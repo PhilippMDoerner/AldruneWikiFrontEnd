@@ -1,0 +1,34 @@
+<article id="characters">
+    <h2 class="major">Characters</h2>
+    <span class="image frontpage-main"><img src="{% static 'frontpage/images/pic01.jpg' %}" alt=""/></span>
+    <p>
+        <a class="button" href="{% url 'aldrunewiki:character-create'%}"> Add Character </a>
+    </p>
+    <h3> Player Characters </h3>
+    <ul>
+        <!-- {% for pc in pc_table %}
+        <li>
+            <a id="character{{ pc.pk }}" href="{{ pc.get_absolute_url }}"> {{ pc.name_for_list|safe }} </a>
+        </li>
+        {% endfor %}
+    </ul>
+    <p></p>
+    <h3> Non-Player Characters </h3>
+    <input type="text" id="npc_filter_input" placeholder="Search for NPC..." class="filter-bar">
+    {% regroup npc_table by name|first|upper as grouped_npc_table %}
+    <ul id="npcList">
+        {% for npc_list in grouped_npc_table %}
+        <h2 class="minor"> {{ npc_list.grouper }} </h2>
+        <ul>
+            {% for npc in npc_list.list %}
+            {% if npc.player_character is not True %}
+            <li><a id="character{{ npc.pk }}" href="{{ npc.get_absolute_url }}">
+                {{ npc.name_for_list|safe }}
+            </a></li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        <p></p>
+        {% endfor %} -->
+    </ul>
+</article>

@@ -1,0 +1,26 @@
+<div id="wrapper" [ngClass]="{'is-preload': isLoaded}" (window:load)=onWindowLoad()>
+    <!-- Header -->
+    <header id="header">
+        <div class="logo">
+            <a routerLink="/rules" class="article-link"><span class="fa fa-diamond fa-2x icon"> </span></a>
+        </div>
+        <div class="content">
+            <div class="inner">
+                <h1>Aldrune</h1>
+                <p><b> A campaign made by Samuel Day and recorded by Philipp Dörner <br>
+                    Through the eyes of Relentless.</b></p>
+            </div>
+        </div>
+        <nav>
+            <ul>
+                <li><b><a class="article-link" routerLink="/character" id="charbutton">Characters</a></b></li>
+                <li><b><a class="article-link" routerLink="/rules" id="locationbutton">Places</a></b></li>
+                <li><b><a class="article-link" routerLink="/rules" id="diarybutton">Diary</a></b></li>
+                <li><b><a class="article-link" routerLink="/rules" id="groupbutton">Groups</a></b></li>
+                <li><b><a class="article-link" routerLink="/rules" id="bestiarybutton">Bestiary</a></b></li>
+                <li><b><a class="article-link" routerLink="/rules" id="itembutton">Items</a></b></li>
+                <li><b><a class="article-link" routerLink="/rules">Map</a></b></li>
+            </ul>
+        </nav>
+    </header>
+</div>

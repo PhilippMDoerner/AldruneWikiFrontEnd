@@ -1,0 +1,13 @@
+<form>
+    <div class="textfield">
+        <editor [init]="{base_url:'/tinymce',suffix: '.min'}"
+        name="textEditField"
+        initialValue="{{ text }}"
+        [(ngModel)]="text"
+        *ngIf="isEditState"
+        (onKeyUp)="updateText()"
+        ></editor>
+    
+        <div *ngIf="!isEditState" innerHTML="{{ text }}">{{ text }}</div>
+    </div>
+</form>
