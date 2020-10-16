@@ -1,3 +1,6 @@
+import { Encounter } from "./encounter";
+import { Image } from "./image";
+
 export interface Character{
     url: string,
     creation_datetime: string,
@@ -12,5 +15,6 @@ export interface Character{
     is_secret: boolean,
     organization: string | null,
     current_location: string | null,
-    images: string[]
+    images: string[],
+    encounters: Encounter[]
 }

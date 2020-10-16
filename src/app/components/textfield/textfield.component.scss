@@ -4,8 +4,13 @@
     color: white;
 }
 
+.fa-pencil{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
 .fa-pencil:hover{
-	color: gray;
+    color: gray;
 }
 
 .fa-check:hover{
@@ -14,4 +19,8 @@
 
 .fa-times:hover{
     color: #9c1e2a;
+}
+
+h4:hover .fa-pencil{
+    opacity: 1;
 }

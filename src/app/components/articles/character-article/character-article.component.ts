@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Character } from "src/app/models/character";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { CharacterService } from "src/app/services/character/character.service";
-import { ThrowStmt } from '@angular/compiler';
+import { Subject } from "rxjs";
 
 @Component({
   selector: 'app-character-article',
@@ -11,7 +11,8 @@ import { ThrowStmt } from '@angular/compiler';
 })
 export class CharacterArticleComponent implements OnInit {
   character: Character;
-  isDescriptionEditState: boolean;
+  isArticleDeleteState: boolean = false;
+  confirmationModal: Subject<void> = new Subject<void>();
   pk: number;
 
   constructor(private modalService: NgbModal, private characterService: CharacterService) { }
@@ -35,28 +36,53 @@ export class CharacterArticleComponent implements OnInit {
           "http://localhost:8000/media/resources/dndicon.png",
           "http://localhost:8000/media/resources/dndicon.png",
           "http://localhost:8000/media/resources/dndicon.png",
-      ]
+        ],
+        encounters: [
+          {
+            "url": "http://localhost:8000/api/encounter/pk/122/",
+            "creation_datetime": "2020-10-03T17:12:45.698883Z",
+            "update_datetime": "2020-10-04T08:01:41.906326Z",
+            "description": "<p>Before the rest of us leave the study from our warplanning with Aspen, Aspen asks Murtagh and myself to help out the wounded in the Brigantia Cathedral of the city. Before doing so though, I snatch Fen and challenge him to a spar to catch up, trying to get as much of what he did in the meantime out of him as possible. After that I make my way to the Cathedral, helping out by carrying stuff and the like, while Bathilde and Murtagh help out in surgical removal of Slaad-tadpoles. The situation in here is dire, medical supplies already running low, people with spines still stuck in them because pulling them out would mean bleeding to death given the lack of supplies and pained moans everywhere. The losing of hope is palpable, here more so than anywhere else in the city.</p>\r\n<p>It&rsquo;s starting to run late into the night as we help out, my mind just about to shut down as we&rsquo;re all jumbled wide awake by a terrifying draconic roar from the central plaza. It is quickly accompanied by the ringing of alarm bells, signaling troops surrounding us to take up arms and march towards the plaza, which we follow. Soon the entire party meets up on the way to the plaza. One quick question from Murtagh later we find out that this was a trap for the dragon and that commands are to make sure it&rsquo;s being taken out.</p>\r\n<p>At the market square we see the dragon caught in a mesh net of chains. On a high wall in front of it, stabbing at its wings are Elmesser and Aspen on each of its sides, trying to keep it in place. Myriads of chaos creatures are flying in, trying to free the dragon from its chains but being fought off by the soldiers that are pouring in. But even then, it seems like it might not be enough, so we join in, fighting our way through Slaads until Melinni suddenly shows up and transports us past them. Worried what might happen if they fall into our backs I give a quick shout to the group of going on without me, staring at the ugly faces of two more of these overgrown frogs. It can&rsquo;t have been much more than a minute, but it feels like hours of slashing between the three of us, while I trust that my friends behind me are making short work of the rest of these creatures, based on the few glimpses I get of them during combat. Aspen&hellip; I hate to say it, but right now, that man is more terrifying than me. I only saw the first, but heard the other two times he tanked a massive amount of spikes piercing his body exhaled by the dragon. Nobody else I know could have survived this with certainty. Gods damn this man&hellip; None the less, based on the pained roars of the dragon, they seem to be succeeding. Or at least they were, until I finish of the last of my Slaad and turn around, just in time to witness the dragon breaking the last of its chains and flying off, wounded, but alive. As he does so, he flies just out of range of Siavala, who seems to have arrived only seconds too late.</p>\r\n<p>We all managed to survive. But so did the dragon.</p>",
+            "is_secret": false,
+            "location": "http://localhost:8000/api/location/pk/16/",
+            "session_number": "http://localhost:8000/api/session/pk/35/"
+          },
+          {
+            "url": "http://localhost:8000/api/encounter/pk/122/",
+            "creation_datetime": "2020-10-03T17:12:45.698883Z",
+            "update_datetime": "2020-10-04T08:01:41.906326Z",
+            "description": "<p>Before the rest of us leave the study from our warplanning with Aspen, Aspen asks Murtagh and myself to help out the wounded in the Brigantia Cathedral of the city. Before doing so though, I snatch Fen and challenge him to a spar to catch up, trying to get as much of what he did in the meantime out of him as possible. After that I make my way to the Cathedral, helping out by carrying stuff and the like, while Bathilde and Murtagh help out in surgical removal of Slaad-tadpoles. The situation in here is dire, medical supplies already running low, people with spines still stuck in them because pulling them out would mean bleeding to death given the lack of supplies and pained moans everywhere. The losing of hope is palpable, here more so than anywhere else in the city.</p>\r\n<p>It&rsquo;s starting to run late into the night as we help out, my mind just about to shut down as we&rsquo;re all jumbled wide awake by a terrifying draconic roar from the central plaza. It is quickly accompanied by the ringing of alarm bells, signaling troops surrounding us to take up arms and march towards the plaza, which we follow. Soon the entire party meets up on the way to the plaza. One quick question from Murtagh later we find out that this was a trap for the dragon and that commands are to make sure it&rsquo;s being taken out.</p>\r\n<p>At the market square we see the dragon caught in a mesh net of chains. On a high wall in front of it, stabbing at its wings are Elmesser and Aspen on each of its sides, trying to keep it in place. Myriads of chaos creatures are flying in, trying to free the dragon from its chains but being fought off by the soldiers that are pouring in. But even then, it seems like it might not be enough, so we join in, fighting our way through Slaads until Melinni suddenly shows up and transports us past them. Worried what might happen if they fall into our backs I give a quick shout to the group of going on without me, staring at the ugly faces of two more of these overgrown frogs. It can&rsquo;t have been much more than a minute, but it feels like hours of slashing between the three of us, while I trust that my friends behind me are making short work of the rest of these creatures, based on the few glimpses I get of them during combat. Aspen&hellip; I hate to say it, but right now, that man is more terrifying than me. I only saw the first, but heard the other two times he tanked a massive amount of spikes piercing his body exhaled by the dragon. Nobody else I know could have survived this with certainty. Gods damn this man&hellip; None the less, based on the pained roars of the dragon, they seem to be succeeding. Or at least they were, until I finish of the last of my Slaad and turn around, just in time to witness the dragon breaking the last of its chains and flying off, wounded, but alive. As he does so, he flies just out of range of Siavala, who seems to have arrived only seconds too late.</p>\r\n<p>We all managed to survive. But so did the dragon.</p>",
+            "is_secret": false,
+            "location": "http://localhost:8000/api/location/pk/16/",
+            "session_number": "http://localhost:8000/api/session/pk/35/"
+          },
+          {
+            "url": "http://localhost:8000/api/encounter/pk/122/",
+            "creation_datetime": "2020-10-03T17:12:45.698883Z",
+            "update_datetime": "2020-10-04T08:01:41.906326Z",
+            "description": "<p>Before the rest of us leave the study from our warplanning with Aspen, Aspen asks Murtagh and myself to help out the wounded in the Brigantia Cathedral of the city. Before doing so though, I snatch Fen and challenge him to a spar to catch up, trying to get as much of what he did in the meantime out of him as possible. After that I make my way to the Cathedral, helping out by carrying stuff and the like, while Bathilde and Murtagh help out in surgical removal of Slaad-tadpoles. The situation in here is dire, medical supplies already running low, people with spines still stuck in them because pulling them out would mean bleeding to death given the lack of supplies and pained moans everywhere. The losing of hope is palpable, here more so than anywhere else in the city.</p>\r\n<p>It&rsquo;s starting to run late into the night as we help out, my mind just about to shut down as we&rsquo;re all jumbled wide awake by a terrifying draconic roar from the central plaza. It is quickly accompanied by the ringing of alarm bells, signaling troops surrounding us to take up arms and march towards the plaza, which we follow. Soon the entire party meets up on the way to the plaza. One quick question from Murtagh later we find out that this was a trap for the dragon and that commands are to make sure it&rsquo;s being taken out.</p>\r\n<p>At the market square we see the dragon caught in a mesh net of chains. On a high wall in front of it, stabbing at its wings are Elmesser and Aspen on each of its sides, trying to keep it in place. Myriads of chaos creatures are flying in, trying to free the dragon from its chains but being fought off by the soldiers that are pouring in. But even then, it seems like it might not be enough, so we join in, fighting our way through Slaads until Melinni suddenly shows up and transports us past them. Worried what might happen if they fall into our backs I give a quick shout to the group of going on without me, staring at the ugly faces of two more of these overgrown frogs. It can&rsquo;t have been much more than a minute, but it feels like hours of slashing between the three of us, while I trust that my friends behind me are making short work of the rest of these creatures, based on the few glimpses I get of them during combat. Aspen&hellip; I hate to say it, but right now, that man is more terrifying than me. I only saw the first, but heard the other two times he tanked a massive amount of spikes piercing his body exhaled by the dragon. Nobody else I know could have survived this with certainty. Gods damn this man&hellip; None the less, based on the pained roars of the dragon, they seem to be succeeding. Or at least they were, until I finish of the last of my Slaad and turn around, just in time to witness the dragon breaking the last of its chains and flying off, wounded, but alive. As he does so, he flies just out of range of Siavala, who seems to have arrived only seconds too late.</p>\r\n<p>We all managed to survive. But so did the dragon.</p>",
+            "is_secret": false,
+            "location": "http://localhost:8000/api/location/pk/16/",
+            "session_number": "http://localhost:8000/api/session/pk/35/"
+          }
+        ]
     }
     let split_url = this.character.url.split('/');
     this.pk = parseInt(split_url[split_url.length-2]);
   }
 
-  showModal(content){
-    this.modalService.open(content).result.then(  
-      (closeResult) => {  
-          //modal close  
-          console.log("Used close function on click event");
-          this.deleteArticle();
-      }, (dismissReason) => {  
-          //modal Dismiss  
-          console.log("Used di/dismiss function on click event")
-      })  
-  }
 
   onDescriptionUpdate(updatedDescriptionText){
     this.character.description = updatedDescriptionText;
   }
 
+  confirmationRequest(){
+    this.confirmationModal.next();
+  }
+
+  toggleDeleteRequest(){
+    this.isArticleDeleteState = !this.isArticleDeleteState;
+  }
 
   deleteArticle(){
       this.characterService.deleteCharacter(this.pk);

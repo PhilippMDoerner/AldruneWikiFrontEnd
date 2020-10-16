@@ -1,4 +1,5 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input, HostListener, Output } from '@angular/core';
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-image-gallery',
@@ -7,6 +8,7 @@ import { Component, OnInit, Input, HostListener } from '@angular/core';
 })
 export class ImageGalleryComponent implements OnInit {
   @Input() image_urls : string[];
+  @Output() triggeredDeletion: Observable<void> = new Observable();
   visibleImageIndex: number = 0;
 
   constructor() { }
