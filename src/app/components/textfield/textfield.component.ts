@@ -6,20 +6,29 @@ import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./textfield.component.scss']
 })
 export class TextfieldComponent implements OnInit {
-  @Input() isEditState = false;
-  @Input() text: string;
-  @Output() updatedText: EventEmitter<string> = new EventEmitter();
+  @Input() initialText: string;
+  @Input() heading: string;
+  @Output() updateText: EventEmitter<string> = new EventEmitter();
+  updatedText: string;
+  isEditState: boolean = false;
 
-  constructor() { }
+  constructor() {  }
 
   ngOnInit(): void {
+    this.updatedText = this.initialText;
   }
 
-  toggleEditState(){
-    this.isEditState = !this.isEditState;
+  enableEdit(){
+    this.isEditState = true;
   }
 
-  updateText(){
-    this.updatedText.emit(this.text);
+  finishEdit(){
+    this.isEditState = false;
+    this.updateText.emit(this.updatedText);
+  }
+
+  cancelEdit(){
+    this.isEditState = false;
+    this.updatedText = this.initialText;
   }
 }

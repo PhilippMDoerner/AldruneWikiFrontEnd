@@ -177,3 +177,10 @@ body.is-article-visible #bg:after {
 body.is-preload #bg:before {
 	background-color: #000000;
 }
+
+.btn{
+	font-weight: bold !important;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

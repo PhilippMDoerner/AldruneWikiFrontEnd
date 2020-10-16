@@ -1,0 +1,65 @@
+.main-image{
+    display: block;
+}
+
+.side-image{
+    display: none;
+}
+
+.image-area{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.gallery-image{
+    max-height: 20rem;
+    max-width: 100%;
+}
+
+.edit-image-buttons{
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: space-evenly;
+    transition: opacity 0.2s;
+    opacity: 0;
+}
+
+.mouseoverVisible{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+div:hover .edit-image-buttons, div:hover .mouseoverVisible{
+    opacity: 1;
+}
+
+.fa{
+    cursor: pointer;
+    transition: color 0.2s;
+    color: white;
+    margin: 0.5rem;
+    padding: 0.5rem;
+}
+
+.fa-pencil-square-o:hover{
+    color: gray;
+}
+
+.fa-trash:hover{
+    color: red;
+}
+
+.fa-plus-square-o:hover{
+    color: green;
+}

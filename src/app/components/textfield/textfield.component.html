@@ -1,13 +1,24 @@
+<h4> {{ heading }} 
+    <i *ngIf="!isEditState" (click)="enableEdit()" class="fa fa-pencil ml-2"></i>
+    <i *ngIf="isEditState" (click)="cancelEdit()" class="fa fa-times ml-2"></i>
+    <i *ngIf="isEditState" (click)="finishEdit()" class="fa fa-check ml-2"></i>
+</h4>
 <form>
     <div class="textfield">
-        <editor [init]="{base_url:'/tinymce',suffix: '.min'}"
-        name="textEditField"
-        initialValue="{{ text }}"
-        [(ngModel)]="text"
-        *ngIf="isEditState"
-        (onKeyUp)="updateText()"
-        ></editor>
-    
-        <div *ngIf="!isEditState" innerHTML="{{ text }}">{{ text }}</div>
+        <div *ngIf="isEditState">
+            <editor 
+            [init]="{base_url:'/tinymce', suffix:'.min'}"
+            name="textEditField"
+            [(ngModel)]="updatedText"
+            class="mb-2"
+            ></editor>
+        </div>
+
+        <div 
+        *ngIf="!isEditState" 
+        innerHTML="{{ updatedText }}"
+        >
+            {{ updatedText }}
+        </div>
     </div>
 </form>

@@ -14,6 +14,10 @@ export class CharacterService {
   getCharacters(): Observable<Character[]>{
     return this.http.get<Character[]>(this.characterUrl);
   }
+
+  deleteCharacter(id: number): void{//Observable<Character>{
+    console.log(`Delete Character with pk ${id}`);
+  }
 }
 
 

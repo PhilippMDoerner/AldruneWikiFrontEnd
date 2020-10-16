@@ -11,5 +11,6 @@ export interface Character{
     description: string,
     is_secret: boolean,
     organization: string | null,
-    current_location: string | null
+    current_location: string | null,
+    images: string[]
 }

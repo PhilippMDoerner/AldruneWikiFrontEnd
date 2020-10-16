@@ -1,12 +1,18 @@
 <div class="main">
     <article>
-        <h2 class="text-center"> {{ character.title }} {{ character.name }} </h2>
-        <!-- <img src="IMG PLACEHOLDER!"> -->
+        <h2 class="text-center"> {{ character.title }}<span *ngIf="character.title"> - </span>{{ character.name }} </h2>
+        
+        <app-image-gallery [image_urls]="character.images"></app-image-gallery>
+
         <!-- TODO: Implement some sort of quote card -->
-        <h4>Description <i (click)="onDescriptionEditToggle()" class="fa fa-pencil"></i></h4>
-        <app-textfield [text]="character.description"
-        [isEditState]="isDescriptionEditState"
-        (updatedText)="onUpdateDescription($event)"></app-textfield>
+        <div class="mb-5">
+            <app-textfield 
+            [initialText]="character.description"
+            [heading]="'Description'"
+            (updateText)="onDescriptionUpdate($event)"
+            ></app-textfield>
+        </div>
+
 
         <h4>Items of Note</h4>
         <ul>
@@ -14,5 +20,6 @@
         </ul>
         <h4>Encounters</h4>
 
+        <app-confirm-deletion [article]="character.name" (deletionConfirmation)="deleteArticle()"></app-confirm-deletion>
     </article>
 </div>
