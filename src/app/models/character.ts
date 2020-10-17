@@ -8,13 +8,39 @@ export interface Character{
     player_character: boolean,
     alive: boolean,
     name: string,
-    title: string | null,
+    title: string,
     gender: string,
     race: string,
     description: string,
     is_secret: boolean,
-    organization: string | null,
-    current_location: string | null,
+    organization: characterOrganization,
+    current_location: string,
     images: Image[],
-    encounters: Encounter[]
+    encounters: characterEncounter[],
+    items: characterItems[]
+}
+
+interface characterItems {
+    url: string,
+    name: string
+}
+
+interface characterOrganization{
+    url: string,
+    name: string
+}
+
+interface characterEncounter{
+    name: string,
+    url: string,
+    creation_datetime: string,
+    update_datetime:string,
+    encounterConnections: characterEncounterConnections[]
+    description: string
+    pk: number
+}
+
+interface characterEncounterConnections{
+    character: string,
+    url: string
 }

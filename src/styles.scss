@@ -196,3 +196,13 @@ body.is-preload #bg:before {
 .icon:hover{
 	color: gray
 }
+
+a{
+	color: white !important;
+	border-bottom: dotted 1px gray;
+}
+
+a:hover{
+	text-decoration: none !important;
+	border-bottom: solid 2px gray;
+}

@@ -28,3 +28,12 @@ h2{
     padding: 0.5rem 1rem;
     justify-content: flex-end;
 }
+
+h4 .icon{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+h4:hover .icon{
+    opacity: 1;
+}

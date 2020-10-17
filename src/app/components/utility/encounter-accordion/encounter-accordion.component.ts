@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Encounter } from "src/app/models/encounter";
 
 @Component({
@@ -8,6 +8,7 @@ import { Encounter } from "src/app/models/encounter";
 })
 export class EncounterAccordionComponent implements OnInit {
   @Input() encounters: Encounter[];
+  @Output() updateEncounterDescription: EventEmitter<{updatedDescription: string, index: number}> = new EventEmitter();
   isOpen: object;
 
   constructor() { }
@@ -15,17 +16,22 @@ export class EncounterAccordionComponent implements OnInit {
   ngOnInit(): void {
     this.isOpen ={};
     this.encounters.forEach((encounter, index) => {
-      const accordionPanelId = `static-${{index}}`;
+      const accordionPanelId = `static-${index}`;
       this.isOpen[accordionPanelId] = false;
     });
   }
 
-  onEncounterUpdate(){
-
+  onEncounterUpdate(updateText, encounterIndex){
+    this.encounters[encounterIndex].description = updateText;
+    const encounterDescriptionUpdateEvent = {updatedDescription: updateText, index: encounterIndex};
+    this.updateEncounterDescription.emit(encounterDescriptionUpdateEvent);
   }
 
   onPanelChange({panelId}){
-    this.isOpen[panelId] = !this.isOpen[panelId];
+    for (const key in this.isOpen) {
+      const isClickedPanel: boolean = (key === panelId);
+      this.isOpen[key] = isClickedPanel ? !this.isOpen[key]: false;
+    }
   }
 
   panelIsOpen(index: number){

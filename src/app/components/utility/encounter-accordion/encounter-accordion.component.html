@@ -22,7 +22,7 @@
                 <app-textfield 
                 [initialText]="encounter.description"
                 [heading]="encounter.name"
-                (updateText)="onEncounterUpdate($event)"
+                (updateText)="onEncounterUpdate($event, i)"
                 ></app-textfield>
             </div>        
         </ng-template>

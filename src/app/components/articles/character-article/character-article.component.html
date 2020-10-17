@@ -1,10 +1,17 @@
 <div class="main">
     <article>
         <h2 class="text-center"> {{ character.title }}<span *ngIf="character.title"> - </span>{{ character.name }} </h2>
-        
+        <div class="text-center">
+            <span *ngIf="character.gender !=='Other'">{{character.gender}}</span>
+            {{ character.race }}
+            <span *ngIf="character.organization"> of the 
+                <a routerLink="character.organization.url">{{ character.organization.name }}</a>
+            </span>   
+        </div>
+
         <app-image-gallery [images]="character.images"></app-image-gallery>
 
-        <!-- TODO: Implement some sort of quote card -->
+        <!-- TODO: Implement a quote DB. A random quote of that selection shall be displayed as some sort of quote card -->
         <div class="mb-5">
             <app-textfield 
             [initialText]="character.description"
@@ -13,15 +20,20 @@
             ></app-textfield>
         </div>
 
+        <div class="mb-5">
+            <h4>Items of Note <i class="fa fa-plus icon ml-1" (click)="addItem()"></i></h4>
+            <ul>
+                <li *ngFor="let item of character.items">
+                    <a routerLink="item.url">{{ item.name }}</a>
+                </li>
+            </ul>
+        </div>
 
-        <h4>Items of Note</h4>
-        <ul>
-            <li></li>
-        </ul>
-        <h4>Encounters</h4>
-        <div class="encounter-list mb-3 mt-3">
+        <h4>Encounters <i class="fa fa-plus icon ml-1" (click)="addEncounter()"></i></h4>
+        <div class="encounter-list mb-5 mt-3">
             <app-encounter-accordion
             [encounters]="character.encounters"
+            (updateEncounterDescription)="onEncounterUpdate($event)"
             ></app-encounter-accordion>
         </div>
 
