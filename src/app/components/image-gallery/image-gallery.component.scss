@@ -52,7 +52,7 @@ div:hover .edit-image-buttons, div:hover .mouseoverVisible{
     padding: 0.5rem;
 }
 
-.fa-pencil-square-o:hover{
+.fa-pencil-square-o:hover, .fa-arrow-left:hover, .fa-arrow-right:hover{
     color: gray;
 }
 
@@ -62,4 +62,14 @@ div:hover .edit-image-buttons, div:hover .mouseoverVisible{
 
 .fa-plus-square-o:hover{
     color: green;
+}
+
+.modal-content{
+    background-color: black;
+    color: white;
+}
+
+.deactivated-icon{
+    opacity: 0;
+    cursor: default;
 }

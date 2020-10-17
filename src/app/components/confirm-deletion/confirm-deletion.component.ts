@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap"
 import { Observable, Subscription } from "rxjs";
+import { Image } from "src/app/models/image";
 
 @Component({
   selector: 'app-confirm-deletion',
@@ -9,14 +10,16 @@ import { Observable, Subscription } from "rxjs";
 })
 export class ConfirmDeletionComponent implements OnInit {
   @Input() article: string;
-  @Input() triggerConfirmationRequest: Observable<void>;
+  @Input() showDeletionModalEvent: Observable<Image>;
   @Output() deletionConfirmation: EventEmitter<boolean> = new EventEmitter();
   private triggerSubscription: Subscription;
 
   constructor(private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.triggerSubscription = this.triggerConfirmationRequest.subscribe(this.showModal);
+    this.triggerSubscription = this.showDeletionModalEvent.subscribe(() => {
+      console.log("Triggered Modal creation in confirm-deletion-component");
+    })
   }
 
   showModal(content){
