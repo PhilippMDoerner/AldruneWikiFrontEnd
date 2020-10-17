@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AppConstants } from "src/app/app.constants";
+import { Constants } from "src/app/app.constants";
 import { HttpClient } from "@angular/common/http";
 import { Character } from "src/app/models/character";
 import { Observable } from "rxjs";
@@ -8,7 +8,7 @@ import { Observable } from "rxjs";
   providedIn: 'root'
 })
 export class CharacterService {
-  characterUrl: string = `${AppConstants.wikiApiURL}/character/`;
+  characterUrl: string = `${Constants.wikiApiURL}/character/`;
   constructor(private http: HttpClient) { }
 
   getCharacters(): Observable<Character[]>{

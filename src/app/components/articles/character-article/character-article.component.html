@@ -2,7 +2,7 @@
     <article>
         <h2 class="text-center"> {{ character.title }}<span *ngIf="character.title"> - </span>{{ character.name }} </h2>
         
-        <app-image-gallery [image_urls]="character.images"></app-image-gallery>
+        <app-image-gallery [images]="character.images"></app-image-gallery>
 
         <!-- TODO: Implement some sort of quote card -->
         <div class="mb-5">

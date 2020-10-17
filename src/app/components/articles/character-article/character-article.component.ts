@@ -3,6 +3,7 @@ import { Character } from "src/app/models/character";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { CharacterService } from "src/app/services/character/character.service";
 import { Subject } from "rxjs";
+import { Image } from "src/app/models/image";
 
 @Component({
   selector: 'app-character-article',
@@ -14,7 +15,6 @@ export class CharacterArticleComponent implements OnInit {
   isArticleDeleteState: boolean = false;
   confirmationModal: Subject<void> = new Subject<void>();
   pk: number;
-
   constructor(private modalService: NgbModal, private characterService: CharacterService) { }
 
   ngOnInit(): void {
@@ -33,9 +33,24 @@ export class CharacterArticleComponent implements OnInit {
         organization: "http://localhost:8000/api/organization/pk/19/",
         current_location: null,
         images: [
-          "http://localhost:8000/media/resources/dndicon.png",
-          "http://localhost:8000/media/resources/dndicon.png",
-          "http://localhost:8000/media/resources/dndicon.png",
+          {
+            url: "http://localhost:8000/api/image/pk/57/",
+            image: "http://localhost:8000/media/resources/dndicon.png",
+            name: "DndIcon",
+            articleUrl: "http://localhost:8000/api/character/pk/81/"
+          },
+          {
+            url: "http://localhost:8000/api/image/pk/57/",
+            image: "http://localhost:8000/media/resources/dndicon.png",
+            name: "DndIcon",
+            articleUrl: "http://localhost:8000/api/character/pk/81/"
+          },
+          {
+            url: "http://localhost:8000/api/image/pk/57/",
+            image: "http://localhost:8000/media/resources/dndicon.png",
+            name: "DndIcon",
+            articleUrl: "http://localhost:8000/api/character/pk/81/"
+          }
         ],
         encounters: [
           {
@@ -66,6 +81,7 @@ export class CharacterArticleComponent implements OnInit {
             "session_number": "http://localhost:8000/api/session/pk/35/"
           }
         ]
+
     }
     let split_url = this.character.url.split('/');
     this.pk = parseInt(split_url[split_url.length-2]);
@@ -81,7 +97,7 @@ export class CharacterArticleComponent implements OnInit {
   }
 
   toggleDeleteRequest(){
-    this.isArticleDeleteState = !this.isArticleDeleteState;
+    this.isArticleDeleteState = !this.isArticleDeleteState
   }
 
   deleteArticle(){
