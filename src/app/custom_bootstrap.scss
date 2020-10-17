@@ -1,0 +1,17 @@
+$card-bg: rgb(56, 61, 64) !important;
+$card-color: #fff !important;
+
+button.btn.btn-link:hover{
+    text-decoration: none !important;
+}
+
+button.btn.btn-link:focus{
+    text-decoration: none !important;
+    box-shadow: none !important;
+}
+
+//Explicitly expand buttons in Accordion components to 100% width
+.card button.btn.btn-link{
+    width: 100%;
+    text-align: left;
+}

@@ -1,0 +1,18 @@
+@import "../../../cssvariables.scss";
+
+.encounter-title{
+    color: white;
+    width: 100%;
+    font-size: 18px;
+    border-bottom: dotted 2px gray;
+}
+
+.encounter-title:hover{
+    border-bottom: solid 2px gray;
+}
+
+.encounter-connections{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}

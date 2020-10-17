@@ -1,3 +1,4 @@
+import { EncounterConnection } from "src/app/models/encounterconnection";
 export interface Encounter    {
     "url": string,
     "creation_datetime": string,
@@ -5,5 +6,7 @@ export interface Encounter    {
     "description": string,
     "is_secret": boolean,
     "location": string,
-    "session_number": string
+    "session_number": string,
+    "encounterconnection": EncounterConnection[],
+    "name": string
 }

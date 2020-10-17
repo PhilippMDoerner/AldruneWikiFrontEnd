@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600");
+@import './app/custom_bootstrap.scss';
+@import '../node_modules/bootstrap/scss/bootstrap';
 
 :root {
 	--blue: #007bff;
@@ -184,3 +186,13 @@ body.is-preload #bg:before {
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
+
+.icon{
+	color: white;
+	transition: color 0.2s;
+	cursor: pointer;
+}
+
+.icon:hover{
+	color: gray
+}

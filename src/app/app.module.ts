@@ -21,6 +21,7 @@ import { TextfieldComponent } from './components/utility/textfield/textfield.com
 import { ImageGalleryComponent } from './components/utility/image-gallery/image-gallery.component';
 
 import { CharacterService } from "src/app/services/character/character.service";
+import { EncounterAccordionComponent } from './components/utility/encounter-accordion/encounter-accordion.component';
 
 
 @NgModule({
@@ -38,6 +39,7 @@ import { CharacterService } from "src/app/services/character/character.service";
     ArticleOverviewComponent,
     TextfieldComponent,
     ImageGalleryComponent,
+    EncounterAccordionComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +53,11 @@ import { CharacterService } from "src/app/services/character/character.service";
     CharacterService,
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [
+    AppComponent
+  ],
+  exports: [
+    EncounterAccordionComponent
+  ]
 })
 export class AppModule { }

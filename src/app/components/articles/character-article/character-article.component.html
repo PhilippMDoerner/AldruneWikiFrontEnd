@@ -19,6 +19,11 @@
             <li></li>
         </ul>
         <h4>Encounters</h4>
+        <div class="encounter-list mb-3 mt-3">
+            <app-encounter-accordion
+            [encounters]="character.encounters"
+            ></app-encounter-accordion>
+        </div>
 
         <div class="float-right">
             <i *ngIf="!isArticleDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleDeleteRequest()"></i>

@@ -1,0 +1,32 @@
+<ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)">
+    <ngb-panel id="static-{{i}}" *ngFor="let encounter of encounters; let i = index">
+        
+        <ng-template ngbPanelTitle class="button-container">
+            <span class="encounter-title"> {{ encounter.name }}</span>
+            <i [ngClass]="{
+                'fa float-right icon': true,
+                'fa-plus': !panelIsOpen(i),
+                'fa-minus': panelIsOpen(i)}"></i>
+        </ng-template>
+        
+        <ng-template ngbPanelContent>
+            <div class="encounter-connections mb-3">
+                <h5 class="mr-4"> Characters </h5>
+                <div>
+                    <span class="badge badge-secondary mr-2" *ngFor="let connection of encounter.encounterconnection">
+                        {{ connection.character }}
+                    </span>
+                </div>
+            </div>
+            <div class="mb-1">
+                <app-textfield 
+                [initialText]="encounter.description"
+                [heading]="encounter.name"
+                (updateText)="onEncounterUpdate($event)"
+                ></app-textfield>
+            </div>        
+        </ng-template>
+
+    </ngb-panel>
+</ngb-accordion>
+  
