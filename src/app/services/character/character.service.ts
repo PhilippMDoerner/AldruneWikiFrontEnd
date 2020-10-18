@@ -8,11 +8,15 @@ import { Observable } from "rxjs";
   providedIn: 'root'
 })
 export class CharacterService {
-  characterUrl: string = `${Constants.wikiApiURL}/character/`;
+  characterUrl: string = `${Constants.wikiApiURL}/character`;
   constructor(private http: HttpClient) { }
 
   getCharacters(): Observable<Character[]>{
     return this.http.get<Character[]>(this.characterUrl);
+  }
+
+  getCharacter(characterName: string): Observable<Character>{
+    return this.http.get<Character>(`${this.characterUrl}/${characterName}`);
   }
 
   deleteCharacter(id: number): void{//Observable<Character>{

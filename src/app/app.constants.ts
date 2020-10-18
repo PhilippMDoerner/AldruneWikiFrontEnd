@@ -1,5 +1,5 @@
 export class Constants{
-    public static get wikiApiURL(): string { return "localhost/8000/api/";}
+    public static get wikiApiURL(): string { return "http://localhost:8000/api";}
     //Used so far mostly in Image Gallery
     public static get createState(): string { return "create";}
     public static get deleteState(): string { return "delete";}

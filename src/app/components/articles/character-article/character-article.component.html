@@ -1,15 +1,22 @@
 <div class="main">
-    <article>
-        <h2 class="text-center"> {{ character.title }}<span *ngIf="character.title"> - </span>{{ character.name }} </h2>
-        <div class="text-center">
+    <article *ngIf="characterObs | async as character; else loading" class="mb-4">
+        <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
+        <h2 class="text-center"> 
+            <span *ngIf="character.title">{{ character.title }} - </span>
+            {{ character.name }} 
+        </h2>
+        <div class="text-center mb-3">
             <span *ngIf="character.gender !=='Other'">{{character.gender}}</span>
             {{ character.race }}
             <span *ngIf="character.organization"> of the 
-                <a routerLink="character.organization.url">{{ character.organization.name }}</a>
+                <a routerLink="/organization/{{character.organization}}">{{ character.organization }}</a>
             </span>   
         </div>
 
-        <app-image-gallery [images]="character.images"></app-image-gallery>
+        <app-image-gallery
+        [article_pk]="this.character.pk"
+        [article_type]="this.articleType"
+        ></app-image-gallery>
 
         <!-- TODO: Implement a quote DB. A random quote of that selection shall be displayed as some sort of quote card -->
         <div class="mb-5">
@@ -24,17 +31,14 @@
             <h4>Items of Note <i class="fa fa-plus icon ml-1" (click)="addItem()"></i></h4>
             <ul>
                 <li *ngFor="let item of character.items">
-                    <a routerLink="item.url">{{ item.name }}</a>
+                    <a routerLink="/item/{{item}}">{{ item }}</a>
                 </li>
             </ul>
         </div>
 
         <h4>Encounters <i class="fa fa-plus icon ml-1" (click)="addEncounter()"></i></h4>
         <div class="encounter-list mb-5 mt-3">
-            <app-encounter-accordion
-            [encounters]="character.encounters"
-            (updateEncounterDescription)="onEncounterUpdate($event)"
-            ></app-encounter-accordion>
+            <app-encounter-accordion [encounters]="character.encounters"></app-encounter-accordion>
         </div>
 
         <div class="float-right">
@@ -47,4 +51,7 @@
         </div>
 
     </article>
+    <ng-template #loading class="mb-4">
+        <div>Loading ...</div>
+    </ng-template> 
 </div>

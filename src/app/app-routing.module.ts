@@ -11,7 +11,8 @@ import { RulesComponent } from "src/app/components/articles/rules/rules.componen
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
-  {path: "character", component: CharacterArticleComponent},
+  {path: "character", component: HomeComponent},
+  {path: "character/:name", component: CharacterArticleComponent},
   {path: "location/", component: LocationArticleComponent},
   {path: "diaryentry/", component: DiaryentryArticleComponent},
   {path: "creature/", component: CreatureArticleComponent},

@@ -1,8 +1,8 @@
 import { Encounter } from "./encounter";
 import { Image } from "./image";
 
+// TODO: Check out to move encounters and images into this one single object to reduce queries on the backend to a minimum
 export interface Character{
-    url: string,
     creation_datetime: string,
     update_datetime: string,
     player_character: boolean,
@@ -13,26 +13,15 @@ export interface Character{
     race: string,
     description: string,
     is_secret: boolean,
-    organization: characterOrganization,
+    organization: string,
     current_location: string,
-    images: Image[],
-    encounters: characterEncounter[],
-    items: characterItems[]
-}
-
-interface characterItems {
-    url: string,
-    name: string
-}
-
-interface characterOrganization{
-    url: string,
-    name: string
+    items: string[],
+    pk: number;
+    encounters: characterEncounter[];
 }
 
 interface characterEncounter{
     name: string,
-    url: string,
     creation_datetime: string,
     update_datetime:string,
     encounterConnections: characterEncounterConnections[]
@@ -41,6 +30,6 @@ interface characterEncounter{
 }
 
 interface characterEncounterConnections{
-    character: string,
-    url: string
+    connection_pk: number
+    character_name: string,
 }

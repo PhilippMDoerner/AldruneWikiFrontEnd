@@ -16,3 +16,11 @@
     flex-direction: row;
     justify-content: flex-start;
 }
+
+.badge a{
+    border-bottom: none;
+}
+
+.badge a:hover{
+    color: darkblue !important;
+}

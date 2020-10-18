@@ -22,6 +22,7 @@ import { ImageGalleryComponent } from './components/utility/image-gallery/image-
 
 import { CharacterService } from "src/app/services/character/character.service";
 import { EncounterAccordionComponent } from './components/utility/encounter-accordion/encounter-accordion.component';
+import { CharacterCreateComponent } from './components/articles/character-create/character-create.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { EncounterAccordionComponent } from './components/utility/encounter-acco
     TextfieldComponent,
     ImageGalleryComponent,
     EncounterAccordionComponent,
+    CharacterCreateComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
-export interface EncounterConnection    {
-    "url": string;
-    "character": string;
-    "encounter": string;
+export interface EncounterConnection{
+    "pk": number,
+    "encounter_pk": number,
+    "character_name": string,
 }

@@ -2,7 +2,8 @@ import { Component, OnInit, Input, HostListener, Output } from '@angular/core';
 import { Image, EmptyImage } from "src/app/models/image";
 import { Constants } from "src/app/app.constants";
 import { deepCopy } from "src/app/utils";
-import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
+import { ImageUploadService } from "src/app/services/image/image-upload.service";
 
 @Component({
   selector: 'app-image-gallery',
@@ -12,16 +13,20 @@ import { ModalDismissReasons, NgbModal } from "@ng-bootstrap/ng-bootstrap";
 
 export class ImageGalleryComponent implements OnInit {
   constants: any = Constants;
-  @Input() images : Image[];
+  images : Image[];
   visibleImageIndex: number = 0;
   formImageData: Image;
   activeModalState: string;
-  articleUrl: string;
+  @Input() article_type: string;
+  @Input() article_pk: number;
+  imageFileForUpload: File = null;
 
-  constructor(private modalService: NgbModal) { }
+  constructor(private modalService: NgbModal, private imageUploadService: ImageUploadService) { }
 
   ngOnInit(): void {
-    this.articleUrl = this.images[0].articleUrl;
+    this.imageUploadService.getArticleImages(this.article_type, this.article_pk).subscribe((images) => {
+      this.images = images;
+    })
   }
 
   @HostListener('document:keyup', ['$event'])
@@ -64,6 +69,18 @@ export class ImageGalleryComponent implements OnInit {
     this.formImageData = null;
   }
 
+  handleFileInput(files: FileList) {
+    this.imageFileForUpload = files.item(0);
+  }
+
+  uploadArticleImage(){
+    // this.imageUploadService.postImage(this.imageFileForUpload).subscribe( data => {
+    //   console.log(data);
+    // }, error => {
+    //   console.log(error);
+    // })
+  }
+
   createImage(){
     console.log("Send Image creation to server...");
     //Do the below in a promise-callback when you receive the response from the server once services are implemented
@@ -84,7 +101,7 @@ export class ImageGalleryComponent implements OnInit {
   showCreateModal(content){
     this.activeModalState = this.constants.createState;
     this.formImageData = new EmptyImage();
-    this.formImageData.articleUrl = this.articleUrl;
+    // this.formImageData.articleUrl = this.articleUrl;
     this.modalService.open(content).result.then( 
       (closeSignal) => {this.createImage()},(dismissSignal) => {}
     );
@@ -97,5 +114,13 @@ export class ImageGalleryComponent implements OnInit {
     this.modalService.open(content).result.then( 
       (closeSignal) => {this.deleteImage()},(dismissSignal) => {}
     );  
+  }
+
+  isLastImage(){
+    if(this.images){
+      return this.images.length === 1;
+    }
+
+    return true;
   }
 }

@@ -1,12 +1,9 @@
 import { EncounterConnection } from "src/app/models/encounterconnection";
-export interface Encounter    {
-    "url": string,
+export interface Encounter{
+    "pk": number,
     "creation_datetime": string,
     "update_datetime": string,
     "description": string,
-    "is_secret": boolean,
-    "location": string,
-    "session_number": string,
-    "encounterconnection": EncounterConnection[],
+    "encounterConnections": EncounterConnection[],
     "name": string
 }

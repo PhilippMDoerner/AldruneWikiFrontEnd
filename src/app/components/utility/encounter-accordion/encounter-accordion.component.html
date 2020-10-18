@@ -13,8 +13,8 @@
             <div class="encounter-connections mb-3">
                 <h5 class="mr-4"> Characters </h5>
                 <div>
-                    <span class="badge badge-secondary mr-2" *ngFor="let connection of encounter.encounterconnection">
-                        {{ connection.character }}
+                    <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections">
+                        <a routerLink="/character/{{connection.character_name}}">{{ connection.character_name }}</a>
                     </span>
                 </div>
             </div>
