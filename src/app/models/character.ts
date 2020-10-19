@@ -18,6 +18,7 @@ export interface Character{
     items: string[],
     pk: number;
     encounters: characterEncounter[];
+    images: Image[];
 }
 
 interface characterEncounter{

@@ -13,21 +13,16 @@ import { ImageUploadService } from "src/app/services/image/image-upload.service"
 
 export class ImageGalleryComponent implements OnInit {
   constants: any = Constants;
-  images : Image[];
+  @Input() images : Image[];
+  @Input() article_type: string;
   visibleImageIndex: number = 0;
   formImageData: Image;
   activeModalState: string;
-  @Input() article_type: string;
-  @Input() article_pk: number;
   imageFileForUpload: File = null;
 
   constructor(private modalService: NgbModal, private imageUploadService: ImageUploadService) { }
 
-  ngOnInit(): void {
-    this.imageUploadService.getArticleImages(this.article_type, this.article_pk).subscribe((images) => {
-      this.images = images;
-    })
-  }
+  ngOnInit(): void {}
 
   @HostListener('document:keyup', ['$event'])
   changeMainImage(event){

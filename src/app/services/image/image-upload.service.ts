@@ -24,7 +24,7 @@ export class ImageUploadService {
   }
 
   updateImage(image: Image){
-    const url = `${this.api_url_base}/pk/${image.pk}`;
+    const url = `${this.api_url_base}/pk/${image.image_pk}`;
     return this.http.put<Image>(url, image, httpOptions);
   }
 
@@ -34,7 +34,7 @@ export class ImageUploadService {
   }
 
   deleteImage(image: Image){
-    const url = `${this.api_url_base}/pk/${image.pk}`;
+    const url = `${this.api_url_base}/pk/${image.image_pk}`;
     return this.http.delete<Image>(url, httpOptions);
   }
 
