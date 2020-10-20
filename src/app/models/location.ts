@@ -6,4 +6,5 @@ export interface Location {
     "description": string,
     "is_secret": boolean,
     "parent_location": string,
+    "pk": number
 }

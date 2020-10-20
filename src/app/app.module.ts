@@ -4,8 +4,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule } from "@angular/forms";
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { HttpClientModule } from '@angular/common/http';
-
 import { AppRoutingModule } from './app-routing.module';
+import { CommonModule } from "@angular/common";
+
 import { AppComponent } from './app.component';
 import { NavbarComponent } from "src/app/components/navbar/navbar.component";
 import { HomeComponent } from './components/home/home.component';
@@ -22,8 +23,7 @@ import { ImageGalleryComponent } from './components/utility/image-gallery/image-
 
 import { CharacterService } from "src/app/services/character/character.service";
 import { EncounterAccordionComponent } from './components/utility/encounter-accordion/encounter-accordion.component';
-import { CharacterCreateComponent } from './components/articles/character-create/character-create.component';
-
+import { CharacterArticleUpdateComponent } from './components/articles/character-article-update/character-article-update.component';
 
 @NgModule({
   declarations: [
@@ -41,7 +41,7 @@ import { CharacterCreateComponent } from './components/articles/character-create
     TextfieldComponent,
     ImageGalleryComponent,
     EncounterAccordionComponent,
-    CharacterCreateComponent,
+    CharacterArticleUpdateComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +49,7 @@ import { CharacterCreateComponent } from './components/articles/character-create
     EditorModule,
     FormsModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [
     CharacterService,

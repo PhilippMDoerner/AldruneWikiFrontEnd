@@ -8,11 +8,13 @@ import { CreatureArticleComponent } from "src/app/components/articles/creature-a
 import { OrganizationArticleComponent } from "src/app/components/articles/organization-article/organization-article.component";
 import { ItemArticleComponent } from "src/app/components/articles/item-article/item-article.component";
 import { RulesComponent } from "src/app/components/articles/rules/rules.component";
+import { CharacterArticleUpdateComponent } from "src/app/components/articles/character-article-update/character-article-update.component";
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
   {path: "character", component: HomeComponent},
   {path: "character/:name", component: CharacterArticleComponent},
+  {path: "character/:name/update", component: CharacterArticleUpdateComponent},
   {path: "location/", component: LocationArticleComponent},
   {path: "diaryentry/", component: DiaryentryArticleComponent},
   {path: "creature/", component: CreatureArticleComponent},

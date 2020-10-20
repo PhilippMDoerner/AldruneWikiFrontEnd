@@ -22,6 +22,14 @@ export class CharacterService {
   deleteCharacter(id: number): void{//Observable<Character>{
     console.log(`Delete Character with pk ${id}`);
   }
+
+  updateCharacter(id: number): void{//Observable<Character>{
+    console.log(`Update Character with pk ${id}`);
+  }
+
+  createCharacter(data: object): void{//Observable<Character>{
+    console.log(`Creating Character with data ${data}`);
+  }
 }
 
 

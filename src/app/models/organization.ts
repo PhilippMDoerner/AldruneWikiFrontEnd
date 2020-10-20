@@ -1,4 +1,4 @@
-export interface organization{
+export interface Organization{
     "url": string,
     "creation_datetime": string,
     "update_datetime": string,
@@ -7,4 +7,9 @@ export interface organization{
     "description":string,
     "is_secret": boolean,
     "headquarter": string
+}
+
+export interface OrganizationListEntry {
+    "pk": number,
+    "name": string
 }

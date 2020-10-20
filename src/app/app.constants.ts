@@ -4,6 +4,7 @@ export class Constants{
     public static get createState(): string { return "create";}
     public static get deleteState(): string { return "delete";}
     public static get updateState(): string { return "update";}
+    public static get displayState(): string {return "display";}
 
     public static get createSignal(): string { return "create";}
     public static get deleteSignal(): string { return "delete";}

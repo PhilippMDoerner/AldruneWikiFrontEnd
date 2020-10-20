@@ -1,9 +1,11 @@
 <div class="main">
-    <article *ngIf="characterObs | async as character; else loading" class="mb-4">
-        <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
+    <article *ngIf="characterObs | async as character; else loading" class="mb-5">
+        <a routerLink="/character/{{character.name}}/update">
+            <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
+        </a>
         <h2 class="text-center"> 
             <span *ngIf="character.title">{{ character.title }} - </span>
-            {{ character.name }} 
+            {{ character.name }}
         </h2>
         <div class="text-center mb-3">
             <span *ngIf="character.gender !=='Other'">{{character.gender}}</span>
@@ -23,7 +25,6 @@
             <app-textfield 
             [initialText]="character.description"
             [heading]="'Description'"
-            (updateText)="onDescriptionUpdate($event)"
             ></app-textfield>
         </div>
 
@@ -45,7 +46,7 @@
             <i *ngIf="!isArticleDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleDeleteRequest()"></i>
             <div *ngIf="isArticleDeleteState" class="delete-request">
                 <span class="mr-3"> <strong>Delete this article?</strong> </span>  
-                <button class="btn btn-outline-danger float-right mr-2"> Yes </button>
+                <button class="btn btn-outline-danger float-right mr-2" (click)="deleteArticle(character.pk)"> Yes </button>
                 <button class="btn btn-outline-secondary float-right" (click)="toggleDeleteRequest()"> No </button>
             </div>
         </div>

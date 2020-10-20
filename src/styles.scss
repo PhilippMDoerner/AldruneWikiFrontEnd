@@ -206,3 +206,63 @@ a:hover{
 	text-decoration: none !important;
 	border-bottom: solid 2px gray;
 }
+
+.main{
+    display: flex;
+    justify-content: center;
+}
+
+article{
+    width: 60rem;
+    max-width: 100%;
+    background-color:rgba(27, 31, 34, 0.85);
+    border-radius: 4px;
+    margin-top: 2rem;
+    padding: 2.5rem;
+    color: white;
+    font-size: 18px;
+}
+
+h2{
+    letter-spacing: 0.5rem;
+}
+
+.flex1{
+	flex: 1;
+}
+
+.flex2{
+	flex: 2;
+}
+
+.flex3{
+	flex: 3;
+}
+
+.flex4{
+	flex: 4;
+}
+
+.flex5{
+	flex: 5;
+}
+
+.flex6{
+	flex: 6;
+}
+
+.flex7{
+	flex: 7;
+}
+
+.flex8{
+	flex: 8;
+}
+
+.flex9{
+	flex: 9;
+}
+
+.flex10{
+	flex: 10;
+}

@@ -5,14 +5,13 @@ import { Image } from "./image";
 export interface Character{
     creation_datetime: string,
     update_datetime: string,
-    player_character: boolean,
-    alive: boolean,
+    is_player_character: boolean,
+    is_alive: boolean,
     name: string,
     title: string,
     gender: string,
     race: string,
     description: string,
-    is_secret: boolean,
     organization: string,
     current_location: string,
     items: string[],
@@ -33,4 +32,15 @@ interface characterEncounter{
 interface characterEncounterConnections{
     connection_pk: number
     character_name: string,
+}
+
+export interface FormCharacter{
+    is_player_character: boolean,
+    is_alive: boolean,
+    name: string,
+    title: string,
+    gender: string,
+    race: string,
+    organization: string,
+    current_location: string
 }

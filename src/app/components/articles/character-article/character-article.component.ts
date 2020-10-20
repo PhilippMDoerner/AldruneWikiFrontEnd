@@ -6,18 +6,20 @@ import { CharacterService } from "src/app/services/character/character.service";
 import { ImageUploadService } from "src/app/services/image/image-upload.service";
 import { Subject, Observable } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
-
+import { Constants } from "src/app/app.constants";
 @Component({
   selector: 'app-character-article',
   templateUrl: './character-article.component.html',
   styleUrls: ['./character-article.component.scss']
 })
+
 export class CharacterArticleComponent implements OnInit {
-  character: Character;
+  constants: any = Constants;
   characterObs: Observable<Character>;
   isArticleDeleteState: boolean = false;
   confirmationModal: Subject<void> = new Subject<void>();
   articleType: string = 'character'
+  articleState: string = this.constants.displayState;
 
   private parameter_subscription: any;
 
@@ -35,10 +37,14 @@ export class CharacterArticleComponent implements OnInit {
     });
   }
 
-
-  onDescriptionUpdate(updatedDescriptionText){
-    this.character.description = updatedDescriptionText;
+  setArticleState(state: string){
+    this.articleState = state;
   }
+
+
+  // onDescriptionUpdate(updatedDescriptionText){
+  //   this.character.description = updatedDescriptionText;
+  // }
 
   addItem(){
     console.log("Summon a create item form!");
@@ -60,8 +66,8 @@ export class CharacterArticleComponent implements OnInit {
     this.isArticleDeleteState = !this.isArticleDeleteState
   }
 
-  deleteArticle(){
-      this.characterService.deleteCharacter(this.character.pk);
+  deleteArticle(character_pk){
+      this.characterService.deleteCharacter(character_pk);
   }
 
   ngOnDestroy(){
