@@ -1,0 +1,37 @@
+#alive, #player-character{
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.form-group{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+}
+
+.form-group label{
+    width: 11rem;
+    margin-right: 2rem;
+}
+
+input, select{
+    background-color: transparent;
+    color: white;
+}
+input:focus, select:focus{
+    background-color: transparent;
+    box-shadow: 3px blue;
+    color: white;
+}
+
+option{
+    background-color: #1b1f22;
+    color: white;
+    font-size: 18px;
+}
+
+.spinner-border{
+    width: 5rem;
+    height: 5rem;
+}
