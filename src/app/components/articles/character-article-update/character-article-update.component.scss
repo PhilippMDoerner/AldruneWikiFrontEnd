@@ -14,36 +14,3 @@
     width: 11rem;
     margin-right: 2rem;
 }
-
-.form-control{
-    height: 2.75rem;
-    font-size: 1.2rem;
-}
-
-input{
-    background-color: transparent;
-    color: white;
-}
-
-input:focus{
-    background-color: transparent;
-    box-shadow: 3px blue;
-    color: white;
-}
-
-select{
-    color: white;
-    background-color: #4c4c4c;
-}
-
-select:focus{
-    background-color: #4c4c4c;
-    box-shadow: 3px blue;
-    color: white;
-}
-
-option{
-    background-color: #1b1f22;
-    color: white;
-    font-size: 18px;
-}

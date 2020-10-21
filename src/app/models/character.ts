@@ -19,14 +19,14 @@ export interface Character{
     images: Image[];
 }
 
-interface characterLocation{
+export interface characterLocation{
     pk: number,
     name: string,
     name_full: string,
     parent_location: string
 }
 
-interface characterEncounter{
+export interface characterEncounter{
     name: string,
     creation_datetime: string,
     update_datetime:string,
@@ -35,19 +35,7 @@ interface characterEncounter{
     pk: number
 }
 
-interface characterEncounterConnections{
+export interface characterEncounterConnections{
     connection_pk: number
     character_name: string,
 }
-
-export interface FormCharacter{
-    is_player_character: boolean,
-    is_alive: boolean,
-    name: string,
-    title: string,
-    gender: string,
-    race: string,
-    organization: string,
-    current_location: string
-}
-

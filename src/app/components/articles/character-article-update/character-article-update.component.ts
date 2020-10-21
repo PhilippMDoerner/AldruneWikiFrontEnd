@@ -41,6 +41,55 @@ export class CharacterArticleUpdateComponent implements OnInit {
         label: "Alive"
       }
     },
+    {
+      key: "name",
+      type: "input",
+      templateOptions:{
+        label: "Name"
+      }
+    },
+    {
+      key: "title",
+      type: "input",
+      templateOptions:{
+        label: "Title"
+      }
+    },
+    {
+      key: "gender",
+      type: "select",
+      templateOptions:{
+        label: "Sex",
+        options: [
+          {label: "Other", value: "Other"},
+          {label: "Female", value: "Female"},
+          {label: "Male", value: "Male"},
+        ]
+      }
+    },
+    {
+      key: "race",
+      type: "input",
+      templateOptions:{
+        label: "Race"
+      }
+    },
+    {
+      key: "organization",
+      type: "select",
+      templateOptions:{
+        label: "Organization",
+        options: this.organizationService.getOrganizationsFormList(),
+      }
+    },
+    {
+      key: "location",
+      type: "select",
+      templateOptions:{
+        label: "Location",
+        options: this.locationService.getLocationsFormList(),
+      }
+    },
   ]
 
   characterSubscription: Subscription;

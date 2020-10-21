@@ -57,11 +57,11 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormlyModule.forRoot({ extras: { lazyRender: true } }),
+    FormlyModule.forRoot(), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,
+    CommonModule
   ],
   providers: [
-    CharacterService,
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
   ],
   bootstrap: [
