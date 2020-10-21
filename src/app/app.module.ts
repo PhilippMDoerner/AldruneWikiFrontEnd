@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +24,10 @@ import { ImageGalleryComponent } from './components/utility/image-gallery/image-
 import { CharacterService } from "src/app/services/character/character.service";
 import { EncounterAccordionComponent } from './components/utility/encounter-accordion/encounter-accordion.component';
 import { CharacterArticleUpdateComponent } from './components/articles/character-article-update/character-article-update.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
+import { SpinnerComponent } from './components/utility/spinner/spinner.component';
+import { FormlyModule } from '@ngx-formly/core';
+import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
 @NgModule({
   declarations: [
@@ -42,6 +46,8 @@ import { CharacterArticleUpdateComponent } from './components/articles/character
     ImageGalleryComponent,
     EncounterAccordionComponent,
     CharacterArticleUpdateComponent,
+    NotFoundComponent,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +56,9 @@ import { CharacterArticleUpdateComponent } from './components/articles/character
     FormsModule,
     NgbModule,
     HttpClientModule,
+    ReactiveFormsModule,
+    FormlyModule.forRoot({ extras: { lazyRender: true } }),
+    FormlyBootstrapModule,
   ],
   providers: [
     CharacterService,

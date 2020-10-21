@@ -4,8 +4,8 @@ import { Image } from "src/app/models/image";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { CharacterService } from "src/app/services/character/character.service";
 import { ImageUploadService } from "src/app/services/image/image-upload.service";
-import { Subject, Observable } from "rxjs";
-import { ActivatedRoute } from "@angular/router";
+import { Subject, Observable, Subscription } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
 import { Constants } from "src/app/app.constants";
 @Component({
   selector: 'app-character-article',
@@ -15,30 +15,32 @@ import { Constants } from "src/app/app.constants";
 
 export class CharacterArticleComponent implements OnInit {
   constants: any = Constants;
-  characterObs: Observable<Character>;
+  character: Character;
   isArticleDeleteState: boolean = false;
   confirmationModal: Subject<void> = new Subject<void>();
   articleType: string = 'character'
-  articleState: string = this.constants.displayState;
 
-  private parameter_subscription: any;
+  private parameter_subscription: Subscription;
+  private character_subscription: Subscription;
 
   constructor(
     private modalService: NgbModal,
     private characterService: CharacterService,
     private imageService: ImageUploadService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const character_name: string = params['name'];
-      this.characterObs = this.characterService.getCharacter(character_name)
+      this.character_subscription = this.characterService.getCharacter(character_name).subscribe(character => {
+        this.character = character;
+      }, error =>{
+        this.router.navigateByUrl("error");      
+      });
     });
-  }
 
-  setArticleState(state: string){
-    this.articleState = state;
   }
 
 
@@ -72,5 +74,6 @@ export class CharacterArticleComponent implements OnInit {
 
   ngOnDestroy(){
     this.parameter_subscription.unsubscribe();
+    this.character_subscription.unsubscribe();
   }
 }

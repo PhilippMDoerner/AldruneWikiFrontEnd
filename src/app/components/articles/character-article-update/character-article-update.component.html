@@ -1,13 +1,17 @@
 <div class="main">
     <article *ngIf="character && locations && organizations; else loading" class="mb-5">
+        <a routerLink="/character/{{character.name}}">
+            <i class="btn btn-outline-secondary icon fa fa-times float-right" id="article"></i>
+        </a>
         <h2 class="text-center">
             Updating Character {{ character.name }}
         </h2>
-        <form>
-            <!-- TODO: Implement reactive forms together with building dynamic forms -->
-            <div class="form-group">
+        <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button type="submit" class="btn btn-default">Submit</button>
+            <!-- <div class="form-group">
                 <label for="name">Alive</label>
-                <input type="checkbox" id="alive" name="alive" [(ngModel)]="character.is_alive">
+                <input type="checkbox" id="alive" name="alive" [(ngModel)]="character.is_alive" checked>
             </div>
 
             <div class="form-group">
@@ -16,21 +20,21 @@
             </div>
 
             <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" [(ngModel)]="character.name" placeholder="Name.." required>
+            </div>
+
+            <div class="form-group">
                 <label for="title">Title</label>
                 <input type="text" class="form-control" id="title" name="title" [(ngModel)]="character.title" placeholder="Title...">
             </div>
 
             <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" [(ngModel)]="character.name" placeholder="Name..">
-            </div>
-
-            <div class="form-group">
                 <label>Sex</label>
-                <select class="form-control custom-select" id="sex" name="sex" [(ngModel)]="character.gender">
-                    <option value="other">Other</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
+                <select class="form-control" id="sex" name="sex" [(ngModel)]="character.gender">
+                    <option value="Other">Other</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
                 </select>
             </div>
 
@@ -41,24 +45,25 @@
 
             <div class="form-group">
                 <label>Organization</label>
-                <select type="text" class="form-control custom-select" id="organization" name="organization" [(ngModel)]="character.organization">
-                    <option *ngFor="let organization of organizations" value="organization.pk">{{ organization.name }}</option>
+                <select type="text" class="form-control " id="organization" name="organization" [(ngModel)]="character.organization">
+                    <option value="">---------</option>
+                    <option *ngFor="let organization of organizations" value="{{ organization.name }}">{{ organization.name }}</option>
                 </select>
             </div>
 
             <div class="form-group">
                 <label>Last Location</label>
-                <select type="text" class="form-control custom-select" id="location" name="location" [(ngModel)]="character.current_location">
-                    <option *ngFor="let location of locations" value="location.pk">{{ location.name }}</option>
-                </select>            
-            </div>
-
+                <select type="text" class="form-control " id="location" name="location" [(ngModel)]="character.current_location" [compareWith]="compareLocations">
+                    <option value="">---------</option>
+                    <option 
+                    *ngFor="let location of locations" 
+                    [ngValue]="{'pk': location.pk, 'name': location.name, 'name_full': location.name_full, 'parent_location': location.parent_location?.name }"
+                    >{{ location.name_full }}</option>
+                </select>
+            </div> -->
         </form>
+        <button class="btn btn-outline-secondary" (click)="updateCharacter()"> Update </button>
     </article>
 
-    <ng-template #loading class="mb-4">
-        <article class="d-flex flew-row justify-content-center spinner-container">
-            <div class="spinner-border text-primary"></div>
-        </article>
-    </ng-template> 
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

@@ -9,6 +9,7 @@ import { OrganizationArticleComponent } from "src/app/components/articles/organi
 import { ItemArticleComponent } from "src/app/components/articles/item-article/item-article.component";
 import { RulesComponent } from "src/app/components/articles/rules/rules.component";
 import { CharacterArticleUpdateComponent } from "src/app/components/articles/character-article-update/character-article-update.component";
+import { NotFoundComponent } from "src/app/components/not-found/not-found.component";
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -21,6 +22,8 @@ const routes: Routes = [
   {path: "organization/", component: OrganizationArticleComponent},
   {path: "item/", component: ItemArticleComponent},
   {path: "rules", component: RulesComponent},
+  {path: "error", component: NotFoundComponent},
+  {path: '**', component: NotFoundComponent}
 ];
 
 @NgModule({

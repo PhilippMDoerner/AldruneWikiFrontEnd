@@ -7,7 +7,7 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-
+    margin-bottom: 1.5rem;
 }
 
 .form-group label{
@@ -15,12 +15,29 @@
     margin-right: 2rem;
 }
 
-input, select{
+.form-control{
+    height: 2.75rem;
+    font-size: 1.2rem;
+}
+
+input{
     background-color: transparent;
     color: white;
 }
-input:focus, select:focus{
+
+input:focus{
     background-color: transparent;
+    box-shadow: 3px blue;
+    color: white;
+}
+
+select{
+    color: white;
+    background-color: #4c4c4c;
+}
+
+select:focus{
+    background-color: #4c4c4c;
     box-shadow: 3px blue;
     color: white;
 }
@@ -29,9 +46,4 @@ option{
     background-color: #1b1f22;
     color: white;
     font-size: 18px;
-}
-
-.spinner-border{
-    width: 5rem;
-    height: 5rem;
 }

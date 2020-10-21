@@ -1,7 +1,6 @@
 import { Encounter } from "./encounter";
 import { Image } from "./image";
 
-// TODO: Check out to move encounters and images into this one single object to reduce queries on the backend to a minimum
 export interface Character{
     creation_datetime: string,
     update_datetime: string,
@@ -13,11 +12,18 @@ export interface Character{
     race: string,
     description: string,
     organization: string,
-    current_location: string,
+    current_location: characterLocation,
     items: string[],
     pk: number;
     encounters: characterEncounter[];
     images: Image[];
+}
+
+interface characterLocation{
+    pk: number,
+    name: string,
+    name_full: string,
+    parent_location: string
 }
 
 interface characterEncounter{
@@ -44,3 +50,4 @@ export interface FormCharacter{
     organization: string,
     current_location: string
 }
+

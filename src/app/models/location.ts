@@ -1,10 +1,14 @@
 export interface Location {
-    "url": string,
     "creation_datetime": string,
     "update_datetime": string,
     "name": string,
+    "name_full": string,
     "description": string,
-    "is_secret": boolean,
-    "parent_location": string,
+    "parent_location": {
+        'pk': number,
+        'name': string,
+        'parent_location': string,
+        'name_full': string
+    },
     "pk": number
 }

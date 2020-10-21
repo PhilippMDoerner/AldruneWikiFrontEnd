@@ -1,13 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { Constants } from "src/app/app.constants";
 import { Subject, Observable, Subscription } from "rxjs";
+import { ActivatedRoute, Router } from "@angular/router";
+import { FormGroup } from "@angular/forms";
+import { FormlyFieldConfig } from "@ngx-formly/core";
+//models and constants
+import { Constants } from "src/app/app.constants";
 import { Character } from "src/app/models/character";
+import { Location } from "src/app/models/location";
+import { Organization } from "src/app/models/organization";
+//services
 import { CharacterService } from "src/app/services/character/character.service";
 import { OrganizationService } from "src/app/services/organization/organization.service";
 import { LocationService } from "src/app/services/location/location.service";
-import { ActivatedRoute } from "@angular/router";
-import { Location } from "src/app/models/location";
-import { Organization } from "src/app/models/organization";
 
 @Component({
   selector: 'app-character-article-update',
@@ -17,9 +21,32 @@ import { Organization } from "src/app/models/organization";
 
 export class CharacterArticleUpdateComponent implements OnInit {
   constants: any = Constants;
+  formState: string;
+  form = new FormGroup({});
+  model: Character = {} as Character;
+  fields: FormlyFieldConfig[] = [
+    {
+      key: "is_player_character",
+      type: "checkbox",
+      defaultValue: false,
+      templateOptions: {
+        label: "Player Character",
+      }
+    },
+    {
+      key: "is_alive",
+      type: "checkbox",
+      defaultValue: true,
+      templateOptions:{
+        label: "Alive"
+      }
+    },
+  ]
+
   characterSubscription: Subscription;
   organizationSubscription: Subscription;
   locationSubscription: Subscription;
+
   locations: Location[];
   organizations: Organization[];
   character: Character;
@@ -31,23 +58,45 @@ export class CharacterArticleUpdateComponent implements OnInit {
     private locationService: LocationService,
     private organizationService: OrganizationService,
     private route: ActivatedRoute,
+    private router: Router
     ) { }
 
   ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const character_name: string = params['name'];
-      this.characterSubscription = this.characterService.getCharacter(character_name).subscribe(character => {
-        this.character = character;
-      });
+    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
 
-      this.locationSubscription = this.locationService.getLocations().subscribe(locations => {
-        this.locations = locations;
+    if (this.formState === this.constants.updateState){
+      this.parameter_subscription = this.route.params.subscribe(params => {
+        const character_name: string = params['name'];
+        this.characterSubscription = this.characterService.getCharacter(character_name).subscribe(character => {
+          this.character = character;
+        }, error => this.router.navigateByUrl("error"));
       });
+    }
 
-      this.organizationSubscription = this.organizationService.getOrganizations().subscribe(organizations => {
-        this.organizations = organizations;
-      });
-    });
+    this.locationSubscription = this.locationService.getLocations().subscribe(locations => {
+      this.locations = locations;
+    }, error => this.router.navigateByUrl("error"));
+
+    this.organizationSubscription = this.organizationService.getOrganizations().subscribe(organizations => {
+      this.organizations = organizations;
+    }, error => this.router.navigateByUrl("error"));
+  }
+
+
+
+
+  compareLocations(c1: any, c2: any): boolean{
+    return c1 && c2 ? c1.pk === c2.pk : c1 === c2;
+  }
+
+  updateCharacter(){
+    this.characterService.updateCharacter(this.character).subscribe((updatedCharacter => {
+      this.router.navigateByUrl(`/character/${this.character.name}`);
+    }));
+  }
+
+  onSubmit(model: any){
+    console.log(model);
   }
 
   ngOnDestroy(){

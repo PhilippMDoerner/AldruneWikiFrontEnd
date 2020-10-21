@@ -1,18 +1,26 @@
 <div class="main">
-    <article *ngIf="characterObs | async as character; else loading" class="mb-5">
+    <article *ngIf="character; else loading" class="mb-5">
         <a routerLink="/character/{{character.name}}/update">
             <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
         </a>
-        <h2 class="text-center"> 
+        <h2 class="text-center">
             <span *ngIf="character.title">{{ character.title }} - </span>
             {{ character.name }}
         </h2>
         <div class="text-center mb-3">
-            <span *ngIf="character.gender !=='Other'">{{character.gender}}</span>
-            {{ character.race }}
-            <span *ngIf="character.organization"> of the 
-                <a routerLink="/organization/{{character.organization}}">{{ character.organization }}</a>
-            </span>   
+            <div>
+                <span *ngIf="character.gender !=='Other'">{{character.gender}}</span>
+                {{ character.race }}
+                <span *ngIf="character.organization"> of the 
+                    <a routerLink="/organization/{{character.organization}}">{{ character.organization }}</a>
+                </span> 
+            </div>
+            <div *ngIf="character.current_location">
+                Last known location:
+                <a routerLink="location/{{character.current_location.name}}">
+                    <strong> {{ character.current_location.name_full }} </strong>
+                </a>
+            </div>
         </div>
 
         <app-image-gallery
@@ -52,7 +60,5 @@
         </div>
 
     </article>
-    <ng-template #loading class="mb-4">
-        <div>Loading ...</div>
-    </ng-template> 
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
