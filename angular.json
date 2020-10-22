@@ -132,6 +132,46 @@
           }
         }
       }
+    },
+    "aldrunewiki-swagger-client": {
+      "projectType": "library",
+      "root": "projects/aldrunewiki-swagger-client",
+      "sourceRoot": "projects/aldrunewiki-swagger-client/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "tsConfig": "projects/aldrunewiki-swagger-client/tsconfig.lib.json",
+            "project": "projects/aldrunewiki-swagger-client/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/aldrunewiki-swagger-client/tsconfig.lib.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/aldrunewiki-swagger-client/src/test.ts",
+            "tsConfig": "projects/aldrunewiki-swagger-client/tsconfig.spec.json",
+            "karmaConfig": "projects/aldrunewiki-swagger-client/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/aldrunewiki-swagger-client/tsconfig.lib.json",
+              "projects/aldrunewiki-swagger-client/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
     }},
   "defaultProject": "frontend"
 }

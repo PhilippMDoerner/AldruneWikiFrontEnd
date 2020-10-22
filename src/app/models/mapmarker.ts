@@ -1,10 +1,24 @@
+import { Map } from "./map";
+import { Location } from "./location";
+import { MapMarkerType } from "./mapmarkertype";
 export interface MapMarker{
-    "url": string,
     "color": string,
     "icon": string,
     "latitude": number,
     "longitude": number,
-    "map": string,
-    "location": string,
-    "type": string
+    "map": Map,
+    "location": Location,
+    "type": MapMarkerType,
+    "pk": number
+}
+
+export interface SimpleMapMarker{
+    "color": string,
+    "icon": string,
+    "latitude": number,
+    "longitude": number,
+    "map": number,
+    "location": number,
+    "type": number,
+    "pk": number  
 }

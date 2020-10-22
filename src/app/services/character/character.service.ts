@@ -20,17 +20,17 @@ export class CharacterService {
   }
 
   getCharacter(character: number | string): Observable<Character>{
-    const url = (typeof character === 'number') ? `${this.characterUrl}/pk/${character}` :  `${this.characterUrl}/${character}`;
+    const url = (typeof character === 'number') ? `${this.characterUrl}/pk/${character}/` :  `${this.characterUrl}/${character}`;
     return this.http.get<Character>(url);
   }
 
   deleteCharacter(character: Character): Observable<Character>{
-    const url = `${this.characterUrl}/pk/${character.pk}`;
+    const url = `${this.characterUrl}/pk/${character.pk}/`;
     return this.http.delete<Character>(url, httpOptions);
   }
 
   updateCharacter(character: Character): Observable<Character>{
-    const url = `${this.characterUrl}/pk/${character.pk}`;
+    const url = `${this.characterUrl}/pk/${character.pk}/`;
     return this.http.put<Character>(url, character, httpOptions);
   }
 

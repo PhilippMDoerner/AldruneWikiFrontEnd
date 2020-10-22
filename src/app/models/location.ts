@@ -12,3 +12,11 @@ export interface Location {
     },
     "pk": number
 }
+
+export interface SimpleLocation {
+    "name": string,
+    "description": string,
+    "parent_location": number,
+    "pk": number
+}
+

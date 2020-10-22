@@ -1,69 +1,31 @@
 <div class="main">
-    <article *ngIf="character && locations && organizations; else loading" class="mb-5">
-        <a routerLink="/character/{{character.name}}">
-            <i class="btn btn-outline-secondary icon fa fa-times float-right" id="article"></i>
-        </a>
-        <h2 class="text-center">
-            Updating Character {{ character.name }}
-        </h2>
+    <article *ngIf="locations && organizations; else loading" class="mb-5">
+        <!-- Heading -->
+        <div *ngIf="formState===constants.updateState && model; else createState">
+            <a routerLink="/character/{{model.name}}">
+                <i class="btn btn-outline-secondary icon fa fa-times float-right" id="article"></i>
+            </a>
+            <h2 class="text-center">
+                Updating Character {{ model.name }}
+            </h2>
+        </div>
+        <ng-template #createState>
+            <a routerLink="">
+                <i class="btn btn-outline-secondary icon fa fa-times float-right" id="article"></i>
+            </a>
+            <h2 class="text-center">
+                Creating a new character
+            </h2>
+        </ng-template>
+
+
+<!-- Form -->
         <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <button type="submit" class="btn btn-default">Submit</button>
-            <!-- <div class="form-group">
-                <label for="name">Alive</label>
-                <input type="checkbox" id="alive" name="alive" [(ngModel)]="character.is_alive" checked>
-            </div>
-
-            <div class="form-group">
-                <label for="player-character">Player Character</label>
-                <input type="checkbox" id="player-character" name="player_character" [(ngModel)]="character.is_player_character">
-            </div>
-
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" class="form-control" id="name" name="name" [(ngModel)]="character.name" placeholder="Name.." required>
-            </div>
-
-            <div class="form-group">
-                <label for="title">Title</label>
-                <input type="text" class="form-control" id="title" name="title" [(ngModel)]="character.title" placeholder="Title...">
-            </div>
-
-            <div class="form-group">
-                <label>Sex</label>
-                <select class="form-control" id="sex" name="sex" [(ngModel)]="character.gender">
-                    <option value="Other">Other</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Race</label>
-                <input type="text" class="form-control" id="race" name="race" [(ngModel)]="character.race" placeholder="race">
-            </div>
-
-            <div class="form-group">
-                <label>Organization</label>
-                <select type="text" class="form-control " id="organization" name="organization" [(ngModel)]="character.organization">
-                    <option value="">---------</option>
-                    <option *ngFor="let organization of organizations" value="{{ organization.name }}">{{ organization.name }}</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label>Last Location</label>
-                <select type="text" class="form-control " id="location" name="location" [(ngModel)]="character.current_location" [compareWith]="compareLocations">
-                    <option value="">---------</option>
-                    <option 
-                    *ngFor="let location of locations" 
-                    [ngValue]="{'pk': location.pk, 'name': location.name, 'name_full': location.name_full, 'parent_location': location.parent_location?.name }"
-                    >{{ location.name_full }}</option>
-                </select>
-            </div> -->
+            <button type="submit" class="btn btn-outline-primary">Submit</button>
         </form>
-        <button class="btn btn-outline-secondary" (click)="updateCharacter()"> Update </button>
-    </article>
 
+    </article>
+<!-- Spinner while loading -->
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

@@ -17,8 +17,9 @@ export class EncounterServiceService {
   constructor(private http: HttpClient) { 
   }
 
-  getEncounters(character_pk: number): Observable<Encounter[]>{
-    const url = `${this.encounterUrl}/character/${character_pk}`;
+
+  getEncounters(): Observable<Encounter[]>{
+    const url = `${this.encounterUrl}`;
     return this.http.get<Encounter[]>(url);
   }
 

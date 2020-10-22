@@ -23,10 +23,10 @@ export class CharacterArticleUpdateComponent implements OnInit {
   constants: any = Constants;
   formState: string;
   form = new FormGroup({});
-  model: Character = {} as Character;
+  model: Character;
   fields: FormlyFieldConfig[] = [
     {
-      key: "is_player_character",
+      key: "player_character",
       type: "checkbox",
       defaultValue: false,
       templateOptions: {
@@ -34,7 +34,7 @@ export class CharacterArticleUpdateComponent implements OnInit {
       }
     },
     {
-      key: "is_alive",
+      key: "alive",
       type: "checkbox",
       defaultValue: true,
       templateOptions:{
@@ -79,28 +79,31 @@ export class CharacterArticleUpdateComponent implements OnInit {
       type: "select",
       templateOptions:{
         label: "Organization",
-        options: this.organizationService.getOrganizationsFormList(),
+        labelProp: "name",
+        valueProp: "pk",
+        options: this.organizationService.getOrganizations(),
       }
     },
     {
-      key: "location",
+      key: "current_location",
       type: "select",
       templateOptions:{
         label: "Location",
-        options: this.locationService.getLocationsFormList(),
+        labelProp: "name_full",
+        valueProp: "pk",
+        options: this.locationService.getLocations(),
       }
-    },
-  ]
+    }
+  ];
 
-  characterSubscription: Subscription;
-  organizationSubscription: Subscription;
-  locationSubscription: Subscription;
+  private characterSubscription: Subscription;
+  private organizationSubscription: Subscription;
+  private locationSubscription: Subscription;
+  private parameter_subscription: Subscription;
 
   locations: Location[];
   organizations: Organization[];
-  character: Character;
 
-  private parameter_subscription: any;
 
   constructor(
     private characterService: CharacterService,
@@ -117,7 +120,8 @@ export class CharacterArticleUpdateComponent implements OnInit {
       this.parameter_subscription = this.route.params.subscribe(params => {
         const character_name: string = params['name'];
         this.characterSubscription = this.characterService.getCharacter(character_name).subscribe(character => {
-          this.character = character;
+          console.log(character);
+          this.model = character;
         }, error => this.router.navigateByUrl("error"));
       });
     }
@@ -131,24 +135,22 @@ export class CharacterArticleUpdateComponent implements OnInit {
     }, error => this.router.navigateByUrl("error"));
   }
 
-
-
-
-  compareLocations(c1: any, c2: any): boolean{
-    return c1 && c2 ? c1.pk === c2.pk : c1 === c2;
-  }
-
-  updateCharacter(){
-    this.characterService.updateCharacter(this.character).subscribe((updatedCharacter => {
-      this.router.navigateByUrl(`/character/${this.character.name}`);
-    }));
-  }
-
   onSubmit(model: any){
-    console.log(model);
+    if (this.formState === this.constants.updateState){
+      this.characterService.updateCharacter(model).subscribe(response => {
+        console.log(response);
+        this.router.navigateByUrl(`/character/${model.name}`);
+      }, error => this.router.navigateByUrl("error"));
+    } else if (this.formState === this.constants.createState){
+      this.characterService.createCharacter(model).subscribe(response => {
+        console.log(response);
+        this.router.navigateByUrl(`character/${model.name}`);
+      }, error => this.router.navigateByUrl("error"));
+    }
   }
 
   ngOnDestroy(){
+    this.parameter_subscription.unsubscribe();
     this.characterSubscription.unsubscribe();
     this.organizationSubscription.unsubscribe();
     this.locationSubscription.unsubscribe();

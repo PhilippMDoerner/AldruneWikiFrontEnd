@@ -4,5 +4,10 @@ export interface Creature {
     "update_datetime": string,
     "name": string,
     "description": string,
-    "is_secret": boolean
+}
+
+export interface SimpleCreature{
+    "url": string,
+    "name": string,
+    "description": string,
 }

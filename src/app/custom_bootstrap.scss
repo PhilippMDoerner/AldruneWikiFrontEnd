@@ -21,24 +21,24 @@ button.btn.btn-link:focus{
     height: 5rem !important;
 }
 
-
+//Style Forms
 .form-control{
     height: 2.75rem;
     font-size: 1.2rem;
 }
 
-input{
+input.form-control{
     background-color: transparent !important;
     color: white !important;
 }
 
-input:focus{
+input.form-control:focus{
     background-color: transparent;
     box-shadow: 3px blue;
     color: white;
 }
 
-select{
+select.form-control{
     color: white !important;
     background-color: #4c4c4c !important;
 }
@@ -53,4 +53,9 @@ option{
     background-color: #1b1f22;
     color: white;
     font-size: 18px;
+}
+
+.custom-control.custom-checkbox input{
+    zoom: 3;
+
 }

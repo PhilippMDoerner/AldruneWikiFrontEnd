@@ -9,16 +9,16 @@
         </h2>
         <div class="text-center mb-3">
             <div>
-                <span *ngIf="character.gender !=='Other'">{{character.gender}}</span>
+                <span *ngIf="character.gender !=='Other'">{{ character.gender }}</span>
                 {{ character.race }}
                 <span *ngIf="character.organization"> of the 
-                    <a routerLink="/organization/{{character.organization}}">{{ character.organization }}</a>
+                    <a routerLink="/organization/{{character.organization_details.name}}">{{ character.organization_details.name }}</a>
                 </span> 
             </div>
             <div *ngIf="character.current_location">
                 Last known location:
-                <a routerLink="location/{{character.current_location.name}}">
-                    <strong> {{ character.current_location.name_full }} </strong>
+                <a routerLink="location/{{character.current_location_details.name}}">
+                    <strong> {{ character.current_location_details.name_full }} </strong>
                 </a>
             </div>
         </div>
@@ -40,7 +40,7 @@
             <h4>Items of Note <i class="fa fa-plus icon ml-1" (click)="addItem()"></i></h4>
             <ul>
                 <li *ngFor="let item of character.items">
-                    <a routerLink="/item/{{item}}">{{ item }}</a>
+                    <a routerLink="/item/{{item.name}}">{{ item.name }}</a>
                 </li>
             </ul>
         </div>

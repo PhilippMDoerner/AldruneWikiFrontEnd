@@ -14,8 +14,10 @@ import { NotFoundComponent } from "src/app/components/not-found/not-found.compon
 const routes: Routes = [
   {path: "", component: HomeComponent},
   {path: "character", component: HomeComponent},
+  {path: "character/create", component: CharacterArticleUpdateComponent},
   {path: "character/:name", component: CharacterArticleComponent},
   {path: "character/:name/update", component: CharacterArticleUpdateComponent},
+  
   {path: "location/", component: LocationArticleComponent},
   {path: "diaryentry/", component: DiaryentryArticleComponent},
   {path: "creature/", component: CreatureArticleComponent},

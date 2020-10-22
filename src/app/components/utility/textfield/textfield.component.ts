@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-textfield',
   templateUrl: './textfield.component.html',
   styleUrls: ['./textfield.component.scss']
 })
-export class TextfieldComponent implements OnInit {
+export class TextfieldComponent implements OnInit, OnChanges {
   @Input() initialText: string;
   @Input() heading: string;
   @Output() updateText: EventEmitter<string> = new EventEmitter();
@@ -15,6 +15,10 @@ export class TextfieldComponent implements OnInit {
   constructor() {  }
 
   ngOnInit(): void {
+    this.updatedText = this.initialText;
+  }
+
+  ngOnChanges(): void{
     this.updatedText = this.initialText;
   }
 

@@ -4,16 +4,18 @@ import { Image } from "./image";
 export interface Character{
     creation_datetime: string,
     update_datetime: string,
-    is_player_character: boolean,
-    is_alive: boolean,
+    player_character: boolean,
+    alive: boolean,
     name: string,
     title: string,
     gender: string,
     race: string,
     description: string,
-    organization: string,
-    current_location: characterLocation,
-    items: string[],
+    organization: number,
+    organization_details: characterOrganization,
+    current_location: number,
+    current_location_details: characterLocation,
+    items: characterItem[],
     pk: number;
     encounters: characterEncounter[];
     images: Image[];
@@ -26,7 +28,7 @@ export interface characterLocation{
     parent_location: string
 }
 
-export interface characterEncounter{
+interface characterEncounter{
     name: string,
     creation_datetime: string,
     update_datetime:string,
@@ -35,7 +37,30 @@ export interface characterEncounter{
     pk: number
 }
 
-export interface characterEncounterConnections{
+interface characterEncounterConnections{
     connection_pk: number
     character_name: string,
+}
+
+interface characterOrganization{
+    pk: number,
+    name: string
+}
+
+interface characterItem{
+    pk: number,
+    name: string
+}
+
+export interface SimpleCharater{
+    is_player_character: boolean,
+    is_alive: boolean,
+    name: string,
+    title: string,
+    gender: string,
+    race: string,
+    description: string,
+    organization: number,
+    current_location: number,
+    pk: number;
 }

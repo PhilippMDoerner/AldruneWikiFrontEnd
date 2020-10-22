@@ -1,8 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600");
 @import './app/custom_bootstrap.scss';
-//@import '../node_modules/bootstrap/scss/bootstrap';
 
-body, input, select, textarea {
+body {
     margin-top: 0.5rem;
     color: #ffffff;
     font-family: "Source Sans Pro", sans-serif !important;
