@@ -52,15 +52,17 @@ interface characterItem{
     name: string
 }
 
-export interface SimpleCharater{
-    is_player_character: boolean,
-    is_alive: boolean,
-    name: string,
-    title: string,
-    gender: string,
-    race: string,
-    description: string,
-    organization: number,
-    current_location: number,
+
+
+export class EmptyFormCharacter{
+    player_character: boolean;
+    alive: boolean;
+    name: string;
+    title: string;
+    gender: string;
+    race: string;
+    description: string;
+    organization: number;
+    current_location: number;
     pk: number;
 }

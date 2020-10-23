@@ -1,39 +1,40 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-md">
+    <!-- Brand -->
     <a routerLink="" class="navbar-brand mr-5 ml-5"><strong> Aldrune Wiki </strong></a>
-
+    <!-- Collapsed navbar toggle -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
+        <!-- Search Bar -->
         <form class="input-group my-2 my-lg-0">
             <div class="searchbar form-control">
                 <i class="fa fa-2x fa-search mr-2"></i>
                 <input class="search-input" type="search" placeholder="Search Articles..." aria-label="Search">
             </div>
         </form>
-
+        <!-- Nav Items -->
         <ul class="navbar-nav">
-
+            <!-- Recent Updates -->
             <li class="nav-item mr-3 ml-3">
                 <a routerLink="/rules" class="button nav-link nav-link-text"> Recent Updates </a>
             </li>
-
+            <!-- Rules -->
             <li class="nav-item mr-3 ml-3">
                 <a routerLink="/rules" class="button nav-link"> 
                     <span class="d-md-none nav-link-text mr-3">Rules</span> 
                     <i class="fa fa-book fa-2x" aria-hidden="true"></i>
                 </a>
             </li>
-
+            <!-- Session Audio -->
             <li class="nav-item mr-3 ml-3" routerLink="/rules">
                 <a class="button nav-link"> 
                     <span class="d-md-none nav-link-text mr-3">Session Audio</span> 
                     <i class="fa fa-file-audio-o fa-2x" aria-hidden="true"></i> 
                 </a>
             </li>
-
+            <!-- Log out -->
             <li class="nav-item mr-3 ml-5">
                 <a routerLink="/rules" class="button nav-link"> 
                     <span class="d-md-none nav-link-text mr-3">Logout</span> 

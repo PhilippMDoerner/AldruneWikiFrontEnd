@@ -12,7 +12,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class EncounterServiceService {
-  encounterUrl: string = `${Constants.wikiApiURL}/encounter`;
+  encounterUrl: string = `${Constants.wikiApiUrl}/encounter`;
 
   constructor(private http: HttpClient) { 
   }

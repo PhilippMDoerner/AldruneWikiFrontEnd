@@ -12,7 +12,7 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class ImageUploadService {
-  api_url_base: string = `${Constants.wikiApiURL}/image`;
+  api_url_base: string = `${Constants.wikiApiUrl}/image`;
 
   constructor(private http: HttpClient) { }
   imageData: Observable<any>;

@@ -5,7 +5,7 @@ import { FormGroup } from "@angular/forms";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 //models and constants
 import { Constants } from "src/app/app.constants";
-import { Character } from "src/app/models/character";
+import { Character, EmptyFormCharacter } from "src/app/models/character";
 import { Location } from "src/app/models/location";
 import { Organization } from "src/app/models/organization";
 //services
@@ -23,7 +23,7 @@ export class CharacterArticleUpdateComponent implements OnInit {
   constants: any = Constants;
   formState: string;
   form = new FormGroup({});
-  model: Character;
+  model: Character | EmptyFormCharacter;
   fields: FormlyFieldConfig[] = [
     {
       key: "player_character",
@@ -120,10 +120,11 @@ export class CharacterArticleUpdateComponent implements OnInit {
       this.parameter_subscription = this.route.params.subscribe(params => {
         const character_name: string = params['name'];
         this.characterSubscription = this.characterService.getCharacter(character_name).subscribe(character => {
-          console.log(character);
           this.model = character;
         }, error => this.router.navigateByUrl("error"));
       });
+    } else if (this.formState === this.constants.createState) {
+      this.model = new EmptyFormCharacter();
     }
 
     this.locationSubscription = this.locationService.getLocations().subscribe(locations => {
@@ -150,8 +151,10 @@ export class CharacterArticleUpdateComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    this.parameter_subscription.unsubscribe();
-    this.characterSubscription.unsubscribe();
+    if (this.formState === this.constants.updateState){
+      this.parameter_subscription.unsubscribe();
+      this.characterSubscription.unsubscribe();
+    }
     this.organizationSubscription.unsubscribe();
     this.locationSubscription.unsubscribe();
   }

@@ -8,11 +8,15 @@ import { Observable } from "rxjs";
   providedIn: 'root'
 })
 export class DiaryentryService {
-  diaryEntryUrl: string = `${Constants.wikiApiURL}/diaryentry`;
+  diaryEntryUrl: string = `${Constants.wikiApiUrl}/diaryentry`;
   constructor(private http : HttpClient) { }
 
   getDiaryEntries(): Observable<DiaryEntry[]>{
     return this.http.get<DiaryEntry[]>(this.diaryEntryUrl);
+  }
+
+  getListItems(): Observable<DiaryEntry[]>{
+    return this.getDiaryEntries();
   }
 
   getDiaryEntryPk(diaryEntryPk: number): Observable<DiaryEntry>{

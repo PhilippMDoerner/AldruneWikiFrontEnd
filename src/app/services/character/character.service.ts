@@ -12,11 +12,15 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class CharacterService {
-  characterUrl: string = `${Constants.wikiApiURL}/character`;
+  characterUrl: string = `${Constants.wikiApiUrl}/character`;
   constructor(private http: HttpClient) { }
 
   getCharacters(): Observable<Character[]>{
     return this.http.get<Character[]>(this.characterUrl);
+  }
+
+  getListItems(): Observable<Character[]>{
+    return this.getCharacters();
   }
 
   getCharacter(character: number | string): Observable<Character>{
@@ -35,7 +39,8 @@ export class CharacterService {
   }
 
   createCharacter(character: Character): Observable<Character>{
-    return this.http.post<Character>(this.characterUrl, character, httpOptions);
+    console.log(character);
+    return this.http.post<Character>(`${this.characterUrl}/`, character, httpOptions);
   }
 }
 

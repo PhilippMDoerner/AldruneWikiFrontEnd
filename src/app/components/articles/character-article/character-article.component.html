@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="character; else loading" class="mb-5">
+    <article *ngIf="character; else loading">
         <a routerLink="/character/{{character.name}}/update">
             <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
         </a>
@@ -33,6 +33,7 @@
             <app-textfield 
             [initialText]="character.description"
             [heading]="'Description'"
+            (updateText)="onDescriptionUpdate($event)"
             ></app-textfield>
         </div>
 
@@ -59,6 +60,7 @@
             </div>
         </div>
 
+        <a routerLink=".." class="btn btn-outline-secondary">Back to Characters</a>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

@@ -1,5 +1,10 @@
 <app-navbar></app-navbar>
-<router-outlet></router-outlet>
+<div 
+id="background-div"
+class="d-flex justify-content-center align-items-center pt-4 pb-4"
+(click)="routeToBackground($event)">
+    <router-outlet></router-outlet>
+</div>
 
 <!-- BG -->
 <div id="bg"></div>

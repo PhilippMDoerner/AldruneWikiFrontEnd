@@ -1,6 +1,7 @@
 export class Constants{
-    public static get wikiApiURL(): string { return "http://localhost:8000/api";}
-    public static get wikiURL(): string { return "http://localhost:8000";}
+    public static get wikiUrl(): string { return "http://localhost:8000";}
+    public static get wikiApiUrl(): string { return `${this.wikiUrl}/api`;}
+    public static get wikiStaticUrl(): string { return `${this.wikiUrl}/static`;}
     //Used so far mostly in Image Gallery
     public static get createState(): string { return "create";}
     public static get deleteState(): string { return "delete";}

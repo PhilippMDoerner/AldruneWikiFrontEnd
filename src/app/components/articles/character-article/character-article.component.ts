@@ -36,17 +36,21 @@ export class CharacterArticleComponent implements OnInit {
       const character_name: string = params['name'];
       this.character_subscription = this.characterService.getCharacter(character_name).subscribe(character => {
         this.character = character;
-      }, error =>{
-        this.router.navigateByUrl("error");      
-      });
+      }, error =>{ this.router.navigateByUrl("error");});
     });
 
   }
 
 
-  // onDescriptionUpdate(updatedDescriptionText){
-  //   this.character.description = updatedDescriptionText;
-  // }
+  onDescriptionUpdate(updatedDescription){
+    const oldDescription = this.character.description;
+    this.character.description = updatedDescription;
+    this.characterService.updateCharacter(this.character).subscribe(character => {
+    }, error =>{
+      this.character.description = oldDescription;
+      console.log(error);
+    })
+  }
 
   addItem(){
     console.log("Summon a create item form!");
@@ -68,8 +72,10 @@ export class CharacterArticleComponent implements OnInit {
     this.isArticleDeleteState = !this.isArticleDeleteState
   }
 
-  deleteArticle(character_pk){
-      this.characterService.deleteCharacter(character_pk);
+  deleteArticle(){
+      this.characterService.deleteCharacter(this.character).subscribe(response => {
+        this.router.navigateByUrl("character")
+      }, error => console.log(error));
   }
 
   ngOnDestroy(){

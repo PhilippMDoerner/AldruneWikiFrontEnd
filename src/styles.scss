@@ -57,6 +57,11 @@ h1{
 	line-height: 1.3!important;
 }
 
+h2{
+	letter-spacing: 0.2rem!important;
+	font-size: 1.5rem!important;
+}
+
 // Button
 
 .button:hover {
@@ -179,10 +184,8 @@ a:hover{
 
 .main{
     width: 60rem;
-    max-width: 100%;
     background-color:rgba(27, 31, 34, 0.85);
-    border-radius: 4px;
-	margin: 2rem auto 2rem auto;
+    border-radius: 6px;
     padding: 2.5rem 2.5rem 5rem 2.5rem;
     color: white;
 	font-size: 18px;
@@ -234,4 +237,15 @@ h2{
 
 .flex10{
 	flex: 10;
+}
+
+.text-decoration-underline{
+	text-decoration: underline;
+}
+
+@media(max-width: 992px){
+	.main{
+		width: auto;
+		max-width: 60rem;
+	}
 }

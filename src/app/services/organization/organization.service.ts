@@ -9,12 +9,16 @@ import { map, catchError, mergeMap, toArray, tap } from "rxjs/operators";
   providedIn: 'root'
 })
 export class OrganizationService {
-  organizationUrl: string = `${Constants.wikiApiURL}/organization`;
+  organizationUrl: string = `${Constants.wikiApiUrl}/organization`;
 
   constructor(private http : HttpClient) { }
 
   getOrganizations(): Observable<Organization[]>{
     return this.http.get<Organization[]>(this.organizationUrl);
+  }
+
+  getListItems(): Observable<Organization[]>{
+    return this.getOrganizations();
   }
 
   getOrganization(organization: number | string): Observable<Organization>{

@@ -20,8 +20,6 @@ import { RulesComponent } from './components/articles/rules/rules.component';
 import { ArticleOverviewComponent } from './components/articles/article-overview/article-overview.component';
 import { TextfieldComponent } from './components/utility/textfield/textfield.component';
 import { ImageGalleryComponent } from './components/utility/image-gallery/image-gallery.component';
-
-import { CharacterService } from "src/app/services/character/character.service";
 import { EncounterAccordionComponent } from './components/utility/encounter-accordion/encounter-accordion.component';
 import { CharacterArticleUpdateComponent } from './components/articles/character-article-update/character-article-update.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';

@@ -10,12 +10,16 @@ import { mergeMap, toArray, map, tap } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class LocationService {
-  locationUrl = `${Constants.wikiApiURL}/location`;
+  locationUrl = `${Constants.wikiApiUrl}/location`;
 
   constructor(private http : HttpClient) { }
 
   getLocations(): Observable<Location[]>{
     return this.http.get<Location[]>(this.locationUrl);
+  }
+
+  getListItems(): Observable<Location[]>{
+    return this.getLocations();
   }
 
   getLocation(): Observable<Location>{

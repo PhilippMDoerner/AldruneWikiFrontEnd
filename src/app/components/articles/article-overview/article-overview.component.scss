@@ -1,0 +1,16 @@
+.filter-bar{
+    background-color: transparent;
+    border: 1px white solid;
+    border-radius: 5px;
+    padding: 0rem 1rem;
+    line-height: 1.65;
+    font-size: 1rem;
+    height: 2.75rem;
+    color: white;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus, select:focus, textarea:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #ffffff;
+    box-shadow: 0 0 0 2px #ffffff;
+}

@@ -1,34 +1,68 @@
-<article id="characters">
-    <h2 class="major">Characters</h2>
-    <span class="image frontpage-main"><img src="{% static 'frontpage/images/pic01.jpg' %}" alt=""/></span>
-    <p>
-        <a class="button" href="{% url 'aldrunewiki:character-create'%}"> Add Character </a>
-    </p>
-    <h3> Player Characters </h3>
-    <ul>
-        <!-- {% for pc in pc_table %}
-        <li>
-            <a id="character{{ pc.pk }}" href="{{ pc.get_absolute_url }}"> {{ pc.name_for_list|safe }} </a>
-        </li>
-        {% endfor %}
-    </ul>
-    <p></p>
-    <h3> Non-Player Characters </h3>
-    <input type="text" id="npc_filter_input" placeholder="Search for NPC..." class="filter-bar">
-    {% regroup npc_table by name|first|upper as grouped_npc_table %}
-    <ul id="npcList">
-        {% for npc_list in grouped_npc_table %}
-        <h2 class="minor"> {{ npc_list.grouper }} </h2>
-        <ul>
-            {% for npc in npc_list.list %}
-            {% if npc.player_character is not True %}
-            <li><a id="character{{ npc.pk }}" href="{{ npc.get_absolute_url }}">
-                {{ npc.name_for_list|safe }}
-            </a></li>
-            {% endif %}
-            {% endfor %}
-        </ul>
-        <p></p>
-        {% endfor %} -->
-    </ul>
-</article>
+<div class="main">
+    <article *ngIf="listItems; else loading">
+        <h2 class="major mb-4 pb-1 border-bottom">{{ capitalizeString(overviewType) }}s</h2>
+        <img class="w-100 d-block ml-auto mr-auto mb-5" src="{{overviewImages[overviewType]}}" alt=""/>
+        <!-- Adding Item button -->
+        <div class="mb-3">
+            <a class="btn btn-outline-secondary" routerLink="create"> 
+                Add {{ capitalizeString(overviewType) }}
+            </a>
+        </div>
+        <!-- Character OverView Snippet -->
+        <div *ngIf="overviewType===characterOverview">
+            <h5> Player Characters </h5>
+            <ul class="mb-5">
+                <span *ngFor="let item of listItems">
+                    <li *ngIf="item.player_character">
+                        <a routerLink="{{item.name}}">{{ item.name_full }}</a> 
+                    </li>
+                </span>
+            </ul>
+            <h5 class="mb-3"> Non-Player Characters </h5>
+        </div>
+        <!-- Filter  -->
+        <form autocomplete="off">
+            <input
+            type="text"
+            id="filter_input"
+            placeholder="Search for {{ overviewType }}..."
+            class="filter-bar mb-4 w-100"
+            #filter
+            (keyup)="filterListItems()"
+            >    
+        </form>
+        <!-- Character Overview Snippet -->
+        <div *ngIf="overviewType===characterOverview">
+            <ul>
+                <span *ngFor="let item of listItems">
+                    <li 
+                    [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
+                    *ngIf="!item.player_character"
+                    >
+                        <a routerLink="{{item.name}}">{{ item.name_full }}</a> 
+                    </li>
+                </span>
+            </ul>
+        </div>
+        <!-- DiaryEntry Overview -->
+        <div *ngIf="overviewType===diaryentryOverview">
+            <h5> DiaryEntries </h5>
+        </div>
+        <!-- Location/Item/Creature Overview -->
+        <div *ngIf="overviewType===locationOverview || overviewType===itemOverview || overviewType===creatureOverview">
+            <h5 *ngIf="overviewType===locationOverview"> Location </h5>
+            <h5 *ngIf="overviewType===itemOverview"> Item </h5>
+            <h5 *ngIf="overviewType===creatureOverview"> Creature </h5>
+            <ul>
+                <li 
+                *ngFor="let item of listItems"
+                [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
+                >
+                    <a routerLink="{{item.name}}">{{ item.name_full }}</a> 
+                </li>
+            </ul>
+        </div>
+    </article>
+    <!-- Loading Spinner -->
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

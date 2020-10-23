@@ -8,11 +8,15 @@ import { Observable } from "rxjs";
   providedIn: 'root'
 })
 export class CreatureService {
-  creatureUrl: string = `${Constants.wikiApiURL}/creature`
+  creatureUrl: string = `${Constants.wikiApiUrl}/creature`
   constructor(private http : HttpClient) { }
 
   getCreatures(): Observable<Creature[]>{
     return this.http.get<Creature[]>(this.creatureUrl);
+  }
+
+  getListItems(): Observable<Creature[]>{
+    return this.getCreatures();
   }
 
   getCreature(creature: string | number){
