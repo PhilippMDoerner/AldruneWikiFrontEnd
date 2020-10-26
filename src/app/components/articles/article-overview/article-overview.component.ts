@@ -48,12 +48,11 @@ export class ArticleOverviewComponent implements OnInit {
     const listItemObs = this.overviewService.getOverviewItems(this.overviewType) 
     this.listItemSubscription = listItemObs.subscribe(listItems => {
       this.listItems = listItems;
-      console.log(listItems);
+
       this.listItemArray = [];
       for(let item of listItems){
         this.listItemArray.push(item);
       }
-      console.log(listItems.values());
     }, error =>{
       console.log(error);
       this.router.navigateByUrl("error");
