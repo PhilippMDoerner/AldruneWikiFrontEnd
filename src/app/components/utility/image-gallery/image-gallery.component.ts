@@ -27,23 +27,10 @@ export class ImageGalleryComponent implements OnInit {
   form: FormGroup = new FormGroup({});
   formImageName: string;
   formImageFile: File = null;
-  imageFileForUpload: File = null;
 
   private imageSubscription: Subscription;
 
   fields: FormlyFieldConfig[] = [
-    {
-      key: "article_type",
-      type: "input",
-      templateOptions: {
-        label: "Article Type",
-        type: "text"
-      },
-      hideExpression: true,
-      expressionProperties:{
-        "templateOptions.disabled": 'true'
-      }
-    },
     {
       key: "name",
       type: "input",
@@ -51,6 +38,13 @@ export class ImageGalleryComponent implements OnInit {
         label: "Name",
         type: "text"
       },
+    },
+    {
+      key: "image",
+      type: "file",
+      templateOptions: {
+        change: (field, $event) => this.onFileSelected($event)
+      }
     },
     {
       key: "character_article",
@@ -139,6 +133,7 @@ export class ImageGalleryComponent implements OnInit {
     } else if (event.code === "ArrowLeft"){
       this.decreaseVisibleImageIndex();
     }
+    console.log(typeof this.getCurrentMainImage().image);
   }
 
   // Main Image Gallery controls
@@ -174,8 +169,10 @@ export class ImageGalleryComponent implements OnInit {
   }
 
   updateImage(){
-    console.log("Send Image update to server....");
-    this.formImageName = null;
+    this.imageUploadService.updateImage(this.model).subscribe(updatedImage => {
+      console.log(updatedImage);
+      this.images[this.visibleImageIndex] = updatedImage;
+    }, error => console.log(error));
   }
 
   // Create Image
@@ -193,17 +190,14 @@ export class ImageGalleryComponent implements OnInit {
 
   createImage(){
     this.imageUploadService.postImage(this.model, this.formImageFile).subscribe( data => {
-      console.log("Image sent!");
       this.images.push(this.model);
       this.model = new EmptyImage();
     }, error => {
-      console.log("ERROR");
       console.log(error);
     })  
   }
 
   onFileSelected(event) {
-    console.log("I fired on change");
     this.formImageFile = event.target.files[0];
   }
 
@@ -241,6 +235,6 @@ export class ImageGalleryComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    this.imageSubscription.unsubscribe();
+    if (this.imageSubscription) this.imageSubscription.unsubscribe();
   }
 }

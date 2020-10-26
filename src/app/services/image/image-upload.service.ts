@@ -10,7 +10,8 @@ const httpOptions = {
     "Content-Type": "application/json"
   })
 };
-
+//TODO: Creating works, but adding to the images list afterwards does not work properly. 
+//TODO: Updating does not work
 @Injectable({
   providedIn: 'root'
 })
@@ -27,7 +28,7 @@ export class ImageUploadService {
   }
 
   updateImage(image: Image){
-    const url = `${this.imageUrl}/pk/${image.pk}`;
+    const url = `${this.imageUrl}/pk/${image.pk}/`;
     return this.http.put<Image>(url, image, httpOptions);
   }
 
@@ -36,8 +37,8 @@ export class ImageUploadService {
     const url = `${Constants.wikiApiUrl}/image/upload/`;
     const formData: FormData = new FormData();
     for ( var key in imageModel ) {
-      if (key==="image"){
-        formData.append("image", imageFile, imageFile.name);
+      if (key === "image"){
+        formData.append(key, imageFile);
       } else if (imageModel[key]){
         formData.append(key, imageModel[key]);
       }

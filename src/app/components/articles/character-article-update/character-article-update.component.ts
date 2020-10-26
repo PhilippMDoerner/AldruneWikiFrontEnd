@@ -154,11 +154,9 @@ export class CharacterArticleUpdateComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.formState === this.constants.updateState){
-      this.parameter_subscription.unsubscribe();
-      this.characterSubscription.unsubscribe();
-    }
-    this.organizationSubscription.unsubscribe();
-    this.locationSubscription.unsubscribe();
+    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
+    if (this.characterSubscription) this.characterSubscription.unsubscribe();
+    if (this.organizationSubscription) this.organizationSubscription.unsubscribe();
+    if (this.locationSubscription) this.locationSubscription.unsubscribe();
   }
 }
