@@ -4,13 +4,13 @@
     (click)="decreaseVisibleImageIndex()"></i>
 
     <div class="image-container">
-        <a [href]="image.url"
+        <a [href]="image.image"
         *ngFor="let image of images; let i = index"
         (keydown)="changeMainImage($event)"
         [ngClass]="{'main-image': i === visibleImageIndex, 
                     'side-image': i !== visibleImageIndex}"
         >
-            <img title="None" class="gallery-image" [src]="image.url" alt="">
+            <img title="None" class="gallery-image" [src]="constants.wikiUrl + image.image" alt="">
         </a>
     
         <div class="edit-image-buttons">
@@ -31,29 +31,29 @@
     <!-- Modal Templates for Image Manipulation -->
     <ng-template #requestModal let-cl="close" let-di="dismiss">  
         <div class="modal-content"> 
-    
+            <!-- Heading -->
             <div class="modal-header">  
-                <h5 class="modal-title">Confirmation Request</h5>
+                <h5 class="modal-title">
+                    <span *ngIf="activeModalState===constants.createState">Add</span>
+                    <span *ngIf="activeModalState===constants.updateState">Change</span>
+                    Image
+                </h5>
                 <button type="button" class="close" (click)="di()">  
                     <i class="fa fa-times"></i>
                 </button> 
             </div>  
-    
+            <!-- Body -->
             <div class="modal-body">
 
-                <form *ngIf="activeModalState===constants.createState || activeModalState===constants.updateState">
-                    <div class="form-group">
-                        <label for="image_name">Image Name</label>
-                        <input type="text" class="form-control" id="image_name" name="image_name" [(ngModel)]="formImageData.name"  >
-                    </div>
-
-                    <div class="form-group">
-                        <!-- TODO: Handle File Input -->
-                        <label for="image_url">Choose File</label>
-                        <input type="file" id="file" (change)="handleFileInput($event.target.files)">
-                        <input type="text" class="form-control" id="image_url" name="image_url" [(ngModel)]="formImageData.url" >
-                    </div>
-                </form>
+                <div *ngIf="activeModalState===constants.createState || activeModalState===constants.updateState">
+                    <form [formGroup]="form" (ngSubmit)="cl(constants.createSignal)" enctype="multipart/form-data">
+                        <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+                        <div class="form-group">
+                            <input type="file" (change)="onFileSelected($event)">
+                        </div>
+                        <button type="submit" class="btn btn-outline-secondary">Submit</button>
+                    </form>
+                </div>
 
                 <p *ngIf="activeModalState===constants.deleteState">Do you really want to delete <strong>{{ images[visibleImageIndex].name }}</strong> ?</p>  
             </div>  

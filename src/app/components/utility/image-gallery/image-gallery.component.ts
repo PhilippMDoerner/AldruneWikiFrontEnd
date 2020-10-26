@@ -4,6 +4,9 @@ import { Constants } from "src/app/app.constants";
 import { deepCopy } from "src/app/utils";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ImageUploadService } from "src/app/services/image/image-upload.service";
+import { Subscription } from 'rxjs';
+import { FormGroup } from '@angular/forms';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-image-gallery',
@@ -13,12 +16,117 @@ import { ImageUploadService } from "src/app/services/image/image-upload.service"
 
 export class ImageGalleryComponent implements OnInit {
   constants: any = Constants;
+
   @Input() images : Image[];
   @Input() article_type: string;
+  @Input() article_pk: number;
   visibleImageIndex: number = 0;
-  formImageData: Image;
   activeModalState: string;
+
+  model: Image;
+  form: FormGroup = new FormGroup({});
+  formImageName: string;
+  formImageFile: File = null;
   imageFileForUpload: File = null;
+
+  private imageSubscription: Subscription;
+
+  fields: FormlyFieldConfig[] = [
+    {
+      key: "article_type",
+      type: "input",
+      templateOptions: {
+        label: "Article Type",
+        type: "text"
+      },
+      hideExpression: true,
+      expressionProperties:{
+        "templateOptions.disabled": 'true'
+      }
+    },
+    {
+      key: "name",
+      type: "input",
+      templateOptions: {
+        label: "Name",
+        type: "text"
+      },
+    },
+    {
+      key: "character_article",
+      type: "input",
+      templateOptions: {
+        type: "number",
+        label: "Character Article Pk",
+      },
+      hideExpression: true,
+      expressionProperties:{
+        "templateOptions.disabled": 'true'
+      }
+    },
+    {
+      key: "location_article",
+      type: "input",
+      templateOptions: {
+        type: "number",
+        label: "Location Article Pk",
+      },
+      hideExpression: true,
+      expressionProperties:{
+        "templateOptions.disabled": 'true'
+      }
+    },
+    {
+      key: "creature_article",
+      type: "input",
+      templateOptions: {
+        type: "number",
+        label: "Creature Article Pk",
+      },
+      hideExpression: true,
+      expressionProperties:{
+        "templateOptions.disabled": 'true'
+      }
+    },
+    {
+      key: "organization_article",
+      type: "input",
+      templateOptions: {
+        type: "number",
+        label: "Organization Article Pk",
+      },
+      hideExpression: true,
+      expressionProperties:{
+        "templateOptions.disabled": 'true'
+      }
+    },
+    {
+      key: "encounter_article",
+      type: "input",
+      templateOptions: {
+        type: "number",
+        label: "Encounter Article Pk",
+      },
+      hideExpression: true,
+      expressionProperties:{
+        "templateOptions.disabled": 'true'
+      }
+    },
+    {
+      key: "item_article",
+      type: "input",
+      templateOptions: {
+        type: "number",
+        label: "Item Article Pk",
+      },
+      hideExpression: true,
+      expressionProperties:{
+        "templateOptions.disabled": 'true'
+      }
+    },
+  ]
+
+
 
   constructor(private modalService: NgbModal, private imageUploadService: ImageUploadService) { }
 
@@ -33,6 +141,7 @@ export class ImageGalleryComponent implements OnInit {
     }
   }
 
+  // Main Image Gallery controls
   incrementVisibleImageIndex(){
     let hasMaxImageIndex : boolean = this.visibleImageIndex === this.images.length - 1;
     this.visibleImageIndex = hasMaxImageIndex ? 0 : this.visibleImageIndex + 1;
@@ -50,65 +159,77 @@ export class ImageGalleryComponent implements OnInit {
     this.visibleImageIndex = this.images.indexOf(nextMainImage);
   }
 
-  deleteImage(){
-    console.log(`Send delete request to server...`);
-    this.images.splice(this.visibleImageIndex, 1);
-    if (this.visibleImageIndex === this.images.length){
-      this.visibleImageIndex = this.images.length - 1;
-    }
+  getCurrentMainImage(){
+    return this.images[this.visibleImageIndex];
   }
 
-  updateImage(){
-    console.log("Send Image update to server....");
-    this.images[this.visibleImageIndex] = this.formImageData;
-    this.formImageData = null;
-  }
 
-  handleFileInput(files: FileList) {
-    this.imageFileForUpload = files.item(0);
-  }
-
-  uploadArticleImage(){
-    // this.imageUploadService.postImage(this.imageFileForUpload).subscribe( data => {
-    //   console.log(data);
-    // }, error => {
-    //   console.log(error);
-    // })
-  }
-
-  createImage(){
-    console.log("Send Image creation to server...");
-    //Do the below in a promise-callback when you receive the response from the server once services are implemented
-    this.images.push(this.formImageData);
-    this.setMainImage(this.formImageData);
-    console.log(this.formImageData);
-    this.formImageData = null;
-  }
-
+  // Update Image
   showUpdateModal(content){
     this.activeModalState = this.constants.updateState;
-    this.formImageData = deepCopy(this.images[this.visibleImageIndex]);
+    this.model = deepCopy(this.images[this.visibleImageIndex]);
     this.modalService.open(content).result.then( 
       (closeSignal) => {this.updateImage()},(dismissSignal) => {}
     );
   }
 
+  updateImage(){
+    console.log("Send Image update to server....");
+    this.formImageName = null;
+  }
+
+  // Create Image
   showCreateModal(content){
     this.activeModalState = this.constants.createState;
-    this.formImageData = new EmptyImage();
-    // this.formImageData.articleUrl = this.articleUrl;
+    this.model = new EmptyImage();
+    this.model.article_type = this.article_type;
+    const article_type_pk_key = `${this.article_type}_article`;
+    this.model[article_type_pk_key] = this.article_pk;
+
     this.modalService.open(content).result.then( 
       (closeSignal) => {this.createImage()},(dismissSignal) => {}
     );
   }
 
+  createImage(){
+    this.imageUploadService.postImage(this.model, this.formImageFile).subscribe( data => {
+      console.log("Image sent!");
+      this.images.push(this.model);
+      this.model = new EmptyImage();
+    }, error => {
+      console.log("ERROR");
+      console.log(error);
+    })  
+  }
+
+  onFileSelected(event) {
+    console.log("I fired on change");
+    this.formImageFile = event.target.files[0];
+  }
+
+  // Delete Image
   showDeleteModal(content){
-    if (this.images.length === 1) return;
+    if (this.isLastImage()) return;
     
     this.activeModalState = this.constants.deleteState;
     this.modalService.open(content).result.then( 
-      (closeSignal) => {this.deleteImage()},(dismissSignal) => {}
+      (closeSignal) => {this.deleteCurrentMainImage()},(dismissSignal) => {}
     );  
+  }
+
+  deleteCurrentMainImage(){
+    const currentMainImage = this.getCurrentMainImage();
+
+    this.imageUploadService.deleteImage(currentMainImage.pk).subscribe(response => {
+      console.log(response);
+    }, error => {
+      console.log(error);
+    })
+    
+    this.images.splice(this.visibleImageIndex, 1);
+    if (this.visibleImageIndex === this.images.length){
+      this.visibleImageIndex = this.images.length - 1;
+    }
   }
 
   isLastImage(){
@@ -117,5 +238,9 @@ export class ImageGalleryComponent implements OnInit {
     }
 
     return true;
+  }
+
+  ngOnDestroy(){
+    this.imageSubscription.unsubscribe();
   }
 }

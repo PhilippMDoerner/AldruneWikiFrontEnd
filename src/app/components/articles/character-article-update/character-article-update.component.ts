@@ -146,7 +146,10 @@ export class CharacterArticleUpdateComponent implements OnInit {
       this.characterService.createCharacter(model).subscribe(response => {
         console.log(response);
         this.router.navigateByUrl(`character/${model.name}`);
-      }, error => this.router.navigateByUrl("error"));
+      }, error => {
+        console.log(error);
+        this.router.navigateByUrl("error");
+      });
     }
   }
 

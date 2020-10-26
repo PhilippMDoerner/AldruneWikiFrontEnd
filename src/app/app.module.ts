@@ -27,6 +27,9 @@ import { SpinnerComponent } from './components/utility/spinner/spinner.component
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 
+import { FormlyFieldFile } from './components/utility/file-upload/file-upload.component';
+import { FileValueAccessor } from './components/utility/file-upload/file-value-accesor';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -46,6 +49,8 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
     CharacterArticleUpdateComponent,
     NotFoundComponent,
     SpinnerComponent,
+    FormlyFieldFile,
+    FileValueAccessor,
   ],
   imports: [
     BrowserModule,
@@ -55,7 +60,12 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
     NgbModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormlyModule.forRoot(), //{ extras: { lazyRender: true } }
+    FormlyModule.forRoot({
+        types: [
+          { name: "file", component: FormlyFieldFile, wrappers: ['form-field'] },
+        ]
+      }
+    ), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,
     CommonModule
   ],
