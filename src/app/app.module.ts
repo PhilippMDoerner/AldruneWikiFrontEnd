@@ -30,6 +30,8 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { FormlyFieldFile } from './components/utility/file-upload/file-upload.component';
 import { FileValueAccessor } from './components/utility/file-upload/file-value-accesor';
 
+import { GroupByPipe, GroupByFirstLetterPipe } from "src/app/utils/pipes/groupObjects.pipe";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -51,6 +53,8 @@ import { FileValueAccessor } from './components/utility/file-upload/file-value-a
     SpinnerComponent,
     FormlyFieldFile,
     FileValueAccessor,
+    GroupByPipe,
+    GroupByFirstLetterPipe
   ],
   imports: [
     BrowserModule,
@@ -67,7 +71,7 @@ import { FileValueAccessor } from './components/utility/file-upload/file-value-a
       }
     ), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,
-    CommonModule
+    CommonModule,
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }

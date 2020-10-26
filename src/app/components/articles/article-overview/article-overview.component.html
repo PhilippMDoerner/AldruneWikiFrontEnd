@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="listItems; else loading">
+    <article *ngIf="listItems; else loading" class="pr-4 pl-4">
         <h2 class="major mb-4 pb-1 border-bottom">{{ capitalizeString(overviewType) }}s</h2>
         <img class="w-100 d-block ml-auto mr-auto mb-5" src="{{overviewImages[overviewType]}}" alt=""/>
         <!-- Adding Item button -->
@@ -10,7 +10,7 @@
         </div>
         <!-- Character OverView Snippet -->
         <div *ngIf="overviewType===characterOverview">
-            <h5> Player Characters </h5>
+            <h4> Player Characters </h4>
             <ul class="mb-5">
                 <span *ngFor="let item of listItems">
                     <li *ngIf="item.player_character">
@@ -18,7 +18,6 @@
                     </li>
                 </span>
             </ul>
-            <h5 class="mb-3"> Non-Player Characters </h5>
         </div>
         <!-- Filter  -->
         <form autocomplete="off">
@@ -33,35 +32,72 @@
         </form>
         <!-- Character Overview Snippet -->
         <div *ngIf="overviewType===characterOverview">
-            <ul>
-                <span *ngFor="let item of listItems">
+            <h4 class="mb-3"> Non-Player Characters </h4>
+            <div *ngFor="let characterLetterEntries of listItems | groupByFirstLetter: 'name'">
+                <h5 [ngClass]="{'d-none': filter.value}"> {{ characterLetterEntries.key }} </h5>
+                <ul>
                     <li 
-                    [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
-                    *ngIf="!item.player_character"
+                    *ngFor="let characterEntry of characterLetterEntries.value"
+                    [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                     >
-                        <a routerLink="{{item.name}}">{{ item.name_full }}</a> 
+                        <a routerLink="{{characterEntry.name}}"> {{characterEntry.name_full}} </a>
                     </li>
-                </span>
-            </ul>
+                </ul>
+            </div>
         </div>
+
         <!-- DiaryEntry Overview -->
         <div *ngIf="overviewType===diaryentryOverview">
-            <h5> DiaryEntries </h5>
+            <h4 class="mb-4"> DiaryEntries </h4>
+
+            <div *ngFor="let authorDiaryEntries of listItems | groupBy: 'author'">
+                <h5 [ngClass]="{'d-none': filter.value}"> {{ authorDiaryEntries.key }} </h5>
+                <ul>
+                    <li 
+                    *ngFor="let diaryEntry of authorDiaryEntries.value"
+                    [ngClass]="{'d-none': !diaryEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
+                    >
+                        <a routerLink="{{diaryEntry.name}}"> {{diaryEntry.name_full}}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <!-- Location/Item/Creature Overview -->
-        <div *ngIf="overviewType===locationOverview || overviewType===itemOverview || overviewType===creatureOverview">
-            <h5 *ngIf="overviewType===locationOverview"> Location </h5>
-            <h5 *ngIf="overviewType===itemOverview"> Item </h5>
-            <h5 *ngIf="overviewType===creatureOverview"> Creature </h5>
-            <ul>
-                <li 
-                *ngFor="let item of listItems"
-                [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
-                >
-                    <a routerLink="{{item.name}}">{{ item.name_full }}</a> 
-                </li>
-            </ul>
+
+        <!-- Location Overview -->
+        <div *ngIf="overviewType===locationOverview">
+            <h4> Location </h4>
+            <div *ngFor="let itemLetterEntries of listItems | groupByFirstLetter: 'name_full'">
+                <h5 [ngClass]="{'d-none': filter.value}"> {{ itemLetterEntries.key }} </h5>
+                <ul>
+                    <li 
+                    *ngFor="let item of itemLetterEntries.value"
+                    [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
+                    >
+                        <a routerLink="{{item.name}}"> {{item.name_full}} </a>
+                    </li>
+                </ul>
+            </div>
         </div>
+        
+        <!-- Item/Creature Overview -->
+        <div *ngIf="overviewType===itemOverview || overviewType===creatureOverview">
+            <h4 *ngIf="overviewType===itemOverview"> Item </h4>
+            <h4 *ngIf="overviewType===creatureOverview"> Creature </h4>
+
+            <div *ngFor="let itemLetterEntries of listItems | groupByFirstLetter: 'name'">
+                <h5 [ngClass]="{'d-none': filter.value}"> {{ itemLetterEntries.key }} </h5>
+                <ul>
+                    <li 
+                    *ngFor="let item of itemLetterEntries.value"
+                    [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
+                    >
+                        <a routerLink="{{item.name}}"> {{item.name_full}} </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+
     </article>
     <!-- Loading Spinner -->
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

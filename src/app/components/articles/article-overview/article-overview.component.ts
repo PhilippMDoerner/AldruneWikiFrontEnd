@@ -10,11 +10,12 @@ import { Constants } from 'src/app/app.constants';
 @Component({
   selector: 'app-article-overview',
   templateUrl: './article-overview.component.html',
-  styleUrls: ['./article-overview.component.scss']
+  styleUrls: ['./article-overview.component.scss'],
 })
 export class ArticleOverviewComponent implements OnInit {
-  listItems: OverviewItem[]
-  constants: any = Constants
+  listItems: OverviewItem[];
+  listItemArray: Array<OverviewItem>;
+  constants: any = Constants;
   overviewImages = {
     character: `${this.constants.wikiStaticUrl}/frontpage/images/pic01.jpg`,
     item: `${this.constants.wikiStaticUrl}/frontpage/images/pic07.jpg`,
@@ -22,7 +23,7 @@ export class ArticleOverviewComponent implements OnInit {
     location: `${this.constants.wikiStaticUrl}/frontpage/images/pic02.jpg`,
     organization: `${this.constants.wikiStaticUrl}/frontpage/images/pic03.jpg`,
     diaryentry: `${this.constants.wikiStaticUrl}/frontpage/images/pic04.png`,
-  }
+  };
   overviewType: string;
 
   characterOverview: string = "character";
@@ -47,6 +48,12 @@ export class ArticleOverviewComponent implements OnInit {
     const listItemObs = this.overviewService.getOverviewItems(this.overviewType) 
     this.listItemSubscription = listItemObs.subscribe(listItems => {
       this.listItems = listItems;
+      console.log(listItems);
+      this.listItemArray = [];
+      for(let item of listItems){
+        this.listItemArray.push(item);
+      }
+      console.log(listItems.values());
     }, error =>{
       console.log(error);
       this.router.navigateByUrl("error");
