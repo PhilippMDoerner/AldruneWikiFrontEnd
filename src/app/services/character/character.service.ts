@@ -19,10 +19,6 @@ export class CharacterService {
     return this.http.get<Character[]>(this.characterUrl);
   }
 
-  getListItems(): Observable<Character[]>{
-    return this.getCharacters();
-  }
-
   getCharacter(character: number | string): Observable<Character>{
     const url = (typeof character === 'number') ? `${this.characterUrl}/pk/${character}/` :  `${this.characterUrl}/${character}`;
     return this.http.get<Character>(url);
@@ -39,7 +35,6 @@ export class CharacterService {
   }
 
   createCharacter(character: Character): Observable<Character>{
-    console.log(character);
     return this.http.post<Character>(`${this.characterUrl}/`, character, httpOptions);
   }
 }

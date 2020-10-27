@@ -37,7 +37,6 @@ export class ArticleOverviewComponent implements OnInit {
 
   constructor(
     private overviewService: OverviewService,
-    private route: ActivatedRoute,
     private router: Router
   ) { }
 

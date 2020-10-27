@@ -18,18 +18,16 @@ export class CharacterArticleComponent implements OnInit {
   character: Character;
   isArticleDeleteState: boolean = false;
   confirmationModal: Subject<void> = new Subject<void>();
-  articleType: string = 'character'
+  articleType: string = 'character';
 
   private parameter_subscription: Subscription;
   private character_subscription: Subscription;
 
   constructor(
-    private modalService: NgbModal,
     private characterService: CharacterService,
-    private imageService: ImageUploadService,
     private route: ActivatedRoute,
     private router: Router
-    ) { }
+    ) {}
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
@@ -40,7 +38,6 @@ export class CharacterArticleComponent implements OnInit {
     });
 
   }
-
 
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.character.description;
@@ -53,19 +50,18 @@ export class CharacterArticleComponent implements OnInit {
   }
 
   addItem(){
+    // TODO: Add way to add an item to a character on the fly
     console.log("Summon a create item form!");
   }
 
   addEncounter(){
+    //TODO: Add way to add an encounter to a character on the fly
     console.log("Summon a create Encounter form!");
   }
 
   onEncounterUpdate({updatedText, encounterIndex}){
+    //TODO: Implement actually sending an encounter update
     console.log("Sending updated Encounter to Database");
-  }
-
-  confirmationRequest(){
-    this.confirmationModal.next();
   }
 
   toggleDeleteRequest(){
@@ -79,7 +75,7 @@ export class CharacterArticleComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    this.parameter_subscription.unsubscribe();
-    this.character_subscription.unsubscribe();
+    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
+    if (this.character_subscription) this.character_subscription.unsubscribe();
   }
 }

@@ -11,6 +11,7 @@ import { ItemArticleComponent } from "src/app/components/articles/item-article/i
 import { RulesComponent } from "src/app/components/articles/rules/rules.component";
 import { CharacterArticleUpdateComponent } from "src/app/components/articles/character-article-update/character-article-update.component";
 import { NotFoundComponent } from "src/app/components/not-found/not-found.component";
+import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -25,9 +26,10 @@ const routes: Routes = [
   {path: "diaryentry", component: ArticleOverviewComponent},
   {path: "diaryentry/", component: DiaryentryArticleComponent},
   
-  
   {path: "creature", component: ArticleOverviewComponent},
-  {path: "creature/", component: CreatureArticleComponent},
+  {path: "creature/create", component: CreatureArticleUpdateComponent},
+  {path: "creature/:name", component: CreatureArticleComponent},
+  {path: "creature/:name/update", component: CreatureArticleUpdateComponent},
   
   {path: "organization", component: ArticleOverviewComponent},
   {path: "organization/", component: OrganizationArticleComponent},

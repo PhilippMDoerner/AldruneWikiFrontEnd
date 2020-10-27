@@ -1,0 +1,69 @@
+import { Component, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Observable, Subscription } from 'rxjs';
+import { Constants } from 'src/app/app.constants';
+import { Creature, EmptyFormCreature } from 'src/app/models/creature';
+import { CreatureService } from 'src/app/services/creature/creature.service';
+
+@Component({
+  selector: 'app-creature-article-update',
+  templateUrl: './creature-article-update.component.html',
+  styleUrls: ['./creature-article-update.component.scss']
+})
+export class CreatureArticleUpdateComponent implements OnInit {
+  constants: any = Constants;
+  formState: string;
+  form = new FormGroup({});
+  model: Creature | EmptyFormCreature;
+  fields: FormlyFieldConfig[] = [
+    {
+      key: "name",
+      type: "input",
+      templateOptions:{
+        label: "Name"
+      }
+    },
+  ]
+
+  private parameter_subscription: Subscription;
+  private creature_subscription: Subscription;
+
+  constructor(
+    private creatureService: CreatureService,
+    private router: Router,
+    private route: ActivatedRoute,
+  ) { }
+
+  ngOnInit(): void {
+    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
+
+    if (this.formState === this.constants.updateState){
+      this.parameter_subscription = this.route.params.subscribe(params => {
+        const creature_name: string = params['name'];
+        this.creature_subscription = this.creatureService.getCreature(creature_name).subscribe(creature => {
+          this.model = creature;
+        }, error => this.router.navigateByUrl("error"));
+      });
+    } else if (this.formState === this.constants.createState) {
+      this.model = new EmptyFormCreature();
+    }
+  }
+
+  onSubmit(model: any){
+    const isFormInUpdateState : boolean = (this.formState === this.constants.updateState)
+    const responseObservable : Observable<Creature> =  isFormInUpdateState ? this.creatureService.updateCreature(model) : this.creatureService.createCreature(model);
+
+    responseObservable.subscribe(response => {
+      console.log(response);
+      this.router.navigateByUrl(`/creature/${model.name}`);
+    }, error => console.log(error));
+  }
+
+  ngOnDestroy(){
+    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
+    if (this.creature_subscription) this.creature_subscription.unsubscribe();
+  }
+
+}

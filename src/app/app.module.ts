@@ -31,6 +31,7 @@ import { FormlyFieldFile } from './components/utility/file-upload/file-upload.co
 import { FileValueAccessor } from './components/utility/file-upload/file-value-accesor';
 
 import { GroupByPipe, GroupByFirstLetterPipe } from "src/app/utils/pipes/groupObjects.pipe";
+import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { GroupByPipe, GroupByFirstLetterPipe } from "src/app/utils/pipes/groupOb
     FormlyFieldFile,
     FileValueAccessor,
     GroupByPipe,
-    GroupByFirstLetterPipe
+    GroupByFirstLetterPipe,
+    CreatureArticleUpdateComponent
   ],
   imports: [
     BrowserModule,

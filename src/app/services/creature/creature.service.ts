@@ -15,12 +15,22 @@ export class CreatureService {
     return this.http.get<Creature[]>(this.creatureUrl);
   }
 
-  getListItems(): Observable<Creature[]>{
-    return this.getCreatures();
+  getCreature(creature: string | number): Observable<Creature>{
+    const url = (typeof creature === 'number') ? `${this.creatureUrl}/pk/${creature}/` :  `${this.creatureUrl}/${creature}/`;
+    return this.http.get<Creature>(url);
   }
 
-  getCreature(creature: string | number){
-    const url = (typeof creature === 'number') ? `${this.creatureUrl}/pk/${creature}` :  `${this.creatureUrl}/${creature}`;
-    return this.http.get<Creature>(url);
+  createCreature(creature: Creature): Observable<Creature>{
+    return this.http.post<Creature>(`${this.creatureUrl}/`, creature);
+  }
+
+  updateCreature(creature: Creature): Observable<Creature>{
+    const url = `${this.creatureUrl}/pk/${creature.pk}/`;
+    return this.http.put<Creature>(url, creature);
+  }
+
+  deleteCreature(creature_pk: number){
+    const url = `${this.creatureUrl}/pk/${creature_pk}/`;
+    return this.http.delete<Creature>(url);
   }
 }

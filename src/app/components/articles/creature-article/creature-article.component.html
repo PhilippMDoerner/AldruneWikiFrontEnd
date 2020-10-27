@@ -1,1 +1,34 @@
-<p>creature-article works!</p>
+<div class="main">
+    <article *ngIf="creature; else loading">
+        <a routerLink="/{{articleType}}/{{creature.name}}/update">
+            <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
+        </a>
+        <h1 class="text-center"> {{ creature.name }} </h1>
+
+        <app-image-gallery
+        [article_type]="this.articleType"
+        [article_pk]="this.creature.pk"
+        [images]="this.creature.images"
+        ></app-image-gallery>
+
+        <div class="mb-5">
+            <app-textfield 
+            [initialText]="creature.description"
+            [heading]="'Description'"
+            (updateText)="onDescriptionUpdate($event)"
+            ></app-textfield>
+        </div>
+
+        <div class="float-right">
+            <i *ngIf="!isArticleDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleDeleteRequest()"></i>
+            <div *ngIf="isArticleDeleteState" class="delete-request">
+                <span class="mr-3"> <strong>Delete this article?</strong> </span>  
+                <button class="btn btn-outline-danger float-right mr-2" (click)="deleteArticle(creature.pk)"> Yes </button>
+                <button class="btn btn-outline-secondary float-right" (click)="toggleDeleteRequest()"> No </button>
+            </div>
+        </div>
+
+        <a routerLink=".." class="btn btn-outline-secondary">Back to Creatures</a>
+    </article>
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

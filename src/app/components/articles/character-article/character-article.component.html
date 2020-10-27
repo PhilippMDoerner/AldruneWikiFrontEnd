@@ -3,10 +3,10 @@
         <a routerLink="/character/{{character.name}}/update">
             <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
         </a>
-        <h2 class="text-center">
+        <h1 class="text-center">
             <span *ngIf="character.title">{{ character.title }} - </span>
             {{ character.name }}
-        </h2>
+        </h1>
         <div class="text-center mb-3">
             <div>
                 <span *ngIf="character.gender !=='Other'">{{ character.gender }}</span>
