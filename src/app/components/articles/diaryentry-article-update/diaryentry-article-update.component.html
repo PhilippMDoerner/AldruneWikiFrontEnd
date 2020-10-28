@@ -9,6 +9,7 @@
                 Updating Diaryentry {{ model.title }}
             </h2>
         </div>
+        
         <ng-template #createState>
             <a routerLink="">
                 <i class="btn btn-outline-secondary icon fa fa-times float-right" id="article"></i>
@@ -19,7 +20,7 @@
         </ng-template>
 
 
-    <!-- Form -->
+        <!-- Form -->
         <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
             <button type="submit" class="btn btn-outline-secondary">Submit</button>
