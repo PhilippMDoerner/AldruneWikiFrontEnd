@@ -1,24 +1,25 @@
+import { Session } from "src/app/models/session";
+
 export interface DiaryEntry{
     "creation_datetime": string,
     "update_datetime": string,
     "title": string,
     "entry": string,
-    "author": diaryEntryUser,
-    "session": diaryEntrySession,
-}
-
-interface diaryEntrySession{
-    pk: number,
-    session: string
+    "author": number,
+    "author_details": diaryEntryUser
+    "session": number
+    "session_details": Session,
+    "pk": number,
 }
 
 interface diaryEntryUser{
     pk: number,
     name: string
 }
-export interface SimpleDiaryEntry{
-    "title": string,
-    "entry": string,
-    "author": number,
-    "session": number,
+export class EmptyFormDiaryEntry{
+    "title" = null;
+    "entry" = null;
+    "author" = null;
+    "session" = null;
+    "pk" = null;
 }

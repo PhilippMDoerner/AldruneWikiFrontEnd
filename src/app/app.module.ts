@@ -32,6 +32,7 @@ import { FileValueAccessor } from './components/utility/file-upload/file-value-a
 
 import { GroupByPipe, GroupByFirstLetterPipe } from "src/app/utils/pipes/groupObjects.pipe";
 import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
+import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { CreatureArticleUpdateComponent } from './components/articles/creature-a
     FileValueAccessor,
     GroupByPipe,
     GroupByFirstLetterPipe,
-    CreatureArticleUpdateComponent
+    CreatureArticleUpdateComponent,
+    DiaryentryArticleUpdateComponent
   ],
   imports: [
     BrowserModule,

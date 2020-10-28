@@ -137,20 +137,13 @@ export class CharacterArticleUpdateComponent implements OnInit {
   }
 
   onSubmit(model: any){
-    if (this.formState === this.constants.updateState){
-      this.characterService.updateCharacter(model).subscribe(response => {
-        console.log(response);
-        this.router.navigateByUrl(`/character/${model.name}`);
-      }, error => this.router.navigateByUrl("error"));
-    } else if (this.formState === this.constants.createState){
-      this.characterService.createCharacter(model).subscribe(response => {
-        console.log(response);
-        this.router.navigateByUrl(`character/${model.name}`);
-      }, error => {
-        console.log(error);
-        this.router.navigateByUrl("error");
-      });
-    }
+    const isFormInUpdateState: boolean = (this.formState === this.constants.updateState)
+    const responseObservable: Observable<Character> =  isFormInUpdateState ? this.characterService.updateCharacter(model) : this.characterService.createCharacter(model);
+
+    responseObservable.subscribe(response => {
+      console.log(response);
+      this.router.navigateByUrl(`/character/${model.name}`);
+    }, error => console.log(error));
   }
 
   ngOnDestroy(){

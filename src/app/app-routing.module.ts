@@ -12,6 +12,7 @@ import { RulesComponent } from "src/app/components/articles/rules/rules.componen
 import { CharacterArticleUpdateComponent } from "src/app/components/articles/character-article-update/character-article-update.component";
 import { NotFoundComponent } from "src/app/components/not-found/not-found.component";
 import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
+import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -24,7 +25,9 @@ const routes: Routes = [
   {path: "location/", component: LocationArticleComponent},
 
   {path: "diaryentry", component: ArticleOverviewComponent},
-  {path: "diaryentry/", component: DiaryentryArticleComponent},
+  {path: "diaryentry/create", component: DiaryentryArticleUpdateComponent},
+  {path: "diaryentry/:sessionNumber/:isMainSession/:authorName", component: DiaryentryArticleComponent},
+  {path: "diaryentry/:sessionNumber/:isMainSession/:authorName/update", component: DiaryentryArticleUpdateComponent},
   
   {path: "creature", component: ArticleOverviewComponent},
   {path: "creature/create", component: CreatureArticleUpdateComponent},
