@@ -1,0 +1,26 @@
+@import "../../../cssvariables.scss";
+
+.location-title{
+    color: white;
+    width: 100%;
+    font-size: 18px;
+    border-bottom: dotted 2px gray;
+}
+
+.location-title:hover{
+    border-bottom: solid 2px gray;
+}
+
+.location-character{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+.badge a{
+    border-bottom: none;
+}
+
+.badge a:hover{
+    color: darkblue !important;
+}

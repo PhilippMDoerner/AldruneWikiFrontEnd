@@ -18,13 +18,10 @@ export class LocationService {
     return this.http.get<Location[]>(this.locationUrl);
   }
 
-  getListItems(): Observable<Location[]>{
-    return this.getLocations();
+  getLocation(parentLocationName: string, locationName: string): Observable<Location>{
+    const url = `${this.locationUrl}/${parentLocationName}/${locationName}/`;
+    return this.http.get<Location>(url);
   }
-
-  getLocation(): Observable<Location>{
-    const url = (typeof location === 'number') ? `${this.locationUrl}/pk/${location}` :  `${this.locationUrl}/${location}`;
-    return this.http.get<Location>(this.locationUrl);  }
 
   getLocationsFormList(): Observable<{label: string, value: characterLocation}[]>{
     const locationObs = this.getLocations();
@@ -36,22 +33,24 @@ export class LocationService {
           pk: location.pk,
           name: location.name,
           name_full: location.name_full,
-          parent_location: location.parent_location ? location.parent_location.name : null
+          parent_location: location.parent_location ? location.parent_location_details.name : null
         }
       })),
       toArray(),
     );
   }
 
-  updateLocation(): void{ //Observable<Location>{
-    console.log("Totally updated the Location!");
+  updateLocation(location: Location): Observable<Location>{
+    const url: string = `${this.locationUrl}/pk/${location.pk}/`;
+    return this.http.put<Location>(url, location);
   }
 
-  deleteLocation(): void{ //Observable<Location>{
-    console.log("Totally deleted the Location!");
+  deleteLocation(location_pk: number){
+    const url: string = `${this.locationUrl}/pk/${location_pk}/`;
+    return this.http.delete(url);
   }
 
-  createLocation(): void{
-    console.log("Totally created the Location!");
+  createLocation(location: Location): Observable<Location>{
+    return this.http.post<Location>(`${this.locationUrl}/`, location);
   }
 }

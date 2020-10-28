@@ -17,7 +17,7 @@
             </div>
             <div *ngIf="character.current_location">
                 Last known location:
-                <a routerLink="location/{{character.current_location_details.name}}">
+                <a routerLink="/location/{{character.current_location_details.parent_location}}/{{character.current_location_details.name}}">
                     <strong> {{ character.current_location_details.name_full }} </strong>
                 </a>
             </div>

@@ -1,4 +1,3 @@
-import { Encounter } from "./encounter";
 import { Image } from "./image";
 
 export interface Character{

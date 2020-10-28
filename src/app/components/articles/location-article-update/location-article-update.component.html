@@ -1,0 +1,32 @@
+<div class="main">
+    <article class="mb-5">
+        <!-- Heading -->
+        <div *ngIf="formState===constants.updateState && model; else createState">
+            <a routerLink="..">
+                <i class="btn btn-outline-secondary icon fa fa-times float-right" id="article"></i>
+            </a>
+            <h2 class="text-center">
+                Updating Location {{ model.name }}
+            </h2>
+        </div>
+        
+        <ng-template #createState>
+            <a routerLink="">
+                <i class="btn btn-outline-secondary icon fa fa-times float-right" id="article"></i>
+            </a>
+            <h2 class="text-center">
+                Adding a new Location
+            </h2>
+        </ng-template>
+
+
+        <!-- Form -->
+        <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+        </form>
+
+    </article>
+    <!-- Spinner while loading -->
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

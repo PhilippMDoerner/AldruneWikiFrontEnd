@@ -34,6 +34,8 @@ import { GroupByPipe, GroupByFirstLetterPipe } from "src/app/utils/pipes/groupOb
 import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
 import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
+import { LocationArticleUpdateComponent } from './components/articles/location-article-update/location-article-update.component';
+import { LocationAccordionComponent } from './components/utility/location-accordion/location-accordion.component';
 
 @NgModule({
   declarations: [
@@ -60,7 +62,9 @@ import { ItemArticleUpdateComponent } from './components/articles/item-article-u
     GroupByFirstLetterPipe,
     CreatureArticleUpdateComponent,
     DiaryentryArticleUpdateComponent,
-    ItemArticleUpdateComponent
+    ItemArticleUpdateComponent,
+    LocationArticleUpdateComponent,
+    LocationAccordionComponent
   ],
   imports: [
     BrowserModule,

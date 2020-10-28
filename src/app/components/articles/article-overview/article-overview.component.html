@@ -73,8 +73,9 @@
                     *ngFor="let item of itemLetterEntries.value"
                     [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                     >
-                        <a routerLink="{{item.name}}"> {{item.name_full}} </a>
-                    </li>
+                    <a *ngIf="item.parent_location_name" routerLink="{{item.parent_location_name}}/{{item.name}}"> {{item.name_full}} </a>
+                    <a *ngIf="!item.parent_location_name" routerLink="{{item.name}}"> {{item.name_full}} </a>
+                </li>
                 </ul>
             </div>
         </div>

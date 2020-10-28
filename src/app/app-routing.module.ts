@@ -14,6 +14,7 @@ import { NotFoundComponent } from "src/app/components/not-found/not-found.compon
 import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
 import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
+import { LocationArticleUpdateComponent } from './components/articles/location-article-update/location-article-update.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -23,7 +24,11 @@ const routes: Routes = [
   {path: "character/:name/update", component: CharacterArticleUpdateComponent},
   
   {path: "location", component: ArticleOverviewComponent},
-  {path: "location/", component: LocationArticleComponent},
+  {path: "location/create", component: LocationArticleUpdateComponent},
+  {path: "location/:name", component: LocationArticleComponent},
+  {path: "location/:name/update", component: LocationArticleUpdateComponent},
+  {path: "location/:parent_name/:name", component: LocationArticleComponent},
+  {path: "location/:parent_name/:name/update", component: LocationArticleUpdateComponent},
 
   {path: "diaryentry", component: ArticleOverviewComponent},
   {path: "diaryentry/create", component: DiaryentryArticleUpdateComponent},

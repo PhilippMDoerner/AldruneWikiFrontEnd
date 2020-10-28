@@ -1,0 +1,35 @@
+<ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)">
+    <ngb-panel id="static-{{i}}" *ngFor="let location of sublocations; let i = index">
+        <!-- Header -->
+        <ng-template ngbPanelTitle class="button-container">
+            <span class="location-title"> 
+                <a routerLink="/location/{{location.parent_location_name}}/{{location.name}}"> {{ location.name }} </a>
+            </span>
+            <i [ngClass]="{
+                'fa float-right icon': true,
+                'fa-plus': !panelIsOpen(i),
+                'fa-minus': panelIsOpen(i)}"></i>
+        </ng-template>
+        <!-- Body -->
+        <ng-template ngbPanelContent>
+            <div class="location-character mb-4" *ngIf="location.characters.length > 0">
+                <h5 class="mr-4"> Characters: </h5>
+                <div class="d-flex align-items-center flex-wrap">
+                    <span class="badge badge-secondary mr-2 p-2 mb-1" *ngFor="let character of location.characters">
+                        <a routerLink="/character/{{character.name}}">{{ character.name }}</a>
+                    </span>
+                </div>
+            </div>
+            <!-- Description -->
+            <div class="mb-1">
+                <app-textfield 
+                [initialText]="location.description"
+                [heading]="location.name"
+                (updateText)="onSublocationUpdate($event, i)"
+                ></app-textfield>
+            </div>        
+        </ng-template>
+
+    </ngb-panel>
+</ngb-accordion>
+  
