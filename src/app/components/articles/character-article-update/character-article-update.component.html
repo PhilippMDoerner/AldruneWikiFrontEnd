@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="locations && organizations; else loading" class="mb-5">
+    <article class="mb-5">
         <!-- Heading -->
         <div *ngIf="formState===constants.updateState && model; else createState">
             <a routerLink="/character/{{model.name}}">

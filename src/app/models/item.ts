@@ -1,13 +1,13 @@
 import { Image } from './image';
 
 export interface Item    {
-    "creation_datetime": string,
-    "update_datetime": string,
+    "creation_datetime"?: string,
+    "update_datetime"?: string,
     "name": string,
     "description": string,
     "owner": number,
-    "owner_details": itemCharacter,
-    "images": Image[],
+    "owner_details"?: itemCharacter,
+    "images"?: Image[],
     "pk": number
 }
 

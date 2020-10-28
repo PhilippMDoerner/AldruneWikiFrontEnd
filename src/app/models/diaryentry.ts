@@ -1,14 +1,14 @@
 import { Session } from "src/app/models/session";
 
 export interface DiaryEntry{
-    "creation_datetime": string,
-    "update_datetime": string,
+    "creation_datetime"?: string,
+    "update_datetime"?: string,
     "title": string,
     "entry": string,
     "author": number,
-    "author_details": diaryEntryUser
+    "author_details"?: diaryEntryUser
     "session": number
-    "session_details": Session,
+    "session_details"?: Session,
     "pk": number,
 }
 

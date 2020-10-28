@@ -6,8 +6,6 @@ import { FormlyFieldConfig } from "@ngx-formly/core";
 //models and constants
 import { Constants } from "src/app/app.constants";
 import { Character, EmptyFormCharacter } from "src/app/models/character";
-import { Location } from "src/app/models/location";
-import { Organization } from "src/app/models/organization";
 //services
 import { CharacterService } from "src/app/services/character/character.service";
 import { OrganizationService } from "src/app/services/organization/organization.service";
@@ -97,13 +95,7 @@ export class CharacterArticleUpdateComponent implements OnInit {
   ];
 
   private characterSubscription: Subscription;
-  private organizationSubscription: Subscription;
-  private locationSubscription: Subscription;
   private parameter_subscription: Subscription;
-
-  locations: Location[];
-  organizations: Organization[];
-
 
   constructor(
     private characterService: CharacterService,
@@ -111,7 +103,7 @@ export class CharacterArticleUpdateComponent implements OnInit {
     private organizationService: OrganizationService,
     private route: ActivatedRoute,
     private router: Router
-    ) { }
+  ) { }
 
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
@@ -126,14 +118,6 @@ export class CharacterArticleUpdateComponent implements OnInit {
     } else if (this.formState === this.constants.createState) {
       this.model = new EmptyFormCharacter();
     }
-
-    this.locationSubscription = this.locationService.getLocations().subscribe(locations => {
-      this.locations = locations;
-    }, error => this.router.navigateByUrl("error"));
-
-    this.organizationSubscription = this.organizationService.getOrganizations().subscribe(organizations => {
-      this.organizations = organizations;
-    }, error => this.router.navigateByUrl("error"));
   }
 
   onSubmit(model: any){
@@ -149,7 +133,5 @@ export class CharacterArticleUpdateComponent implements OnInit {
   ngOnDestroy(){
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.characterSubscription) this.characterSubscription.unsubscribe();
-    if (this.organizationSubscription) this.organizationSubscription.unsubscribe();
-    if (this.locationSubscription) this.locationSubscription.unsubscribe();
   }
 }

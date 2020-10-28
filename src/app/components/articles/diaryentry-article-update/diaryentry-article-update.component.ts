@@ -52,12 +52,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
   ];
 
   private diaryEntry_subscription: Subscription;
-  private user_subscription: Subscription;
-  private session_subscription: Subscription;
   private parameter_subscription: Subscription;
-
-  users: User[];
-  sessions: Session[];
 
   constructor(
     private userService: UserService,
@@ -83,14 +78,6 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
     } else if (this.formState === this.constants.createState) {
       this.model = new EmptyFormDiaryEntry();
     }
-
-    this.session_subscription = this.sessionService.getSessions().subscribe(sessions => {
-      this.sessions = sessions;
-    }, error => this.router.navigateByUrl("error"));
-
-    this.user_subscription = this.userService.getUsers().subscribe(users => {
-      this.users = users;
-    }, error => this.router.navigateByUrl("error"));
   }
 
   onSubmit(model: DiaryEntry){
@@ -105,8 +92,6 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
 
   ngOnDestroy(){
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
-    if (this.user_subscription) this.user_subscription.unsubscribe();
-    if (this.session_subscription) this.session_subscription.unsubscribe();
     if (this.diaryEntry_subscription) this.diaryEntry_subscription.unsubscribe();
   }
 }
