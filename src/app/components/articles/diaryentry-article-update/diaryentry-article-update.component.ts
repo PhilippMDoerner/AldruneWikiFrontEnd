@@ -10,7 +10,6 @@ import { User } from 'src/app/models/user';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UserService } from 'src/app/services/user.service';
-import { Observable } from 'tinymce';
 
 @Component({
   selector: 'app-diaryentry-article-update',

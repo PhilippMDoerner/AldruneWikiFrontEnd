@@ -1,9 +1,13 @@
+import { Image } from './image';
+
 export interface Item    {
     "creation_datetime": string,
     "update_datetime": string,
     "name": string,
     "description": string,
-    "owner": itemCharacter
+    "owner": number,
+    "owner_details": itemCharacter,
+    "images": Image[],
     "pk": number
 }
 
@@ -12,9 +16,9 @@ interface itemCharacter{
     "pk": number
 }
 
-export interface SimpleItem{
-    "name": string,
-    "description": string,
-    "owner": number,
-    "pk": number
+export class EmptyFormItem{
+    "name": string = null;
+    "description": string = null;
+    "owner": number = null;
+    "pk": number = null;
 }
