@@ -5,6 +5,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { Item, EmptyFormItem } from 'src/app/models/item';
+import { CharacterService } from 'src/app/services/character/character.service';
 import { ItemService } from 'src/app/services/item/item.service';
 import { OverviewService } from 'src/app/services/overview.service';
 
@@ -14,12 +15,15 @@ import { OverviewService } from 'src/app/services/overview.service';
   styleUrls: ['./item-article-update.component.scss']
 })
 export class ItemArticleUpdateComponent implements OnInit {
+  constants: any = Constants;
 
   private item_subscription: Subscription;
   private parameter_subscription: Subscription;
+  private character_subscription: Subscription;
 
-  constants: any = Constants;
+  isForAssociatedObjectCreation: boolean;
   formState: string;
+
   form = new FormGroup({});
   model: Item | EmptyFormItem;
   fields: FormlyFieldConfig[] = [
@@ -37,32 +41,37 @@ export class ItemArticleUpdateComponent implements OnInit {
         label: "Owner",
         labelProp: "name",
         valueProp: "pk",
-        options: this.characterService.getOverviewItems('character'),
+        options: this.selectOptionService.getOverviewItems('character'),
       }
     },
   ];
 
   constructor(
     private itemService: ItemService,
-    private characterService: OverviewService,
+    private selectOptionService: OverviewService,
+    private characterService: CharacterService,
     private router: Router,
     private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
+    const itemName: string = this.route.snapshot.params.name;
+    const itemOwnerName: string = this.route.snapshot.params.character_name;
+    this.isForAssociatedObjectCreation = itemOwnerName && this.formState === this.constants.createState;
 
     if (this.formState === this.constants.updateState){
-      this.parameter_subscription = this.route.params.subscribe(params => {
-        const itemName: string = params['name'];
-  
-        this.item_subscription = this.itemService.getItem(itemName).subscribe(item => {
-          this.model = item;
-        }, error =>{ this.router.navigateByUrl("error");});
+      this.item_subscription = this.itemService.getItem(itemName).subscribe(item => {
+        this.model = item;
+      });
+    } else if (this.isForAssociatedObjectCreation){
+      this.character_subscription = this.characterService.getCharacter(itemOwnerName).subscribe(itemOwner => {
+        this.model = new EmptyFormItem();
+        this.model.owner = itemOwner.pk;
       });
     } else if (this.formState === this.constants.createState) {
       this.model = new EmptyFormItem();
-    }
+    } 
   }
 
   onSubmit(model: Item){
@@ -78,5 +87,6 @@ export class ItemArticleUpdateComponent implements OnInit {
   ngOnDestroy(){
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.item_subscription) this.item_subscription.unsubscribe();
+    if (this.character_subscription) this.character_subscription.unsubscribe();
   }
 }

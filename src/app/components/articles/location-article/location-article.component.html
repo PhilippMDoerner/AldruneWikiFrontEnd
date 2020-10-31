@@ -28,8 +28,8 @@
         </div>
 
         <!-- Characters of Interest -->
-        <div class="mb-3">
-            <h5>Characters of Interest</h5>
+        <div class="mb-4">
+            <h4>Characters of Interest</h4>
             <ul>
                 <li
                 *ngFor="let character of location.characters">
@@ -41,7 +41,7 @@
         </div>
 
         <!-- Locations of Interest -->
-        <h4>Locations of Interest <i class="fa fa-plus icon ml-1" (click)="addSublocation()"></i></h4>
+        <h4>Locations of Interest <i class="fa fa-plus icon ml-1" routerLink="create"></i></h4>
         <div class="encounter-list mb-5 mt-3">
             <app-location-accordion [sublocations]="location.sublocations"></app-location-accordion>
         </div>

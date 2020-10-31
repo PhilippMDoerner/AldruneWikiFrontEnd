@@ -23,6 +23,10 @@ export class LocationService {
     return this.http.get<Location>(url);
   }
 
+  getLocationByPk(location_pk): Observable<Location>{
+    return this.http.get<Location>(`${this.locationUrl}/pk/${location_pk}`);
+  }
+
   getLocationsFormList(): Observable<{label: string, value: characterLocation}[]>{
     const locationObs = this.getLocations();
     return locationObs.pipe(

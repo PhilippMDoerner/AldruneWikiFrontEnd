@@ -25,9 +25,8 @@ const routes: Routes = [
   
   {path: "location", component: ArticleOverviewComponent},
   {path: "location/create", component: LocationArticleUpdateComponent},
-  {path: "location/:name", component: LocationArticleComponent},
-  {path: "location/:name/update", component: LocationArticleUpdateComponent},
   {path: "location/:parent_name/:name", component: LocationArticleComponent},
+  {path: "location/:parent_name/:name/create", component: LocationArticleUpdateComponent},
   {path: "location/:parent_name/:name/update", component: LocationArticleUpdateComponent},
 
   {path: "diaryentry", component: ArticleOverviewComponent},
@@ -45,6 +44,7 @@ const routes: Routes = [
   
   {path: "item", component: ArticleOverviewComponent},
   {path: "item/create", component: ItemArticleUpdateComponent},
+  {path: "item/:character_name/create", component: ItemArticleUpdateComponent},
   {path: "item/:name", component: ItemArticleComponent},
   {path: "item/:name/update", component: ItemArticleUpdateComponent},
   

@@ -39,7 +39,7 @@
         </div>
 
         <div class="mb-5">
-            <h4>Items of Note <i class="fa fa-plus icon ml-1" (click)="addItem()"></i></h4>
+            <h4>Items of Note <i class="fa fa-plus icon ml-1" routerLink="/item/{{character.name}}/create"></i></h4>
             <ul>
                 <li *ngFor="let item of character.items">
                     <a routerLink="/item/{{item.name}}">{{ item.name }}</a>

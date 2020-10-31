@@ -18,9 +18,13 @@ export class LocationArticleUpdateComponent implements OnInit {
 
   private location_subscription: Subscription;
   private parameter_subscription: Subscription;
+  private parent_location_subscription: Subscription;
 
   constants: any = Constants;
+
   formState: string;
+  isForAssociatedObjectCreation: boolean;
+
   form = new FormGroup({});
   model: Location | EmptyFormLocation;
   fields: FormlyFieldConfig[] = [
@@ -52,17 +56,20 @@ export class LocationArticleUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
+    const locationName: string = this.route.snapshot.params.name;
+    const parentLocationName: string = this.route.snapshot.params.parent_name;
+    this.isForAssociatedObjectCreation = locationName && parentLocationName && this.formState === this.constants.createState;
 
     if (this.formState === this.constants.updateState){
-      this.parameter_subscription = this.route.params.subscribe(params => {
-        const locationName: string = params['name'];
-        const parentLocationName: string = params['parent_name'] ? params['parent_name'] : "None";
-  
         this.location_subscription = this.locationService.getLocation(parentLocationName, locationName).subscribe(location => {
           this.model = location;
-        }, error =>{ this.router.navigateByUrl("error");});
       });
-    } else if (this.formState === this.constants.createState) {
+    } else if (this.isForAssociatedObjectCreation) {
+      this.parent_location_subscription = this.locationService.getLocation(parentLocationName, locationName).subscribe(location => {
+        this.model = new EmptyFormLocation();
+        this.model.parent_location = location.pk;
+      });
+    } else if (this.formState === this.constants.createState){
       this.model = new EmptyFormLocation();
     }
   }
@@ -72,13 +79,27 @@ export class LocationArticleUpdateComponent implements OnInit {
     const responseObservable: any =  isFormInUpdateState ? this.locationService.updateLocation(model) : this.locationService.createLocation(model);
 
     responseObservable.subscribe(response => {
-      console.log(response);
-      this.router.navigateByUrl(`/location`);
+      this.router.navigateByUrl(this.getRedirectUrl());
     }, error => console.log(error));
   }
 
+  getRedirectUrl(){
+    if (this.formState === this.constants.updateState){
+      return `..`;
+    } else if(this.isForAssociatedObjectCreation){
+      const newLocationParentName: string = this.route.snapshot.params.name;
+      return `/location/${newLocationParentName}/${this.model.name}`;
+    } else {
+      return "/location";
+    }
+  }
+
   ngOnDestroy(){
+    //TODO: Replace this form of unsubscription by using "pipe" on Observable above and using the first() 
+    // method (see https://stackoverflow.com/questions/40019177/immediately-unsubscribing-from-rxjs-observable for reference)
+    // Do so for all views
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.location_subscription) this.location_subscription.unsubscribe();
+    if (this.parent_location_subscription) this.parent_location_subscription.unsubscribe();
   }
 }
