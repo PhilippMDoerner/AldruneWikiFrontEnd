@@ -21,7 +21,7 @@ export class ImageGalleryComponent implements OnInit {
   @Input() article_type: string;
   @Input() article_pk: number;
   visibleImageIndex: number = 0;
-  activeModalState: string;
+  activeModalState: string = null;
 
   model: Image;
   form: FormGroup = new FormGroup({});
@@ -38,13 +38,6 @@ export class ImageGalleryComponent implements OnInit {
         label: "Name",
         type: "text"
       },
-    },
-    {
-      key: "image",
-      type: "file",
-      templateOptions: {
-        change: (field, $event) => this.onFileSelected($event)
-      }
     },
     {
       key: "character_article",
@@ -120,6 +113,16 @@ export class ImageGalleryComponent implements OnInit {
     },
   ]
 
+  imageFileField: FormlyFieldConfig[] = [
+    {
+      key: "image",
+      type: "file",
+      templateOptions: {
+        change: (field, $event) => this.onFileSelected($event)
+      },
+    },
+  ]
+
 
 
   constructor(private modalService: NgbModal, private imageUploadService: ImageUploadService) { }
@@ -158,43 +161,49 @@ export class ImageGalleryComponent implements OnInit {
     return this.images[this.visibleImageIndex];
   }
 
+  resetImageModel(){
+    this.model = new EmptyImage();
+  }
+
 
   // Update Image
-  showUpdateModal(content){
-    this.activeModalState = this.constants.updateState;
-    this.model = deepCopy(this.images[this.visibleImageIndex]);
-    this.modalService.open(content).result.then( 
-      (closeSignal) => {this.updateImage()},(dismissSignal) => {}
-    );
-  }
+  // showUpdateModal(content){
+  //   this.activeModalState = this.constants.updateState;
+  //   this.model = deepCopy(this.images[this.visibleImageIndex]);
+  //   this.modalService.open(content).result.then( 
+  //     (closeSignal) => {this.updateImage()},
+  //     (dismissSignal) => {}
+  //   );
+  // }
 
-  updateImage(){
-    this.imageUploadService.updateImage(this.model).subscribe(updatedImage => {
-      console.log(updatedImage);
-      this.images[this.visibleImageIndex] = updatedImage;
-    }, error => console.log(error));
-  }
+  // updateImage(){
+  //   this.imageUploadService.updateImage(this.model).subscribe(updatedImage => {
+  //     console.log(updatedImage);
+  //     this.images[this.visibleImageIndex] = updatedImage;
+  //     this.resetImageModel();
+  //   }, error => console.log(error));
+  // }
 
   // Create Image
   showCreateModal(content){
     this.activeModalState = this.constants.createState;
-    this.model = new EmptyImage();
+    this.resetImageModel();
+
     this.model.article_type = this.article_type;
     const article_type_pk_key = `${this.article_type}_article`;
     this.model[article_type_pk_key] = this.article_pk;
 
     this.modalService.open(content).result.then( 
-      (closeSignal) => {this.createImage()},(dismissSignal) => {}
+      (closeSignal) => this.createImage(),
+      (dismissSignal) => {}
     );
   }
 
   createImage(){
-    this.imageUploadService.postImage(this.model, this.formImageFile).subscribe( data => {
-      this.images.push(this.model);
-      this.model = new EmptyImage();
-    }, error => {
-      console.log(error);
-    })  
+    this.imageUploadService.postImage(this.model, this.formImageFile).subscribe(createdImage => {
+      this.images.push(createdImage);
+      this.resetImageModel();
+    }, error => console.log(error));  
   }
 
   onFileSelected(event) {
@@ -207,7 +216,8 @@ export class ImageGalleryComponent implements OnInit {
     
     this.activeModalState = this.constants.deleteState;
     this.modalService.open(content).result.then( 
-      (closeSignal) => {this.deleteCurrentMainImage()},(dismissSignal) => {}
+      (closeSignal) => this.deleteCurrentMainImage(),
+      (dismissSignal) => {}
     );  
   }
 

@@ -7,17 +7,16 @@
         <a [href]="image.image"
         *ngFor="let image of images; let i = index"
         (keydown)="changeMainImage($event)"
-        [ngClass]="{'main-image': i === visibleImageIndex, 
-                    'side-image': i !== visibleImageIndex}"
+        [ngClass]="{'main-image': i === visibleImageIndex, 'side-image': i !== visibleImageIndex}"
         >
             <img title="None" class="gallery-image" [src]="constants.wikiUrl + image.image" alt="">
         </a>
     
         <div class="edit-image-buttons">
             <i class="fa fa-plus-square-o fa-2x" aria-hidden="true" (click)="showCreateModal(requestModal)"></i>
-            <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" (click)="showUpdateModal(requestModal)"></i>
+            <!-- <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" (click)="showUpdateModal(requestModal)"></i> -->
             <i 
-            [ngClass]="{'fa fa-trash fa-2x': true, 'deactivated-icon': isLastImage()}"
+            [ngClass]="{'fa fa-trash fa-2x': true, 'd-none': isLastImage()}"
             aria-hidden="true"
             (click)="showDeleteModal(requestModal)"
             ></i>
@@ -35,7 +34,7 @@
             <div class="modal-header">  
                 <h5 class="modal-title">
                     <span *ngIf="activeModalState===constants.createState">Add</span>
-                    <span *ngIf="activeModalState===constants.updateState">Change</span>
+                    <!-- <span *ngIf="activeModalState===constants.updateState">Change</span> -->
                     Image
                 </h5>
                 <button type="button" class="close" (click)="di()">  
@@ -45,13 +44,11 @@
             <!-- Body -->
             <div class="modal-body">
 
-                <div *ngIf="activeModalState===constants.createState || activeModalState===constants.updateState">
+                <div *ngIf="activeModalState===constants.createState">
                     <form [formGroup]="form" (ngSubmit)="cl(constants.createSignal)" enctype="multipart/form-data">
                         <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-                        <!-- <div class="form-group">
-                            <label>Image</label>
-                            <input type="file" (change)="onFileSelected($event)" >
-                        </div> -->
+                        <formly-form [form]="form" [fields]="imageFileField" [model]="model"></formly-form>
+                        
                         <button type="submit" class="btn btn-outline-secondary">Submit</button>
                     </form>
                 </div>
@@ -63,7 +60,7 @@
                 <button type="button" class="btn btn-secondary" (click)="di(l)"> Cancel </button> 
                 <button type="button" *ngIf="activeModalState===constants.deleteState" class="btn btn-outline-danger" (click)="cl(constants.deleteSignal)"> Delete </button> 
                 <button type="button" *ngIf="activeModalState===constants.createState" class="btn btn-outline-success" (click)="cl(constants.createSignal)"> Save </button> 
-                <button type="button" *ngIf="activeModalState===constants.updateState" class="btn btn-outline-info" (click)="cl(constants.updateSignal)"> Update </button> 
+                <!-- <button type="button" *ngIf="activeModalState===constants.updateState" class="btn btn-outline-info" (click)="cl(constants.updateSignal)"> Update </button>  -->
             </div> 
     
         </div>  
