@@ -49,21 +49,6 @@ export class CharacterArticleComponent implements OnInit {
     })
   }
 
-  addItem(){
-    // TODO: Add way to add an item to a character on the fly
-    console.log("Summon a create item form!");
-  }
-
-  addEncounter(){
-    //TODO: Add way to add an encounter to a character on the fly
-    console.log("Summon a create Encounter form!");
-  }
-
-  onEncounterUpdate({updatedText, encounterIndex}){
-    //TODO: Implement actually sending an encounter update
-    console.log("Sending updated Encounter to Database");
-  }
-
   toggleDeleteRequest(){
     this.isArticleDeleteState = !this.isArticleDeleteState
   }

@@ -1,1 +1,53 @@
-<p>organization-article works!</p>
+<div class="main">
+    <article *ngIf="organization; else loading">
+        <!-- Heading -->
+        <a routerLink="update">
+            <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
+        </a>
+        <h1 class="text-center"> {{ organization.name }} </h1>
+        <div>
+            <div class="text-center subheading mb-1"> 
+                Leader: 
+                <a *ngIf="organization.leader; else Unknown" class="ml-1" routerLink="/character/{{organization.leader}}">
+                    {{ organization.leader }}
+                </a>
+                <ng-template #Unknown>Unknown</ng-template>
+            </div>
+            <div class="text-center mb-3 subheading"> 
+                Headquarters:
+                <a *ngIf="organization.headquarter_details; else Unknown" class="ml-1" routerLink="/location/{{organization.headquarter_details.name}}">
+                    {{ organization.headquarter_details.name_full }}
+                </a>
+            </div>
+        </div>
+
+
+        <!-- Image Gallery -->
+        <app-image-gallery
+        [article_type]="this.articleType"
+        [article_pk]="this.organization.pk"
+        [images]="this.organization.images"
+        ></app-image-gallery>
+
+        <!-- Description -->
+        <div class="mb-5">
+            <app-textfield 
+            [initialText]="organization.description"
+            [heading]="'Description'"
+            (updateText)="onDescriptionUpdate($event)"
+            ></app-textfield>
+        </div>
+
+        <div class="float-right">
+            <i *ngIf="!isArticleDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleDeleteRequest()"></i>
+            <div *ngIf="isArticleDeleteState" class="delete-request">
+                <span class="mr-3"> <strong>Delete this article?</strong> </span>  
+                <button class="btn btn-outline-danger float-right mr-2" (click)="deleteArticle(organization.pk)"> Yes </button>
+                <button class="btn btn-outline-secondary float-right" (click)="toggleDeleteRequest()"> No </button>
+            </div>
+        </div>
+
+        <a routerLink="/organization" class="btn btn-outline-secondary mr-1">Back to organizations</a>
+    </article>
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

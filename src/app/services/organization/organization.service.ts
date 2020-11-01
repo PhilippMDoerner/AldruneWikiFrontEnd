@@ -17,13 +17,23 @@ export class OrganizationService {
     return this.http.get<Organization[]>(this.organizationUrl);
   }
 
-  getListItems(): Observable<Organization[]>{
-    return this.getOrganizations();
+  getOrganization(organization: number | string): Observable<Organization>{
+    const url: string = (typeof organization === 'number') ? `${this.organizationUrl}/pk/${organization}` :  `${this.organizationUrl}/${organization}`;
+    return this.http.get<Organization>(url);
   }
 
-  getOrganization(organization: number | string): Observable<Organization>{
-    const url = (typeof organization === 'number') ? `${this.organizationUrl}/pk/${organization}` :  `${this.organizationUrl}/${organization}`;
-    return this.http.get<Organization>(url);
+  createOrganization(organization: Organization): Observable<Organization>{
+    return this.http.post<Organization>(`${this.organizationUrl}/`, organization);
+  }
+
+  updateOrganization(organization: Organization): Observable<Organization>{
+    const url: string = `${this.organizationUrl}/pk/${organization.pk}/`;
+    return this.http.put<Organization>(url, organization);
+  }
+
+  deleteOrganization(organization_pk){
+    const url: string = `${this.organizationUrl}/pk/${organization_pk}/`;
+    return this.http.delete<Organization>(url);
   }
 
   getOrganizationsFormList(): Observable<{label: string, value: string}[]>{

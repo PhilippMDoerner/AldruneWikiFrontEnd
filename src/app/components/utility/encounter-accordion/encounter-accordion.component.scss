@@ -4,11 +4,6 @@
     color: white;
     width: 100%;
     font-size: 18px;
-    border-bottom: dotted 2px gray;
-}
-
-.encounter-title:hover{
-    border-bottom: solid 2px gray;
 }
 
 .encounter-connections{
@@ -23,4 +18,56 @@
 
 .badge a:hover{
     color: darkblue !important;
+}
+
+.badge .icon{
+    transition: display 0.2s;
+    display: none;
+}
+
+.badge:hover .icon{
+    display: inline;
+}
+
+.encounter-connections .icon{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.encounter-connections:hover .icon{
+    opacity: 1;
+}
+
+.fa-check:hover{
+    color: green;
+}
+
+.fa-times:hover{
+    color: red;
+}
+
+.badge .fa-trash:hover{
+    color: red;
+}
+
+#encounter-delete{
+    background-color: #383d40 !important;
+}
+
+.panel-title .encounter-title, .panel-title .icon{
+    transition: color 0.2s;
+    color: white;
+}
+
+.panel-title:hover .encounter-title, .panel-title:hover .icon{
+    color: grey;
+}
+
+h4 .icon{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+h4:hover .icon{
+    opacity: 1;
 }

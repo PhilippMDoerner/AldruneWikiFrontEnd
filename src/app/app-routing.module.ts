@@ -15,6 +15,7 @@ import { CreatureArticleUpdateComponent } from './components/articles/creature-a
 import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
 import { LocationArticleUpdateComponent } from './components/articles/location-article-update/location-article-update.component';
+import { OrganizationArticleUpdateComponent } from './components/articles/organization-article-update/organization-article-update.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -40,7 +41,9 @@ const routes: Routes = [
   {path: "creature/:name/update", component: CreatureArticleUpdateComponent},
   
   {path: "organization", component: ArticleOverviewComponent},
-  {path: "organization/", component: OrganizationArticleComponent},
+  {path: "organization/create", component: OrganizationArticleUpdateComponent},
+  {path: "organization/:name", component: OrganizationArticleComponent},
+  {path: "organization/:name/update", component: OrganizationArticleUpdateComponent},
   
   {path: "item", component: ArticleOverviewComponent},
   {path: "item/create", component: ItemArticleUpdateComponent},

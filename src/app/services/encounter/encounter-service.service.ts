@@ -14,9 +14,7 @@ const httpOptions = {
 export class EncounterServiceService {
   encounterUrl: string = `${Constants.wikiApiUrl}/encounter`;
 
-  constructor(private http: HttpClient) { 
-  }
-
+  constructor(private http: HttpClient) {}
 
   getEncounters(): Observable<Encounter[]>{
     const url = `${this.encounterUrl}`;
@@ -28,18 +26,17 @@ export class EncounterServiceService {
     return this.http.get<Encounter>(url);  
   }
 
-  updateEncounter(encounter_pk: number): void{//: Observable<Encounter>{
-    const url = `${this.encounterUrl}/pk/${encounter_pk}`;
-    console.log("Update the Encounter");
+  updateEncounter(encounter: Encounter): Observable<Encounter>{
+    const url = `${this.encounterUrl}/pk/${encounter.pk}/`;
+    return this.http.put<Encounter>(url, encounter);
   }
 
-  createEncounter(encounter_pk: number): void{//: Observable<Encounter>{
-    const url = `${this.encounterUrl}/pk/${encounter_pk}`;
-    console.log("Create the Encounter");
+  createEncounter(encounter: Encounter): Observable<Encounter>{
+    return this.http.post<Encounter>(`${this.encounterUrl}/`, encounter);
   }
 
-  deleteEncounter(encounter_pk: number): void{//Observable<Encounter>{
+  deleteEncounter(encounter_pk: number): Observable<Encounter>{
     const url = `${this.encounterUrl}/pk/${encounter_pk}`;
-    console.log("Delete the Encounter");
+    return this.http.delete<Encounter>(url);
   }
 }

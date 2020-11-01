@@ -1,16 +1,21 @@
+import { Image } from './image';
+
 export interface Organization{
-    "creation_datetime": string,
-    "update_datetime": string,
+    "creation_datetime"?: string,
+    "update_datetime"?: string,
     "name": string,
-    "leader": organizationCharacter,
+    "leader": string,
     "description":string,
-    "headquarter": organizationLocation,
-    "members": organizationCharacter[],
-    'pk': number
+    "headquarter": number,
+    "headquarter_details"?: organizationLocation
+    "members"?: organizationCharacter[],
+    'pk'?: number,
+    "images"?: Image[],
 }
 
 interface organizationLocation{
     "name": string,
+    "name_full": string,
     "pk": number
 }
 
@@ -23,9 +28,9 @@ export interface OrganizationListEntry {
     "name": string
 }
 
-export interface SimpleOrganization{
-    "name": string,
-    "leader": string,
-    "description":string,
-    "headquarter": number,
+export class EmptyFormOrganization{
+    "name": string = null;
+    "leader": string = null;
+    "description":string = null;
+    "headquarter": number = null;
 }

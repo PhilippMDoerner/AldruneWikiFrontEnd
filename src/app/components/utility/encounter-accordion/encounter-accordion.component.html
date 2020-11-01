@@ -1,32 +1,80 @@
-<ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)">
-    <ngb-panel id="static-{{i}}" *ngFor="let encounter of encounters; let i = index">
-        
-        <ng-template ngbPanelTitle class="button-container">
-            <span class="encounter-title"> {{ encounter.name }}</span>
-            <i [ngClass]="{
-                'fa float-right icon': true,
-                'fa-plus': !panelIsOpen(i),
-                'fa-minus': panelIsOpen(i)}"></i>
-        </ng-template>
-        
-        <ng-template ngbPanelContent>
-            <div class="encounter-connections mb-3">
-                <h5 class="mr-4"> Characters </h5>
-                <div>
-                    <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections">
-                        <a routerLink="/character/{{connection.character_name}}">{{ connection.character_name }}</a>
-                    </span>
-                </div>
-            </div>
-            <div class="mb-1">
-                <app-textfield 
-                [initialText]="encounter.description"
-                [heading]="encounter.name"
-                (updateText)="onEncounterUpdate($event, i)"
-                ></app-textfield>
-            </div>        
-        </ng-template>
+<h4>Encounters <i class="fa fa-plus icon ml-1" (click)="toggleEncounterCreateState()"></i></h4>
+<div class="encounter-list mb-5 mt-3" *ngIf="!isEncounterCreateState && !isEncounterUpdateState; else EncounterForm">
+    <ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)">
+        <ngb-panel id="static-{{i}}" *ngFor="let encounter of encounters; let i = index">
 
-    </ngb-panel>
-</ngb-accordion>
-  
+            <!-- Panel Title -->
+            <ng-template ngbPanelTitle>
+                <div class="d-flex align-items-center justify-content-between panel-title">
+                    <span class="encounter-title" [innerHTML]="encounter.name"></span>
+                    <i [ngClass]="{
+                        'fa float-right icon': true,
+                        'fa-plus': !panelIsOpen(i),
+                        'fa-minus': panelIsOpen(i)
+                    }">
+                    </i>
+                </div>
+            </ng-template>
+
+            <!-- Panel Content -->
+            <ng-template ngbPanelContent>
+                
+                <i class="btn btn-outline-secondary icon fa fa-pencil float-right" (click)="fullEditEncounter(encounter)"></i>
+                <!-- Encounter Connections -->
+                <div class="encounter-connections mb-3">
+                    <h5 class="mr-4"> Characters </h5>
+                    <div>
+                        <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections">
+                            <a routerLink="/character/{{connection.character_details.name}}">{{ connection.character_details.name }}</a>
+                            <i class="fa fa-trash icon ml-1" (click)="deleteEncounterConnection(encounter, connection)"></i>
+                        </span>
+                        <form [ngClass]="{'d-none':!inEncounterConnectionCreationState, 'd-inline-block': inEncounterConnectionCreationState}">
+                            <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
+                                <option *ngFor="let character of characters" value="{{character.pk}}">{{character.name}}</option>
+                            </select>
+                        </form>
+
+                        <i [ngClass]="{'fa icon mx-2': true, 'fa-plus': !inEncounterConnectionCreationState, 'fa-times': inEncounterConnectionCreationState}"
+                        (click)="toggleEncounterConnectionCreationState()"></i>
+                        <i [ngClass]="{'fa icon': true, 'fa-check': inEncounterConnectionCreationState}" (click)="createEncounterConnection(encounter)"></i>
+                    </div>
+                </div>
+
+                <!-- Encounter -->
+                <div class="mb-1">
+                    <app-textfield 
+                    [initialText]="encounter.description"
+                    [heading]="encounter.name"
+                    (updateText)="onEncounterUpdate($event, i)"
+                    ></app-textfield>
+                </div>
+
+                <!-- Encounter Footer -->
+                <div class="float-right mb-3">
+                    <i *ngIf="!isEncounterDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleEncounterDeleteState()"></i>
+                    <div *ngIf="isEncounterDeleteState" class="delete-request" id="encounter-delete">
+                        <span class="mr-3"> <strong>Delete this encounter?</strong> </span>  
+                        <button class="btn btn-outline-danger float-right mr-2" (click)="deleteEncounter(encounter, i)"> Yes </button>
+                        <button class="btn btn-outline-secondary float-right" (click)="toggleEncounterDeleteState()"> No </button>
+                    </div>
+                </div>    
+    
+            </ng-template>
+
+        </ngb-panel>
+    </ngb-accordion>
+</div>
+
+<!-- Form to create Encounters -->
+<ng-template #EncounterForm>
+    <div class="my-3 py-3 px-4 card">
+        <form [formGroup]="form" (ngSubmit)="createEncounter(model)" *ngIf="isEncounterCreateState && !isEncounterUpdateState">
+            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+        </form>         
+        <form [formGroup]="form" (ngSubmit)="updateEncounter(model)" *ngIf="!isEncounterCreateState && isEncounterUpdateState">
+            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+        </form>    
+    </div>
+</ng-template>

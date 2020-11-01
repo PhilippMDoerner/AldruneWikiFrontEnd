@@ -3,11 +3,11 @@
         <a routerLink="/character/{{character.name}}/update">
             <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
         </a>
-        <h1 class="text-center">
+        <h1 class="text-center subheading">
             <span *ngIf="character.title">{{ character.title }} - </span>
             {{ character.name }}
         </h1>
-        <div class="text-center mb-3">
+        <div class="text-center mb-3 subheading">
             <div>
                 <span *ngIf="character.gender !=='Other'">{{ character.gender }}</span>
                 {{ character.race }}
@@ -47,10 +47,8 @@
             </ul>
         </div>
 
-        <h4>Encounters <i class="fa fa-plus icon ml-1" (click)="addEncounter()"></i></h4>
-        <div class="encounter-list mb-5 mt-3">
-            <app-encounter-accordion [encounters]="character.encounters"></app-encounter-accordion>
-        </div>
+
+        <app-encounter-accordion [encounters]="character.encounters" [articleCharacter]="character"></app-encounter-accordion>
 
         <div class="float-right">
             <i *ngIf="!isArticleDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleDeleteRequest()"></i>

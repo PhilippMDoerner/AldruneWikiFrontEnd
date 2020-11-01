@@ -36,12 +36,14 @@
             <div *ngFor="let characterLetterEntries of listItems | groupByFirstLetter: 'name'">
                 <h5 [ngClass]="{'d-none': filter.value}"> {{ characterLetterEntries.key }} </h5>
                 <ul>
-                    <li 
-                    *ngFor="let characterEntry of characterLetterEntries.value"
-                    [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
-                    >
-                        <a routerLink="{{characterEntry.name}}"> {{characterEntry.name_full}} </a>
-                    </li>
+                    <span *ngFor="let characterEntry of characterLetterEntries.value">
+                        <li 
+                        *ngIf="!characterEntry.player_character"
+                        [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
+                        >
+                            <a routerLink="{{characterEntry.name}}"> {{characterEntry.name_full}} </a>
+                        </li>
+                    </span>
                 </ul>
             </div>
         </div>
@@ -81,7 +83,7 @@
         </div>
         
         <!-- Item/Creature Overview -->
-        <div *ngIf="overviewType===itemOverview || overviewType===creatureOverview">
+        <div *ngIf="overviewType===itemOverview || overviewType===creatureOverview || overviewType===organizationOverview">
             <h4 *ngIf="overviewType===itemOverview"> Item </h4>
             <h4 *ngIf="overviewType===creatureOverview"> Creature </h4>
 

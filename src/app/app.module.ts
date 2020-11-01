@@ -36,6 +36,8 @@ import { DiaryentryArticleUpdateComponent } from './components/articles/diaryent
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
 import { LocationArticleUpdateComponent } from './components/articles/location-article-update/location-article-update.component';
 import { LocationAccordionComponent } from './components/utility/location-accordion/location-accordion.component';
+import { OrganizationArticleUpdateComponent } from './components/articles/organization-article-update/organization-article-update.component';
+import { FormlyComponent } from './components/utility/formly/formly.component';
 
 @NgModule({
   declarations: [
@@ -64,7 +66,9 @@ import { LocationAccordionComponent } from './components/utility/location-accord
     DiaryentryArticleUpdateComponent,
     ItemArticleUpdateComponent,
     LocationArticleUpdateComponent,
-    LocationAccordionComponent
+    LocationAccordionComponent,
+    OrganizationArticleUpdateComponent,
+    FormlyComponent
   ],
   imports: [
     BrowserModule,
@@ -77,9 +81,9 @@ import { LocationAccordionComponent } from './components/utility/location-accord
     FormlyModule.forRoot({
         types: [
           { name: "file", component: FormlyFieldFile, wrappers: ['form-field'] },
+          { name: "tinymce", component: FormlyComponent}
         ]
-      }
-    ), //{ extras: { lazyRender: true } }
+      }), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,
     CommonModule,
   ],
