@@ -1,0 +1,30 @@
+.mytable>tbody>tr>td, .mytable>tbody>tr>th, .mytable>tfoot>tr>td, .mytable>tfoot>tr>th, .mytable>thead>tr>td, .mytable>thead>tr>th {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+h4 .icon{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+h4:hover .icon{
+    opacity: 1;
+}
+
+.bg-warning{
+    background-color: rgba(255, 200, 36, 0.30) !important;
+}
+
+.bg-success{
+    background-color:rgba(147, 196, 125, 0.30) !important;
+}
+
+.bg-danger{
+    background-color: rgba(206, 10, 10, 0.30) !important;
+}
+
+.form-control{
+    max-width: 20%;
+    min-width: 8rem;
+}

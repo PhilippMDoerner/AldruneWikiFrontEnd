@@ -30,7 +30,7 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { FormlyFieldFile } from './components/utility/file-upload/file-upload.component';
 import { FileValueAccessor } from './components/utility/file-upload/file-value-accesor';
 
-import { GroupByPipe, GroupByFirstLetterPipe } from "src/app/utils/pipes/groupObjects.pipe";
+import { GroupByPipe, GroupByFirstLetterPipe, GroupByQuestTakerPipe } from "src/app/utils/pipes/groupObjects.pipe";
 import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
 import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
@@ -38,6 +38,9 @@ import { LocationArticleUpdateComponent } from './components/articles/location-a
 import { LocationAccordionComponent } from './components/utility/location-accordion/location-accordion.component';
 import { OrganizationArticleUpdateComponent } from './components/articles/organization-article-update/organization-article-update.component';
 import { FormlyComponent } from './components/utility/formly/formly.component';
+import { QuestArticleComponent } from './components/articles/quest-article/quest-article.component';
+import { QuestArticleUpdateComponent } from './components/articles/quest-article-update/quest-article-update.component';
+import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
 
 @NgModule({
   declarations: [
@@ -62,13 +65,17 @@ import { FormlyComponent } from './components/utility/formly/formly.component';
     FileValueAccessor,
     GroupByPipe,
     GroupByFirstLetterPipe,
+    GroupByQuestTakerPipe,
     CreatureArticleUpdateComponent,
     DiaryentryArticleUpdateComponent,
     ItemArticleUpdateComponent,
     LocationArticleUpdateComponent,
     LocationAccordionComponent,
     OrganizationArticleUpdateComponent,
-    FormlyComponent
+    FormlyComponent,
+    QuestArticleComponent,
+    QuestArticleUpdateComponent,
+    QuestOverviewComponent
   ],
   imports: [
     BrowserModule,

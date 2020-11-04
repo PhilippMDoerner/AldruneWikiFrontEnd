@@ -16,6 +16,9 @@ import { DiaryentryArticleUpdateComponent } from './components/articles/diaryent
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
 import { LocationArticleUpdateComponent } from './components/articles/location-article-update/location-article-update.component';
 import { OrganizationArticleUpdateComponent } from './components/articles/organization-article-update/organization-article-update.component';
+import { QuestArticleComponent } from './components/articles/quest-article/quest-article.component';
+import { QuestArticleUpdateComponent } from './components/articles/quest-article-update/quest-article-update.component';
+import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -50,7 +53,12 @@ const routes: Routes = [
   {path: "item/:character_name/create", component: ItemArticleUpdateComponent},
   {path: "item/:name", component: ItemArticleComponent},
   {path: "item/:name/update", component: ItemArticleUpdateComponent},
-  
+
+  {path: "quest", component: QuestOverviewComponent},
+  {path: "quest/create", component: QuestArticleUpdateComponent},
+  {path: "quest/:name", component: QuestArticleComponent},
+  {path: "quest/:name/update", component: QuestArticleUpdateComponent},
+
   {path: "rules", component: RulesComponent},
   {path: "error", component: NotFoundComponent},
   {path: '**', component: NotFoundComponent}

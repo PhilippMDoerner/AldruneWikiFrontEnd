@@ -69,6 +69,4 @@ export class ArticleOverviewComponent implements OnInit {
   ngOnDestroy(){
     this.listItemSubscription.unsubscribe();
   }
-  
-
 }

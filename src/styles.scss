@@ -1,6 +1,9 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600");
 @import './app/custom_bootstrap.scss';
 
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+
 body {
     margin-top: 0.5rem;
     color: #ffffff;
@@ -159,8 +162,6 @@ body.is-preload #bg:before {
 	font-weight: bold !important;
 }
 
-/* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
 
 .icon{
 	color: white;
@@ -199,43 +200,43 @@ h2{
     letter-spacing: 0.5rem;
 }
 
-.flex1{
+.flex-1{
 	flex: 1;
 }
 
-.flex2{
+.flex-2{
 	flex: 2;
 }
 
-.flex3{
+.flex-3{
 	flex: 3;
 }
 
-.flex4{
+.flex-4{
 	flex: 4;
 }
 
-.flex5{
+.flex-5{
 	flex: 5;
 }
 
-.flex6{
+.flex-6{
 	flex: 6;
 }
 
-.flex7{
+.flex-7{
 	flex: 7;
 }
 
-.flex8{
+.flex-8{
 	flex: 8;
 }
 
-.flex9{
+.flex-9{
 	flex: 9;
 }
 
-.flex10{
+.flex-10{
 	flex: 10;
 }
 
