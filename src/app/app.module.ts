@@ -41,6 +41,7 @@ import { FormlyComponent } from './components/utility/formly/formly.component';
 import { QuestArticleComponent } from './components/articles/quest-article/quest-article.component';
 import { QuestArticleUpdateComponent } from './components/articles/quest-article-update/quest-article-update.component';
 import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
+import { SpellsComponent } from './components/articles/spells/spells.component';
 
 @NgModule({
   declarations: [
@@ -75,7 +76,8 @@ import { QuestOverviewComponent } from './components/articles/quest-overview/que
     FormlyComponent,
     QuestArticleComponent,
     QuestArticleUpdateComponent,
-    QuestOverviewComponent
+    QuestOverviewComponent,
+    SpellsComponent
   ],
   imports: [
     BrowserModule,

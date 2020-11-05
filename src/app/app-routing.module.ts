@@ -19,6 +19,7 @@ import { OrganizationArticleUpdateComponent } from './components/articles/organi
 import { QuestArticleComponent } from './components/articles/quest-article/quest-article.component';
 import { QuestArticleUpdateComponent } from './components/articles/quest-article-update/quest-article-update.component';
 import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
+import { SpellsComponent } from './components/articles/spells/spells.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -60,6 +61,7 @@ const routes: Routes = [
   {path: "quest/:name/update", component: QuestArticleUpdateComponent},
 
   {path: "rules", component: RulesComponent},
+  {path: "spells", component: SpellsComponent},
   {path: "error", component: NotFoundComponent},
   {path: '**', component: NotFoundComponent}
 ];

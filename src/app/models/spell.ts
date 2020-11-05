@@ -14,5 +14,5 @@ export interface Spell{
     "saving_throw": string,
     "damage": string,
     "description": string,
-    "classes": string
+    "classes": string[]
 }

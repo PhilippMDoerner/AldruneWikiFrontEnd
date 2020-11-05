@@ -1,0 +1,70 @@
+<div class="main">
+    <article>
+        <h1 class="text-center mb-3">Spells</h1>
+
+        <div class="card px-3 py-2 mb-3" *ngFor="let spell of spells; let i = index">
+            <!-- Heading -->
+            <div class="card-title pointer mb-0 d-flex justify-content-between align-items-center" (click)="togglePanel(i)">
+                <strong> 
+                    {{spell.name}}
+                    <span *ngIf="spell.concentration" class="ml-2">(C)</span>
+                    <span *ngIf="spell.ritual" class="ml-2">(R)</span>
+                    <div class="ml-4 d-inline">
+                        <span *ngFor="let class of spell.classes" class="badge badge-secondary mr-3">{{class}}</span>
+                    </div>
+                </strong>
+
+                <i [ngClass]="{'fa icon': true, 'fa-plus': panelIsOpen(i), 'fa-minus': !panelIsOpen(i)}"></i>
+            </div>
+            <div [ngbCollapse]="panelIsOpen(i)" class="mt-2">
+                <hr class="whiteline">
+
+                <!-- Spell Table -->
+                <table class="table table-dark table-striped mytable mb-0 pb-2">
+                    <!-- Column Definition -->
+                    <colgroup></colgroup>
+                    <colgroup></colgroup>
+                    <colgroup></colgroup>
+                    <tbody>
+                        <!-- First Heading Line -->
+                        <tr>
+                            <td><strong>SPELL LEVEL</strong></td>
+                            <td><strong>CASTING TIME</strong></td>
+                            <td><strong>RANGE/AREA</strong></td>
+                            <td><strong>COMPONENTS</strong></td>                
+                        </tr>
+                        <!-- First Content Line -->
+                        <tr>
+                            <td> {{spell.spell_level}} </td>
+                            <td> {{spell.casting_time}} </td>
+                            <td> {{spell.range}} </td>
+                            <td> {{spell.components}} </td>
+                        </tr>
+                        <!-- Second Heading Line -->
+                        <tr>
+                            <td><strong>DURATION</strong></td>
+                            <td><strong>SCHOOL</strong></td>
+                            <td><strong>ATTACK/SAVE</strong></td>
+                            <td><strong>DAMAGE/EFFECT</strong></td>
+                        </tr>
+                        <!-- Second Content Line -->
+                        <tr>
+                            <td>{{spell.duration}}</td>
+                            <td>{{spell.school}}</td>
+                            <td>{{spell.saving_throw}}</td>
+                            <td>{{spell.damage}}</td>
+                        </tr>
+                        <!-- Description -->
+                        <tr>
+                            <td colspan="4"><strong>DESCRIPTION</strong></td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" [innerHTML]="spell.description"></td>
+                        </tr>
+                    </tbody>
+                </table>    
+            </div>
+            
+        </div>
+    </article>
+</div>
