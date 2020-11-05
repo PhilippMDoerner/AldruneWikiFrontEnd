@@ -6,9 +6,7 @@ import { EmptyFormOrganization, Organization } from 'src/app/models/organization
 import { OrganizationService } from 'src/app/services/organization/organization.service';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { CharacterService } from 'src/app/services/character/character.service';
 import { OverviewService } from 'src/app/services/overview.service';
-import { LocationService } from 'src/app/services/location/location.service';
 
 @Component({
   selector: 'app-organization-article-update',

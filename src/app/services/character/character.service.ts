@@ -3,6 +3,7 @@ import { Constants } from "src/app/app.constants";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Character } from "src/app/models/character";
 import { Observable } from "rxjs";
+import { OverviewItem } from "src/app/models/overviewItem";
 
 const httpOptions = {
   headers: new HttpHeaders({"Content-Type": "application/json"}),
@@ -22,6 +23,11 @@ export class CharacterService {
   getCharacter(character: number | string): Observable<Character>{
     const url = (typeof character === 'number') ? `${this.characterUrl}/pk/${character}/` :  `${this.characterUrl}/${character}`;
     return this.http.get<Character>(url);
+  }
+
+  getPlayerCharacters(): Observable<OverviewItem[]>{
+    const url = `${Constants.wikiApiUrl}/playercharacters`;
+    return this.http.get<OverviewItem[]>(url);
   }
 
   deleteCharacter(character: Character): Observable<Character>{

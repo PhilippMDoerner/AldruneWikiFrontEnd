@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { Constants } from 'src/app/app.constants';
+import { Quest } from 'src/app/models/quest';
+import { QuestService } from 'src/app/services/quest.service';
 
 @Component({
   selector: 'app-quest-article',
@@ -6,10 +11,47 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./quest-article.component.scss']
 })
 export class QuestArticleComponent implements OnInit {
+  constants: any = Constants;
+  quest: Quest;
+  isArticleDeleteState: boolean = false;
+  articleType: string = 'quest';
 
-  constructor() { }
+  private quest_subscription: Subscription;
+  private parameter_subscription: Subscription;
+
+  constructor(
+    private questService: QuestService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
+    this.parameter_subscription = this.route.params.subscribe(params => {
+      const questName = params['name'];
+
+      this.quest_subscription = this.questService.getQuest(questName).subscribe(quest => {
+        this.quest = quest;
+      }, error =>{ this.router.navigateByUrl("error");});
+    });
   }
 
+  onDescriptionUpdate(updatedDescription){
+    const oldDescription = this.quest.description;
+    this.quest.description = updatedDescription;
+    this.questService.updateQuest(this.quest).subscribe(organization => {
+    }, error =>{
+      this.quest.description = oldDescription;
+      console.log(error);
+    })
+  }
+
+  toggleDeleteRequest(){
+    this.isArticleDeleteState = !this.isArticleDeleteState
+  }
+
+  deleteArticle(){
+      this.questService.deleteQuest(this.quest.pk).subscribe(response => {
+        this.router.navigateByUrl("/quest")
+      }, error => console.log(error));
+  }
 }

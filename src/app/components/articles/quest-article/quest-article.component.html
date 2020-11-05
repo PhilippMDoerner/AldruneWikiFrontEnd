@@ -1,1 +1,48 @@
-<p>quest-article works!</p>
+<div class="main">
+    <article *ngIf="quest; else loading">
+        <!-- Heading -->
+        <a routerLink="update">
+            <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
+        </a>
+        <h1 class="text-center"> {{ quest.name }} </h1>
+        <div class="my-4">
+            <div class="subheading d-flex"> 
+                <span class="w-25">Status:</span>
+                 {{ quest.status }}
+            </div>
+            <div class="subheading d-flex">
+                <div class="w-25">Start - End:</div>
+                <div>
+                    {{ quest.start_session_details.name }} - 
+                    <span *ngIf="quest.end_session_details; else Ongoing"> {{ quest.end_session_details.name }} </span>
+                    <ng-template #Ongoing class="d-inline">Ongoing</ng-template>
+                </div>
+            </div>
+            <div class="subheading d-flex align-items-center"> 
+                <span class="w-25">Quest Giver:</span>
+                <a href="/character/{{quest.giver_details.name}}">{{ quest.giver_details.name }}</a>
+            </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-5">
+            <app-textfield 
+            [initialText]="quest.description"
+            [heading]="'Description'"
+            (updateText)="onDescriptionUpdate($event)"
+            ></app-textfield>
+        </div>
+
+        <div class="float-right">
+            <i *ngIf="!isArticleDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleDeleteRequest()"></i>
+            <div *ngIf="isArticleDeleteState" class="delete-request">
+                <span class="mr-3"> <strong>Delete this article?</strong> </span>  
+                <button class="btn btn-outline-danger float-right mr-2" (click)="deleteArticle(quest.pk)"> Yes </button>
+                <button class="btn btn-outline-secondary float-right" (click)="toggleDeleteRequest()"> No </button>
+            </div>
+        </div>
+
+        <a routerLink="/quest" class="btn btn-outline-secondary mr-1">Back to Quest Overview</a>
+    </article>
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

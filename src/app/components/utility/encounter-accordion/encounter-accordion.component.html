@@ -20,10 +20,20 @@
             <ng-template ngbPanelContent>
                 
                 <i class="btn btn-outline-secondary icon fa fa-pencil float-right" (click)="fullEditEncounter(encounter)"></i>
+
+                <!-- Encounter -->
+                <div class="mb-1">
+                    <app-textfield 
+                    [initialText]="encounter.description"
+                    [heading]="encounter.name"
+                    (updateText)="onEncounterUpdate($event, i)"
+                    ></app-textfield>
+                </div>
+                <hr class="white-line">
                 <!-- Encounter Connections -->
-                <div class="encounter-connections mb-3">
-                    <h5 class="mr-4"> Characters </h5>
-                    <div>
+                <div class="encounter-connections d-inline-flex">
+                    <span class="mr-4 tag-label"> Characters: </span>
+                    <div class="d-inline-flex align-items-center flex-wrap">
                         <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections">
                             <a routerLink="/character/{{connection.character_details.name}}">{{ connection.character_details.name }}</a>
                             <i class="fa fa-trash icon ml-1" (click)="deleteEncounterConnection(encounter, connection)"></i>
@@ -40,15 +50,6 @@
                     </div>
                 </div>
 
-                <!-- Encounter -->
-                <div class="mb-1">
-                    <app-textfield 
-                    [initialText]="encounter.description"
-                    [heading]="encounter.name"
-                    (updateText)="onEncounterUpdate($event, i)"
-                    ></app-textfield>
-                </div>
-
                 <!-- Encounter Footer -->
                 <div class="float-right mb-3">
                     <i *ngIf="!isEncounterDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleEncounterDeleteState()"></i>
@@ -57,8 +58,8 @@
                         <button class="btn btn-outline-danger float-right mr-2" (click)="deleteEncounter(encounter, i)"> Yes </button>
                         <button class="btn btn-outline-secondary float-right" (click)="toggleEncounterDeleteState()"> No </button>
                     </div>
-                </div>    
-    
+                </div>
+
             </ng-template>
 
         </ngb-panel>
