@@ -45,6 +45,7 @@ import { SpellsComponent } from './components/articles/spells/spells.component';
 import { RecentlyUpdatedArticleComponent } from './components/articles/recently-updated-article/recently-updated-article.component';
 import { DeleteToggleComponent } from './components/utility/delete-toggle/delete-toggle.component';
 import { EditToggleComponent } from './components/utility/edit-toggle/edit-toggle.component';
+import { ColoredSidebarLegendComponent } from './components/utility/colored-sidebar-legend/colored-sidebar-legend.component';
 
 @NgModule({
   declarations: [
@@ -82,7 +83,8 @@ import { EditToggleComponent } from './components/utility/edit-toggle/edit-toggl
     SpellsComponent,
     RecentlyUpdatedArticleComponent,
     DeleteToggleComponent,
-    EditToggleComponent
+    EditToggleComponent,
+    ColoredSidebarLegendComponent,
   ],
   imports: [
     BrowserModule,

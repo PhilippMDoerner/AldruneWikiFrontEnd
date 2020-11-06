@@ -21,10 +21,8 @@ export class RecentlyUpdatedArticleComponent implements OnInit {
     })
   }
 
-  coloredSidebar(articleType: string): string{
-    const sidebarColorMapping: object = Constants.articleTypeSidebarColorMapping;
-    const sidebarColor: string = sidebarColorMapping[articleType];
-    return `sidebar ${sidebarColor}`;
+  sidebarColor(articleType: string): string{
+    return Constants.articleTypeSidebarColorMapping[articleType];
   }
 
   ngOnDestroy():void{

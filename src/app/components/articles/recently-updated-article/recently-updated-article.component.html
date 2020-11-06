@@ -1,47 +1,16 @@
 <div class="main">
-    <article>
+    <article *ngIf="articles; else loading">
         <!-- Heading -->
         <h1 class="text-center">Recently Updated</h1>
-        <div class="d-flex flex-row position-relative justify-content-around flex-wrap">
-            <div>
-                <div [ngClass]="coloredSidebar('character')"></div>
-                <div class="mx-3"> Character </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('creature')"></div>
-                <div class="mx-3"> Creature </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('diaryentry')"></div>
-                <div class="mx-3"> DiaryEntry </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('encounter')"></div>
-                <div class="mx-3"> Encounter </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('item')"></div>
-                <div class="mx-3"> Item </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('location')"></div>
-                <div class="mx-3"> Location </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('organization')"></div>
-                <div class="mx-3"> Organization </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('quest')"></div>
-                <div class="mx-3"> Quest </div>
-            </div>
-        </div>
+        <app-colored-sidebar-legend></app-colored-sidebar-legend>
 
         <!-- Article List -->
         <div class="my-3" *ngFor="let articleGroup of articles|groupBy: 'update_date'">
             <div class="mb-1">{{articleGroup.key|date}}</div>
-            <a routerLink="/{{article.url}}" *ngFor="let article of articleGroup.value" class="card flex-row align-items-center">
-                <div [ngClass]="coloredSidebar(article.article_type)"></div>
+            <a routerLink="/{{article.url}}" 
+               *ngFor="let article of articleGroup.value"
+               [ngClass]="'card flex-row align-items-center sidebar-border ' + sidebarColor(article.article_type)">
+               
                 <div class="d-flex flex-row align-items-center py-2 w-100">
                     <div class="mx-3 text-center flex-1"> <h5><strong>{{article.name}}</strong></h5></div>
                     <div class="flex-3 pr-3 font-size-16">{{article.description}}</div>
@@ -50,4 +19,5 @@
         </div>
 
     </article>
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

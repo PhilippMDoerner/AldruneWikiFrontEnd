@@ -1,5 +1,5 @@
 <div class="main">
-    <article>
+    <article *ngIf="spells; else loading">
         <h1 class="text-center mb-3">Spells</h1>
 
         <div class="card px-3 py-2 mb-3" *ngFor="let spell of spells; let i = index">
@@ -67,4 +67,5 @@
             
         </div>
     </article>
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
