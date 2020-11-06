@@ -21,6 +21,7 @@ import { QuestArticleUpdateComponent } from './components/articles/quest-article
 import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
 import { SpellsComponent } from './components/articles/spells/spells.component';
 import { RecentlyUpdatedArticleComponent } from './components/articles/recently-updated-article/recently-updated-article.component';
+import { SearchComponent } from './components/articles/search/search.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -64,6 +65,7 @@ const routes: Routes = [
   {path: "rules", component: RulesComponent},
   {path: "spells", component: SpellsComponent},
   {path: "recent-updates", component: RecentlyUpdatedArticleComponent},
+  {path: "search/:searchString", component: SearchComponent},
   {path: "error", component: NotFoundComponent},
   {path: '**', component: NotFoundComponent}
 ];

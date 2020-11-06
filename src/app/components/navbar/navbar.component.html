@@ -8,10 +8,10 @@
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <!-- Search Bar -->
-        <form class="input-group my-2 my-lg-0">
+        <form class="input-group my-2 my-lg-0" (submit)="search()">
             <div class="searchbar form-control">
                 <i class="fa fa-2x fa-search mr-2"></i>
-                <input class="search-input" type="search" placeholder="Search Articles..." aria-label="Search">
+                <input class="search-input" type="search" name="search" [(ngModel)]="searchString" placeholder="Search Articles..." aria-label="Search">
             </div>
         </form>
         <!-- Nav Items -->

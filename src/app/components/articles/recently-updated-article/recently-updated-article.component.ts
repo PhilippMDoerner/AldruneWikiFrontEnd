@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { RecentlyUpdatedArticle } from 'src/app/models/recentlyUpdatedArticle';
+import { Article } from 'src/app/models/recentlyUpdatedArticle';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { RecentlyUpdatedService } from 'src/app/services/recently-updated.servic
 })
 export class RecentlyUpdatedArticleComponent implements OnInit {
   article_subscription: Subscription;
-  articles: RecentlyUpdatedArticle[];
+  articles: Article[];
 
   constructor(private recentlyUpdatedArticleService: RecentlyUpdatedService) { }
 

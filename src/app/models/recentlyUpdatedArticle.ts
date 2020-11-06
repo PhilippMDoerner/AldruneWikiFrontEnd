@@ -1,4 +1,4 @@
-export interface RecentlyUpdatedArticle{
+export interface Article{
     'name': string,
     'name_full': string,
     'url': string,
@@ -6,3 +6,4 @@ export interface RecentlyUpdatedArticle{
     'article_type': string,
     'update_date': string,
 }
+
