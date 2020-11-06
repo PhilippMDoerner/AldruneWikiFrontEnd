@@ -46,6 +46,7 @@ import { RecentlyUpdatedArticleComponent } from './components/articles/recently-
 import { DeleteToggleComponent } from './components/utility/delete-toggle/delete-toggle.component';
 import { EditToggleComponent } from './components/utility/edit-toggle/edit-toggle.component';
 import { ColoredSidebarLegendComponent } from './components/utility/colored-sidebar-legend/colored-sidebar-legend.component';
+import { ObjectListComponent } from './components/utility/object-list/object-list.component';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { ColoredSidebarLegendComponent } from './components/utility/colored-side
     DeleteToggleComponent,
     EditToggleComponent,
     ColoredSidebarLegendComponent,
+    ObjectListComponent,
   ],
   imports: [
     BrowserModule,

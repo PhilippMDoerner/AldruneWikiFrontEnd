@@ -1,0 +1,16 @@
+<!-- DO NOT USE FOR LOCATIONS AS THEIR WAY OF HYPER-LINKING DOESN'T WORK HERE -->
+<div>
+    <!-- Heading -->
+    <h4>
+        {{heading}}
+        <i class="fa fa-plus icon ml-1" routerLink="{{createLink}}"></i>
+    </h4>
+    <!-- List -->
+    <ul>
+        <li *ngFor="let item of items">
+            <a routerLink="/{{articleType}}/{{item.name}}">
+                {{item.name}}
+            </a>
+        </li>
+    </ul>
+</div>

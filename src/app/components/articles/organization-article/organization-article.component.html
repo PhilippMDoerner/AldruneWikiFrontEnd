@@ -22,11 +22,9 @@
 
 
         <!-- Image Gallery -->
-        <app-image-gallery
-        [article_type]="this.articleType"
-        [article_pk]="this.organization.pk"
-        [images]="this.organization.images"
-        ></app-image-gallery>
+        <app-image-gallery  [article_type]="this.articleType"
+                            [article_pk]="this.organization.pk"
+                            [images]="this.organization.images"></app-image-gallery>
 
         <!-- Description -->
         <div class="mb-5">
@@ -36,6 +34,15 @@
             (updateText)="onDescriptionUpdate($event)"
             ></app-textfield>
         </div>
+
+        <!-- Members -->
+        <div class="mb-5">
+            <app-object-list    [heading]="'Members'"
+                                [items]="organization.members"
+                                [createLink]="'/character/create'"
+                                [articleType]="'character'"></app-object-list>
+        </div>
+
 
         <app-delete-toggle [deleteMessage]="'Delete '+organization.name+'?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
 

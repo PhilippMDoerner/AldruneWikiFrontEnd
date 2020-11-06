@@ -42,18 +42,18 @@
             ></app-textfield>
         </div>
 
+        <!-- Items -->
         <div class="mb-5">
-            <h4>Items of Note <i class="fa fa-plus icon ml-1" routerLink="/item/{{character.name}}/create"></i></h4>
-            <ul>
-                <li *ngFor="let item of character.items">
-                    <a routerLink="/item/{{item.name}}">{{ item.name }}</a>
-                </li>
-            </ul>
+            <app-object-list    [articleType]="'item'" 
+            [createLink]="'/item/'+character.name+'/create'"
+            [heading]="'Items of Note'"
+            [items]="character.items"></app-object-list>
         </div>
 
-
+        <!-- Encounters -->
         <app-encounter-accordion [encounters]="character.encounters" [articleCharacter]="character"></app-encounter-accordion>
 
+        <!-- Delete Article? -->
         <app-delete-toggle [deleteMessage]="'Delete '+character.name+'?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
 
         <a routerLink=".." class="btn btn-outline-secondary">Back to Characters</a>

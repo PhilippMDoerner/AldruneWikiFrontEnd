@@ -5,10 +5,7 @@
 
         <h1 class="text-center"> {{ location.name }} </h1>
         <!-- String indicating all parent_locations -->
-        <p
-        *ngIf="location.parent_location" 
-        class="text-center mb-5"> 
-        </p>
+        <p *ngIf="location.parent_location" class="text-center mb-5"> </p>
 
         <!-- Image Gallery -->
         <app-image-gallery
@@ -27,16 +24,12 @@
         </div>
 
         <!-- Characters of Interest -->
+
         <div class="mb-4">
-            <h4>Characters of Interest</h4>
-            <ul>
-                <li
-                *ngFor="let character of location.characters">
-                    <a routerLink="/character/{{character.name}}">
-                        {{character.name}}
-                    </a>
-                </li>
-            </ul>
+            <app-object-list    [heading]="'Characters of Interest'"
+                                [items]="location.characters"
+                                [articleType]="'character'"
+                                [createLink]="'/character/create'"></app-object-list>
         </div>
 
         <!-- Locations of Interest -->
