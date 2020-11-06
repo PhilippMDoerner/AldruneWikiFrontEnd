@@ -2,18 +2,16 @@
     <article class="mb-5">
         <!-- Heading -->
         <div *ngIf="formState===constants.updateState && model; else createState">
-            <a routerLink="..">
-                <i class="btn btn-outline-secondary icon fa fa-times float-right" id="article"></i>
-            </a>
+            <app-edit-toggle [isInUpdateState]=true [link]="'..'"></app-edit-toggle>
+
             <h2 class="text-center">
                 Updating Item {{ model.name }}
             </h2>
         </div>
         
         <ng-template #createState>
-            <a routerLink="">
-                <i class="btn btn-outline-secondary icon fa fa-times float-right" id="article"></i>
-            </a>
+            <app-edit-toggle [isInUpdateState]=true [link]="'/item'"></app-edit-toggle>
+
             <h2 class="text-center">
                 Creating a new Item
             </h2>

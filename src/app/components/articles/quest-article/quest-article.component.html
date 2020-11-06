@@ -1,9 +1,8 @@
 <div class="main">
     <article *ngIf="quest; else loading">
         <!-- Heading -->
-        <a routerLink="update">
-            <i class="btn btn-outline-secondary icon fa fa-pencil float-right" id="edit-article"></i>
-        </a>
+        <app-edit-toggle [isInUpdateState]=false [link]="'update'"></app-edit-toggle>
+
         <h1 class="text-center"> {{ quest.name }} </h1>
         <div class="my-4">
             <div class="subheading d-flex"> 
