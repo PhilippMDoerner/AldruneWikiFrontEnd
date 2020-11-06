@@ -17,7 +17,6 @@ export class OrganizationArticleUpdateComponent implements OnInit {
   constants: any = Constants;
 
   private organization_subscription: Subscription;
-  private parameter_subscription: Subscription;
 
   formState: string;
 
@@ -84,7 +83,6 @@ export class OrganizationArticleUpdateComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.organization_subscription) this.organization_subscription.unsubscribe();
   }
 }

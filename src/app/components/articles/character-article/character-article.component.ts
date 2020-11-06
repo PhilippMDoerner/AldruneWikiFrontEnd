@@ -19,7 +19,6 @@ export class CharacterArticleComponent implements OnInit {
   confirmationModal: Subject<void> = new Subject<void>();
   articleType: string = 'character';
 
-  private parameter_subscription: Subscription;
   private character_subscription: Subscription;
 
   constructor(
@@ -29,13 +28,10 @@ export class CharacterArticleComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const character_name: string = params['name'];
-      this.character_subscription = this.characterService.getCharacter(character_name).subscribe(character => {
-        this.character = character;
-      }, error =>{ this.router.navigateByUrl("error");});
-    });
-
+    const character_name: string = this.route.snapshot.params.name;
+    this.character_subscription = this.characterService.getCharacter(character_name).subscribe(character => {
+      this.character = character;
+    }, error =>{ this.router.navigateByUrl("error");});
   }
 
   onDescriptionUpdate(updatedDescription){
@@ -55,7 +51,6 @@ export class CharacterArticleComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.character_subscription) this.character_subscription.unsubscribe();
   }
 }

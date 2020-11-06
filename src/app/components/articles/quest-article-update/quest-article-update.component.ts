@@ -19,7 +19,6 @@ export class QuestArticleUpdateComponent implements OnInit {
   constants: any = Constants;
 
   private quest_subscription: Subscription;
-  private parameter_subscription: Subscription;
 
   formState: string;
 
@@ -125,7 +124,6 @@ export class QuestArticleUpdateComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.quest_subscription) this.quest_subscription.unsubscribe();
   }
 }

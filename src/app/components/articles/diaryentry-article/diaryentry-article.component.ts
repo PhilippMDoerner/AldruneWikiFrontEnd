@@ -16,7 +16,6 @@ export class DiaryentryArticleComponent implements OnInit {
   articleType: string = 'diaryEntry';
 
   private diaryEntry_subscription: Subscription;
-  private parameter_subscription: Subscription;
 
   constructor(
     private diaryEntryService: DiaryentryService,
@@ -25,15 +24,13 @@ export class DiaryentryArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const isMainSession: string = params['isMainSession'];
-      const sessionNumber: string = params['sessionNumber'];
-      const authorName: string = params['authorName'];
+    const isMainSession: string = this.route.snapshot.params.isMainSession;
+    const sessionNumber: string = this.route.snapshot.params.sessionNumber;
+    const authorName: string = this.route.snapshot.params.authorName;
 
-      this.diaryEntry_subscription = this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(diaryEntry => {
-        this.diaryEntry = diaryEntry;
-      }, error =>{ this.router.navigateByUrl("error");});
-    });
+    this.diaryEntry_subscription = this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(diaryEntry => {
+      this.diaryEntry = diaryEntry;
+    }, error =>{ this.router.navigateByUrl("error");});
   }
 
   onDescriptionUpdate(updatedDescription){
@@ -53,7 +50,6 @@ export class DiaryentryArticleComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.diaryEntry_subscription) this.diaryEntry_subscription.unsubscribe();
   }
 }

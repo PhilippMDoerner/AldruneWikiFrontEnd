@@ -24,13 +24,12 @@ export class LocationArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const locationName: string = params['name'];
-      const parentLocationName: string = params['parent_name'] ? params['parent_name'] : "None";
-      this.location_subscription = this.locationService.getLocation(parentLocationName, locationName).subscribe(location => {
-        this.location = location;
-      }, error =>{ console.log(error)});
-    }, error => console.log(error));
+    const locationName: string = this.route.snapshot.params.name;
+    const parameterParentLocationName = this.route.snapshot.params.parent_name;
+    const parentLocationName: string = parameterParentLocationName ? parameterParentLocationName : "None";
+    this.location_subscription = this.locationService.getLocation(parentLocationName, locationName).subscribe(location => {
+      this.location = location;
+    }, error =>{ console.log(error)});
   }
 
   onDescriptionUpdate(updatedDescription){

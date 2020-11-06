@@ -27,7 +27,6 @@ export class CreatureArticleUpdateComponent implements OnInit {
     },
   ]
 
-  private parameter_subscription: Subscription;
   private creature_subscription: Subscription;
 
   constructor(
@@ -40,12 +39,10 @@ export class CreatureArticleUpdateComponent implements OnInit {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
 
     if (this.formState === this.constants.updateState){
-      this.parameter_subscription = this.route.params.subscribe(params => {
-        const creature_name: string = params['name'];
-        this.creature_subscription = this.creatureService.getCreature(creature_name).subscribe(creature => {
-          this.model = creature;
-        }, error => this.router.navigateByUrl("error"));
-      });
+      const creature_name: string = this.route.snapshot.params.name;
+      this.creature_subscription = this.creatureService.getCreature(creature_name).subscribe(creature => {
+        this.model = creature;
+      }, error => this.router.navigateByUrl("error"));
     } else if (this.formState === this.constants.createState) {
       this.model = new EmptyFormCreature();
     }
@@ -62,7 +59,6 @@ export class CreatureArticleUpdateComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.creature_subscription) this.creature_subscription.unsubscribe();
   }
 

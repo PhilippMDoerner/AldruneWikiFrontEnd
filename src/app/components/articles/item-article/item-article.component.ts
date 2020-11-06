@@ -17,7 +17,6 @@ export class ItemArticleComponent implements OnInit {
   articleType: string = 'item';
 
   private item_subscription: Subscription;
-  private parameter_subscription: Subscription;
 
   constructor(
     private itemService: ItemService,
@@ -26,13 +25,11 @@ export class ItemArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const itemName = params['name'];
+    const itemName = this.route.snapshot.params.name;
 
-      this.item_subscription = this.itemService.getItem(itemName).subscribe(item => {
-        this.item = item;
-      }, error =>{ this.router.navigateByUrl("error");});
-    });
+    this.item_subscription = this.itemService.getItem(itemName).subscribe(item => {
+      this.item = item;
+    }, error =>{ this.router.navigateByUrl("error");});
   }
 
   onDescriptionUpdate(updatedDescription){
@@ -52,7 +49,6 @@ export class ItemArticleComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.item_subscription) this.item_subscription.unsubscribe();
   }
 

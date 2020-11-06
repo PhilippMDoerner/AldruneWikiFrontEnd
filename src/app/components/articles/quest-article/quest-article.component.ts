@@ -16,7 +16,6 @@ export class QuestArticleComponent implements OnInit {
   articleType: string = 'quest';
 
   private quest_subscription: Subscription;
-  private parameter_subscription: Subscription;
 
   constructor(
     private questService: QuestService,
@@ -25,13 +24,10 @@ export class QuestArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const questName = params['name'];
-
-      this.quest_subscription = this.questService.getQuest(questName).subscribe(quest => {
-        this.quest = quest;
-      }, error =>{ this.router.navigateByUrl("error");});
-    });
+    const questName: string = this.route.snapshot.params.name;
+    this.quest_subscription = this.questService.getQuest(questName).subscribe(quest => {
+      this.quest = quest;
+    }, error => this.router.navigateByUrl("error"));
   }
 
   onDescriptionUpdate(updatedDescription){
@@ -52,6 +48,5 @@ export class QuestArticleComponent implements OnInit {
 
   ngOnDestroy(){
     if(this.quest_subscription) this.quest_subscription.unsubscribe();
-    if(this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

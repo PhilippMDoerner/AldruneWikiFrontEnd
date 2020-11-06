@@ -16,7 +16,6 @@ export class OrganizationArticleComponent implements OnInit {
   articleType: string = 'organization';
 
   private organization_subscription: Subscription;
-  private parameter_subscription: Subscription;
 
   constructor(
     private organizationService: OrganizationService,
@@ -25,13 +24,11 @@ export class OrganizationArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const organizationName = params['name'];
+    const organizationName = this.route.snapshot.params.name;
 
-      this.organization_subscription = this.organizationService.getOrganization(organizationName).subscribe(organization => {
-        this.organization = organization;
-      }, error =>{ this.router.navigateByUrl("error");});
-    });
+    this.organization_subscription = this.organizationService.getOrganization(organizationName).subscribe(organization => {
+      this.organization = organization;
+    }, error =>{ this.router.navigateByUrl("error");});
   }
 
   onDescriptionUpdate(updatedDescription){
@@ -51,7 +48,6 @@ export class OrganizationArticleComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.organization_subscription) this.organization_subscription.unsubscribe();
   }
 }

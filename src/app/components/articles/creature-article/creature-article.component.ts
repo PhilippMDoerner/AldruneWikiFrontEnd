@@ -16,7 +16,6 @@ export class CreatureArticleComponent implements OnInit {
   creature: Creature;
 
   creature_subscription: Subscription;
-  parameter_subscription: Subscription;
 
   constructor(
     private creatureService: CreatureService,
@@ -25,12 +24,10 @@ export class CreatureArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const creature_name: string = params['name'];
-      this.creature_subscription = this.creatureService.getCreature(creature_name).subscribe(character => {
-        this.creature = character;
-      }, error =>{ console.log(error)});
-    });
+    const creature_name: string = this.route.snapshot.params.name;
+    this.creature_subscription = this.creatureService.getCreature(creature_name).subscribe(character => {
+      this.creature = character;
+    }, error =>{ console.log(error)});
   }
 
   onDescriptionUpdate(updatedDescription){
@@ -50,7 +47,6 @@ export class CreatureArticleComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.creature_subscription) this.creature_subscription.unsubscribe();
   }
 }

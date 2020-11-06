@@ -52,7 +52,6 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
   ];
 
   private diaryEntry_subscription: Subscription;
-  private parameter_subscription: Subscription;
 
   constructor(
     private userService: UserService,
@@ -66,15 +65,13 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
 
     if (this.formState === this.constants.updateState){
-      this.parameter_subscription = this.route.params.subscribe(params => {
-        const isMainSession: string = params['isMainSession'];
-        const sessionNumber: string = params['sessionNumber'];
-        const authorName: string = params['authorName'];
-  
-        this.diaryEntry_subscription = this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(diaryEntry => {
-          this.model = diaryEntry;
-        }, error =>{ this.router.navigateByUrl("error");});
-      });
+      const isMainSession: string = this.route.snapshot.params.isMainSession;
+      const sessionNumber: string = this.route.snapshot.params.sessionNumber;
+      const authorName: string = this.route.snapshot.params.authorName;
+
+      this.diaryEntry_subscription = this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(diaryEntry => {
+        this.model = diaryEntry;
+      }, error =>{ this.router.navigateByUrl("error");});
     } else if (this.formState === this.constants.createState) {
       this.model = new EmptyFormDiaryEntry();
     }
@@ -91,7 +88,6 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.diaryEntry_subscription) this.diaryEntry_subscription.unsubscribe();
   }
 }

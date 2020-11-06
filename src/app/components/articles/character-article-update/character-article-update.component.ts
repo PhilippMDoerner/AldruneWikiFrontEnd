@@ -95,7 +95,6 @@ export class CharacterArticleUpdateComponent implements OnInit {
   ];
 
   private character_subscription: Subscription;
-  private parameter_subscription: Subscription;
 
   constructor(
     private characterService: CharacterService,
@@ -109,12 +108,10 @@ export class CharacterArticleUpdateComponent implements OnInit {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
 
     if (this.formState === this.constants.updateState){
-      this.parameter_subscription = this.route.params.subscribe(params => {
-        const character_name: string = params['name'];
-        this.character_subscription = this.characterService.getCharacter(character_name).subscribe(character => {
-          this.model = character;
-        }, error => this.router.navigateByUrl("error"));
-      });
+      const character_name: string = this.route.snapshot.params.name;
+      this.character_subscription = this.characterService.getCharacter(character_name).subscribe(character => {
+        this.model = character;
+      }, error => this.router.navigateByUrl("error"));
     } else if (this.formState === this.constants.createState) {
       this.model = new EmptyFormCharacter();
     }
@@ -131,7 +128,6 @@ export class CharacterArticleUpdateComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.character_subscription) this.character_subscription.unsubscribe();
   }
 }

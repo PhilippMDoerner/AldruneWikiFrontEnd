@@ -18,7 +18,6 @@ export class ItemArticleUpdateComponent implements OnInit {
   constants: any = Constants;
 
   private item_subscription: Subscription;
-  private parameter_subscription: Subscription;
   private character_subscription: Subscription;
 
   isForAssociatedObjectCreation: boolean;
@@ -85,7 +84,6 @@ export class ItemArticleUpdateComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.item_subscription) this.item_subscription.unsubscribe();
     if (this.character_subscription) this.character_subscription.unsubscribe();
   }
