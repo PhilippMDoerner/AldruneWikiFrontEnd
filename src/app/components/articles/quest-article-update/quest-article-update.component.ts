@@ -29,7 +29,8 @@ export class QuestArticleUpdateComponent implements OnInit {
       key: "name",
       type: "input",
       templateOptions:{
-        label: "Name"
+        label: "Name",
+        placeholder:"Quest Name"
       }
     },
     {
@@ -87,7 +88,7 @@ export class QuestArticleUpdateComponent implements OnInit {
       type: "input",
       templateOptions:{
         label: "Abstract",
-        placeholder: "quest summary...",
+        placeholder: "Quest Summary...",
         type: "string",
       }
     }

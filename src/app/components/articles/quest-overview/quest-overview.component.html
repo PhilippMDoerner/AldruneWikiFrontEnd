@@ -2,10 +2,12 @@
     <article *ngIf="quests; else loading" class="pr-4 pl-4">
         <div *ngFor="let questTaker of quests">
             <div class="mb-2">
+                <!-- Outer Table Heading -->
                 <h4 class="d-inline-block w-50">
                     {{questTaker.key}}'s Quests
-                    <i class="fa fa-plus icon ml-2"></i>
+                    <i class="fa fa-plus icon ml-2" routerLink="create"></i>
                 </h4>
+                <!-- Filterselect -->
                 <select name="quest-status" class="form-control d-inline-block" [(ngModel)]="filterStates[questTaker.key]">
                     <option selected value="Default">Default</option>
                     <option value="All">All</option>
@@ -14,7 +16,7 @@
             </div>
 
             <table class="table table-dark table-striped mytable mb-5 pb-2">
-                <!-- Table Heading -->
+                <!-- Inner Table Heading -->
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
