@@ -13,7 +13,6 @@ import { QuestService } from 'src/app/services/quest.service';
 export class QuestArticleComponent implements OnInit {
   constants: any = Constants;
   quest: Quest;
-  isArticleDeleteState: boolean = false;
   articleType: string = 'quest';
 
   private quest_subscription: Subscription;
@@ -45,13 +44,14 @@ export class QuestArticleComponent implements OnInit {
     })
   }
 
-  toggleDeleteRequest(){
-    this.isArticleDeleteState = !this.isArticleDeleteState
-  }
-
   deleteArticle(){
       this.questService.deleteQuest(this.quest.pk).subscribe(response => {
         this.router.navigateByUrl("/quest")
       }, error => console.log(error));
+  }
+
+  ngOnDestroy(){
+    if(this.quest_subscription) this.quest_subscription.unsubscribe();
+    if(this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

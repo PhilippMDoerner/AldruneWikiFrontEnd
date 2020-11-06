@@ -12,7 +12,6 @@ import { LocationService } from 'src/app/services/location/location.service';
 export class LocationArticleComponent implements OnInit {
   constants: any = Constants;
   location: Location;
-  isArticleDeleteState: boolean = false;
   articleType: string = 'location';
 
   private location_subscription: Subscription;
@@ -42,10 +41,6 @@ export class LocationArticleComponent implements OnInit {
       this.location.description = oldDescription;
       console.log(error);
     })
-  }
-
-  toggleDeleteRequest(){
-    this.isArticleDeleteState = !this.isArticleDeleteState;
   }
 
   deleteArticle(){

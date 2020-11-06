@@ -13,7 +13,6 @@ import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.servic
 export class DiaryentryArticleComponent implements OnInit {
   constants: any = Constants;
   diaryEntry: DiaryEntry;
-  isArticleDeleteState: boolean = false;
   articleType: string = 'diaryEntry';
 
   private diaryEntry_subscription: Subscription;
@@ -45,10 +44,6 @@ export class DiaryentryArticleComponent implements OnInit {
       this.diaryEntry.entry = oldDescription;
       console.log(error);
     })
-  }
-
-  toggleDeleteRequest(){
-    this.isArticleDeleteState = !this.isArticleDeleteState
   }
 
   deleteArticle(){

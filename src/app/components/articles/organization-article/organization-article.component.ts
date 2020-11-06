@@ -13,7 +13,6 @@ import { OrganizationService } from 'src/app/services/organization/organization.
 export class OrganizationArticleComponent implements OnInit {
   constants: any = Constants;
   organization: Organization;
-  isArticleDeleteState: boolean = false;
   articleType: string = 'organization';
 
   private organization_subscription: Subscription;
@@ -43,10 +42,6 @@ export class OrganizationArticleComponent implements OnInit {
       this.organization.description = oldDescription;
       console.log(error);
     })
-  }
-
-  toggleDeleteRequest(){
-    this.isArticleDeleteState = !this.isArticleDeleteState
   }
 
   deleteArticle(){

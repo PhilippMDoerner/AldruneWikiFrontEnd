@@ -14,7 +14,6 @@ export class CreatureArticleComponent implements OnInit {
   constants: any = Constants;
   articleType: string = "creature";
   creature: Creature;
-  isArticleDeleteState: boolean = false;
 
   creature_subscription: Subscription;
   parameter_subscription: Subscription;
@@ -43,12 +42,6 @@ export class CreatureArticleComponent implements OnInit {
       console.log(error);
     })
   }
-
-
-  toggleDeleteRequest(){
-    this.isArticleDeleteState = !this.isArticleDeleteState
-  }
-
 
   deleteArticle(){
     this.creatureService.deleteCreature(this.creature.pk).subscribe(response => {

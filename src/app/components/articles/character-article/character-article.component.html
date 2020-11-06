@@ -1,12 +1,14 @@
 <div class="main">
     <article *ngIf="character; else loading">
         <app-edit-toggle [isInUpdateState]=false [link]="'update'"></app-edit-toggle>
-
+        <!-- Heading -->
         <h1 class="text-center subheading">
             <span *ngIf="character.title">{{ character.title }} - </span>
             {{ character.name }}
         </h1>
+        <!-- Subheadings -->
         <div class="text-center mb-3 subheading">
+            <!-- Organization -->
             <div>
                 <span *ngIf="character.gender !=='Other'">{{ character.gender }}</span>
                 {{ character.race }}
@@ -14,6 +16,7 @@
                     <a routerLink="/organization/{{character.organization_details.name}}">{{ character.organization_details.name }}</a>
                 </span> 
             </div>
+            <!-- Current Location -->
             <div *ngIf="character.current_location">
                 Last known location:
                 <a routerLink="/location/{{character.current_location_details.parent_location}}/{{character.current_location_details.name}}">
@@ -22,6 +25,7 @@
             </div>
         </div>
 
+        <!-- Image Gallery -->
         <app-image-gallery
         [article_type]="this.articleType"
         [article_pk]="this.character.pk"
@@ -29,6 +33,7 @@
         ></app-image-gallery>
 
         <!-- TODO: Implement a quote DB. A random quote of that selection shall be displayed as some sort of quote card -->
+        <!-- Description -->
         <div class="mb-5">
             <app-textfield 
             [initialText]="character.description"

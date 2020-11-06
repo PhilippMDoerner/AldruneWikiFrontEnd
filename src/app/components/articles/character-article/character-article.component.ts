@@ -16,7 +16,6 @@ import { Constants } from "src/app/app.constants";
 export class CharacterArticleComponent implements OnInit {
   constants: any = Constants;
   character: Character;
-  isArticleDeleteState: boolean = false;
   confirmationModal: Subject<void> = new Subject<void>();
   articleType: string = 'character';
 
@@ -47,10 +46,6 @@ export class CharacterArticleComponent implements OnInit {
       this.character.description = oldDescription;
       console.log(error);
     })
-  }
-
-  toggleDeleteRequest(){
-    this.isArticleDeleteState = !this.isArticleDeleteState
   }
 
   deleteArticle(){

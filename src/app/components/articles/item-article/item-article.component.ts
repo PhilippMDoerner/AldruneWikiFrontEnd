@@ -14,7 +14,6 @@ import { ItemService } from 'src/app/services/item/item.service';
 export class ItemArticleComponent implements OnInit {
   constants: any = Constants;
   item: Item;
-  isArticleDeleteState: boolean = false;
   articleType: string = 'item';
 
   private item_subscription: Subscription;
@@ -44,10 +43,6 @@ export class ItemArticleComponent implements OnInit {
       this.item.description = oldDescription;
       console.log(error);
     })
-  }
-
-  toggleDeleteRequest(){
-    this.isArticleDeleteState = !this.isArticleDeleteState
   }
 
   deleteArticle(){
