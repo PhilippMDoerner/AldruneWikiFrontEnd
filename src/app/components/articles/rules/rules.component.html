@@ -2,7 +2,10 @@
     <article>
         <h1 class="text-center">Rules</h1>
         <div *ngFor="let rule of rules; let i = index" class="card mb-3 px-4 pt-3 pb-1">
-            <h5 class="pointer" (click)="togglePanel(i)"> {{ rule.name }} </h5>
+            <h5 class="pointer" (click)="togglePanel(i)"> 
+                {{ rule.name }} 
+                <i [ngClass]="{'fa icon float-right': true, 'fa-plus': panelIsOpen(i), 'fa-minus': !panelIsOpen(i)}"></i>
+            </h5>
             <div [ngbCollapse]="panelIsOpen(i)">
                 <hr class="white-separator">
                 <div [innerHTML]="rule.description"></div>
