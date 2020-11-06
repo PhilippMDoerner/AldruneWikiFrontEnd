@@ -12,4 +12,16 @@ export class Constants{
     public static get deleteSignal(): string { return "delete";}
     public static get updateSignal(): string { return "update";}
     public static get cancelSignal(): string { return "cancel";}
+
+    //Mapping of article types to colors
+    public static get articleTypeSidebarColorMapping(): object { return { 
+        'item' : 'yellow',
+        'character': 'darkpink',
+        'creature': 'brown',
+        'location': 'blue',
+        'organization' : 'black',
+        'diaryentry' : 'gray',
+        'quest' : 'white',
+        'encounter' : 'lightpink'
+    }}
 }

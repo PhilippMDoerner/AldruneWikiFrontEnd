@@ -1,0 +1,58 @@
+.sidebar{
+    width: 5px;
+    height: 90%;
+    position: absolute;
+}
+
+.yellow{
+    background-color: #e8b41b;
+}
+
+.darkpink{
+    background-color: #ca0263;
+}
+
+.lightpink{
+    background-color: #f293a4;
+}
+
+.brown{
+    background-color: brown;
+}
+
+.blue{
+    background-color: blue;
+}
+
+.black{
+    background-color: black;
+}
+
+.gray{
+    background-color: gray;
+}
+
+.white{
+    background-color: white;
+}
+
+h5{
+    font-size: 18px;
+}
+
+.font-size-16{
+    font-size: 16px;
+}
+
+.card{
+    background-color: #1f1e1f!important;
+}
+
+.card:hover{
+    background-color: rgba(255, 255, 255, 0.075)!important;
+    border: none;
+}
+
+.h-2rem{
+    height: 2rem;
+}

@@ -30,7 +30,7 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { FormlyFieldFile } from './components/utility/file-upload/file-upload.component';
 import { FileValueAccessor } from './components/utility/file-upload/file-value-accesor';
 
-import { GroupByPipe, GroupByFirstLetterPipe, GroupByQuestTakerPipe } from "src/app/utils/pipes/groupObjects.pipe";
+import { GroupByPipe, GroupByFirstLetterPipe } from "src/app/utils/pipes/groupObjects.pipe";
 import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
 import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
@@ -42,6 +42,7 @@ import { QuestArticleComponent } from './components/articles/quest-article/quest
 import { QuestArticleUpdateComponent } from './components/articles/quest-article-update/quest-article-update.component';
 import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
 import { SpellsComponent } from './components/articles/spells/spells.component';
+import { RecentlyUpdatedArticleComponent } from './components/articles/recently-updated-article/recently-updated-article.component';
 
 @NgModule({
   declarations: [
@@ -66,7 +67,6 @@ import { SpellsComponent } from './components/articles/spells/spells.component';
     FileValueAccessor,
     GroupByPipe,
     GroupByFirstLetterPipe,
-    GroupByQuestTakerPipe,
     CreatureArticleUpdateComponent,
     DiaryentryArticleUpdateComponent,
     ItemArticleUpdateComponent,
@@ -77,7 +77,8 @@ import { SpellsComponent } from './components/articles/spells/spells.component';
     QuestArticleComponent,
     QuestArticleUpdateComponent,
     QuestOverviewComponent,
-    SpellsComponent
+    SpellsComponent,
+    RecentlyUpdatedArticleComponent
   ],
   imports: [
     BrowserModule,

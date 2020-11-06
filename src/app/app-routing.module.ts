@@ -20,6 +20,7 @@ import { QuestArticleComponent } from './components/articles/quest-article/quest
 import { QuestArticleUpdateComponent } from './components/articles/quest-article-update/quest-article-update.component';
 import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
 import { SpellsComponent } from './components/articles/spells/spells.component';
+import { RecentlyUpdatedArticleComponent } from './components/articles/recently-updated-article/recently-updated-article.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -62,6 +63,7 @@ const routes: Routes = [
 
   {path: "rules", component: RulesComponent},
   {path: "spells", component: SpellsComponent},
+  {path: "recent-updates", component: RecentlyUpdatedArticleComponent},
   {path: "error", component: NotFoundComponent},
   {path: '**', component: NotFoundComponent}
 ];
