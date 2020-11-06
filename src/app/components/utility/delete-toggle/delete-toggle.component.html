@@ -1,0 +1,8 @@
+<div class="float-right">
+    <i *ngIf="!isInDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleDeleteState()"></i>
+    <div *ngIf="isInDeleteState" class="delete-request">
+        <span class="mr-3"> <strong>{{deleteMessage}}</strong> </span>  
+        <button class="btn btn-outline-danger float-right mr-2" (click)="emitDeleteEvent()"> Yes </button>
+        <button class="btn btn-outline-secondary float-right" (click)="toggleDeleteState()"> No </button>
+    </div>
+</div>

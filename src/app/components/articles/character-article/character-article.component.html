@@ -50,14 +50,7 @@
 
         <app-encounter-accordion [encounters]="character.encounters" [articleCharacter]="character"></app-encounter-accordion>
 
-        <div class="float-right">
-            <i *ngIf="!isArticleDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleDeleteRequest()"></i>
-            <div *ngIf="isArticleDeleteState" class="delete-request">
-                <span class="mr-3"> <strong>Delete this article?</strong> </span>  
-                <button class="btn btn-outline-danger float-right mr-2" (click)="deleteArticle(character.pk)"> Yes </button>
-                <button class="btn btn-outline-secondary float-right" (click)="toggleDeleteRequest()"> No </button>
-            </div>
-        </div>
+        <app-delete-toggle [deleteMessage]="'Delete '+character.name+'?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
 
         <a routerLink=".." class="btn btn-outline-secondary">Back to Characters</a>
     </article>

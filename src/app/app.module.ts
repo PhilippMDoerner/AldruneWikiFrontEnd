@@ -43,6 +43,7 @@ import { QuestArticleUpdateComponent } from './components/articles/quest-article
 import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
 import { SpellsComponent } from './components/articles/spells/spells.component';
 import { RecentlyUpdatedArticleComponent } from './components/articles/recently-updated-article/recently-updated-article.component';
+import { DeleteToggleComponent } from './components/utility/delete-toggle/delete-toggle.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { RecentlyUpdatedArticleComponent } from './components/articles/recently-
     QuestArticleUpdateComponent,
     QuestOverviewComponent,
     SpellsComponent,
-    RecentlyUpdatedArticleComponent
+    RecentlyUpdatedArticleComponent,
+    DeleteToggleComponent
   ],
   imports: [
     BrowserModule,

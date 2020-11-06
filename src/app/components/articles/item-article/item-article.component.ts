@@ -10,6 +10,7 @@ import { ItemService } from 'src/app/services/item/item.service';
   templateUrl: './item-article.component.html',
   styleUrls: ['./item-article.component.scss']
 })
+
 export class ItemArticleComponent implements OnInit {
   constants: any = Constants;
   item: Item;
