@@ -5,7 +5,7 @@
 
         <h1 class="text-center"> {{ location.name }} </h1>
         <!-- String indicating all parent_locations -->
-        <p *ngIf="location.parent_location" class="text-center mb-5"> </p>
+        <p *ngIf="location.parent_location" class="text-center mb-5 font-italic"> {{location.name_full}} </p>
 
         <!-- Image Gallery -->
         <app-image-gallery
