@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { last } from 'lodash';
 import { DiaryEntry } from 'src/app/models/diaryentry';
 import { Quest } from 'src/app/models/quest';
 

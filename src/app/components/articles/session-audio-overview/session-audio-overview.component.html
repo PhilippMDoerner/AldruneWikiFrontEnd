@@ -1,0 +1,38 @@
+<div class="main">
+    <article *ngIf="sessionAudioFiles; else loading">
+        <h1 class="text-center">Session Audio Files</h1>
+
+        <div class="container">
+            <div class="row">
+                <!-- Normal Session Audio Cards -->
+                <div class="col-lg-3" *ngFor="let sessionAudio of sessionAudioFiles">
+                    <div class="card my-3">
+                        <div class="card-header"> 
+                            <h3 class="text-center card-title ">{{ sessionAudio.name }}</h3>
+                        </div>
+                        <div class="card-body d-flex justify-content-center flex-column">
+                            <a class="text-center btn btn-primary"> 
+                                <strong> Download </strong> 
+                            </a>
+                            <a class="text-center btn btn-primary"> 
+                                <strong> Stream </strong> 
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Add Session Audio card -->
+                <div class="col-lg-3">
+                    <div class="card my-3 h-87">
+                        <div class="card-body d-flex justify-content-center align-items-center">
+                            <i class="fa fa-5x icon fa-plus-square-o" aria-hidden="true"></i> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </article>
+    <!-- Loading Spinner -->
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

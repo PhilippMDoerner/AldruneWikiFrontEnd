@@ -48,6 +48,8 @@ import { EditToggleComponent } from './components/utility/edit-toggle/edit-toggl
 import { ColoredSidebarLegendComponent } from './components/utility/colored-sidebar-legend/colored-sidebar-legend.component';
 import { ObjectListComponent } from './components/utility/object-list/object-list.component';
 import { SearchComponent } from './components/articles/search/search.component';
+import { SessionAudioComponent } from './components/articles/session-audio/session-audio.component';
+import { SessionAudioOverviewComponent } from './components/articles/session-audio-overview/session-audio-overview.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +91,8 @@ import { SearchComponent } from './components/articles/search/search.component';
     ColoredSidebarLegendComponent,
     ObjectListComponent,
     SearchComponent,
+    SessionAudioComponent,
+    SessionAudioOverviewComponent,
   ],
   imports: [
     BrowserModule,
