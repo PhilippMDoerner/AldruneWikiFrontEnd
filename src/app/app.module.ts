@@ -6,6 +6,7 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from "@angular/common";
+import { VimeModule } from "@vime/angular/dist";
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from "src/app/components/navbar/navbar.component";
@@ -110,6 +111,7 @@ import { SessionAudioOverviewComponent } from './components/articles/session-aud
       }), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,
     CommonModule,
+    VimeModule,
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
@@ -119,6 +121,8 @@ import { SessionAudioOverviewComponent } from './components/articles/session-aud
   ],
   exports: [
     EncounterAccordionComponent
+  ],
+  schemas: [
   ]
 })
 export class AppModule { }

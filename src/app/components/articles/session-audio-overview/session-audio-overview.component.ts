@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Constants } from 'src/app/app.constants';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { SessionAudio } from 'src/app/models/sessionaudio';
 import { OverviewService } from 'src/app/services/overview.service';
@@ -10,6 +11,8 @@ import { OverviewService } from 'src/app/services/overview.service';
   styleUrls: ['./session-audio-overview.component.scss']
 })
 export class SessionAudioOverviewComponent implements OnInit {
+  constants: any = Constants;
+
   sessionAudioFiles: OverviewItem[];
 
   sessionaudio_subscription: Subscription;

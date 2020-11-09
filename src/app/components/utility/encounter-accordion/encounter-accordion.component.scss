@@ -17,8 +17,12 @@
     border-bottom: none;
 }
 
+.badge{
+    background-color: #292929;
+}
+
 .badge a:hover{
-    color: darkblue !important;
+    color: royalblue !important;
 }
 
 .badge .icon{
@@ -79,4 +83,8 @@ h4:hover .icon{
 
 .tag-label{
     font-size: 14px;
+}
+
+.btn-secondary{
+    background-color: #292929;
 }

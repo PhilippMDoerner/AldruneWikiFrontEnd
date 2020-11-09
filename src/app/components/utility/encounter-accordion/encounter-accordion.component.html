@@ -18,8 +18,9 @@
 
             <!-- Panel Content -->
             <ng-template ngbPanelContent>
-                
-                <i class="btn btn-outline-secondary icon fa fa-pencil float-right" (click)="fullEditEncounter(encounter)"></i>
+                <div class="btn btn-secondary float-right" (click)="fullEditEncounter(encounter)">
+                    <i class="fa fa-pencil"></i>
+                </div>
 
                 <!-- Encounter -->
                 <div class="mb-1">
@@ -52,7 +53,9 @@
 
                 <!-- Encounter Footer -->
                 <div class="float-right mb-3">
-                    <i *ngIf="!isEncounterDeleteState" class="btn btn-outline-danger fa fa-trash" (click)="toggleEncounterDeleteState()"></i>
+                    <div class="btn btn-outline-danger" (click)="toggleEncounterDeleteState()">
+                        <i *ngIf="!isEncounterDeleteState" class="fa fa-trash"></i>
+                    </div>
                     <div *ngIf="isEncounterDeleteState" class="delete-request" id="encounter-delete">
                         <span class="mr-3"> <strong>Delete this encounter?</strong> </span>  
                         <button class="btn btn-outline-danger float-right mr-2" (click)="deleteEncounter(encounter, i)"> Yes </button>

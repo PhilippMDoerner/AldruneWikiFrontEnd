@@ -1,11 +1,14 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600");
+
 @import './app/custom_bootstrap.scss';
 
 /* Importing Bootstrap SCSS file. */
 @import '~bootstrap/scss/bootstrap';
 
+/* Default Vime theme. ~960B */
+@import '~@vime/core/themes/default.css';
+
 body {
-    margin-top: 0.5rem;
     color: #ffffff;
     font-family: "Source Sans Pro", sans-serif !important;
     font-weight: 300;

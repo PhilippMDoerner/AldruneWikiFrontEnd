@@ -1,7 +1,12 @@
 export interface Timestamp{
-    "url": string,
+    "pk"?: number,
     "name": string,
     "time": number,
-    "session_audio": string,
     "encounter": string
+}
+
+export class EmptyFormTimestamp{
+    "name": string = null;
+    "time": number = null;
+    "encounter": string = null;
 }

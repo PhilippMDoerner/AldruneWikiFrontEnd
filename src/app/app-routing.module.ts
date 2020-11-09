@@ -65,7 +65,7 @@ const routes: Routes = [
   {path: "quest/:name/update", component: QuestArticleUpdateComponent},
 
   {path: "sessionaudio", component: SessionAudioOverviewComponent},
-  {path: "sessionaudio/:sessionNumber/:isMainSession", component: SessionAudioComponent},
+  {path: "sessionaudio/:isMainSession/:sessionNumber", component: SessionAudioComponent},
 
   {path: "rules", component: RulesComponent},
   {path: "spells", component: SpellsComponent},
