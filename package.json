@@ -25,6 +25,7 @@
     "@ngx-formly/core": "^5.10.4",
     "@ngx-formly/schematics": "^5.10.4",
     "@tinymce/tinymce-angular": "^4.2.0",
+    "@vime/angular": "^4.3.3",
     "bootstrap": "4.5.3",
     "font-awesome": "^4.7.0",
     "jquery": "^3.5.1",
