@@ -24,6 +24,7 @@ import { RecentlyUpdatedArticleComponent } from './components/articles/recently-
 import { SearchComponent } from './components/articles/search/search.component';
 import { SessionAudioComponent } from './components/articles/session-audio/session-audio.component';
 import { SessionAudioOverviewComponent } from './components/articles/session-audio-overview/session-audio-overview.component';
+import { SessionAudioUpdateComponent } from './components/articles/session-audio-update/session-audio-update.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -65,7 +66,9 @@ const routes: Routes = [
   {path: "quest/:name/update", component: QuestArticleUpdateComponent},
 
   {path: "sessionaudio", component: SessionAudioOverviewComponent},
+  {path: "sessionaudio/create", component: SessionAudioUpdateComponent},  
   {path: "sessionaudio/:isMainSession/:sessionNumber", component: SessionAudioComponent},
+  {path: "sessionaudio/:isMainSession/:sessionNumber/update", component: SessionAudioUpdateComponent},
 
   {path: "rules", component: RulesComponent},
   {path: "spells", component: SpellsComponent},

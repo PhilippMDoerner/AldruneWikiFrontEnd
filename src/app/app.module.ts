@@ -51,6 +51,7 @@ import { ObjectListComponent } from './components/utility/object-list/object-lis
 import { SearchComponent } from './components/articles/search/search.component';
 import { SessionAudioComponent } from './components/articles/session-audio/session-audio.component';
 import { SessionAudioOverviewComponent } from './components/articles/session-audio-overview/session-audio-overview.component';
+import { SessionAudioUpdateComponent } from './components/articles/session-audio-update/session-audio-update.component';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { SessionAudioOverviewComponent } from './components/articles/session-aud
     SearchComponent,
     SessionAudioComponent,
     SessionAudioOverviewComponent,
+    SessionAudioUpdateComponent,
   ],
   imports: [
     BrowserModule,

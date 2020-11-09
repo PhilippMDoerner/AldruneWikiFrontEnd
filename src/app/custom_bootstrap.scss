@@ -196,10 +196,10 @@ button.btn.btn-link:focus{
 input.form-control{
     background-color: transparent !important;
     color: white !important;
+    border: solid white 1px !important;
 }
 
 input.form-control:focus{
-    background-color: transparent;
     box-shadow: 3px blue;
     color: white;
 }

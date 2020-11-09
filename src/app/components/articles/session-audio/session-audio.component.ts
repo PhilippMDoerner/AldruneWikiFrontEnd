@@ -15,7 +15,7 @@ import { SessionAudioService } from 'src/app/services/session-audio.service';
 })
 
 export class SessionAudioComponent implements OnInit {
-  constants: Constants = Constants;
+  constants: any = Constants;
 
   sessionAudio: SessionAudio;
   priorSessionAudio: {isMainSessionInt: number, sessionNumber: number};

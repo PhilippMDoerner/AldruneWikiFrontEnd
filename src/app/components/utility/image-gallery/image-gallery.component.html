@@ -48,7 +48,6 @@
                     <form [formGroup]="form" (ngSubmit)="cl(constants.createSignal)" enctype="multipart/form-data">
                         <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
                         <formly-form [form]="form" [fields]="imageFileField" [model]="model"></formly-form>
-                        
                         <button type="submit" class="btn btn-outline-secondary">Submit</button>
                     </form>
                 </div>

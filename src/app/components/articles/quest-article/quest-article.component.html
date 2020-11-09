@@ -19,7 +19,8 @@
             </div>
             <div class="subheading d-flex align-items-center"> 
                 <span class="w-25">Quest Giver:</span>
-                <a href="/character/{{quest.giver_details.name}}">{{ quest.giver_details.name }}</a>
+                <a *ngIf="quest.giver_details" href="/character/{{quest.giver_details.name}}">{{ quest.giver_details.name }}</a>
+                <span *ngIf="!quest.giver_details"> None </span>
             </div>
         </div>
 
