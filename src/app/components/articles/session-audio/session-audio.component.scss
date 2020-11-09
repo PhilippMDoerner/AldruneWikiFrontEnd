@@ -1,0 +1,53 @@
+.mh-20rem{
+    max-height: 20rem;
+}
+
+.black-background{
+    background-color: black;
+}
+
+.timestamp-input{
+    background-color: rgba(27, 31, 34, 1);
+    font-weight: bolder;
+    color: white;
+    border: none;
+}
+
+.time-input{
+    max-width: 6.5rem;
+}
+
+.title-input{
+    max-width: 13rem;
+}
+
+.timestamp{
+    font-weight: bold;
+    color:#1e66b3 !important;
+    border-bottom: none;
+    font-size: 1.1rem;
+}
+
+.delete-timestamp{
+    transition: opacity 0.2s;
+    opacity: 0;
+}
+
+.timestamp-box:hover .delete-timestamp{
+    opacity: 1;
+}
+
+.hover-green{
+    transition: color 0.2s;
+}
+.hover-green:hover{
+    color: green;
+}
+
+.hover-red:hover{
+    color:red;
+}
+
+.fa-1-5x{
+    font-size: 1.5em;
+}

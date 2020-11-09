@@ -1,0 +1,79 @@
+<div class="main">
+    <article *ngIf="sessionAudio; else loading">
+        <app-edit-toggle></app-edit-toggle>
+        <!-- Heading -->
+        <h1 class="text-center">
+            {{ sessionAudio.session_details.name}}
+            <i class="fa fa-volume-up"></i>
+        </h1>
+
+        <!-- Audio Player -->
+        <div class="mt-4 mb-1">
+            <!-- Background Image -->
+            <div class="black-background d-flex justify-content-center" (click)="togglePlayer(vimePlayer)">
+                <img class="mw-100 mh-20rem" src="{{constants.wikiStaticUrl}}/fileserver/images/audio_pic.png"/>
+            </div>
+            <!-- Vime-Player -->
+            <vime-player class="w-100" (vCurrentSrcChange)="reloadPlayer(audioSource)" #vimePlayer>
+                <vime-audio cross-origin>
+                    <source [src]="sessionAudio.audio_file" type="audio/mp3" #audioSource/>
+                </vime-audio>
+    
+                <vime-default-ui></vime-default-ui>
+            </vime-player>
+        </div>
+
+
+        <!-- Next Buttons -->
+        <div class="mb-5 d-flex justify-content-between">
+            <a  *ngIf="priorSessionAudio"
+                routerLink="/sessionaudio/{{priorSessionAudio.isMainSessionInt}}/{{priorSessionAudio.sessionNumber}}"
+                class="btn btn-secondary float-left"> 
+                <i class="fa fa-arrow-left mr-1"></i>
+                Session {{priorSessionAudio.sessionNumber}}
+            </a>
+
+            <div class="btn btn-primary mr-auto ml-auto" (click)="toggleTimestampCreateState()">
+                Add Timestamp <i class="fa fa-clock-o ml-1"></i>
+            </div>
+
+            <a  *ngIf="nextSessionAudio"
+                routerLink="/sessionaudio/{{nextSessionAudio.isMainSessionInt}}/{{nextSessionAudio.sessionNumber}}"
+                class="btn btn-secondary float-right"> 
+                Session {{nextSessionAudio.sessionNumber}}
+                <i class="fa fa-arrow-right ml-1"></i>
+            </a>
+        </div>
+
+        <!-- Timestamps -->
+        <div class="w-75 mx-auto container mb-5">
+            <!-- Timestamp Create Form -->
+            <form [ngClass]="{'d-none': !timestampCreateState, 'row my-1': timestampCreateState}">
+                <div class="col-lg-1"></div>
+                <input type="text" name="time" class="timestamp-input black-background border border-dark col-lg-2 pr-0" maxlength="8" minlength="8" placeholder="HH:MM:SS" [(ngModel)]="timestamp_model.time" />
+                <input type="text" name="title" class="timestamp-input black-background border border-dark col-lg-8" max-length="100" placeholder="Title..." [(ngModel)]="timestamp_model.name" />
+                <div class="col-lg-1 d-flex flex-row align-items-center">
+                    <i class="icon hover-red fa fa-1-5x fa-times mx-1" (click)="cancelTimestampCreateState()"></i>
+                    <i class="icon hover-green fa fa-1-5x fa-check mx-1" (click)="createTimestamp()"></i>
+                </div>
+            </form>
+
+            <!-- Timestamp List -->
+            <div *ngFor="let timestamp of timestamps" class="row timestamp-box my-1">
+                <div class="col-1 d-flex align-items-center justify-content-center">
+                    <i class="icon fa fa-trash delete-timestamp" (click)="deleteTimestamp(timestamp.pk)"></i>
+                </div>
+                <a (click)="vimePlayer.currentTime=timestamp.time" href="#" class="timestamp col-2 text-align-right"> {{timeToString(timestamp.time)}} </a>    
+                <span class="col-9">{{timestamp.name}}</span>
+            </div>
+        </div>
+
+        <!-- Ending -->
+        <div class="d-block mt-2">
+            <a routerLink="/sessionaudio" class="btn btn-secondary mr-1">Back to SessionAudio Overview</a>
+            <app-delete-toggle></app-delete-toggle>
+        </div>
+    </article>
+    <!-- Loading Spinner -->
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>
