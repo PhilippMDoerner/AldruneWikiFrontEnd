@@ -1,12 +1,12 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ContentChild, ContentChildren, ElementRef, OnInit, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { indexOf } from 'lodash';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { SessionAudio } from 'src/app/models/sessionaudio';
 import { EmptyFormTimestamp, Timestamp } from 'src/app/models/timestamp';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
+
 
 @Component({
   selector: 'app-session-audio',
@@ -28,6 +28,9 @@ export class SessionAudioComponent implements OnInit {
   sessionAudio_subscription: Subscription;
   parameter_subscription: Subscription;
   timestamp_suscription: Subscription;
+
+  @ContentChild("audioSource") audioSourceChild: ElementRef;
+  @ViewChild("audioSource") audioSourceChild2: ElementRef;
 
 
   constructor(
@@ -52,14 +55,23 @@ export class SessionAudioComponent implements OnInit {
         this.timestamps = timestamps;
       })
     })
+  }
 
+  ngAfterViewInit(){
+    console.log(this.audioSourceChild);
+    console.log(this.audioSourceChild2);
   }
 
   routeToSessionAudio({isMainSessionInt, sessionNumber}){
+    //Only needed because the vime player doesn't properly trigger events for src changes
     this.router.navigateByUrl(`sessionaudio/${isMainSessionInt}/${sessionNumber}`);
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
   }
 
   reloadPlayer(audioSource){
+    console.log("Reload");
     const audioPlayer = audioSource.parentElement;
     audioPlayer.load();
   }

@@ -14,7 +14,7 @@
                 <img class="mw-100 mh-20rem" src="{{constants.wikiStaticUrl}}/fileserver/images/audio_pic.png"/>
             </div>
             <!-- Vime-Player -->
-            <vime-player class="w-100" (vCurrentSrcChange)="reloadPlayer(audioSource)" #vimePlayer>
+            <vime-player class="w-100" #vimePlayer>
                 <vime-audio cross-origin>
                     <source [src]="sessionAudio.audio_file" type="audio/mp3" #audioSource/>
                 </vime-audio>
@@ -23,11 +23,11 @@
             </vime-player>
         </div>
 
-
         <!-- Next Buttons -->
+        <!-- routerLink="/sessionaudio/{{priorSessionAudio.isMainSessionInt}}/{{priorSessionAudio.sessionNumber}}" -->
         <div class="mb-5 d-flex justify-content-between">
             <a  *ngIf="priorSessionAudio"
-                routerLink="/sessionaudio/{{priorSessionAudio.isMainSessionInt}}/{{priorSessionAudio.sessionNumber}}"
+                (click)="routeToSessionAudio(priorSessionAudio)"
                 class="btn btn-secondary float-left"> 
                 <i class="fa fa-arrow-left mr-1"></i>
                 Session {{priorSessionAudio.sessionNumber}}
@@ -37,8 +37,9 @@
                 Add Timestamp <i class="fa fa-clock-o ml-1"></i>
             </div>
 
+            <!--  routerLink="/sessionaudio/{{nextSessionAudio.isMainSessionInt}}/{{nextSessionAudio.sessionNumber}}" -->
             <a  *ngIf="nextSessionAudio"
-                routerLink="/sessionaudio/{{nextSessionAudio.isMainSessionInt}}/{{nextSessionAudio.sessionNumber}}"
+                (click)="routeToSessionAudio(nextSessionAudio)"
                 class="btn btn-secondary float-right"> 
                 Session {{nextSessionAudio.sessionNumber}}
                 <i class="fa fa-arrow-right ml-1"></i>
