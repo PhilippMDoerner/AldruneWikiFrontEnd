@@ -29,6 +29,7 @@ export class LocationArticleComponent implements OnInit {
       const parentLocationName: string = params['parent_name'] ? params['parent_name'] : "None";
       this.location_subscription = this.locationService.getLocation(parentLocationName, locationName).subscribe(location => {
         this.location = location;
+        console.log(this.location.parent_location_list);
       }, error =>{ console.log(error)});
     }, error => console.log(error));
   }
@@ -43,14 +44,18 @@ export class LocationArticleComponent implements OnInit {
     })
   }
 
+  buildLocationRoute(index: number){
+    const locationList: string[] = this.location.parent_location_list;
+    if (!locationList) throw "Tried building a route to a location in parent_location_list when there is no parent_location_list";
+    const locationName: string = locationList[index];
+    const parentLocationName: string = (index === 0) ? "None" : locationList[index-1];
+    return `/location/${parentLocationName}/${locationName}`;
+  }
+
   deleteArticle(){
       this.locationService.deleteLocation(this.location.pk).subscribe(response => {
         this.router.navigateByUrl("/location");
       }, error => console.log(error));
-  }
-
-  addSublocation(){
-    console.log("Totally add a sublocation, link to the creation form there with some pre-filled stuff");
   }
 
   ngOnDestroy(){

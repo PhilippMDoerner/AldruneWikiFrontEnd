@@ -22,5 +22,9 @@
 }
 
 .badge a:hover{
-    color: darkblue !important;
+    color: gray !important;
+}
+
+.badge-secondary{
+    background-color: rgba(27, 31, 34, 1);
 }

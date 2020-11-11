@@ -14,6 +14,7 @@ export interface Location {
         'parent_location': string,
         'name_full': string,
     },
+    "parent_location_list"?: string[],
     "pk": number,
     "characters"?: LocationCharacter[],
     "sublocations"?: SubLocation[]
