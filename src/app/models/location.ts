@@ -17,7 +17,8 @@ export interface Location {
     "parent_location_list"?: string[],
     "pk": number,
     "characters"?: LocationCharacter[],
-    "sublocations"?: SubLocation[]
+    "sublocations"?: SubLocation[],
+    "marker_details"?: [{'map': string, 'map_icon': string}],
 }
 
 export interface SubLocation{

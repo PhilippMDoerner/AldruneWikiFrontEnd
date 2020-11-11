@@ -52,6 +52,8 @@ import { SearchComponent } from './components/articles/search/search.component';
 import { SessionAudioComponent } from './components/articles/session-audio/session-audio.component';
 import { SessionAudioOverviewComponent } from './components/articles/session-audio-overview/session-audio-overview.component';
 import { SessionAudioUpdateComponent } from './components/articles/session-audio-update/session-audio-update.component';
+import { MarkerComponent } from './components/articles/marker/marker.component';
+import { EncounterComponent } from './components/articles/encounter/encounter.component';
 
 @NgModule({
   declarations: [
@@ -96,6 +98,8 @@ import { SessionAudioUpdateComponent } from './components/articles/session-audio
     SessionAudioComponent,
     SessionAudioOverviewComponent,
     SessionAudioUpdateComponent,
+    MarkerComponent,
+    EncounterComponent,
   ],
   imports: [
     BrowserModule,

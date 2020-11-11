@@ -25,6 +25,8 @@ import { SearchComponent } from './components/articles/search/search.component';
 import { SessionAudioComponent } from './components/articles/session-audio/session-audio.component';
 import { SessionAudioOverviewComponent } from './components/articles/session-audio-overview/session-audio-overview.component';
 import { SessionAudioUpdateComponent } from './components/articles/session-audio-update/session-audio-update.component';
+import { MarkerComponent } from './components/articles/marker/marker.component';
+import { EncounterComponent } from './components/articles/encounter/encounter.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -32,6 +34,8 @@ const routes: Routes = [
   {path: "character/create", component: CharacterArticleUpdateComponent},
   {path: "character/:name", component: CharacterArticleComponent},
   {path: "character/:name/update", component: CharacterArticleUpdateComponent},
+
+  {path: "encounter/:pk", component: EncounterComponent},
   
   {path: "location", component: ArticleOverviewComponent},
   {path: "location/create", component: LocationArticleUpdateComponent},
@@ -69,6 +73,8 @@ const routes: Routes = [
   {path: "sessionaudio/create", component: SessionAudioUpdateComponent},  
   {path: "sessionaudio/:isMainSession/:sessionNumber", component: SessionAudioComponent},
   {path: "sessionaudio/:isMainSession/:sessionNumber/update", component: SessionAudioUpdateComponent},
+
+  {path:  "marker/:parent_location_name/:location_name/:map_name", component: MarkerComponent},
 
   {path: "rules", component: RulesComponent},
   {path: "spells", component: SpellsComponent},

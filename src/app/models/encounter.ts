@@ -9,7 +9,7 @@ export interface Encounter{
     "encounterConnections"?: EncounterConnection[],
     "name"?: string
     "location": number,
-    "location_details"?: {"name": string, "pk": number, "name_full": string},
+    "location_details"?: {"name": string, "pk": number, "name_full": string, "parent_location_name": string},
 }
 
 interface encounterLocation{
