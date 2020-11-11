@@ -87,7 +87,6 @@ export class EncounterAccordionComponent implements OnInit {
     encounter.description = updateText;
     this.encounterService.updateEncounter(encounter).subscribe(encounter => {
       this.encounters[encounterIndex] = encounter;
-      console.log(encounter);
     }, error => console.log(error));
   }
 
@@ -132,7 +131,6 @@ export class EncounterAccordionComponent implements OnInit {
 
   createEncounter(model: Encounter){
     this.encounterService.createEncounter(model).subscribe(encounter => {
-      console.log(encounter);
       this.toggleEncounterCreateState();
       this.encounters.unshift(encounter);
       this.connectCharacterToEncounter(encounter);

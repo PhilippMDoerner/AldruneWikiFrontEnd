@@ -3,7 +3,12 @@
         <!-- Heading -->
         <app-edit-toggle [isInUpdateState]=false [link]="'update'"></app-edit-toggle>
 
-        <h1 class="text-center"> {{ location.name }} </h1>
+        <h1 class="text-center">
+            {{ location.name }} 
+            <a *ngFor="let marker of location.marker_details" class="mx-1 no-underline" routerLink="/marker/{{location.parent_location_details.name}}/{{location.name}}/{{marker.map}}">
+                <i class="fa fa-{{marker.map_icon}} icon"></i>
+            </a>
+        </h1>
         <!-- String indicating all parent_locations -->
         <p *ngIf="location.parent_location_list.length > 0" class="text-center font-italic mb-5">
             <span *ngFor="let loc of location.parent_location_list; let i = index"> 
