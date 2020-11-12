@@ -28,6 +28,8 @@ import { SessionAudioUpdateComponent } from './components/articles/session-audio
 import { MarkerComponent } from './components/articles/marker/marker.component';
 import { EncounterComponent } from './components/articles/encounter/encounter.component';
 import { MarkerUpdateComponent } from './components/articles/marker-update/marker-update.component';
+import { MapComponent } from './components/articles/map/map.component';
+import { MapUpdateComponent } from './components/articles/map-update/map-update.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -78,6 +80,11 @@ const routes: Routes = [
   {path:  "marker/:parent_location_name/:location_name/create", component: MarkerUpdateComponent},
   {path:  "marker/:parent_location_name/:location_name/:map_name", component: MarkerComponent},
   {path:  "marker/:parent_location_name/:location_name/:map_name/update", component: MarkerUpdateComponent},
+
+  {path: "map/create", component: MapUpdateComponent},
+  {path: "map/:name", component: MapComponent},
+  {path: "map/:name/update", component: MapUpdateComponent},
+
 
   {path: "rules", component: RulesComponent},
   {path: "spells", component: SpellsComponent},

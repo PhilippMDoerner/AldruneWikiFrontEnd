@@ -1,0 +1,19 @@
+<div class="main">
+    <article *ngIf="maps && currentMap; else loading">
+        <!-- Heading -->
+        <app-edit-toggle></app-edit-toggle>
+        <h3 class="text-center mb-5 icon-container">
+            Map of
+            <select name="map" id="map" class="ml-2">
+                <option *ngFor="let map of maps" value="{{map.name}}">{{map.name}}</option>
+            </select>
+            <i class="fa fa-plus icon ml-2" routerLink="/map/create"></i>
+        </h3>
+
+        <!-- Leaflet Map -->
+        <app-leaflet-map></app-leaflet-map>
+
+        <app-delete-toggle (deleteEvent)="deleteMap()"></app-delete-toggle>
+    </article>
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

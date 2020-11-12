@@ -23,13 +23,6 @@ export class EmptyMapMarker implements MapMarker{
     type = null;
 }
 
-export interface SimpleMapMarker{
-    "color": string,
-    "icon": string,
-    "latitude": number,
-    "longitude": number,
-    "map": number,
-    "location": number,
-    "type": number,
-    "pk": number  
+export interface ExtendedMapMarker extends MapMarker{
+    "walumba": string,
 }

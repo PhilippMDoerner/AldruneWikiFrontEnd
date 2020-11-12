@@ -55,6 +55,9 @@ import { SessionAudioUpdateComponent } from './components/articles/session-audio
 import { MarkerComponent } from './components/articles/marker/marker.component';
 import { EncounterComponent } from './components/articles/encounter/encounter.component';
 import { MarkerUpdateComponent } from './components/articles/marker-update/marker-update.component';
+import { MapComponent } from './components/articles/map/map.component';
+import { MapUpdateComponent } from './components/articles/map-update/map-update.component';
+import { LeafletMapComponent } from './components/utility/leaflet-map/leaflet-map.component';
 
 @NgModule({
   declarations: [
@@ -102,6 +105,9 @@ import { MarkerUpdateComponent } from './components/articles/marker-update/marke
     MarkerComponent,
     EncounterComponent,
     MarkerUpdateComponent,
+    MapComponent,
+    MapUpdateComponent,
+    LeafletMapComponent,
   ],
   imports: [
     BrowserModule,
