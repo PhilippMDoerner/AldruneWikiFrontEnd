@@ -53,8 +53,8 @@
 
                 <!-- Encounter Footer -->
                 <div class="float-right mb-3">
-                    <div class="btn btn-outline-danger" (click)="toggleEncounterDeleteState()">
-                        <i *ngIf="!isEncounterDeleteState" class="fa fa-trash"></i>
+                    <div *ngIf="!isEncounterDeleteState" class="btn btn-outline-danger" (click)="toggleEncounterDeleteState()">
+                        <i class="fa fa-trash"></i>
                     </div>
                     <div *ngIf="isEncounterDeleteState" class="delete-request" id="encounter-delete">
                         <span class="mr-3"> <strong>Delete this encounter?</strong> </span>  

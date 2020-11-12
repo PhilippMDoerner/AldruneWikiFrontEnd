@@ -27,6 +27,7 @@ import { SessionAudioOverviewComponent } from './components/articles/session-aud
 import { SessionAudioUpdateComponent } from './components/articles/session-audio-update/session-audio-update.component';
 import { MarkerComponent } from './components/articles/marker/marker.component';
 import { EncounterComponent } from './components/articles/encounter/encounter.component';
+import { MarkerUpdateComponent } from './components/articles/marker-update/marker-update.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -74,7 +75,9 @@ const routes: Routes = [
   {path: "sessionaudio/:isMainSession/:sessionNumber", component: SessionAudioComponent},
   {path: "sessionaudio/:isMainSession/:sessionNumber/update", component: SessionAudioUpdateComponent},
 
+  {path:  "marker/:parent_location_name/:location_name/create", component: MarkerUpdateComponent},
   {path:  "marker/:parent_location_name/:location_name/:map_name", component: MarkerComponent},
+  {path:  "marker/:parent_location_name/:location_name/:map_name/update", component: MarkerUpdateComponent},
 
   {path: "rules", component: RulesComponent},
   {path: "spells", component: SpellsComponent},

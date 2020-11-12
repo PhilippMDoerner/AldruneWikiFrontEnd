@@ -18,7 +18,7 @@
 }
 
 .badge{
-    background-color: #292929;
+    background-color: #1b1f22;
 }
 
 .badge a:hover{
@@ -86,5 +86,14 @@ h4:hover .icon{
 }
 
 .btn-secondary{
-    background-color: #292929;
+    background-color: #1b1f22;
+}
+
+.btn-outline-secondary{
+    border-color: #1b1f22;
+    color: white;
+}
+
+.btn-outline-secondary:hover{
+    background-color: #1b1f22;
 }

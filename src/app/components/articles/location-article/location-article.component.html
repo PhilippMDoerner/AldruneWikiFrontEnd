@@ -2,6 +2,9 @@
     <article *ngIf="location; else loading">
         <!-- Heading -->
         <app-edit-toggle [isInUpdateState]=false [link]="'update'"></app-edit-toggle>
+        <a routerLink="/marker/{{location.parent_location_details.name}}/{{location.name}}/create" class="btn btn-outline-secondary float-right mr-4">
+            Add Marker
+        </a>
 
         <h1 class="text-center">
             {{ location.name }} 
@@ -58,7 +61,7 @@
         <!-- Return Buttons -->
         <a routerLink="/location" class="btn btn-outline-secondary mr-1">Back to locations</a>
         <a 
-        *ngIf="location.parent_location_details"
+        *ngIf="location.parent_location_details.name !== constants.NONE_STRING"
         routerLink="/location/{{location.parent_location_details.parent_location}}/{{location.parent_location_details.name}}"
         class="btn btn-outline-secondary">
             Back to {{location.parent_location_details.name}}

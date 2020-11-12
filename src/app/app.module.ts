@@ -54,6 +54,7 @@ import { SessionAudioOverviewComponent } from './components/articles/session-aud
 import { SessionAudioUpdateComponent } from './components/articles/session-audio-update/session-audio-update.component';
 import { MarkerComponent } from './components/articles/marker/marker.component';
 import { EncounterComponent } from './components/articles/encounter/encounter.component';
+import { MarkerUpdateComponent } from './components/articles/marker-update/marker-update.component';
 
 @NgModule({
   declarations: [
@@ -100,6 +101,7 @@ import { EncounterComponent } from './components/articles/encounter/encounter.co
     SessionAudioUpdateComponent,
     MarkerComponent,
     EncounterComponent,
+    MarkerUpdateComponent,
   ],
   imports: [
     BrowserModule,

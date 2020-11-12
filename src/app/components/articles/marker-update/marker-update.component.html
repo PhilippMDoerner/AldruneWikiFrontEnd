@@ -1,0 +1,26 @@
+<div class="main">
+    <article class="mb-5" *ngIf="markerLocation; else loading">
+        <div *ngIf="formState===constants.updateState && model; else createState">
+            <app-edit-toggle [isInUpdateState]=true [link]="'..'"></app-edit-toggle>
+
+            <h2 class="text-center">
+                Updating Marker for {{model.location_details.name}} on {{model.map_details.name}}
+            </h2>
+        </div>
+
+        <ng-template #createState>
+            <app-edit-toggle [isInUpdateState]=true [link]="'/location/'+markerLocation.parent_location_details.name+'/'+markerLocation.name"></app-edit-toggle>
+
+            <h2 class="text-center">
+                Adding a new Marker
+            </h2>
+        </ng-template>
+
+        <!-- Form -->
+        <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+        </form>
+    </article>
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>
