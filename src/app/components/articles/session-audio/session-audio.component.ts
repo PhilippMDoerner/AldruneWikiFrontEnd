@@ -57,11 +57,6 @@ export class SessionAudioComponent implements OnInit {
     })
   }
 
-  ngAfterViewInit(){
-    console.log(this.audioSourceChild);
-    console.log(this.audioSourceChild2);
-  }
-
   routeToSessionAudio({isMainSessionInt, sessionNumber}){
     //Only needed because the vime player doesn't properly trigger events for src changes
     this.router.navigateByUrl(`sessionaudio/${isMainSessionInt}/${sessionNumber}`);

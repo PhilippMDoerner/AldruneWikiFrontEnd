@@ -7,7 +7,6 @@ import { Constants } from 'src/app/app.constants';
 import { EmptyFormLocation, Location } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { OverviewService } from 'src/app/services/overview.service';
 
 
 @Component({
@@ -16,7 +15,6 @@ import { OverviewService } from 'src/app/services/overview.service';
   styleUrls: ['./location-article-update.component.scss']
 })
 export class LocationArticleUpdateComponent implements OnInit {
-
   private location_subscription: Subscription;
   private parameter_subscription: Subscription;
   private parent_location_subscription: Subscription;

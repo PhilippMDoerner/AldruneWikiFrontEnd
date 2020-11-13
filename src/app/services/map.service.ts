@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
 import { ExtendedMap, Map } from '../models/map';
+import { convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,8 @@ export class MapService {
   }
 
   createMap(map: Map): Observable<ExtendedMap>{
-    return this.http.post<ExtendedMap>(`${this.mapUrl}/`, map);
+    const formData: FormData = convertSingleFileModelToFormData(map, "image");
+    return this.http.post<ExtendedMap>(`${this.mapUrl}/`, formData);
   }
 
   deleteMap(map_pk: number): Observable<any>{
@@ -25,12 +27,8 @@ export class MapService {
   }
 
   updateMap(map: Map): Observable<ExtendedMap>{
+    const formData: FormData = convertSingleFileModelToFormData(map, "image");
     const url: string = `${this.mapUrl}/pk/${map.pk}`;
-    return this.http.put<ExtendedMap>(url, map);
-  }
-
-  getFoliumMap(mapName: string): Observable<any>{
-    const url: string = `${this.mapUrl}/folium/${mapName}`
-    return this.http.get(url);
+    return this.http.put<ExtendedMap>(url, formData);
   }
 }

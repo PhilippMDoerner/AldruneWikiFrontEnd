@@ -1,1 +1,30 @@
-<p>map-update works!</p>
+<div class="main">
+    <article class="mb-5">
+        <!-- Heading -->
+        <div *ngIf="formState===constants.updateState && model; else createState">
+            <app-edit-toggle [isInUpdateState]=true [link]="'..'"></app-edit-toggle>
+
+            <h2 class="text-center">
+                Updating Map {{ model.name }}
+            </h2>
+        </div>
+        
+        <ng-template #createState>
+            <app-edit-toggle [isInUpdateState]=true [link]="'/map/Aldrune'"></app-edit-toggle>
+
+            <h2 class="text-center">
+                Adding a new Map
+            </h2>
+        </ng-template>
+
+
+        <!-- Form -->
+        <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+        </form>
+
+    </article>
+    <!-- Spinner while loading -->
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

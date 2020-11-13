@@ -41,11 +41,16 @@ export class MapComponent implements OnInit {
 
   routeToMap(newMap: string){
     this.router.navigateByUrl(`/map/${newMap}`);
-    
+    this.router.routeReuseStrategy.shouldReuseRoute = function () {
+      return false;
+    };
   }
 
   deleteMap(){
-    console.log("Deleting Map...");
+    this.mapService.deleteMap(this.currentMap.pk).subscribe(response => {
+      const nextMapName: string = (this.currentMap.pk === this.maps[0].pk) ? this.maps[0].name : this.maps[1].name;
+      this.routeToMap(nextMapName);
+    })
   }
 
   ngOnDestroy(){
