@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, HostListener, Output } from '@angular/core';
 import { Image, EmptyImage } from "src/app/models/image";
 import { Constants } from "src/app/app.constants";
-import { deepCopy } from "src/app/utils";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ImageUploadService } from "src/app/services/image/image-upload.service";
 import { Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 
 @Component({
   selector: 'app-image-gallery',
@@ -31,101 +31,21 @@ export class ImageGalleryComponent implements OnInit {
   private imageSubscription: Subscription;
 
   fields: FormlyFieldConfig[] = [
-    {
-      key: "name",
-      type: "input",
-      templateOptions: {
-        label: "Name",
-        type: "text"
-      },
-    },
-    {
-      key: "character_article",
-      type: "input",
-      templateOptions: {
-        type: "number",
-        label: "Character Article Pk",
-      },
-      hideExpression: true,
-      expressionProperties:{
-        "templateOptions.disabled": 'true'
-      }
-    },
-    {
-      key: "location_article",
-      type: "input",
-      templateOptions: {
-        type: "number",
-        label: "Location Article Pk",
-      },
-      hideExpression: true,
-      expressionProperties:{
-        "templateOptions.disabled": 'true'
-      }
-    },
-    {
-      key: "creature_article",
-      type: "input",
-      templateOptions: {
-        type: "number",
-        label: "Creature Article Pk",
-      },
-      hideExpression: true,
-      expressionProperties:{
-        "templateOptions.disabled": 'true'
-      }
-    },
-    {
-      key: "organization_article",
-      type: "input",
-      templateOptions: {
-        type: "number",
-        label: "Organization Article Pk",
-      },
-      hideExpression: true,
-      expressionProperties:{
-        "templateOptions.disabled": 'true'
-      }
-    },
-    {
-      key: "encounter_article",
-      type: "input",
-      templateOptions: {
-        type: "number",
-        label: "Encounter Article Pk",
-      },
-      hideExpression: true,
-      expressionProperties:{
-        "templateOptions.disabled": 'true'
-      }
-    },
-    {
-      key: "item_article",
-      type: "input",
-      templateOptions: {
-        type: "number",
-        label: "Item Article Pk",
-      },
-      hideExpression: true,
-      expressionProperties:{
-        "templateOptions.disabled": 'true'
-      }
-    },
+    this.formlyService.genericInput({key: "name", required: false}),
+    this.formlyService.genericInput({key: "character_article", label: "Character Article", hide: true, isNumberInput: true, required: false}),
+    this.formlyService.genericInput({key: "location_article", label: "Location Article", hide: true, isNumberInput: true, required: false}),
+    this.formlyService.genericInput({key: "creature_article", label: "Creature Article", hide: true, isNumberInput: true, required: false}),
+    this.formlyService.genericInput({key: "organization_article", label: "Organization Article", hide: true, isNumberInput: true, required: false}),
+    this.formlyService.genericInput({key: "encounter_article", label: "Encounter Article", hide: true, isNumberInput: true, required: false}),
+    this.formlyService.genericInput({key: "item_article", label: "Item Article", hide: true, isNumberInput: true, required: false}),
+    this.formlyService.singleFileField({key: "image"})
   ]
 
-  imageFileField: FormlyFieldConfig[] = [
-    {
-      key: "image",
-      type: "file",
-      templateOptions: {
-        change: (field, $event) => this.onFileSelected($event)
-      },
-    },
-  ]
-
-
-
-  constructor(private modalService: NgbModal, private imageUploadService: ImageUploadService) { }
+  constructor(
+    private modalService: NgbModal,
+    private imageUploadService: ImageUploadService,
+    private formlyService: MyFormlyService
+    ) { }
 
   ngOnInit(): void {}
 
@@ -200,14 +120,10 @@ export class ImageGalleryComponent implements OnInit {
   }
 
   createImage(){
-    this.imageUploadService.postImage(this.model, this.formImageFile).subscribe(createdImage => {
+    this.imageUploadService.postImage(this.model).subscribe(createdImage => {
       this.images.push(createdImage);
       this.resetImageModel();
     }, error => console.log(error));  
-  }
-
-  onFileSelected(event) {
-    this.formImageFile = event.target.files[0];
   }
 
   // Delete Image
@@ -225,23 +141,16 @@ export class ImageGalleryComponent implements OnInit {
     const currentMainImage = this.getCurrentMainImage();
 
     this.imageUploadService.deleteImage(currentMainImage.pk).subscribe(response => {
-      console.log(response);
-    }, error => {
-      console.log(error);
-    })
-    
-    this.images.splice(this.visibleImageIndex, 1);
-    if (this.visibleImageIndex === this.images.length){
-      this.visibleImageIndex = this.images.length - 1;
-    }
+      this.images.splice(this.visibleImageIndex, 1);
+      if (this.visibleImageIndex === this.images.length){
+        this.visibleImageIndex = this.images.length - 1;
+      }
+    }, error => console.log(error))
   }
 
   isLastImage(){
-    if(this.images){
-      return this.images.length === 1;
-    }
-
-    return true;
+    if(this.images) return this.images.length === 1;
+    else return true;
   }
 
   ngOnDestroy(){

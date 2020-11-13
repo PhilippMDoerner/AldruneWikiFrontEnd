@@ -7,6 +7,7 @@ import { OrganizationService } from 'src/app/services/organization/organization.
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { OverviewService } from 'src/app/services/overview.service';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 
 @Component({
   selector: 'app-organization-article-update',
@@ -23,40 +24,16 @@ export class OrganizationArticleUpdateComponent implements OnInit {
   form = new FormGroup({});
   model: Organization | EmptyFormOrganization;
   fields: FormlyFieldConfig[] = [
-    {
-      key: "name",
-      type: "input",
-      templateOptions:{
-        label: "Name"
-      }
-    },
-    {
-      key: "leader",
-      type: "select",
-      templateOptions:{
-        label: "Leader",
-        labelProp: "name",
-        valueProp: "name",
-        options: this.selectOptionService.getOverviewItems('character'),
-      }
-    },
-    {
-      key: "headquarter",
-      type: "select",
-      templateOptions:{
-        label: "Headquarter",
-        labelProp: "name",
-        valueProp: "pk",
-        options: this.selectOptionService.getOverviewItems('location'),
-      }
-    },
+    this.formlyService.genericInput({key: "name"}),
+    this.formlyService.genericSelect({key: "leader", valueProp: "name", optionsType: "character"}),
+    this.formlyService.genericSelect({key: "headquarter", optionsType: "location"}),
   ];
 
   constructor(
-    private selectOptionService: OverviewService,
     private organizationService: OrganizationService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private formlyService: MyFormlyService,
   ) { }
 
   ngOnInit(): void {

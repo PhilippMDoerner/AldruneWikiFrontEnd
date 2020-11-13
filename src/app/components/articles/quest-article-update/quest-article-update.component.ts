@@ -9,6 +9,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { OverviewService } from 'src/app/services/overview.service';
 import { QuestService } from 'src/app/services/quest.service';
 import { CharacterService } from 'src/app/services/character/character.service';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 
 @Component({
   selector: 'app-quest-article-update',
@@ -25,14 +26,7 @@ export class QuestArticleUpdateComponent implements OnInit {
   form = new FormGroup({});
   model: Quest | EmptyFormQuest;
   fields: FormlyFieldConfig[] = [
-    {
-      key: "name",
-      type: "input",
-      templateOptions:{
-        label: "Name",
-        placeholder:"Quest Name"
-      }
-    },
+    this.formlyService.genericInput({key: "name", placeholder: "Quest Name"}),
     {
       key: "status",
       type: "select",
@@ -43,16 +37,7 @@ export class QuestArticleUpdateComponent implements OnInit {
         options: this.questService.getQuestStates(),
       }
     },
-    {
-      key: "giver",
-      type: "select",
-      templateOptions:{
-        label: "Quest Giver",
-        labelProp: "name",
-        valueProp: "pk",
-        options: this.selectOptionService.getOverviewItems('character'),
-      }
-    },
+    this.formlyService.genericSelect({key: "giver", label: "Quest Giver", optionsType: "character"}),
     { //TODO: Replace this select with a typeahead or something that allows the select drop down as an OPTION to pre-select, but also to type in whatever you want
       key: "taker",
       type: "select",
@@ -63,42 +48,16 @@ export class QuestArticleUpdateComponent implements OnInit {
         options: this.questService.getQuestTakers(),
       }
     },
-    {
-      key: "start_session",
-      type: "select",
-      templateOptions:{
-        label: "Start Session",
-        labelProp: "name",
-        valueProp: "pk",
-        options: this.selectOptionService.getOverviewItems('session'),
-      }
-    },
-    {
-      key: "end_session",
-      type: "select",
-      templateOptions:{
-        label: "End Session",
-        labelProp: "name",
-        valueProp: "pk",
-        options: this.selectOptionService.getOverviewItems('session'),
-      }
-    },
-    {
-      key: "abstract",
-      type: "input",
-      templateOptions:{
-        label: "Abstract",
-        placeholder: "Quest Summary...",
-        type: "string",
-      }
-    }
+    this.formlyService.genericSelect({key: "start_session", label: "Start Session", optionsType: "session"}),
+    this.formlyService.genericSelect({key: "end_session", label: "Start Session", optionsType: "session", required: false}),
+    this.formlyService.genericInput({key: "abstract", placeholder: "Quest Summary...", required: false})
   ];
 
   constructor(
-    private selectOptionService: OverviewService,
     private questService: QuestService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private formlyService: MyFormlyService,
   ) { }
 
   ngOnInit(): void {

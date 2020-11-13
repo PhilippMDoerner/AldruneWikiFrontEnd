@@ -16,12 +16,13 @@ export class MyFormlyService {
     return {
       key: config.key,
       type: "select",
+      hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         labelProp: (config.labelProp) ? config.labelProp : "name_full",
         valueProp: (config.valueProp) ? config.valueProp : "pk",
         options: this.selectOptionService.getOverviewItems(config.optionsType),
-        required: (config.required) ? config.required : false,
+        required: (typeof config.required === "boolean") ? config.required : true,
       }
     };
   }
@@ -35,9 +36,10 @@ export class MyFormlyService {
     return {
       key: config.key,
       type: "select",
+      hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         options: options,
-        required: (config.required) ? config.required : false,
+        required: (typeof config.required === "boolean") ? config.required : true,
       }
     }
   }
@@ -46,10 +48,11 @@ export class MyFormlyService {
     return {
       key: config.key,
       type: "input",
+      hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         type: (config.isNumberInput) ? "number" : "string",
-        required: (config.required) ? config.required : true,
+        required: (typeof config.required === "boolean") ? config.required : true,
         placeholder: (config.placeholder) ? config.placeholder : null,
       }
     }
@@ -60,6 +63,7 @@ export class MyFormlyService {
       key: config.key,
       type: "checkbox",
       defaultValue: config.defaultValue,
+      hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
       }
@@ -70,9 +74,10 @@ export class MyFormlyService {
     return {
       key: config.key,
       type: "file",
+      hideExpression: (config.hide) ? config.hide : false,
       templateOptions: {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
-        required: (config.required) ? config.required : true,
+        required: (typeof config.required === "boolean") ? config.required : true,
       }
     }
   }

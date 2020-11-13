@@ -8,6 +8,7 @@ import { DiaryEntry, EmptyFormDiaryEntry } from 'src/app/models/diaryentry';
 import { Session } from 'src/app/models/session';
 import { User } from 'src/app/models/user';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { SessionService } from 'src/app/services/session.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -22,40 +23,15 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
   form = new FormGroup({});
   model: DiaryEntry | EmptyFormDiaryEntry;
   fields: FormlyFieldConfig[] = [
-    {
-      key: "title",
-      type: "input",
-      templateOptions:{
-        label: "Title"
-      }
-    },
-    {
-      key: "author",
-      type: "select",
-      templateOptions:{
-        label: "Author",
-        labelProp: "username",
-        valueProp: "pk",
-        options: this.userService.getUsers(),
-      }
-    },
-    {
-      key: "session",
-      type: "select",
-      templateOptions:{
-        label: "Session",
-        labelProp: "name",
-        valueProp: "pk",
-        options: this.sessionService.getSessions(),
-      }
-    }
+    this.formlyService.genericInput({key: "title"}),
+    this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
+    this.formlyService.genericSelect({key: 'session', optionsType: 'session'}),
   ];
 
   private diaryEntry_subscription: Subscription;
 
   constructor(
-    private userService: UserService,
-    private sessionService: SessionService,
+    private formlyService: MyFormlyService,
     private diaryEntryService: DiaryentryService,
     private router: Router,
     private route: ActivatedRoute

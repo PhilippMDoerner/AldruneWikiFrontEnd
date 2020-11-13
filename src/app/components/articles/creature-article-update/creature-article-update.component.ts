@@ -6,6 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { Creature, EmptyFormCreature } from 'src/app/models/creature';
 import { CreatureService } from 'src/app/services/creature/creature.service';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 
 @Component({
   selector: 'app-creature-article-update',
@@ -18,18 +19,13 @@ export class CreatureArticleUpdateComponent implements OnInit {
   form = new FormGroup({});
   model: Creature | EmptyFormCreature;
   fields: FormlyFieldConfig[] = [
-    {
-      key: "name",
-      type: "input",
-      templateOptions:{
-        label: "Name"
-      }
-    },
+    this.formlyService.genericInput({key: "name"}),
   ]
 
   private creature_subscription: Subscription;
 
   constructor(
+    private formlyService: MyFormlyService,
     private creatureService: CreatureService,
     private router: Router,
     private route: ActivatedRoute,

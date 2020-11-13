@@ -74,10 +74,12 @@
     <div class="my-3 py-3 px-4 card">
         <form [formGroup]="form" (ngSubmit)="createEncounter(model)" *ngIf="isEncounterCreateState && !isEncounterUpdateState">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button class="btn btn-secondary mr-3" (click)="toggleEncounterCreateState()">Cancel</button>
             <button type="submit" class="btn btn-outline-secondary">Submit</button>
         </form>         
         <form [formGroup]="form" (ngSubmit)="updateEncounter(model)" *ngIf="!isEncounterCreateState && isEncounterUpdateState">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</button>
             <button type="submit" class="btn btn-outline-secondary">Submit</button>
         </form>    
     </div>

@@ -10,6 +10,7 @@ import { Character, EmptyFormCharacter } from "src/app/models/character";
 import { CharacterService } from "src/app/services/character/character.service";
 import { OrganizationService } from "src/app/services/organization/organization.service";
 import { LocationService } from "src/app/services/location/location.service";
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 
 @Component({
   selector: 'app-character-article-update',
@@ -23,83 +24,21 @@ export class CharacterArticleUpdateComponent implements OnInit {
   form = new FormGroup({});
   model: Character | EmptyFormCharacter;
   fields: FormlyFieldConfig[] = [
-    {
-      key: "player_character",
-      type: "checkbox",
-      defaultValue: false,
-      templateOptions: {
-        label: "Player Character",
-      }
-    },
-    {
-      key: "alive",
-      type: "checkbox",
-      defaultValue: true,
-      templateOptions:{
-        label: "Alive"
-      }
-    },
-    {
-      key: "name",
-      type: "input",
-      templateOptions:{
-        label: "Name"
-      }
-    },
-    {
-      key: "title",
-      type: "input",
-      templateOptions:{
-        label: "Title"
-      }
-    },
-    {
-      key: "gender",
-      type: "select",
-      templateOptions:{
-        label: "Sex",
-        options: [
-          {label: "Other", value: "Other"},
-          {label: "Female", value: "Female"},
-          {label: "Male", value: "Male"},
-        ]
-      }
-    },
-    {
-      key: "race",
-      type: "input",
-      templateOptions:{
-        label: "Race"
-      }
-    },
-    {
-      key: "organization",
-      type: "select",
-      templateOptions:{
-        label: "Organization",
-        labelProp: "name",
-        valueProp: "pk",
-        options: this.organizationService.getOrganizations(),
-      }
-    },
-    {
-      key: "current_location",
-      type: "select",
-      templateOptions:{
-        label: "Location",
-        labelProp: "name_full",
-        valueProp: "pk",
-        options: this.locationService.getLocations(),
-      }
-    }
+    this.formlyService.genericCheckbox({key: "player_character", label: "Player Character", defaultValue: false}),
+    this.formlyService.genericCheckbox({key: "alive", defaultValue: true}),
+    this.formlyService.genericInput({key: "name"}),
+    this.formlyService.genericInput({key: "title"}),
+    this.formlyService.customStringSelect({key:"gender", label: "Sex", options: ["Other", "Female", "Male"]}),
+    this.formlyService.genericInput({key: "race"}),
+    this.formlyService.genericSelect({key: "organization", optionsType: "organization"}),
+    this.formlyService.genericSelect({key: "current_location", label: "Location", optionsType: "location"}),
   ];
 
   private character_subscription: Subscription;
 
   constructor(
     private characterService: CharacterService,
-    private locationService: LocationService,
-    private organizationService: OrganizationService,
+    private formlyService: MyFormlyService,
     private route: ActivatedRoute,
     private router: Router
   ) { }

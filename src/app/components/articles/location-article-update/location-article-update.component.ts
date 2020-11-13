@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { EmptyFormLocation, Location } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
 
 
@@ -28,28 +29,13 @@ export class LocationArticleUpdateComponent implements OnInit {
   form = new FormGroup({});
   model: Location | EmptyFormLocation;
   fields: FormlyFieldConfig[] = [
-    {
-      key: "name",
-      type: "input",
-      templateOptions:{
-        label: "Name"
-      }
-    },
-    {
-      key: "parent_location",
-      type: "select",
-      templateOptions:{
-        label: "Parent Location",
-        labelProp: "name_full",
-        valueProp: "pk",
-        options: this.selectOptionService.getOverviewItems('location'),
-      }
-    },
+    this.formlyService.genericInput({key: "name"}),
+    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", optionsType: "location"}),
   ];
 
   constructor(
+    private formlyService: MyFormlyService,
     private locationService: LocationService,
-    private selectOptionService: OverviewService,
     private router: Router,
     private route: ActivatedRoute
   ) { }

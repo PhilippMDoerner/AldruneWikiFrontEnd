@@ -1,7 +1,8 @@
 export interface FormlyInterface{
     key: string,
     label?: string,
-    required?: boolean
+    required?: boolean,
+    hide?: boolean,
 }
 export interface FormlyOverviewSelectConfig extends FormlyInterface{
     labelProp?: string,

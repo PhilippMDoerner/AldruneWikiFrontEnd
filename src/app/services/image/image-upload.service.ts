@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { map } from "rxjs/operators"
 import { Image } from "src/app/models/image";
 import { Constants } from "src/app/app.constants";
+import { convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -37,19 +37,17 @@ export class ImageUploadService {
   //   return this.http.put<Image>(url, image);
   // }
 
-  postImage(imageModel: Image, imageFile: File): Observable<Image>{
-    console.log(imageModel);
+  postImage(imageModel: Image): Observable<Image>{
     const url = `${Constants.wikiApiUrl}/image/upload/`;
-    const formData: FormData = new FormData();
-    for ( var key in imageModel ) {
-      if (key === "image"){
-        formData.append(key, imageFile);
-      } else if (imageModel[key]){
-        formData.append(key, imageModel[key]);
-      }
-    }
-
-    const options = {headers: new HttpHeaders({"Content-Disposition": `attachment; filename=${imageFile.name}`})}
+    const formData: FormData = convertSingleFileModelToFormData(imageModel, "image");
+    // const formData: FormData = new FormData();
+    // for ( var key in imageModel ) {
+    //   if (key === "image"){
+    //     formData.append(key, imageFile);
+    //   } else if (imageModel[key]){
+    //     formData.append(key, imageModel[key]);
+    //   }
+    // }
     return this.http.post<Image>(url, formData);
   }
 

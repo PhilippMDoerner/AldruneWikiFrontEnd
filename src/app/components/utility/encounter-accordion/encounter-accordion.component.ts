@@ -9,6 +9,7 @@ import { EncounterConnection } from 'src/app/models/encounterconnection';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { EncounterConnectionService } from 'src/app/services/encounter-connection.service';
 import { EncounterServiceService } from "src/app/services/encounter/encounter-service.service";
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
 
 @Component({
@@ -35,26 +36,8 @@ export class EncounterAccordionComponent implements OnInit {
   form = new FormGroup({});
   model: Encounter | EmptyFormEncounter;
   fields: FormlyFieldConfig[] = [
-    {
-      key: "session_number",
-      type: "select",
-      templateOptions:{
-        label: "Session",
-        labelProp: "name_full",
-        valueProp: "pk",
-        options: this.overviewService.getOverviewItems('session'),
-      }
-    },
-    {
-      key: "location",
-      type: "select",
-      templateOptions:{
-        label: "Encounter Location",
-        labelProp: "name",
-        valueProp: "pk",
-        options: this.overviewService.getOverviewItems('location'),
-      }
-    },
+    this.formlyService.genericSelect({key: "session_number", label: "Session", optionsType: "session"}),
+    this.formlyService.genericSelect({key: "location", label: "Encounter Location", optionsType: "location"}),
     {
       key: "description",
       type: "tinymce",
@@ -68,7 +51,8 @@ export class EncounterAccordionComponent implements OnInit {
     private overviewService: OverviewService,
     private encounterService: EncounterServiceService,
     private encounterConnectionService: EncounterConnectionService,
-    private router: Router
+    private router: Router,
+    private formlyService: MyFormlyService,
   ) { }
 
   ngOnInit(): void {

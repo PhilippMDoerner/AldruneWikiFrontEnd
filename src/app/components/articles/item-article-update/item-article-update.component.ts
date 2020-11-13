@@ -7,6 +7,7 @@ import { Constants } from 'src/app/app.constants';
 import { Item, EmptyFormItem } from 'src/app/models/item';
 import { CharacterService } from 'src/app/services/character/character.service';
 import { ItemService } from 'src/app/services/item/item.service';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
 
 @Component({
@@ -26,31 +27,16 @@ export class ItemArticleUpdateComponent implements OnInit {
   form = new FormGroup({});
   model: Item | EmptyFormItem;
   fields: FormlyFieldConfig[] = [
-    {
-      key: "name",
-      type: "input",
-      templateOptions:{
-        label: "Name"
-      }
-    },
-    {
-      key: "owner",
-      type: "select",
-      templateOptions:{
-        label: "Owner",
-        labelProp: "name",
-        valueProp: "pk",
-        options: this.selectOptionService.getOverviewItems('character'),
-      }
-    },
+    this.formlyService.genericInput({key: 'name'}),
+    this.formlyService.genericSelect({key: 'owner', optionsType: 'character'})
   ];
 
   constructor(
     private itemService: ItemService,
-    private selectOptionService: OverviewService,
     private characterService: CharacterService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private formlyService: MyFormlyService,
   ) { }
 
   ngOnInit(): void {

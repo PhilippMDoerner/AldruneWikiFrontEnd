@@ -6,7 +6,7 @@ export function convertSingleFileModelToFormData(model: any, fileAttributeName: 
     for ( var key in model ){
         if (key === fileAttributeName){
             formData.append(key, model[fileAttributeName][0]);
-        } else {
+        } else if (model[key]){
             formData.append(key, model[key]);
         }
     }

@@ -21,6 +21,16 @@ export class MarkerMapCreateComponent implements OnInit {
 
   form = new FormGroup({});
   model: MapMarker;
+  fields: FormlyFieldConfig[] = [
+    this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
+    this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
+    this.formlyService.genericSelect({key: "Location", optionsType: 'location'}),
+    this.formlyService.genericSelect({key: "map", optionsType: "map"}),
+    this.formlyService.genericSelect({key: 'type', label: "Marker Type", optionsType: "marker_type"}),
+    this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
+    this.formlyService.genericInput({key: "icon", label: "Custom Icon", required: false}),
+  ];
+
   constructor(
     private markerService: MarkerService,
     private mapService: MapService,
@@ -29,7 +39,6 @@ export class MarkerMapCreateComponent implements OnInit {
     private formlyService: MyFormlyService,
   ) { }
 
-  fields: FormlyFieldConfig[] = this.formlyService.getFieldConfigForMarker();
 
 
   ngOnInit(): void {
