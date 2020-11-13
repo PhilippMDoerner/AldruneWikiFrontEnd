@@ -30,6 +30,8 @@ import { EncounterComponent } from './components/articles/encounter/encounter.co
 import { MarkerUpdateComponent } from './components/articles/marker-update/marker-update.component';
 import { MapComponent } from './components/articles/map/map.component';
 import { MapUpdateComponent } from './components/articles/map-update/map-update.component';
+import { MarkerMapCreateComponent } from './components/articles/marker-map-create/marker-map-create.component';
+import { LocationArticleMapCreateComponent } from './components/articles/location-article-map-create/location-article-map-create.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -44,6 +46,7 @@ const routes: Routes = [
   {path: "location/create", component: LocationArticleUpdateComponent},
   {path: "location/:parent_name/:name", component: LocationArticleComponent},
   {path: "location/:parent_name/:name/create", component: LocationArticleUpdateComponent},
+  {path: "location/:latitude/:longitude/:map_name/create", component: LocationArticleMapCreateComponent},
   {path: "location/:parent_name/:name/update", component: LocationArticleUpdateComponent},
 
   {path: "diaryentry", component: ArticleOverviewComponent},
@@ -78,6 +81,7 @@ const routes: Routes = [
   {path: "sessionaudio/:isMainSession/:sessionNumber/update", component: SessionAudioUpdateComponent},
 
   {path:  "marker/:parent_location_name/:location_name/create", component: MarkerUpdateComponent},
+  {path:  "marker/:latitude/:longitude/:map/create", component: MarkerMapCreateComponent},
   {path:  "marker/:parent_location_name/:location_name/:map_name", component: MarkerComponent},
   {path:  "marker/:parent_location_name/:location_name/:map_name/update", component: MarkerUpdateComponent},
 

@@ -58,6 +58,8 @@ import { MarkerUpdateComponent } from './components/articles/marker-update/marke
 import { MapComponent } from './components/articles/map/map.component';
 import { MapUpdateComponent } from './components/articles/map-update/map-update.component';
 import { LeafletMapComponent } from './components/utility/leaflet-map/leaflet-map.component';
+import { MarkerMapCreateComponent } from './components/articles/marker-map-create/marker-map-create.component';
+import { LocationArticleMapCreateComponent } from './components/articles/location-article-map-create/location-article-map-create.component';
 
 @NgModule({
   declarations: [
@@ -108,6 +110,8 @@ import { LeafletMapComponent } from './components/utility/leaflet-map/leaflet-ma
     MapComponent,
     MapUpdateComponent,
     LeafletMapComponent,
+    MarkerMapCreateComponent,
+    LocationArticleMapCreateComponent,
   ],
   imports: [
     BrowserModule,
