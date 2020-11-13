@@ -1,13 +1,7 @@
 import { Injectable } from '@angular/core';
-import { FormlyGenericInputConfig, FormlyOverviewSelectConfig } from "src/app/models/formly";
-import { FormlyField, FormlyFieldConfig } from "@ngx-formly/core";
-import { LocationService } from './location/location.service';
-import { OrganizationService } from './organization/organization.service';
-import { RouteConfigLoadStart } from '@angular/router';
-import { Location } from "src/app/models/location";
+import { FormlyCheckboxConfig, FormlyCustomStringSelectConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewSelectConfig } from "src/app/models/formly";
+import { FormlyFieldConfig } from "@ngx-formly/core";
 import { OverviewService } from './overview.service';
-import { config } from 'rxjs';
-import { isNumber } from 'lodash';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +9,6 @@ import { isNumber } from 'lodash';
 export class MyFormlyService {
 
   constructor(
-    private locationService: LocationService,
-    private organizationService: OrganizationService,
     private selectOptionService: OverviewService
   ) { }
 
@@ -27,21 +19,27 @@ export class MyFormlyService {
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         labelProp: (config.labelProp) ? config.labelProp : "name_full",
-        valueProp: "pk",
+        valueProp: (config.valueProp) ? config.valueProp : "pk",
         options: this.selectOptionService.getOverviewItems(config.optionsType),
+        required: (config.required) ? config.required : false,
       }
     };
   }
 
-  genericNumberInput(config: FormlyGenericInputConfig): FormlyFieldConfig{
+  customStringSelect(config: FormlyCustomStringSelectConfig): FormlyFieldConfig{
+    let options: {label: string, value: string}[] = [];
+    for (let option of config.options){
+      options.push({label: option, value: option});
+    }
+
     return {
       key: config.key,
-      type: "input",
+      type: "select",
       templateOptions:{
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
-        type: "number"
+        options: options,
+        required: (config.required) ? config.required : false,
       }
-    };
+    }
   }
 
   genericInput(config: FormlyGenericInputConfig): FormlyFieldConfig{
@@ -51,6 +49,30 @@ export class MyFormlyService {
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         type: (config.isNumberInput) ? "number" : "string",
+        required: (config.required) ? config.required : true,
+        placeholder: (config.placeholder) ? config.placeholder : null,
+      }
+    }
+  }
+
+  genericCheckbox(config: FormlyCheckboxConfig): FormlyFieldConfig{
+    return{
+      key: config.key,
+      type: "checkbox",
+      defaultValue: config.defaultValue,
+      templateOptions:{
+        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+      }
+    }
+  }
+
+  singleFileField(config: FormlyInterface): FormlyFieldConfig{
+    return {
+      key: config.key,
+      type: "file",
+      templateOptions: {
+        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+        required: (config.required) ? config.required : true,
       }
     }
   }

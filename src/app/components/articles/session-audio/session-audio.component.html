@@ -72,7 +72,7 @@
         <!-- Ending -->
         <div class="d-block mt-2">
             <a routerLink="/sessionaudio" class="btn btn-secondary mr-1">Back to SessionAudio Overview</a>
-            <app-delete-toggle></app-delete-toggle>
+            <app-delete-toggle (deleteEvent)="deleteArticle()"></app-delete-toggle>
         </div>
     </article>
     <!-- Loading Spinner -->

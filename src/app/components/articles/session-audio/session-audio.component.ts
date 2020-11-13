@@ -70,6 +70,12 @@ export class SessionAudioComponent implements OnInit {
     };
   }
 
+  deleteArticle(){
+    this.sessionAudioService.deleteSessionAudioFile(this.sessionAudio.pk).subscribe(response => {
+      this.router.navigateByUrl("/sessionaudio");
+    }, error => console.log(error));
+  }
+
   reloadPlayer(audioSource){
     console.log("Reload");
     const audioPlayer = audioSource.parentElement;

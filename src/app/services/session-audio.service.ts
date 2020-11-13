@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Session } from 'protractor';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
 import { SessionAudio } from '../models/sessionaudio';
+import { convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
 
 @Injectable({
   providedIn: 'root'
@@ -18,13 +18,14 @@ export class SessionAudioService {
     return this.http.get<SessionAudio>(url);
   }
 
-  createSessionAudioFile(sessionAudioEntry: SessionAudio): Observable<SessionAudio>{
-    return this.http.post<SessionAudio>(`${this.sessionAudioUrl}/`, sessionAudioEntry);
+  createSessionAudioFile(sessionAudioModel: SessionAudio): Observable<SessionAudio>{
+    const formData: FormData = convertSingleFileModelToFormData(sessionAudioModel, "audio_file");
+    return this.http.post<SessionAudio>(`${this.sessionAudioUrl}/`, formData);
   }
 
-  updateSessionAudioFile(sessionAudioEntry: SessionAudio): Observable<SessionAudio>{
-    const url = `${this.sessionAudioUrl}/pk/${sessionAudioEntry.pk}`;
-    return this.http.put<SessionAudio>(url, sessionAudioEntry);
+  updateSessionAudioFile(sessionAudioModel: SessionAudio): Observable<SessionAudio>{
+    const url = `${this.sessionAudioUrl}/pk/${sessionAudioModel.pk}`;
+    return this.http.put<SessionAudio>(url, sessionAudioModel);
   }
 
   deleteSessionAudioFile(sessionAudioEntry_pk: number): any{
