@@ -3,12 +3,15 @@
         <!-- Heading -->
         <app-edit-toggle></app-edit-toggle>
         <h3 class="text-center mb-5 icon-container">
-            <!-- TODO: Add that on a select or chance it shall navigate to the next map, navigateByUrl or sth. This right now doesn't work -->
+            <!-- TODO: Ensure that the new map on the new URL actually gets loaded, right now it only changes url -->
             Map of
-            <select name="map" id="map" class="mx-2" #mapChoice>
-                <option *ngFor="let map of maps" value="{{map.name}}">{{map.name}}</option>
-            </select>
-            <div class="btn btn-sm btn-outline-info" routerLink="/map/{{mapChoice.value}}">Go to Map</div>
+            <form class="d-inline" (ngSubmit)="routeToMap(mapChoice.value)">
+                <select name="map" id="map" class="mx-2" #mapChoice>
+                    <option *ngFor="let map of maps" value="{{map.name}}">{{map.name}}</option>
+                </select> 
+                <button type="submit" class="btn btn-sm btn-outline-info">Go to Map</button>
+            </form>
+
             <i class="fa fa-plus icon ml-2" routerLink="/map/create"></i>
         </h3>
 

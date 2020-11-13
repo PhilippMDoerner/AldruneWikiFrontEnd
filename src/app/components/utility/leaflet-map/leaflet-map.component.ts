@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentChecked, AfterContentInit, AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { ExtendedMap } from 'src/app/models/map';
 import { MapService } from 'src/app/services/map.service';
@@ -8,6 +8,7 @@ import { MapMarker } from 'src/app/models/mapmarker';
 //Bugfixing leaflet not grabbing its shadow-image file properly
 import "leaflet/dist/images/marker-shadow.png";
 import { Router } from '@angular/router';
+import { Marker } from 'leaflet';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { Router } from '@angular/router';
   templateUrl: './leaflet-map.component.html',
   styleUrls: ['./leaflet-map.component.scss']
 })
-export class LeafletMapComponent implements OnInit, OnDestroy, AfterViewInit{
+export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit {
   @Input() map: ExtendedMap;
   private leafletMap;
   constructor(private router: Router) { }
@@ -27,12 +28,11 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterViewInit{
   ngOnInit(): void {
   }
 
-  ngAfterViewInit(){
+  ngAfterContentInit(){
     this.initMap();
   }
 
   initMap(){
-    console.log(L.Icon.Default.prototype._getIconUrl())
     this.leafletMap = L.map('leafletMapDiv', {
       crs: L.CRS.Simple,
       minZoom: -1,
@@ -41,11 +41,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterViewInit{
     this.addMarkers()
     this.setMapEventListeners();
     this.addMapImage()
-
-    L.popup()
-      .setLatLng([200, 140])
-      .setContent("Walumba")
-      .openon(this.leafletMap)
   }
 
   setMapEventListeners(){
@@ -91,20 +86,28 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
   addMarkers(){
+    const layers = {};
+
     for (let mapMarker of this.map.markers){
-      if (mapMarker.type_details.is_text_marker){
-        this.addTextMarkerToMap(mapMarker);
-      } else{
-        this.addDefaultMarkerToMap(mapMarker);
-      }
+      const layerName = mapMarker.type_details.name;
+      const layer = (layers.hasOwnProperty(layerName)) ? layers[layerName] : L.layerGroup();  
+      layers[layerName] = layer;  
+
+      const marker = (mapMarker.type_details.is_text_marker) ? this.createTextMarker(mapMarker) : this.createDefaultMarker(mapMarker);
+      marker.addTo(layer);
     }
+    
+    for(const layerName in layers){
+      layers[layerName].addTo(this.leafletMap);
+    }
+    L.control.layers(null, layers, {sortLayers: true}).addTo(this.leafletMap);
   }
 
-  addTextMarkerToMap(mapMarker: MapMarker){
-    console.log(mapMarker);
+
+  createTextMarker(mapMarker: MapMarker): Marker{
     const markerColor = this.getMarkerColor(mapMarker);
     const textColor = (['beige', 'lightgreen'].includes(markerColor)) ? "black" : "white";
-    L.marker([mapMarker.latitude, mapMarker.longitude], {
+    return L.marker([mapMarker.latitude, mapMarker.longitude], {
       icon: L.divIcon({
         html: `
         <div class="leaflet-text-marker bg-color-${markerColor} text-color-${textColor}">
@@ -113,12 +116,11 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterViewInit{
         `,
       })
     })
-    .addTo(this.leafletMap)
     .bindPopup(this.getPopupText(mapMarker))
     .bindTooltip(mapMarker.location_details.name);
   }
 
-  getMarkerColor(marker: MapMarker){
+  getMarkerColor(marker: MapMarker): string{
     if (marker.color){
       return marker.color;
     } else if (marker.type_details.color){
@@ -128,9 +130,8 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterViewInit{
     }
   }
 
-  addDefaultMarkerToMap(mapMarker: MapMarker){
-    L.marker([mapMarker.latitude, mapMarker.longitude], {})
-    .addTo(this.leafletMap)
+  createDefaultMarker(mapMarker: MapMarker): Marker{
+    return L.marker([mapMarker.latitude, mapMarker.longitude], {})
     .bindPopup(this.getPopupText(mapMarker))
     .bindTooltip(mapMarker.location_details.name);
   }

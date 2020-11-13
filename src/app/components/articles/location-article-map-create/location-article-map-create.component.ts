@@ -72,8 +72,6 @@ export class LocationArticleMapCreateComponent implements OnInit {
         this.router.navigateByUrl(`/map/${marker.map_details.name}`);
       }, error => console.log(error));
     })
-
-
   }
 
   ngOnDestroy(){

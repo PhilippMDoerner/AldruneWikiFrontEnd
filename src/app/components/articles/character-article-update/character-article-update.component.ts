@@ -8,8 +8,6 @@ import { Constants } from "src/app/app.constants";
 import { Character, EmptyFormCharacter } from "src/app/models/character";
 //services
 import { CharacterService } from "src/app/services/character/character.service";
-import { OrganizationService } from "src/app/services/organization/organization.service";
-import { LocationService } from "src/app/services/location/location.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 
 @Component({
