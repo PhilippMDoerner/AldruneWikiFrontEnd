@@ -9,7 +9,7 @@ export interface MapMarker{
     "map": number,
     "map_details"?: {"name": string},
     "location": number,
-    "location_details"?: {"name": string, "parent_location_name": string},
+    "location_details"?: {"name": string, "parent_location_name": string, "description": string, "sublocations": string[]},
     "type": number,
     "type_details"?: MapMarkerType,
     "pk"?: number

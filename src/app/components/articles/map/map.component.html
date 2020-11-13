@@ -11,7 +11,9 @@
         </h3>
 
         <!-- Leaflet Map -->
-        <app-leaflet-map></app-leaflet-map>
+        <div class="mb-5">
+            <app-leaflet-map [map]="currentMap"></app-leaflet-map>
+        </div>
 
         <app-delete-toggle (deleteEvent)="deleteMap()"></app-delete-toggle>
     </article>

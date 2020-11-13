@@ -1,1 +1,28 @@
-<p>leaflet-map works!</p>
+<!-- Display Map Coordinates near Mouse-->
+<div class="mb-2">
+    <h5 class="mb-0"> 
+        <span [ngClass]="{'mr-3': !hideCoordinatesState, 'd-none': hideCoordinatesState}">Map Coordinates near Mouse</span>
+        <div class="btn btn-outline-info" (click)="hideCoordinatesState = !hideCoordinatesState">
+            <span *ngIf="hideCoordinatesState">
+                Show Mouse Coordinates
+                <i class="fa fa-arrow-right"></i>
+            </span>
+            <span *ngIf="!hideCoordinatesState">
+                <i class="fa fa-arrow-left"></i>
+                Hide Mouse Coordinates
+            </span>
+        </div>
+    </h5>
+
+    <div [ngClass]="{'d-none': hideCoordinatesState}">
+        <div class="d-flex">
+            <span class="bold w-15">Latitude:</span> {{mouseLatitude}}
+        </div>
+        <div class="d-flex">
+            <span class="bold w-15">Longitude</span> {{mouseLongitude}}
+        </div>
+    </div>
+</div>
+
+<!-- Leaflet Map -->
+<div id="leafletMapDiv"></div>

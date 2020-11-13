@@ -17,6 +17,7 @@ export class MapComponent implements OnInit {
 
   parameter_subscription: Subscription;
   map_subscription: Subscription;
+  // foliumMap_subscription: Subscription;
   overview_subscription: Subscription;
 
   constructor(
@@ -36,6 +37,10 @@ export class MapComponent implements OnInit {
       this.overview_subscription = this.overviewService.getOverviewItems('map').subscribe(overviewItems => {
         this.maps = overviewItems;
       })
+
+      // this.foliumMap_subscription = this.mapService.getFoliumMap(mapName).subscribe(foliumMapHTML => {
+      //   this.foliumMapHTML = foliumMapHTML;
+      // })
     })
   }
 

@@ -1,5 +1,38 @@
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600");
+// Overwriting leaflet CSS
+h5.popup-heading{
+	color: black;
+	font-weight: normal !important;
+	font-size: 0.9rem;
+	letter-spacing: normal;
+	margin-top: 1rem;
+	margin-bottom: 0rem;
+	text-transform: none;
+}
 
+.leaflet-text-marker{
+	opacity: 0.66;
+	padding: 0 3px;
+	width: 100px;
+	margin-left: -50px;
+	margin-top: 5px;
+	text-align: center;
+}
+
+.leaflet-div-icon{
+	border:none;
+	background-color: transparent;
+}
+
+.leaflet-container a.btn{
+	color: white;
+}
+
+/* Leaflet CSS */
+@import "~leaflet/dist/leaflet.css";
+
+
+/* Bootstrap customizations */
 @import './app/custom_bootstrap.scss';
 
 /* Importing Bootstrap SCSS file. */
@@ -177,11 +210,12 @@ body.is-preload #bg:before {
 }
 
 a{
-	color: white !important;
+	color: white;
 	border-bottom: dotted 1px gray;
 }
 
 a:hover{
+	color: #839cff;
 	text-decoration: none !important;
 	border-bottom: solid 2px gray;
 }
@@ -288,3 +322,88 @@ label{
 .pointer{
 	cursor: pointer;
 }
+
+.bg-color-darkgreen{
+    background-color: darkgreen;
+}
+
+.bg-color-darkblue{
+    background-color: darkblue;
+}
+
+.bg-color-beige{
+    background-color: beige;
+}
+
+.bg-color-darkpurple{
+    background-color: darkpurple;
+}
+
+.bg-color-pink{
+    background-color: pink;
+}
+
+.bg-color-black{
+    background-color: black;
+}
+
+.bg-color-orange{
+    background-color: orange;
+}
+
+.bg-color-red{
+    background-color: red;
+}
+
+.bg-color-green{
+    background-color: green;
+}
+
+.bg-color-gray{
+    background-color: gray;
+}
+
+.bg-color-lightred{
+    background-color: lightcoral;
+}
+
+.bg-color-darkred{
+    background-color: darkred;
+}
+
+.bg-color-lightgreen{
+    background-color: lightgreen;
+}
+
+.bg-color-blue{
+    background-color: blue;
+}
+
+.bg-color-lightblue{
+    background-color: lightblue;
+}
+
+.bg-color-cadetblue{
+    background-color: cadetblue;
+}
+
+.bg-color-purple{
+    background-color: purple;
+}
+
+.bg-color-white{
+    background-color: white;
+}
+
+.bg-color-lightgray{
+	background-color: lightgray;
+}
+
+.text-color-white{
+	color: white;
+}
+
+.text-color-black{
+	color: black;
+}
+

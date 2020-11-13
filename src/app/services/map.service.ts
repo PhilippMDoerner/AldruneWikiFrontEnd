@@ -28,4 +28,9 @@ export class MapService {
     const url: string = `${this.mapUrl}/pk/${map.pk}`;
     return this.http.put<ExtendedMap>(url, map);
   }
+
+  getFoliumMap(mapName: string): Observable<any>{
+    const url: string = `${this.mapUrl}/folium/${mapName}`
+    return this.http.get(url);
+  }
 }
