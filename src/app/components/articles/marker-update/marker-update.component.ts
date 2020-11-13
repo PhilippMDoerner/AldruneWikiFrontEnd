@@ -8,6 +8,7 @@ import { Location } from 'src/app/models/location';
 import { MapMarker, EmptyMapMarker } from 'src/app/models/mapmarker';
 import { LocationService } from 'src/app/services/location/location.service';
 import { MarkerService } from 'src/app/services/marker.service';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
 
 @Component({
@@ -26,80 +27,14 @@ export class MarkerUpdateComponent implements OnInit {
   formState: string;
   form = new FormGroup({});
   model: MapMarker;
-  fields: FormlyFieldConfig[] = [
-    {
-      key: "latitude",
-      type: "input",
-      templateOptions:{
-        label: "Latitude",
-        type: "number",
-        required: true,
-      }
-    },
-    {
-      key: "longitude",
-      type: "input",
-      templateOptions:{
-        label: "Longitude",
-        type: "number",
-        required: true,
-      }
-    },
-    {
-      key: "location",
-      type: "select",
-      templateOptions:{
-        label: "Location",
-        labelProp: "name_full",
-        valueProp: "pk",
-        required: true,
-        options: this.selectOptionService.getOverviewItems('location'),
-      }
-    },
-    {
-      key: "map",
-      type: "select",
-      templateOptions:{
-        label: "Map",
-        labelProp: "name_full",
-        valueProp: "pk",
-        required: true,
-        options: this.selectOptionService.getOverviewItems('map'),
-      }
-    },
-    {
-      key: "type",
-      type: "select",
-      templateOptions:{
-        label: "Marker Type",
-        labelProp: "name_full",
-        valueProp: "pk",
-        options: this.selectOptionService.getOverviewItems('marker_type'),
-      }
-    },
-    {
-      key: "color",
-      type: "input",
-      templateOptions:{
-        label: "Custom Color",
-        type: "string"
-      }
-    },
-    {
-      key: "icon",
-      type: "input",
-      templateOptions:{
-        label: "Custom Icon",
-        type: "string"
-      }
-    }
-  ];
+  fields: FormlyFieldConfig[] = this.formlyService.getFieldConfigForMarker();
+
   constructor(
     private markerService: MarkerService,
     private locationService: LocationService,
-    private selectOptionService: OverviewService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private formlyService: MyFormlyService
   ) { }
 
   ngOnInit(): void {
@@ -107,19 +42,17 @@ export class MarkerUpdateComponent implements OnInit {
     const parentLocationName = this.route.snapshot.params['parent_location_name'];
     const locationName = this.route.snapshot.params['location_name'];
     
-    this.location_subscription = this.locationService.getLocation(parentLocationName, locationName).subscribe(location => {
-      this.markerLocation = location;
-
       if (this.formState === this.constants.updateState){
         const mapName: string = this.route.snapshot.params['map_name'];
         this.marker_subscription = this.markerService.getMapMarker(parentLocationName, locationName, mapName).subscribe(marker => {
           this.model = marker;
         });
       } else if (this.formState === this.constants.createState){
-        this.model = new EmptyMapMarker();
-        this.model.location = location.pk;
+        this.location_subscription = this.locationService.getLocation(parentLocationName, locationName).subscribe(location => {
+          this.model = new EmptyMapMarker();
+          this.model.location = location.pk;
+        });
       }
-    });
   }
 
   onSubmit(model: MapMarker){
@@ -135,7 +68,9 @@ export class MarkerUpdateComponent implements OnInit {
     if (this.formState === this.constants.updateState){
       return "..";
     } else if (this.formState === this.constants.createState){
-      return `/marker/${this.markerLocation.parent_location_details.name}/${this.markerLocation.name}/${mapName}`;
+      const locationName: string = this.route.snapshot.params['location_name'];
+      const parentLocationName = this.route.snapshot.params['parent_location_name'];
+      return `/marker/${parentLocationName}/${locationName}/${mapName}`;
     }
   }
 

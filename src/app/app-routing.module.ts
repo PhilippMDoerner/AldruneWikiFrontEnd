@@ -81,7 +81,7 @@ const routes: Routes = [
   {path: "sessionaudio/:isMainSession/:sessionNumber/update", component: SessionAudioUpdateComponent},
 
   {path:  "marker/:parent_location_name/:location_name/create", component: MarkerUpdateComponent},
-  {path:  "marker/:latitude/:longitude/:map/create", component: MarkerMapCreateComponent},
+  {path:  "marker/:latitude/:longitude/:map_name/create", component: MarkerMapCreateComponent},
   {path:  "marker/:parent_location_name/:location_name/:map_name", component: MarkerComponent},
   {path:  "marker/:parent_location_name/:location_name/:map_name/update", component: MarkerUpdateComponent},
 

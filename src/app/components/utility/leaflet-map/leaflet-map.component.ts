@@ -56,8 +56,8 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterViewInit{
     })
 
     this.leafletMap.on('click', event => {
-      const latitude = event.latlng.lat;
-      const longitude = event.latlng.lng;
+      const latitude = parseInt(event.latlng.lat);
+      const longitude = parseInt(event.latlng.lng);
       const contentHTML: string = `
       <div class="mb-2 pointer"> 
         <a href="/marker/${latitude}/${longitude}/${this.map.name}/create">
@@ -72,7 +72,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterViewInit{
       </div>
 
     `;
-
 
       L.popup()
         .setLatLng([latitude, longitude])
@@ -137,13 +136,14 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterViewInit{
   }
 
   //TODO: Write into every model a "get_absolute_url" method and use that for url generation everywhere
+  //TODO: Update your database so that markers automatically get deleted together with their location (CASCADE).
   getPopupText(marker: MapMarker){
     // Heading and Description
     const location_url = `/location/${marker.location_details.parent_location_name}/${marker.location_details.name}`;
     const heading: string = `<a href="${location_url}"> <b>${marker.location_details.name}</b> </a>`
 
     let description: string = marker.location_details.description;
-    if (description.split(" ").length >= 35) description += "...";
+    if (description && description.split(" ").length >= 35) description += "...";
 
     let text: string = `${heading} <br> ${description} <br>`;
 

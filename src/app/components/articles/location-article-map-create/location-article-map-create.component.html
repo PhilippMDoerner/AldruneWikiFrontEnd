@@ -1,1 +1,20 @@
-<p>location-article-map-create works!</p>
+<div class="main">
+    <article class="mb-5" *ngIf="markerModel && locationModel; else loading">
+        <app-edit-toggle [isInUpdateState]=true [link]="'/map/'+mapName"></app-edit-toggle>
+        <h2 class="text-center"> Adding Location and Marker </h2>
+
+        <!-- Form -->
+        <form [formGroup]="locationForm" (ngSubmit)="onSubmit()">
+            <div class="mb-5">
+                <h5 class="mb-0"> Location Fields </h5>
+                <formly-form [form]="locationForm" [fields]="location_fields" [model]="locationModel"></formly-form>    
+            </div>
+            <div>
+                <h5 class="mb-0"> Marker Fields </h5>
+                <formly-form [form]="markerForm" [fields]="marker_fields" [model]="markerModel"></formly-form>
+            </div>
+            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+        </form>
+    </article>
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

@@ -1,11 +1,12 @@
-export interface MyFormlyFieldConfig{
-    compareWith: any,
-    key: string,
-    label?: string
-}
-
-export interface FormlyLocationField{
+export interface FormlyOverviewSelectConfig{
     key: string,
     label?: string,
-    compareWith: any
+    labelProp?: string,
+    optionsType: string
+}
+
+export interface FormlyGenericInputConfig{
+    key: string,
+    label?: string
+    isNumberInput?: boolean,
 }

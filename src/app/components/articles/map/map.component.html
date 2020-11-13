@@ -3,10 +3,12 @@
         <!-- Heading -->
         <app-edit-toggle></app-edit-toggle>
         <h3 class="text-center mb-5 icon-container">
+            <!-- TODO: Add that on a select or chance it shall navigate to the next map, navigateByUrl or sth. This right now doesn't work -->
             Map of
-            <select name="map" id="map" class="ml-2">
+            <select name="map" id="map" class="mx-2" #mapChoice>
                 <option *ngFor="let map of maps" value="{{map.name}}">{{map.name}}</option>
             </select>
+            <div class="btn btn-sm btn-outline-info" routerLink="/map/{{mapChoice.value}}">Go to Map</div>
             <i class="fa fa-plus icon ml-2" routerLink="/map/create"></i>
         </h3>
 

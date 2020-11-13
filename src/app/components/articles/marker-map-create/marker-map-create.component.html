@@ -1,1 +1,13 @@
-<p>marker-map-create works!</p>
+<div class="main">
+    <article class="mb-5" *ngIf="model; else loading">
+        <app-edit-toggle [isInUpdateState]=true [link]="'/map/'+mapName"></app-edit-toggle>
+        <h2 class="text-center"> Adding a new Marker </h2>
+
+        <!-- Form -->
+        <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+        </form>
+    </article>
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>
