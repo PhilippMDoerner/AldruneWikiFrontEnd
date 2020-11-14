@@ -1,14 +1,13 @@
-import { AfterContentChecked, AfterContentInit, AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { AfterContentInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ExtendedMap } from 'src/app/models/map';
-import { MapService } from 'src/app/services/map.service';
 import * as L from "node_modules/leaflet";
 import { MapMarker } from 'src/app/models/mapmarker';
+import { Router } from '@angular/router';
+import { Marker } from 'leaflet';
 
 //Bugfixing leaflet not grabbing its shadow-image file properly
 import "leaflet/dist/images/marker-shadow.png";
-import { Router } from '@angular/router';
-import { Marker } from 'leaflet';
+
 
 
 @Component({
@@ -96,7 +95,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit 
       const marker = (mapMarker.type_details.is_text_marker) ? this.createTextMarker(mapMarker) : this.createDefaultMarker(mapMarker);
       marker.addTo(layer);
     }
-    
+
     for(const layerName in layers){
       layers[layerName].addTo(this.leafletMap);
     }

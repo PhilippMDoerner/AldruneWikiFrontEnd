@@ -6,6 +6,19 @@
     font-weight: 600;
 }
 
+.navbar a.nav-link{
+    color: white;
+    border-bottom: none;
+    font-size: 0.8rem;
+    border-radius: 10px;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.navbar a.nav-link:hover{
+    background-color: grey;
+}
+
 .bg-dark{
     background-color: #1f1e1f !important;
 }

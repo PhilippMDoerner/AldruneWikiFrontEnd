@@ -10,11 +10,12 @@ h5.popup-heading{
 	text-transform: none;
 }
 
+$marker-width: 100px;
 .leaflet-text-marker{
 	opacity: 0.66;
 	padding: 0 3px;
-	width: 100px;
-	margin-left: -50px;
+	width: $marker-width;
+	margin-left: -1*$marker-width/2;
 	margin-top: 5px;
 	text-align: center;
 }
@@ -22,10 +23,6 @@ h5.popup-heading{
 .leaflet-div-icon{
 	border:none;
 	background-color: transparent;
-}
-
-.leaflet-container a.btn{
-	color: white;
 }
 
 /* Leaflet CSS */
