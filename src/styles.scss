@@ -404,3 +404,13 @@ label{
 	color: black;
 }
 
+blockquote{
+	border-left: solid 4px #ffffff;
+    font-style: italic;
+    margin: 0 0 2rem 0;
+    padding: 0.5rem 0 0.5rem 2rem;
+}
+
+blockquote strong{
+	font-weight: bold;
+}

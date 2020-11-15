@@ -1,0 +1,12 @@
+.hide-icon{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.icon-container:hover .hide-icon{
+    opacity: 1;
+}
+
+.fa-trash:hover{
+    color: red;
+}

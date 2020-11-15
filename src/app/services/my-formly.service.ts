@@ -82,6 +82,18 @@ export class MyFormlyService {
     }
   }
 
+  genericTextField(config: FormlyInterface): FormlyFieldConfig{
+    return {
+      key: config.key,
+      type: "tinymce",
+      hideExpression: (config.hide) ? config.hide : false,
+      templateOptions:{
+        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+        required: (typeof config.required === "boolean") ? config.required : true,
+      }
+    }
+  }
+
   capitalizeFirstLetter(s: string){
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
