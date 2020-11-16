@@ -1,11 +1,9 @@
+import { ApiObject, ArticleObject } from './base-models';
 import { Image } from "./image";
 
-export interface Character{
-    creation_datetime?: string,
-    update_datetime?: string,
+export interface Character extends ArticleObject{
     player_character: boolean,
     alive: boolean,
-    name: string,
     title: string,
     gender: string,
     race: string,
@@ -15,7 +13,6 @@ export interface Character{
     current_location: number,
     current_location_details?: characterLocation,
     items?: characterItem[],
-    pk?: number;
     encounters?: characterEncounter[];
     images?: Image[];
 }
@@ -62,4 +59,8 @@ export class EmptyFormCharacter implements Character{
     organization: number;
     current_location: number;
     pk: number;
+
+    getAbsoluteRouterUrl(): string{
+        return `/character/${this.name}`;
+    }
 }

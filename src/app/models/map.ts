@@ -1,19 +1,21 @@
-import { ExtendedMapMarker, MapMarker } from './mapmarker';
+import { ArticleObject } from './base-models';
+import { MapMarker } from './mapmarker';
 
-export interface Map{
-    "name": string,
-    "icon": string,
-    "creation_datetime"?: string,
-    "image": string,
-    "pk"?: number
+export interface Map extends ArticleObject{
+    icon: string,
+    image: string,
 }
 
 export interface ExtendedMap extends Map{
-    "markers": ExtendedMapMarker[],
+    markers?: MapMarker[],
 }
 
-export class EmptyFormMap implements Map{
+export class EmptyFormMap implements ExtendedMap{
     name = null;
     icon = null;
     image = null;
+
+    getAbsoluteRouterUrl(): string{
+        return `/map/${this.name}`;
+    }
 }

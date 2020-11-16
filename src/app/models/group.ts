@@ -1,5 +1,5 @@
 export interface PermissionGroup{
-    "url": string,
-    "name": string,
-    "permissions": string[]
+    url: string,
+    name: string,
+    permissions: string[]
 }

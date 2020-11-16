@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Organization, OrganizationListEntry } from "src/app/models/organization";
+import { Organization } from "src/app/models/organization";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Constants } from "src/app/app.constants";
 import { Observable } from "rxjs";

@@ -1,24 +1,20 @@
+import { ArticleObject } from './base-models';
 import { Image } from './image';
 
-export interface Item    {
-    "creation_datetime"?: string,
-    "update_datetime"?: string,
-    "name": string,
-    "description": string,
-    "owner": number,
-    "owner_details"?: itemCharacter,
-    "images"?: Image[],
-    "pk": number
+export interface Item extends ArticleObject{
+    description: string,
+    owner: number,
+    owner_details?: {name: string, pk: number},
+    images?: Image[],
 }
 
-interface itemCharacter{
-    "name": string,
-    "pk": number
-}
+export class EmptyFormItem implements Item{
+    name: string;
+    description: string;
+    owner: number;
+    pk: number;
 
-export class EmptyFormItem{
-    "name": string = null;
-    "description": string = null;
-    "owner": number = null;
-    "pk": number = null;
+    getAbsoluteRouterUrl(): string{
+        return `/item/${name}`;
+    }
 }

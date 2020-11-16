@@ -15,13 +15,13 @@ export interface QuoteConnection{
 }
 
 export class EmptyFormQuote implements Quote{
-    quote:string = null;
-    description: string = null;
-    session: number = null;
-    encounter: number = null;
+    quote:string;
+    description: string;
+    session: number;
+    encounter: number;
 }
 
 export class EmptyFormQuoteConnection implements QuoteConnection{
-    character: number = null;
-    quote: number = null;
+    character: number;
+    quote: number;
 }

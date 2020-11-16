@@ -5,7 +5,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { Character } from 'src/app/models/character';
 import { EmptyFormEncounter, Encounter } from "src/app/models/encounter";
-import { EncounterConnection } from 'src/app/models/encounterconnection';
+import { EmptyFormEncounterConnection, EncounterConnection } from 'src/app/models/encounterconnection';
+import { EmptyFormMap } from 'src/app/models/map';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { EncounterConnectionService } from 'src/app/services/encounter-connection.service';
 import { EncounterServiceService } from "src/app/services/encounter/encounter-service.service";
@@ -24,7 +25,7 @@ export class EncounterAccordionComponent implements OnInit {
   isOpen: object;
 
   inEncounterConnectionCreationState: boolean = false;
-  baseEncounterConnection: EncounterConnection = {"character": null, "encounter": null};
+  baseEncounterConnection: EmptyFormEncounterConnection = new EmptyFormEncounterConnection();
 
   isEncounterDeleteState: boolean = false;
   isEncounterCreateState: boolean = false;
@@ -169,7 +170,7 @@ export class EncounterAccordionComponent implements OnInit {
   }
 
   resetBaseEncounterConnection(){
-    this.baseEncounterConnection = {"character": null, "encounter": null};
+    this.baseEncounterConnection = new EmptyFormEncounterConnection();
   }
 
   ngOnDestroy(){
