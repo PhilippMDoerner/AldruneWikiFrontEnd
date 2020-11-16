@@ -2,13 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { EmptyFormQuest, Quest } from 'src/app/models/quest';
-import { OrganizationService } from 'src/app/services/organization/organization.service';
+import { QuestObject, Quest } from 'src/app/models/quest';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { OverviewService } from 'src/app/services/overview.service';
 import { QuestService } from 'src/app/services/quest.service';
-import { CharacterService } from 'src/app/services/character/character.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 
 @Component({
@@ -24,7 +21,7 @@ export class QuestArticleUpdateComponent implements OnInit {
   formState: string;
 
   form = new FormGroup({});
-  model: Quest | EmptyFormQuest;
+  model: QuestObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", placeholder: "Quest Name"}),
     {
@@ -69,7 +66,7 @@ export class QuestArticleUpdateComponent implements OnInit {
         this.model = item;
       });
     } else if (this.formState === this.constants.createState) {
-      this.model = new EmptyFormQuest();
+      this.model = new QuestObject();
     } 
   }
 

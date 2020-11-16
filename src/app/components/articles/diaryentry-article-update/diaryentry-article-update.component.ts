@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { DiaryEntry, EmptyFormDiaryEntry } from 'src/app/models/diaryentry';
+import { DiaryEntry, DiaryEntryObject } from 'src/app/models/diaryentry';
 import { Session } from 'src/app/models/session';
 import { User } from 'src/app/models/user';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
@@ -21,7 +21,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
   constants: any = Constants;
   formState: string;
   form = new FormGroup({});
-  model: DiaryEntry | EmptyFormDiaryEntry;
+  model: DiaryEntryObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title"}),
     this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
@@ -49,7 +49,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
         this.model = diaryEntry;
       }, error =>{ this.router.navigateByUrl("error");});
     } else if (this.formState === this.constants.createState) {
-      this.model = new EmptyFormDiaryEntry();
+      this.model = new DiaryEntryObject();
     }
   }
 

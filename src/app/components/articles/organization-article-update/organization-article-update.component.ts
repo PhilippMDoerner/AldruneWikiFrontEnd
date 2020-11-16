@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { EmptyFormOrganization, Organization } from 'src/app/models/organization';
+import { OrganizationObject, Organization } from 'src/app/models/organization';
 import { OrganizationService } from 'src/app/services/organization/organization.service';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -22,7 +22,7 @@ export class OrganizationArticleUpdateComponent implements OnInit {
   formState: string;
 
   form = new FormGroup({});
-  model: Organization | EmptyFormOrganization;
+  model: OrganizationObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name"}),
     this.formlyService.genericSelect({key: "leader", valueProp: "name", optionsType: "character"}),
@@ -41,11 +41,11 @@ export class OrganizationArticleUpdateComponent implements OnInit {
     const organizationName: string = this.route.snapshot.params.name;
 
     if (this.formState === this.constants.updateState){
-      this.organization_subscription = this.organizationService.getOrganization(organizationName).subscribe(item => {
-        this.model = item;
+      this.organization_subscription = this.organizationService.getOrganization(organizationName).subscribe(organization => {
+        this.model = organization;
       });
     } else if (this.formState === this.constants.createState) {
-      this.model = new EmptyFormOrganization();
+      this.model = new OrganizationObject();
     } 
   }
 

@@ -6,7 +6,14 @@ export interface Rule{
     description: string
 }
 
-export class EmptyFormRule implements Rule{
+export class RuleObject implements Rule{
+    pk?: number;
     name: string;
+    creation_datetime?: string;
+    update_datetime?: string;
     description: string;
+
+    constructor(object?: Rule){
+        if (object) Object.assign(this, object)
+    }
 }

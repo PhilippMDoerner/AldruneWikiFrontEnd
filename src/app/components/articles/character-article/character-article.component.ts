@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Character } from "src/app/models/character";
+import { Character, CharacterObject } from "src/app/models/character";
 import { Image } from "src/app/models/image";
 import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
 import { CharacterService } from "src/app/services/character/character.service";
@@ -15,7 +15,7 @@ import { Constants } from "src/app/app.constants";
 
 export class CharacterArticleComponent implements OnInit {
   constants: any = Constants;
-  character: Character;
+  character: CharacterObject;
   confirmationModal: Subject<void> = new Subject<void>();
   articleType: string = 'character';
 
@@ -28,10 +28,12 @@ export class CharacterArticleComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    const character_name: string = this.route.snapshot.params.name;
-    this.character_subscription = this.characterService.getCharacter(character_name).subscribe(character => {
-      this.character = character;
-    }, error =>{ this.router.navigateByUrl("error");});
+    this.route.params.subscribe( params => {
+      const character_name: string = params.name;
+      this.character_subscription = this.characterService.getCharacter(character_name).subscribe((character: CharacterObject) => {
+        this.character = character;
+      }, error =>{ this.router.navigateByUrl("error");});
+    });
   }
 
   onDescriptionUpdate(updatedDescription){

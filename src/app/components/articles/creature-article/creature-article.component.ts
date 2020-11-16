@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { Creature } from 'src/app/models/creature';
+import { Creature, CreatureObject } from 'src/app/models/creature';
 import { CreatureService } from 'src/app/services/creature/creature.service';
 
 @Component({
@@ -13,7 +13,7 @@ import { CreatureService } from 'src/app/services/creature/creature.service';
 export class CreatureArticleComponent implements OnInit {
   constants: any = Constants;
   articleType: string = "creature";
-  creature: Creature;
+  creature: CreatureObject;
 
   creature_subscription: Subscription;
 
@@ -25,8 +25,9 @@ export class CreatureArticleComponent implements OnInit {
 
   ngOnInit(): void {
     const creature_name: string = this.route.snapshot.params.name;
-    this.creature_subscription = this.creatureService.getCreature(creature_name).subscribe(character => {
-      this.creature = character;
+    this.creature_subscription = this.creatureService.getCreature(creature_name).subscribe(creature => {
+      this.creature = creature;
+      console.log(this.creature.getAbsoluteRouterUrl());
     }, error =>{ console.log(error)});
   }
 

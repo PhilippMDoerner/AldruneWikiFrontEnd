@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { SessionAudio, EmptyFormSessionAudio } from 'src/app/models/sessionaudio';
+import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 
@@ -45,7 +45,7 @@ export class SessionAudioUpdateComponent implements OnInit {
         this.model = item;
       });
     } else if (this.formState === this.constants.createState) {
-      this.model = new EmptyFormSessionAudio();
+      this.model = new SessionAudioObject();
     } 
   }
 

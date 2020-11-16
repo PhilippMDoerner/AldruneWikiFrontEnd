@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { Creature, EmptyFormCreature } from 'src/app/models/creature';
+import { Creature, CreatureObject } from 'src/app/models/creature';
 import { CreatureService } from 'src/app/services/creature/creature.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 
@@ -17,7 +17,7 @@ export class CreatureArticleUpdateComponent implements OnInit {
   constants: any = Constants;
   formState: string;
   form = new FormGroup({});
-  model: Creature | EmptyFormCreature;
+  model: CreatureObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name"}),
   ]
@@ -40,7 +40,7 @@ export class CreatureArticleUpdateComponent implements OnInit {
         this.model = creature;
       }, error => this.router.navigateByUrl("error"));
     } else if (this.formState === this.constants.createState) {
-      this.model = new EmptyFormCreature();
+      this.model = new CreatureObject();
     }
   }
 

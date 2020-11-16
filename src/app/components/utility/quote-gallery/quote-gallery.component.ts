@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Character } from 'src/app/models/character';
 import { OverviewItem } from 'src/app/models/overviewItem';
-import { EmptyFormQuote, EmptyFormQuoteConnection, Quote, QuoteConnection } from 'src/app/models/quote';
+import { QuoteObject, QuoteConnectionObject, Quote, QuoteConnection } from 'src/app/models/quote';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { QuoteConnectionService } from 'src/app/services/quote-connection.service';
@@ -27,7 +27,7 @@ export class QuoteGalleryComponent implements OnInit {
   inDeleteState: boolean = false;
   inEditState: boolean = false;
 
-  baseQuoteConnection: QuoteConnection = new EmptyFormQuoteConnection();
+  baseQuoteConnection: QuoteConnection = new QuoteConnectionObject();
   inQuoteConnectionCreateState: boolean = false;
   characters: OverviewItem[];
 
@@ -54,7 +54,9 @@ export class QuoteGalleryComponent implements OnInit {
   getNextRandomQuote(){
     this.isLoadingNextQuote = true;
     this.quoteService.getRandomQuote(this.character.name).pipe(first()).subscribe(quote => {
-      this.quote = quote;
+      if (quote.quote){
+        this.quote = quote;
+      }
       this.isLoadingNextQuote = false;
     })
   }
@@ -77,7 +79,7 @@ export class QuoteGalleryComponent implements OnInit {
 
   toggleCreateState(){
     this.inCreateState = true;
-    if (!this.model) this.model = new EmptyFormQuote();
+    if (!this.model) this.model = new QuoteObject();
   }
 
   toggleEditState(){
@@ -121,7 +123,7 @@ export class QuoteGalleryComponent implements OnInit {
   }
 
   resetBaseQuoteConnection(){
-    this.baseQuoteConnection = new EmptyFormQuoteConnection();
+    this.baseQuoteConnection = new QuoteConnectionObject();
   }
 
   deleteQuote(){

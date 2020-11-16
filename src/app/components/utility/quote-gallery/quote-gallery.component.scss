@@ -3,10 +3,26 @@
     transition: opacity 0.2s;
 }
 
+.vanish-icon{
+    display: none;
+}
+
 .icon-container:hover .hide-icon{
     opacity: 1;
 }
 
+.vanish-container:hover .vanish-icon{
+    display: inline-block;
+}
+
 .fa-trash:hover{
     color: red;
+}
+
+.tag-label{
+    font-size: 0.9rem;
+}
+
+.badge.badge-secondary{
+    padding: 0.35rem;
 }

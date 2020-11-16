@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { Encounter } from 'src/app/models/encounter';
-import { EmptyFormEncounterConnection, EncounterConnection } from 'src/app/models/encounterconnection';
+import { EncounterConnectionObject, EncounterConnection } from 'src/app/models/encounterconnection';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { EncounterConnectionService } from 'src/app/services/encounter-connection.service';
 import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
@@ -25,7 +25,7 @@ export class EncounterComponent implements OnInit {
   isEncounterDeleteState: boolean = false;
 
   characters : OverviewItem[];
-  baseEncounterConnection: EmptyFormEncounterConnection = new EmptyFormEncounterConnection();
+  baseEncounterConnection: EncounterConnectionObject = new EncounterConnectionObject();
 
   constructor(
     private encounterService: EncounterServiceService,
@@ -77,7 +77,7 @@ export class EncounterComponent implements OnInit {
   }
 
   resetBaseEncounterConnection(){
-    this.baseEncounterConnection = new EmptyFormEncounterConnection();
+    this.baseEncounterConnection = new EncounterConnectionObject();
   }
 
   toggleEncounterDeleteState(){

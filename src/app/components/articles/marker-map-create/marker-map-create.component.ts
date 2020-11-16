@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { MapMarker, EmptyMapMarker } from 'src/app/models/mapmarker';
+import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
 import { MapService } from 'src/app/services/map.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -48,7 +48,7 @@ export class MarkerMapCreateComponent implements OnInit {
     this.mapName = this.route.snapshot.params['map_name'];
     
     this.map_subscription = this.mapService.getMap(this.mapName).subscribe(map =>{
-      this.model = new EmptyMapMarker();
+      this.model = new MapMarkerObject();
       this.model.map = map.pk;
       this.model.latitude = latitude;
       this.model.longitude = longitude;

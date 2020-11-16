@@ -15,7 +15,7 @@ export interface Spell extends ArticleObject{
     classes: string[]
 }
 
-export class EmptyFormSpell implements Spell{
+export class SpellObject implements Spell{
     spell_level: number;
     casting_time: string;
     range: string;
@@ -29,6 +29,11 @@ export class EmptyFormSpell implements Spell{
     description: string;
     classes: string[]
     name: string;
+    pk?: number;
+
+    constructor(object?: Spell){
+        if (object) Object.assign(this, object)
+    }
 
     getAbsoluteRouterUrl(): string{
         return `/spell/${this.name}`;

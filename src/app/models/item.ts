@@ -8,11 +8,17 @@ export interface Item extends ArticleObject{
     images?: Image[],
 }
 
-export class EmptyFormItem implements Item{
+export class ItemObject implements Item{
     name: string;
     description: string;
     owner: number;
-    pk: number;
+    owner_details?: {name: string, pk: number};
+    images?: Image[];
+    pk?: number;
+
+    constructor(object?: Item){
+        if (object) Object.assign(this, object)
+    }
 
     getAbsoluteRouterUrl(): string{
         return `/item/${name}`;

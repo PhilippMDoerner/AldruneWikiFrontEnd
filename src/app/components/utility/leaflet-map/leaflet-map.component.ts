@@ -136,7 +136,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   //TODO: Write into every model a "get_absolute_url" method and use that for url generation everywhere
-  //TODO: Update your database so that markers automatically get deleted together with their location (CASCADE).
   getPopupText(marker: MapMarker){
     // Heading and Description
     const location_url = `/location/${marker.location_details.parent_location_name}/${marker.location_details.name}`;

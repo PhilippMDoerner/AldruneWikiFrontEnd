@@ -5,7 +5,7 @@ export interface Timestamp{
     encounter: string
 }
 
-export class EmptyFormTimestamp implements Timestamp{
+export class TimestampObject implements Timestamp{
     name: string;
     time: number;
     encounter: string;

@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { Item, EmptyFormItem } from 'src/app/models/item';
+import { Item, ItemObject } from 'src/app/models/item';
 import { CharacterService } from 'src/app/services/character/character.service';
 import { ItemService } from 'src/app/services/item/item.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -25,7 +25,7 @@ export class ItemArticleUpdateComponent implements OnInit {
   formState: string;
 
   form = new FormGroup({});
-  model: Item | EmptyFormItem;
+  model: ItemObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: 'name'}),
     this.formlyService.genericSelect({key: 'owner', optionsType: 'character'})
@@ -51,11 +51,11 @@ export class ItemArticleUpdateComponent implements OnInit {
       });
     } else if (this.isForAssociatedObjectCreation){
       this.character_subscription = this.characterService.getCharacter(itemOwnerName).subscribe(itemOwner => {
-        this.model = new EmptyFormItem();
+        this.model = new ItemObject();
         this.model.owner = itemOwner.pk;
       });
     } else if (this.formState === this.constants.createState) {
-      this.model = new EmptyFormItem();
+      this.model = new ItemObject();
     } 
   }
 

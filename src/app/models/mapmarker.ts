@@ -16,7 +16,7 @@ export interface MapMarker extends ApiObject{
     pk?: number
 }
 
-export class EmptyMapMarker implements MapMarker{
+export class MapMarkerObject implements MapMarker{
     latitude: number;
     longitude: number;
     map: number;
@@ -24,6 +24,10 @@ export class EmptyMapMarker implements MapMarker{
     location: number;
     location_details?: {name: string, parent_location_name: string, description: string, sublocations: string[]};
     type: number;
+
+    constructor(object?: MapMarker){
+        if(object) Object.assign(this, object);
+    }
 
     getAbsoluteRouterUrl(): string{
         if (!this.map_details) throw "Can't generate URL for MapMarker object without map_details";

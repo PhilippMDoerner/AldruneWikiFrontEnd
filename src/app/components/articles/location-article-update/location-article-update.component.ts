@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { EmptyFormLocation, Location } from 'src/app/models/location';
+import { LocationObject, Location } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 
@@ -25,7 +25,7 @@ export class LocationArticleUpdateComponent implements OnInit {
   isForAssociatedObjectCreation: boolean;
 
   form = new FormGroup({});
-  model: Location | EmptyFormLocation;
+  model: LocationObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name"}),
     this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", optionsType: "location"}),
@@ -50,11 +50,11 @@ export class LocationArticleUpdateComponent implements OnInit {
       });
     } else if (this.isForAssociatedObjectCreation) {
       this.parent_location_subscription = this.locationService.getLocation(parentLocationName, locationName).subscribe(location => {
-        this.model = new EmptyFormLocation();
+        this.model = new LocationObject();
         this.model.parent_location = location.pk;
       });
     } else if (this.formState === this.constants.createState){
-      this.model = new EmptyFormLocation();
+      this.model = new LocationObject();
     }
   }
 

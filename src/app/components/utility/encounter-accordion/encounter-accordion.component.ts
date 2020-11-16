@@ -4,9 +4,8 @@ import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { Character } from 'src/app/models/character';
-import { EmptyFormEncounter, Encounter } from "src/app/models/encounter";
-import { EmptyFormEncounterConnection, EncounterConnection } from 'src/app/models/encounterconnection';
-import { EmptyFormMap } from 'src/app/models/map';
+import { EncounterObject, Encounter } from "src/app/models/encounter";
+import { EncounterConnectionObject, EncounterConnection } from 'src/app/models/encounterconnection';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { EncounterConnectionService } from 'src/app/services/encounter-connection.service';
 import { EncounterServiceService } from "src/app/services/encounter/encounter-service.service";
@@ -25,7 +24,7 @@ export class EncounterAccordionComponent implements OnInit {
   isOpen: object;
 
   inEncounterConnectionCreationState: boolean = false;
-  baseEncounterConnection: EmptyFormEncounterConnection = new EmptyFormEncounterConnection();
+  baseEncounterConnection: EncounterConnectionObject = new EncounterConnectionObject();
 
   isEncounterDeleteState: boolean = false;
   isEncounterCreateState: boolean = false;
@@ -35,7 +34,7 @@ export class EncounterAccordionComponent implements OnInit {
   connection_subscription: Subscription;
 
   form = new FormGroup({});
-  model: Encounter | EmptyFormEncounter;
+  model: EncounterObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericSelect({key: "session_number", label: "Session", optionsType: "session"}),
     this.formlyService.genericSelect({key: "location", label: "Encounter Location", optionsType: "location"}),
@@ -65,7 +64,6 @@ export class EncounterAccordionComponent implements OnInit {
     });
   }
 
-  //TODO: Swap to pipe and ensure all subscriptions are only used once
   //### Handling Encounters ###
   onEncounterUpdate(updateText: string, encounterIndex: number){
     const encounter: Encounter = this.encounters[encounterIndex];
@@ -106,12 +104,12 @@ export class EncounterAccordionComponent implements OnInit {
   toggleEncounterCreateState(){
     this.isEncounterCreateState = !this.isEncounterCreateState;
     if (!this.model){
-      this.model = new EmptyFormEncounter();
+      this.model = new EncounterObject();
     }
   }
 
   resetEncounterForm(){
-    this.model = new EmptyFormEncounter();
+    this.model = new EncounterObject();
   }
 
   createEncounter(model: Encounter){
@@ -170,7 +168,7 @@ export class EncounterAccordionComponent implements OnInit {
   }
 
   resetBaseEncounterConnection(){
-    this.baseEncounterConnection = new EmptyFormEncounterConnection();
+    this.baseEncounterConnection = new EncounterConnectionObject();
   }
 
   ngOnDestroy(){

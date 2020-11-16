@@ -5,11 +5,10 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { Location } from 'src/app/models/location';
-import { MapMarker, EmptyMapMarker } from 'src/app/models/mapmarker';
+import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
 import { LocationService } from 'src/app/services/location/location.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { OverviewService } from 'src/app/services/overview.service';
 
 @Component({
   selector: 'app-marker-update',
@@ -57,7 +56,7 @@ export class MarkerUpdateComponent implements OnInit {
         });
       } else if (this.formState === this.constants.createState){
         this.location_subscription = this.locationService.getLocation(parentLocationName, locationName).subscribe(location => {
-          this.model = new EmptyMapMarker();
+          this.model = new MapMarkerObject();
           this.model.location = location.pk;
         });
       }

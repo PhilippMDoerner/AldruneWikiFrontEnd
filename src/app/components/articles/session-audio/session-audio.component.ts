@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { SessionAudio } from 'src/app/models/sessionaudio';
-import { EmptyFormTimestamp, Timestamp } from 'src/app/models/timestamp';
+import { TimestampObject, Timestamp } from 'src/app/models/timestamp';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
 
@@ -22,7 +22,7 @@ export class SessionAudioComponent implements OnInit {
   nextSessionAudio: {isMainSessionInt: number, sessionNumber: number};
 
   timestamps: Timestamp[];
-  timestamp_model: EmptyFormTimestamp = new EmptyFormTimestamp();
+  timestamp_model: TimestampObject = new TimestampObject();
   timestampCreateState: boolean = false;
   
   sessionAudio_subscription: Subscription;
@@ -91,13 +91,13 @@ export class SessionAudioComponent implements OnInit {
 
   toggleTimestampCreateState(){
     this.timestampCreateState = !this.timestampCreateState;
-    if (this.timestampCreateState) this.timestamp_model = new EmptyFormTimestamp();
+    if (this.timestampCreateState) this.timestamp_model = new TimestampObject();
   }
 
   createTimestamp(){
     this.timestampService.createTimestamp(this.timestamp_model).subscribe(timestamp => {
       this.timestamps.unshift(timestamp);
-      this.timestamp_model = new EmptyFormTimestamp();
+      this.timestamp_model = new TimestampObject();
       this.timestampCreateState = false;
     }).unsubscribe();
   }

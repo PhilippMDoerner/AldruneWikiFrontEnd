@@ -4,9 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { EmptyFormLocation, Location } from 'src/app/models/location';
-import { EmptyFormMap, Map } from 'src/app/models/map';
-import { LocationService } from 'src/app/services/location/location.service';
+import { MapObject, Map } from 'src/app/models/map';
 import { MapService } from 'src/app/services/map.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 
@@ -50,7 +48,7 @@ export class MapUpdateComponent implements OnInit {
         this.model = map;
       });
     }  else if (this.formState === this.constants.createState){
-      this.model = new EmptyFormMap();
+      this.model = new MapObject();
     }
   }
 
@@ -65,9 +63,6 @@ export class MapUpdateComponent implements OnInit {
 
 
   ngOnDestroy(){
-    //TODO: Replace this form of unsubscription by using "pipe" on Observable above and using the first() 
-    // method (see https://stackoverflow.com/questions/40019177/immediately-unsubscribing-from-rxjs-observable for reference)
-    // Do so for all views
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
     if (this.map_subscription) this.map_subscription.unsubscribe();
     if (this.parent_location_subscription) this.parent_location_subscription.unsubscribe();

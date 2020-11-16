@@ -3,12 +3,12 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { MapMarker, EmptyMapMarker } from 'src/app/models/mapmarker';
+import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
 import { MapService } from 'src/app/services/map.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { EmptyFormLocation, Location } from 'src/app/models/location';
+import { LocationObject, Location } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 
 @Component({
@@ -56,13 +56,13 @@ export class LocationArticleMapCreateComponent implements OnInit {
     this.mapName = this.route.snapshot.params['map_name'];
     
     this.map_subscription = this.mapService.getMap(this.mapName).subscribe(map =>{
-      this.markerModel = new EmptyMapMarker();
+      this.markerModel = new MapMarkerObject();
       this.markerModel.map = map.pk;
       this.markerModel.latitude = latitude;
       this.markerModel.longitude = longitude;
     });
 
-    this.locationModel = new EmptyFormLocation();
+    this.locationModel = new LocationObject();
   }
 
   onSubmit(){

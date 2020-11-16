@@ -14,14 +14,24 @@ export interface QuoteConnection{
     pk?: number,
 }
 
-export class EmptyFormQuote implements Quote{
+export class QuoteObject implements Quote{
     quote:string;
     description: string;
     session: number;
     encounter: number;
+    pk?: number;
+
+    constructor(object?: Quote){
+        if (object) Object.assign(this, object)
+    }
 }
 
-export class EmptyFormQuoteConnection implements QuoteConnection{
+export class QuoteConnectionObject implements QuoteConnection{
     character: number;
     quote: number;
+    pk?: number;
+
+    constructor(object?: QuoteConnection){
+        if (object) Object.assign(this, object)
+    }
 }

@@ -14,14 +14,18 @@ interface diaryEntryUser{
     pk: number,
     name: string
 }
-export class EmptyFormDiaryEntry implements DiaryEntry{
-    title: string = null;
-    entry: string = null;
-    session: number = null;
-    pk: number = null;
-    session_details?: Session = null;
-    author: number = null;
-    author_details: diaryEntryUser = null;
+export class DiaryEntryObject implements DiaryEntry{
+    title: string;
+    entry: string;
+    session: number;
+    pk?: number;
+    session_details?: Session;
+    author: number;
+    author_details?: diaryEntryUser;
+
+    constructor(object?: DiaryEntry){
+        if(object) Object.assign(this, object);
+    }
 
     getAbsoluteRouterUrl(): string{
         if (!this.session_details) throw "Can't generate URL for diaryEntry object without Session Details";

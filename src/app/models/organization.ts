@@ -10,12 +10,18 @@ export interface Organization extends ArticleObject{
     images?: Image[],
 }
 
+export class OrganizationObject implements Organization{
+    name: string;
+    leader: string;
+    description:string;
+    headquarter: number;
+    headquarter_details?: {name: string, pk: number, name_full: string};
+    pk?: number;
+    images?: Image[];
 
-export class EmptyFormOrganization implements Organization{
-    name: string = null;
-    leader: string = null;
-    description:string = null;
-    headquarter: number = null;
+    constructor(object?: Organization){
+        if (object) Object.assign(this, object)
+    }
 
     getAbsoluteRouterUrl(): string{
         return `/organization/${this.name}`;

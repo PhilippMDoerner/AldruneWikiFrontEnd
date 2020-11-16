@@ -1,3 +1,4 @@
+import { ObjectListComponent } from '../components/utility/object-list/object-list.component';
 import { ApiObject, ArticleObject } from './base-models';
 import { Image } from "./image";
 
@@ -48,7 +49,11 @@ interface characterItem{
     name: string
 }
 
-export class EmptyFormCharacter implements Character{
+export class CharacterObject implements Character{
+    constructor(object?: Character){
+        if (object) Object.assign(this, object);
+    }
+
     player_character: boolean;
     alive: boolean;
     name: string;
@@ -58,7 +63,7 @@ export class EmptyFormCharacter implements Character{
     description: string;
     organization: number;
     current_location: number;
-    pk: number;
+    pk?: number;
 
     getAbsoluteRouterUrl(): string{
         return `/character/${this.name}`;

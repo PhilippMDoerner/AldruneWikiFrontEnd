@@ -5,7 +5,7 @@ import { FormGroup } from "@angular/forms";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 //models and constants
 import { Constants } from "src/app/app.constants";
-import { Character, EmptyFormCharacter } from "src/app/models/character";
+import { Character, CharacterObject } from "src/app/models/character";
 //services
 import { CharacterService } from "src/app/services/character/character.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -20,16 +20,16 @@ export class CharacterArticleUpdateComponent implements OnInit {
   constants: any = Constants;
   formState: string;
   form = new FormGroup({});
-  model: Character | EmptyFormCharacter;
+  model: CharacterObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericCheckbox({key: "player_character", label: "Player Character", defaultValue: false}),
     this.formlyService.genericCheckbox({key: "alive", defaultValue: true}),
     this.formlyService.genericInput({key: "name"}),
-    this.formlyService.genericInput({key: "title"}),
+    this.formlyService.genericInput({key: "title", required: false}),
     this.formlyService.customStringSelect({key:"gender", label: "Sex", options: ["Other", "Female", "Male"]}),
     this.formlyService.genericInput({key: "race"}),
-    this.formlyService.genericSelect({key: "organization", optionsType: "organization"}),
-    this.formlyService.genericSelect({key: "current_location", label: "Location", optionsType: "location"}),
+    this.formlyService.genericSelect({key: "organization", optionsType: "organization", required: false}),
+    this.formlyService.genericSelect({key: "current_location", label: "Location", optionsType: "location", required: false}),
   ];
 
   private character_subscription: Subscription;
@@ -50,7 +50,7 @@ export class CharacterArticleUpdateComponent implements OnInit {
         this.model = character;
       }, error => this.router.navigateByUrl("error"));
     } else if (this.formState === this.constants.createState) {
-      this.model = new EmptyFormCharacter();
+      this.model = new CharacterObject();
     }
   }
 

@@ -16,6 +16,8 @@ export interface Location extends ArticleObject{
     characters?: LocationCharacter[],
     sublocations?: SubLocation[],
     marker_details?: [{map: string, map_icon: string}],
+
+    getAbsoluteRouterUrlForParentLocation(): string
 }
 
 export interface SubLocation{
@@ -35,7 +37,7 @@ interface LocationCharacter{
     name_full: string
 }
 
-export class EmptyFormLocation implements Location{
+export class LocationObject implements Location{
     name: string;
     description: string;
     parent_location: number;
@@ -45,7 +47,11 @@ export class EmptyFormLocation implements Location{
         parent_location: string,
         name_full: string,
     }
-    pk: number;
+    pk?: number;
+
+    constructor(object?: Location){
+        if (object) Object.assign(this, object)
+    }
 
     getAbsoluteRouterUrl(): string{
         if (!this.parent_location_details) throw "Can't generate URL for Location object without parent_location_details";

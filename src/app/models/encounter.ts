@@ -9,12 +9,16 @@ export interface Encounter extends ArticleObject{
     location_details?: {name: string, pk: number, name_full: string, parent_location_name: string},
 }
 
-export class EmptyFormEncounter implements Encounter {
+export class EncounterObject implements Encounter {
     pk?: number;
     description: string;
     session_number: number;
     location: number;
     name: string;
+
+    constructor(object?: Encounter){
+        if (object) Object.assign(this, object)
+    }
 
     getAbsoluteRouterUrl(){
         if (!this.pk) throw "Can't generate URL for Encounter object without pk";

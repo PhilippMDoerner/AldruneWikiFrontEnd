@@ -14,7 +14,7 @@ export interface Image{
     imageFile?: File
 }
 
-export class EmptyImage implements Image{
+export class ImageObject implements Image{
     pk: number;
     image: string;
     name: string;

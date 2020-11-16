@@ -6,10 +6,14 @@ export interface Creature extends ArticleObject{
     description: string,
 }
 
-export class EmptyFormCreature implements Creature{
-    pk = null;
-    name = null;
-    description = null;
+export class CreatureObject implements Creature{
+    pk?: number;
+    name: string;
+    description: string;
+
+    constructor(object?: Creature){
+        if (object) Object.assign(this, object);
+    }
 
     getAbsoluteRouterUrl(): string{
         return `/creature/${this.name}`;

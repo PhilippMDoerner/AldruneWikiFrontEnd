@@ -1,46 +1,52 @@
-<div *ngIf="!inCreateState && !inEditState; else quoteForm">
-    <blockquote *ngIf="quote && !isLoadingNextQuote; else loading">
-        <!-- Quote -->
-        <div [innerHTML]="quote.quote"></div>
-        <div class="ml-4">
-            <!-- Quote Description -->
-            <span [innerHTML]="'- ' + quote.description"></span>
-
-            <!-- Quote Connections -->
-            <div class="quote-connections d-flex icon-container">
-                <span class="mr-4 tag-label"> Characters: </span>
-
-                <div class="d-inline-flex align-items-center flex-wrap">
-                    <!-- Display Existing Quote Connections -->
-                    <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of quote.connections">
-                        <a routerLink="/character/{{connection.character_details.name}}">{{connection.character_details.name}}</a>
-                        <i class="fa fa-trash icon hide-icon ml-1" (click)="deleteQuoteConnection(connection)"></i>
-                    </span>
-
-                    <!-- Form for Creating Quote Connections -->
-                    <form [ngClass]="{'d-none':!inQuoteConnectionCreateState, 'd-inline-block': inQuoteConnectionCreateState}">
-                        <select class="form-control" name="character" id="character" [(ngModel)]="baseQuoteConnection.character">
-                            <option *ngFor="let character of characters" value="{{character.pk}}" [attr.disabled]="hasConnection(character) ? true : null">
-                                {{character.name}}
-                            </option>
-                        </select>
-                    </form>
-
-                    <i [ngClass]="{'fa icon mx-2': true, 'fa-plus hide-icon': !inQuoteConnectionCreateState, 'fa-times': inQuoteConnectionCreateState}"
-                    (click)="toggleQuoteConnectionCreateState()"></i>
-                    <i [ngClass]="{'fa icon': true, 'fa-check': inQuoteConnectionCreateState}" (click)="createQuoteConnection()"></i>
+<!-- TODO: Add some way to add a quote if the character has no quote yet -->
+<div *ngIf="!inCreateState && !inEditState; else quoteForm" class="mb-3">
+    <div *ngIf="quote">
+        <blockquote *ngIf="!isLoadingNextQuote; else loading">
+            <!-- Quote -->
+            <div [innerHTML]="quote.quote"></div>
+            <div class="ml-4">
+                <!-- Quote Description -->
+                <div class="mb-3">
+                    <span *ngIf="quote.description" [innerHTML]="'- ' + quote.description"></span>
+                    <span *ngIf="!quote.description"> - {{character.name}}</span>
+                </div>
+    
+                <!-- Quote Connections -->
+                <div class="quote-connections d-flex icon-container">
+                    <span class="mr-4 tag-label"> Characters: </span>
+    
+                    <div class="d-inline-flex align-items-center flex-wrap">
+                        <!-- Display Existing Quote Connections -->
+                        <span class="badge badge-secondary mr-2 text-center vanish-container" *ngFor="let connection of quote.connections">
+                            <a routerLink="/character/{{connection.character_details.name}}">{{connection.character_details.name}}</a>
+                            <i class="fa fa-trash icon vanish-icon ml-2" (click)="deleteQuoteConnection(connection)"></i>
+                        </span>
+    
+                        <!-- Form for Creating Quote Connections -->
+                        <form [ngClass]="{'d-none':!inQuoteConnectionCreateState, 'd-inline-block': inQuoteConnectionCreateState}">
+                            <select class="form-control" name="character" id="character" [(ngModel)]="baseQuoteConnection.character">
+                                <option *ngFor="let character of characters" value="{{character.pk}}" [attr.disabled]="hasConnection(character) ? true : null">
+                                    {{character.name}}
+                                </option>
+                            </select>
+                        </form>
+    
+                        <i [ngClass]="{'fa icon mx-2': true, 'fa-plus hide-icon': !inQuoteConnectionCreateState, 'fa-times': inQuoteConnectionCreateState}"
+                        (click)="toggleQuoteConnectionCreateState()"></i>
+                        <i [ngClass]="{'fa icon': true, 'fa-check': inQuoteConnectionCreateState}" (click)="createQuoteConnection()"></i>
+                    </div>
                 </div>
             </div>
+        </blockquote>
 
-            <!-- Quote Refresh/Create/Edit/Delete Icons -->
-            <div class="mt-2 icon-container" *ngIf="!inDeleteState; else deleteRequest">
-                <i class="fa fa-refresh fa-1-5x icon mx-3" (click)="getNextRandomQuote()"></i>
-                <i class="fa fa-pencil fa-1-5x icon mx-3" (click)="toggleEditState()"></i>
-                <i class="fa fa-plus fa-1-5x icon mx-3" (click)="toggleCreateState()"></i>
-                <i class="fa fa-trash fa-1-5x icon mx-3" (click)="inDeleteState=true"></i>
-            </div>
+        <!-- Quote Refresh/Create/Edit/Delete Icons -->
+        <div class="icon-container mt-1" *ngIf="!inDeleteState; else deleteRequest">
+            <i class="fa fa-refresh fa-1-5x icon mx-3" (click)="getNextRandomQuote()"></i>
+            <i class="fa fa-pencil fa-1-5x icon mx-3" (click)="toggleEditState()"></i>
+            <i class="fa fa-plus fa-1-5x icon mx-3" (click)="toggleCreateState()"></i>
+            <i class="fa fa-trash fa-1-5x icon mx-3" (click)="inDeleteState=true"></i>
         </div>
-    </blockquote>
+    </div>
 </div>
 
 <!-- Loading Spinner -->
@@ -59,7 +65,7 @@
         <!-- Form -->
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <button class="btn btn-secondary mr-3" (click)="inCreateState=false">Cancel</button>
+            <button class="btn btn-secondary mr-3" (click)="inCreateState=false; inEditState=false">Cancel</button>
             <button type="submit" class="btn btn-outline-secondary">Submit</button>
         </form>
 

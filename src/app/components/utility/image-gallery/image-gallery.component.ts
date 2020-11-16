@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, HostListener, Output } from '@angular/core';
-import { Image, EmptyImage } from "src/app/models/image";
+import { Image, ImageObject } from "src/app/models/image";
 import { Constants } from "src/app/app.constants";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ImageUploadService } from "src/app/services/image/image-upload.service";
@@ -77,7 +77,7 @@ export class ImageGalleryComponent {
   }
 
   resetImageModel(){
-    this.model = new EmptyImage();
+    this.model = new ImageObject();
   }
 
   onSubmit(){
