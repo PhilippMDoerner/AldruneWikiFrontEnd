@@ -26,3 +26,7 @@
 .badge.badge-secondary{
     padding: 0.35rem;
 }
+
+blockquote:hover ~ .icon-container, .icon-container:hover{
+    opacity: 1;
+}

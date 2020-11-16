@@ -8,8 +8,6 @@ import { Marker } from 'leaflet';
 //Bugfixing leaflet not grabbing its shadow-image file properly
 import "leaflet/dist/images/marker-shadow.png";
 
-
-
 @Component({
   selector: 'app-leaflet-map',
   templateUrl: './leaflet-map.component.html',
@@ -135,7 +133,6 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit 
     .bindTooltip(mapMarker.location_details.name);
   }
 
-  //TODO: Write into every model a "get_absolute_url" method and use that for url generation everywhere
   getPopupText(marker: MapMarker){
     // Heading and Description
     const location_url = `/location/${marker.location_details.parent_location_name}/${marker.location_details.name}`;

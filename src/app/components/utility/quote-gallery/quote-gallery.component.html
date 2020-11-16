@@ -1,6 +1,5 @@
-<!-- TODO: Add some way to add a quote if the character has no quote yet -->
 <div *ngIf="!inCreateState && !inEditState; else quoteForm" class="mb-3">
-    <div *ngIf="quote">
+    <div *ngIf="quote; else addNewQuoteButton">
         <blockquote *ngIf="!isLoadingNextQuote; else loading">
             <!-- Quote -->
             <div [innerHTML]="quote.quote"></div>
@@ -40,7 +39,7 @@
         </blockquote>
 
         <!-- Quote Refresh/Create/Edit/Delete Icons -->
-        <div class="icon-container mt-1" *ngIf="!inDeleteState; else deleteRequest">
+        <div class="icon-container hide-icon mt-1" *ngIf="!inDeleteState; else deleteRequest">
             <i class="fa fa-refresh fa-1-5x icon mx-3" (click)="getNextRandomQuote()"></i>
             <i class="fa fa-pencil fa-1-5x icon mx-3" (click)="toggleEditState()"></i>
             <i class="fa fa-plus fa-1-5x icon mx-3" (click)="toggleCreateState()"></i>
@@ -79,4 +78,9 @@
         <button class="btn btn-outline-secondary mr-2" (click)="inDeleteState=false"> No </button>
         <button class="btn btn-outline-danger" (click)="deleteQuote()"> Yes </button>
     </div>
+</ng-template>
+
+<!-- Add New Quote Button If Character has no Quote -->
+<ng-template #addNewQuoteButton>
+    <div class="btn btn-dark" (click)="toggleCreateState()">Add Quote</div>
 </ng-template>

@@ -1,5 +1,5 @@
 <!-- Display State -->
-<div class="image-area mb-5 icon-container" *ngIf="componentState===constants.displayState">
+<div class="image-area icon-container" *ngIf="componentState===constants.displayState">
     <!-- Prior Image Arrow -->
     <i [ngClass]="{'fa fa-arrow-left fa-2x mr-5 icon': true, 'mouseoverVisible': !isLastImage(), 'deactivated-icon': isLastImage()}" 
     aria-hidden="true"
