@@ -26,8 +26,8 @@ export interface OverviewItem{
 }
 
 export class OverviewItemObject implements OverviewItem{
-    constructor(object: OverviewItem){
-        Object.assign(this, object);
+    constructor(object?: OverviewItem){
+        if (object) Object.assign(this, object);
     }
 
     name: string;
@@ -42,7 +42,7 @@ export class OverviewItemObject implements OverviewItem{
     }
 }
 
-const ArticleTypeToObjectClassMapping = {
+export const ArticleTypeToObjectClassMapping = {
     character: CharacterObject,
     creature: CreatureObject,
     diaryentry: DiaryEntryObject,

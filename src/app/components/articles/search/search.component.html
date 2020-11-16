@@ -6,7 +6,7 @@
          
         <!-- Article List -->
         <div class="my-3">
-            <a routerLink="/{{article.url}}" 
+            <a routerLink="{{article.getAbsoluteRouterUrl()}}" 
                *ngFor="let article of articles"
                [ngClass]="'card flex-row align-items-center sidebar-border my-2 ' + sidebarColor(article.article_type)">
                

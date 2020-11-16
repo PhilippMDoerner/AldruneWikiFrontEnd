@@ -29,7 +29,7 @@ export class CharacterService {
     return this.http.get<Character>(url);
   }
 
-  @TransformObservable(CharacterObject)
+  //TODO: Maybe transform this also into some kind of object... who knows
   getPlayerCharacters(): Observable<OverviewItem[]>{
     const url = `${Constants.wikiApiUrl}/playercharacters`;
     return this.http.get<OverviewItem[]>(url);

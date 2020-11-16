@@ -7,7 +7,7 @@
         <!-- Article List -->
         <div class="my-3" *ngFor="let articleGroup of articles|groupBy: 'update_date'">
             <div class="mb-1">{{articleGroup.key|date}}</div>
-            <a routerLink="" 
+            <a routerLink="{{article.getAbsoluteRouterUrl()}}" 
                *ngFor="let article of articleGroup.value"
                [ngClass]="'card flex-row align-items-center sidebar-border ' + sidebarColor(article.article_type)">
                

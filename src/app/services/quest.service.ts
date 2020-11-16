@@ -34,7 +34,7 @@ export class QuestService {
       const groupAsQuestTaker: OverviewItem = {'name': 'Group', 'name_full': 'Group', 'pk': null, 'article_type': 'quest'}
       characters.unshift(groupAsQuestTaker);
       return characters;
-    }))
+    }));
   }
 
   @TransformObservable(QuestObject)

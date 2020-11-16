@@ -29,6 +29,7 @@ export class DiaryEntryObject implements DiaryEntry{
 
     getAbsoluteRouterUrl(): string{
         if (!this.session_details) throw "Can't generate URL for diaryEntry object without Session Details";
+        if (!this.session_details) throw "Can't generate URL for diaryEntry object without author_Details";
         return `/diaryentry/${this.session_details.session_number}/${this.session_details.is_main_session_int}/${this.author_details.name}`;
     }
 }

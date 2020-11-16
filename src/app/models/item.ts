@@ -21,6 +21,6 @@ export class ItemObject implements Item{
     }
 
     getAbsoluteRouterUrl(): string{
-        return `/item/${name}`;
+        return `/item/${this.name}`;
     }
 }
