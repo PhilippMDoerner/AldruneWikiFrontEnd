@@ -21,7 +21,8 @@
         <!-- Form -->
         <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+            <button class="btn btn-dark mr-3" routerLink="..">Cancel</button>
+            <button type="submit" class="btn btn-outline-dark">Submit</button>
         </form>
     </article>
 

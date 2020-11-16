@@ -79,7 +79,7 @@ export class QuoteGalleryComponent implements OnInit {
 
   toggleCreateState(){
     this.inCreateState = true;
-    if (!this.model) this.model = new QuoteObject();
+    this.model = new QuoteObject();
   }
 
   toggleEditState(){

@@ -24,7 +24,6 @@ export class QuestService {
     return this.http.get<Quest[]>(this.questUrl);
   }
 
-  @TransformObservable(QuestObject)
   getQuestStates(): Observable<string[]>{
     return this.http.get<string[]>(`${this.questUrl}states`);
   }
