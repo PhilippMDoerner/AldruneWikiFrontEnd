@@ -38,6 +38,7 @@ export class MyFormlyService {
       type: "select",
       hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
+        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         options: options,
         required: (typeof config.required === "boolean") ? config.required : true,
       }
