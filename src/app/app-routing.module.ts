@@ -32,9 +32,12 @@ import { MapComponent } from './components/articles/map/map.component';
 import { MapUpdateComponent } from './components/articles/map-update/map-update.component';
 import { MarkerMapCreateComponent } from './components/articles/marker-map-create/marker-map-create.component';
 import { LocationArticleMapCreateComponent } from './components/articles/location-article-map-create/location-article-map-create.component';
+import { LoginComponent } from './components/login/login.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
+  {path: "login", component: LoginComponent},
+  
   {path: "character", component: ArticleOverviewComponent},
   {path: "character/create", component: CharacterArticleUpdateComponent},
   {path: "character/:name", component: CharacterArticleComponent},

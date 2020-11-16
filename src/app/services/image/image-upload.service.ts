@@ -27,27 +27,15 @@ export class ImageUploadService {
     return this.http.get<Image[]>(url);
   }
 
-  // updateImage(image: Image){
-  //   const formData: FormData = new FormData();
-  //   for ( var key in image ) {
-  //     formData.append(key, image[key]);
-  //   }
-  //   const url = `${this.imageUrl}/pk/${image.pk}/`;
-  //   const options = {headers: new HttpHeaders({"Content-Disposition": `attachment;`})}
-  //   return this.http.put<Image>(url, image);
-  // }
+  updateImage(imageModel: Image){
+    const formData: FormData = convertSingleFileModelToFormData(imageModel, "image");
+    const url = `${this.imageUrl}/pk/${imageModel.pk}/`;
+    return this.http.put<Image>(url, formData);
+  }
 
   postImage(imageModel: Image): Observable<Image>{
     const url = `${Constants.wikiApiUrl}/image/upload/`;
     const formData: FormData = convertSingleFileModelToFormData(imageModel, "image");
-    // const formData: FormData = new FormData();
-    // for ( var key in imageModel ) {
-    //   if (key === "image"){
-    //     formData.append(key, imageFile);
-    //   } else if (imageModel[key]){
-    //     formData.append(key, imageModel[key]);
-    //   }
-    // }
     return this.http.post<Image>(url, formData);
   }
 

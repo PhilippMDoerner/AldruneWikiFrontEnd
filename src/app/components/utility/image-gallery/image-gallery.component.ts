@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-image-gallery',
@@ -14,21 +15,19 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
   styleUrls: ['./image-gallery.component.scss']
 })
 
-export class ImageGalleryComponent implements OnInit {
+export class ImageGalleryComponent {
   constants: any = Constants;
 
   @Input() images : Image[];
   @Input() article_type: string;
   @Input() article_pk: number;
   visibleImageIndex: number = 0;
-  activeModalState: string = null;
+  componentState: string = Constants.displayState;
 
   model: Image;
   form: FormGroup = new FormGroup({});
   formImageName: string;
   formImageFile: File = null;
-
-  private imageSubscription: Subscription;
 
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", required: false}),
@@ -42,12 +41,9 @@ export class ImageGalleryComponent implements OnInit {
   ]
 
   constructor(
-    private modalService: NgbModal,
     private imageUploadService: ImageUploadService,
     private formlyService: MyFormlyService
     ) { }
-
-  ngOnInit(): void {}
 
   @HostListener('document:keyup', ['$event'])
   changeMainImage(event){
@@ -56,7 +52,6 @@ export class ImageGalleryComponent implements OnInit {
     } else if (event.code === "ArrowLeft"){
       this.decreaseVisibleImageIndex();
     }
-    console.log(typeof this.getCurrentMainImage().image);
   }
 
   // Main Image Gallery controls
@@ -85,62 +80,57 @@ export class ImageGalleryComponent implements OnInit {
     this.model = new EmptyImage();
   }
 
+  onSubmit(){
+    if (this.componentState === this.constants.createState){
+      this.createImage();
+    } else if (this.componentState === this.constants.updateState){
+      this.updateImage();
+    } else {
+      throw `Submitted form while Image-Gallery Component was in invalid state ${this.componentState}`;
+    }
+  }
 
   // Update Image
-  // showUpdateModal(content){
-  //   this.activeModalState = this.constants.updateState;
-  //   this.model = deepCopy(this.images[this.visibleImageIndex]);
-  //   this.modalService.open(content).result.then( 
-  //     (closeSignal) => {this.updateImage()},
-  //     (dismissSignal) => {}
-  //   );
-  // }
+  toggleUpdateState(){
+    this.componentState = this.constants.updateState;
+    const currentMainImage = this.images[this.visibleImageIndex];
+    this.model = currentMainImage;
+  }
 
-  // updateImage(){
-  //   this.imageUploadService.updateImage(this.model).subscribe(updatedImage => {
-  //     console.log(updatedImage);
-  //     this.images[this.visibleImageIndex] = updatedImage;
-  //     this.resetImageModel();
-  //   }, error => console.log(error));
-  // }
+  updateImage(){
+    this.imageUploadService.updateImage(this.model).pipe(first()).subscribe(updatedImage => {
+      this.images[this.visibleImageIndex] = updatedImage;
+      this.resetImageModel();
+    }, error => console.log(error));
+  }
 
   // Create Image
-  showCreateModal(content){
-    this.activeModalState = this.constants.createState;
-    this.resetImageModel();
+  toggleCreateState(){
+    this.componentState = this.constants.createState;
 
+    this.resetImageModel();
     this.model.article_type = this.article_type;
     const article_type_pk_key = `${this.article_type}_article`;
     this.model[article_type_pk_key] = this.article_pk;
-
-    this.modalService.open(content).result.then( 
-      (closeSignal) => this.createImage(),
-      (dismissSignal) => {}
-    );
   }
 
   createImage(){
-    this.imageUploadService.postImage(this.model).subscribe(createdImage => {
+    this.imageUploadService.postImage(this.model).pipe(first()).subscribe(createdImage => {
       this.images.push(createdImage);
       this.resetImageModel();
     }, error => console.log(error));  
   }
 
   // Delete Image
-  showDeleteModal(content){
+  toggleDeleteState(){
     if (this.isLastImage()) return;
-    
-    this.activeModalState = this.constants.deleteState;
-    this.modalService.open(content).result.then( 
-      (closeSignal) => this.deleteCurrentMainImage(),
-      (dismissSignal) => {}
-    );  
+    this.componentState = this.constants.deleteState;
   }
 
   deleteCurrentMainImage(){
     const currentMainImage = this.getCurrentMainImage();
 
-    this.imageUploadService.deleteImage(currentMainImage.pk).subscribe(response => {
+    this.imageUploadService.deleteImage(currentMainImage.pk).pipe(first()).subscribe(response => {
       this.images.splice(this.visibleImageIndex, 1);
       if (this.visibleImageIndex === this.images.length){
         this.visibleImageIndex = this.images.length - 1;
@@ -151,9 +141,5 @@ export class ImageGalleryComponent implements OnInit {
   isLastImage(){
     if(this.images) return this.images.length === 1;
     else return true;
-  }
-
-  ngOnDestroy(){
-    if (this.imageSubscription) this.imageSubscription.unsubscribe();
   }
 }

@@ -58,6 +58,19 @@ export class MyFormlyService {
     }
   }
 
+  genericPasswordInput(config: FormlyInterface): FormlyFieldConfig{
+    return {
+      key: config.key,
+      type: "input",
+      templateOptions:{
+        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+        type: "password",
+        required: true,
+        placeholder: "Password",
+      }
+    }
+  }
+
   genericCheckbox(config: FormlyCheckboxConfig): FormlyFieldConfig{
     return{
       key: config.key,

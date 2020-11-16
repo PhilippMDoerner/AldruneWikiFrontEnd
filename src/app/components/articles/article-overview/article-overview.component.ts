@@ -53,7 +53,12 @@ export class ArticleOverviewComponent implements OnInit {
       }
     }, error =>{
       console.log(error);
-      this.router.navigateByUrl("error");
+      if (error.status === 403){
+        const url: string = `${this.constants.wikiUrl}/users/login`;
+        window.location.href = url;
+      } else {
+        this.router.navigateByUrl("error");
+      }
     });
   }
 

@@ -1,8 +1,8 @@
 import { Image } from "./image";
 
 export interface Character{
-    creation_datetime: string,
-    update_datetime: string,
+    creation_datetime?: string,
+    update_datetime?: string,
     player_character: boolean,
     alive: boolean,
     name: string,
@@ -11,13 +11,13 @@ export interface Character{
     race: string,
     description: string,
     organization: number,
-    organization_details: characterOrganization,
+    organization_details?: characterOrganization,
     current_location: number,
-    current_location_details: characterLocation,
-    items: characterItem[],
-    pk: number;
-    encounters: characterEncounter[];
-    images: Image[];
+    current_location_details?: characterLocation,
+    items?: characterItem[],
+    pk?: number;
+    encounters?: characterEncounter[];
+    images?: Image[];
 }
 
 export interface characterLocation{
@@ -51,9 +51,7 @@ interface characterItem{
     name: string
 }
 
-
-
-export class EmptyFormCharacter{
+export class EmptyFormCharacter implements Character{
     player_character: boolean;
     alive: boolean;
     name: string;

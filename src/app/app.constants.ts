@@ -2,6 +2,8 @@ export class Constants{
     public static get wikiUrl(): string { return "http://localhost:8000";}
     public static get wikiApiUrl(): string { return `${this.wikiUrl}/api`;}
     public static get wikiStaticUrl(): string { return `${this.wikiUrl}/static`;}
+    public static get wikiTokenUrl(): string { return `${this.wikiApiUrl}/token`;}
+    public static get wikiTokenRefreshUrl(): string {return `${this.wikiTokenUrl}/refresh`;}
 
     public static get NONE_STRING(): string { return "None";} //This value must be identical to the NONE_STRING setting in the backend
     //Used so far mostly in Image Gallery

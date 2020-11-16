@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Constants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-navbar',
@@ -8,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
   searchString: string;
+  constants: any = Constants;
   constructor(private router: Router) { }
 
   ngOnInit(): void {

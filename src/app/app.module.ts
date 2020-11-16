@@ -61,7 +61,8 @@ import { LeafletMapComponent } from './components/utility/leaflet-map/leaflet-ma
 import { MarkerMapCreateComponent } from './components/articles/marker-map-create/marker-map-create.component';
 import { LocationArticleMapCreateComponent } from './components/articles/location-article-map-create/location-article-map-create.component';
 import { QuoteGalleryComponent } from './components/utility/quote-gallery/quote-gallery.component';
-
+import { LoginComponent } from './components/login/login.component';
+import { httpInterceptorProviders } from "src/app/interceptors/index";
 @NgModule({
   declarations: [
     AppComponent,
@@ -114,6 +115,7 @@ import { QuoteGalleryComponent } from './components/utility/quote-gallery/quote-
     MarkerMapCreateComponent,
     LocationArticleMapCreateComponent,
     QuoteGalleryComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,
@@ -134,7 +136,8 @@ import { QuoteGalleryComponent } from './components/utility/quote-gallery/quote-
     VimeModule,
   ],
   providers: [
-    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' }
+    { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
+    httpInterceptorProviders
   ],
   bootstrap: [
     AppComponent
