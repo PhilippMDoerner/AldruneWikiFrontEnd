@@ -13,7 +13,8 @@
                 <h5 class="mb-0"> Marker Fields </h5>
                 <formly-form [form]="markerForm" [fields]="marker_fields" [model]="markerModel"></formly-form>
             </div>
-            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+            <button class="btn btn-dark mr-3" routerLink="..">Cancel</button>
+            <button type="submit" class="btn btn-secondary">Submit</button>
         </form>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

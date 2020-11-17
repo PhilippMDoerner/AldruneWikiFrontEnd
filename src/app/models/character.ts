@@ -14,7 +14,7 @@ export interface Character extends ArticleObject{
     current_location: number,
     current_location_details?: characterLocation,
     items?: characterItem[],
-    encounters?: characterEncounter[];
+    encounters?: characterEncounter[],
     images?: Image[];
 }
 
@@ -64,6 +64,11 @@ export class CharacterObject implements Character{
     organization: number;
     current_location: number;
     pk?: number;
+    current_location_details?: characterLocation;
+    organization_details?: characterOrganization;
+    items?: characterItem[];
+    encounters?: characterEncounter[];
+    images?: Image[];
 
     getAbsoluteRouterUrl(): string{
         return `/character/${this.name}`;

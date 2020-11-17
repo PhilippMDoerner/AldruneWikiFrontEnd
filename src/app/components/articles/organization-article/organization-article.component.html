@@ -44,9 +44,9 @@
         </div>
 
 
-        <app-delete-toggle [deleteMessage]="'Delete '+organization.name+'?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
 
-        <a routerLink="/organization" class="btn btn-outline-secondary mr-1">Back to organizations</a>
+        <a routerLink="/organization" class="btn btn-secondary mr-1">Back to organizations</a>
+        <app-delete-toggle [deleteMessage]="'Delete '+organization.name+'?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

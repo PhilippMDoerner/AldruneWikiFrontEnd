@@ -19,6 +19,7 @@
             <app-leaflet-map [map]="currentMap"></app-leaflet-map>
         </div>
 
+        <button class="btn btn-dark mr-3" routerLink="">Back To Frontpage</button>
         <app-delete-toggle (deleteEvent)="deleteMap()"></app-delete-toggle>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

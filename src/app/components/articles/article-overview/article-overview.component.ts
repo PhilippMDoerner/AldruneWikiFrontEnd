@@ -51,7 +51,6 @@ export class ArticleOverviewComponent implements OnInit {
       for(let item of listItems){
         this.listItemArray.push(item);
       }
-      console.log(this.listItemArray);
     }, error =>{
       console.log(error);
       if (error.status === 403){
