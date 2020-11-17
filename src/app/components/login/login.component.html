@@ -1,9 +1,11 @@
 
 <div class="main">
     <article>
+        <h1>Log In</h1>
+        <div class="mb-3">{{extraMessage}}</div>
         <form (ngSubmit)="onSubmit()">
             <formly-form [model]="model" [fields]="fields" [form]="form"></formly-form>
-            <button type="submit" class="btn btn-outline-dark">Login</button>
+            <button type="submit" class="btn btn-secondary">Login</button>
         </form>
     </article>
 </div>

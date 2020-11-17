@@ -37,6 +37,7 @@ import { LoginComponent } from './components/login/login.component';
 const routes: Routes = [
   {path: "", component: HomeComponent},
   {path: "login", component: LoginComponent},
+  {path: "login/:state", component: LoginComponent},
   
   {path: "character", component: ArticleOverviewComponent},
   {path: "character/create", component: CharacterArticleUpdateComponent},
@@ -91,7 +92,6 @@ const routes: Routes = [
   {path: "map/create", component: MapUpdateComponent},
   {path: "map/:name", component: MapComponent},
   {path: "map/:name/update", component: MapUpdateComponent},
-
 
   {path: "rules", component: RulesComponent},
   {path: "spells", component: SpellsComponent},

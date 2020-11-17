@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { first } from 'rxjs/operators';
+import { Constants } from 'src/app/app.constants';
 import { User } from 'src/app/models/user';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { TokenService } from 'src/app/services/token.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -19,20 +23,34 @@ export class LoginComponent implements OnInit {
     this.formlyService.genericPasswordInput({key: 'password'})
   ]
 
+  state: string;
+  extraMessage: string;
 
   constructor(
     private formlyService: MyFormlyService,
     private userService: UserService,
+    private tokenService: TokenService,
+    private route: ActivatedRoute,
+    private router: Router,
     ) { }
 
   ngOnInit(): void {
+    this.state = this.route.snapshot.params['state'];
+    this.extraMessage = Constants.loginMessageForState[this.state];
     this.model = {username: null, password: null};
   }
 
   onSubmit(){
-    this.userService.setJWTToken(this.model);
-    console.log(this.userService.getAccessToken());
-    console.log(this.userService.getRefreshToken());
+    this.tokenService.getJWTToken(this.model).pipe(first()).subscribe( jwtTokens => {
+      this.tokenService.setTokens(jwtTokens);
+      this.router.navigateByUrl("");
+    }, error => {
+      console.log(error);
+      if(error.status === 401){
+               
+      }
+    });
+
   }
 
 }

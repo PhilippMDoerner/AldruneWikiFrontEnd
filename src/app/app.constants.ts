@@ -1,4 +1,5 @@
 export class Constants{
+    // API Urls
     public static get wikiUrl(): string { return "http://localhost:8000";}
     public static get wikiApiUrl(): string { return `${this.wikiUrl}/api`;}
     public static get wikiStaticUrl(): string { return `${this.wikiUrl}/static`;}
@@ -6,7 +7,8 @@ export class Constants{
     public static get wikiTokenRefreshUrl(): string {return `${this.wikiTokenUrl}/refresh`;}
 
     public static get NONE_STRING(): string { return "None";} //This value must be identical to the NONE_STRING setting in the backend
-    //Used so far mostly in Image Gallery
+    
+    //strings representing states
     public static get createState(): string { return "create";}
     public static get deleteState(): string { return "delete";}
     public static get updateState(): string { return "update";}
@@ -27,5 +29,20 @@ export class Constants{
         'diaryentry' : 'gray',
         'quest' : 'white',
         'encounter' : 'lightpink'
+    }}
+
+    // JWT Token Constants
+    public static get accessTokenType(): string { return "access";}
+    public static get refreshTokenType(): string { return "refresh";}
+    public static get anonymousUserName(): string { return "AnonymousUser";}
+
+    // Keys for LocalStorage
+    public static get accessTokenKey(): string { return "access_token";}
+    public static get refreshTokenKey(): string { return "refresh_token";}
+
+    //Login Custom Message to URL Mapping
+    public static get loginMessageForState(): object { return {
+        'token-expired': 'Your Session expired, please log in again',
+        'token-null': 'You do not have a valid token, please log in',
     }}
 }
