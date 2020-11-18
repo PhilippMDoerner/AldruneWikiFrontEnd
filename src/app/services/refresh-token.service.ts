@@ -23,6 +23,9 @@ export class RefreshTokenService {
      * other waiting requests 
      * */
     return this.tokenService.refreshToken().pipe(
+      tap((jwtToken: EncodedJWTToken) => {
+        this.tokenService.setRefreshToken(jwtToken.refresh);
+      }),
       map((tokenResponse: EncodedJWTToken) => {
         return tokenResponse.access;
       }),
@@ -46,10 +49,12 @@ export class RefreshTokenService {
   }
 
   public tokenNeedsRefresh(accessToken: string): boolean{
-    return this.tokenService.isTokenExpired(accessToken) && !this.tokenRefreshInProgress;
+    const accessTokenExpired: boolean = this.tokenService.isTokenExpired(accessToken);
+    return accessTokenExpired && !this.tokenRefreshInProgress;
   }
 
   public hasToWaitForRefresh(accessToken: string): boolean{
-    return this.tokenService.isTokenExpired(accessToken) && this.tokenRefreshInProgress;
+    const accessTokenExpired: boolean = this.tokenService.isTokenExpired(accessToken);
+    return accessTokenExpired && this.tokenRefreshInProgress;
   }
 }

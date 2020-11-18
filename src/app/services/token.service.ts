@@ -20,6 +20,22 @@ export class TokenService {
     return this.http.post<EncodedJWTToken>(this.jwtTokenUrl, loginData);
   }
 
+  public invalidateJWTToken(): void{
+    const jwtToken: EncodedJWTToken = {access: this.getAccessToken(), refresh: this.getRefreshToken()};
+    //return this.http.post(`${this.jwtTokenUrl}/logout`, jwtToken); //This feature is not implemented in the backend
+  }
+
+  public hasJWTToken(): boolean{
+    const hasAccessToken = localStorage.hasOwnProperty(Constants.accessTokenKey) &&  !this.isBadToken(this.getAccessToken());
+    const hasRefreshToken = localStorage.hasOwnProperty(Constants.refreshTokenKey) && !this.isBadToken(this.getRefreshToken());
+    return hasAccessToken && hasRefreshToken;
+  }
+
+  public hasValidJWTToken(): boolean{
+    if (!this.hasJWTToken()) return false;
+    return !this.isTokenExpired(this.getRefreshToken());
+  }
+
   public getAccessToken(): string{
     return localStorage.getItem(Constants.accessTokenKey);
   }
@@ -33,12 +49,14 @@ export class TokenService {
     return this.http.post<EncodedJWTToken>(this.refreshTokenUrl, {refresh: refreshToken});
   }
 
-  public setTokens(jwtToken: EncodedJWTToken){
-    console.log(jwtToken);
-    console.log(this.decodeTokenPayload(jwtToken.access));
-    console.log(this.decodeTokenPayload(jwtToken.refresh));
+  public setTokens(jwtToken: EncodedJWTToken): void{
     this.setAccessToken(jwtToken.access);
     this.setRefreshToken(jwtToken.refresh);
+  }
+
+  public removeJWTTokenFromLocalStorage(): void{
+    localStorage.removeItem(Constants.accessTokenKey);
+    localStorage.removeItem(Constants.refreshTokenKey);
   }
 
   public setAccessToken(token: string): void{
@@ -55,14 +73,22 @@ export class TokenService {
     localStorage.setItem(Constants.refreshTokenKey, token);
   }
 
+  public decodeTokenPayload(token: string): DecodedTokenPayload{
+    const [encodedHeader, encodedPayload, encodedSignature]: string[] = token.split('.');
+    return JSON.parse(atob(encodedPayload));
+  }
+
   public isTokenExpired(token: string): boolean{
     const payload: DecodedTokenPayload = this.decodeTokenPayload(token);
     const expiryTimestamp = payload.exp;
     const currentTimestamp = Math.floor((new Date).getTime()/1000);
+    if (currentTimestamp >= expiryTimestamp){
+      console.log(`Token is expired. request timestamp: ${new Date(currentTimestamp*1000).toString()}. Token expiry timestamp: ${new Date(expiryTimestamp*1000).toString()}`)
+    }
     return currentTimestamp >= expiryTimestamp;
   }
 
-  public isBadToken(token: string): boolean{
+  private isBadToken(token: string): boolean{
     const isEmptyToken: boolean = !token;
     return isEmptyToken || this.isTokenForAnonymousUser(token);
   }
@@ -70,10 +96,5 @@ export class TokenService {
   private isTokenForAnonymousUser(token: string): boolean{
     const payload: DecodedTokenPayload = this.decodeTokenPayload(token);
     return payload.user_name === Constants.anonymousUserName;
-  }
-
-  public decodeTokenPayload(token: string): DecodedTokenPayload{
-    const [encodedHeader, encodedPayload, encodedSignature]: string[] = token.split('.');
-    return JSON.parse(atob(encodedPayload));
   }
 }

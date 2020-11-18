@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders} from '@angular/common/http';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { catchError, filter, first, switchMap } from 'rxjs/operators';
+import { EMPTY, Observable } from 'rxjs';
+import { catchError, switchMap } from 'rxjs/operators';
 import { Constants } from "src/app/app.constants";
-import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
 import { RefreshTokenService } from '../services/refresh-token.service';
 import { TokenService } from '../services/token.service';
@@ -18,8 +17,10 @@ export class JWTInterceptor implements HttpInterceptor{
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         if (this.isApiUrl(request.url)){
+            if (!this.tokenService.hasValidJWTToken()){
+                return this.handleByRoutingToLogin(request, next);
+            }
             const accessToken = this.tokenService.getAccessToken();
-
             if (this.refreshTokenService.tokenNeedsRefresh(accessToken)){
                 return this.handleByRefreshingAccessToken(request, next);
             }
@@ -42,8 +43,12 @@ export class JWTInterceptor implements HttpInterceptor{
             return next.handle(request);
           }),
           catchError(err =>{
-              this.router.navigateByUrl("/login/token-expired");
-              return next.handle(request);
+              if (err.status === 401){
+                console.log("Error while refreshing access token");
+                this.router.navigateByUrl("/login/token-expired");
+              }
+              console.log("Uncertain what error, but not unauthorized");
+              return EMPTY;
           })
         )
       }
@@ -53,8 +58,21 @@ export class JWTInterceptor implements HttpInterceptor{
             switchMap((newAccessToken: string) => {
             request = this.addTokenToRequest(newAccessToken, request);
             return next.handle(request);
+            }),
+            catchError(err =>{
+                if(err.status===401){
+                    console.log("Error while waiting for access token refresh")
+                    this.router.navigateByUrl("/login/???");
+                }
+                console.log("Uncertain what error, but not unauthorized");
+                return EMPTY
             })
         )
+    }
+
+    private handleByRoutingToLogin(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
+        this.router.navigateByUrl('/login/no-token');
+        return EMPTY;
     }
 
     private isApiUrl(url: string): boolean{
@@ -70,39 +88,3 @@ export class JWTInterceptor implements HttpInterceptor{
         return request;   
     }
 }
-
-
-            
-            // //If Access Token Expired and no refresh of it currently running
-            // if(this.userService.isTokenExpired(accessToken) && !this.tokenRefreshInProgress){
-            //     const refreshToken = this.userService.getRefreshToken();
-            //     if (this.userService.isTokenExpired(refreshToken) || !this.userService.getRefreshToken()) this.routeToLogin();
-
-            //     this.tokenRefreshInProgress = true;
-            //     this.refreshAccessTokenSubject.next(null);
-
-            //     return this.userService.refreshToken().pipe(
-            //         switchMap(authResponse => {
-            //             this.userService.setAccessToken(authResponse.access);
-            //             this.tokenRefreshInProgress = false;
-            //             this.refreshAccessTokenSubject.next(authResponse.access);
-            //             request = this.addTokenToRequest(authResponse.access, request);
-            //             return next.handle(request);
-            //         })
-            //     )
-
-            // //If Access Token Expired and already a refresh of it running
-            // } else if(this.userService.isTokenExpired(accessToken) && this.tokenRefreshInProgress){
-            //     return this.refreshAccessTokenSubject.pipe(
-            //         filter(result => result !== null),
-            //         first(),
-            //         switchMap(response => {
-            //             request = this.addTokenToRequest(this.userService.getAccessToken(), request);
-            //             return next.handle(request);
-            //         })
-            //     )
-            
-            //  //If Access Token Valid
-            // } else {
-            //     request = this.addTokenToRequest(accessToken, request);      
-            // }   

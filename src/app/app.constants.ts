@@ -44,5 +44,8 @@ export class Constants{
     public static get loginMessageForState(): object { return {
         'token-expired': 'Your Session expired, please log in again',
         'token-null': 'You do not have a valid token, please log in',
+        'invalid-login': 'No active account found with the given credentials',
+        'logged-out': 'Log out successful. Log in again?',
+        'no-token': 'You are not logged in. Please enter your credentials',
     }}
 }

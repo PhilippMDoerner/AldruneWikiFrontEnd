@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { User } from 'src/app/models/user';
@@ -9,12 +10,14 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { TokenService } from 'src/app/services/token.service';
 import { UserService } from 'src/app/services/user.service';
 
+// TODO: Implement Logout at some point. To do this, you need to implement a view on the backend that 
+// Blacklists Access and Refresh Token when being sent
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
 
   model: User;
   form = new FormGroup({});
@@ -25,6 +28,7 @@ export class LoginComponent implements OnInit {
 
   state: string;
   extraMessage: string;
+  parameter_subscription: Subscription;
 
   constructor(
     private formlyService: MyFormlyService,
@@ -35,8 +39,10 @@ export class LoginComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.state = this.route.snapshot.params['state'];
-    this.extraMessage = Constants.loginMessageForState[this.state];
+    this.parameter_subscription = this.route.params.subscribe( params => {
+      this.state = params['state'];
+      this.extraMessage = Constants.loginMessageForState[this.state];
+    })
     this.model = {username: null, password: null};
   }
 
@@ -47,10 +53,19 @@ export class LoginComponent implements OnInit {
     }, error => {
       console.log(error);
       if(error.status === 401){
-               
+           this.resetModel();
+           this.router.navigateByUrl('/login/invalid-login') ;   
       }
     });
 
+  }
+
+  resetModel(){
+    this.model = {username: null, password: null};
+  }
+
+  ngOnDestroy(){
+    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 
 }
