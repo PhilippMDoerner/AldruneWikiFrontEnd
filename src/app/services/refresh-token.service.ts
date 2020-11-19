@@ -1,10 +1,7 @@
-import { HttpClient, HttpEvent, HttpHandler, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, first, map, switchMap, tap } from 'rxjs/operators';
-import { Constants } from '../app.constants';
-import { DecodedTokenPayload, EncodedJWTToken } from '../models/jwttoken';
+import { filter, first, map, tap } from 'rxjs/operators';
+import { EncodedJWTToken } from '../models/jwttoken';
 import { TokenService } from './token.service';
 
 @Injectable({

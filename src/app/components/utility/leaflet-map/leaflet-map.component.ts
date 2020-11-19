@@ -1,12 +1,21 @@
 import { AfterContentInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ExtendedMap } from 'src/app/models/map';
-import * as L from "node_modules/leaflet";
-import { MapMarker } from 'src/app/models/mapmarker';
 import { Router } from '@angular/router';
+import { Constants } from 'src/app/app.constants';
+import { ExtendedMap } from 'src/app/models/map';
+import { MapMarker } from 'src/app/models/mapmarker';
 import { Marker } from 'leaflet';
+import * as L from "node_modules/leaflet";
+import 'leaflet/dist/leaflet.css';
 
-//Bugfixing leaflet not grabbing its shadow-image file properly
-import "leaflet/dist/images/marker-shadow.png";
+let DefaultIcon = L.icon({
+  iconUrl: `${Constants.wikiMediaUrl}/leaflet/marker-icon.png`,
+  shadowUrl: `${Constants.wikiMediaUrl}/leaflet/marker-shadow.png`,
+  iconSize: [24,36],
+  iconAnchor: [12,36]
+});
+
+L.Marker.prototype.options.icon = DefaultIcon;
+
 
 @Component({
   selector: 'app-leaflet-map',
@@ -73,7 +82,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   routeToAddLocationUrl(latitude: number, longitude: number){
-    this.router.navigateByUrl(`/location/${latitude}/${longitude}/create`);
+    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}}/location/${latitude}/${longitude}/create`);
   }
 
   addMapImage(){
@@ -128,14 +137,19 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   createDefaultMarker(mapMarker: MapMarker): Marker{
-    return L.marker([mapMarker.latitude, mapMarker.longitude], {})
+    return L.marker([mapMarker.latitude, mapMarker.longitude], {
+      // iconSize: [ 25, 41 ],
+      // iconAnchor: [ 13, 41 ],
+      // iconUrl: 'assets/marker-icon.png',
+      // shadowUrl: 'assets/marker-shadow.png'
+    })
     .bindPopup(this.getPopupText(mapMarker))
     .bindTooltip(mapMarker.location_details.name);
   }
 
   getPopupText(marker: MapMarker){
     // Heading and Description
-    const location_url = `/location/${marker.location_details.parent_location_name}/${marker.location_details.name}`;
+    const location_url = `${Constants.wikiUrlFrontendPrefix}/location/${marker.location_details.parent_location_name}/${marker.location_details.name}`;
     const heading: string = `<a href="${location_url}"> <b>${marker.location_details.name}</b> </a>`
 
     let description: string = marker.location_details.description;
@@ -150,7 +164,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit 
       let sublocationList: string = " <ul>";
       for(let sublocationName of marker.location_details.sublocations){
         const sublocation_url = `/location/${marker.location_details.name}/${sublocationName}`;
-        sublocationList += `<li><a routerLink='${sublocation_url}'> ${sublocationName}</a></li>`
+        sublocationList += `<li><a routerLink="${Constants.wikiUrlFrontendPrefix}/${sublocation_url}"> ${sublocationName}</a></li>`
       }
       sublocationList += '</ul>';
 

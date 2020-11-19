@@ -26,7 +26,8 @@
             "assets": [
               "src/favicon.ico",
               "src/assets",
-              { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" }
+              { "glob": "**/*", "input": "node_modules/tinymce", "output": "/tinymce/" },
+              { "glob": "**/*", "input": "node_modules/leaflet/dist/images", "output": "assets/"}
             ],
             "styles": [
               "src/styles.scss",
@@ -35,7 +36,7 @@
             "scripts": [
               "node_modules/jquery/dist/jquery.js",
               "node_modules/popper.js/dist/umd/popper.js",
-              "node_modules/leaflet/dist/leaflet.js"
+              "node_modules/tinymce/tinymce.min.js"
             ]
           },
           "configurations": {
