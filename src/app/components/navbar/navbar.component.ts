@@ -18,7 +18,7 @@ export class NavbarComponent implements OnInit {
   }
 
   search(){
-    this.router.navigateByUrl(`/search/${this.searchString}`);
+    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/search/${this.searchString}`);
   }
 
   logout(){
@@ -26,6 +26,6 @@ export class NavbarComponent implements OnInit {
       this.tokenService.invalidateJWTToken();
       this.tokenService.removeJWTTokenFromLocalStorage();
     }
-    this.router.navigateByUrl('/login/logged-out');
+    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/login/logged-out`);
   }
 }

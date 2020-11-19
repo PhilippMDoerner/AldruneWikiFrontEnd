@@ -55,7 +55,7 @@ export class OrganizationArticleUpdateComponent implements OnInit {
 
     responseObservable.subscribe(response => {
       console.log(response);
-      this.router.navigateByUrl(`/organization/${model.name}`);
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/organization/${model.name}`);
     }, error => console.log(error));
   }
 

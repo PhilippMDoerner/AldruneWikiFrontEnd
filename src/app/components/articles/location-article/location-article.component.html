@@ -8,7 +8,7 @@
 
         <h1 class="text-center">
             {{ location.name }} 
-            <a *ngFor="let marker of location.marker_details" class="mx-1 no-underline" routerLink="/marker/{{location.parent_location_details.name}}/{{location.name}}/{{marker.map}}">
+            <a *ngFor="let marker of location.marker_details" class="mx-1 no-underline" routerLink="{{constants.wikiUrlFrontendPrefix}}/marker/{{location.parent_location_details.name}}/{{location.name}}/{{marker.map}}">
                 <i class="fa fa-{{marker.map_icon}} icon"></i>
             </a>
         </h1>
@@ -59,10 +59,10 @@
 
 
         <!-- Return Buttons -->
-        <a routerLink="/location" class="btn btn-outline-secondary mr-1">Back to locations</a>
+        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/location" class="btn btn-outline-secondary mr-1">Back to locations</a>
         <a 
         *ngIf="location.parent_location_details.name !== constants.NONE_STRING"
-        routerLink="/location/{{location.parent_location_details.parent_location}}/{{location.parent_location_details.name}}"
+        routerLink="{{constants.wikiUrlFrontendPrefix}}/location/{{location.parent_location_details.parent_location}}/{{location.parent_location_details.name}}"
         class="btn btn-secondary">
             Back to {{location.parent_location_details.name}}
         </a>

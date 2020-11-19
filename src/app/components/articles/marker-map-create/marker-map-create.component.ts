@@ -57,7 +57,7 @@ export class MarkerMapCreateComponent implements OnInit {
 
   onSubmit(model: MapMarker){
     this.marker_subscription = this.markerService.createMapMarker(model).subscribe((marker: MapMarker) => {
-      this.router.navigateByUrl(`/map/${marker.map_details.name}`);
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/map/${marker.map_details.name}`);
     }, error => console.log(error));
   }
 

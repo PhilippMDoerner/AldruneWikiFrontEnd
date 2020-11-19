@@ -32,7 +32,7 @@ export class CharacterArticleComponent implements OnInit {
       const character_name: string = params.name;
       this.character_subscription = this.characterService.getCharacter(character_name).subscribe((character: CharacterObject) => {
         this.character = character;
-      }, error =>{ this.router.navigateByUrl("error");});
+      }, error =>{ this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`);});
     });
   }
 
@@ -48,7 +48,7 @@ export class CharacterArticleComponent implements OnInit {
 
   deleteArticle(){
       this.characterService.deleteCharacter(this.character).subscribe(response => {
-        this.router.navigateByUrl("character")
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/character`)
       }, error => console.log(error));
   }
 

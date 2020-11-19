@@ -8,7 +8,7 @@
     <!-- List -->
     <ul>
         <li *ngFor="let item of items">
-            <a routerLink="/{{articleType}}/{{item.name}}">
+            <a routerLink="{{constants.wikiUrlFrontendPrefix}}/{{articleType}}/{{item.name}}">
                 {{item.name}}
             </a>
         </li>

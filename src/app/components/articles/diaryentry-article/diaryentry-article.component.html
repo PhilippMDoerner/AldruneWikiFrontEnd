@@ -4,7 +4,7 @@
 
         <h1 class="text-center">
             Diary Entry #
-            <a routerLink="../../../../session/{{diaryEntry.session_details.session_number}}/{{diaryEntry.session_details.is_main_session_int}}">
+            <a routerLink="{{constants.wikiUrlFrontendPrefix}}/session/{{diaryEntry.session_details.session_number}}/{{diaryEntry.session_details.is_main_session_int}}">
                 {{ diaryEntry.session_details.name }}
             </a>
         </h1>
@@ -20,7 +20,7 @@
 
         <app-delete-toggle [deleteMessage]="'Delete Diaryentry?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
 
-        <a routerLink="../../.." class="btn btn-secondary">Back to Diaryentries</a>
+        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/diaryentry" class="btn btn-secondary">Back to Diaryentries</a>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

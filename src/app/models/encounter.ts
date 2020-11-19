@@ -1,4 +1,5 @@
 import { EncounterConnection } from "src/app/models/encounterconnection";
+import { Constants } from '../app.constants';
 import { ArticleObject } from './base-models';
 export interface Encounter extends ArticleObject{
     description: string,
@@ -22,6 +23,6 @@ export class EncounterObject implements Encounter {
 
     getAbsoluteRouterUrl(){
         if (!this.pk) throw "Can't generate URL for Encounter object without pk";
-        return `/encounter/${this.pk}`;
+        return `${Constants.wikiUrlFrontendPrefix}/encounter/${this.pk}`;
     }
 }

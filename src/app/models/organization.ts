@@ -1,3 +1,4 @@
+import { Constants } from '../app.constants';
 import { ArticleObject } from './base-models';
 import { Image } from './image';
 
@@ -24,6 +25,6 @@ export class OrganizationObject implements Organization{
     }
 
     getAbsoluteRouterUrl(): string{
-        return `/organization/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/organization/${this.name}`;
     }
 }

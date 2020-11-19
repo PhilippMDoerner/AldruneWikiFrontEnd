@@ -49,12 +49,12 @@ export class LocationArticleComponent implements OnInit {
     if (!locationList) throw "Tried building a route to a location in parent_location_list when there is no parent_location_list";
     const locationName: string = locationList[index];
     const parentLocationName: string = (index === 0) ? "None" : locationList[index-1];
-    return `/location/${parentLocationName}/${locationName}`;
+    return `${Constants.wikiUrlFrontendPrefix}/location/${parentLocationName}/${locationName}`;
   }
 
   deleteArticle(){
       this.locationService.deleteLocation(this.location.pk).subscribe(response => {
-        this.router.navigateByUrl("/location");
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/location`);
       }, error => console.log(error));
   }
 

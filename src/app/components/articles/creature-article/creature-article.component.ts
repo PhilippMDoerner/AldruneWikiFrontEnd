@@ -43,7 +43,7 @@ export class CreatureArticleComponent implements OnInit {
 
   deleteArticle(){
     this.creatureService.deleteCreature(this.creature.pk).subscribe(response => {
-      this.router.navigateByUrl("character")
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/character`)
     }, error => console.log(error));
   }
 

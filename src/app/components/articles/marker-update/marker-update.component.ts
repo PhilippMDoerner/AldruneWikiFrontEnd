@@ -77,7 +77,7 @@ export class MarkerUpdateComponent implements OnInit {
     } else if (this.formState === this.constants.createState){
       const locationName: string = this.route.snapshot.params['location_name'];
       const parentLocationName = this.route.snapshot.params['parent_location_name'];
-      return `/marker/${parentLocationName}/${locationName}/${mapName}`;
+      return `${Constants.wikiUrlFrontendPrefix}/marker/${parentLocationName}/${locationName}/${mapName}`;
     }
   }
 

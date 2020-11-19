@@ -13,13 +13,13 @@
                 <span *ngIf="character.gender !=='Other'">{{ character.gender }}</span>
                 {{ character.race }}
                 <span *ngIf="character.organization"> of the 
-                    <a routerLink="/organization/{{character.organization_details.name}}">{{ character.organization_details.name }}</a>
+                    <a routerLink="{{constants.wikiUrlFrontendPrefix}}/organization/{{character.organization_details.name}}">{{ character.organization_details.name }}</a>
                 </span> 
             </div>
             <!-- Current Location -->
             <div *ngIf="character.current_location">
                 Last known location:
-                <a routerLink="/location/{{character.current_location_details.parent_location}}/{{character.current_location_details.name}}">
+                <a routerLink="{{constants.wikiUrlFrontendPrefix}}/location/{{character.current_location_details.parent_location}}/{{character.current_location_details.name}}">
                     <strong> {{ character.current_location_details.name_full }} </strong>
                 </a>
             </div>

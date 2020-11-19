@@ -28,7 +28,7 @@ export class OrganizationArticleComponent implements OnInit {
 
     this.organization_subscription = this.organizationService.getOrganization(organizationName).subscribe(organization => {
       this.organization = organization;
-    }, error =>{ this.router.navigateByUrl("error");});
+    }, error =>{ this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`)});
   }
 
   onDescriptionUpdate(updatedDescription){
@@ -43,7 +43,7 @@ export class OrganizationArticleComponent implements OnInit {
 
   deleteArticle(){
       this.organizationService.deleteOrganization(this.organization.pk).subscribe(response => {
-        this.router.navigateByUrl("/organization")
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/organization`)
       }, error => console.log(error));
   }
 

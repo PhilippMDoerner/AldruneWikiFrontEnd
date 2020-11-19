@@ -1,3 +1,4 @@
+import { Constants } from '../app.constants';
 import { ArticleObject } from './base-models';
 
 export interface Spell extends ArticleObject{
@@ -36,6 +37,6 @@ export class SpellObject implements Spell{
     }
 
     getAbsoluteRouterUrl(): string{
-        return `/spell/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/spell/${this.name}`;
     }
 }

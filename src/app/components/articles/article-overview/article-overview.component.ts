@@ -57,7 +57,7 @@ export class ArticleOverviewComponent implements OnInit {
         const url: string = `${this.constants.wikiUrl}/users/login`;
         window.location.href = url;
       } else {
-        this.router.navigateByUrl("error");
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`);
       }
     });
   }

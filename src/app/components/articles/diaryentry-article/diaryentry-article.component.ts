@@ -30,7 +30,9 @@ export class DiaryentryArticleComponent implements OnInit {
 
     this.diaryEntry_subscription = this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(diaryEntry => {
       this.diaryEntry = diaryEntry;
-    }, error =>{ this.router.navigateByUrl("error");});
+    }, error =>{ 
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`)
+    });
   }
 
   onDescriptionUpdate(updatedDescription){
@@ -45,7 +47,7 @@ export class DiaryentryArticleComponent implements OnInit {
 
   deleteArticle(){
       this.diaryEntryService.deleteDiaryEntry(this.diaryEntry.pk).subscribe(response => {
-        this.router.navigateByUrl("diaryentry")
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/diaryentry`)
       }, error => console.log(error));
   }
 

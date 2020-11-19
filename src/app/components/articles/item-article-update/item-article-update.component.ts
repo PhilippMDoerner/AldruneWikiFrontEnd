@@ -65,7 +65,7 @@ export class ItemArticleUpdateComponent implements OnInit {
 
     responseObservable.subscribe(response => {
       console.log(response);
-      this.router.navigateByUrl(`/item/${model.name}`);
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/item/${model.name}`);
     }, error => console.log(error));
   }
 

@@ -47,7 +47,9 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
 
       this.diaryEntry_subscription = this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(diaryEntry => {
         this.model = diaryEntry;
-      }, error =>{ this.router.navigateByUrl("error");});
+      }, error => { 
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`)
+      });
     } else if (this.formState === this.constants.createState) {
       this.model = new DiaryEntryObject();
     }
@@ -59,7 +61,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
 
     responseObservable.subscribe(response => {
       console.log(response);
-      this.router.navigateByUrl(`/diaryentry`);
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/diaryentry`);
     }, error => console.log(error));
   }
 

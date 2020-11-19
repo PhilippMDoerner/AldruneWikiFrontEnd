@@ -10,7 +10,7 @@
             <div class="text-center"><span class="bold mr-2">Color: </span> {{marker.color}}</div>
         </div>
 
-        <a routerLink="/location/{{marker.location_details.parent_location_name}}/{{marker.location_details.name}}" class="btn btn-secondary">
+        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/location/{{marker.location_details.parent_location_name}}/{{marker.location_details.name}}" class="btn btn-secondary">
             Back to {{marker.location_details.name}}
         </a>
         <app-delete-toggle (deleteEvent)="deleteMarker()"></app-delete-toggle>

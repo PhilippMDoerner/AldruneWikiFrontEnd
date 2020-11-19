@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Constants } from 'src/app/app.constants';
 import { MapMarker } from 'src/app/models/mapmarker';
 import { MarkerService } from 'src/app/services/marker.service';
 
@@ -10,7 +11,7 @@ import { MarkerService } from 'src/app/services/marker.service';
   styleUrls: ['./marker.component.scss']
 })
 export class MarkerComponent implements OnInit {
-
+  constants: any = Constants;
   marker: MapMarker;
 
   marker_subscription: Subscription;
@@ -34,7 +35,7 @@ export class MarkerComponent implements OnInit {
     this.markerService.deleteMapMarker(this.marker.pk).subscribe(response => {
       const parentLocationName: string = this.route.snapshot.params['parent_location_name'];
       const locationName: string = this.route.snapshot.params['location_name'];
-      const url: string = `/location/${parentLocationName}/${locationName}`;
+      const url: string = `${Constants.wikiUrlFrontendPrefix}/location/${parentLocationName}/${locationName}`;
       this.router.navigateByUrl(url);
     })
   }

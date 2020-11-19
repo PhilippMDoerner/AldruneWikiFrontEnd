@@ -1,3 +1,4 @@
+import { Constants } from '../app.constants';
 import { ArticleObject } from './base-models';
 import { MapMarker } from './mapmarker';
 
@@ -20,6 +21,6 @@ export class MapObject implements ExtendedMap{
     }
 
     getAbsoluteRouterUrl(): string{
-        return `/map/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/map/${this.name}`;
     }
 }

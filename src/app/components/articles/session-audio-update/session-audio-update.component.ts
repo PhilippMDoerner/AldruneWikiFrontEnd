@@ -54,7 +54,7 @@ export class SessionAudioUpdateComponent implements OnInit {
 
     const responseObservable: any =  isFormInUpdateState ? this.audioService.updateSessionAudioFile(this.model) : this.audioService.createSessionAudioFile(this.model);
     responseObservable.subscribe( (sessionAudio: SessionAudio) => {
-      this.router.navigateByUrl(`/sessionaudio/${sessionAudio.session_details.is_main_session_int}/${sessionAudio.session_details.session_number}`);
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/sessionaudio/${sessionAudio.session_details.is_main_session_int}/${sessionAudio.session_details.session_number}`);
     }, error => console.log(error));
   }
 

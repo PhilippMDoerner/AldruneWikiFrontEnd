@@ -59,7 +59,7 @@ export class SessionAudioComponent implements OnInit {
 
   routeToSessionAudio({isMainSessionInt, sessionNumber}){
     //Only needed because the vime player doesn't properly trigger events for src changes
-    this.router.navigateByUrl(`sessionaudio/${isMainSessionInt}/${sessionNumber}`);
+    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/sessionaudio/${isMainSessionInt}/${sessionNumber}`);
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };
@@ -67,7 +67,7 @@ export class SessionAudioComponent implements OnInit {
 
   deleteArticle(){
     this.sessionAudioService.deleteSessionAudioFile(this.sessionAudio.pk).subscribe(response => {
-      this.router.navigateByUrl("/sessionaudio");
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/sessionaudio`);
     }, error => console.log(error));
   }
 

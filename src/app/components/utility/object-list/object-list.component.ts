@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Constants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-object-list',
@@ -6,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./object-list.component.scss']
 })
 export class ObjectListComponent implements OnInit {
+  constants: any = Constants;
   @Input() heading: string;
   @Input() items: {'name': string}[];
   @Input() articleType: string;
@@ -14,7 +16,7 @@ export class ObjectListComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-    if (this.createLink === "") this.createLink = `/${this.articleType}/create`;
+    if (this.createLink === "") this.createLink = `${Constants.wikiUrlFrontendPrefix}/${this.articleType}/create`;
     
   }
 

@@ -15,7 +15,7 @@ import { OverviewService } from 'src/app/services/overview.service';
   styleUrls: ['./encounter.component.scss']
 })
 export class EncounterComponent implements OnInit {
-  constants: Constants;
+  constants: any = Constants;
   encounter: Encounter;
   encounter_subscription: Subscription;
   character_subscription: Subscription;

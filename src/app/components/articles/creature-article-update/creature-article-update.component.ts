@@ -38,7 +38,7 @@ export class CreatureArticleUpdateComponent implements OnInit {
       const creature_name: string = this.route.snapshot.params.name;
       this.creature_subscription = this.creatureService.getCreature(creature_name).subscribe(creature => {
         this.model = creature;
-      }, error => this.router.navigateByUrl("error"));
+      }, error => this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`));
     } else if (this.formState === this.constants.createState) {
       this.model = new CreatureObject();
     }
@@ -50,7 +50,7 @@ export class CreatureArticleUpdateComponent implements OnInit {
 
     responseObservable.subscribe(response => {
       console.log(response);
-      this.router.navigateByUrl(`/creature/${model.name}`);
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/creature/${model.name}`);
     }, error => console.log(error));
   }
 

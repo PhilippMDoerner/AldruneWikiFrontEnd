@@ -72,9 +72,9 @@ export class LocationArticleUpdateComponent implements OnInit {
       return `..`;
     } else if(this.isForAssociatedObjectCreation){
       const newLocationParentName: string = this.route.snapshot.params.name;
-      return `/location/${newLocationParentName}/${this.model.name}`;
+      return `${Constants.wikiUrlFrontendPrefix}/location/${newLocationParentName}/${this.model.name}`;
     } else {
-      return "/location";
+      return `${Constants.wikiUrlFrontendPrefix}/location`;
     }
   }
 

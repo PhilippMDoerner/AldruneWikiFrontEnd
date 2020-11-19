@@ -1,3 +1,4 @@
+import { Constants } from '../app.constants';
 import { ArticleObject } from './base-models';
 import { Image } from './image';
 
@@ -21,6 +22,6 @@ export class ItemObject implements Item{
     }
 
     getAbsoluteRouterUrl(): string{
-        return `/item/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/item/${this.name}`;
     }
 }

@@ -3,7 +3,7 @@
         <!-- Header -->
         <ng-template ngbPanelTitle class="button-container">
             <span class="location-title"> 
-                <a routerLink="/location/{{location.parent_location_name}}/{{location.name}}"> {{ location.name }} </a>
+                <a routerLink="{{constants.wikiUrlFrontendPrefix}}/location/{{location.parent_location_name}}/{{location.name}}"> {{ location.name }} </a>
             </span>
             <i [ngClass]="{
                 'fa float-right icon': true,
@@ -24,7 +24,7 @@
                 <span class="mr-4"> Characters: </span>
                 <span class="d-inline-flex align-items-center flex-wrap">
                     <span class="badge badge-secondary mr-2 p-1 mb-1" *ngFor="let character of location.characters">
-                        <a routerLink="/character/{{character.name}}">{{ character.name }}</a>
+                        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{character.name}}">{{ character.name }}</a>
                     </span>
                 </span>
             </div>       

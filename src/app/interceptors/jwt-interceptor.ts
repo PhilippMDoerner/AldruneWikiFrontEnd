@@ -45,7 +45,7 @@ export class JWTInterceptor implements HttpInterceptor{
           catchError(err =>{
               if (err.status === 401){
                 console.log("Error while refreshing access token");
-                this.router.navigateByUrl("/login/token-expired");
+                this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/login/token-expired`);
               }
               console.log("Uncertain what error, but not unauthorized");
               return EMPTY;
@@ -62,7 +62,7 @@ export class JWTInterceptor implements HttpInterceptor{
             catchError(err =>{
                 if(err.status===401){
                     console.log("Error while waiting for access token refresh")
-                    this.router.navigateByUrl("/login/???");
+                    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/login/???`);
                 }
                 console.log("Uncertain what error, but not unauthorized");
                 return EMPTY
@@ -71,7 +71,7 @@ export class JWTInterceptor implements HttpInterceptor{
     }
 
     private handleByRoutingToLogin(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-        this.router.navigateByUrl('/login/no-token');
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/login/no-token`);
         return EMPTY;
     }
 

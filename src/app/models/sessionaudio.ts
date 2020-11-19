@@ -1,4 +1,5 @@
 import { Session } from 'src/app/models/session';
+import { Constants } from '../app.constants';
 import { ApiObject } from './base-models';
 
 export interface SessionAudio extends ApiObject{
@@ -27,6 +28,6 @@ export class SessionAudioObject implements SessionAudio{
 
     getAbsoluteRouterUrl(): string{
         if (!this.session_details) throw "Can't generate URL for SessionAudio object without session_details";
-        return `/sessionaudio/${this.session_details.session_number}/${this.session_details.session_number}`;
+        return `${Constants.wikiUrlFrontendPrefix}/sessionaudio/${this.session_details.session_number}/${this.session_details.session_number}`;
     }
 }

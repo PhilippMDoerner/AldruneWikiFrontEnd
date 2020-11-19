@@ -36,7 +36,7 @@
                     <span class="mr-4 tag-label"> Characters: </span>
                     <div class="d-inline-flex align-items-center flex-wrap">
                         <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections">
-                            <a routerLink="/character/{{connection.character_details.name}}">{{ connection.character_details.name }}</a>
+                            <a routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{connection.character_details.name}}">{{ connection.character_details.name }}</a>
                             <i class="fa fa-trash icon ml-1" (click)="deleteEncounterConnection(encounter, connection)"></i>
                         </span>
                         <form [ngClass]="{'d-none':!inEncounterConnectionCreationState, 'd-inline-block': inEncounterConnectionCreationState}">

@@ -27,7 +27,7 @@ export class QuestArticleComponent implements OnInit {
     const questName: string = this.route.snapshot.params.name;
     this.quest_subscription = this.questService.getQuest(questName).subscribe(quest => {
       this.quest = quest;
-    }, error => this.router.navigateByUrl("error"));
+    }, error => this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`));
   }
 
   onDescriptionUpdate(updatedDescription){
@@ -42,7 +42,7 @@ export class QuestArticleComponent implements OnInit {
 
   deleteArticle(){
       this.questService.deleteQuest(this.quest.pk).subscribe(response => {
-        this.router.navigateByUrl("/quest")
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/quest`);
       }, error => console.log(error));
   }
 

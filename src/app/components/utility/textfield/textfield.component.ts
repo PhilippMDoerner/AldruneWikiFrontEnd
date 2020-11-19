@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { Constants } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-textfield',
@@ -11,6 +12,7 @@ export class TextfieldComponent implements OnInit, OnChanges {
   @Output() updateText: EventEmitter<string> = new EventEmitter();
   updatedText: string;
   isEditState: boolean = false;
+  constants = Constants;
 
   constructor() {  }
 

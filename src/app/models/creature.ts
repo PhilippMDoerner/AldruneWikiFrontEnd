@@ -1,3 +1,4 @@
+import { Constants } from '../app.constants';
 import { ArticleObject } from './base-models';
 import { Image } from './image';
 
@@ -17,6 +18,6 @@ export class CreatureObject implements Creature{
     }
 
     getAbsoluteRouterUrl(): string{
-        return `/creature/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/creature/${this.name}`;
     }
 }

@@ -1,3 +1,4 @@
+import { Constants } from '../app.constants';
 import { ObjectListComponent } from '../components/utility/object-list/object-list.component';
 import { ApiObject, ArticleObject } from './base-models';
 import { Image } from "./image";
@@ -71,6 +72,6 @@ export class CharacterObject implements Character{
     images?: Image[];
 
     getAbsoluteRouterUrl(): string{
-        return `/character/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/character/${this.name}`;
     }
 }

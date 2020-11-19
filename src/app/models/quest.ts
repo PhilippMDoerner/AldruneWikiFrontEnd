@@ -1,4 +1,5 @@
 import { Session } from "src/app/models/session";
+import { Constants } from '../app.constants';
 import { ArticleObject } from './base-models';
 
 export interface Quest extends ArticleObject{
@@ -33,6 +34,6 @@ export class QuestObject implements Quest{
     }
 
     getAbsoluteRouterUrl(): string{
-        return `/quest/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/quest/${this.name}`;
     }
 }

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Constants } from 'src/app/app.constants';
 import { ExtendedMap, Map } from 'src/app/models/map';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { MapService } from 'src/app/services/map.service';
@@ -14,6 +15,7 @@ import { OverviewService } from 'src/app/services/overview.service';
 export class MapComponent implements OnInit {
   maps: OverviewItem[];
   currentMap: ExtendedMap;
+  constants: any = Constants;
 
   parameter_subscription: Subscription;
   map_subscription: Subscription;
@@ -40,7 +42,7 @@ export class MapComponent implements OnInit {
   }
 
   routeToMap(newMap: string){
-    this.router.navigateByUrl(`/map/${newMap}`);
+    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/map/${newMap}`);
     this.router.routeReuseStrategy.shouldReuseRoute = function () {
       return false;
     };

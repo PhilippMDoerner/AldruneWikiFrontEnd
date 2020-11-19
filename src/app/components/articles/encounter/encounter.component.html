@@ -9,7 +9,7 @@
             </div>
             <div class="d-flex">
                 <span class="w-25 bold">Location: </span> 
-                <a routerLink="/location/{{encounter.location_details.parent_location_name}}/{{encounter.location_details.name}}">
+                <a routerLink="{{constants.wikiUrlFrontendPrefix}}}/location/{{encounter.location_details.parent_location_name}}/{{encounter.location_details.name}}">
                     {{encounter.location_details.name}}
                 </a>
             </div>
@@ -32,7 +32,7 @@
 
 
                 <div *ngFor="let character of encounter.encounterConnections; let i = index" class="icon-container">
-                    <a routerLink="/character/{{character.character_details.name}}">
+                    <a routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{character.character_details.name}}">
                         {{character.character_details.name}}
                     </a>
                     <i class="fa fa-trash icon ml-3" (click)="deleteEncounterConnection(character)"></i>

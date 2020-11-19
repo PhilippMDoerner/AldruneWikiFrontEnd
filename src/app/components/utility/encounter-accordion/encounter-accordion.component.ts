@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
+import { Constants } from 'src/app/app.constants';
 import { Character } from 'src/app/models/character';
 import { EncounterObject, Encounter } from "src/app/models/encounter";
 import { EncounterConnectionObject, EncounterConnection } from 'src/app/models/encounterconnection';
@@ -18,6 +19,7 @@ import { OverviewService } from 'src/app/services/overview.service';
   styleUrls: ['./encounter-accordion.component.scss']
 })
 export class EncounterAccordionComponent implements OnInit {
+  constants: any = Constants;
   @Input() encounters: Encounter[];
   @Input() articleCharacter: Character;
   characters : OverviewItem[];

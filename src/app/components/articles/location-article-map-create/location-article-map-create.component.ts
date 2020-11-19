@@ -69,7 +69,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
     this.location_subscription = this.locationService.createLocation(this.locationModel).subscribe((location: Location) => {
       this.markerModel.location = location.pk;
       this.marker_subscription = this.markerService.createMapMarker(this.markerModel).subscribe((marker: MapMarker) => {
-        this.router.navigateByUrl(`/map/${marker.map_details.name}`);
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/map/${marker.map_details.name}`);
       }, error => console.log(error));
     })
   }

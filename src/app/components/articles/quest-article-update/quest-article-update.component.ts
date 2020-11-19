@@ -76,7 +76,7 @@ export class QuestArticleUpdateComponent implements OnInit {
 
     responseObservable.subscribe(response => {
       console.log(response);
-      this.router.navigateByUrl(`/quest/${model.name}`);
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/quest/${model.name}`);
     }, error => console.log(error));
   }
 

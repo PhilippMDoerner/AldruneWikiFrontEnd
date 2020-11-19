@@ -17,7 +17,7 @@
                     <div class="d-inline-flex align-items-center flex-wrap">
                         <!-- Display Existing Quote Connections -->
                         <span class="badge badge-secondary mr-2 text-center vanish-container" *ngFor="let connection of quote.connections">
-                            <a routerLink="/character/{{connection.character_details.name}}">{{connection.character_details.name}}</a>
+                            <a routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{connection.character_details.name}}">{{connection.character_details.name}}</a>
                             <i class="fa fa-trash icon vanish-icon ml-2" (click)="deleteQuoteConnection(connection)"></i>
                         </span>
     

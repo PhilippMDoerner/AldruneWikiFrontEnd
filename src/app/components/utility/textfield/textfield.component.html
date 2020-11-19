@@ -29,8 +29,9 @@
                 height: 500,
                 convert_urls: false,
                 relative_urls: false,
-                document_base_url: 'https://www.aldrune.com/',
-                branding: false
+                branding: false,
+                base_url: constants.wikiTinyMCEUrl,
+                suffix: '.min'
             }"
             name="textEditField"
             [(ngModel)]="updatedText"

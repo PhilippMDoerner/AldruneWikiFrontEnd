@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Constants } from 'src/app/app.constants';
 import { Location, SubLocation } from 'src/app/models/location';
 
 @Component({
@@ -7,6 +8,7 @@ import { Location, SubLocation } from 'src/app/models/location';
   styleUrls: ['./location-accordion.component.scss']
 })
 export class LocationAccordionComponent implements OnInit {
+  constants: any = Constants;
   @Input() sublocations: SubLocation[];
   isOpen: object;
 

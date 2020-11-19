@@ -11,7 +11,7 @@
                 <button type="submit" class="btn btn-sm btn-outline-info">Go to Map</button>
             </form>
 
-            <i class="fa fa-plus icon ml-2" routerLink="/map/create"></i>
+            <i class="fa fa-plus icon ml-2" routerLink="{{constants.wikiUrlFrontendPrefix}}/map/create"></i>
         </h3>
 
         <!-- Leaflet Map -->
@@ -19,7 +19,7 @@
             <app-leaflet-map [map]="currentMap"></app-leaflet-map>
         </div>
 
-        <button class="btn btn-dark mr-3" routerLink="">Back To Frontpage</button>
+        <button class="btn btn-dark mr-3" routerLink="{{constants.wikiUrlFrontendPrefix}}">Back To Frontpage</button>
         <app-delete-toggle (deleteEvent)="deleteMap()"></app-delete-toggle>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

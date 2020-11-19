@@ -48,7 +48,7 @@ export class CharacterArticleUpdateComponent implements OnInit {
       const character_name: string = this.route.snapshot.params.name;
       this.character_subscription = this.characterService.getCharacter(character_name).subscribe(character => {
         this.model = character;
-      }, error => this.router.navigateByUrl("error"));
+      }, error => this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`));
     } else if (this.formState === this.constants.createState) {
       this.model = new CharacterObject();
     }
@@ -60,7 +60,7 @@ export class CharacterArticleUpdateComponent implements OnInit {
 
     responseObservable.subscribe(response => {
       console.log(response);
-      this.router.navigateByUrl(`/character/${model.name}`);
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/character/${model.name}`);
     }, error => console.log(error));
   }
 

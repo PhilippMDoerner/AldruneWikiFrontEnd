@@ -29,7 +29,7 @@ export class ItemArticleComponent implements OnInit {
 
     this.item_subscription = this.itemService.getItem(itemName).subscribe(item => {
       this.item = item;
-    }, error =>{ this.router.navigateByUrl("error");});
+    }, error =>{ this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`)});
   }
 
   onDescriptionUpdate(updatedDescription){
@@ -44,7 +44,7 @@ export class ItemArticleComponent implements OnInit {
 
   deleteArticle(){
       this.itemService.deleteItem(this.item.pk).subscribe(response => {
-        this.router.navigateByUrl("/item")
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/item`)
       }, error => console.log(error));
   }
 

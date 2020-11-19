@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { Constants } from 'src/app/app.constants';
 import { Character } from 'src/app/models/character';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { QuoteObject, QuoteConnectionObject, Quote, QuoteConnection } from 'src/app/models/quote';
@@ -18,6 +19,7 @@ import { QuoteService } from 'src/app/services/quote.service';
 })
 
 export class QuoteGalleryComponent implements OnInit {
+  constants: any = Constants;
   quote: Quote;
   quote_subscription: Subscription;
   @Input() character: Character;

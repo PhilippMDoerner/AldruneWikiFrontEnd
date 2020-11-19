@@ -8,7 +8,7 @@
         *ngIf="item.owner_details" 
         class="text-center mb-5"> 
             Owned by: 
-            <a routerLink="/character/{{item.owner_details.name}}">{{ item.owner_details.name }}</a>
+            <a routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{item.owner_details.name}}">{{ item.owner_details.name }}</a>
         </p>
 
         <!-- Image Gallery -->
@@ -29,10 +29,10 @@
 
         <app-delete-toggle [deleteMessage]="'Delete '+item.name+'?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
 
-        <a routerLink="/item" class="btn btn-secondary mr-1">Back to Items</a>
+        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/item" class="btn btn-secondary mr-1">Back to Items</a>
         <a 
         *ngIf="item.owner_details"
-        routerLink="/character/{{item.owner_details.name}}" class="btn btn-secondary">Back to {{item.owner_details.name}}</a>
+        routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{item.owner_details.name}}" class="btn btn-secondary">Back to {{item.owner_details.name}}</a>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

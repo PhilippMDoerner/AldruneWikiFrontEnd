@@ -1,3 +1,4 @@
+import { Constants } from '../app.constants';
 import { ArticleObject } from './base-models';
 import { Image } from "./image";
 
@@ -55,12 +56,12 @@ export class LocationObject implements Location{
 
     getAbsoluteRouterUrl(): string{
         if (!this.parent_location_details) throw "Can't generate URL for Location object without parent_location_details";
-        return `/location/${this.parent_location_details.name}/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/location/${this.parent_location_details.name}/${this.name}`;
     }
 
     getAbsoluteRouterUrlForParentLocation(): string{
         if (!this.parent_location_details) throw "Can't generate URL for Parent-Location of Location object without parent_location_details";
-        return `/location/${this.parent_location_details.parent_location}/${this.parent_location_details.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/location/${this.parent_location_details.parent_location}/${this.parent_location_details.name}`;
     }
 }
 

@@ -35,7 +35,7 @@
 
         <app-delete-toggle [deleteMessage]="'Delete Quest?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
 
-        <a routerLink="/quest" class="btn btn-secondary mr-1">Back to Quest Overview</a>
+        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/quest" class="btn btn-secondary mr-1">Back to Quest Overview</a>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

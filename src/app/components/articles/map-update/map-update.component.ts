@@ -57,7 +57,7 @@ export class MapUpdateComponent implements OnInit {
     const responseObservable: any =  isFormInUpdateState ? this.mapService.updateMap(model) : this.mapService.createMap(model);
 
     responseObservable.subscribe((map: Map) => {
-      this.router.navigateByUrl(`/map/${map.name}`);
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/map/${map.name}`);
     }, error => console.log(error));
   }
 
