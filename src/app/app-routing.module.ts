@@ -37,6 +37,7 @@ import { Constants } from './app.constants';
 
 const routes: Routes = [
   {path: ``, component: HomeComponent},
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}`, component: HomeComponent},
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, component: HomeComponent},
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login`, component: LoginComponent},
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login/:state`, component: LoginComponent},
