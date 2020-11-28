@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       console.log(error);
       if(error.status === 401){
            this.resetModel();
-           this.router.navigateByUrl(`{{constants.wikiUrlFrontendPrefix}}/login/invalid-login`) ;   
+           this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/login/invalid-login`) ;   
       }
     });
 
