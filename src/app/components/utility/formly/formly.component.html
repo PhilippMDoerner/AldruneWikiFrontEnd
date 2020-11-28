@@ -1,4 +1,10 @@
 <div class="form-group mb-4">
     <label for="{{to.name}}">{{to.label}}</label>
-    <editor [init]="{base_url:'/tinymce', suffix:'.min'}" id="{{to.name}}" [formControl]="formControl"></editor>
+    <editor 
+    [init]="constants.tinyMCESettings"
+    name="textEditField"
+    class="mb-2"
+    id="{{to.name}}"
+    [formControl]="formControl"
+    ></editor>
 </div>

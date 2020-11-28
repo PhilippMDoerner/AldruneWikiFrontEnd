@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { FieldType } from '@ngx-formly/core';
+import { Constants } from 'src/app/app.constants';
+
 
 @Component({
   selector: 'formly-field-tinymce',
@@ -7,4 +9,6 @@ import { FieldType } from '@ngx-formly/core';
   styleUrls: ['./formly.component.scss']
 })
 
-export class FormlyComponent extends FieldType {}
+export class FormlyComponent extends FieldType {
+  constants: any = Constants;
+}
