@@ -54,6 +54,9 @@ export class Constants{
         'no-token': 'You are not logged in. Please enter your credentials',
     }}
 
+    //Default Image for Image Gallery
+    public static get defaultImageUrl(): string { return `${this.wikiMediaUrl}/resources/dndicon.png`;}
+
     //TinyMCE Settings
     public static get tinyMCESettings(): object{ return {
             plugins: [
