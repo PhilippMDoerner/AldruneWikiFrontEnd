@@ -8,8 +8,8 @@ export class Constants{
     public static get wikiTokenUrl(): string { return `${this.wikiApiUrl}/token`;}
     public static get wikiTokenRefreshUrl(): string {return `${this.wikiTokenUrl}/refresh`;}
     public static get wikiTinyMCEUrl(): string { return `${this.wikiStaticUrl}/frontend/tinymce`;}
-    public static get wikiUrlFrontendPrefix(): string { return '/wiki';};
-    public static get wikiUrlFrontendPrefixNoSlash(): string { return 'wiki';};
+    public static get wikiUrlFrontendPrefix(): string { return '/wiki2';};
+    public static get wikiUrlFrontendPrefixNoSlash(): string { return 'wiki2';};
 
     public static get NONE_STRING(): string { return "None";} //This value must be identical to the NONE_STRING setting in the backend
     
