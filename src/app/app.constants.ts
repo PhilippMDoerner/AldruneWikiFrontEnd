@@ -1,13 +1,13 @@
 export class Constants{
     // API Urls
     public static get wikiUrl(): string { return "https://www.aldrune.com";} //prod
-    //public static get wikiUrl(): string { return "http://localhost:8000";} //dev
+    public static get wikiSPAUrl(): string{ return `${this.wikiUrl}/${this.wikiUrlFrontendPrefixNoSlash}`;}
     public static get wikiApiUrl(): string { return `${this.wikiUrl}/api`;}
     public static get wikiStaticUrl(): string { return `${this.wikiUrl}/static`;}
     public static get wikiMediaUrl(): string { return `${this.wikiUrl}/media`;}
     public static get wikiTokenUrl(): string { return `${this.wikiApiUrl}/token`;}
     public static get wikiTokenRefreshUrl(): string {return `${this.wikiTokenUrl}/refresh`;}
-    public static get wikiTinyMCEUrl(): string { return `${this.wikiStaticUrl}/frontend/tinymce`;}
+    public static get wikiTinyMCEUrl(): string { return `${this.wikiSPAUrl}/tinymce`;}
     public static get wikiUrlFrontendPrefix(): string { return '/wiki2';};
     public static get wikiUrlFrontendPrefixNoSlash(): string { return 'wiki2';};
 
