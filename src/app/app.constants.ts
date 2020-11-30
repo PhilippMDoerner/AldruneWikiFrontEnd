@@ -1,6 +1,6 @@
 export class Constants{
     // API Urls
-    public static get wikiUrl(): string { return "https://www.aldrune.com";} //prod
+    public static get wikiUrl(): string { return "https://www.aldrune.com/wiki1";} //prod
     public static get wikiSPAUrl(): string{ return `${this.wikiUrl}/${this.wikiUrlFrontendPrefixNoSlash}`;}
     public static get wikiApiUrl(): string { return `${this.wikiUrl}/api`;}
     public static get wikiStaticUrl(): string { return `${this.wikiUrl}/static`;}
