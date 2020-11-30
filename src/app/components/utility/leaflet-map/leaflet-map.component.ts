@@ -61,13 +61,13 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit 
       const longitude = parseInt(event.latlng.lng);
       const contentHTML: string = `
       <div class="mb-2 pointer"> 
-        <a href="/marker/${latitude}/${longitude}/${this.map.name}/create">
+        <a href="${Constants.spaPrefix}/marker/${latitude}/${longitude}/${this.map.name}/create">
           <i class="fa fa-map-marker"></i> Add Marker
         </a>
       </div>
 
       <div class="pointer"> 
-        <a href="/location/${latitude}/${longitude}/${this.map.name}/create">
+        <a href="${Constants.spaPrefix}/location/${latitude}/${longitude}/${this.map.name}/create">
           <i class="fa fa-home"></i> Add Marker and Location
         </a>
       </div>

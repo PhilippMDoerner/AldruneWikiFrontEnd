@@ -1,12 +1,15 @@
 export class Constants{
+    public static get apiPrefix(): string { return "wiki1";}
+    public static get spaPrefix(): string { return "wiki2";}
+
     // API Urls
     public static get wikiUrl(): string { return "https://www.aldrune.com";} //prod
-    public static get wikiSPAUrl(): string{ return `${this.wikiUrl}/${this.wikiUrlFrontendPrefixNoSlash}`;}
-    public static get wikiApiUrl(): string { return `${this.wikiUrl}/${this.wikiUrlFrontendPrefixNoSlash}/api`;}
+    public static get wikiSPAUrl(): string{ return `${this.wikiUrl}/${this.spaPrefix}`;}
+    public static get wikiApiUrl(): string { return `${this.wikiUrl}/${this.apiPrefix}/api`;}
     public static get wikiStaticUrl(): string { return `${this.wikiUrl}/static`;}
     public static get wikiMediaUrl(): string { return `${this.wikiUrl}/media`;}
-    public static get wikiTokenUrl(): string { return `${this.wikiApiUrl}/${this.wikiUrlFrontendPrefixNoSlash}/token`;}
-    public static get wikiTokenRefreshUrl(): string {return `${this.wikiTokenUrl}/${this.wikiUrlFrontendPrefixNoSlash}/refresh`;}
+    public static get wikiTokenUrl(): string { return `${this.wikiApiUrl}/token`;}
+    public static get wikiTokenRefreshUrl(): string {return `${this.wikiTokenUrl}/refresh`;}
     public static get wikiTinyMCEUrl(): string { return `${this.wikiSPAUrl}/tinymce`;}
     public static get wikiUrlFrontendPrefix(): string { return '/wiki2';};
     public static get wikiUrlFrontendPrefixNoSlash(): string { return 'wiki2';};
