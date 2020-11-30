@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit(){
     this.tokenService.getJWTToken(this.model).pipe(first()).subscribe( jwtTokens => {
       this.tokenService.setTokens(jwtTokens);
-      this.router.navigateByUrl("");
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}`);
     }, error => {
       console.log(error);
       if(error.status === 401){

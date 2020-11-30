@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Constants } from 'src/app/app.constants';
 import { Spell } from 'src/app/models/spell';
 import { SpellService } from 'src/app/services/spell.service';
 
@@ -12,6 +13,7 @@ export class SpellsComponent implements OnInit {
   panelIsOpenArray: boolean[];
   spells: Spell[];
   spell_subscription: Subscription;
+  constants: any = Constants;
 
   constructor(private spellService: SpellService) { }
 

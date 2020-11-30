@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Event, Router } from '@angular/router';
+import { Constants } from './app.constants';
 
 @Component({
   selector: 'app-root',
@@ -15,7 +16,7 @@ export class AppComponent {
     if (event.target.attributes.id){
       const clickTargetId = event.target.attributes.id.nodeValue;
       if (clickTargetId === "background-div"){
-        this.router.navigateByUrl("");
+        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}`);
       }
     }
   }

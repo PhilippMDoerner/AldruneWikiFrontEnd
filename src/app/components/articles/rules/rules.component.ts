@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
+import { Constants } from 'src/app/app.constants';
 import { Rule } from "src/app/models/rule";
 import { RuleService } from 'src/app/services/rule.service';
 @Component({
@@ -11,6 +12,7 @@ export class RulesComponent implements OnInit {
   rules: Rule[];
   panelIsOpenArray: boolean[];
   rules_subscription: Subscription;
+  constants: any = Constants;
 
   constructor(
     private ruleService: RuleService,

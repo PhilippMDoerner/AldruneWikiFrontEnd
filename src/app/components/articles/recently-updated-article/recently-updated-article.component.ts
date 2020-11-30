@@ -12,6 +12,7 @@ import { RecentlyUpdatedService } from 'src/app/services/recently-updated.servic
 export class RecentlyUpdatedArticleComponent implements OnInit {
   article_subscription: Subscription;
   articles: Article[];
+  constants: any = Constants;
 
   constructor(private recentlyUpdatedArticleService: RecentlyUpdatedService) { }
 

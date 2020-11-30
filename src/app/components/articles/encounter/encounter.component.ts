@@ -86,7 +86,7 @@ export class EncounterComponent implements OnInit {
 
   deleteEncounter(){
     this.encounterService.deleteEncounter(this.encounter.pk).subscribe(response => {
-      this.router.navigateByUrl("");
+      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}`);
     }, error => console.log(error));
   }
 
