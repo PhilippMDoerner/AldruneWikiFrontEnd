@@ -64,7 +64,7 @@
                 <div class="col-1 d-flex align-items-center justify-content-center">
                     <i class="icon fa fa-trash delete-timestamp" (click)="deleteTimestamp(timestamp.pk)"></i>
                 </div>
-                <a (click)="vimePlayer.currentTime=timestamp.time" href="#" class="timestamp col-2 text-align-right"> {{timeToString(timestamp.time)}} </a>    
+                <a (click)="vimePlayer.currentTime=timestamp.time" class="timestamp pointer col-2 text-align-right"> {{timeToString(timestamp.time)}} </a>    
                 <span class="col-9">{{timestamp.name}}</span>
             </div>
         </div>
