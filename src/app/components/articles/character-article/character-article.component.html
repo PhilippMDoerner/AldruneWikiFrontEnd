@@ -47,7 +47,7 @@
         <!-- Items -->
         <div class="mb-5">
             <app-object-list    [articleType]="'item'" 
-            [createLink]="'/item/'+character.name+'/create'"
+            [createLink]="'/'+constants.spaPrefix+'/item/'+character.name+'/create'"
             [heading]="'Items of Note'"
             [items]="character.items"></app-object-list>
         </div>
