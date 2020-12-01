@@ -74,6 +74,8 @@ export class QuoteGalleryComponent implements OnInit {
         this.quoteConnectionservice.createQuoteConnection(connectionToThisCharacter).pipe(first()).subscribe(connection => {
           this.inCreateState = false;
         })
+      } else {
+        this.inEditState = false;
       }
     })
 

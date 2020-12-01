@@ -137,12 +137,7 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit 
   }
 
   createDefaultMarker(mapMarker: MapMarker): Marker{
-    return L.marker([mapMarker.latitude, mapMarker.longitude], {
-      // iconSize: [ 25, 41 ],
-      // iconAnchor: [ 13, 41 ],
-      // iconUrl: 'assets/marker-icon.png',
-      // shadowUrl: 'assets/marker-shadow.png'
-    })
+    return L.marker([mapMarker.latitude, mapMarker.longitude], {})
     .bindPopup(this.getPopupText(mapMarker))
     .bindTooltip(mapMarker.location_details.name);
   }

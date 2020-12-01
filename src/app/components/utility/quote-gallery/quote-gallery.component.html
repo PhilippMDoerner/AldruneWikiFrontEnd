@@ -62,10 +62,10 @@
         </h5>
 
         <!-- Form -->
-        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <form [formGroup]="form">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
             <button class="btn btn-secondary mr-3" (click)="inCreateState=false; inEditState=false">Cancel</button>
-            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+            <button type="submit" class="btn btn-outline-secondary" (click)="onSubmit()">Submit</button>
         </form>
 
     </blockquote>
