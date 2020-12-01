@@ -8,7 +8,7 @@ import { Item, ItemObject } from 'src/app/models/item';
 import { CharacterService } from 'src/app/services/character/character.service';
 import { ItemService } from 'src/app/services/item/item.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { OverviewService } from 'src/app/services/overview.service';
+import { routeNameMatches } from 'src/app/utils/functions/routeFilter';
 
 @Component({
   selector: 'app-item-article-update',
@@ -67,6 +67,18 @@ export class ItemArticleUpdateComponent implements OnInit {
       console.log(response);
       this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/item/${model.name}`);
     }, error => console.log(error));
+  }
+  //TODO: Replace the way the URL is built here with something that builds it for you, so you don't need to recall putting in spaPrefix and such
+  getCancelRoutingDestination(): string{
+    const isItemCharacterCreateUrl: boolean = routeNameMatches(this.route, "item-character-create");
+    if (isItemCharacterCreateUrl){
+      const characterName = this.route.snapshot.params['character_name'];
+      const absoluteCharacterArticlePath = `/${Constants.spaPrefix}/character/${characterName}`;
+      return absoluteCharacterArticlePath;
+    }
+
+    const relativeItemArticlePath = "..";
+    return relativeItemArticlePath;
   }
 
   ngOnDestroy(){
