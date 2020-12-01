@@ -32,6 +32,7 @@ import { FormlyFieldFile } from './components/utility/file-upload/file-upload.co
 import { FileValueAccessor } from './components/utility/file-upload/file-value-accesor';
 
 import { GroupByPipe, GroupByFirstLetterPipe } from "src/app/utils/pipes/groupObjects.pipe";
+import { SafeHtmlPipe } from "src/app/utils/pipes/htmlSanitizer.pipe";
 import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
 import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
@@ -116,6 +117,7 @@ import { httpInterceptorProviders } from "src/app/interceptors/index";
     LocationArticleMapCreateComponent,
     QuoteGalleryComponent,
     LoginComponent,
+    SafeHtmlPipe,
   ],
   imports: [
     BrowserModule,

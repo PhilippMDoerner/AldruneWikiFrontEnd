@@ -17,6 +17,6 @@
             ></editor>
         </div>
 
-        <div *ngIf="!isEditState" [innerHTML]="updatedText"></div>
+        <div *ngIf="!isEditState" [innerHTML]="updatedText | safeHtml"></div>
     </div>
 </form>
