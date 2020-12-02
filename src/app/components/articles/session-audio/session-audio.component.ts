@@ -89,9 +89,13 @@ export class SessionAudioComponent implements OnInit {
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
 }
 
-  toggleTimestampCreateState(){
+  toggleTimestampCreateState(timestampTime: number, timestampTimeInput: HTMLElement){
     this.timestampCreateState = !this.timestampCreateState;
-    if (this.timestampCreateState) this.timestamp_model = new TimestampObject();
+
+    if (this.timestampCreateState){
+      this.timestamp_model = new TimestampObject();
+      timestampTimeInput.nodeValue = this.timeToString(timestampTime);
+    }
   }
 
   createTimestamp(){

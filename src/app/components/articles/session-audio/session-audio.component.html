@@ -24,7 +24,6 @@
         </div>
 
         <!-- Next Buttons -->
-        <!-- routerLink="/sessionaudio/{{priorSessionAudio.isMainSessionInt}}/{{priorSessionAudio.sessionNumber}}" -->
         <div class="mb-5 d-flex justify-content-between">
             <a  *ngIf="priorSessionAudio"
                 (click)="routeToSessionAudio(priorSessionAudio)"
@@ -33,11 +32,10 @@
                 Session {{priorSessionAudio.sessionNumber}}
             </a>
 
-            <div class="btn btn-primary mr-auto ml-auto" (click)="toggleTimestampCreateState()">
+            <div class="btn btn-primary mr-auto ml-auto" (click)="toggleTimestampCreateState(vimePlayer.currentTime, timestampTimeInput)">
                 Add Timestamp <i class="fa fa-clock-o ml-1"></i>
             </div>
 
-            <!--  routerLink="/sessionaudio/{{nextSessionAudio.isMainSessionInt}}/{{nextSessionAudio.sessionNumber}}" -->
             <a  *ngIf="nextSessionAudio"
                 (click)="routeToSessionAudio(nextSessionAudio)"
                 class="btn btn-secondary float-right"> 
@@ -51,7 +49,7 @@
             <!-- Timestamp Create Form -->
             <form [ngClass]="{'d-none': !timestampCreateState, 'row my-1': timestampCreateState}">
                 <div class="col-lg-1"></div>
-                <input type="text" name="time" class="timestamp-input black-background border border-dark col-lg-2 pr-0" maxlength="8" minlength="8" placeholder="HH:MM:SS" [(ngModel)]="timestamp_model.time" />
+                <input type="text" name="time" class="timestamp-input black-background border border-dark col-lg-2 pr-0" maxlength="8" minlength="8" placeholder="HH:MM:SS" [(ngModel)]="timestamp_model.time" #timestampTimeInput />
                 <input type="text" name="title" class="timestamp-input black-background border border-dark col-lg-8" max-length="100" placeholder="Title..." [(ngModel)]="timestamp_model.name" />
                 <div class="col-lg-1 d-flex flex-row align-items-center">
                     <i class="icon hover-red fa fa-1-5x fa-times mx-1" (click)="cancelTimestampCreateState()"></i>
