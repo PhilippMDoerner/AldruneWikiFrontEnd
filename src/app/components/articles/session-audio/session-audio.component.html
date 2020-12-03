@@ -16,7 +16,7 @@
             <!-- Vime-Player -->
             <vime-player class="w-100" #vimePlayer>
                 <vime-audio cross-origin>
-                    <source [src]="sessionAudio.audio_file" type="audio/mp3" #audioSource/>
+                    <source [src]="sessionAudio.audio_file" type="audio/mp3" crossorigin="anonymous" #audioSource/>
                 </vime-audio>
     
                 <vime-default-ui></vime-default-ui>
