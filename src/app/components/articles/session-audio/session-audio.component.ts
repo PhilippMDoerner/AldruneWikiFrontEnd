@@ -1,9 +1,11 @@
 import { Component, ContentChild, ContentChildren, ElementRef, OnInit, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { SessionAudio } from 'src/app/models/sessionaudio';
 import { TimestampObject, Timestamp } from 'src/app/models/timestamp';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
 
@@ -72,7 +74,6 @@ export class SessionAudioComponent implements OnInit {
   }
 
   reloadPlayer(audioSource){
-    console.log("Reload");
     const audioPlayer = audioSource.parentElement;
     audioPlayer.load();
   }
@@ -87,7 +88,14 @@ export class SessionAudioComponent implements OnInit {
     const minutes = Math.floor((seconds - hours*3600)/60);
     const remainingSeconds = Math.floor(seconds - hours*3600 - minutes*60);
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
-}
+  }
+
+  stringToTime(timeString: string): number{
+    const hours: number = parseInt(timeString.substr(0, 2));
+    const minutes: number = parseInt(timeString.substr(3, 2));
+    const seconds: number = parseInt(timeString.substr(6, 2));
+    return hours*3600 + minutes*60 + seconds;
+  }
 
   toggleTimestampCreateState(timestampTime: number, timestampTimeInput: any){
     this.timestampCreateState = !this.timestampCreateState;
@@ -95,15 +103,17 @@ export class SessionAudioComponent implements OnInit {
     if (this.timestampCreateState){
       this.timestamp_model = new TimestampObject();
       timestampTimeInput.value = this.timeToString(timestampTime);
+      this.timestamp_model.session_audio = this.sessionAudio.pk;
     }
   }
 
-  createTimestamp(){
+  createTimestamp(timestampTimeInput: any, timestampNameInput: any){
+    this.timestamp_model.time = this.stringToTime(timestampTimeInput.value);
+    this.timestamp_model.name = timestampNameInput.value;
     this.timestampService.createTimestamp(this.timestamp_model).subscribe(timestamp => {
       this.timestamps.unshift(timestamp);
-      this.timestamp_model = new TimestampObject();
       this.timestampCreateState = false;
-    }).unsubscribe();
+    }, error => console.log(error)).unsubscribe();
   }
 
   cancelTimestampCreateState(){
@@ -111,7 +121,9 @@ export class SessionAudioComponent implements OnInit {
   }
 
   deleteTimestamp(timestamp: Timestamp){
+    console.log(timestamp);
     this.timestampService.deleteTimestamp(timestamp.pk).subscribe(response => {
+      console.log(response);
       const index: number = this.timestamps.indexOf(timestamp);
       this.timestamps.splice(index, 1);
     }).unsubscribe();
