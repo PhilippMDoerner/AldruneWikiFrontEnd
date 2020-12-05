@@ -3,6 +3,8 @@ export interface FormlyInterface{
     label?: string,
     required?: boolean,
     hide?: boolean,
+    wrappers?: string[],
+    className?: string,
 }
 export interface FormlyOverviewSelectConfig extends FormlyInterface{
     labelProp?: string,
@@ -13,6 +15,9 @@ export interface FormlyOverviewSelectConfig extends FormlyInterface{
 export interface FormlyGenericInputConfig extends FormlyInterface{
     isNumberInput?: boolean,
     placeholder?: string,
+    maxLength?: number,
+    minLength?: number,
+    parsers?: any,
 }
 
 export interface FormlyCustomStringSelectConfig extends FormlyInterface{
@@ -22,3 +27,7 @@ export interface FormlyCustomStringSelectConfig extends FormlyInterface{
 export interface FormlyCheckboxConfig extends FormlyInterface{
     defaultValue: boolean
 }
+
+export interface FormlyDatepickerConfig extends FormlyInterface{}
+
+export interface FormlyCustomSessionSelect extends FormlyInterface{}

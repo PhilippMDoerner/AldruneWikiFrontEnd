@@ -1,7 +1,9 @@
 import { Component, ContentChild, ContentChildren, ElementRef, OnInit, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { SessionAudio } from 'src/app/models/sessionaudio';
 import { TimestampObject, Timestamp } from 'src/app/models/timestamp';
@@ -24,7 +26,12 @@ export class SessionAudioComponent implements OnInit {
   nextSessionAudio: {isMainSessionInt: number, sessionNumber: number};
 
   timestamps: Timestamp[];
-  timestamp_model: TimestampObject = new TimestampObject();
+  timestampModel: TimestampObject = new TimestampObject();
+  timestampForm: FormGroup = new FormGroup({});
+  timestampFields: FormlyFieldConfig[] = [
+    this.formlyService.genericInput({key: "time", maxLength: 8, minLength: 8, className: "timestamp-input black-background px-0 col-lg-2"}),
+    this.formlyService.genericInput({key: "name", label: "Title", className: "timestamp-input black-background col-lg-10"}),
+  ]
   timestampCreateState: boolean = false;
   
   sessionAudio_subscription: Subscription;
@@ -40,6 +47,7 @@ export class SessionAudioComponent implements OnInit {
     private router: Router,
     private sessionAudioService: SessionAudioService,
     private timestampService: SessionAudioTimestampService,
+    private formlyService: MyFormlyService,
     ) { }
 
   ngOnInit(): void {
@@ -97,23 +105,24 @@ export class SessionAudioComponent implements OnInit {
     return hours*3600 + minutes*60 + seconds;
   }
 
-  toggleTimestampCreateState(timestampTime: number, timestampTimeInput: any){
+  toggleTimestampCreateState(timestampTime: number){
     this.timestampCreateState = !this.timestampCreateState;
 
     if (this.timestampCreateState){
-      this.timestamp_model = new TimestampObject();
-      timestampTimeInput.value = this.timeToString(timestampTime);
-      this.timestamp_model.session_audio = this.sessionAudio.pk;
+      this.timestampModel = new TimestampObject();
+      this.timestampModel.time = this.timeToString(timestampTime);
+      this.timestampModel.session_audio = this.sessionAudio.pk;
     }
   }
 
-  createTimestamp(timestampTimeInput: any, timestampNameInput: any){
-    this.timestamp_model.time = this.stringToTime(timestampTimeInput.value);
-    this.timestamp_model.name = timestampNameInput.value;
-    this.timestampService.createTimestamp(this.timestamp_model).subscribe(timestamp => {
+  createTimestamp(){
+    if (typeof this.timestampModel.time === "number") throw `Error during creation of request to create timestamp. The input ${this.timestampModel.time} is not the expected time-string`
+    this.timestampModel.time = this.stringToTime(this.timestampModel.time);;
+
+    this.timestampService.createTimestamp(this.timestampModel).pipe(first()).subscribe(timestamp => {
       this.timestamps.unshift(timestamp);
       this.timestampCreateState = false;
-    }, error => console.log(error)).unsubscribe();
+    });
   }
 
   cancelTimestampCreateState(){
@@ -121,12 +130,10 @@ export class SessionAudioComponent implements OnInit {
   }
 
   deleteTimestamp(timestamp: Timestamp){
-    console.log(timestamp);
-    this.timestampService.deleteTimestamp(timestamp.pk).subscribe(response => {
-      console.log(response);
+    this.timestampService.deleteTimestamp(timestamp.pk).pipe(first()).subscribe(response => {
       const index: number = this.timestamps.indexOf(timestamp);
       this.timestamps.splice(index, 1);
-    }).unsubscribe();
+    })
   }
 
   ngOnDestroy(){
