@@ -1,7 +1,7 @@
 export interface Timestamp{
     pk?: number,
     name: string,
-    time: number,
+    time: number | string,
     encounter?: string
     session_audio: number,
 }
@@ -13,7 +13,7 @@ export class TimestampObject implements Timestamp{
 
     pk?: number;
     name: string;
-    time: number;
+    time: number | string;
     encounter?: string;
     session_audio: number;
 }
