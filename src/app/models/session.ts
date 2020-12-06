@@ -17,6 +17,7 @@ export class SessionObject implements Session{
     session_date: string;
     start_day?: number;
     end_day?: number;
+    name?: string;
 
     constructor(object?: Session){
         if (object) Object.assign(this, object)

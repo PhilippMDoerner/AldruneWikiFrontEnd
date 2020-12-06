@@ -24,7 +24,7 @@ export class SessionAudioUpdateComponent implements OnInit {
   form = new FormGroup({});
   model: SessionAudio;
   fields: FormlyFieldConfig[] = [
-    this.formlyService.genericSelect({key: "session", optionsType: "session"}),
+    this.formlyService.genericSelect({key: "session", optionsType: "session", wrappers: ["session-update-wrapper"]}),
     this.formlyService.singleFileField({key: "audio_file", label: "Audio File"}),
   ];
 

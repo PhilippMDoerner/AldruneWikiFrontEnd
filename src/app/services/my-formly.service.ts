@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormlyCheckboxConfig, FormlyCustomStringSelectConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewSelectConfig } from "src/app/models/formly";
+import { FormlyCheckboxConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewSelectConfig } from "src/app/models/formly";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { OverviewService } from './overview.service';
 
@@ -16,6 +16,8 @@ export class MyFormlyService {
     return {
       key: config.key,
       type: "select",
+      className: config.className,
+      wrappers: config.wrappers,
       hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
@@ -36,6 +38,7 @@ export class MyFormlyService {
     return {
       key: config.key,
       type: "select",
+      className: config.className,
       hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
@@ -49,8 +52,12 @@ export class MyFormlyService {
     return {
       key: config.key,
       type: "input",
+      className: config.className,
       hideExpression: (config.hide) ? config.hide : false,
+      parsers: config.parsers,
       templateOptions:{
+        maxLength: config.maxLength,
+        minLength: config.minLength,
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         type: (config.isNumberInput) ? "number" : "string",
         required: (typeof config.required === "boolean") ? config.required : true,
@@ -63,6 +70,7 @@ export class MyFormlyService {
     return {
       key: config.key,
       type: "input",
+      className: config.className,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         type: "password",
@@ -76,7 +84,20 @@ export class MyFormlyService {
     return{
       key: config.key,
       type: "checkbox",
+      className: config.className,
       defaultValue: config.defaultValue,
+      hideExpression: (config.hide) ? config.hide : false,
+      templateOptions:{
+        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+      }
+    }
+  }
+
+  genericDatepicker(config: FormlyDatepickerConfig): FormlyFieldConfig{
+    return {
+      key: config.key,
+      type: "datepicker",
+      className: config.className,
       hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
@@ -88,6 +109,7 @@ export class MyFormlyService {
     return {
       key: config.key,
       type: "file",
+      className: config.className,
       hideExpression: (config.hide) ? config.hide : false,
       templateOptions: {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
@@ -100,6 +122,7 @@ export class MyFormlyService {
     return {
       key: config.key,
       type: "tinymce",
+      className: config.className,
       hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),

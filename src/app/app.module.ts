@@ -64,6 +64,9 @@ import { LocationArticleMapCreateComponent } from './components/articles/locatio
 import { QuoteGalleryComponent } from './components/utility/quote-gallery/quote-gallery.component';
 import { LoginComponent } from './components/login/login.component';
 import { httpInterceptorProviders } from "src/app/interceptors/index";
+import { FormlyDatepickerComponent } from './components/utility/formly-datepicker/formly-datepicker.component';
+import { SessionUpdateModalComponent } from './components/utility/session-update-modal/session-update-modal.component';
+import { SessionUpdateWrapperComponent } from './components/utility/session-update-wrapper/session-update-wrapper.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -118,6 +121,9 @@ import { httpInterceptorProviders } from "src/app/interceptors/index";
     QuoteGalleryComponent,
     LoginComponent,
     SafeHtmlPipe,
+    FormlyDatepickerComponent,
+    SessionUpdateModalComponent,
+    SessionUpdateWrapperComponent,
   ],
   imports: [
     BrowserModule,
@@ -130,8 +136,13 @@ import { httpInterceptorProviders } from "src/app/interceptors/index";
     FormlyModule.forRoot({
         types: [
           { name: "file", component: FormlyFieldFile, wrappers: ['form-field'] },
-          { name: "tinymce", component: FormlyComponent}
-        ]
+          { name: "tinymce", component: FormlyComponent},
+          { name: "datepicker", component: FormlyDatepickerComponent},
+          { name: "session-create-edit", component: SessionUpdateModalComponent}
+        ],
+        wrappers: [
+          { name: "session-update-wrapper", component: SessionUpdateWrapperComponent },
+        ],
       }), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,
     CommonModule,
