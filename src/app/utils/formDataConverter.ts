@@ -1,4 +1,4 @@
-export function convertSingleFileModelToFormData(model: any, fileAttributeName: string = "file"){
+export function convertSingleFileModelToFormData(model: any, fileAttributeName: string = "file"): FormData{
     if (!model.hasOwnProperty(fileAttributeName)) throw `Can't convert object to FormData! Your model does not have a ${fileAttributeName} property!`;
     if (!model[fileAttributeName][0]) throw `Can't convert object to FormData! Your model's ${fileAttributeName} has no file!`;
 
