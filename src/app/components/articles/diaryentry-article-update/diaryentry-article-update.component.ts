@@ -25,7 +25,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title"}),
     this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
-    this.formlyService.genericSelect({key: 'session', optionsType: 'session'}),
+    this.formlyService.genericSelect({key: 'session', optionsType: 'session', wrappers: ["session-update-wrapper"]}),
   ];
 
   private diaryEntry_subscription: Subscription;
