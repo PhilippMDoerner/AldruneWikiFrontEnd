@@ -38,7 +38,6 @@ export class SessionService {
   @TransformObservable(SessionObject)
   updateSession(model: SessionObject): Observable<Session>{
     const isMainSession = (model.is_main_session) ? 1 : 0;
-    //const url: string = `${this.sessionUrl}/${model.session_number}/${isMainSession}/`;
     const url: string = `${this.sessionUrl}/pk/${model.pk}/`;
     console.log("Update session called with this model");
     console.log(model);
@@ -47,7 +46,7 @@ export class SessionService {
 
   @TransformObservable(SessionObject)
   createSession(model: SessionObject): Observable<Session>{
-    return this.http.post<Session>(this.sessionUrl, model);
+    return this.http.post<Session>(`${this.sessionUrl}/`, model);
   }
 
   deleteSession(session_pk: number): Observable<any>{
