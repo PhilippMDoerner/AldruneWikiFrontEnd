@@ -1,8 +1,20 @@
+<!-- Heading --> 
+<label for="datepicker">
+    <strong>
+        {{to.label}}
+        <span *ngIf="to.required">*</span>
+    </strong>
+</label>
+
+<!-- Input -->
 <div class="d-flex">
     <div class="flex-1">
         <ng-container #fieldComponent></ng-container>
     </div>
     <div class="ml-2">
         <app-session-update-modal [session_pk_subject]="formControl.valueChanges"></app-session-update-modal>
+    </div>
+    <div class="ml-2">
+        <app-session-update-modal [session_pk_subject]="null" [icon]="'fa-plus'"></app-session-update-modal>
     </div>
 </div>

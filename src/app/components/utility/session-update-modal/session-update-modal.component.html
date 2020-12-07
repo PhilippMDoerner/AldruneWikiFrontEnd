@@ -23,5 +23,6 @@
 </ng-template>
 
 <div class="form-group mx-2">
-    <div class="btn btn-outline-info fa {{icon}}" title="Edit selected Session" (click)="open(content)"></div>
+    <div *ngIf="formState===constants.updateState" class="btn btn-outline-info fa {{icon}}" title="Edit selected Session" (click)="open(content)"></div>
+    <div *ngIf="formState===constants.createState" class="btn btn-outline-info fa {{icon}}" title="Create new Session" (click)="open(content)"></div>    
 </div>

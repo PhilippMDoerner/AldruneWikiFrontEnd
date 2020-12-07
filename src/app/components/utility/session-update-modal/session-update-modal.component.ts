@@ -18,12 +18,14 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
   @Input() session_pk_subject: BehaviorSubject<number>;
   @Input() icon: string = "fa-pencil";
   @Output() updateSession: EventEmitter<SessionObject> = new EventEmitter();
+  @Output() createSession: EventEmitter<SessionObject> = new EventEmitter();
 
   formState: string;
 
   model: SessionObject;
   form: FormGroup = new FormGroup({});
   fields: FormlyFieldConfig[] = [
+    this.formlyService.genericCheckbox({key: "is_main_session", defaultValue: true, label: "Main Session?"}),
     this.formlyService.genericInput({key: "session_number", label: "Session Number", required: true}),
     this.formlyService.genericDatepicker({key: "session_date", label: "Day of the Session", required: true}),
     this.formlyService.genericInput({key: "start_day", label: "Start Day", required: false, isNumberInput: true}),
@@ -41,23 +43,49 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(){
-    this.sessionpk_subscription = this.session_pk_subject.pipe(
-      filter(sessionPk => !!sessionPk),
-    ).subscribe((sessionPk: number) => {
-      this.sessionService.getSessionByPk(sessionPk).pipe(first()).subscribe((session: SessionObject) => {
-        this.model = session;
+    this.formState = (this.session_pk_subject) ? Constants.updateState : Constants.createState;
+
+    if (this.formState === Constants.updateState){
+      this.sessionpk_subscription = this.session_pk_subject.pipe(
+        filter(sessionPk => !!sessionPk),
+      ).subscribe((sessionPk: number) => {
+        this.sessionService.getSessionByPk(sessionPk).pipe(first()).subscribe((session: SessionObject) => {
+          this.model = session;
+        })
       })
-    })
+    } else if (this.formState === Constants.createState){
+      this.sessionService.getSessions().pipe(first()).subscribe((sessions: SessionObject[]) => {
+        const lastSession = sessions[0];
+        this.model = new SessionObject();
+
+        const lastSessionDate: Date = new Date(lastSession.session_date);
+        const assumedThisSessionDate: Date = this.addDaysToDate(7, lastSessionDate);
+        this.model.session_date = this.dateToYYYMMDDString(assumedThisSessionDate);
+        this.model.is_main_session = true;
+        this.model.session_number = lastSession.session_number + 1;
+      })
+    }
+
+  }
+
+  addDaysToDate(days: number, oldDate: Date): Date{
+    const daysInSeconds = days * 86400000;
+    return new Date(oldDate.setTime( oldDate.getTime() + daysInSeconds));
+  }
+
+  dateToYYYMMDDString(date: Date){
+    return date.toISOString().slice(0,10);
   }
 
   onSubmit(): void{
-    const isFormInUpdateState: boolean = true;
+    const isFormInUpdateState: boolean = this.formState === Constants.updateState;
     const responseObservable: Observable<SessionObject> = (isFormInUpdateState) ? this.sessionService.updateSession(this.model) : this.sessionService.createSession(this.model);
 
     responseObservable.pipe(first()).subscribe(session =>{
-      console.log(`Session From Server`);
+      const emitter: EventEmitter<SessionObject> = (this.formState === Constants.updateState) ? this.updateSession : this.createSession;
+      console.log(`State: ${this.formState}. Got this session From Server`);
       console.log(session);
-      this.updateSession.emit(session);
+      emitter.emit(session);
     });
   }
 
