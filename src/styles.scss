@@ -421,3 +421,25 @@ blockquote strong{
 strong{
 	font-weight: bold;
 }
+
+// Overwriting styling of ngx-bootstrap Datepicker
+
+div.ngb-dp-header{
+	background-color: #1b1f22;
+}
+
+.ngb-dp-month{
+    background-color: #1b1f22;
+}
+
+.ngb-dp-week.ngb-dp-weekdays{
+	background-color: #1b1f22;
+}
+
+div.ngb-dp-day div{
+	color:white;
+}
+
+div.ngb-dp-day .btn-light:hover{
+	color: black !important;
+}

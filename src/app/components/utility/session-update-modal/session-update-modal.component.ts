@@ -25,7 +25,7 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
   form: FormGroup = new FormGroup({});
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "session_number", label: "Session Number", required: true}),
-    //this.formlyService.genericDatepicker({key: "session_date", label: "Day of the Session", required: true}),
+    this.formlyService.genericDatepicker({key: "session_date", label: "Day of the Session", required: true}),
     this.formlyService.genericInput({key: "start_day", label: "Start Day", required: false, isNumberInput: true}),
     this.formlyService.genericInput({key: "end_day", label: "End Day", required: false, isNumberInput: true})
   ];

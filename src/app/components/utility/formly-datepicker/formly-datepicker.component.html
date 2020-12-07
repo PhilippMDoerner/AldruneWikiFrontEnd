@@ -1,0 +1,24 @@
+<div class="form-group" [ngClass]="{'d-none': to.hidden}">
+    <!-- Heading --> 
+    <label for="datepicker">
+        <strong>
+            {{to.label}}
+            <span *ngIf="to.required">*</span>
+        </strong>
+    </label>
+
+    <!-- Input -->
+    <div class="input-group">
+        <input class="form-control" placeholder="yyyy-mm-dd" name="datepicker" [formControl]="formControl" [formlyAttributes]="field" ngbDatepicker #datepickerInput="ngbDatepicker">
+        <div class="input-group-append">
+            <div class="btn btn-outline-light fa fa-calendar" (click)="datepickerInput.toggle()"></div>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #customDay let-date>
+    <div class="datepicker-day btn-light">
+        {{ date.day }}
+    </div>
+</ng-template>
