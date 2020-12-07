@@ -1,6 +1,4 @@
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
 
 export function getComponentRoutes(router: Router, componentName : string): string[]{
     const routes: {path?: string, component?}[] = router.config;
@@ -9,7 +7,7 @@ export function getComponentRoutes(router: Router, componentName : string): stri
     return componentRouteStrings;
 }
 
-export function getRouteByName(router: Router, routeName: string): Route{
+export function getVariableRouteByName(router: Router, routeName: string): Route{
     const routes: Route[] = router.config;
     const routesWithRouteName = routes.filter(pathObject => pathObject.data.name === routeName);
 
@@ -20,9 +18,34 @@ export function getRouteByName(router: Router, routeName: string): Route{
     return targetRouteObject;
 }
 
-export function getRoutePathByName(router: Router, routeName: string): string{
-    const targetRouteObject: Route = getRouteByName(router, routeName);
+export function getVariableRoutePathByName(router: Router, routeName: string): string{
+    const targetRouteObject: Route = getVariableRouteByName(router, routeName);
     return targetRouteObject.path;
+}
+
+export function getRoutePath(router: Router, routeName: string, params = {}): string{
+    let variableRoutePath = getVariableRoutePathByName(router, routeName);
+
+    if (hasPathVariables(variableRoutePath)){
+        const variableNames: string[] = getPathVariableNames(variableRoutePath);
+        for (let variableName of variableNames){
+            if(!params.hasOwnProperty(variableName)) throw `Tried to create path for route ${routeName} but lacked parameter ${variableName}`;
+            variableRoutePath = variableRoutePath.replace(`:${variableName}`, params[variableName]);
+        }
+    }
+
+    return `/${variableRoutePath}`;
+}
+
+function hasPathVariables(routePath: string): boolean{
+    return routePath.includes('/:');
+}
+
+function getPathVariableNames(routePath: string): string[]{
+    const routeSegments: string[] = routePath.split("/");
+    const pathVariables: string[] = routeSegments.filter((segment: string) => segment.startsWith(":"));
+    const variableNameStartIndex = 1;
+    return pathVariables.map(segment => segment.slice(variableNameStartIndex));
 }
 
 export function routeNameMatches(route: ActivatedRoute, routeName: string): boolean{

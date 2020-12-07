@@ -95,12 +95,12 @@ const routes: Routes = [
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:name`, component: MapComponent, data:{ name: "map"}},
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:name/update`, component: MapUpdateComponent, data:{ name: "map-update"}},
 
-  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules`, component: RulesComponent},
-  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells`, component: SpellsComponent},
-  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/recent-updates`, component: RecentlyUpdatedArticleComponent},
-  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:searchString`, component: SearchComponent},
-  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/error`, component: NotFoundComponent},
-  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/**`, component: NotFoundComponent}
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules`, component: RulesComponent, data:{ name: "rules"}},
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells`, component: SpellsComponent, data:{ name: "spells"}},
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/recent-updates`, component: RecentlyUpdatedArticleComponent, data:{ name: "recent-updates"}},
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:searchString`, component: SearchComponent, data:{ name: "search"}},
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/error`, component: NotFoundComponent, data:{ name: "error"}},
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/**`, component: NotFoundComponent, data:{ name: "not-found"}}
 ];
 
 @NgModule({
