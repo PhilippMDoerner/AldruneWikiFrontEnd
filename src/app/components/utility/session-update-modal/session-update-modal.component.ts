@@ -83,8 +83,6 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
 
     responseObservable.pipe(first()).subscribe(session =>{
       const emitter: EventEmitter<SessionObject> = (this.formState === Constants.updateState) ? this.updateSession : this.createSession;
-      console.log(`State: ${this.formState}. Got this session From Server`);
-      console.log(session);
       emitter.emit(session);
     });
   }

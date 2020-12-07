@@ -5,12 +5,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { DiaryEntry, DiaryEntryObject } from 'src/app/models/diaryentry';
-import { Session } from 'src/app/models/session';
-import { User } from 'src/app/models/user';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { SessionService } from 'src/app/services/session.service';
-import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-diaryentry-article-update',
@@ -60,7 +56,6 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
     const responseObservable: any =  isFormInUpdateState ? this.diaryEntryService.updateDiaryEntry(model) : this.diaryEntryService.createDiaryEntry(model);
 
     responseObservable.subscribe(response => {
-      console.log(response);
       this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/diaryentry`);
     }, error => console.log(error));
   }
