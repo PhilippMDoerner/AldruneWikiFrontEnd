@@ -35,7 +35,7 @@ import { LocationArticleMapCreateComponent } from './components/articles/locatio
 import { LoginComponent } from './components/login/login.component';
 import { Constants } from './app.constants';
 
-const routes: Routes = [
+const routes: {path: string, component: any, data: {name: string}}[] = [
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, component: HomeComponent, data:{ name: "home1"}},
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}`, component: HomeComponent, data:{ name: "home2"}},
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login`, component: LoginComponent, data:{ name: "login"}},
