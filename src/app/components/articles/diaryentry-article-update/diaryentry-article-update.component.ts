@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { DiaryEntry, DiaryEntryObject } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
@@ -24,7 +25,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
     this.formlyService.genericSelect({key: 'session', optionsType: 'session', wrappers: ["session-update-wrapper"]}),
   ];
 
-  private diaryEntry_subscription: Subscription;
+  private parameter_subscription: Subscription;
 
   constructor(
     private formlyService: MyFormlyService,
@@ -36,31 +37,44 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
 
-    if (this.formState === this.constants.updateState){
-      const isMainSession: string = this.route.snapshot.params.isMainSession;
-      const sessionNumber: string = this.route.snapshot.params.sessionNumber;
-      const authorName: string = this.route.snapshot.params.authorName;
-
-      this.diaryEntry_subscription = this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(diaryEntry => {
-        this.model = diaryEntry;
-      }, error => { 
-        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`)
-      });
-    } else if (this.formState === this.constants.createState) {
-      this.model = new DiaryEntryObject();
-    }
+    this.parameter_subscription = this.route.params.subscribe(params => {
+      if (this.formState === this.constants.updateState){
+        const isMainSession: string = params.isMainSession;
+        const sessionNumber: string = params.sessionNumber;
+        const authorName: string = params.authorName;
+  
+        this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(diaryEntry => {
+          this.model = diaryEntry;
+        }, error => { 
+          this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`)
+        });
+      } else if (this.formState === this.constants.createState) {
+        this.model = new DiaryEntryObject();
+      }
+    });
   }
 
-  onSubmit(model: DiaryEntry){
+  onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
-    const responseObservable: any =  isFormInUpdateState ? this.diaryEntryService.updateDiaryEntry(model) : this.diaryEntryService.createDiaryEntry(model);
+    const responseObservable: any =  isFormInUpdateState ? this.diaryEntryService.updateDiaryEntry(this.model) : this.diaryEntryService.createDiaryEntry(this.model);
 
-    responseObservable.subscribe(response => {
-      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/diaryentry`);
+    responseObservable.pipe(first()).subscribe(response => {
+      let diaryEntryUrl: string;
+      if (isFormInUpdateState){
+        diaryEntryUrl = Constants.getRoutePath(this.router, 'diaryentry', {
+          sessionNumber: this.model.session_details.session_number,
+          isMainSession: this.model.session_details.is_main_session_int,
+          authorName: this.model.author_details.name
+        });
+      } else {
+        diaryEntryUrl = Constants.getRoutePath(this.router, 'diaryentry-overview');
+      }
+
+      this.router.navigateByUrl(diaryEntryUrl);
     }, error => console.log(error));
   }
 
   ngOnDestroy(){
-    if (this.diaryEntry_subscription) this.diaryEntry_subscription.unsubscribe();
+    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

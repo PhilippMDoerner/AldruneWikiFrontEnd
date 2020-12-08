@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Character, characterLocation } from "src/app/models/character";
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OverviewItem } from "src/app/models/overviewItem";
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
-import { Subscription, Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { OverviewService } from 'src/app/services/overview.service';
 import { Constants } from 'src/app/app.constants';
 
@@ -12,7 +11,7 @@ import { Constants } from 'src/app/app.constants';
   templateUrl: './article-overview.component.html',
   styleUrls: ['./article-overview.component.scss'],
 })
-export class ArticleOverviewComponent implements OnInit {
+export class ArticleOverviewComponent implements OnInit, OnDestroy {
   listItems: OverviewItem[];
   listItemArray: Array<OverviewItem>;
   constants: any = Constants;

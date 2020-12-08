@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Subject, Observable, Subscription } from "rxjs";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormGroup } from "@angular/forms";
 import { FormlyFieldConfig } from "@ngx-formly/core";
@@ -9,6 +9,7 @@ import { Character, CharacterObject } from "src/app/models/character";
 //services
 import { CharacterService } from "src/app/services/character/character.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-character-article-update',
@@ -16,7 +17,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
   styleUrls: ['./character-article-update.component.scss']
 })
 
-export class CharacterArticleUpdateComponent implements OnInit {
+export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   constants: any = Constants;
   formState: string;
   form = new FormGroup({});
@@ -32,7 +33,7 @@ export class CharacterArticleUpdateComponent implements OnInit {
     this.formlyService.genericSelect({key: "current_location", label: "Location", optionsType: "location", required: false}),
   ];
 
-  private character_subscription: Subscription;
+  private parameter_subscription: Subscription;
 
   constructor(
     private characterService: CharacterService,
@@ -44,27 +45,32 @@ export class CharacterArticleUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
 
-    if (this.formState === this.constants.updateState){
-      const character_name: string = this.route.snapshot.params.name;
-      this.character_subscription = this.characterService.getCharacter(character_name).subscribe(character => {
-        this.model = character;
-      }, error => this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`));
-    } else if (this.formState === this.constants.createState) {
-      this.model = new CharacterObject();
-    }
+    this.parameter_subscription = this.route.params.subscribe(params => {
+      if (this.formState === this.constants.updateState){
+        const character_name: string = params.name;
+        this.characterService.getCharacter(character_name).pipe(first()).subscribe(character => {
+          this.model = character;
+        }, error => this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`));
+
+      } else if (this.formState === this.constants.createState) {
+        this.model = new CharacterObject();
+      }
+    });
+
   }
 
-  onSubmit(model: any){
+  onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState)
-    const responseObservable: Observable<Character> =  isFormInUpdateState ? this.characterService.updateCharacter(model) : this.characterService.createCharacter(model);
+    const responseObservable: Observable<Character> =  isFormInUpdateState ? this.characterService.updateCharacter(this.model) : this.characterService.createCharacter(this.model);
 
-    responseObservable.subscribe(response => {
-      console.log(response);
-      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/character/${model.name}`);
+    responseObservable.pipe(first()).subscribe(response => {
+      const characterUrl: string = Constants.getRoutePath(this.router, 'character', {name: this.model.name});
+      console.log(`Routing to ${characterUrl}`);
+      this.router.navigateByUrl(characterUrl);
     }, error => console.log(error));
   }
 
   ngOnDestroy(){
-    if (this.character_subscription) this.character_subscription.unsubscribe();
+    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

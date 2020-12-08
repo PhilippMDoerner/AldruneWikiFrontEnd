@@ -19,7 +19,9 @@
             </div>
             <div class="subheading d-flex align-items-center"> 
                 <span class="w-25">Quest Giver:</span>
-                <a *ngIf="quest.giver_details" href="/character/{{quest.giver_details.name}}">{{ quest.giver_details.name }}</a>
+                <a *ngIf="quest.giver_details" routerLink="{{constants.getRoutePath(router, 'character', {name: quest.giver_details.name})}}">
+                    {{ quest.giver_details.name }}
+                </a>
                 <span *ngIf="!quest.giver_details"> None </span>
             </div>
         </div>
@@ -35,7 +37,9 @@
 
         <app-delete-toggle [deleteMessage]="'Delete Quest?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
 
-        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/quest" class="btn btn-secondary mr-1">Back to Quest Overview</a>
+        <a routerLink="{{constants.getRoutePath(router, 'quest-overview')}}" class="btn btn-secondary mr-1">
+            Back to Quest Overview
+        </a>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

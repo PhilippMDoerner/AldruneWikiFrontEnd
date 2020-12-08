@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Article } from 'src/app/models/recentlyUpdatedArticle';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
@@ -10,11 +11,12 @@ import { RecentlyUpdatedService } from 'src/app/services/recently-updated.servic
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, OnDestroy {
   articles: Article[];
 
+  constants: any = Constants;
+
   parameter_subscription: Subscription;
-  article_subscription: Subscription;
 
   constructor(
     private articleService: RecentlyUpdatedService,
@@ -23,7 +25,7 @@ export class SearchComponent implements OnInit {
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const searchString: string = params['searchString'];
-      this.article_subscription = this.articleService.getSearchedArticles(searchString).subscribe(articles => {
+      this.articleService.getSearchedArticles(searchString).pipe(first()).subscribe(articles => {
         this.articles = articles;
       })
     })
@@ -35,7 +37,6 @@ export class SearchComponent implements OnInit {
 
   ngOnDestroy(){
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
-    if (this.article_subscription) this.article_subscription.unsubscribe();
   }
 
 }

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Constants } from 'src/app/app.constants';
 
 @Component({
@@ -6,12 +7,12 @@ import { Constants } from 'src/app/app.constants';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   isLoaded: boolean = false;
   constants: any = Constants;
-  constructor() { }
-
-  ngOnInit(): void {
+  router: Router;
+  constructor(private secretRouter: Router) {
+    this.router = this.secretRouter;
   }
 
   onWindowLoad():void{

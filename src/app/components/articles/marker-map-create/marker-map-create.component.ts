@@ -8,14 +8,15 @@ import { MapService } from 'src/app/services/map.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'app-marker-map-create',
   templateUrl: './marker-map-create.component.html',
   styleUrls: ['./marker-map-create.component.scss']
 })
 export class MarkerMapCreateComponent implements OnInit {
-  private marker_subscription: Subscription;
-  private map_subscription: Subscription;
+  private parameter_subscription: Subscription;
+
   mapName: string;
   constants: any = Constants;
 
@@ -39,30 +40,29 @@ export class MarkerMapCreateComponent implements OnInit {
     private formlyService: MyFormlyService,
   ) { }
 
-
-
   ngOnInit(): void {
-    console.log(this.route.snapshot.params);
-    const longitude: number = this.route.snapshot.params['longitude'];
-    const latitude: number = this.route.snapshot.params['latitude'];
-    this.mapName = this.route.snapshot.params['map_name'];
-    
-    this.map_subscription = this.mapService.getMap(this.mapName).subscribe(map =>{
-      this.model = new MapMarkerObject();
-      this.model.map = map.pk;
-      this.model.latitude = latitude;
-      this.model.longitude = longitude;
-    })
+    this.parameter_subscription = this.route.params.subscribe(params =>{
+      const longitude: number = params['longitude'];
+      const latitude: number = params['latitude'];
+      this.mapName = params['map_name'];
+      
+      this.mapService.getMap(this.mapName).pipe(first()).subscribe(map =>{
+        this.model = new MapMarkerObject();
+        this.model.map = map.pk;
+        this.model.latitude = latitude;
+        this.model.longitude = longitude;
+      })
+    });
   }
 
-  onSubmit(model: MapMarker){
-    this.marker_subscription = this.markerService.createMapMarker(model).subscribe((marker: MapMarker) => {
-      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/map/${marker.map_details.name}`);
+  onSubmit(){
+    this.markerService.createMapMarker(this.model).pipe(first()).subscribe((marker: MapMarker) => {
+      const mapUrl = Constants.getRoutePath(this.router, 'map', {name: marker.map_details.name});
+      this.router.navigateByUrl(mapUrl);
     }, error => console.log(error));
   }
 
   ngOnDestroy(){
-    if (this.marker_subscription) this.marker_subscription.unsubscribe();
-    if (this.map_subscription) this.map_subscription.unsubscribe();
+    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

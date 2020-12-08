@@ -47,7 +47,7 @@
         <!-- Items -->
         <div class="mb-5">
             <app-object-list    [articleType]="'item'" 
-            [createLink]="'/'+constants.spaPrefix+'/item/'+character.name+'/create'"
+            [createLink]="constants.getRoutePath(router, 'item-character-create', {character_name: character.name})"
             [heading]="'Items of Note'"
             [items]="character.items"></app-object-list>
         </div>

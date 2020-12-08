@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { DiaryEntry } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
@@ -15,7 +16,7 @@ export class DiaryentryArticleComponent implements OnInit {
   diaryEntry: DiaryEntry;
   articleType: string = 'diaryEntry';
 
-  private diaryEntry_subscription: Subscription;
+  private parameter_subscription: Subscription;
 
   constructor(
     private diaryEntryService: DiaryentryService,
@@ -24,12 +25,14 @@ export class DiaryentryArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const isMainSession: string = this.route.snapshot.params.isMainSession;
-    const sessionNumber: string = this.route.snapshot.params.sessionNumber;
-    const authorName: string = this.route.snapshot.params.authorName;
-
-    this.diaryEntry_subscription = this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(diaryEntry => {
-      this.diaryEntry = diaryEntry;
+    this.parameter_subscription = this.route.params.subscribe(params => {
+      const isMainSession: string = params.isMainSession;
+      const sessionNumber: string = params.sessionNumber;
+      const authorName: string = params.authorName;
+  
+      this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).pipe(first()).subscribe(diaryEntry => {
+        this.diaryEntry = diaryEntry;
+      })
     }, error =>{ 
       this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`)
     });
@@ -38,7 +41,7 @@ export class DiaryentryArticleComponent implements OnInit {
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.diaryEntry.entry;
     this.diaryEntry.entry = updatedDescription;
-    this.diaryEntryService.updateDiaryEntry(this.diaryEntry).subscribe(diaryEntry => {
+    this.diaryEntryService.updateDiaryEntry(this.diaryEntry).pipe(first()).subscribe(diaryEntry => {
     }, error =>{
       this.diaryEntry.entry = oldDescription;
       console.log(error);
@@ -46,12 +49,13 @@ export class DiaryentryArticleComponent implements OnInit {
   }
 
   deleteArticle(){
-      this.diaryEntryService.deleteDiaryEntry(this.diaryEntry.pk).subscribe(response => {
-        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/diaryentry`)
+      this.diaryEntryService.deleteDiaryEntry(this.diaryEntry.pk).pipe(first()).subscribe(response => {
+        const diaryentryOverviewUrl: string = Constants.getRoutePath(this.router, 'diaryentry-overview');
+        this.router.navigateByUrl(diaryentryOverviewUrl);
       }, error => console.log(error));
   }
 
   ngOnDestroy(){
-    if (this.diaryEntry_subscription) this.diaryEntry_subscription.unsubscribe();
+    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

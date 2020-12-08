@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { QuestObject, Quest } from 'src/app/models/quest';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { QuestService } from 'src/app/services/quest.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-quest-article-update',
@@ -16,7 +17,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 export class QuestArticleUpdateComponent implements OnInit {
   constants: any = Constants;
 
-  private quest_subscription: Subscription;
+  private parameter_subscription: Subscription;
 
   formState: string;
 
@@ -59,28 +60,32 @@ export class QuestArticleUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
-    const questName: string = this.route.snapshot.params.name;
 
-    if (this.formState === this.constants.updateState){
-      this.quest_subscription = this.questService.getQuest(questName).subscribe(item => {
-        this.model = item;
-      });
-    } else if (this.formState === this.constants.createState) {
-      this.model = new QuestObject();
-    } 
+    this.parameter_subscription = this.route.params.subscribe(params => {
+      const questName: string = params.name;
+
+      if (this.formState === this.constants.updateState){
+        this.questService.getQuest(questName).pipe(first()).subscribe((quest: QuestObject) => {
+          this.model = quest;
+        });
+        
+      } else if (this.formState === this.constants.createState) {
+        this.model = new QuestObject();
+      } 
+    })
   }
 
-  onSubmit(model: Quest){
+  onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
-    const responseObservable: any =  isFormInUpdateState ? this.questService.updateQuest(model) : this.questService.createQuest(model);
+    const responseObservable: Observable<QuestObject> =  isFormInUpdateState ? this.questService.updateQuest(this.model) : this.questService.createQuest(this.model);
 
-    responseObservable.subscribe(response => {
-      console.log(response);
-      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/quest/${model.name}`);
+    responseObservable.pipe(first()).subscribe((quest: QuestObject) => {
+      const questUrl: string = Constants.getRoutePath(this.router, 'quest', {name: quest.name});
+      this.router.navigateByUrl(questUrl);
     }, error => console.log(error));
   }
 
   ngOnDestroy(){
-    if (this.quest_subscription) this.quest_subscription.unsubscribe();
+    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

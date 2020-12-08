@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { MapObject, Map } from 'src/app/models/map';
 import { MapService } from 'src/app/services/map.service';
@@ -15,9 +16,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 })
 export class MapUpdateComponent implements OnInit {
 
-  private map_subscription: Subscription;
   private parameter_subscription: Subscription;
-  private parent_location_subscription: Subscription;
 
   constants: any = Constants;
 
@@ -41,30 +40,32 @@ export class MapUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
-    const mapName: string = this.route.snapshot.params['name'];
 
-    if (this.formState === this.constants.updateState){
-      this.map_subscription = this.mapService.getMap(mapName).subscribe(map => {
-        this.model = map;
-      });
-    }  else if (this.formState === this.constants.createState){
-      this.model = new MapObject();
-    }
+    this.parameter_subscription = this.route.params.subscribe(params => {
+      const mapName: string = params['name'];
+
+      if (this.formState === this.constants.updateState){
+        this.mapService.getMap(mapName).pipe(first()).subscribe(map => {
+          this.model = map;
+        });
+      }  else if (this.formState === this.constants.createState){
+        this.model = new MapObject();
+      }
+    })
   }
 
-  onSubmit(model: Map){
+  onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
-    const responseObservable: any =  isFormInUpdateState ? this.mapService.updateMap(model) : this.mapService.createMap(model);
+    const responseObservable: any =  isFormInUpdateState ? this.mapService.updateMap(this.model) : this.mapService.createMap(this.model);
 
-    responseObservable.subscribe((map: Map) => {
-      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/map/${map.name}`);
+    responseObservable.pipe(first()).subscribe((map: Map) => {
+      const mapUrl: string = Constants.getRoutePath(this.router, 'map', {name: map.name});
+      this.router.navigateByUrl(mapUrl);
     }, error => console.log(error));
   }
 
 
   ngOnDestroy(){
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
-    if (this.map_subscription) this.map_subscription.unsubscribe();
-    if (this.parent_location_subscription) this.parent_location_subscription.unsubscribe();
   }
 }

@@ -2,16 +2,19 @@
     <article *ngIf="location; else loading">
         <!-- Heading -->
         <app-edit-toggle [isInUpdateState]=false [link]="'update'"></app-edit-toggle>
-        <a routerLink="/marker/{{location.parent_location_details.name}}/{{location.name}}/create" class="btn btn-outline-secondary float-right mr-4">
+        <a routerLink="{{constants.getRoutePath(router, 'marker-create', {parent_location_name: location.parent_location_details.name, location_name: location.name})}}"
+            class="btn btn-outline-secondary float-right mr-4">
             Add Marker
         </a>
 
         <h1 class="text-center">
             {{ location.name }} 
-            <a *ngFor="let marker of location.marker_details" class="mx-1 no-underline" routerLink="{{constants.wikiUrlFrontendPrefix}}/marker/{{location.parent_location_details.name}}/{{location.name}}/{{marker.map}}">
+            <a *ngFor="let marker of location.marker_details" class="mx-1 no-underline" 
+            routerLink="{{constants.getRoutePath(router, 'marker', {parent_location_name: location.parent_location_details.name, location_name: location.name, map_name: marker.map})}}">
                 <i class="fa fa-{{marker.map_icon}} icon"></i>
             </a>
         </h1>
+
         <!-- String indicating all parent_locations -->
         <p *ngIf="location.parent_location_list.length > 0" class="text-center font-italic mb-5">
             <span *ngFor="let loc of location.parent_location_list; let i = index"> 
@@ -40,12 +43,8 @@
         </div>
 
         <!-- Characters of Interest -->
-
         <div class="mb-4">
-            <app-object-list    [heading]="'Characters of Interest'"
-                                [items]="location.characters"
-                                [articleType]="'character'"
-                                [createLink]="'/character/create'"></app-object-list>
+            <app-object-list [heading]="'Characters of Interest'" [items]="location.characters" [articleType]="'character'" [createLink]="'/character/create'"></app-object-list>
         </div>
 
         <!-- Locations of Interest -->
@@ -59,10 +58,11 @@
 
 
         <!-- Return Buttons -->
-        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/location" class="btn btn-outline-secondary mr-1">Back to locations</a>
-        <a 
-        *ngIf="location.parent_location_details.name !== constants.NONE_STRING"
-        routerLink="{{constants.wikiUrlFrontendPrefix}}/location/{{location.parent_location_details.parent_location}}/{{location.parent_location_details.name}}"
+        <a routerLink="{{constants.getRoutePath(router, 'location-overview')}}" class="btn btn-outline-secondary mr-1">
+            Back to locations
+        </a>
+        <a *ngIf="location.parent_location_details.name !== constants.NONE_STRING"
+        routerLink="{{constants.getRoutePath(router, 'location', {parent_name: location.parent_location_details.paren_location, name: location.parent_location_details.name})}}"
         class="btn btn-secondary">
             Back to {{location.parent_location_details.name}}
         </a>

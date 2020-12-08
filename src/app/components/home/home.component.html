@@ -15,13 +15,13 @@
         </div>
         <nav>
             <ul>
-                <li><b><a class="article-link" routerLink="{{constants.wikiUrlFrontendPrefix}}/character">Characters</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.wikiUrlFrontendPrefix}}/location">Places</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.wikiUrlFrontendPrefix}}/diaryentry">Diary</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.wikiUrlFrontendPrefix}}/organization">Groups</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.wikiUrlFrontendPrefix}}/creature">Bestiary</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.wikiUrlFrontendPrefix}}/item">Items</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.wikiUrlFrontendPrefix}}/map/Aldrune">Map</a></b></li>
+                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'character-overview')}}">Characters</a></b></li>
+                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'location-overview')}}">Places</a></b></li>
+                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'diaryentry-overview')}}">Diary</a></b></li>
+                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'organization-overview')}}">Groups</a></b></li>
+                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'creature-overview')}}">Bestiary</a></b></li>
+                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'item-overview')}}">Items</a></b></li>
+                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'map', {name: 'Aldrune'})}}">Map</a></b></li>
             </ul>
         </nav>
     </header>

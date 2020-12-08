@@ -20,7 +20,7 @@
 
         <app-delete-toggle [deleteMessage]="'Delete '+creature.name+'?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
 
-        <a routerLink=".." class="btn btn-secondary">Back to Creatures</a>
+        <a routerLink="{{constants.getRoutePath(router, 'creature-overview')}}" class="btn btn-secondary">Back to Creatures</a>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

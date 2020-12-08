@@ -81,6 +81,12 @@ const routes: {path: string, component: any, data: {name: string}}[] = [
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:name`, component: QuestArticleComponent, data:{ name: "quest"}},
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:name/update`, component: QuestArticleUpdateComponent, data:{ name: "quest-update"}},
 
+  //TODO: Actually implement a session component because why not
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session`, component: HomeComponent, data:{name: "session-overview"}},
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/create`, component: HomeComponent, data:{name: "session-create"}},
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:sessionNumber/:isMainSession`, component: HomeComponent, data:{name: "session"}},
+  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:sessionNumber/:isMainSession/update`, component: HomeComponent, data:{name: "session-update"}},
+  //TODO: Change this path to be :sesionNumber/:isMainSession as right now its the wrong way round
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio`, component: SessionAudioOverviewComponent, data:{ name: "sessionaudio-overview"}},
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/create`, component: SessionAudioUpdateComponent, data:{ name: "sessionaudio-create"}},  
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:isMainSession/:sessionNumber`, component: SessionAudioComponent, data:{ name: "sessionaudio"}},

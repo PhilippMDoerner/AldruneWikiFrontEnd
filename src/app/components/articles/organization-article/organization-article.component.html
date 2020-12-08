@@ -7,14 +7,14 @@
         <div>
             <div class="text-center subheading mb-1"> 
                 Leader: 
-                <a *ngIf="organization.leader; else Unknown" class="ml-1" routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{organization.leader}}">
+                <a *ngIf="organization.leader; else Unknown" class="ml-1" routerLink="{{constants.getRoutePath(router, 'character', {name: organization.leader})}}">
                     {{ organization.leader }}
                 </a>
                 <ng-template #Unknown>Unknown</ng-template>
             </div>
             <div class="text-center mb-3 subheading"> 
                 Headquarters:
-                <a *ngIf="organization.headquarter_details; else Unknown" class="ml-1" routerLink="{{constants.wikiUrlFrontendPrefix}}/location/{{organization.headquarter_details.name}}">
+                <a *ngIf="organization.headquarter_details; else Unknown" class="ml-1" routerLink="{{constants.getRoutePath(router, 'location', {name: organization.headquarter_details.name, parent_name: organization.headquarter_details.parent_name})}}">
                     {{ organization.headquarter_details.name_full }}
                 </a>
             </div>
@@ -39,13 +39,13 @@
         <div class="mb-5">
             <app-object-list    [heading]="'Members'"
                                 [items]="organization.members"
-                                [createLink]="'/character/create'"
+                                [createLink]="constants.getRoutePath(router, 'character-create')"
                                 [articleType]="'character'"></app-object-list>
         </div>
 
 
 
-        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/organization" class="btn btn-secondary mr-1">Back to organizations</a>
+        <a routerLink="{{constants.getRoutePath(router, 'organization-overview')}}" class="btn btn-secondary mr-1">Back to organizations</a>
         <app-delete-toggle [deleteMessage]="'Delete '+organization.name+'?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

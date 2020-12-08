@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { Quest } from 'src/app/models/quest';
+import { Quest, QuestObject } from 'src/app/models/quest';
 import { QuestService } from 'src/app/services/quest.service';
 
 @Component({
@@ -29,7 +29,7 @@ export class QuestOverviewComponent implements OnInit {
     const urlSplit = this.router.url.split('/');
     this.overviewType = urlSplit[urlSplit.length - 1];
 
-    this.quest_subscription = this.questService.getQuests().subscribe(quests => {
+    this.quest_subscription = this.questService.getQuests().subscribe((quests: QuestObject[]) => {
       this.quests = this.groupQuestsByTaker(quests);
 
       this.filterStateTypes = [];
@@ -44,7 +44,7 @@ export class QuestOverviewComponent implements OnInit {
     }, error => console.log(error));
   }
 
-  groupQuestsByTaker(itemArray: Array<Quest>): Array<{key:string, value:Quest}>{
+  groupQuestsByTaker(itemArray: QuestObject[]): Array<{key:string, value:Quest}>{
     const callback = (accumulator: object, quest: Quest) => {
         const questTaker: string = quest.taker;
         if(accumulator.hasOwnProperty(questTaker)) accumulator[questTaker].push(quest);

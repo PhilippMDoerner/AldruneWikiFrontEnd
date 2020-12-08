@@ -1,25 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { Character, CharacterObject } from "src/app/models/character";
-import { Image } from "src/app/models/image";
-import { NgbModal, ModalDismissReasons } from "@ng-bootstrap/ng-bootstrap";
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CharacterObject } from "src/app/models/character";
 import { CharacterService } from "src/app/services/character/character.service";
-import { ImageUploadService } from "src/app/services/image/image-upload.service";
 import { Subject, Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Constants } from "src/app/app.constants";
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'app-character-article',
   templateUrl: './character-article.component.html',
   styleUrls: ['./character-article.component.scss']
 })
 
-export class CharacterArticleComponent implements OnInit {
+export class CharacterArticleComponent implements OnInit, OnDestroy {
   constants: any = Constants;
   character: CharacterObject;
   confirmationModal: Subject<void> = new Subject<void>();
   articleType: string = 'character';
 
-  private character_subscription: Subscription;
+  private parameter_subscription: Subscription;
 
   constructor(
     private characterService: CharacterService,
@@ -28,9 +26,9 @@ export class CharacterArticleComponent implements OnInit {
     ) {}
 
   ngOnInit(): void {
-    this.route.params.subscribe( params => {
+    this.parameter_subscription = this.route.params.subscribe( params => {
       const character_name: string = params.name;
-      this.character_subscription = this.characterService.getCharacter(character_name).subscribe((character: CharacterObject) => {
+      this.characterService.getCharacter(character_name).pipe(first()).subscribe((character: CharacterObject) => {
         this.character = character;
       }, error =>{ this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`);});
     });
@@ -39,7 +37,7 @@ export class CharacterArticleComponent implements OnInit {
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.character.description;
     this.character.description = updatedDescription;
-    this.characterService.updateCharacter(this.character).subscribe(character => {
+    this.characterService.updateCharacter(this.character).pipe(first()).subscribe(character => {
     }, error =>{
       this.character.description = oldDescription;
       console.log(error);
@@ -47,12 +45,12 @@ export class CharacterArticleComponent implements OnInit {
   }
 
   deleteArticle(){
-      this.characterService.deleteCharacter(this.character).subscribe(response => {
+      this.characterService.deleteCharacter(this.character).pipe(first()).subscribe(response => {
         this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/character`)
       }, error => console.log(error));
   }
 
   ngOnDestroy(){
-    if (this.character_subscription) this.character_subscription.unsubscribe();
+    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

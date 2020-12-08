@@ -4,7 +4,7 @@
 
         <h1 class="text-center">
             Diary Entry #
-            <a routerLink="{{constants.wikiUrlFrontendPrefix}}/session/{{diaryEntry.session_details.session_number}}/{{diaryEntry.session_details.is_main_session_int}}">
+            <a routerLink="{{constants.getRoutePath(router, 'session', {isMainSession: diaryEntry.session_details.is_main_session_int, sessionNumber: diaryEntry.session_details.session_number})}}">
                 {{ diaryEntry.session_details.name }}
             </a>
         </h1>

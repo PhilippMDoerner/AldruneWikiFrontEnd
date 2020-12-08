@@ -61,14 +61,18 @@
                 <div class="col-1 d-flex align-items-center justify-content-center">
                     <i class="icon fa fa-trash delete-timestamp" (click)="deleteTimestamp(timestamp)"></i>
                 </div>
-                <a (click)="vimePlayer.currentTime=timestamp.time" class="timestamp pointer col-2 text-align-right"> {{timeToString(timestamp.time)}} </a>    
+                <a (click)="vimePlayer.currentTime=timestamp.time" class="timestamp pointer col-2 text-align-right"> 
+                    {{timeToString(timestamp.time)}} 
+                </a>    
                 <span class="col-9">{{timestamp.name}}</span>
             </div>
         </div>
 
         <!-- Ending -->
         <div class="d-block mt-2">
-            <a routerLink="{{constants.wikiUrlFrontendPrefix}}/sessionaudio" class="btn btn-secondary mr-1">Back to SessionAudio Overview</a>
+            <a routerLink="{{constants.getRoutePath(router, 'sessionaudio-overview')}}" class="btn btn-secondary mr-1">
+                Back to SessionAudio Overview
+            </a>
             <app-delete-toggle (deleteEvent)="deleteArticle()"></app-delete-toggle>
         </div>
     </article>

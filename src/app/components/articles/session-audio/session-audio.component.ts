@@ -1,4 +1,4 @@
-import { Component, ContentChild, ContentChildren, ElementRef, OnInit, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
+import { Component, ContentChild, ContentChildren, ElementRef, OnDestroy, OnInit, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -18,7 +18,7 @@ import { SessionAudioService } from 'src/app/services/session-audio.service';
   styleUrls: ['./session-audio.component.scss']
 })
 
-export class SessionAudioComponent implements OnInit {
+export class SessionAudioComponent implements OnInit, OnDestroy {
   constants: any = Constants;
 
   sessionAudio: SessionAudio;
@@ -34,9 +34,7 @@ export class SessionAudioComponent implements OnInit {
   ]
   timestampCreateState: boolean = false;
   
-  sessionAudio_subscription: Subscription;
   parameter_subscription: Subscription;
-  timestamp_suscription: Subscription;
 
   @ContentChild("audioSource") audioSourceChild: ElementRef;
   @ViewChild("audioSource") audioSourceChild2: ElementRef;
@@ -55,13 +53,13 @@ export class SessionAudioComponent implements OnInit {
       const isMainSessionInt: number = params.isMainSession;
       const sessionNumber: number = params.sessionNumber;
 
-      this.sessionAudio_subscription = this.sessionAudioService.getSessionAudioFile(isMainSessionInt, sessionNumber).subscribe(sessionAudio => {
+      this.sessionAudioService.getSessionAudioFile(isMainSessionInt, sessionNumber).pipe(first()).subscribe(sessionAudio => {
         this.sessionAudio = sessionAudio;
         this.priorSessionAudio = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
         this.nextSessionAudio = sessionAudio.sessionAudioNeighbours.nextSessionAudio;
       }, error => console.log(error));
 
-      this.timestamp_suscription = this.timestampService.getTimestamps(isMainSessionInt, sessionNumber).subscribe(timestamps => {
+      this.timestampService.getTimestamps(isMainSessionInt, sessionNumber).pipe(first()).subscribe(timestamps => {
         this.timestamps = timestamps;
       })
     })
@@ -69,14 +67,13 @@ export class SessionAudioComponent implements OnInit {
 
   routeToSessionAudio({isMainSessionInt, sessionNumber}){
     //Only needed because the vime player doesn't properly trigger events for src changes
-    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/sessionaudio/${isMainSessionInt}/${sessionNumber}`);
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {
-      return false;
-    };
+    const sessionAudioUrl: string = Constants.getRoutePath(this.router, 'sessionaudio', {isMainSession: isMainSessionInt, sessionNumber: sessionNumber});
+    this.router.navigateByUrl(sessionAudioUrl);
+    this.router.routeReuseStrategy.shouldReuseRoute = function () { return false; };
   }
 
   deleteArticle(){
-    this.sessionAudioService.deleteSessionAudioFile(this.sessionAudio.pk).subscribe(response => {
+    this.sessionAudioService.deleteSessionAudioFile(this.sessionAudio.pk).pipe(first()).subscribe(response => {
       this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/sessionaudio`);
     }, error => console.log(error));
   }
@@ -137,8 +134,6 @@ export class SessionAudioComponent implements OnInit {
   }
 
   ngOnDestroy(){
-    if(this.sessionAudio_subscription) this.sessionAudio_subscription.unsubscribe();
-    if(this.timestamp_suscription) this.timestamp_suscription.unsubscribe();
     if(this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

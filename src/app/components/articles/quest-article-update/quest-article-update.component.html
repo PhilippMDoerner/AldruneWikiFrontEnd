@@ -10,7 +10,7 @@
         </div>
         
         <ng-template #createState>
-            <app-edit-toggle [isInUpdateState]=true [link]="'/quest'"></app-edit-toggle>
+            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'quest-overview')"></app-edit-toggle>
 
             <h2 class="text-center">
                 Creating a new Quest
@@ -19,10 +19,10 @@
 
 
         <!-- Form -->
-        <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+        <form [formGroup]="form">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
             <button class="btn btn-dark mr-3" routerLink="..">Cancel</button>
-            <button type="submit" class="btn btn-secondary">Submit</button>
+            <button class="btn btn-secondary" (click)="onSubmit()">Submit</button>
         </form>
 
     </article>

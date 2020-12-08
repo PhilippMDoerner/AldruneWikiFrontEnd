@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'app-session-audio-update',
@@ -16,7 +17,6 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 export class SessionAudioUpdateComponent implements OnInit {
   constants: any = Constants;
 
-  private sessionaudio_subscription: Subscription;
   private parameter_subscription: Subscription;
 
   formState: string;
@@ -38,28 +38,35 @@ export class SessionAudioUpdateComponent implements OnInit {
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
 
-    if (this.formState === this.constants.updateState){
-      const isMainSessionInt: number = this.route.snapshot.params['isMainSession'];
-      const sessionNumber: number = this.route.snapshot.params['sessionNumber'];
-      this.sessionaudio_subscription = this.audioService.getSessionAudioFile(isMainSessionInt, sessionNumber).subscribe(item => {
-        this.model = item;
-      });
-    } else if (this.formState === this.constants.createState) {
-      this.model = new SessionAudioObject();
-    } 
+    this.parameter_subscription = this.route.params.subscribe(params => {
+      if (this.formState === this.constants.updateState){
+        const isMainSessionInt: number = params['isMainSession'];
+        const sessionNumber: number = params['sessionNumber'];
+        this.audioService.getSessionAudioFile(isMainSessionInt, sessionNumber).pipe(first()).subscribe(item => {
+          this.model = item;
+        });
+
+      } else if (this.formState === this.constants.createState) {
+        this.model = new SessionAudioObject();
+      } 
+    })
+
   }
 
   onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
 
-    const responseObservable: any =  isFormInUpdateState ? this.audioService.updateSessionAudioFile(this.model) : this.audioService.createSessionAudioFile(this.model);
-    responseObservable.subscribe( (sessionAudio: SessionAudio) => {
-      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/sessionaudio/${sessionAudio.session_details.is_main_session_int}/${sessionAudio.session_details.session_number}`);
+    const responseObservable: Observable<SessionAudioObject> =  isFormInUpdateState ? this.audioService.updateSessionAudioFile(this.model) : this.audioService.createSessionAudioFile(this.model);
+    responseObservable.pipe(first()).subscribe( (sessionAudio: SessionAudio) => {
+      const sessionAudioUrl: string = Constants.getRoutePath(this.router, 'sessionaudio', {
+        isMainSession: sessionAudio.session_details.is_main_session_int, 
+        session_number: sessionAudio.session_details.session_number
+      });
+      this.router.navigateByUrl(sessionAudioUrl);
     }, error => console.log(error));
   }
 
   ngOnDestroy(){
-    if (this.sessionaudio_subscription) this.sessionaudio_subscription.unsubscribe();
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

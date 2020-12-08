@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { Quest } from 'src/app/models/quest';
+import { Quest, QuestObject } from 'src/app/models/quest';
 import { QuestService } from 'src/app/services/quest.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class QuestArticleComponent implements OnInit {
   quest: Quest;
   articleType: string = 'quest';
 
-  private quest_subscription: Subscription;
+  private parameter_subscription: Subscription;
 
   constructor(
     private questService: QuestService,
@@ -24,16 +25,18 @@ export class QuestArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    const questName: string = this.route.snapshot.params.name;
-    this.quest_subscription = this.questService.getQuest(questName).subscribe(quest => {
-      this.quest = quest;
-    }, error => this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`));
+    this.parameter_subscription = this.route.params.subscribe(params => {
+      const questName: string = params.name;
+      this.questService.getQuest(questName).pipe(first()).subscribe((quest: QuestObject) => {
+        this.quest = quest;
+      }, error => this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`));
+    })
   }
 
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.quest.description;
     this.quest.description = updatedDescription;
-    this.questService.updateQuest(this.quest).subscribe(organization => {
+    this.questService.updateQuest(this.quest).pipe(first()).subscribe(organization => {
     }, error =>{
       this.quest.description = oldDescription;
       console.log(error);
@@ -41,12 +44,13 @@ export class QuestArticleComponent implements OnInit {
   }
 
   deleteArticle(){
-      this.questService.deleteQuest(this.quest.pk).subscribe(response => {
-        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/quest`);
+      this.questService.deleteQuest(this.quest.pk).pipe(first()).subscribe(response => {
+        const questOverviewUrl: string = Constants.getRoutePath(this.router, 'quest-overview');
+        this.router.navigateByUrl(questOverviewUrl);
       }, error => console.log(error));
   }
 
   ngOnDestroy(){
-    if(this.quest_subscription) this.quest_subscription.unsubscribe();
+    if(this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

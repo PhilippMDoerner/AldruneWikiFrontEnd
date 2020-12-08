@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Encounter } from 'src/app/models/encounter';
 import { EncounterConnectionObject, EncounterConnection } from 'src/app/models/encounterconnection';
@@ -18,8 +19,6 @@ export class EncounterComponent implements OnInit {
   constants: any = Constants;
   encounter: Encounter;
   encounter_subscription: Subscription;
-  character_subscription: Subscription;
-  connection_subscription: Subscription;
 
   addEncounterConnectionState: boolean = false;
   isEncounterDeleteState: boolean = false;
@@ -52,7 +51,7 @@ export class EncounterComponent implements OnInit {
   toggleAddEncounterConnectionState(){
     this.addEncounterConnectionState = !this.addEncounterConnectionState;
     if (!this.characters){
-      this.character_subscription = this.overviewService.getOverviewItems('character').subscribe(characters => {
+      this.overviewService.getOverviewItems('character').pipe(first()).subscribe(characters => {
         this.characters = characters;
       });
     }
@@ -60,7 +59,7 @@ export class EncounterComponent implements OnInit {
 
   createEncounterConnection(){
     this.baseEncounterConnection.encounter = this.encounter.pk;
-    this.encounterConnectionService.createEncounterConnection(this.baseEncounterConnection).subscribe(encounterConnection => {
+    this.encounterConnectionService.createEncounterConnection(this.baseEncounterConnection).pipe(first()).subscribe(encounterConnection => {
       this.encounter.encounterConnections.push(encounterConnection);
       this.resetBaseEncounterConnection();
       this.addEncounterConnectionState = false;
@@ -68,7 +67,7 @@ export class EncounterComponent implements OnInit {
   }
 
   deleteEncounterConnection(connection: EncounterConnection){
-    this.connection_subscription = this.encounterConnectionService.deleteEncounterConnection(connection.pk).subscribe(response => {
+    this.encounterConnectionService.deleteEncounterConnection(connection.pk).pipe(first()).subscribe(response => {
       const connectionIndex: number = this.encounter.encounterConnections.indexOf(connection);
       if (connectionIndex > -1){
         this.encounter.encounterConnections.splice(connectionIndex, 1);
@@ -85,14 +84,12 @@ export class EncounterComponent implements OnInit {
   }
 
   deleteEncounter(){
-    this.encounterService.deleteEncounter(this.encounter.pk).subscribe(response => {
+    this.encounterService.deleteEncounter(this.encounter.pk).pipe(first()).subscribe(response => {
       this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}`);
     }, error => console.log(error));
   }
 
   ngOnDestroy(){
     if(this.encounter_subscription) this.encounter_subscription.unsubscribe();
-    if(this.connection_subscription) this.connection_subscription.unsubscribe();
-    if(this.character_subscription) this.character_subscription.unsubscribe();
   }
 }

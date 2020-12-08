@@ -15,7 +15,7 @@
                                 class="text-center btn btn-primary"> 
                                 <strong> Download </strong> 
                             </a>
-                            <a routerLink="{{sessionAudio.session_details.is_main_session_int}}/{{sessionAudio.session_details.session_number}}" 
+                            <a routerLink="{{constants.getRoutePath(router, 'sessionaudio', {isMainSession: sessionAudio.session_details.is_main_session_int, sessionNumber: sessionAudio.session_details.session_number})}}"
                                class="text-center btn btn-primary"> 
                                 <strong> Stream </strong> 
                             </a>
@@ -34,7 +34,7 @@
             </div>
 
         </div>
-        <div class="mt-5 btn btn-secondary" routerLink="{{constants.wikiUrlFrontendPrefix}}">Back To Frontpage</div>
+        <div class="mt-5 btn btn-secondary" routerLink="{{constants.getRoutePath(router, 'home1')}}">Back To Frontpage</div>
     </article>
     <!-- Loading Spinner -->
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

@@ -2,14 +2,14 @@
     <article class="mb-5">
         <!-- Heading -->
         <div *ngIf="formState===constants.updateState && model; else createState">
-            <app-edit-toggle [isInUpdateState]=true [link]="'..'"></app-edit-toggle>
+            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'creature', {name: model.name})"></app-edit-toggle>
 
             <h2 class="text-center">
                 Updating Creature {{ model.name }}
             </h2>
         </div>
         <ng-template #createState>
-            <app-edit-toggle [isInUpdateState]=true [link]="'/creature'"></app-edit-toggle>
+            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'creature-overview')"></app-edit-toggle>
 
             <h2 class="text-center">
                 Adding a new Creature
@@ -18,10 +18,10 @@
 
 
         <!-- Form -->
-        <form [formGroup]="form" (ngSubmit)="onSubmit(model)">
+        <form [formGroup]="form">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
             <button class="btn btn-dark mr-3" routerLink="..">Cancel</button>
-            <button type="submit" class="btn btn-secondary">Submit</button>
+            <button class="btn btn-secondary" (click)="onSubmit()">Submit</button>
         </form>
 
     </article>

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Location } from 'src/app/models/location';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
@@ -17,8 +18,6 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 })
 export class MarkerUpdateComponent implements OnInit {
   private parameter_subscription: Subscription;
-  private marker_subscription: Subscription;
-  private location_subscription: Subscription;
 
   constants: any = Constants;
   markerLocation: Location;
@@ -46,44 +45,46 @@ export class MarkerUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
-    const parentLocationName = this.route.snapshot.params['parent_location_name'];
-    const locationName = this.route.snapshot.params['location_name'];
-    
+
+    this.parameter_subscription = this.route.params.subscribe(params =>{
+      const parentLocationName = params['parent_location_name'];
+      const locationName = params['location_name'];
+      
       if (this.formState === this.constants.updateState){
-        const mapName: string = this.route.snapshot.params['map_name'];
-        this.marker_subscription = this.markerService.getMapMarker(parentLocationName, locationName, mapName).subscribe(marker => {
+        const mapName: string = params['map_name'];
+        this.markerService.getMapMarker(parentLocationName, locationName, mapName).pipe(first()).subscribe(marker => {
           this.model = marker;
         });
+
       } else if (this.formState === this.constants.createState){
-        this.location_subscription = this.locationService.getLocation(parentLocationName, locationName).subscribe(location => {
+        this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(location => {
           this.model = new MapMarkerObject();
           this.model.location = location.pk;
         });
       }
+
+    })
   }
 
-  onSubmit(model: MapMarker){
+  onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
-    const responseObservable: any =  isFormInUpdateState ? this.markerService.updateMapMarker(model) : this.markerService.createMapMarker(model);
-    responseObservable.subscribe((marker: MapMarker) => {
-      const mapName: string = marker.map_details.name;
-      this.router.navigateByUrl(this.getRedirectUrl(mapName));
+    const responseObservable: Observable<MapMarkerObject> =  isFormInUpdateState ? this.markerService.updateMapMarker(this.model) : this.markerService.createMapMarker(this.model);
+    
+    responseObservable.pipe(first()).subscribe((marker: MapMarkerObject) => {
+      this.router.navigateByUrl(this.getRedirectUrl(marker));
     }, error => console.log(error));
   }
 
-  getRedirectUrl(mapName: string){
-    if (this.formState === this.constants.updateState){
-      return "..";
-    } else if (this.formState === this.constants.createState){
-      const locationName: string = this.route.snapshot.params['location_name'];
-      const parentLocationName = this.route.snapshot.params['parent_location_name'];
-      return `${Constants.wikiUrlFrontendPrefix}/marker/${parentLocationName}/${locationName}/${mapName}`;
-    }
+  getRedirectUrl(mapMarker: MapMarkerObject){
+    const locationName: string = mapMarker.location_details.name;
+    const parentLocationName: string = mapMarker.location_details.parent_location_name;
+    const mapName: string = mapMarker.map_details.name;
+
+    const markerUrl: string = Constants.getRoutePath(this.router, 'marker', {parent_location_name: parentLocationName, location_name: locationName, map_name: mapName});
+    return markerUrl;
   }
 
   ngOnDestroy(){
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
-    if (this.marker_subscription) this.marker_subscription.unsubscribe();
-    if (this.location_subscription) this.location_subscription.unsubscribe();
   }
 }

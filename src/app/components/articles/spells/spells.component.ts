@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { Spell } from 'src/app/models/spell';
+import { Spell, SpellObject } from 'src/app/models/spell';
 import { SpellService } from 'src/app/services/spell.service';
 
 @Component({
@@ -9,16 +9,16 @@ import { SpellService } from 'src/app/services/spell.service';
   templateUrl: './spells.component.html',
   styleUrls: ['./spells.component.scss']
 })
-export class SpellsComponent implements OnInit {
+export class SpellsComponent implements OnInit, OnDestroy {
   panelIsOpenArray: boolean[];
-  spells: Spell[];
+  spells: SpellObject[];
   spell_subscription: Subscription;
   constants: any = Constants;
 
   constructor(private spellService: SpellService) { }
 
   ngOnInit(): void {
-    this.spell_subscription = this.spellService.getSpells().subscribe( spells => {
+    this.spell_subscription = this.spellService.getSpells().subscribe((spells: SpellObject[]) => {
       this.spells = spells;
       this.panelIsOpenArray = [];
       for (let spell of spells){
