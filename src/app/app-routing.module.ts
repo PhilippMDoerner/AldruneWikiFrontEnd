@@ -34,7 +34,7 @@ import { MarkerMapCreateComponent } from './components/articles/marker-map-creat
 import { LocationArticleMapCreateComponent } from './components/articles/location-article-map-create/location-article-map-create.component';
 import { LoginComponent } from './components/login/login.component';
 import { Constants } from './app.constants';
-
+//TODO: Implement a way that blocks access if user misses specific rights
 const routes: {path: string, component: any, data: {name: string}}[] = [
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, component: HomeComponent, data:{ name: "home1"}},
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}`, component: HomeComponent, data:{ name: "home2"}},
