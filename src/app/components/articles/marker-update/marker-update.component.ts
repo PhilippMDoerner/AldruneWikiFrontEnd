@@ -20,7 +20,6 @@ export class MarkerUpdateComponent implements OnInit {
   private parameter_subscription: Subscription;
 
   constants: any = Constants;
-  markerLocation: Location;
 
   formState: string;
   form = new FormGroup({});
@@ -28,7 +27,7 @@ export class MarkerUpdateComponent implements OnInit {
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
     this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
-    this.formlyService.genericSelect({key: "Location", optionsType: 'location'}),
+    this.formlyService.genericSelect({key: "location", optionsType: 'location'}),
     this.formlyService.genericSelect({key: "map", optionsType: "map"}),
     this.formlyService.genericSelect({key: 'type', label: "Marker Type", optionsType: "marker_type"}),
     this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
@@ -45,21 +44,34 @@ export class MarkerUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
-
+    console.log("The formstate:");
+    console.log(this.formState);
+    console.log(this.formState === Constants.createState);
     this.parameter_subscription = this.route.params.subscribe(params =>{
       const parentLocationName = params['parent_location_name'];
       const locationName = params['location_name'];
       
-      if (this.formState === this.constants.updateState){
+      if (this.formState === Constants.updateState){
         const mapName: string = params['map_name'];
         this.markerService.getMapMarker(parentLocationName, locationName, mapName).pipe(first()).subscribe(marker => {
           this.model = marker;
         });
 
-      } else if (this.formState === this.constants.createState){
+      } else if (this.formState === Constants.createState){
         this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(location => {
+          console.log("The gained location:")
+          console.log(location);
           this.model = new MapMarkerObject();
           this.model.location = location.pk;
+          this.model.location_details = {
+            parent_location_name: location.parent_location_details.name,
+            name: location.name,
+            description: location.description,
+            sublocations: null,
+          };
+
+          console.log("The current marker");
+          console.log(this.model);
         });
       }
 
