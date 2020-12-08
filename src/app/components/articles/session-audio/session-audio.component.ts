@@ -2,7 +2,7 @@ import { Component, ContentChild, ContentChildren, ElementRef, OnDestroy, OnInit
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { SessionAudio } from 'src/app/models/sessionaudio';
@@ -26,13 +26,7 @@ export class SessionAudioComponent implements OnInit, OnDestroy {
   nextSessionAudio: {isMainSessionInt: number, sessionNumber: number};
 
   timestamps: Timestamp[];
-  timestampModel: TimestampObject = new TimestampObject();
-  timestampForm: FormGroup = new FormGroup({});
-  timestampFields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "time", maxLength: 8, minLength: 8, className: "timestamp-input black-background px-0 col-lg-2"}),
-    this.formlyService.genericInput({key: "name", label: "Title", className: "timestamp-input black-background col-lg-10"}),
-  ]
-  timestampCreateState: boolean = false;
+  createTimestampEventSubject: Subject<number> = new Subject();
   
   parameter_subscription: Subscription;
 
@@ -45,7 +39,6 @@ export class SessionAudioComponent implements OnInit, OnDestroy {
     private router: Router,
     private sessionAudioService: SessionAudioService,
     private timestampService: SessionAudioTimestampService,
-    private formlyService: MyFormlyService,
     ) { }
 
   ngOnInit(): void {
@@ -74,7 +67,8 @@ export class SessionAudioComponent implements OnInit, OnDestroy {
 
   deleteArticle(){
     this.sessionAudioService.deleteSessionAudioFile(this.sessionAudio.pk).pipe(first()).subscribe(response => {
-      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/sessionaudio`);
+      const sessionAudioOverviewUrl = Constants.getRoutePath(this.router, 'sessionaudio-overview');
+      this.router.navigateByUrl(sessionAudioOverviewUrl);
     }, error => console.log(error));
   }
 
@@ -86,51 +80,6 @@ export class SessionAudioComponent implements OnInit, OnDestroy {
   togglePlayer(vimePlayer){
     if (vimePlayer.playing) vimePlayer.pause();
     else vimePlayer.play();
-  }
-
-  timeToString(seconds: number): string{
-    const hours = Math.floor(seconds/3600);
-    const minutes = Math.floor((seconds - hours*3600)/60);
-    const remainingSeconds = Math.floor(seconds - hours*3600 - minutes*60);
-    return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}:${remainingSeconds.toString().padStart(2, "0")}`;
-  }
-
-  stringToTime(timeString: string): number{
-    const hours: number = parseInt(timeString.substr(0, 2));
-    const minutes: number = parseInt(timeString.substr(3, 2));
-    const seconds: number = parseInt(timeString.substr(6, 2));
-    return hours*3600 + minutes*60 + seconds;
-  }
-
-  toggleTimestampCreateState(timestampTime: number){
-    this.timestampCreateState = !this.timestampCreateState;
-
-    if (this.timestampCreateState){
-      this.timestampModel = new TimestampObject();
-      this.timestampModel.time = this.timeToString(timestampTime);
-      this.timestampModel.session_audio = this.sessionAudio.pk;
-    }
-  }
-
-  createTimestamp(){
-    if (typeof this.timestampModel.time === "number") throw `Error during creation of request to create timestamp. The input ${this.timestampModel.time} is not the expected time-string`
-    this.timestampModel.time = this.stringToTime(this.timestampModel.time);;
-
-    this.timestampService.createTimestamp(this.timestampModel).pipe(first()).subscribe(timestamp => {
-      this.timestamps.unshift(timestamp);
-      this.timestampCreateState = false;
-    });
-  }
-
-  cancelTimestampCreateState(){
-    this.timestampCreateState = false;
-  }
-
-  deleteTimestamp(timestamp: Timestamp){
-    this.timestampService.deleteTimestamp(timestamp.pk).pipe(first()).subscribe(response => {
-      const index: number = this.timestamps.indexOf(timestamp);
-      this.timestamps.splice(index, 1);
-    })
   }
 
   ngOnDestroy(){

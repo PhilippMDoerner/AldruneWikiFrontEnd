@@ -1,0 +1,21 @@
+.delete-timestamp{
+    transition: opacity 0.2s;
+    opacity: 0;
+}
+
+.timestamp{
+    font-weight: bold;
+    color:#1e66b3 !important;
+    border-bottom: none;
+}
+
+.row:hover .delete-timestamp{
+    opacity: 1;
+}
+
+.timestamp-box{
+    background-color: rgba(27, 31, 34, 1);
+    border-radius: 5px;
+    border: 1px solid red;
+    padding: 0.5rem 0rem;
+}

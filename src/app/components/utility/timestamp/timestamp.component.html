@@ -1,0 +1,20 @@
+<div *ngIf="!isInDeleteState; else deleteRequest" class="row">
+    <div class="col-1 d-flex align-items-center justify-content-center">
+        <i class="icon fa fa-trash delete-timestamp" (click)="toggleDeleteState()"></i>
+    </div>
+    <a (click)="vimePlayer.currentTime=timestamp.time" class="timestamp pointer col-2 text-align-center"> 
+        {{timeToString(timestamp.time)}} 
+    </a>    
+    <div class="col-9">{{timestamp.name}}</div>
+</div>
+
+<ng-template #deleteRequest>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-7 timestamp-box">
+            <span class="ml-2">Delete Timestamp?</span> 
+            <div class="btn btn-danger btn-sm mx-3" (click)="deleteTimestamp()">Delete</div>
+            <div class="btn btn-secondary btn-sm" (click)="toggleDeleteState()">Cancel</div> 
+        </div>
+    </div>
+</ng-template>

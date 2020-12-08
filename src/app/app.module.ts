@@ -67,6 +67,8 @@ import { httpInterceptorProviders } from "src/app/interceptors/index";
 import { FormlyDatepickerComponent } from './components/utility/formly-datepicker/formly-datepicker.component';
 import { SessionUpdateModalComponent } from './components/utility/session-update-modal/session-update-modal.component';
 import { SessionUpdateWrapperComponent } from './components/utility/session-update-wrapper/session-update-wrapper.component';
+import { TimestampListComponent } from './components/utility/timestamp-list/timestamp-list.component';
+import { TimestampComponent } from './components/utility/timestamp/timestamp.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -124,6 +126,8 @@ import { SessionUpdateWrapperComponent } from './components/utility/session-upda
     FormlyDatepickerComponent,
     SessionUpdateModalComponent,
     SessionUpdateWrapperComponent,
+    TimestampListComponent,
+    TimestampComponent,
   ],
   imports: [
     BrowserModule,

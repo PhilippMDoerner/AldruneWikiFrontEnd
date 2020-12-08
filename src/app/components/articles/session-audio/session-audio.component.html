@@ -32,7 +32,7 @@
                 Session {{priorSessionAudio.sessionNumber}}
             </a>
 
-            <div class="btn btn-primary mr-auto ml-auto" (click)="toggleTimestampCreateState(vimePlayer.currentTime)">
+            <div class="btn btn-primary mr-auto ml-auto" (click)="createTimestampEventSubject.next(this.vimePlayer.currentTime)">
                 Add Timestamp <i class="fa fa-clock-o ml-1"></i>
             </div>
 
@@ -44,29 +44,12 @@
             </a>
         </div>
 
-        <!-- Timestamps -->
-        <div class="w-75 mx-auto container mb-5">
-            <!-- Timestamp Create Form -->
-            <form [formGroup]="timestampForm" [ngClass]="{'d-none': !timestampCreateState, 'row my-1': timestampCreateState}">
-                <div class="col-lg-1"></div>
-                <formly-form class="d-flex col-lg-10" [form]="timestampForm" [fields]="timestampFields" [model]="timestampModel"></formly-form>
-                <div class="col-lg-1 d-flex flex-row align-items-center">
-                    <i class="icon hover-red fa fa-1-5x fa-times mx-1" (click)="cancelTimestampCreateState()"></i>
-                    <i class="icon hover-green fa fa-1-5x fa-check mx-1" (click)="createTimestamp()"></i>
-                </div>
-            </form>
-
-            <!-- Timestamp List -->
-            <div *ngFor="let timestamp of timestamps" class="row timestamp-box my-1">
-                <div class="col-1 d-flex align-items-center justify-content-center">
-                    <i class="icon fa fa-trash delete-timestamp" (click)="deleteTimestamp(timestamp)"></i>
-                </div>
-                <a (click)="vimePlayer.currentTime=timestamp.time" class="timestamp pointer col-2 text-align-right"> 
-                    {{timeToString(timestamp.time)}} 
-                </a>    
-                <span class="col-9">{{timestamp.name}}</span>
-            </div>
-        </div>
+        <app-timestamp-list 
+        [timestamps]="timestamps"
+        [sessionAudio]="sessionAudio"
+        [vimePlayer]="vimePlayer"
+        [createTimestampEventSubject]="createTimestampEventSubject"
+        ></app-timestamp-list>
 
         <!-- Ending -->
         <div class="d-block mt-2">
