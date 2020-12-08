@@ -8,10 +8,7 @@ import { Constants } from 'src/app/app.constants';
 import { User } from 'src/app/models/user';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { TokenService } from 'src/app/services/token.service';
-import { UserService } from 'src/app/services/user.service';
 
-// TODO: Implement Logout at some point. To do this, you need to implement a view on the backend that 
-// Blacklists Access and Refresh Token when being sent
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -32,7 +29,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   constructor(
     private formlyService: MyFormlyService,
-    private userService: UserService,
     private tokenService: TokenService,
     private route: ActivatedRoute,
     private router: Router,
