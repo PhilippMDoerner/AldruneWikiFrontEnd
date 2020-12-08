@@ -67,8 +67,8 @@ export class ItemArticleUpdateComponent implements OnInit {
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
     const responseObservable: any =  isFormInUpdateState ? this.itemService.updateItem(this.model) : this.itemService.createItem(this.model);
 
-    responseObservable.pipe(first()).subscribe(response => {
-      const itemUrl: string = Constants.getRoutePath(this.router, 'item', {name: this.model.name});
+    responseObservable.pipe(first()).subscribe((item: ItemObject) => {
+      const itemUrl: string = Constants.getRoutePath(this.router, 'item', {name: item.name});
       this.router.navigateByUrl(itemUrl);
     }, error => console.log(error));
   }
