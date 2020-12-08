@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { Article } from 'src/app/models/recentlyUpdatedArticle';
@@ -14,7 +15,10 @@ export class RecentlyUpdatedArticleComponent implements OnInit {
   articles: Article[];
   constants: any = Constants;
 
-  constructor(private recentlyUpdatedArticleService: RecentlyUpdatedService) { }
+  constructor(
+    private recentlyUpdatedArticleService: RecentlyUpdatedService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
     this.article_subscription = this.recentlyUpdatedArticleService.getRecentlyUpdatedArticle().subscribe(articles => {

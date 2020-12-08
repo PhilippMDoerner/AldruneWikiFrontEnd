@@ -1,6 +1,6 @@
 <nav class="navbar navbar-dark bg-dark navbar-expand-md p-0">
     <!-- Brand -->
-    <a routerLink="{{constants.wikiUrlFrontendPrefix}}" class="navbar-brand mr-5 ml-5"><strong> Aldrune Wiki </strong></a>
+    <a routerLink="{{constants.getRoutePath(router, 'home1')}}" class="navbar-brand mr-5 ml-5"><strong> Aldrune Wiki </strong></a>
     <!-- Collapsed navbar toggle -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -18,18 +18,18 @@
         <ul class="navbar-nav mr-5">
             <!-- Recent Updates -->
             <li class="nav-item mx-2">
-                <a routerLink="{{constants.wikiUrlFrontendPrefix}}/recent-updates" class="nav-link nav-link-text"> Recent Updates </a>
+                <a routerLink="{{constants.getRoutePath(router, 'recent-updates')}}" class="nav-link nav-link-text"> Recent Updates </a>
             </li>
             <!-- Rules -->
             <li class="nav-item mx-2">
-                <a routerLink="{{constants.wikiUrlFrontendPrefix}}/rules" class="nav-link"> 
+                <a routerLink="{{constants.getRoutePath(router, 'rules')}}" class="nav-link"> 
                     <span class="d-md-none nav-link-text mr-3">Rules</span> 
                     <i class="fa fa-book fa-2x" aria-hidden="true"></i>
                 </a>
             </li>
             <!-- Session Audio -->
             <li class="nav-item mx-2">
-                <a class="nav-link" routerLink="{{constants.wikiUrlFrontendPrefix}}/sessionaudio"> 
+                <a class="nav-link" routerLink="{{constants.getRoutePath(router, 'sessionaudio-overview')}}"> 
                     <span class="d-md-none nav-link-text mr-3">Session Audio</span> 
                     <i class="fa fa-file-audio-o fa-2x" aria-hidden="true"></i> 
                 </a>

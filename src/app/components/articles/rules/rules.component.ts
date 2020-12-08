@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { Rule } from "src/app/models/rule";
@@ -16,6 +17,7 @@ export class RulesComponent implements OnInit {
 
   constructor(
     private ruleService: RuleService,
+    private router: Router,
   ) { }
 
   ngOnInit(): void {

@@ -8,17 +8,20 @@ import { TokenService } from 'src/app/services/token.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit{
   public searchString: string;
   public constants: any = Constants;
+  public router: Router;
 
-  constructor(private router: Router, private tokenService: TokenService) { }
+  constructor(private secretRouter: Router, private tokenService: TokenService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void{
+    this.router = this.secretRouter;
   }
 
   search(){
-    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/search/${this.searchString}`);
+    const searchUrl: string = Constants.getRoutePath(this.router, 'search', {searchString: this.searchString});
+    this.router.navigateByUrl(searchUrl);
   }
 
   logout(){
@@ -26,6 +29,8 @@ export class NavbarComponent implements OnInit {
       this.tokenService.invalidateJWTToken();
       this.tokenService.removeJWTTokenFromLocalStorage();
     }
-    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/login/logged-out`);
+
+    const logoutUrl: string = Constants.getRoutePath(this.router, 'login-state', {state: 'logged-out'});
+    this.router.navigateByUrl(logoutUrl);
   }
 }
