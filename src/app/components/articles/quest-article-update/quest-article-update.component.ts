@@ -47,7 +47,7 @@ export class QuestArticleUpdateComponent implements OnInit {
       }
     },
     this.formlyService.genericSelect({key: "start_session", label: "Start Session", optionsType: "session"}),
-    this.formlyService.genericSelect({key: "end_session", label: "Start Session", optionsType: "session", required: false}),
+    this.formlyService.genericSelect({key: "end_session", label: "End Session", optionsType: "session", required: false}),
     this.formlyService.genericInput({key: "abstract", placeholder: "Quest Summary...", required: false})
   ];
 
