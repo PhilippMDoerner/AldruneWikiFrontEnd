@@ -44,7 +44,7 @@
 
         <!-- Characters of Interest -->
         <div class="mb-4">
-            <app-object-list [heading]="'Characters of Interest'" [items]="location.characters" [articleType]="'character'" [createLink]="'/character/create'"></app-object-list>
+            <app-object-list [heading]="'Characters of Interest'" [items]="location.characters" [articleType]="'character'" [createLink]="constants.getRoutePath(router, 'character-create')"></app-object-list>
         </div>
 
         <!-- Locations of Interest -->
