@@ -59,7 +59,9 @@
                     *ngFor="let diaryEntry of authorDiaryEntries.value"
                     [ngClass]="{'d-none': !diaryEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                     >
-                        <a routerLink="{{diaryEntry.name}}"> {{diaryEntry.name_full}}</a>
+                        <a routerLink="{{constants.getRoutePath(router, 'diaryentry', {sessionNumber: diaryEntry.session_number, isMainSession: diaryEntry.is_main_session_int, authorName: diaryEntry.author})}}">
+                            {{buildDiaryEntryNameForList(diaryEntry)}}
+                        </a>
                     </li>
                 </ul>
             </div>

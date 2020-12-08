@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { OverviewItem } from "src/app/models/overviewItem";
 import { Router } from '@angular/router';
 
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { OverviewService } from 'src/app/services/overview.service';
 import { Constants } from 'src/app/app.constants';
 
@@ -40,11 +40,11 @@ export class ArticleOverviewComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    const urlSplit = this.router.url.split('/');
+    const urlSplit: string[] = this.router.url.split('/');
     this.overviewType = urlSplit[urlSplit.length - 1];
 
-    const listItemObs = this.overviewService.getOverviewItems(this.overviewType) 
-    this.listItemSubscription = listItemObs.subscribe(listItems => {
+    const listItemObs: Observable<OverviewItem[]> = this.overviewService.getOverviewItems(this.overviewType);
+    this.listItemSubscription = listItemObs.subscribe((listItems: OverviewItem[]) => {
       this.listItems = listItems;
       this.listItemArray = [];
       for(let item of listItems){
@@ -53,8 +53,8 @@ export class ArticleOverviewComponent implements OnInit, OnDestroy {
     }, error =>{
       console.log(error);
       if (error.status === 403){
-        const url: string = `${this.constants.wikiUrl}/users/login`;
-        window.location.href = url;
+        const loginUrl: string = Constants.getRoutePath(this.router, 'login');
+        window.location.href = loginUrl;
       } else {
         this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`);
       }
@@ -69,7 +69,31 @@ export class ArticleOverviewComponent implements OnInit, OnDestroy {
     //This function exists only so that it triggers the NgClass of the listItems in the template
   }
 
+  buildDiaryEntryNameForList(diaryEntry: OverviewItem): string{
+    const startWithSessionNumber: string = diaryEntry.name_full;
+
+    let daysCoveredByEntry: string = "";
+    if(diaryEntry.start_day && diaryEntry.end_day){
+      const padLength = 3;
+      const startDay: string = this.padNumber(diaryEntry.start_day, padLength, "");
+      const endDay: string = this.padNumber(diaryEntry.end_day, padLength, "");
+      daysCoveredByEntry = `- Days ${startDay}-${endDay}`;
+    }
+
+    let title: string = "";
+    if (diaryEntry.name){
+      title = `- ${diaryEntry.name}`;
+    }
+    
+    return `${startWithSessionNumber} ${daysCoveredByEntry} ${title}`;
+  }
+
+  padNumber(num: number, padCount: number, paddingCharacter="0"): string{
+    const overlengthString: string = paddingCharacter.repeat(padCount) + num;
+    return overlengthString.slice(padCount*-1);
+  }
+
   ngOnDestroy(){
-    this.listItemSubscription.unsubscribe();
+    if (this.listItemSubscription) this.listItemSubscription.unsubscribe();
   }
 }
