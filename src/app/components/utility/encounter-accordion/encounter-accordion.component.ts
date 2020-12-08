@@ -105,7 +105,7 @@ export class EncounterAccordionComponent implements OnInit {
 
   toggleEncounterCreateState(){
     this.isEncounterCreateState = !this.isEncounterCreateState;
-    if (!this.model){
+    if (this.isEncounterCreateState){
       this.model = new EncounterObject();
     }
   }
