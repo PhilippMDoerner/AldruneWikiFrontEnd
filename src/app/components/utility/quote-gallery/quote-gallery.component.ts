@@ -38,7 +38,7 @@ export class QuoteGalleryComponent implements OnInit {
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericTextField({key: "quote", required: true}),
     this.formlyService.genericInput({key: "description"}),
-    this.formlyService.genericSelect({key: "session", optionsType: "session", required: false}),
+    this.formlyService.genericSelect({key: "session", optionsType: "session", required: true}),
     this.formlyService.genericSelect({key: "encounter", optionsType: "encounter", required: false})
   ]
 
@@ -66,12 +66,13 @@ export class QuoteGalleryComponent implements OnInit {
   onSubmit(){
     const responseObservable = (this.inCreateState) ? this.quoteService.createQuote(this.model) : this.quoteService.updateQuote(this.model);
     
-    responseObservable.subscribe(quote => {
+    responseObservable.pipe(first()).subscribe(quote => {
       this.quote = quote;
 
       if (this.inCreateState){
         const connectionToThisCharacter: QuoteConnection = {"quote": quote.pk, "character": this.character.pk};
         this.quoteConnectionservice.createQuoteConnection(connectionToThisCharacter).pipe(first()).subscribe(connection => {
+          this.quote.connections = [connection];
           this.inCreateState = false;
         })
       } else {
