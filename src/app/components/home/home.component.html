@@ -2,7 +2,9 @@
     <!-- Header -->
     <header id="header">
         <div class="logo">
-            <a routerLink="{{constants.wikiUrlFrontendPrefix}}/quest" class="article-link"><span class="fa fa-diamond fa-2x icon"> </span></a>
+            <a routerLink="{{ constants.getRoutePath(router, 'quest-overview') }}" class="article-link">
+                <span class="fa fa-diamond fa-2x icon"></span>
+            </a>
         </div>
         <div class="content">
             <div class="inner">
@@ -21,7 +23,7 @@
                 <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'organization-overview')}}">Groups</a></b></li>
                 <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'creature-overview')}}">Bestiary</a></b></li>
                 <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'item-overview')}}">Items</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'map', {name: 'Aldrune'})}}">Map</a></b></li>
+                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'map', {name: constants.defaultMapName})}}">Map</a></b></li>
             </ul>
         </nav>
     </header>

@@ -8,10 +8,19 @@
                     <i class="fa fa-plus icon ml-2" routerLink="create"></i>
                 </h4>
                 <!-- Filterselect -->
-                <select name="quest-status" class="form-control d-inline-block" [(ngModel)]="filterStates[questTaker.key]">
+                <select 
+                name="quest-status" 
+                class="form-control d-inline-block" 
+                [(ngModel)]="filterStates[questTaker.key]"
+                >
                     <option selected value="Default">Default</option>
                     <option value="All">All</option>
-                    <option *ngFor="let filterStateType of filterStateTypes" value="{{filterStateType}}">{{filterStateType}}</option>
+                    <option 
+                    *ngFor="let filterStateType of filterStateTypes" 
+                    value="{{filterStateType}}"
+                    >
+                        {{filterStateType}}
+                    </option>
                 </select>
             </div>
 
@@ -27,35 +36,51 @@
 
                 <!-- Table Body -->
                 <tbody id="{{questTaker.key}}-quests">
-                    <tr *ngFor="let quest of questTaker.value" [ngClass]='{"d-none": isFilteredOut(filterStates[questTaker.key], quest.status)}'>
+                    <tr 
+                    *ngFor="let quest of questTaker.value" 
+                    [ngClass]='{"d-none": isFilteredOut(filterStates[questTaker.key], quest.status)}'
+                    >
                         <!-- Quest Name Column -->
                         <td>
-                            <a id="quest{{ quest.pk }}" routerLink="{{quest.name}}">
+                            <a 
+                            id="quest{{ quest.pk }}" 
+                            routerLink="{{constants.getPathRoute(router, 'quest', {name: quest.name}) }}"
+                            >
                                  <span class="bold">{{ quest.name }}</span>
                             </a>
                         </td>
                         <!-- Quest Abstract -->
                         <td class="hide-on-mobile"> {{ quest.abstract }}</td>
                         <!-- Quest Status -->
-                        <td [ngClass]="{
+                        <td 
+                        [ngClass]="{
                             'completed bg-success': quest.status === 'Completed',
                             'on-hold bg-warning': quest.status === 'On Hold',
                             'failed bg-danger': quest.status === 'Failed'
                         }">
-                            <i [ngClass]="{
-                                'fa': true,
-                                'fa-check-square-o': quest.status === 'Completed',
-                                'fa-hourglass-half': quest.status === 'On Hold',
-                                'fa-times': quest.status === 'Failed',
-                                'fa-spinner': quest.status === 'In progress'
-                            }" title="quest.status"></i>
+                            <i 
+                                [ngClass]="{
+                                    'fa': true,
+                                    'fa-check-square-o': quest.status === 'Completed',
+                                    'fa-hourglass-half': quest.status === 'On Hold',
+                                    'fa-times': quest.status === 'Failed',
+                                    'fa-spinner': quest.status === 'In progress'
+                                }" 
+                                title="quest.status"
+                            ></i>
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
     
-        <div class="btn btn-secondary" routerLink="{{constants.getRoutePath(router, 'home1')}}">Back To Frontpage</div>
+        <div 
+        class="btn btn-secondary" 
+        routerLink="{{constants.getRoutePath(router, 'home1')}}"
+        >
+            Back To Frontpage
+        </div>
+
     </article>
     <!-- Loading Spinner -->
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

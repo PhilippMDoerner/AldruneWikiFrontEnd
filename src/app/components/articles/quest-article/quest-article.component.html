@@ -1,22 +1,30 @@
 <div class="main">
     <article *ngIf="quest; else loading">
         <!-- Heading -->
-        <app-edit-toggle [isInUpdateState]=false [link]="'update'"></app-edit-toggle>
+        <app-edit-toggle 
+        [isInUpdateState]=false 
+        [link]="'update'"
+        ></app-edit-toggle>
 
         <h1 class="text-center"> {{ quest.name }} </h1>
         <div class="my-4">
+            <!-- Quest Status -->
             <div class="subheading d-flex"> 
                 <span class="w-25">Status:</span>
                  {{ quest.status }}
             </div>
+            <!-- Quest Start -->
             <div class="subheading d-flex">
                 <div class="w-25">Start - End:</div>
                 <div>
                     {{ quest.start_session_details.name }} - 
-                    <span *ngIf="quest.end_session_details; else Ongoing"> {{ quest.end_session_details.name }} </span>
+                    <span *ngIf="quest.end_session_details; else Ongoing"> 
+                        {{ quest.end_session_details.name }} 
+                    </span>
                     <ng-template #Ongoing class="d-inline">Ongoing</ng-template>
                 </div>
             </div>
+            <!-- Quest Giver -->
             <div class="subheading d-flex align-items-center"> 
                 <span class="w-25">Quest Giver:</span>
                 <a *ngIf="quest.giver_details" routerLink="{{constants.getRoutePath(router, 'character', {name: quest.giver_details.name})}}">
@@ -24,6 +32,7 @@
                 </a>
                 <span *ngIf="!quest.giver_details"> None </span>
             </div>
+
         </div>
 
         <!-- Description -->
@@ -35,9 +44,16 @@
             ></app-textfield>
         </div>
 
-        <app-delete-toggle [deleteMessage]="'Delete Quest?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
+        <!-- Footer -->
+        <app-delete-toggle 
+        [deleteMessage]="'Delete Quest?'" 
+        (deleteEvent)="deleteArticle()"
+        ></app-delete-toggle>
 
-        <a routerLink="{{constants.getRoutePath(router, 'quest-overview')}}" class="btn btn-secondary mr-1">
+        <a 
+        routerLink="{{constants.getRoutePath(router, 'quest-overview')}}" 
+        class="btn btn-secondary mr-1"
+        >
             Back to Quest Overview
         </a>
     </article>

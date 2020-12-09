@@ -2,6 +2,8 @@
     <article *ngIf="marker; else loading">
         <app-edit-toggle></app-edit-toggle>
         <h1 class="text-center">Marker on {{marker.map_details.name}}</h1>
+        
+        <!-- Data -->
         <h3 class="text-center"> Properties </h3>
         <div class="mx-auto d-flex justify-content-center flex-column">
             <div class="text-center"><span class="bold mr-2">Longitude: </span> {{marker.longitude}}</div>
@@ -14,7 +16,10 @@
         class="btn btn-secondary">
             Back to {{marker.location_details.name}}
         </a>
-        <app-delete-toggle (deleteEvent)="deleteMarker()"></app-delete-toggle>
+
+        <app-delete-toggle 
+        (deleteEvent)="deleteMarker()"
+        ></app-delete-toggle>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

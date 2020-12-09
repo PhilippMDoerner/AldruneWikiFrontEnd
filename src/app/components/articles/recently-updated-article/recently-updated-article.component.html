@@ -7,17 +7,23 @@
         <!-- Article List -->
         <div class="my-3" *ngFor="let articleGroup of articles|groupBy: 'update_date'">
             <div class="mb-1">{{articleGroup.key|date}}</div>
-            <a routerLink="{{article.getAbsoluteRouterUrl()}}" 
-               *ngFor="let article of articleGroup.value"
-               [ngClass]="'card flex-row align-items-center sidebar-border ' + sidebarColor(article.article_type)">
-               
+            <a 
+            routerLink="{{article.getAbsoluteRouterUrl()}}" 
+            *ngFor="let article of articleGroup.value"
+            [ngClass]="'card flex-row align-items-center sidebar-border ' + sidebarColor(article.article_type)"
+            >
                 <div class="d-flex flex-row align-items-center py-2 w-100">
                     <div class="mx-3 text-center flex-1"> <h5><strong>{{article.name}}</strong></h5></div>
                     <div class="flex-3 pr-3 font-size-16">{{article.description}}</div>
                 </div>
             </a>
         </div>
-        <div class="btn btn-secondary" routerLink="{{constants.getRoutePath(router, 'home1')}}">Back To Frontpage</div>
+        <div 
+        class="btn btn-secondary" 
+        routerLink="{{constants.getRoutePath(router, 'home1')}}"
+        >
+            Back To Frontpage
+        </div>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

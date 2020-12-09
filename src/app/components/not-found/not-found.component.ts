@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Constants } from "src/app/app.constants";
 @Component({
   selector: 'app-not-found',
@@ -7,9 +8,12 @@ import { Constants } from "src/app/app.constants";
 })
 export class NotFoundComponent implements OnInit {
   constants: any = Constants;
-  constructor() { }
+
+  router: Router;
+  constructor(private privateRouter: Router) { }
 
   ngOnInit(): void {
+    this.router = this.privateRouter;
   }
 
 }

@@ -2,24 +2,29 @@
     <article *ngIf="listItems; else loading" class="pr-4 pl-4">
         <h2 class="major mb-4 pb-1 border-bottom">{{ capitalizeString(overviewType) }}s</h2>
         <img class="w-100 d-block ml-auto mr-auto mb-5" src="{{overviewImages[overviewType]}}" alt=""/>
+
         <!-- Adding Item button -->
         <div class="mb-3">
             <a class="btn btn-secondary" routerLink="create"> 
                 Add {{ capitalizeString(overviewType) }}
             </a>
         </div>
-        <!-- Character OverView Snippet -->
+
+        <!-- Character OverView Snippet | PC List-->
         <div *ngIf="overviewType===characterOverview">
             <h4> Player Characters </h4>
             <ul class="mb-5">
                 <span *ngFor="let item of listItems">
                     <li *ngIf="item.player_character">
-                        <a routerLink="{{item.name}}">{{ item.name_full }}</a> 
+                        <a routerLink="{{constants.getRoutePath(router, 'item', {name: item.name }) }}">
+                            {{ item.name_full }}
+                        </a> 
                     </li>
                 </span>
             </ul>
         </div>
-        <!-- Filter  -->
+
+        <!-- Filter Bar -->
         <form autocomplete="off">
             <input
             type="text"
@@ -30,7 +35,8 @@
             (keyup)="filterListItems()"
             >    
         </form>
-        <!-- Character Overview Snippet -->
+
+        <!-- Character Overview Snippet | NPC List -->
         <div *ngIf="overviewType===characterOverview">
             <h4 class="mb-3"> Non-Player Characters </h4>
             <div *ngFor="let characterLetterEntries of listItems | groupByFirstLetter: 'name'">
@@ -41,7 +47,9 @@
                         *ngIf="!characterEntry.player_character"
                         [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                         >
-                            <a routerLink="{{characterEntry.name}}"> {{characterEntry.name_full}} </a>
+                            <a routerLink="{{ constants.getRoutePath(router, 'character', {name: characterEntry.name}) }}"> 
+                                {{characterEntry.name_full}}
+                            </a>
                         </li>
                     </span>
                 </ul>
@@ -77,9 +85,29 @@
                     *ngFor="let item of itemLetterEntries.value"
                     [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                     >
-                    <a *ngIf="item.parent_location_name" routerLink="{{item.parent_location_name}}/{{item.name}}"> {{item.name_full}} </a>
-                    <a *ngIf="!item.parent_location_name" routerLink="{{item.name}}"> {{item.name_full}} </a>
-                </li>
+                        <a 
+                        *ngIf="item.parent_location_name" 
+                        routerLink="{{ 
+                            constants.getRoutePath(router, 'location', {
+                                name: item.name, 
+                                parent_name: item.parent_location_name
+                            }) 
+                        }}"
+                        > 
+                            {{item.name_full}} 
+                        </a>
+                        <a 
+                        *ngIf="!item.parent_location_name" 
+                        routerLink="{{ 
+                            constants.getRoutePath(router, 'location', {
+                                name: item.name,
+                                parent_name: constants.NONE_STRING
+                            })
+                        }}"
+                        > 
+                            {{item.name_full}}
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -96,7 +124,9 @@
                     *ngFor="let item of itemLetterEntries.value"
                     [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                     >
-                        <a routerLink="{{item.name}}"> {{item.name_full}} </a>
+                        <a routerLink="{{ constants.getRoutePath(route, 'item', {name: item.name}) }}">
+                            {{item.name_full}}
+                        </a>
                     </li>
                 </ul>
             </div>

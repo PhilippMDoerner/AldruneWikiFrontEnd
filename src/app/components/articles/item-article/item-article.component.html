@@ -1,12 +1,15 @@
 <div class="main">
     <article *ngIf="item; else loading">
         <!-- Heading -->
-        <app-edit-toggle [isInUpdateState]=false [link]="'update'"></app-edit-toggle>
+        <app-edit-toggle 
+        [isInUpdateState]=false 
+        [link]="'update'"
+        ></app-edit-toggle>
 
         <h1 class="text-center"> {{ item.name }} </h1>
         <p *ngIf="item.owner_details" class="text-center mb-5"> 
             Owned by: 
-            <a routerLink="{{constants.getRoutePath(router, 'character', {name: item.owner_details.name})}}">
+            <a routerLink="{{ constants.getRoutePath(router, 'character', {name: item.owner_details.name}) }}">
                 {{ item.owner_details.name }}
             </a>
         </p>
@@ -27,12 +30,23 @@
             ></app-textfield>
         </div>
 
-        <app-delete-toggle [deleteMessage]="'Delete '+item.name+'?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
+        <app-delete-toggle 
+        [deleteMessage]="'Delete '+item.name+'?'" 
+        (deleteEvent)="deleteArticle()"
+        ></app-delete-toggle>
 
-        <a routerLink="{{constants.getRoutePath(router, 'item-overview')}}" class="btn btn-secondary mr-1">Back to Items</a>
-        <a  *ngIf="item.owner_details"
-            routerLink="{{constants.getRoutePath(router, 'character', {name: item.owner_details.name})}}" 
-            class="btn btn-secondary">
+        <a 
+        routerLink="{{ constants.getRoutePath(router, 'item-overview') }}" 
+        class="btn btn-secondary mr-1"
+        >
+            Back to Items
+        </a>
+
+        <a
+        *ngIf="item.owner_details"
+        routerLink="{{ constants.getRoutePath(router, 'character', {name: item.owner_details.name}) }}" 
+        class="btn btn-secondary"
+        >
             Back to {{item.owner_details.name}}
         </a>
     </article>

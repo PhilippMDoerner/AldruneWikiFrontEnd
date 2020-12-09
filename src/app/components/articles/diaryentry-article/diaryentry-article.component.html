@@ -1,6 +1,9 @@
 <div class="main">
     <article *ngIf="diaryEntry; else loading">
-        <app-edit-toggle [isInUpdateState]=false [link]="'update'"></app-edit-toggle>
+        <app-edit-toggle 
+        [isInUpdateState]=false 
+        [link]="'update'"
+        ></app-edit-toggle>
 
         <h1 class="text-center">
             Diary Entry #
@@ -18,9 +21,17 @@
             ></app-textfield>
         </div>
 
-        <app-delete-toggle [deleteMessage]="'Delete Diaryentry?'" (deleteEvent)="deleteArticle()"></app-delete-toggle>
+        <app-delete-toggle 
+        [deleteMessage]="'Delete Diaryentry?'" 
+        (deleteEvent)="deleteArticle()"
+        ></app-delete-toggle>
 
-        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/diaryentry" class="btn btn-secondary">Back to Diaryentries</a>
+        <a 
+        routerLink="{{constants.getRoutePath(router, 'diaryentry-overview')}}"
+        class="btn btn-secondary"
+        >
+            Back to Diaryentries
+        </a>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
