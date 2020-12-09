@@ -1,34 +1,41 @@
 <!-- Display State -->
 <div class="image-area icon-container" *ngIf="componentState===constants.displayState">
     <!-- Prior Image Arrow -->
-    <i [ngClass]="{'fa fa-arrow-left fa-2x mr-5 icon': true, 'mouseoverVisible': !isLastImage(), 'deactivated-icon': isLastImage()}" 
+    <i 
+    [ngClass]="{'fa fa-arrow-left fa-2x mr-5 icon': true, 'mouseoverVisible': !isLastImage(), 'deactivated-icon': isLastImage()}" 
     aria-hidden="true"
-    (click)="decreaseVisibleImageIndex()"></i>
+    (click)="decreaseVisibleImageIndex()"
+    ></i>
 
     <!-- Image Container -->
     <div class="image-container">
 
         <!-- Images -->
-        <a [href]="image.image"
-        *ngFor="let image of images; let i = index"
-        (keydown)="changeMainImage($event)"
-        [ngClass]="{'main-image': i === visibleImageIndex, 'side-image': i !== visibleImageIndex}">
-            <img title="None" class="gallery-image" [src]="constants.wikiUrl + image.image" alt="">
-        </a>
+        <div *ngIf="images; else defaultImage">
+            <a [href]="constants.wikiUrl + image.image"
+            *ngFor="let image of images; let i = index"
+            (keydown)="changeMainImage($event)"
+            [ngClass]="{'main-image': i === visibleImageIndex, 'side-image': i !== visibleImageIndex}">
+                <img title="None" class="gallery-image" [src]="constants.wikiUrl + image.image" alt="">
+            </a>
+        </div>
+
 
         <!-- Image Edit/Delete/Create Buttons -->
         <div class="edit-image-buttons">
-            <i class="fa fa-plus-square-o fa-2x icon" aria-hidden="true" (click)="toggleCreateState()"></i>
-            <i class="fa fa-pencil fa-2x icon" aria-hidden="true" (click)="toggleUpdateState()"></i>
-            <i [ngClass]="{'fa fa-trash fa-2x icon': true, 'd-none': isLastImage()}" aria-hidden="true" (click)="toggleDeleteState()"></i>
+            <i class="fa fa-plus-square-o fa-2x icon" aria-hidden="true" (click)="enableCreateState()"></i>
+            <i class="fa fa-pencil fa-2x icon" aria-hidden="true" (click)="enableUpdateState()"></i>
+            <i [ngClass]="{'fa fa-trash fa-2x icon': true, 'd-none': isLastImage()}" aria-hidden="true" (click)="enableDeleteState()"></i>
         </div>
 
     </div>
 
     <!-- Next Image Arrow -->
-    <i [ngClass]="{'fa fa-arrow-right fa-2x ml-5 icon': true, 'mouseoverVisible': !isLastImage(), 'deactivated-icon': isLastImage()}" 
+    <i
+    [ngClass]="{'fa fa-arrow-right fa-2x ml-5 icon': true, 'mouseoverVisible': !isLastImage(), 'deactivated-icon': isLastImage()}" 
     aria-hidden="true" 
-    (click)="incrementVisibleImageIndex()"></i>
+    (click)="incrementVisibleImageIndex()"
+    ></i>
 </div>
 
 <!-- Create/Update Image Form -->
@@ -47,11 +54,14 @@
     </div>
 
     <!-- Create/Update Form -->
-    <form (ngSubmit)="onSubmit()" enctype="multipart/form-data">
-        <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-        <button class="btn btn-dark mr-3" (click)="componentState = constants.displayState">Cancel</button>
-        <button type="submit" class="btn btn-outline-dark">Submit</button>
-    </form>
+    <app-formly-formcontainer 
+    [model]="model" 
+    [fields]="fields"
+    [enctype]="'multipart/form-data'"
+    (submit)="onSubmit()" 
+    (cancel)="onCancel()"
+    ></app-formly-formcontainer>
+
 </div>
 
 <!-- Delete "Form" -->
@@ -69,7 +79,13 @@
     <!-- Delete Question -->
     <div class="text-center mt-3">
         Do you really want to delete this image?
-        <button class="btn btn-dark mr-3" (click)="componentState=constants.displayState"> No </button>
-        <button class="btn btn-outline-danger" (click)="deleteCurrentMainImage()"> Yes </button>
+        <div class="btn btn-dark mr-3" (click)="onCancel()"> No </div>
+        <div class="btn btn-outline-danger" (click)="deleteCurrentMainImage()"> Yes </div>
     </div>
 </div>
+
+<ng-template #defaultImage>
+    <a [href]="constants.defaultImageUrl" class="main-image">
+        <img title="None" class="gallery-image" [src]="constants.defaultImageUrl" alt="">
+    </a>
+</ng-template>

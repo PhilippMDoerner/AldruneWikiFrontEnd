@@ -1,9 +1,7 @@
 import { Component, OnInit, Input, HostListener, Output } from '@angular/core';
 import { Image, ImageObject } from "src/app/models/image";
 import { Constants } from "src/app/app.constants";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { ImageUploadService } from "src/app/services/image/image-upload.service";
-import { Subscription } from 'rxjs';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -80,6 +78,10 @@ export class ImageGalleryComponent {
     this.model = new ImageObject();
   }
 
+  enableDisplayState(){
+    this.componentState = Constants.displayState;
+  }
+
   onSubmit(){
     if (this.componentState === this.constants.createState){
       this.createImage();
@@ -90,22 +92,29 @@ export class ImageGalleryComponent {
     }
   }
 
+  onCancel(){
+    this.enableDisplayState();
+  }
+
   // Update Image
-  toggleUpdateState(){
+  enableUpdateState(){
     this.componentState = this.constants.updateState;
     const currentMainImage = this.images[this.visibleImageIndex];
     this.model = currentMainImage;
   }
 
+  // TODO: Fix the bug that the image isn't displayed after the update goes through
   updateImage(){
-    this.imageUploadService.updateImage(this.model).pipe(first()).subscribe(updatedImage => {
+    this.imageUploadService.updateImage(this.model).pipe(first()).subscribe((updatedImage: ImageObject) => {
       this.images[this.visibleImageIndex] = updatedImage;
       this.resetImageModel();
+
+      this.enableDisplayState();
     }, error => console.log(error));
   }
 
   // Create Image
-  toggleCreateState(){
+  enableCreateState(){
     this.componentState = this.constants.createState;
 
     this.resetImageModel();
@@ -118,11 +127,13 @@ export class ImageGalleryComponent {
     this.imageUploadService.postImage(this.model).pipe(first()).subscribe(createdImage => {
       this.images.push(createdImage);
       this.resetImageModel();
+
+      this.enableDisplayState();
     }, error => console.log(error));  
   }
 
   // Delete Image
-  toggleDeleteState(){
+  enableDeleteState(){
     if (this.isLastImage()) return;
     this.componentState = this.constants.deleteState;
   }
@@ -135,6 +146,8 @@ export class ImageGalleryComponent {
       if (this.visibleImageIndex === this.images.length){
         this.visibleImageIndex = this.images.length - 1;
       }
+
+      this.enableDisplayState();
     }, error => console.log(error))
   }
 
