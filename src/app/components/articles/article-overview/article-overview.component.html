@@ -16,7 +16,7 @@
             <ul class="mb-5">
                 <span *ngFor="let item of listItems">
                     <li *ngIf="item.player_character">
-                        <a routerLink="{{constants.getRoutePath(router, 'item', {name: item.name }) }}">
+                        <a routerLink="{{constants.getRoutePath(router, 'character', {name: item.name }) }}">
                             {{ item.name_full }}
                         </a> 
                     </li>
