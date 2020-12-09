@@ -82,8 +82,8 @@ export class ImageGalleryComponent {
     this.componentState = Constants.displayState;
   }
 
-  hasNoImage(): void{
-    this.images.length === 0;
+  hasImages(): boolean{
+    return this.images.length >= 1;
   }
 
   onSubmit(): void{
