@@ -25,7 +25,7 @@ export class ItemArticleUpdateComponent implements OnInit {
   isForAssociatedObjectCreation: boolean;
   formState: string;
 
-  form = new FormGroup({});
+
   model: ItemObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: 'name'}),
@@ -41,49 +41,51 @@ export class ItemArticleUpdateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
+    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
 
     this.parameter_subscription = this.route.params.subscribe(params => {
       const itemName: string = params.name;
       const itemOwnerName: string = params.character_name;
-      this.isForAssociatedObjectCreation = itemOwnerName && this.formState === this.constants.createState;
+      this.isForAssociatedObjectCreation = itemOwnerName && this.formState === Constants.createState;
 
-      if (this.formState === this.constants.updateState){
-        this.itemService.getItem(itemName).pipe(first()).subscribe(item => {
-          this.model = item;
-        });
+      if (this.formState === Constants.updateState){
+        this.itemService.getItem(itemName).pipe(first()).subscribe(
+          (item: ItemObject) =>  this.model = item
+        );
       } else if (this.isForAssociatedObjectCreation){
         this.characterService.getCharacter(itemOwnerName).pipe(first()).subscribe(itemOwner => {
           this.model = new ItemObject();
           this.model.owner = itemOwner.pk;
         });
-      } else if (this.formState === this.constants.createState) {
+      } else if (this.formState === Constants.createState) {
         this.model = new ItemObject();
       } 
     })
   }
 
   onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
+    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
     const responseObservable: any =  isFormInUpdateState ? this.itemService.updateItem(this.model) : this.itemService.createItem(this.model);
 
-    responseObservable.pipe(first()).subscribe((item: ItemObject) => {
-      const itemUrl: string = Constants.getRoutePath(this.router, 'item', {name: item.name});
-      this.router.navigateByUrl(itemUrl);
-    }, error => console.log(error));
+    responseObservable.pipe(first()).subscribe(
+      (item: ItemObject) => Constants.routeToApiObject(this.router, item),
+      error => console.log(error)
+    );
   }
 
-  getCancelRoutingDestination(): string{
+  onCancel(){
+    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
     const isItemCharacterCreateUrl: boolean = routeNameMatches(this.route, "item-character-create");
 
     if (isItemCharacterCreateUrl){
-      const characterName = this.route.snapshot.params['character_name'];
-      const characterUrl = Constants.getRoutePath(this.router, 'character', {name: characterName});
-      return characterUrl;
+      const characterName: string = this.route.snapshot.params['character_name'];
+      Constants.routeToPath(this.router, 'character', {name: characterName});
+    } else if (isFormInUpdateState){
+      const itemName: string = this.route.snapshot.params.name;
+      Constants.routeToPath(this.router, 'item', {name: itemName});
+    } else {
+      Constants.routeToPath(this.router, 'item-overview');
     }
-
-    const itemUrl = Constants.getRoutePath(this.router, 'item', {name: this.model.name});
-    return itemUrl;
   }
 
   ngOnDestroy(){

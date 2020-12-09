@@ -48,8 +48,7 @@ export class MapComponent implements OnInit, OnDestroy {
 
   deleteMap(){
     this.mapService.deleteMap(this.currentMap.pk).pipe(first()).subscribe(response => {
-      const nextMapName: string = (this.currentMap.pk === this.maps[0].pk) ? this.maps[0].name : this.maps[1].name;
-      this.routeToMap(nextMapName);
+      this.routeToMap(Constants.defaultMapName);
     })
   }
 

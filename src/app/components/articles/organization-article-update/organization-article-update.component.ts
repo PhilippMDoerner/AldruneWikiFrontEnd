@@ -22,7 +22,6 @@ export class OrganizationArticleUpdateComponent implements OnInit {
 
   formState: string;
 
-  form = new FormGroup({});
   model: OrganizationObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name"}),
@@ -41,16 +40,15 @@ export class OrganizationArticleUpdateComponent implements OnInit {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
 
     this.paramter_subscription = this.route.params.subscribe(params => {
-      const organizationName: string = params.name;
-
       if (this.formState === this.constants.updateState){
-        this.organizationService.getOrganization(organizationName).pipe(first()).subscribe(organization => {
-          this.model = organization;
-        });
+        const organizationName: string = params.name;
+        this.organizationService.getOrganization(organizationName).pipe(first()).subscribe(
+          (organization: OrganizationObject) => this.model = organization
+        );
         
       } else if (this.formState === this.constants.createState) {
         this.model = new OrganizationObject();
-      } 
+      }
     })
 
   }
@@ -59,10 +57,20 @@ export class OrganizationArticleUpdateComponent implements OnInit {
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
     const responseObservable: Observable<OrganizationObject> =  isFormInUpdateState ? this.organizationService.updateOrganization(this.model) : this.organizationService.createOrganization(this.model);
 
-    responseObservable.pipe(first()).subscribe((organization: OrganizationObject) => {
-      const organizationUrl: string = Constants.getRoutePath(this.router, 'organization', {name: organization.name});
-      this.router.navigateByUrl(organizationUrl);
-    }, error => console.log(error));
+    responseObservable.pipe(first()).subscribe(
+      (organization: OrganizationObject) => Constants.routeToApiObject(this.router, organization),
+      error => console.log(error)
+    );
+  }
+  
+  onCancel(){
+    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
+    if (isFormInUpdateState){
+      const organizationName: string = this.route.snapshot.params.name;
+      Constants.routeToPath(this.router, 'organization', {name: organizationName});
+    } else {
+      Constants.routeToPath(this.router, 'organization-overview');
+    } 
   }
 
   ngOnDestroy(){

@@ -22,7 +22,7 @@ export class MarkerUpdateComponent implements OnInit {
   constants: any = Constants;
 
   formState: string;
-  form = new FormGroup({});
+
   model: MapMarker;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
@@ -44,9 +44,7 @@ export class MarkerUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
-    console.log("The formstate:");
-    console.log(this.formState);
-    console.log(this.formState === Constants.createState);
+
     this.parameter_subscription = this.route.params.subscribe(params =>{
       const parentLocationName = params['parent_location_name'];
       const locationName = params['location_name'];
@@ -59,8 +57,6 @@ export class MarkerUpdateComponent implements OnInit {
 
       } else if (this.formState === Constants.createState){
         this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(location => {
-          console.log("The gained location:")
-          console.log(location);
           this.model = new MapMarkerObject();
           this.model.location = location.pk;
           this.model.location_details = {
@@ -69,9 +65,6 @@ export class MarkerUpdateComponent implements OnInit {
             description: location.description,
             sublocations: null,
           };
-
-          console.log("The current marker");
-          console.log(this.model);
         });
       }
 
@@ -85,6 +78,24 @@ export class MarkerUpdateComponent implements OnInit {
     responseObservable.pipe(first()).subscribe((marker: MapMarkerObject) => {
       this.router.navigateByUrl(this.getRedirectUrl(marker));
     }, error => console.log(error));
+  }
+
+  onCancel(){
+    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
+    const params = this.route.snapshot.params;
+
+    if (isFormInUpdateState){
+      Constants.routeToPath(this.router, 'marker', {
+        location_name: params.location_name,
+        parent_location_name: params.parent_location_name,
+        map_name: params.map_name,
+      });
+    } else {
+      Constants.routeToPath(this.router, 'location', {
+        name: params.location_name,
+        parent_name: params.parent_location_name
+      });
+    } 
   }
 
   getRedirectUrl(mapMarker: MapMarkerObject){

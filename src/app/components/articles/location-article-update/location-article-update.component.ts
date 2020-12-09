@@ -53,6 +53,8 @@ export class LocationArticleUpdateComponent implements OnInit {
         this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(location => {
           this.model = new LocationObject();
           this.model.parent_location = location.pk;
+          this.model.parent_location_details.name = location.name;
+          this.model.parent_location_details.parent_location = location.parent_location_details.name;
         });
       } else if (this.formState === this.constants.createState){
         this.model = new LocationObject();
@@ -79,6 +81,20 @@ export class LocationArticleUpdateComponent implements OnInit {
     } else {
       const locationOverviewUrl: string = Constants.getRoutePath(this.router, 'location-overview');
       return locationOverviewUrl;
+    }
+  }
+
+  onCancel(){
+    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
+
+    if(this.isForAssociatedObjectCreation){
+      Constants.routeToPath(this.router, 'location', {name: this.model.parent_location_details.name, parent_name: this.model.parent_location_details.parent_location});
+    } else if (isFormInUpdateState){
+      const locationName: string = this.route.snapshot.params.name;
+      const parentLocationName: string = this.route.snapshot.params.parent_name;
+      Constants.routeToPath(this.router, 'location', {name: locationName, parent_name: parentLocationName});
+    } else {
+      Constants.routeToPath(this.router, 'location-overview');
     }
   }
 

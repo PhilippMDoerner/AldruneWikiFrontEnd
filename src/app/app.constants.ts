@@ -1,4 +1,4 @@
-import { getRoutePath } from 'src/app/utils/functions/routeFilter';
+import { getRoutePath, routeToApiObject, routeToPath } from 'src/app/utils/functions/routeFilter';
 
 export class Constants{
     public static get apiPrefix(): string { return "wiki1";}
@@ -22,7 +22,9 @@ export class Constants{
     public static get NONE_STRING(): string { return "None";} //This value must be identical to the NONE_STRING setting in the backend
     
     //accessing route-generating function
-    public static get getRoutePath() { return getRoutePath;}
+    public static get getRoutePath() { return getRoutePath;};
+    public static get routeToPath() { return routeToPath;};
+    public static get routeToApiObject() { return routeToApiObject;};
 
     //strings representing states
     public static get createState(): string { return "create";}
@@ -67,6 +69,9 @@ export class Constants{
 
     //Default Image for Image Gallery
     public static get defaultImageUrl(): string { return `${this.wikiMediaUrl}/resources/dndicon.png`;}
+
+    //Default Map to display
+    public static get defaultMapName(): string {return `Aldrune`};
 
     //TinyMCE Settings
     public static get tinyMCESettings(): object{ return {

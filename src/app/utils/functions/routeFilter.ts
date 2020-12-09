@@ -1,4 +1,5 @@
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { ApiObject } from 'src/app/models/base-models';
 
 export function getComponentRoutes(router: Router, componentName : string): string[]{
     const routes: {path?: string, component?}[] = router.config;
@@ -51,4 +52,14 @@ function getPathVariableNames(routePath: string): string[]{
 export function routeNameMatches(route: ActivatedRoute, routeName: string): boolean{
     const routeData = route.snapshot.data;
     return routeData.name === routeName;
+}
+
+export function routeToPath(router: Router, routeName: string, params = {}): void{
+    const routePath: string = getRoutePath(router, routeName, params);
+    router.navigateByUrl(routePath);
+}
+
+export function routeToApiObject(router: Router, object: ApiObject): void{
+    const objectUrl: string = object.getAbsoluteRouterUrl();
+    router.navigateByUrl(objectUrl);
 }

@@ -17,7 +17,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 export class CreatureArticleUpdateComponent implements OnInit {
   constants: any = Constants;
   formState: string;
-  form = new FormGroup({});
+
   model: CreatureObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name"}),
@@ -33,16 +33,16 @@ export class CreatureArticleUpdateComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
+    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
 
     this.parameter_subscription = this.route.params.subscribe(params => {
-      if (this.formState === this.constants.updateState){
+      if (this.formState === Constants.updateState){
         const creature_name: string = params.name;
-        this.creatureService.getCreature(creature_name).pipe(first()).subscribe(creature => {
-          this.model = creature;
-        }, error => this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`));
+        this.creatureService.getCreature(creature_name).pipe(first()).subscribe(
+          (creature: CreatureObject) =>  this.model = creature, 
+          error => Constants.routeToPath(this.router, 'error'));
 
-      } else if (this.formState === this.constants.createState) {
+      } else if (this.formState === Constants.createState) {
         this.model = new CreatureObject();
       }
     })
@@ -50,13 +50,22 @@ export class CreatureArticleUpdateComponent implements OnInit {
   }
 
   onSubmit(){
-    const isFormInUpdateState : boolean = (this.formState === this.constants.updateState)
+    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
     const responseObservable : Observable<Creature> =  isFormInUpdateState ? this.creatureService.updateCreature(this.model) : this.creatureService.createCreature(this.model);
 
-    responseObservable.pipe(first()).subscribe(response => {
-      const creatureUrl: string = Constants.getRoutePath(this.router, 'creature', {name: this.model.name});
-      this.router.navigateByUrl(creatureUrl);
+    responseObservable.pipe(first()).subscribe((creature: CreatureObject) => {
+      Constants.routeToApiObject(this.router, creature);
     }, error => console.log(error));
+  }
+
+  onCancel(){
+    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
+    if (isFormInUpdateState){
+      const creatureName: string = this.route.snapshot.params.name;
+      Constants.routeToPath(this.router, 'creature', {name: creatureName});
+    } else {
+      Constants.routeToPath(this.router, 'creature-overview');
+    } 
   }
 
   ngOnDestroy(){

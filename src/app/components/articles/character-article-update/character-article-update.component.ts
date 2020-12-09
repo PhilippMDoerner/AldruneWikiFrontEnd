@@ -20,7 +20,7 @@ import { first } from 'rxjs/operators';
 export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   constants: any = Constants;
   formState: string;
-  form = new FormGroup({});
+
   model: CharacterObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericCheckbox({key: "player_character", label: "Player Character", defaultValue: false}),
@@ -48,11 +48,11 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
     this.parameter_subscription = this.route.params.subscribe(params => {
       if (this.formState === this.constants.updateState){
         const character_name: string = params.name;
-        this.characterService.getCharacter(character_name).pipe(first()).subscribe(character => {
-          this.model = character;
-        }, error => this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`));
-
-      } else if (this.formState === this.constants.createState) {
+        this.characterService.getCharacter(character_name).pipe(first()).subscribe(
+          (character: CharacterObject) => this.model = character, 
+          error => Constants.routeToPath(this.router, 'error')
+        )
+      } else if (this.formState === Constants.createState) {
         this.model = new CharacterObject();
       }
     });
@@ -60,17 +60,25 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === this.constants.updateState)
+    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
     const responseObservable: Observable<Character> =  isFormInUpdateState ? this.characterService.updateCharacter(this.model) : this.characterService.createCharacter(this.model);
 
-    responseObservable.pipe(first()).subscribe(response => {
-      const characterUrl: string = Constants.getRoutePath(this.router, 'character', {name: this.model.name});
-      console.log(`Routing to ${characterUrl}`);
-      this.router.navigateByUrl(characterUrl);
+    responseObservable.pipe(first()).subscribe((character: CharacterObject) => {
+      Constants.routeToApiObject(this.router, character);
     }, error => console.log(error));
   }
 
-  ngOnDestroy(){
+  onCancel(){
+    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
+    if (isFormInUpdateState){
+      const characterName: string = this.route.snapshot.params.name;
+      Constants.routeToPath(this.router, 'character', {name: characterName});
+    } else {
+      Constants.routeToPath(this.router, 'character-overview');
+    } 
+  }
+
+  ngOnDestroy(): void{
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

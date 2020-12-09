@@ -69,6 +69,7 @@ import { SessionUpdateModalComponent } from './components/utility/session-update
 import { SessionUpdateWrapperComponent } from './components/utility/session-update-wrapper/session-update-wrapper.component';
 import { TimestampListComponent } from './components/utility/timestamp-list/timestamp-list.component';
 import { TimestampComponent } from './components/utility/timestamp/timestamp.component';
+import { FormlyFormcontainerComponent } from './components/utility/formly-formcontainer/formly-formcontainer.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -128,6 +129,7 @@ import { TimestampComponent } from './components/utility/timestamp/timestamp.com
     SessionUpdateWrapperComponent,
     TimestampListComponent,
     TimestampComponent,
+    FormlyFormcontainerComponent,
   ],
   imports: [
     BrowserModule,

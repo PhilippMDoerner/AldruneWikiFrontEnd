@@ -19,11 +19,12 @@
 
 
         <!-- Form -->
-        <form [formGroup]="form">
-            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <button class="btn btn-dark mr-3" routerLink="..">Cancel</button>
-            <button class="btn btn-outline-dark" (click)="onSubmit()">Submit</button>
-        </form>
+        <app-formly-formcontainer 
+        [model]="model" 
+        [fields]="fields" 
+        (submit)="onSubmit()" 
+        (cancel)="onCancel()"
+        ></app-formly-formcontainer>
     </article>
 
     <!-- Spinner while loading -->

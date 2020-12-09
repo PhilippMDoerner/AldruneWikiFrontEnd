@@ -56,10 +56,13 @@ export class MarkerMapCreateComponent implements OnInit {
   }
 
   onSubmit(){
-    this.markerService.createMapMarker(this.model).pipe(first()).subscribe((marker: MapMarker) => {
-      const mapUrl = Constants.getRoutePath(this.router, 'map', {name: marker.map_details.name});
-      this.router.navigateByUrl(mapUrl);
-    }, error => console.log(error));
+    this.markerService.createMapMarker(this.model).pipe(first()).subscribe(
+      (marker: MapMarker) => Constants.routeToPath(this.router, 'map', {name: marker.map_details.name}),
+      error => console.log(error));
+  }
+
+  onCancel(){
+    Constants.routeToPath(this.router, 'map', {name: this.mapName});
   }
 
   ngOnDestroy(){

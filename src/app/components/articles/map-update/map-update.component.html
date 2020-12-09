@@ -2,24 +2,25 @@
     <article class="mb-5">
         <!-- Heading -->
         <div *ngIf="formState===constants.updateState && model; else createState">
-            <app-edit-toggle [isInUpdateState]=true [link]="'..'"></app-edit-toggle>
+            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'map', {name: model.name})"></app-edit-toggle>
 
             <h2 class="text-center"> Updating Map {{ model.name }} </h2>
         </div>
         
         <ng-template #createState>
-            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'map', {name: 'Aldrune'})"></app-edit-toggle>
+            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'map', {name: constants.defaultMapName})"></app-edit-toggle>
 
             <h2 class="text-center"> Adding a new Map </h2>
         </ng-template>
 
 
         <!-- Form -->
-        <form [formGroup]="form">
-            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <button class="btn btn-dark mr-3" routerLink="..">Cancel</button>
-            <button class="btn btn-secondary" (click)="onSubmit()">Submit</button>
-        </form>
+        <app-formly-formcontainer 
+        [model]="model" 
+        [fields]="fields" 
+        (submit)="onSubmit()" 
+        (cancel)="onCancel()"
+        ></app-formly-formcontainer>
 
     </article>
     <!-- Spinner while loading -->

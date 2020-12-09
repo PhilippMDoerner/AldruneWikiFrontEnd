@@ -21,9 +21,7 @@ export class MapUpdateComponent implements OnInit {
   constants: any = Constants;
 
   formState: string;
-  isForAssociatedObjectCreation: boolean;
 
-  form = new FormGroup({});
   model: Map;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name"}),
@@ -45,9 +43,10 @@ export class MapUpdateComponent implements OnInit {
       const mapName: string = params['name'];
 
       if (this.formState === this.constants.updateState){
-        this.mapService.getMap(mapName).pipe(first()).subscribe(map => {
-          this.model = map;
-        });
+        this.mapService.getMap(mapName).pipe(first()).subscribe(
+          (map: MapObject) => this.model = map,
+          error => console.log(error)
+        );
       }  else if (this.formState === this.constants.createState){
         this.model = new MapObject();
       }
@@ -58,12 +57,21 @@ export class MapUpdateComponent implements OnInit {
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
     const responseObservable: any =  isFormInUpdateState ? this.mapService.updateMap(this.model) : this.mapService.createMap(this.model);
 
-    responseObservable.pipe(first()).subscribe((map: Map) => {
-      const mapUrl: string = Constants.getRoutePath(this.router, 'map', {name: map.name});
-      this.router.navigateByUrl(mapUrl);
-    }, error => console.log(error));
+    responseObservable.pipe(first()).subscribe(
+      (map: MapObject) => Constants.routeToApiObject(this.router, map),
+      error => console.log(error)
+    );
   }
 
+  onCancel(){
+    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
+    if (isFormInUpdateState){
+      const mapName: string = this.route.snapshot.params.name;
+      Constants.routeToPath(this.router, 'map', {name: mapName});
+    } else {
+      Constants.routeToPath(this.router, 'map', {name: Constants.defaultMapName});
+    } 
+  }
 
   ngOnDestroy(){
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();

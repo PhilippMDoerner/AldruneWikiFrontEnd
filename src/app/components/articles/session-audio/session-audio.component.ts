@@ -1,13 +1,10 @@
 import { Component, ContentChild, ContentChildren, ElementRef, OnDestroy, OnInit, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { SessionAudio } from 'src/app/models/sessionaudio';
-import { TimestampObject, Timestamp } from 'src/app/models/timestamp';
-import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { Timestamp } from 'src/app/models/timestamp';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
 
@@ -56,6 +53,10 @@ export class SessionAudioComponent implements OnInit, OnDestroy {
         this.timestamps = timestamps;
       })
     })
+  }
+
+  print(event){
+    console.log(event);
   }
 
   routeToSessionAudio({isMainSessionInt, sessionNumber}){

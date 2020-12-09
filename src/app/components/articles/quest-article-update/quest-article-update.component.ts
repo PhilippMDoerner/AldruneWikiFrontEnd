@@ -65,9 +65,9 @@ export class QuestArticleUpdateComponent implements OnInit {
       const questName: string = params.name;
 
       if (this.formState === this.constants.updateState){
-        this.questService.getQuest(questName).pipe(first()).subscribe((quest: QuestObject) => {
-          this.model = quest;
-        });
+        this.questService.getQuest(questName).pipe(first()).subscribe(
+          (quest: QuestObject) => this.model = quest
+        );
         
       } else if (this.formState === this.constants.createState) {
         this.model = new QuestObject();
@@ -79,10 +79,20 @@ export class QuestArticleUpdateComponent implements OnInit {
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
     const responseObservable: Observable<QuestObject> =  isFormInUpdateState ? this.questService.updateQuest(this.model) : this.questService.createQuest(this.model);
 
-    responseObservable.pipe(first()).subscribe((quest: QuestObject) => {
-      const questUrl: string = Constants.getRoutePath(this.router, 'quest', {name: quest.name});
-      this.router.navigateByUrl(questUrl);
-    }, error => console.log(error));
+    responseObservable.pipe(first()).subscribe(
+      (quest: QuestObject) => Constants.routeToApiObject(this.router, quest), 
+      error => console.log(error)
+    );
+  }
+
+  onCancel(){
+    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
+    if (isFormInUpdateState){
+      const questName: string = this.route.snapshot.params.name;
+      Constants.routeToPath(this.router, 'quest', {name: questName});
+    } else {
+      Constants.routeToPath(this.router, 'quest-overview');
+    } 
   }
 
   ngOnDestroy(){

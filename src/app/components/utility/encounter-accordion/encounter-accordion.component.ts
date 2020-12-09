@@ -70,9 +70,10 @@ export class EncounterAccordionComponent implements OnInit {
   onEncounterUpdate(updateText: string, encounterIndex: number){
     const encounter: Encounter = this.encounters[encounterIndex];
     encounter.description = updateText;
-    this.encounterService.updateEncounter(encounter).subscribe(encounter => {
-      this.encounters[encounterIndex] = encounter;
-    }, error => console.log(error));
+    this.encounterService.updateEncounter(encounter).subscribe(
+      (encounter: EncounterObject) => this.encounters[encounterIndex] = encounter,
+      error => console.log(error)
+    );
   }
 
   toggleEncounterUpdateState(){
@@ -105,6 +106,7 @@ export class EncounterAccordionComponent implements OnInit {
 
   toggleEncounterCreateState(){
     this.isEncounterCreateState = !this.isEncounterCreateState;
+    
     if (this.isEncounterCreateState){
       this.model = new EncounterObject();
     }

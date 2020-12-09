@@ -42,9 +42,10 @@ export class SessionAudioUpdateComponent implements OnInit {
       if (this.formState === this.constants.updateState){
         const isMainSessionInt: number = params['isMainSession'];
         const sessionNumber: number = params['sessionNumber'];
-        this.audioService.getSessionAudioFile(isMainSessionInt, sessionNumber).pipe(first()).subscribe(item => {
-          this.model = item;
-        });
+        this.audioService.getSessionAudioFile(isMainSessionInt, sessionNumber).pipe(first()).subscribe(
+          (sessionAudio: SessionAudioObject) => this.model = sessionAudio,
+          error => Constants.routeToPath(this.router, 'error')
+        );
 
       } else if (this.formState === this.constants.createState) {
         this.model = new SessionAudioObject();
@@ -57,13 +58,22 @@ export class SessionAudioUpdateComponent implements OnInit {
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
 
     const responseObservable: Observable<SessionAudioObject> =  isFormInUpdateState ? this.audioService.updateSessionAudioFile(this.model) : this.audioService.createSessionAudioFile(this.model);
-    responseObservable.pipe(first()).subscribe( (sessionAudio: SessionAudio) => {
-      const sessionAudioUrl: string = Constants.getRoutePath(this.router, 'sessionaudio', {
-        isMainSession: sessionAudio.session_details.is_main_session_int, 
-        session_number: sessionAudio.session_details.session_number
+    responseObservable.pipe(first()).subscribe( 
+      (sessionAudio: SessionAudioObject) => Constants.routeToApiObject(this.router, sessionAudio),
+      error => console.log(error)
+    );
+  }
+
+  onCancel(){
+    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
+    if (isFormInUpdateState){
+      Constants.routeToPath(this.router, 'sessionaudio', {
+        isMainSession: this.route.snapshot.params.isMainSession,
+        sessionNumber: this.route.snapshot.params.sessionNumber
       });
-      this.router.navigateByUrl(sessionAudioUrl);
-    }, error => console.log(error));
+    } else {
+      Constants.routeToPath(this.router, 'sessionaudio-overview');
+    } 
   }
 
   ngOnDestroy(){

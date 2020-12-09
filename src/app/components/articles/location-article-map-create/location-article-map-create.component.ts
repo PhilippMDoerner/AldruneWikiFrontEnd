@@ -24,9 +24,10 @@ export class LocationArticleMapCreateComponent implements OnInit {
   mapName: string;
 
   locationForm = new FormGroup({});
-  locationModel: Location;
+  locationModel: LocationObject;
+
   markerForm = new FormGroup({});
-  markerModel: MapMarker;
+  markerModel: MapMarkerObject;
 
   constructor(
     private markerService: MarkerService,
@@ -68,11 +69,14 @@ export class LocationArticleMapCreateComponent implements OnInit {
     this.locationService.createLocation(this.locationModel).pipe(first()).subscribe((location: Location) => {
       this.markerModel.location = location.pk;
 
-      this.markerService.createMapMarker(this.markerModel).pipe(first()).subscribe((marker: MapMarker) => {
-        const mapUrl = Constants.getRoutePath(this.router, 'map', {name: marker.map_details.name});
-        this.router.navigateByUrl(mapUrl);
-      }, error => console.log(error));
+      this.markerService.createMapMarker(this.markerModel).pipe(first()).subscribe(
+        (marker: MapMarker) => Constants.routeToApiObject(this.router, location), 
+        error => console.log(error));
     })
+  }
+
+  onCancel(){
+      Constants.routeToPath(this.router, 'map', {name: this.mapName});
   }
 
   ngOnDestroy(){
