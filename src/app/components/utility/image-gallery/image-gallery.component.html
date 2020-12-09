@@ -11,7 +11,7 @@
     <div class="image-container">
 
         <!-- Images -->
-        <div *ngIf="images; else defaultImage">
+        <div *ngIf="hasNoImage(); else defaultImage">
             <a [href]="constants.wikiUrl + image.image"
             *ngFor="let image of images; let i = index"
             (keydown)="changeMainImage($event)"

@@ -44,7 +44,7 @@ export class ImageGalleryComponent {
     ) { }
 
   @HostListener('document:keyup', ['$event'])
-  changeMainImage(event){
+  changeMainImage(event): void{
     if(event.code === "ArrowRight"){
       this.incrementVisibleImageIndex();
     } else if (event.code === "ArrowLeft"){
@@ -53,36 +53,40 @@ export class ImageGalleryComponent {
   }
 
   // Main Image Gallery controls
-  incrementVisibleImageIndex(){
+  incrementVisibleImageIndex(): void{
     let hasMaxImageIndex : boolean = this.visibleImageIndex === this.images.length - 1;
     this.visibleImageIndex = hasMaxImageIndex ? 0 : this.visibleImageIndex + 1;
   }
 
-  decreaseVisibleImageIndex(){
+  decreaseVisibleImageIndex(): void{
     let hasMinImageIndex : boolean = this.visibleImageIndex === 0;
     this.visibleImageIndex = hasMinImageIndex ? this.images.length - 1 : this.visibleImageIndex - 1;
   }
 
-  setMainImage(nextMainImage: Image){
+  setMainImage(nextMainImage: Image): void{
     if (!this.images.includes(nextMainImage)){
       throw("The image you want to set is not part of the gallery (images[]) !")
     }
     this.visibleImageIndex = this.images.indexOf(nextMainImage);
   }
 
-  getCurrentMainImage(){
+  getCurrentMainImage(): ImageObject{
     return this.images[this.visibleImageIndex];
   }
 
-  resetImageModel(){
+  resetImageModel(): void{
     this.model = new ImageObject();
   }
 
-  enableDisplayState(){
+  enableDisplayState(): void{
     this.componentState = Constants.displayState;
   }
 
-  onSubmit(){
+  hasNoImage(): void{
+    this.images.length === 0;
+  }
+
+  onSubmit(): void{
     if (this.componentState === this.constants.createState){
       this.createImage();
     } else if (this.componentState === this.constants.updateState){
@@ -92,19 +96,19 @@ export class ImageGalleryComponent {
     }
   }
 
-  onCancel(){
+  onCancel(): void{
     this.enableDisplayState();
   }
 
   // Update Image
-  enableUpdateState(){
+  enableUpdateState(): void{
     this.componentState = this.constants.updateState;
     const currentMainImage = this.images[this.visibleImageIndex];
     this.model = currentMainImage;
   }
 
   // TODO: Fix the bug that the image isn't displayed after the update goes through
-  updateImage(){
+  updateImage(): void{
     this.imageUploadService.updateImage(this.model).pipe(first()).subscribe((updatedImage: ImageObject) => {
       this.images[this.visibleImageIndex] = updatedImage;
       this.resetImageModel();
@@ -114,7 +118,7 @@ export class ImageGalleryComponent {
   }
 
   // Create Image
-  enableCreateState(){
+  enableCreateState(): void{
     this.componentState = this.constants.createState;
 
     this.resetImageModel();
@@ -123,7 +127,7 @@ export class ImageGalleryComponent {
     this.model[article_type_pk_key] = this.article_pk;
   }
 
-  createImage(){
+  createImage(): void{
     this.imageUploadService.postImage(this.model).pipe(first()).subscribe(createdImage => {
       this.images.push(createdImage);
       this.resetImageModel();
@@ -133,12 +137,12 @@ export class ImageGalleryComponent {
   }
 
   // Delete Image
-  enableDeleteState(){
+  enableDeleteState(): void{
     if (this.isLastImage()) return;
     this.componentState = this.constants.deleteState;
   }
 
-  deleteCurrentMainImage(){
+  deleteCurrentMainImage(): void{
     const currentMainImage = this.getCurrentMainImage();
 
     this.imageUploadService.deleteImage(currentMainImage.pk).pipe(first()).subscribe(response => {
@@ -152,7 +156,7 @@ export class ImageGalleryComponent {
   }
 
   isLastImage(){
-    if(this.images) return this.images.length === 1;
+    if(this.images) return this.images.length <= 1;
     else return true;
   }
 }
