@@ -112,7 +112,7 @@
             </div>
         </div>
         
-        <!-- Item/Creature Overview -->
+        <!-- Item/Creature/Organization Overview -->
         <div *ngIf="overviewType===itemOverview || overviewType===creatureOverview || overviewType===organizationOverview">
             <h4 *ngIf="overviewType===itemOverview"> Item </h4>
             <h4 *ngIf="overviewType===creatureOverview"> Creature </h4>
@@ -124,7 +124,7 @@
                     *ngFor="let item of itemLetterEntries.value"
                     [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                     >
-                        <a routerLink="{{ constants.getRoutePath(route, 'item', {name: item.name}) }}">
+                        <a routerLink="{{ constants.getRoutePath(router, 'item', {name: item.name}) }}">
                             {{item.name_full}}
                         </a>
                     </li>
