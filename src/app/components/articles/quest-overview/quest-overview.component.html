@@ -44,7 +44,7 @@
                         <td>
                             <a 
                             id="quest{{ quest.pk }}" 
-                            routerLink="{{constants.getPathRoute(router, 'quest', {name: quest.name}) }}"
+                            routerLink="{{constants.getRoutePath(router, 'quest', {name: quest.name}) }}"
                             >
                                  <span class="bold">{{ quest.name }}</span>
                             </a>
