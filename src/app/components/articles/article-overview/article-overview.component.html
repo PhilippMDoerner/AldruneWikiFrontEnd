@@ -124,7 +124,13 @@
                     *ngFor="let item of itemLetterEntries.value"
                     [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                     >
-                        <a routerLink="{{ constants.getRoutePath(router, 'item', {name: item.name}) }}">
+                        <a *ngIf="overviewType===itemOverview" routerLink="{{ constants.getRoutePath(router, 'item', {name: item.name}) }}">
+                            {{item.name_full}}
+                        </a>
+                        <a *ngIf="overviewType===creatureOverview" routerLink="{{ constants.getRoutePath(router, 'creature', {name: item.name}) }}">
+                            {{item.name_full}}
+                        </a>
+                        <a *ngIf="overviewType===organizationOverview" routerLink="{{ constants.getRoutePath(router, 'organization', {name: item.name}) }}">
                             {{item.name_full}}
                         </a>
                     </li>
