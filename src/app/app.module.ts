@@ -70,6 +70,7 @@ import { SessionUpdateWrapperComponent } from './components/utility/session-upda
 import { TimestampListComponent } from './components/utility/timestamp-list/timestamp-list.component';
 import { TimestampComponent } from './components/utility/timestamp/timestamp.component';
 import { FormlyFormcontainerComponent } from './components/utility/formly-formcontainer/formly-formcontainer.component';
+import { LoginGuardService, PermissionGuardService } from './services/permission.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -156,7 +157,9 @@ import { FormlyFormcontainerComponent } from './components/utility/formly-formco
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
-    httpInterceptorProviders
+    httpInterceptorProviders,
+    PermissionGuardService,
+    LoginGuardService
   ],
   bootstrap: [
     AppComponent
