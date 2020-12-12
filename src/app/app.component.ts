@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Event, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Constants } from './app.constants';
 
 @Component({
@@ -9,13 +9,16 @@ import { Constants } from './app.constants';
 })
 export class AppComponent {
 
-  constructor(private router: Router){}
+  constructor(
+    private router: Router,  
+  ){}
   title = 'frontend';
 
   routeToBackground(event: any){
     if (event.target.attributes.id){
       const clickTargetId = event.target.attributes.id.nodeValue;
       if (clickTargetId === "background-div"){
+        // TODO: Replace this URL with one generated via RoutePath
         this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}`);
       }
     }
