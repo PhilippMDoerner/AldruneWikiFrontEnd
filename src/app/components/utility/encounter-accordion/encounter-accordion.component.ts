@@ -12,13 +12,14 @@ import { EncounterConnectionService } from 'src/app/services/encounter-connectio
 import { EncounterServiceService } from "src/app/services/encounter/encounter-service.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-encounter-accordion',
   templateUrl: './encounter-accordion.component.html',
   styleUrls: ['./encounter-accordion.component.scss']
 })
-export class EncounterAccordionComponent implements OnInit {
+export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin implements OnInit {
   constants: any = Constants;
   @Input() encounters: Encounter[];
   @Input() articleCharacter: Character;
@@ -55,7 +56,7 @@ export class EncounterAccordionComponent implements OnInit {
     private encounterConnectionService: EncounterConnectionService,
     private router: Router,
     private formlyService: MyFormlyService,
-  ) { }
+  ) { super(); }
 
   ngOnInit(): void {
     this.isOpen = {};
@@ -180,3 +181,4 @@ export class EncounterAccordionComponent implements OnInit {
     if(this.connection_subscription) this.connection_subscription.unsubscribe();
   }
 }
+

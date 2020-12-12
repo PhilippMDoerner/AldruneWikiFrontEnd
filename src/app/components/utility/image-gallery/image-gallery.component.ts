@@ -6,6 +6,7 @@ import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-image-gallery',
@@ -13,7 +14,7 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./image-gallery.component.scss']
 })
 
-export class ImageGalleryComponent {
+export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   constants: any = Constants;
 
   @Input() images : Image[];
@@ -41,7 +42,7 @@ export class ImageGalleryComponent {
   constructor(
     private imageUploadService: ImageUploadService,
     private formlyService: MyFormlyService
-    ) { }
+    ) { super() }
 
   @HostListener('document:keyup', ['$event'])
   changeMainImage(event): void{

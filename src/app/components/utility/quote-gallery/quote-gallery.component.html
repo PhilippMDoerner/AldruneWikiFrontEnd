@@ -18,7 +18,7 @@
                         <!-- Display Existing Quote Connections -->
                         <span class="badge badge-secondary mr-2 text-center vanish-container" *ngFor="let connection of quote.connections">
                             <a routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{connection.character_details.name}}">{{connection.character_details.name}}</a>
-                            <i class="fa fa-trash icon vanish-icon ml-2" (click)="deleteQuoteConnection(connection)"></i>
+                            <i class="fa fa-trash icon vanish-icon ml-2" (click)="deleteQuoteConnection(connection)" [ngClass]="{'d-none': !userHasDeletePermission()}"></i>
                         </span>
     
                         <!-- Form for Creating Quote Connections -->
@@ -30,9 +30,9 @@
                             </select>
                         </form>
     
-                        <i [ngClass]="{'fa icon mx-2': true, 'fa-plus hide-icon': !inQuoteConnectionCreateState, 'fa-times': inQuoteConnectionCreateState}"
+                        <i [ngClass]="{'fa icon mx-2': true, 'fa-plus hide-icon': !inQuoteConnectionCreateState, 'fa-times': inQuoteConnectionCreateState, 'd-none': !userHasCreatePermission()}"
                         (click)="toggleQuoteConnectionCreateState()"></i>
-                        <i [ngClass]="{'fa icon': true, 'fa-check': inQuoteConnectionCreateState}" (click)="createQuoteConnection()"></i>
+                        <i [ngClass]="{'fa icon': true, 'fa-check': inQuoteConnectionCreateState, 'd-none': !userHasCreatePermission()}" (click)="createQuoteConnection()"></i>
                     </div>
                 </div>
             </div>
@@ -41,9 +41,9 @@
         <!-- Quote Refresh/Create/Edit/Delete Icons -->
         <div class="icon-container hide-icon mt-1" *ngIf="!inDeleteState; else deleteRequest">
             <i class="fa fa-refresh fa-1-5x icon mx-3" (click)="getNextRandomQuote()"></i>
-            <i class="fa fa-pencil fa-1-5x icon mx-3" (click)="toggleEditState()"></i>
-            <i class="fa fa-plus fa-1-5x icon mx-3" (click)="toggleCreateState()"></i>
-            <i class="fa fa-trash fa-1-5x icon mx-3" (click)="inDeleteState=true"></i>
+            <i class="fa fa-pencil fa-1-5x icon mx-3" [ngClass]="{'d-none': !userHasUpdatePermission()}" (click)="toggleEditState()"></i>
+            <i class="fa fa-plus fa-1-5x icon mx-3" [ngClass]="{'d-none': !userHasCreatePermission()}" (click)="toggleCreateState()"></i>
+            <i class="fa fa-trash fa-1-5x icon mx-3" [ngClass]="{'d-none': !userHasDeletePermission()}" (click)="inDeleteState=true"></i>
         </div>
     </div>
 </div>

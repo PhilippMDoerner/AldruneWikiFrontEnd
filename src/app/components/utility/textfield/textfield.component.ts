@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-textfield',
   templateUrl: './textfield.component.html',
   styleUrls: ['./textfield.component.scss']
 })
-export class TextfieldComponent implements OnInit, OnChanges {
+export class TextfieldComponent extends PermissionUtilityFunctionMixin implements OnInit, OnChanges {
   @Input() initialText: string;
   @Input() heading: string;
   @Output() updateText: EventEmitter<string> = new EventEmitter();
@@ -14,7 +15,7 @@ export class TextfieldComponent implements OnInit, OnChanges {
   isEditState: boolean = false;
   constants = Constants;
 
-  constructor() {  }
+  constructor() { super() }
 
   ngOnInit(): void {
     this.updatedText = this.initialText;

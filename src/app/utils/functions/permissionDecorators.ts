@@ -1,7 +1,8 @@
 import { DecodedTokenPayload } from 'src/app/models/jwttoken';
 import { TokenService } from 'src/app/services/token.service';
+import { Constants } from 'src/app/app.constants';
 
-export function CurrentUserHasPermissions(requiredPermissions: string[]){
+export function CurrentUserHasPermissions(requiredPermissions: string[]): Function{
     /**Decorator to execute hasPermissions before the actual function. The original function shall
      * Only run if the user has the required permissions */
     return function(target: any, propertyKey: string, descriptor: PropertyDescriptor){
@@ -40,4 +41,44 @@ function getCurrentUserPermissions(): string[]{
 
     const decodedAccessToken: DecodedTokenPayload = TokenService.decodeTokenPayload(currentUserAccessToken);
     return decodedAccessToken.permissions;
+}
+
+//DO NOT USE THIS YET. This decorator is perfectly functional, but it's typing is not yet supported by Typescript!
+//Once Typescript supports this you can replace uses of the below PermissionUtilityFunctionMixin with this decorator
+export function AddPermissionUtilityFunctions(): Function {
+    return (target: Function) => {
+        target.prototype.userHasUpdatePermission = () => {
+            return hasPermissions([Constants.apiUpdatePermission]);
+        }
+
+        target.prototype.userHasViewPermission = () => {
+            return hasPermissions([Constants.apiViewPermission]);
+        }
+
+        target.prototype.userHasDeletePermission = () => {
+            return hasPermissions([Constants.apiDeletePermission]);
+        }
+
+        target.prototype.userHasCreatePermission = () => {
+            return hasPermissions([Constants.apiCreatePermission]);
+        }
+    }
+}
+
+export class PermissionUtilityFunctionMixin{
+    userHasUpdatePermission = () => {
+        return hasPermissions([Constants.apiUpdatePermission]);
+    }
+
+    userHasViewPermission = () => {
+        return hasPermissions([Constants.apiViewPermission]);
+    }
+
+    userHasDeletePermission = () => {
+        return hasPermissions([Constants.apiDeletePermission]);
+    }
+
+    userHasCreatePermission = () => {
+        return hasPermissions([Constants.apiCreatePermission]);
+    } 
 }

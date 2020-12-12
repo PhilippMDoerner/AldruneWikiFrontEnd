@@ -23,9 +23,9 @@
 
         <!-- Image Edit/Delete/Create Buttons -->
         <div class="edit-image-buttons">
-            <i class="fa fa-plus-square-o fa-2x icon" aria-hidden="true" (click)="enableCreateState()"></i>
-            <i class="fa fa-pencil fa-2x icon" aria-hidden="true" (click)="enableUpdateState()"></i>
-            <i [ngClass]="{'fa fa-trash fa-2x icon': true, 'd-none': isLastImage()}" aria-hidden="true" (click)="enableDeleteState()"></i>
+            <i class="fa fa-plus-square-o fa-2x icon" [ngClass]="{'d-none': !userHasCreatePermission()}"  aria-hidden="true" (click)="enableCreateState()"></i>
+            <i class="fa fa-pencil fa-2x icon" [ngClass]="{'d-none': !userHasUpdatePermission()}" aria-hidden="true" (click)="enableUpdateState()"></i>
+            <i [ngClass]="{'fa fa-trash fa-2x icon': true, 'd-none': isLastImage() || !userHasDeletePermission()}" aria-hidden="true" (click)="enableDeleteState()"></i>
         </div>
 
     </div>

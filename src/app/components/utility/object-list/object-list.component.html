@@ -3,7 +3,7 @@
     <!-- Heading -->
     <h4>
         {{heading}}
-        <i class="fa fa-plus icon ml-1" routerLink="{{createLink}}"></i>
+        <i class="fa fa-plus icon ml-1" routerLink="{{createLink}}" [ngClass]="{'d-none': !userHasCreatePermission()}"></i>
     </h4>
     <!-- List -->
     <ul>

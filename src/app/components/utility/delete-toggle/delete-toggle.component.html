@@ -1,4 +1,4 @@
-<div class="float-right">
+<div class="float-right" [ngClass]="{'d-none': !userHasDeletePermission()}">
     <div *ngIf="!isInDeleteState" class="btn btn-outline-danger" (click)="toggleDeleteState()">
         <i class="fa fa-trash"></i>
     </div>

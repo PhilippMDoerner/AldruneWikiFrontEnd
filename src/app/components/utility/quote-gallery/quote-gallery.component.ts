@@ -11,6 +11,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { QuoteConnectionService } from 'src/app/services/quote-connection.service';
 import { QuoteService } from 'src/app/services/quote.service';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-quote-gallery',
@@ -18,7 +19,7 @@ import { QuoteService } from 'src/app/services/quote.service';
   styleUrls: ['./quote-gallery.component.scss']
 })
 
-export class QuoteGalleryComponent implements OnInit {
+export class QuoteGalleryComponent extends PermissionUtilityFunctionMixin implements OnInit {
   constants: any = Constants;
   quote: Quote;
   quote_subscription: Subscription;
@@ -47,7 +48,7 @@ export class QuoteGalleryComponent implements OnInit {
     private formlyService: MyFormlyService,
     private quoteConnectionservice: QuoteConnectionService,
     private overviewService: OverviewService,
-  ) { }
+  ) { super() }
 
   ngOnInit(): void {
     this.getNextRandomQuote()

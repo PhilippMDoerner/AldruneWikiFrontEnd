@@ -1,4 +1,4 @@
-<h4>Encounters <i class="fa fa-plus icon ml-1" (click)="toggleEncounterCreateState()"></i></h4>
+<h4>Encounters <i class="fa fa-plus icon ml-1" (click)="toggleEncounterCreateState()" [ngClass]="{'d-none': !userHasCreatePermission()}"></i></h4>
 <div class="encounter-list mb-5 mt-3" *ngIf="!isEncounterCreateState && !isEncounterUpdateState; else EncounterForm">
     <ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)">
         <ngb-panel id="static-{{i}}" *ngFor="let encounter of encounters; let i = index">
@@ -18,7 +18,8 @@
 
             <!-- Panel Content -->
             <ng-template ngbPanelContent>
-                <div class="btn btn-secondary float-right" (click)="fullEditEncounter(encounter)">
+                <!-- Edit Toggler -->
+                <div class="btn btn-secondary float-right" (click)="fullEditEncounter(encounter)" [ngClass]="{'d-none': !userHasUpdatePermission()}">
                     <i class="fa fa-pencil"></i>
                 </div>
 
@@ -37,22 +38,23 @@
                     <div class="d-inline-flex align-items-center flex-wrap">
                         <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections">
                             <a routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{connection.character_details.name}}">{{ connection.character_details.name }}</a>
-                            <i class="fa fa-trash icon ml-1" (click)="deleteEncounterConnection(encounter, connection)"></i>
+                            <i class="fa fa-trash icon ml-1" (click)="deleteEncounterConnection(encounter, connection)" [ngClass]="{'d-none': !userHasDeletePermission()}"></i>
                         </span>
                         <form [ngClass]="{'d-none':!inEncounterConnectionCreationState, 'd-inline-block': inEncounterConnectionCreationState}">
                             <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
                                 <option *ngFor="let character of characters" value="{{character.pk}}">{{character.name}}</option>
                             </select>
                         </form>
-
-                        <i [ngClass]="{'fa icon mx-2': true, 'fa-plus': !inEncounterConnectionCreationState, 'fa-times': inEncounterConnectionCreationState}"
-                        (click)="toggleEncounterConnectionCreationState()"></i>
-                        <i [ngClass]="{'fa icon': true, 'fa-check': inEncounterConnectionCreationState}" (click)="createEncounterConnection(encounter)"></i>
+                        <div [ngClass]="{'d-none': !userHasCreatePermission()}">
+                            <i [ngClass]="{'fa icon mx-2': true, 'fa-plus': !inEncounterConnectionCreationState, 'fa-times': inEncounterConnectionCreationState}"
+                            (click)="toggleEncounterConnectionCreationState()"></i>
+                            <i [ngClass]="{'fa icon': true, 'fa-check': inEncounterConnectionCreationState}" (click)="createEncounterConnection(encounter)"></i>    
+                        </div>
                     </div>
                 </div>
 
-                <!-- Encounter Footer -->
-                <div class="float-right mb-3">
+                <!-- Encounter Footer/Delete Toggle -->
+                <div class="float-right mb-3" [ngClass]="{'d-none': !userHasDeletePermission()}">
                     <div *ngIf="!isEncounterDeleteState" class="btn btn-outline-danger" (click)="toggleEncounterDeleteState()">
                         <i class="fa fa-trash"></i>
                     </div>
