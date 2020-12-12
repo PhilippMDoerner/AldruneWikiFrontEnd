@@ -5,13 +5,14 @@ import { Subject, Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { Constants } from "src/app/app.constants";
 import { first } from 'rxjs/operators';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 @Component({
   selector: 'app-character-article',
   templateUrl: './character-article.component.html',
   styleUrls: ['./character-article.component.scss']
 })
 
-export class CharacterArticleComponent implements OnInit, OnDestroy {
+export class CharacterArticleComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
   constants: any = Constants;
   character: CharacterObject;
   confirmationModal: Subject<void> = new Subject<void>();
@@ -23,7 +24,7 @@ export class CharacterArticleComponent implements OnInit, OnDestroy {
     private characterService: CharacterService,
     private route: ActivatedRoute,
     private router: Router
-    ) {}
+    ) { super() }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe( params => {

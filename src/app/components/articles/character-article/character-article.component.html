@@ -10,6 +10,7 @@
             <span *ngIf="character.title">{{ character.title }} - </span>
             {{ character.name }}
         </h1>
+
         <!-- Subheadings -->
         <div class="text-center mb-3 subheading">
             <!-- Organization -->
@@ -22,6 +23,7 @@
                     </a>
                 </span> 
             </div>
+
             <!-- Current Location -->
             <div *ngIf="character.current_location">
                 Last known location:
@@ -57,10 +59,12 @@
 
         <!-- Items -->
         <div class="mb-5">
-            <app-object-list    [articleType]="'item'" 
+            <app-object-list    
+            [articleType]="'item'" 
             [createLink]="constants.getRoutePath(router, 'item-character-create', {character_name: character.name})"
             [heading]="'Items of Note'"
-            [items]="character.items"></app-object-list>
+            [items]="character.items"
+            ></app-object-list>
         </div>
 
         <!-- Encounters -->

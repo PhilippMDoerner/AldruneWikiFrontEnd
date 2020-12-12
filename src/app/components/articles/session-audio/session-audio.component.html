@@ -32,7 +32,11 @@
                 Session {{priorSessionAudio.sessionNumber}}
             </a>
 
-            <div class="btn btn-primary mr-auto ml-auto" (click)="createTimestampEventSubject.next(this.vimePlayer.currentTime)">
+            <div 
+            class="btn btn-primary mr-auto ml-auto" 
+            [ngClass]="{'d-none': !userHasCreatePermission()}" 
+            (click)="createTimestampEventSubject.next(this.vimePlayer.currentTime)"
+            >
                 Add Timestamp <i class="fa fa-clock-o ml-1"></i>
             </div>
 
@@ -44,6 +48,7 @@
             </a>
         </div>
 
+        <!-- Timestamp List -->
         <app-timestamp-list 
         [timestamps]="timestamps"
         [sessionAudio]="sessionAudio"

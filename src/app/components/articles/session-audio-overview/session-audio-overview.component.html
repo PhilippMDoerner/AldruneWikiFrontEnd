@@ -24,13 +24,14 @@
                 </div>
 
                 <!-- Add Session Audio card -->
-                <div class="col-lg-3">
+                <div class="col-lg-3" [ngClass]="{'d-none': !userHasCreatePermission()}">
                     <div class="card my-3 h-87 pointer add-icon-card" routerLink="create">
                         <div class="card-body d-flex justify-content-center align-items-center">
                             <i class="fa fa-5x icon fa-plus-square-o" aria-hidden="true"></i> 
                         </div>
                     </div>
                 </div>
+
             </div>
 
         </div>

@@ -1,6 +1,6 @@
 <div *ngIf="!isInDeleteState; else deleteRequest" class="row">
     <div class="col-1 d-flex align-items-center justify-content-center">
-        <i class="icon fa fa-trash delete-timestamp" (click)="toggleDeleteState()"></i>
+        <i class="icon fa fa-trash delete-timestamp" [ngClass]="{'d-none': !userHasDeletePermission()}" (click)="toggleDeleteState()"></i>
     </div>
     <a (click)="vimePlayer.currentTime=timestamp.time" class="timestamp pointer col-2 text-align-center"> 
         {{timeToString(timestamp.time)}} 

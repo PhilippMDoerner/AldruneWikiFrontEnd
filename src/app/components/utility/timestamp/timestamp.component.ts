@@ -2,13 +2,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { TimestampObject } from 'src/app/models/timestamp';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-timestamp',
   templateUrl: './timestamp.component.html',
   styleUrls: ['./timestamp.component.scss']
 })
-export class TimestampComponent implements OnInit {
+export class TimestampComponent extends PermissionUtilityFunctionMixin implements OnInit {
   @Input() timestamp: TimestampObject;
   @Input() vimePlayer: any;
   @Output() timestampDelete: EventEmitter<TimestampObject> = new EventEmitter();
@@ -16,7 +17,7 @@ export class TimestampComponent implements OnInit {
 
   constructor(
     private timestampService: SessionAudioTimestampService,
-  ) { }
+  ) { super() }
 
   ngOnInit(): void {
   }

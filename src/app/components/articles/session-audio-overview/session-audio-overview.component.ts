@@ -5,13 +5,14 @@ import { Constants } from 'src/app/app.constants';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { SessionAudio } from 'src/app/models/sessionaudio';
 import { OverviewService } from 'src/app/services/overview.service';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-session-audio-overview',
   templateUrl: './session-audio-overview.component.html',
   styleUrls: ['./session-audio-overview.component.scss']
 })
-export class SessionAudioOverviewComponent implements OnInit, OnDestroy {
+export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
   constants: any = Constants;
 
   sessionAudioFiles: OverviewItem[];
@@ -21,7 +22,7 @@ export class SessionAudioOverviewComponent implements OnInit, OnDestroy {
   constructor(
     private overviewService: OverviewService,
     private router: Router, //Only used in template
-  ) { }
+  ) { super() }
 
   ngOnInit(): void {
     this.sessionaudio_subscription = this.overviewService.getOverviewItems('sessionaudio').subscribe(sessionAudioFiles =>{

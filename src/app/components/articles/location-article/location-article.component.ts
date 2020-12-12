@@ -5,12 +5,13 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Location } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 @Component({
   selector: 'app-location-article',
   templateUrl: './location-article.component.html',
   styleUrls: ['./location-article.component.scss']
 })
-export class LocationArticleComponent implements OnInit {
+export class LocationArticleComponent extends PermissionUtilityFunctionMixin implements OnInit {
   constants: any = Constants;
   location: Location;
   articleType: string = 'location';
@@ -21,7 +22,7 @@ export class LocationArticleComponent implements OnInit {
     private locationService: LocationService,
     private route: ActivatedRoute,
     private router: Router
-  ) { }
+  ) { super() }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {

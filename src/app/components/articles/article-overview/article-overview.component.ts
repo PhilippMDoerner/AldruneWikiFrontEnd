@@ -5,13 +5,14 @@ import { Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { OverviewService } from 'src/app/services/overview.service';
 import { Constants } from 'src/app/app.constants';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-article-overview',
   templateUrl: './article-overview.component.html',
   styleUrls: ['./article-overview.component.scss'],
 })
-export class ArticleOverviewComponent implements OnInit, OnDestroy {
+export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
   listItems: OverviewItem[];
   listItemArray: Array<OverviewItem>;
   constants: any = Constants;
@@ -37,7 +38,7 @@ export class ArticleOverviewComponent implements OnInit, OnDestroy {
   constructor(
     private overviewService: OverviewService,
     private router: Router
-  ) { }
+  ) { super() }
 
   ngOnInit(): void {
     const urlSplit: string[] = this.router.url.split('/');

@@ -14,6 +14,7 @@
             })
         }}"
         class="btn btn-outline-secondary float-right mr-4"
+        [ngClass]="{'d-none': !userHasCreatePermission()}"
         >
             Add Marker
         </a>
@@ -72,7 +73,8 @@
         </div>
 
         <!-- Locations of Interest -->
-        <h4>Locations of Interest <i class="fa fa-plus icon ml-1" routerLink="create"></i></h4>
+        <!-- TODO: Add Heading to location accordion -->
+        <h4>Locations of Interest <i class="fa fa-plus icon ml-1" [ngClass]="{'d-none': !userHasCreatePermission()}" routerLink="create"></i></h4>
         <div class="encounter-list mb-5 mt-3">
             <app-location-accordion 
             [sublocations]="location.sublocations"
@@ -91,7 +93,7 @@
             Back to locations
         </a>
         <a 
-        *ngIf="location.parent_location_details.name !== constants.NONE_STRING"
+        *ngIf="location.parent_location_details.name && location.parent_location_details.name !== constants.NONE_STRING"
         routerLink="{{constants.getRoutePath(router, 'location', {
                 parent_name: location.parent_location_details.paren_location, 
                 name: location.parent_location_details.name

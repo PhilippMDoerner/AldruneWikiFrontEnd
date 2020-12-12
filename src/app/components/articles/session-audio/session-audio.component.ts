@@ -7,6 +7,7 @@ import { SessionAudio } from 'src/app/models/sessionaudio';
 import { Timestamp } from 'src/app/models/timestamp';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 
 @Component({
@@ -15,7 +16,7 @@ import { SessionAudioService } from 'src/app/services/session-audio.service';
   styleUrls: ['./session-audio.component.scss']
 })
 
-export class SessionAudioComponent implements OnInit, OnDestroy {
+export class SessionAudioComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
   constants: any = Constants;
 
   sessionAudio: SessionAudio;
@@ -36,7 +37,7 @@ export class SessionAudioComponent implements OnInit, OnDestroy {
     private router: Router,
     private sessionAudioService: SessionAudioService,
     private timestampService: SessionAudioTimestampService,
-    ) { }
+    ) { super() }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
