@@ -20,7 +20,7 @@ export class JWTInterceptor implements HttpInterceptor{
             if (!this.tokenService.hasValidJWTToken()){
                 return this.handleByRoutingToLogin(request, next);
             }
-            const accessToken = this.tokenService.getAccessToken();
+            const accessToken = TokenService.getAccessToken();
             if (this.refreshTokenService.tokenNeedsRefresh(accessToken)){
                 return this.handleByRefreshingAccessToken(request, next);
             }

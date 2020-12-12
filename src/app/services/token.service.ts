@@ -37,12 +37,22 @@ export class TokenService {
     return !this.isTokenExpired(this.getRefreshToken());
   }
 
-  public getAccessToken(): string{
+  //Exists for permissionDecorator.ts
+  public static getAccessToken(): string{
     return localStorage.getItem(Constants.accessTokenKey);
   }
 
-  public getRefreshToken(): string{
+  private getAccessToken(): string{
+    return TokenService.getAccessToken();
+  }
+
+  //Exists for permissionDecorator.ts
+  public static getRefreshToken(): string{
     return localStorage.getItem(Constants.refreshTokenKey);
+  }
+
+  private getRefreshToken(): string{
+    return TokenService.getRefreshToken();
   }
 
   public refreshToken(): Observable<EncodedJWTToken>{
@@ -74,9 +84,14 @@ export class TokenService {
     localStorage.setItem(Constants.refreshTokenKey, token);
   }
 
-  public decodeTokenPayload(token: string): DecodedTokenPayload{
+  //Exists for permissionDecorator.ts
+  public static decodeTokenPayload(token: string): DecodedTokenPayload{
     const [encodedHeader, encodedPayload, encodedSignature]: string[] = token.split('.');
     return JSON.parse(atob(encodedPayload));
+  }
+
+  private decodeTokenPayload(token: string): DecodedTokenPayload{
+    return TokenService.decodeTokenPayload(token);
   }
 
   public getCurrentUserPk(): number{
