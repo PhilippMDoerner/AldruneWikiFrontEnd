@@ -58,7 +58,6 @@ export class PermissionGuardService implements CanActivate{
 
   getCurrentUserPermissions(): string[]{
     const currentUserAccessToken: string = TokenService.getAccessToken();
-    console.log(currentUserAccessToken);
     if (currentUserAccessToken === null){
       return [];
     }
