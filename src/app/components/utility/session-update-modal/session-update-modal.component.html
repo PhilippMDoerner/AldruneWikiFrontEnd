@@ -9,11 +9,11 @@
 
     <!-- Body -->
     <div class="modal-body">
-        <div class="mb-5" *ngIf="model; else loading">        
+        <div class="mb-1" *ngIf="model; else loading">        
             <!-- Form -->
             <form [formGroup]="form">
                 <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-                <div class="btn btn-dark mr-3" (click)="modal.close()">Cancel</div>
+                <div class="btn btn-secondary mr-3" (click)="modal.close()">Cancel</div>
                 <div class="btn btn-secondary" (click)="onSubmit(modal)">Submit</div>
             </form>
         </div>
@@ -23,6 +23,14 @@
 </ng-template>
 
 <div class="form-group mx-2">
-    <div *ngIf="formState===constants.updateState" class="btn btn-outline-info fa {{icon}}" title="Edit selected Session" (click)="open(content)"></div>
+    <!-- Button to show in Create State -->
     <div *ngIf="formState===constants.createState" class="btn btn-outline-info fa {{icon}}" title="Create new Session" (click)="open(content)"></div>    
+    <!-- Button to show in Update State -->
+    <div 
+    *ngIf="formState===constants.updateState" 
+    class="btn btn-outline-info fa {{icon}}" 
+    title="Edit selected Session" 
+    (click)="open(content)"
+    [ngClass]="{'d-none': !model}"
+    ></div>
 </div>

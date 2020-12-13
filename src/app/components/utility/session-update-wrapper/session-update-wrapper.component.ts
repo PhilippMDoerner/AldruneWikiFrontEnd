@@ -7,10 +7,5 @@ import { FieldWrapper } from '@ngx-formly/core';
   styleUrls: ['./session-update-wrapper.component.scss']
 })
 
-export class SessionUpdateWrapperComponent extends FieldWrapper{
-  ngOnInit(): void{
-    console.log(this.formControl);
-    console.log(this.form);
-  }
-}
+export class SessionUpdateWrapperComponent extends FieldWrapper{}
 
