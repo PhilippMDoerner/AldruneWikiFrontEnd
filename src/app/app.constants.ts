@@ -5,11 +5,11 @@ export class Constants{
     public static get spaPrefix(): string { return "wiki2";}
 
     // API Urls
-    //public static get wikiUrl(): string { return "https://www.aldrune.com";} //prod backend
-    public static get wikiUrl(): string { return "http://localhost:8000";} //dev backend
+    public static get wikiUrl(): string { return "https://www.aldrune.com";} //prod backend
+    //public static get wikiUrl(): string { return "http://localhost:8000";} //dev backend
     public static get wikiSPAUrl(): string{ return `${this.wikiUrl}/${this.spaPrefix}`;}
-    //public static get wikiApiUrl(): string { return `${this.wikiUrl}/${this.apiPrefix}/api`;} //prod backend
-    public static get wikiApiUrl(): string { return `${this.wikiUrl}/api`;} //dev backend
+    public static get wikiApiUrl(): string { return `${this.wikiUrl}/${this.apiPrefix}/api`;} //prod backend
+    //public static get wikiApiUrl(): string { return `${this.wikiUrl}/api`;} //dev backend
 
     public static get wikiStaticUrl(): string { return `${this.wikiUrl}/static`;}
     public static get wikiMediaUrl(): string { return `${this.wikiUrl}/media`;}
