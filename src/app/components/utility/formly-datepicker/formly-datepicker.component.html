@@ -9,7 +9,16 @@
 
     <!-- Input -->
     <div class="input-group">
-        <input class="form-control" placeholder="yyyy-mm-dd" name="datepicker" [formControl]="formControl" [formlyAttributes]="field" ngbDatepicker #datepickerInput="ngbDatepicker">
+        <input 
+        class="form-control" 
+        placeholder="yyyy-mm-dd" 
+        name="datepicker" 
+        [formControl]="formControl" 
+        [formlyAttributes]="field" 
+        ngbDatepicker 
+        #datepickerInput="ngbDatepicker"
+        (dateSelect)="inputDateToField($event)"
+        >
         <div class="input-group-append">
             <div class="btn btn-outline-light fa fa-calendar" (click)="datepickerInput.toggle()"></div>
         </div>

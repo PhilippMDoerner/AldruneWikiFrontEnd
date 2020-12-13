@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { delay, filter, first, tap } from 'rxjs/operators';
@@ -77,13 +77,14 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
     return date.toISOString().slice(0,10);
   }
 
-  onSubmit(): void{
+  onSubmit(modal: NgbActiveModal): void{
     const isFormInUpdateState: boolean = this.formState === Constants.updateState;
     const responseObservable: Observable<SessionObject> = (isFormInUpdateState) ? this.sessionService.updateSession(this.model) : this.sessionService.createSession(this.model);
 
     responseObservable.pipe(first()).subscribe(session =>{
       const emitter: EventEmitter<SessionObject> = (this.formState === Constants.updateState) ? this.updateSession : this.createSession;
       emitter.emit(session);
+      modal.close();
     });
   }
 

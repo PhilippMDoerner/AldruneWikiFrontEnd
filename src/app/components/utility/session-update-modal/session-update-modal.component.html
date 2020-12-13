@@ -14,7 +14,7 @@
             <form [formGroup]="form">
                 <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
                 <div class="btn btn-dark mr-3" (click)="modal.close()">Cancel</div>
-                <div class="btn btn-secondary" (click)="onSubmit()">Submit</div>
+                <div class="btn btn-secondary" (click)="onSubmit(modal)">Submit</div>
             </form>
         </div>
         <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
