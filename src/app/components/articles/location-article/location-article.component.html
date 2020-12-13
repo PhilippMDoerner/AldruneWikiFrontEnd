@@ -95,7 +95,7 @@
         <a 
         *ngIf="location.parent_location_details.name && location.parent_location_details.name !== constants.NONE_STRING"
         routerLink="{{constants.getRoutePath(router, 'location', {
-                parent_name: location.parent_location_details.paren_location, 
+                parent_name: location.parent_location_details.parent_location, 
                 name: location.parent_location_details.name
             })
         }}"
