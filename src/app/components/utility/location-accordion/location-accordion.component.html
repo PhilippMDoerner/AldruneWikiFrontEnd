@@ -1,3 +1,5 @@
+<h4>Locations of Interest <i class="fa fa-plus icon ml-1" [ngClass]="{'d-none': !userHasCreatePermission()}" routerLink="create"></i></h4>
+
 <ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)">
     <ngb-panel id="static-{{i}}" *ngFor="let location of sublocations; let i = index">
         <!-- Header -->

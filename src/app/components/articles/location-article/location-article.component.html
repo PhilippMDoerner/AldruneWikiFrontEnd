@@ -73,8 +73,6 @@
         </div>
 
         <!-- Locations of Interest -->
-        <!-- TODO: Add Heading to location accordion -->
-        <h4>Locations of Interest <i class="fa fa-plus icon ml-1" [ngClass]="{'d-none': !userHasCreatePermission()}" routerLink="create"></i></h4>
         <div class="encounter-list mb-5 mt-3">
             <app-location-accordion 
             [sublocations]="location.sublocations"

@@ -1,18 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
 import { Location, SubLocation } from 'src/app/models/location';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-location-accordion',
   templateUrl: './location-accordion.component.html',
   styleUrls: ['./location-accordion.component.scss']
 })
-export class LocationAccordionComponent implements OnInit {
+export class LocationAccordionComponent extends PermissionUtilityFunctionMixin implements OnInit {
   constants: any = Constants;
   @Input() sublocations: SubLocation[];
   isOpen: object;
 
-  constructor() { }
+  constructor() { super() }
 
   ngOnInit(): void {
     this.isOpen = {};
