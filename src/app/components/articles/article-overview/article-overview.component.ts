@@ -14,7 +14,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 })
 export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
   listItems: OverviewItem[];
-  listItemArray: Array<OverviewItem>;
+
   constants: any = Constants;
   overviewImages = {
     character: `${this.constants.wikiStaticUrl}/frontpage/images/pic01.jpg`,
@@ -47,10 +47,6 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     const listItemObs: Observable<OverviewItem[]> = this.overviewService.getOverviewItems(this.overviewType);
     this.listItemSubscription = listItemObs.subscribe((listItems: OverviewItem[]) => {
       this.listItems = listItems;
-      this.listItemArray = [];
-      for(let item of listItems){
-        this.listItemArray.push(item);
-      }
     }, error =>{
       console.log(error);
       if (error.status === 403){
