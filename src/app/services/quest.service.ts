@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Constants } from '../app.constants';
-import { OverviewItem } from '../models/overviewItem';
+import { OverviewItem, OverviewItemObject } from '../models/overviewItem';
 import { Quest, QuestObject } from '../models/quest';
 import { TransformArrayObservable, TransformObservable } from '../utils/functions/transform';
 import { CharacterService } from './character/character.service';
@@ -27,7 +27,8 @@ export class QuestService {
   getQuestStates(): Observable<string[]>{
     return this.http.get<string[]>(`${this.questUrl}states`);
   }
-// TODO: Create an Object to apply a transformation for this
+
+  @TransformArrayObservable(OverviewItemObject)
   getQuestTakers(): Observable<OverviewItem[]>{
     const playerCharacterObservable: Observable<OverviewItem[]> = this.characterService.getPlayerCharacters();
     return playerCharacterObservable.pipe(map( characters => {
