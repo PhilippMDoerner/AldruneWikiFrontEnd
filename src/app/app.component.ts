@@ -14,12 +14,12 @@ export class AppComponent {
   ){}
   title = 'frontend';
 
-  routeToBackground(event: any){
+  routeToHome(event: any){
     if (event.target.attributes.id){
       const clickTargetId = event.target.attributes.id.nodeValue;
       if (clickTargetId === "background-div"){
-        // TODO: Replace this URL with one generated via RoutePath
-        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}`);
+        const homeUrl: string = Constants.getRoutePath(this.router, 'home2')
+        this.router.navigateByUrl(homeUrl);
       }
     }
   }
