@@ -16,7 +16,7 @@
             <ul class="mb-5">
                 <span *ngFor="let item of listItems">
                     <li *ngIf="item.player_character">
-                        <a routerLink="{{constants.getRoutePath(router, 'character', {name: item.name }) }}">
+                        <a routerLink="{{ item.getAbsoluteRouterUrl() }}">
                             {{ item.name_full }}
                         </a> 
                     </li>
@@ -47,7 +47,7 @@
                         *ngIf="!characterEntry.player_character"
                         [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                         >
-                            <a routerLink="{{ constants.getRoutePath(router, 'character', {name: characterEntry.name}) }}"> 
+                            <a routerLink="{{ characterEntry.getAbsoluteRouterUrl() }}"> 
                                 {{characterEntry.name_full}}
                             </a>
                         </li>
@@ -58,26 +58,23 @@
 
         <!-- DiaryEntry Overview -->
         <div *ngIf="overviewType===diaryentryOverview">
-            <h4 class="mb-4"> DiaryEntries </h4>
-
-            <div *ngFor="let authorDiaryEntries of listItems | groupBy: 'author'">
+            <div *ngFor="let authorDiaryEntries of listItems | groupBy: 'author_details.name'">
                 <h5 [ngClass]="{'d-none': filter.value}"> {{ authorDiaryEntries.key }} </h5>
                 <ul>
                     <li 
                     *ngFor="let diaryEntry of authorDiaryEntries.value"
                     [ngClass]="{'d-none': !diaryEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                     >
-                        <a routerLink="{{constants.getRoutePath(router, 'diaryentry', {sessionNumber: diaryEntry.session_number, isMainSession: diaryEntry.is_main_session_int, authorName: diaryEntry.author})}}">
+                        <a routerLink="{{ diaryEntry.getAbsoluteRouterUrl()}}">
                             {{buildDiaryEntryNameForList(diaryEntry)}}
                         </a>
                     </li>
                 </ul>
             </div>
         </div>
-
-        <!-- Location Overview -->
-        <div *ngIf="overviewType===locationOverview">
-            <h4> Location </h4>
+        
+        <!-- Item/Creature/Organization/Location Overview -->
+        <div *ngIf="overviewType===itemOverview || overviewType===creatureOverview || overviewType===organizationOverview || overviewType===locationOverview">
             <div *ngFor="let itemLetterEntries of listItems | groupByFirstLetter: 'name_full'">
                 <h5 [ngClass]="{'d-none': filter.value}"> {{ itemLetterEntries.key }} </h5>
                 <ul>
@@ -85,52 +82,7 @@
                     *ngFor="let item of itemLetterEntries.value"
                     [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                     >
-                        <a 
-                        *ngIf="item.parent_location_name" 
-                        routerLink="{{ 
-                            constants.getRoutePath(router, 'location', {
-                                name: item.name, 
-                                parent_name: item.parent_location_name
-                            }) 
-                        }}"
-                        > 
-                            {{item.name_full}} 
-                        </a>
-                        <a 
-                        *ngIf="!item.parent_location_name" 
-                        routerLink="{{ 
-                            constants.getRoutePath(router, 'location', {
-                                name: item.name,
-                                parent_name: constants.NONE_STRING
-                            })
-                        }}"
-                        > 
-                            {{item.name_full}}
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        
-        <!-- Item/Creature/Organization Overview -->
-        <div *ngIf="overviewType===itemOverview || overviewType===creatureOverview || overviewType===organizationOverview">
-            <h4 *ngIf="overviewType===itemOverview"> Item </h4>
-            <h4 *ngIf="overviewType===creatureOverview"> Creature </h4>
-
-            <div *ngFor="let itemLetterEntries of listItems | groupByFirstLetter: 'name'">
-                <h5 [ngClass]="{'d-none': filter.value}"> {{ itemLetterEntries.key }} </h5>
-                <ul>
-                    <li 
-                    *ngFor="let item of itemLetterEntries.value"
-                    [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
-                    >
-                        <a *ngIf="overviewType===itemOverview" routerLink="{{ constants.getRoutePath(router, 'item', {name: item.name}) }}">
-                            {{item.name_full}}
-                        </a>
-                        <a *ngIf="overviewType===creatureOverview" routerLink="{{ constants.getRoutePath(router, 'creature', {name: item.name}) }}">
-                            {{item.name_full}}
-                        </a>
-                        <a *ngIf="overviewType===organizationOverview" routerLink="{{ constants.getRoutePath(router, 'organization', {name: item.name}) }}">
+                        <a routerLink="{{ item.getAbsoluteRouterUrl() }}">
                             {{item.name_full}}
                         </a>
                     </li>

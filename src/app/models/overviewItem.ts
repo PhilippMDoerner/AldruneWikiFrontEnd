@@ -14,21 +14,22 @@ import { TimestampObject } from './timestamp';
 import { MapMarkerObject } from './mapmarker';
 
 export interface OverviewItem{
-    name: string,
     article_type: string,
+    name: string,
     pk: number,
     name_full: string,
-    player_character?: boolean,
-    parent_location_name?: string,
-    session_details?: Session,
-    download_url?: string,
-    //For Diaryentry-Type OverviewItems
-    author?: string,
-    start_day?: number,
-    end_day?: number,
-    is_main_session_int?: number,
-    session_number?: number,
+    description?: string,
+    update_date?: string,
 
+    //For Character-Type OverviewItems
+    player_character?: boolean,
+
+    //For Location-Type OverviewItems
+    parent_location_details?: {name: string, pk: number},
+
+    //For Diaryentry-Type OverviewItems
+    session_details?: Session,
+    author_details?: {pk: number, name: string}
 }
 
 export class OverviewItemObject implements OverviewItem{
@@ -36,12 +37,25 @@ export class OverviewItemObject implements OverviewItem{
         if (object) Object.assign(this, object);
     }
 
-    name: string;
     article_type: string;
+    name: string;
     pk: number;
     name_full: string;
+    description: string;
+    update_date?: string;
+
+    //For Character-Type OverviewItems
+    player_character?: boolean;
+
+    //For Location-Type OverviewItems
+    parent_location_details?: {name: string, pk: number};
+
+    //For Diaryentry-Type OverviewItems
+    session_details?: Session;
+    author_details?: {pk: number, name: string};
 
     getAbsoluteRouterUrl(): string{
+        if (!this.article_type) throw "Can not generate URL for undefined article_type";
         const ArticleClass = ArticleTypeToObjectClassMapping[this.article_type]
         const articleObject = new ArticleClass(this);
         return articleObject.getAbsoluteRouterUrl();

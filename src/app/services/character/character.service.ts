@@ -3,7 +3,7 @@ import { Constants } from "src/app/app.constants";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Character, CharacterObject } from "src/app/models/character";
 import { Observable } from "rxjs";
-import { OverviewItem } from "src/app/models/overviewItem";
+import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
 import { map } from 'rxjs/operators';
 import { TransformObservable, TransformArrayObservable } from "src/app/utils/functions/transform"
 
@@ -29,7 +29,8 @@ export class CharacterService {
     return this.http.get<Character>(url);
   }
 
-  //TODO: Maybe transform this also into some kind of object... who knows
+
+  @TransformArrayObservable(OverviewItemObject)
   getPlayerCharacters(): Observable<OverviewItem[]>{
     const url = `${Constants.wikiApiUrl}/playercharacters`;
     return this.http.get<OverviewItem[]>(url);

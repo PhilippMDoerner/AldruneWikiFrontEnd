@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { OverviewItem } from "src/app/models/overviewItem";
+import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
 import { Router } from '@angular/router';
 
 import { Observable, Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   styleUrls: ['./article-overview.component.scss'],
 })
 export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
-  listItems: OverviewItem[];
+  listItems: OverviewItemObject[];
 
   constants: any = Constants;
   overviewImages = {
@@ -44,8 +44,8 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     const urlSplit: string[] = this.router.url.split('/');
     this.overviewType = urlSplit[urlSplit.length - 1];
 
-    const listItemObs: Observable<OverviewItem[]> = this.overviewService.getOverviewItems(this.overviewType);
-    this.listItemSubscription = listItemObs.subscribe((listItems: OverviewItem[]) => {
+    const listItemObs = this.overviewService.getOverviewItems(this.overviewType);
+    this.listItemSubscription = listItemObs.subscribe((listItems: OverviewItemObject[]) => {
       this.listItems = listItems;
     }, error =>{
       console.log(error);
@@ -66,14 +66,14 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     //This function exists only so that it triggers the NgClass of the listItems in the template
   }
 
-  buildDiaryEntryNameForList(diaryEntry: OverviewItem): string{
+  buildDiaryEntryNameForList(diaryEntry: OverviewItemObject): string{
     const startWithSessionNumber: string = diaryEntry.name_full;
 
     let daysCoveredByEntry: string = "";
-    if(diaryEntry.start_day && diaryEntry.end_day){
+    if(diaryEntry.session_details.start_day && diaryEntry.session_details.end_day){
       const padLength = 3;
-      const startDay: string = this.padNumber(diaryEntry.start_day, padLength, "");
-      const endDay: string = this.padNumber(diaryEntry.end_day, padLength, "");
+      const startDay: string = this.padNumber(diaryEntry.session_details.start_day, padLength, "");
+      const endDay: string = this.padNumber(diaryEntry.session_details.end_day, padLength, "");
       daysCoveredByEntry = `- Days ${startDay}-${endDay}`;
     }
 
