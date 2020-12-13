@@ -53,8 +53,12 @@ export class LocationArticleUpdateComponent implements OnInit {
         this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(location => {
           this.model = new LocationObject();
           this.model.parent_location = location.pk;
-          this.model.parent_location_details.name = location.name;
-          this.model.parent_location_details.parent_location = location.parent_location_details.name;
+          this.model.parent_location_details = {
+            pk: location.pk,
+            name: location.name,
+            parent_location: location.parent_location_details.name,
+            name_full: location.name_full
+          };
         });
       } else if (this.formState === this.constants.createState){
         this.model = new LocationObject();
