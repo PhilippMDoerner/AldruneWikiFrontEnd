@@ -108,9 +108,9 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
     this.model = currentMainImage;
   }
 
-  // TODO: Fix the bug that the image isn't displayed after the update goes through
   updateImage(): void{
     this.imageUploadService.updateImage(this.model).pipe(first()).subscribe((updatedImage: ImageObject) => {
+      updatedImage.image = updatedImage.image.replace(Constants.wikiUrl, ""); //Backend somehow returns ImageObject where ImageObject.image includes the wikiUrl, which it shouldn't
       this.images[this.visibleImageIndex] = updatedImage;
       this.resetImageModel();
 

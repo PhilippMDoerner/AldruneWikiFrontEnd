@@ -71,6 +71,7 @@ import { TimestampListComponent } from './components/utility/timestamp-list/time
 import { TimestampComponent } from './components/utility/timestamp/timestamp.component';
 import { FormlyFormcontainerComponent } from './components/utility/formly-formcontainer/formly-formcontainer.component';
 import { LoginGuardService, PermissionGuardService } from './services/permission.service';
+import { SessionDeleteModalComponent } from './components/utility/session-delete-modal/session-delete-modal.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -131,6 +132,7 @@ import { LoginGuardService, PermissionGuardService } from './services/permission
     TimestampListComponent,
     TimestampComponent,
     FormlyFormcontainerComponent,
+    SessionDeleteModalComponent,
   ],
   imports: [
     BrowserModule,

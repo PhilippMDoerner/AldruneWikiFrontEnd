@@ -37,7 +37,7 @@ import { LoginComponent } from './components/login/login.component';
 import { Constants } from './app.constants';
 import { LoginGuardService,
 		PermissionGuardService } from './services/permission.service';
-//TODO: Implement a way that blocks access if user misses specific rights
+
 const routes: {path: string, component: any, data: {name: string, requiredPermissions?: string[]}, canActivate?: any}[] = [
   //Home Routes
   {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, component: HomeComponent, data:{ name: "home1"}, canActivate: [LoginGuardService]},
