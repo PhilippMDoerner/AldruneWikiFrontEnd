@@ -8,7 +8,7 @@
         </h1>
 
         <!-- Audio Player -->
-        <div class="mt-4 mb-1" (keydown)="print($event)">
+        <div class="mt-4 mb-1" #playerSection>
             <!-- Background Image -->
             <div class="black-background d-flex justify-content-center" (click)="togglePlayer(vimePlayer)">
                 <img class="mw-100 mh-20rem" src="{{constants.wikiStaticUrl}}/fileserver/images/audio_pic.png"/>
