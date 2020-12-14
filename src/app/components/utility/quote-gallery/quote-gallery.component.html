@@ -82,5 +82,7 @@
 
 <!-- Add New Quote Button If Character has no Quote -->
 <ng-template #addNewQuoteButton>
-    <div class="btn btn-dark" (click)="toggleCreateState()">Add Quote</div>
+    <div class="btn btn-dark" [ngClass]="{'d-none': userHasCreatePermission()}" (click)="toggleCreateState()">
+        Add Quote
+    </div>
 </ng-template>
