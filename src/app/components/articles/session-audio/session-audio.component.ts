@@ -28,8 +28,6 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
     "KeyM": this.toggleSound,
     "ArrowRight": this.seekForwards,
     "ArrowLeft": this.seekBackwards,
-    "ArrowUp": this.increaseSound,
-    "ArrowDown": this.decreaseSound
   }
 
   timestamps: Timestamp[];
@@ -41,7 +39,8 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
 
   @ContentChild("audioSource") audioSourceChild: ElementRef;
   @ViewChild("audioSource") audioSourceChild2: ElementRef;
-  @ViewChild("vimePlayer") vimePlayer: any;
+  @ViewChild("vimePlayer") vimePlayer: any; 
+  @ViewChild("playerSection") playerSection: any;
 
   constructor(
     private route: ActivatedRoute,
@@ -89,7 +88,7 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
   playerControls(keyPressEvent){
     if (this.keyAffectsPlayer(keyPressEvent)){
       const controlFunction: Function = this.sessionAudioKeyControlMapping[keyPressEvent.code];
-      controlFunction(this.vimePlayer);
+      controlFunction(this.vimePlayer); //vimePlayer must be passed as an argument, as "this" doesn't work for callbacks
       keyPressEvent.preventDefault();
     }
   }
