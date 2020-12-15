@@ -249,8 +249,6 @@ const routes: {path: string, component: any, data: {name: string, requiredPermis
 		data:{ name: "quest-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-
-  //TODO: Actually implement a session component because why not
   {
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session`,
 		component: HomeComponent,

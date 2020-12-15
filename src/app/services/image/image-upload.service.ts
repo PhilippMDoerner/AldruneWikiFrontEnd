@@ -10,8 +10,7 @@ const httpOptions = {
     "Content-Type": "application/json"
   })
 };
-//TODO: Creating works, but adding to the images list afterwards does not work properly. 
-//TODO: Updating does not work
+
 @Injectable({
   providedIn: 'root'
 })
