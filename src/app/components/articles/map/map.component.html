@@ -9,12 +9,12 @@
                     <option *ngFor="let map of maps" value="{{map.name}}">{{map.name}}</option>
                 </select>
 
-                <button 
+                <div 
                 class="btn btn-sm btn-outline-info" 
                 (click)="routeToMap(mapChoice.value)"
                 >
                     Go to Map
-                </button>
+                </div>
             </form>
 
             <i 
@@ -30,12 +30,12 @@
             ></app-leaflet-map>
         </div>
 
-        <button 
+        <div 
         class="btn btn-dark mr-3" 
         routerLink="{{constants.getRoutePath(router, 'home1')}}"
         >
             Back To Frontpage
-        </button>
+        </div>
         
         <app-delete-toggle 
         (deleteEvent)="deleteMap()"

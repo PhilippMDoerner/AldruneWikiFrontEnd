@@ -64,8 +64,8 @@
         <!-- Form -->
         <form [formGroup]="form">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <button class="btn btn-secondary mr-3" (click)="inCreateState=false; inEditState=false">Cancel</button>
-            <button type="submit" class="btn btn-outline-secondary" (click)="onSubmit()">Submit</button>
+            <div class="btn btn-secondary mr-3" (click)="inCreateState=false; inEditState=false">Cancel</div>
+            <div type="submit" class="btn btn-outline-secondary" (click)="onSubmit()">Submit</div>
         </form>
 
     </blockquote>
@@ -75,8 +75,8 @@
 <ng-template #deleteRequest>
     <div>
         Delete this quote?
-        <button class="btn btn-outline-secondary mr-2" (click)="inDeleteState=false"> No </button>
-        <button class="btn btn-outline-danger" (click)="deleteQuote()"> Yes </button>
+        <div class="btn btn-outline-secondary mr-2" (click)="inDeleteState=false"> No </div>
+        <div class="btn btn-outline-danger" (click)="deleteQuote()"> Yes </div>
     </div>
 </ng-template>
 

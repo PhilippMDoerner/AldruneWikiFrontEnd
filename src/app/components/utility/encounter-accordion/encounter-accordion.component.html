@@ -60,8 +60,8 @@
                     </div>
                     <div *ngIf="isEncounterDeleteState" class="delete-request" id="encounter-delete">
                         <span class="mr-3"> <strong>Delete this encounter?</strong> </span>  
-                        <button class="btn btn-outline-danger float-right mr-2" (click)="deleteEncounter(encounter, i)"> Yes </button>
-                        <button class="btn btn-outline-secondary float-right" (click)="toggleEncounterDeleteState()"> No </button>
+                        <div class="btn btn-outline-danger float-right mr-2" (click)="deleteEncounter(encounter, i)"> Yes </div>
+                        <div class="btn btn-outline-secondary float-right" (click)="toggleEncounterDeleteState()"> No </div>
                     </div>
                 </div>
 
@@ -76,13 +76,13 @@
     <div class="my-3 py-3 px-4 card">
         <form [formGroup]="form" (ngSubmit)="createEncounter(model)" *ngIf="isEncounterCreateState && !isEncounterUpdateState">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <button class="btn btn-secondary mr-3" (click)="toggleEncounterCreateState()">Cancel</button>
-            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+            <div class="btn btn-secondary mr-3" (click)="toggleEncounterCreateState()">Cancel</div>
+            <div type="submit" class="btn btn-outline-secondary">Submit</div>
         </form>         
         <form [formGroup]="form" (ngSubmit)="updateEncounter(model)" *ngIf="!isEncounterCreateState && isEncounterUpdateState">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <button class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</button>
-            <button type="submit" class="btn btn-outline-secondary">Submit</button>
+            <div class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</div>
+            <div type="submit" class="btn btn-outline-secondary">Submit</div>
         </form>    
     </div>
 </ng-template>
