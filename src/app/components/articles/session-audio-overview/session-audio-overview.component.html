@@ -10,11 +10,8 @@
                         <div class="card-header"> 
                             <h4 class="text-center card-title ">{{ sessionAudio.name }}</h4>
                         </div>
+                        <!-- TODO: Fix the download button somehow -->
                         <div class="card-body d-flex justify-content-center flex-column">
-                            <a href="{{constants.wikiUrl}}{{sessionAudio.download_url}}" 
-                                class="text-center btn btn-primary"> 
-                                <strong> Download </strong> 
-                            </a>
                             <a routerLink="{{constants.getRoutePath(router, 'sessionaudio', {isMainSession: sessionAudio.session_details.is_main_session_int, sessionNumber: sessionAudio.session_details.session_number})}}"
                                class="text-center btn btn-primary"> 
                                 <strong> Stream </strong> 

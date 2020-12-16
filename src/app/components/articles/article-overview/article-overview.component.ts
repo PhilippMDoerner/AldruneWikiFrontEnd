@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
+import { OverviewItemObject } from "src/app/models/overviewItem";
 import { Router } from '@angular/router';
 
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { OverviewService } from 'src/app/services/overview.service';
 import { Constants } from 'src/app/app.constants';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
