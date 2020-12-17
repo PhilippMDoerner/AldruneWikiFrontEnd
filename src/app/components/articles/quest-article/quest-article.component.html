@@ -1,42 +1,49 @@
 <div class="main">
-    <article *ngIf="quest; else loading">
-        <!-- Heading -->
+    <article *ngIf="quest; else loading" class="container">
         <app-edit-toggle 
-        [isInUpdateState]=false 
+        [isInUpdateState]=false
         [link]="'update'"
         ></app-edit-toggle>
 
-        <h1 class="text-center"> {{ quest.name }} </h1>
-        <div class="my-4">
-            <!-- Quest Status -->
-            <div class="subheading d-flex"> 
-                <span class="w-25">Status:</span>
-                 {{ quest.status }}
+        <!-- Heading -->
+        <div class="row mb-3">
+            <h1 class="text-center col"> {{ quest.name }} </h1>
+        </div>
+
+        <!-- Quest Status -->
+        <div class="subheading row"> 
+            <span class="col-5">Status:</span>
+            <span class="col-7">{{ quest.status }}</span>     
+        </div>
+
+        <!-- Quest Start -->
+        <div class="subheading row">
+            <div class="col-5">Start - End:</div>
+            <div class="col-7">
+                {{ quest.start_session_details.name }} - 
+                <span *ngIf="quest.end_session_details; else Ongoing"> 
+                    {{ quest.end_session_details.name }} 
+                </span>
+                <ng-template #Ongoing class="d-inline">Ongoing</ng-template>
             </div>
-            <!-- Quest Start -->
-            <div class="subheading d-flex">
-                <div class="w-25">Start - End:</div>
-                <div>
-                    {{ quest.start_session_details.name }} - 
-                    <span *ngIf="quest.end_session_details; else Ongoing"> 
-                        {{ quest.end_session_details.name }} 
-                    </span>
-                    <ng-template #Ongoing class="d-inline">Ongoing</ng-template>
-                </div>
-            </div>
-            <!-- Quest Giver -->
-            <div class="subheading d-flex align-items-center"> 
-                <span class="w-25">Quest Giver:</span>
-                <a *ngIf="quest.giver_details" routerLink="{{constants.getRoutePath(router, 'character', {name: quest.giver_details.name})}}">
+        </div>
+
+        <!-- Quest Giver -->
+        <div class="subheading row"> 
+            <span class="col-5">Quest Giver:</span>
+            <span class="col-7">
+                <a 
+                *ngIf="quest.giver_details; else NoQuestGiver" 
+                routerLink="{{constants.getRoutePath(router, 'character', {name: quest.giver_details.name})}}"
+                >
                     {{ quest.giver_details.name }}
                 </a>
-                <span *ngIf="!quest.giver_details"> None </span>
-            </div>
-
+            </span>
+            <ng-template #NoQuestGiver> None </ng-template>
         </div>
 
         <!-- Description -->
-        <div class="mb-5">
+        <div class="my-5">
             <app-textfield 
             [initialText]="quest.description"
             [heading]="'Description'"
