@@ -1,51 +1,72 @@
 <div class="main">
-    <article *ngIf="sessionAudio; else loading">
-        <app-edit-toggle></app-edit-toggle>
-        <!-- Heading -->
-        <h1 class="text-center">
-            {{ sessionAudio.session_details.name}}
-            <i class="fa fa-volume-up"></i>
-        </h1>
+    <article *ngIf="sessionAudio; else loading" class="container">
+        <div class="row">
+            <div class="col-lg-11"></div>
+            <app-edit-toggle class="col-lg-1"></app-edit-toggle>
+
+            <!-- Heading -->
+            <h1 class="text-center col-lg-11">
+                {{ sessionAudio.session_details.name}}
+                <i class="fa fa-volume-up"></i>
+            </h1>
+        </div>
 
         <!-- Audio Player -->
-        <div class="mt-4 mb-1" #playerSection>
+        <div class="mt-4 mb-1 row" #playerSection>
             <!-- Background Image -->
-            <div class="black-background d-flex justify-content-center" (click)="togglePlayer(vimePlayer)">
-                <img class="mw-100 mh-20rem" src="{{constants.wikiStaticUrl}}/fileserver/images/audio_pic.png"/>
+            <div class="black-background col-12 px-0" (click)="togglePlayer(vimePlayer)">
+                <img class="mw-100" src="{{constants.wikiStaticUrl}}/fileserver/images/audio_pic.png"/>
             </div>
+
             <!-- Vime-Player -->
             <vime-player class="w-100" #vimePlayer>
+                <!-- Vime-Audio-Source -->
                 <vime-audio cross-origin>
                     <source [src]="sessionAudio.audio_file" type="audio/mp3" crossorigin="anonymous" #audioSource/>
                 </vime-audio>
     
+                <!-- Vime-UI -->
                 <vime-default-ui></vime-default-ui>
             </vime-player>
         </div>
 
         <!-- Next Buttons -->
-        <div class="mb-5 d-flex justify-content-between">
-            <a  *ngIf="priorSessionAudio"
+        <div class="mb-3 row justify-content-between">
+            <!-- Prior Session -->
+            <div class="col-lg-3 col-6 px-0">
+                <a  
+                *ngIf="priorSessionAudio"
                 (click)="routeToSessionAudio(priorSessionAudio)"
-                class="btn btn-secondary float-left"> 
-                <i class="fa fa-arrow-left mr-1"></i>
-                Session {{priorSessionAudio.sessionNumber}}
-            </a>
+                class="btn btn-secondary"
+                > 
+                    <i class="fa fa-arrow-left mr-1"></i>
+                    Session {{priorSessionAudio.sessionNumber}}
+                </a>
+            </div>
 
+            <!-- Next Session -->
+            <div class="col-lg-3 col-6 px-0">
+                <a  
+                *ngIf="nextSessionAudio"
+                (click)="routeToSessionAudio(nextSessionAudio)"
+                class="btn btn-secondary float-right"
+                > 
+                    Session {{nextSessionAudio.sessionNumber}}
+                    <i class="fa fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+
+        </div>
+
+        <!-- Add Timestamp -->
+        <div class="row justify-content-center mb-3">
             <div 
-            class="btn btn-primary mr-auto ml-auto" 
+            class="btn btn-primary mx-auto col-lg-4" 
             [ngClass]="{'d-none': !userHasCreatePermission()}" 
             (click)="createTimestampEventSubject.next(this.vimePlayer.currentTime)"
             >
                 Add Timestamp <i class="fa fa-clock-o ml-1"></i>
             </div>
-
-            <a  *ngIf="nextSessionAudio"
-                (click)="routeToSessionAudio(nextSessionAudio)"
-                class="btn btn-secondary float-right"> 
-                Session {{nextSessionAudio.sessionNumber}}
-                <i class="fa fa-arrow-right ml-1"></i>
-            </a>
         </div>
 
         <!-- Timestamp List -->
@@ -56,13 +77,13 @@
         [createTimestampEventSubject]="createTimestampEventSubject"
         ></app-timestamp-list>
 
-        <!-- Ending -->
-        <div class="d-block mt-2">
-            <a routerLink="{{constants.getRoutePath(router, 'sessionaudio-overview')}}" class="btn btn-secondary mr-1">
-                Back to SessionAudio Overview
-            </a>
-            <app-delete-toggle (deleteEvent)="deleteArticle()"></app-delete-toggle>
-        </div>
+        <!-- Footer (Move to other Article + Delete Article) -->
+        <app-article-footer
+        (delete)="deleteArticle()"
+        [link]="constants.getRoutePath(router, 'sessionaudio-overview')"
+        [label]="'Back to SessionAudio Overview'"
+        [deleteMessage]="'Delete recording?'"
+        ></app-article-footer>
     </article>
     
     <!-- Loading Spinner -->

@@ -51,18 +51,13 @@
             ></app-textfield>
         </div>
 
-        <!-- Footer -->
-        <app-delete-toggle 
-        [deleteMessage]="'Delete Quest?'" 
-        (deleteEvent)="deleteArticle()"
-        ></app-delete-toggle>
-
-        <a 
-        routerLink="{{constants.getRoutePath(router, 'quest-overview')}}" 
-        class="btn btn-secondary mr-1"
-        >
-            Back to Quest Overview
-        </a>
+        <!-- Footer (Move to other Article + Delete Article) -->
+        <app-article-footer
+        (delete)="deleteArticle()"
+        [link]="constants.getRoutePath(router, 'quest-overview')"
+        [label]="'Back to Quest Overview'"
+        [deleteMessage]="'Delete Quest ?'"
+        ></app-article-footer>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

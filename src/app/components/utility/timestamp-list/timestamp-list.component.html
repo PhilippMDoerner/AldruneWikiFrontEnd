@@ -1,10 +1,9 @@
 <!-- Timestamps -->
-<div class="w-75 mx-auto container mb-5">
+<div>
     <!-- Timestamp Create Form -->
     <form [formGroup]="timestampForm" [ngClass]="{'d-none': !timestampCreateState, 'row my-1': timestampCreateState}">
-        <div class="col-1"></div>
-        <formly-form class="d-flex col-10" [form]="timestampForm" [fields]="timestampFields" [model]="timestampModel"></formly-form>
-        <div class="col-1 d-flex align-items-center">
+        <formly-form class="d-flex col-10 px-0" [form]="timestampForm" [fields]="timestampFields" [model]="timestampModel"></formly-form>
+        <div class="col-2 d-flex align-items-center px-0">
             <div class="d-flex mt-3">
                 <i class="icon hover-red fa fa-1-5x fa-times mx-1" (click)="cancelTimestampCreateState()"></i>
                 <i class="icon hover-green fa fa-1-5x fa-check mx-1" (click)="createTimestamp()"></i>
@@ -13,7 +12,7 @@
     </form>
 
     <!-- Timestamp List -->
-    <div class="timestamp-box container my-1">
+    <div class="timestamp-box my-1">
         <app-timestamp  
         *ngFor="let timestamp of timestamps"
         [timestamp]="timestamp" 
