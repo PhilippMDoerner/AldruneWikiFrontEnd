@@ -1,14 +1,18 @@
 <div class="main">
-    <article *ngIf="organization; else loading">
-        <!-- Heading -->
+    <article *ngIf="organization; else loading" class="container">
         <app-edit-toggle 
         [isInUpdateState]=false 
         [link]="'update'"
         ></app-edit-toggle>
 
-        <h1 class="text-center"> {{ organization.name }} </h1>
-        <div>
-            <div class="text-center subheading mb-1"> 
+        <!-- Heading -->
+        <div class="row">
+            <h1 class="text-center col"> {{ organization.name }} </h1>
+        </div>
+
+        <div class="row">
+            <!-- Leader-Subheading -->
+            <div class="text-center subheading mb-1 col-12"> 
                 Leader: 
                 <a 
                 *ngIf="organization.leader; else Unknown" 
@@ -19,7 +23,9 @@
                 </a>
                 <ng-template #Unknown>Unknown</ng-template>
             </div>
-            <div class="text-center mb-3 subheading"> 
+
+            <!-- Headquarters Subheading -->
+            <div class="text-center mb-3 subheading col-12"> 
                 Headquarters:
                 <a 
                 *ngIf="organization.headquarter_details; else Unknown" 
@@ -62,18 +68,14 @@
             ></app-object-list>
         </div>
 
-        <!-- Footer -->
-        <a 
-        routerLink="{{ constants.getRoutePath(router, 'organization-overview') }}" 
-        class="btn btn-secondary mr-1"
-        >
-            Back to organizations
-        </a>
+        <!-- Footer (Move to other Article + Delete Article) -->
+        <app-article-footer
+        (delete)="deleteArticle()"
+        [link]="constants.getRoutePath(router, 'organization-overview')"
+        [label]="'Back to Organizations'"
+        [deleteMessage]="'Delete '+organization.name+'?'"
+        ></app-article-footer>
 
-        <app-delete-toggle 
-        [deleteMessage]="'Delete '+organization.name+'?'" 
-        (deleteEvent)="deleteArticle()"
-        ></app-delete-toggle>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
