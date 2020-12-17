@@ -9,27 +9,30 @@
         <div class="row">
             <h1 class="text-center col-12">
                 {{ location.name }} 
-                <a 
+                <!-- Marker Icons -->
+                <i
                 *ngFor="let marker of location.marker_details" 
-                class="mx-1 no-underline" 
+                title="Marker on Map of {{marker.map}}"
+                class="mx-1 no-underline pointer icon fa fa-{{marker.map_icon}}" 
                 routerLink="{{constants.getRoutePath(router, 'marker', {
                         parent_location_name: location.parent_location_details.name, 
                         location_name: location.name, 
                         map_name: marker.map
                     })
                 }}"
-                >
-                    <i 
-                    class="fa fa-{{marker.map_icon}} icon"
-                    [ngClass]="{'d-none': !userHasCreatePermission()}"
-                    routerLink="{{constants.getRoutePath(router, 'marker-create', {
-                            parent_location_name: location.parent_location_details.name,
-                            location_name: location.name
-                        })
-                    }}"
-                    ></i>
-                </a>
-                <i class="fa fa-plus icon ml-3" title="Add Marker"></i>
+                ></i>
+
+                <!-- Add-Marker-Icon -->
+                <i 
+                class="fa fa-plus icon ml-3"
+                title="Add Marker"
+                [ngClass]="{'d-none': !userHasCreatePermission()}"
+                routerLink="{{constants.getRoutePath(router, 'marker-create', {
+                        parent_location_name: location.parent_location_details.name,
+                        location_name: location.name
+                    })
+                }}"
+                ></i>
             </h1>
 
             <!-- String indicating all parent_locations -->
@@ -85,7 +88,7 @@
         [label]="'Back to Locations'"
         [deleteMessage]="'Delete '+location.name+'?'"
         ></app-article-footer>
-        
+
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
