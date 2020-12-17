@@ -1,40 +1,47 @@
 <div class="main">
-    <article *ngIf="character; else loading">
+    <article *ngIf="character; else loading" class="container">
         <app-edit-toggle 
         [isInUpdateState]=false 
         [link]="'update'"
         ></app-edit-toggle>
         
         <!-- Heading -->
-        <h1 class="text-center subheading">
-            <span *ngIf="character.title">{{ character.title }} - </span>
-            {{ character.name }}
-        </h1>
+        <div class="row">
+            <h1 class="text-center subheading col">
+                <span *ngIf="character.title">{{ character.title }} - </span>
+                {{ character.name }}
+            </h1>
+        </div>
+
 
         <!-- Subheadings -->
         <div class="text-center mb-3 subheading">
             <!-- Organization -->
-            <div>
-                <span *ngIf="character.gender !=='Other'">{{ character.gender }}</span>
-                {{ character.race }}
-                <span *ngIf="character.organization"> of the 
-                    <a routerLink="{{ constants.getRoutePath(router, 'organization', {name: character.organization_details.name}) }}">
-                        {{ character.organization_details.name }}
-                    </a>
-                </span> 
+            <div class="row">
+                <div class="col">
+                    <span *ngIf="character.gender !=='Other'">{{ character.gender }}</span>
+                    {{ character.race }}
+                    <span *ngIf="character.organization"> of the 
+                        <a routerLink="{{ constants.getRoutePath(router, 'organization', {name: character.organization_details.name}) }}">
+                            {{ character.organization_details.name }}
+                        </a>
+                    </span> 
+                </div>    
             </div>
 
             <!-- Current Location -->
-            <div *ngIf="character.current_location">
-                Last known location:
-                <a routerLink="{{ constants.getRoutePath(router, 'location', {
-                        name: character.current_location_details.name,
-                        parent_name: character.current_location_details.parent_location
-                    }) 
-                }}">
-                
-                    <strong> {{ character.current_location_details.name_full }} </strong>
-                </a>
+            <div class="row">
+                <div *ngIf="character.current_location" class="col">
+                    Last known location:
+                    <a routerLink="{{ constants.getRoutePath(router, 'location', {
+                            name: character.current_location_details.name,
+                            parent_name: character.current_location_details.parent_location
+                        }) 
+                    }}">
+                    
+                        <strong> {{ character.current_location_details.name_full }} </strong>
+                    </a>
+                </div>
             </div>
         </div>
 
@@ -73,15 +80,14 @@
         [articleCharacter]="character"
         ></app-encounter-accordion>
 
-        <!-- Delete Article? -->
-        <app-delete-toggle
+        <!-- Footer (Move to other Article + Delete Article) -->
+        <app-article-footer
+        (delete)="deleteArticle()"
+        [link]="constants.getRoutePath(router, 'character-overview')"
+        [label]="'Back to Characters'"
         [deleteMessage]="'Delete '+character.name+'?'"
-        (deleteEvent)="deleteArticle()"
-        ></app-delete-toggle>
+        ></app-article-footer>
 
-        <a routerLink="{{constants.getRoutePath(router, 'character-overview')}}" class="btn btn-secondary">
-            Back to Characters
-        </a>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

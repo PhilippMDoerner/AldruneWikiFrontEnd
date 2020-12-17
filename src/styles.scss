@@ -240,11 +240,7 @@ h2{
 	text-decoration: underline;
 }
 
-@media(max-width: 960px){
-	.main{
-		padding: 1rem 1rem 2rem 1rem;
-	}
-}
+
 // For Article Pages
 .delete-request{
     border: 1px solid red;
@@ -396,4 +392,19 @@ div.ngb-dp-day div{
 
 div.ngb-dp-day .btn-light:hover{
 	color: black !important;
+}
+
+
+// Mobile CSS
+@media(max-width: 992px){
+	.main{
+		padding: 2.5rem 1rem 2.5rem 1rem;
+	}
+	
+}
+
+@media(max-width: 768px){
+	app-delete-toggle{
+		margin-top: 2rem;
+	}
 }
