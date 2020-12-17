@@ -72,6 +72,11 @@ import { TimestampComponent } from './components/utility/timestamp/timestamp.com
 import { FormlyFormcontainerComponent } from './components/utility/formly-formcontainer/formly-formcontainer.component';
 import { LoginGuardService, PermissionGuardService } from './services/permission.service';
 import { SessionDeleteModalComponent } from './components/utility/session-delete-modal/session-delete-modal.component';
+import { ArticleFooterComponent } from './components/utility/article-footer/article-footer.component';
+
+// TODO: Turn AldruneWiki into a PWA
+// TODO: Apply grid to all articles
+// TODO: Install ServiceWorker and make that work
 @NgModule({
   declarations: [
     AppComponent,
@@ -133,6 +138,7 @@ import { SessionDeleteModalComponent } from './components/utility/session-delete
     TimestampComponent,
     FormlyFormcontainerComponent,
     SessionDeleteModalComponent,
+    ArticleFooterComponent,
   ],
   imports: [
     BrowserModule,

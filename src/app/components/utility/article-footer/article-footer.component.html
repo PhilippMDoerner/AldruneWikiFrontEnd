@@ -1,0 +1,27 @@
+<div class="row mx-0">
+    <div class="col-md-3 px-0">
+        <a
+        *ngIf = "link, else nonLinkButton"
+        (click) = "onClick()"
+        routerLink="{{link}}" 
+        class="btn btn-secondary w-100">
+            {{label}}
+        </a>
+    </div>
+
+
+    <app-delete-toggle
+    [deleteMessage]="deleteMessage"
+    (deleteEvent)="onDelete()"
+    class="col-md-9 float-right px-0"
+    ></app-delete-toggle>
+</div>
+
+
+<ng-template #nonLinkButton>
+    <a
+    (click) = "onClick()"
+    class="col-md-3 btn btn-secondary">
+        {{label}}
+    </a>
+</ng-template> 
