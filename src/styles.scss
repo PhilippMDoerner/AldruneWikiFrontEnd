@@ -372,6 +372,8 @@ strong{
 	font-weight: bold;
 }
 
+
+
 // Overwriting styling of ngx-bootstrap Datepicker
 
 div.ngb-dp-header{
@@ -409,5 +411,9 @@ div.ngb-dp-day .btn-light:hover{
 @media(max-width: 768px){
 	app-delete-toggle{
 		margin-top: 2rem;
+	}
+
+	.hide-on-mobile{
+		display: none;
 	}
 }

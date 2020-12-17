@@ -3,6 +3,18 @@
     padding-right: 1rem;
 }
 
+select {
+    background-color: #4c4c4c;
+    height: calc(1.5em + .75rem + 2px);
+    font-size: .9375rem;
+    line-height: 1.5;
+    background-clip: padding-box;
+    border: 1px solid #222;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    color: white;
+}
+
 h4 .icon{
     opacity: 0;
     transition: opacity 0.2s;

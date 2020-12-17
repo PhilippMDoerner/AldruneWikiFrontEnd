@@ -1,16 +1,19 @@
 <div class="main">
-    <article *ngIf="quests; else loading" class="pr-4 pl-4">
+    <article *ngIf="quests; else loading" class="container">
         <div *ngFor="let questTaker of quests">
-            <div class="mb-2">
+            <div class="mb-3 mx-0 row">
                 <!-- Outer Table Heading -->
-                <h4 class="d-inline-block w-50">
+                <h4 class="col-lg-6 px-0 my-auto">
                     {{questTaker.key}}'s Quests
                     <i class="fa fa-plus icon ml-2" routerLink="create"></i>
                 </h4>
+
+                <div class="col-3"></div>
+
                 <!-- Filterselect -->
                 <select 
                 name="quest-status" 
-                class="form-control d-inline-block" 
+                class="col-lg-3" 
                 [(ngModel)]="filterStates[questTaker.key]"
                 >
                     <option selected value="Default">Default</option>
@@ -29,7 +32,9 @@
                 <thead>
                     <tr>
                         <th scope="col">Name</th>
-                        <th scope="col" class="hide-on-mobile">Description</th>
+                        <th scope="col" class="hide-on-mobile">
+                            Description
+                        </th>
                         <th scope="col">Status</th>
                     </tr>
                 </thead>
