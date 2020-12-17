@@ -13,6 +13,8 @@ export class NavbarComponent implements OnInit{
   public constants: any = Constants;
   public router: Router;
 
+  collapsed: boolean = true; 
+
   constructor(private secretRouter: Router, private tokenService: TokenService) { }
 
   ngOnInit(): void{
@@ -22,6 +24,10 @@ export class NavbarComponent implements OnInit{
   search(){
     const searchUrl: string = Constants.getRoutePath(this.router, 'search', {searchString: this.searchString});
     this.router.navigateByUrl(searchUrl);
+  }
+
+  toggleCollapse(){
+    this.collapsed = !this.collapsed;
   }
 
   logout(){

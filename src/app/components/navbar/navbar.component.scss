@@ -15,6 +15,10 @@
     padding-right: 1rem;
 }
 
+.navbar-nav{
+    margin-right: 3rem;
+}
+
 .navbar a.nav-link:hover{
     background-color: grey;
 }
@@ -66,24 +70,29 @@ form:focus-within{
     box-shadow: 0 0 2pt 1pt white;    
 }
 
-
-@media(max-width:990px){
-    .nav-link.button{
-        min-width: 100%;
-    }
-}
-
-@media(max-width:767px){
-    .nav-link-text{
-        font-size: 20px;
-        display: '';
-    }
-}
-
 .navbar-brand{
     border-bottom: none;
 }
 
 .navbar-brand:hover{
     border-bottom: none;
+}
+
+@media(max-width:767px){
+    .nav-link-text{
+        font-size: 20px;
+        display: inline !important;
+    }
+
+    .nav-item{
+        text-align: center;
+    }
+
+    .nav-link{
+        width: 100%;
+    }
+
+    .navbar-nav{
+        margin-right: 0;
+    }
 }

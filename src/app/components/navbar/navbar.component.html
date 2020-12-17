@@ -1,43 +1,67 @@
-<nav class="navbar navbar-dark bg-dark navbar-expand-md p-0">
+<nav class="navbar navbar-expand-md navbar-dark bg-dark p-0">
     <!-- Brand -->
-    <a routerLink="{{constants.getRoutePath(router, 'home1')}}" class="navbar-brand mr-5 ml-5"><strong> Aldrune Wiki </strong></a>
-    <!-- Collapsed navbar toggle -->
-    <div class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </div>
+    <a routerLink="{{constants.getRoutePath(router, 'home1')}}" class="navbar-brand mx-5">
+        <strong> Aldrune Wiki </strong>
+    </a>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <!-- Collapsed navbar toggle -->
+    <button 
+    type="button"
+    class="navbar-toggler" 
+    data-toggle="collapse" 
+    data-target="#navbarSupportedContent" 
+    aria-controls="navbarSupportedContent" 
+    aria-expanded="false" 
+    aria-label="Toggle navigation"
+    (click)="toggleCollapse()"
+    >
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" [ngClass]="{'show': !collapsed}" id="navbarSupportedContent">
         <!-- Search Bar -->
         <form class="my-2 flex-1" (submit)="search()">
             <div class="searchbar form-control">
                 <i class="fa fa-2x fa-search mr-2"></i>
-                <input class="search-input" type="search" name="search" [(ngModel)]="searchString" placeholder="Search Articles..." aria-label="Search">
+                <input 
+                class="search-input" 
+                type="search" 
+                name="search" 
+                [(ngModel)]="searchString" 
+                placeholder="Search Articles..." 
+                aria-label="Search">
             </div>
         </form>
+
         <!-- Nav Items -->
-        <ul class="navbar-nav mr-5">
+        <ul class="navbar-nav">
             <!-- Recent Updates -->
             <li class="nav-item mx-2">
-                <a routerLink="{{constants.getRoutePath(router, 'recent-updates')}}" class="nav-link nav-link-text"> Recent Updates </a>
+                <a routerLink="{{constants.getRoutePath(router, 'recent-updates')}}" class="nav-link"> 
+                    <span class="nav-link-text">Recent Updates</span>
+                </a>
             </li>
+
             <!-- Rules -->
             <li class="nav-item mx-2">
                 <a routerLink="{{constants.getRoutePath(router, 'rules')}}" class="nav-link"> 
-                    <span class="d-md-none nav-link-text mr-3">Rules</span> 
+                    <span class="nav-link-text mr-3 d-none">Rules</span> 
                     <i class="fa fa-book fa-2x" aria-hidden="true"></i>
                 </a>
             </li>
+
             <!-- Session Audio -->
             <li class="nav-item mx-2">
                 <a class="nav-link" routerLink="{{constants.getRoutePath(router, 'sessionaudio-overview')}}"> 
-                    <span class="d-md-none nav-link-text mr-3">Session Audio</span> 
+                    <span class="nav-link-text mr-3 d-none">Session Audio</span> 
                     <i class="fa fa-file-audio-o fa-2x" aria-hidden="true"></i> 
                 </a>
             </li>
+
             <!-- Log out -->
             <li class="nav-item mx-2">
                 <a (click)="logout()" class="nav-link"> 
-                    <span class="d-md-none nav-link-text mr-3">Logout</span> 
+                    <span class="nav-link-text mr-3 d-none">Logout</span> 
                     <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i> 
                 </a>
             </li>
