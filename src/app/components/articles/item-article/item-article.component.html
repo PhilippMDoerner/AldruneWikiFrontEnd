@@ -1,18 +1,24 @@
 <div class="main">
-    <article *ngIf="item; else loading">
-        <!-- Heading -->
+    <article *ngIf="item; else loading" class="container">
+        <!-- TODO: If the first word of a heaidng is too long it overlaps, see how to avoid this -->
         <app-edit-toggle 
         [isInUpdateState]=false 
         [link]="'update'"
         ></app-edit-toggle>
 
-        <h1 class="text-center"> {{ item.name }} </h1>
-        <p *ngIf="item.owner_details" class="text-center mb-5"> 
-            Owned by: 
-            <a routerLink="{{ constants.getRoutePath(router, 'character', {name: item.owner_details.name}) }}">
-                {{ item.owner_details.name }}
-            </a>
-        </p>
+        <!-- Heading -->
+        <div class="row">
+            <h1 class="text-center col"> {{ item.name }} </h1>
+        </div>
+        <div class="row">
+            <p *ngIf="item.owner_details" class="text-center col mb-5"> 
+                Owned by: 
+                <a routerLink="{{ constants.getRoutePath(router, 'character', {name: item.owner_details.name}) }}">
+                    {{ item.owner_details.name }}
+                </a>
+            </p>
+        </div>
+
 
         <!-- Image Gallery -->
         <app-image-gallery
@@ -30,25 +36,13 @@
             ></app-textfield>
         </div>
 
-        <app-delete-toggle 
-        [deleteMessage]="'Delete '+item.name+'?'" 
-        (deleteEvent)="deleteArticle()"
-        ></app-delete-toggle>
-
-        <a 
-        routerLink="{{ constants.getRoutePath(router, 'item-overview') }}" 
-        class="btn btn-secondary mr-1"
-        >
-            Back to Items
-        </a>
-
-        <a
-        *ngIf="item.owner_details"
-        routerLink="{{ constants.getRoutePath(router, 'character', {name: item.owner_details.name}) }}" 
-        class="btn btn-secondary"
-        >
-            Back to {{item.owner_details.name}}
-        </a>
+        <!-- Footer (Move to other Article + Delete Article) -->
+        <app-article-footer
+        (delete)="deleteArticle()"
+        [link]="constants.getRoutePath(router, 'item-overview')"
+        [label]="'Back to Items'"
+        [deleteMessage]="'Delete '+item.name+'?'"
+        ></app-article-footer>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

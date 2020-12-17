@@ -1,9 +1,9 @@
-h4 .icon{
+h4 .icon, h1 .icon.fa-plus{
     opacity: 0;
     transition: opacity 0.2s;
 }
 
-h4:hover .icon{
+h4:hover .icon, h1:hover .icon.fa-plus{
     opacity: 1;
 }
 

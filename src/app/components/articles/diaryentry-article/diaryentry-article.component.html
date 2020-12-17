@@ -1,18 +1,24 @@
 <div class="main">
-    <article *ngIf="diaryEntry; else loading">
+    <article *ngIf="diaryEntry; else loading" class="container">
         <app-edit-toggle 
         [isInUpdateState]=false 
         [link]="'update'"
         ></app-edit-toggle>
 
-        <h1 class="text-center">
-            Diary Entry #
-            <a routerLink="{{constants.getRoutePath(router, 'session', {isMainSession: diaryEntry.session_details.is_main_session_int, sessionNumber: diaryEntry.session_details.session_number})}}">
-                {{ diaryEntry.session_details.name }}
-            </a>
-        </h1>
-        <p class="text-center mb-5"> Written by: {{ diaryEntry.author_details.name }} </p>
+        <!-- Heading -->
+        <div class="row">
+            <h1 class="text-center col">
+                Diary Entry #
+                <a routerLink="{{constants.getRoutePath(router, 'session', {isMainSession: diaryEntry.session_details.is_main_session_int, sessionNumber: diaryEntry.session_details.session_number})}}">
+                    {{ diaryEntry.session_details.name }}
+                </a>
+            </h1>
+        </div>
+        <div class="row">
+            <p class="text-center mb-5 col"> Written by: {{ diaryEntry.author_details.name }} </p>
+        </div>
 
+        <!-- Diaryentry-Text -->
         <div class="mb-5">
             <app-textfield 
             [initialText]="diaryEntry.entry"
@@ -21,17 +27,14 @@
             ></app-textfield>
         </div>
 
-        <app-delete-toggle 
-        [deleteMessage]="'Delete Diaryentry?'" 
-        (deleteEvent)="deleteArticle()"
-        ></app-delete-toggle>
-
-        <a 
-        routerLink="{{constants.getRoutePath(router, 'diaryentry-overview')}}"
-        class="btn btn-secondary"
-        >
-            Back to Diaryentries
-        </a>
+        <!-- Footer (Move to other Article + Delete Article) -->
+        <app-article-footer
+        (delete)="deleteArticle()"
+        [link]="constants.getRoutePath(router, 'diaryentry-overview')"
+        [label]="'Back to Diaryentries'"
+        [deleteMessage]="'Delete this Diaryentry?'"
+        ></app-article-footer>
+        
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
