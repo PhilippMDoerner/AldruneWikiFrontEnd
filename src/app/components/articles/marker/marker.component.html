@@ -1,25 +1,56 @@
 <div class="main">
-    <article *ngIf="marker; else loading">
+    <article *ngIf="marker; else loading" class="container">
         <app-edit-toggle></app-edit-toggle>
-        <h1 class="text-center">Marker on {{marker.map_details.name}}</h1>
+        <div class="row">
+            <h1 class="text-center col">Marker on {{marker.map_details.name}}</h1>
+        </div>
         
-        <!-- Data -->
-        <h3 class="text-center"> Properties </h3>
-        <div class="mx-auto d-flex justify-content-center flex-column">
-            <div class="text-center"><span class="bold mr-2">Longitude: </span> {{marker.longitude}}</div>
-            <div class="text-center"><span class="bold mr-2">Latitude: </span> {{marker.latitude}}</div>
-            <div class="text-center"><span class="bold mr-2">Icon: </span>{{marker.icon}}</div>
-            <div class="text-center"><span class="bold mr-2">Color: </span> {{marker.color}}</div>
+        <!-- Data Heading-->
+        <div class="row">
+            <h3 class="text-center col"> Properties </h3>
         </div>
 
-        <a routerLink="{{constants.getRoutePath(router, 'location', {parent_name: marker.location_details.parent_location_name, name: marker.location_details.name})}}"
-        class="btn btn-secondary">
-            Back to {{marker.location_details.name}}
-        </a>
+        <!-- Longitude -->
+        <div class="row">
+            <div class="col-4"></div>
+            <span class="bold col-3">Longitude: </span> 
+            <span class="col-3">{{marker.longitude}}</span>
+            <div class="col-2"></div>
+        </div>
 
-        <app-delete-toggle 
-        (deleteEvent)="deleteMarker()"
-        ></app-delete-toggle>
+        <!-- Latitude -->
+        <div class="row">
+            <div class="col-4"></div>
+            <span class="bold col-3">Latitude: </span> 
+            <span class="col-3">{{marker.latitude}}</span>
+            <div class="col-2"></div>
+        </div>
+        <!-- Icon -->
+        <div class="row">
+            <div class="col-4"></div>
+            <span class="bold col-3">Icon: </span>
+            {{marker.icon}}
+            <div class="col-2"></div>
+        </div>
+        <!-- Color -->
+        <div class="row">
+            <div class="col-4"></div>
+            <span class="bold col-3">Color: </span> 
+            <span class="col-3"> {{marker.color}} </span>
+            <div class="col-2"></div>
+        </div>
+
+        <!-- Spacer -->
+        <div class="mb-5"></div>
+        
+        <!-- Footer (Move to other Article + Delete Article) -->
+        <app-article-footer
+        (delete)="deleteMarker()"
+        [link]="constants.getRoutePath(router, 'location', {parent_name: marker.location_details.parent_location_name, name: marker.location_details.name})"
+        [label]="'Back to '+marker.location_details.name"
+        [deleteMessage]="'Delete Marker?'"
+        ></app-article-footer>
+
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
