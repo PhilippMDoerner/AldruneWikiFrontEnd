@@ -1,18 +1,23 @@
 <div class="main">
-    <article *ngIf="creature; else loading">
+    <article *ngIf="creature; else loading" class="container">
         <app-edit-toggle 
         [isInUpdateState]=false 
         [link]="'update'"
         ></app-edit-toggle>
 
-        <h1 class="text-center"> {{ creature.name }} </h1>
+        <!-- Heading -->
+        <div class="row">
+            <h1 class="text-center col"> {{ creature.name }} </h1>
+        </div>
 
+        <!-- Image Gallery -->
         <app-image-gallery
         [article_type]="this.articleType"
         [article_pk]="this.creature.pk"
         [images]="this.creature.images"
         ></app-image-gallery>
 
+        <!-- Description -->
         <div class="mb-5">
             <app-textfield 
             [initialText]="creature.description"
@@ -21,17 +26,14 @@
             ></app-textfield>
         </div>
 
-        <app-delete-toggle 
-        [deleteMessage]="'Delete '+creature.name+'?'" 
-        (deleteEvent)="deleteArticle()"
-        ></app-delete-toggle>
-
-        <a 
-        routerLink="{{constants.getRoutePath(router, 'creature-overview')}}"
-        class="btn btn-secondary"
-        >
-            Back to Creatures
-        </a>
+        <!-- Footer (Move to other Article + Delete Article) -->
+        <app-article-footer
+        (delete)="deleteArticle()"
+        [link]="constants.getRoutePath(router, 'creature-overview')"
+        [label]="'Back to Creatures'"
+        [deleteMessage]="'Delete '+creature.name+'?'"
+        ></app-article-footer>
+        
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

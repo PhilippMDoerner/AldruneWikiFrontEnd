@@ -1,4 +1,5 @@
 <div class="row mx-0">
+    <!-- Move to other Article -->
     <div class="col-md-3 px-0">
         <a
         *ngIf = "link, else nonLinkButton"
@@ -9,7 +10,7 @@
         </a>
     </div>
 
-
+    <!-- Delete Article -->
     <app-delete-toggle
     [deleteMessage]="deleteMessage"
     (deleteEvent)="onDelete()"
