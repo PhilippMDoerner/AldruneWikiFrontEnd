@@ -2,7 +2,7 @@
     <article *ngIf="articles; else loading" class="container">
         <!-- Heading -->
         <div class="row">
-            <h1 class="text-center">Recently Updated</h1>
+            <h1 class="text-center col">Recently Updated</h1>
         </div>
 
         <app-colored-sidebar-legend></app-colored-sidebar-legend>
@@ -29,7 +29,7 @@
                 <div class="col-md-9 col-8 font-size-16">
                     <div>{{article.description}}</div>
                 </div>
-                
+
             </a>
         </div>
 
