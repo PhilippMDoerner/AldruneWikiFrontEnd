@@ -1,34 +1,52 @@
-        <div class="d-flex flex-row position-relative justify-content-around flex-wrap">
-            <div>
-                <div [ngClass]="coloredSidebar('character')"></div>
-                <div class="mx-3"> Character </div>
+            <div class="row">
+
+                <div class="col-lg-2 col-sm-3 col-4 mb-3">
+                    <div class="sidebar-border" [ngClass]="coloredSidebar('character')">
+                        <span class="mx-1"> Character </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4 mb-3">
+                    <div class="sidebar-border" [ngClass]="coloredSidebar('creature')">
+                        <span class="mx-1"> Creature </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4 mb-3">
+                    <div class="sidebar-border" [ngClass]="coloredSidebar('diaryentry')">
+                        <span class="mx-1"> DiaryEntry </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4 mb-3">
+                    <div class="sidebar-border" [ngClass]="coloredSidebar('encounter')">
+                        <span class="mx-1"> Encounter </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4 mb-3">
+                    <div class="sidebar-border" [ngClass]="coloredSidebar('item')">
+                        <span class="mx-1"> Item </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4 mb-3">
+                    <div class="sidebar-border" [ngClass]="coloredSidebar('location')">
+                        <span class="mx-1"> Location </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-sm-3 col-4 mb-3">
+                    <div class="sidebar-border" [ngClass]="coloredSidebar('organization')">
+                        <span class="mx-1"> Organization </span>
+                    </div>
+                </div>
+
+                <div class="col-lg-1 col-sm-3 col-4 mb-3">
+                    <div class="sidebar-border" [ngClass]="coloredSidebar('quest')">
+                        <span class="mx-1"> Quest </span>
+                    </div>
+                </div>
+
             </div>
-            <div>
-                <div [ngClass]="coloredSidebar('creature')"></div>
-                <div class="mx-3"> Creature </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('diaryentry')"></div>
-                <div class="mx-3"> DiaryEntry </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('encounter')"></div>
-                <div class="mx-3"> Encounter </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('item')"></div>
-                <div class="mx-3"> Item </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('location')"></div>
-                <div class="mx-3"> Location </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('organization')"></div>
-                <div class="mx-3"> Organization </div>
-            </div>
-            <div>
-                <div [ngClass]="coloredSidebar('quest')"></div>
-                <div class="mx-3"> Quest </div>
-            </div>
-        </div>
+    

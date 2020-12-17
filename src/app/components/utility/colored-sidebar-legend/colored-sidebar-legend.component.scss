@@ -1,37 +1,35 @@
-.sidebar{
-    width: 5px;
-    height: 90%;
-    position: absolute;
+.sidebar-border{
+    border-left: solid 5px;
 }
 
 .yellow{
-    background-color: #e8b41b;
+    border-left-color: #e8b41b;
 }
 
 .darkpink{
-    background-color: #ca0263;
+    border-left-color: #ca0263;
 }
 
 .lightpink{
-    background-color: #f293a4;
+    border-left-color: #f293a4;
 }
 
 .brown{
-    background-color: brown;
+    border-left-color: brown;
 }
 
 .blue{
-    background-color: blue;
+    border-left-color: blue;
 }
 
 .black{
-    background-color: black;
+    border-left-color: black;
 }
 
 .gray{
-    background-color: gray;
+    border-left-color: gray;
 }
 
 .white{
-    background-color: white;
+    border-left-color: white;
 }
