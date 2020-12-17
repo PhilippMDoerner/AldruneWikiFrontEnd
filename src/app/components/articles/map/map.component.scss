@@ -8,5 +8,12 @@
 }
 
 .main{
-    width: 70rem;
+    max-width: 75rem;
+}
+
+@media(max-width: 768px){
+	app-leaflet-map{
+        margin-left: 1rem;
+        margin-right: 1rem;
+	}
 }

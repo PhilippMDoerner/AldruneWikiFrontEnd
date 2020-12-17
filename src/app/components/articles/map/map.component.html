@@ -2,44 +2,38 @@
     <article *ngIf="maps && currentMap; else loading">
         <!-- Heading -->
         <app-edit-toggle></app-edit-toggle>
-        <h3 class="text-center mb-5 icon-container">
-            Map of
-            <form class="d-inline">
-                <select name="map" id="map" class="mx-2" #mapChoice>
+        
+        <div class="row text-center">
+            <h3 class="icon-container col">
+                <!-- Map-Selector -->
+                Map of
+                <select name="map" id="map" #mapChoice (change)="onMapChange($event)">
                     <option *ngFor="let map of maps" value="{{map.name}}">{{map.name}}</option>
-                </select>
+                </select> 
 
-                <div 
-                class="btn btn-sm btn-outline-info" 
-                (click)="routeToMap(mapChoice.value)"
-                >
-                    Go to Map
-                </div>
-            </form>
-
-            <i 
-            class="fa fa-plus icon ml-2" 
-            routerLink="{{constants.getRoutePath(router, 'map-create') }}"
-            ></i>
-        </h3>
+                <!-- Add Map Button -->
+                <i 
+                class="fa fa-plus icon ml-3" 
+                routerLink="{{constants.getRoutePath(router, 'map-create') }}"
+                ></i>
+            </h3>
+        </div>
 
         <!-- Leaflet Map -->
-        <div class="mb-5">
+        <div class="mx-3 mb-5">
             <app-leaflet-map 
             [map]="currentMap"
             ></app-leaflet-map>
         </div>
 
-        <div 
-        class="btn btn-dark mr-3" 
-        routerLink="{{constants.getRoutePath(router, 'home1')}}"
-        >
-            Back To Frontpage
-        </div>
-        
-        <app-delete-toggle 
-        (deleteEvent)="deleteMap()"
-        ></app-delete-toggle>
+
+        <!-- Footer (Move to other Article + Delete Article) -->
+        <app-article-footer
+        (delete)="deleteMap()"
+        [link]="constants.getRoutePath(router, 'home1')"
+        [label]="'Back to Frontpage'"
+        [deleteMessage]="'Delete Map of '+currentMap.name+'?'"
+        ></app-article-footer>
         
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

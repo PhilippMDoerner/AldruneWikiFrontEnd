@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -17,6 +17,11 @@ export class MapComponent implements OnInit, OnDestroy {
   maps: OverviewItem[];
   currentMap: ExtendedMap;
   constants: any = Constants;
+
+  //Must be ViewChildren instead of ViewChild. Otherwise the Element is not loaded in ngAfterViewInit.
+  //That is because the ngIf on <article> leads to the element not being loaded in time, see the following link
+  // https://stackoverflow.com/questions/34947154/angular-2-viewchild-annotation-returns-undefined
+  @ViewChildren('mapChoice') mapChoice: QueryList<any>;
 
   parameter_subscription: Subscription;
 
@@ -40,10 +45,42 @@ export class MapComponent implements OnInit, OnDestroy {
     })
   }
 
+  ngAfterViewInit(){
+    this.mapChoice.changes.pipe(first()).subscribe((components: QueryList<any>) =>{
+      this.setInitialMapChoiceValue();
+    })
+  }
+
+  setInitialMapChoiceValue(): void{
+    const currentMap: string = this.route.snapshot.params.name;
+    const currentMapIndex = this.getMapOptionIndex(currentMap);
+    const mapChoiceElement = this.getMapChoiceElement();
+    mapChoiceElement.selectedIndex = currentMapIndex;
+  }
+
+  getMapChoiceElement(): any{
+    return this.mapChoice.first.nativeElement;
+  }
+
+  getMapOptionIndex(mapName: string): number{
+    const options: HTMLOptionsCollection = this.getMapChoiceElement().options;
+    for (let i: number=0; i<options.length; i++){
+      const option: HTMLOptionElement = options[i];
+      if (option.value === mapName) return i
+    }
+
+    throw `${mapName} is not a valid map name. There is no map with this name on the page!`;
+  }
+
   routeToMap(newMap: string){
     const mapUrl: string = Constants.getRoutePath(this.router, 'map', {name: newMap});
     this.router.navigateByUrl(mapUrl);
     this.router.routeReuseStrategy.shouldReuseRoute = function () {return false;};
+  }
+
+  onMapChange(event){
+    const newMap: string = event.target.value;
+    this.routeToMap(newMap);
   }
 
   deleteMap(){
