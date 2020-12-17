@@ -57,29 +57,32 @@
             </div>
 
             <!-- NPC List -->
-            <div class="mb-5" *ngFor="let characterLetterEntries of listItems | groupByFirstLetter: 'name'">
-                <!-- Single-Letter-Group-Heading -->
-                <div class="row">
-                    <h5 class="col mb-0" [ngClass]="{'d-none': filter.value}"> {{ characterLetterEntries.key }} </h5>
+            <div class="row">
+                <div *ngFor="let characterLetterEntries of listItems | groupByFirstLetter: 'name'" class="col-lg-4">
+                    <!-- Single-Letter-Group-Heading -->
+                    <h5 class="mb-0" [ngClass]="{'d-none': filter.value}"> {{ characterLetterEntries.key }} </h5>
+
+                    <!-- Single-Letter-Group-Names -->
+                    <ul class="mb-0">
+                        <span *ngFor="let characterEntry of characterLetterEntries.value" class="px-0">
+                            <li 
+                            *ngIf="!characterEntry.player_character"
+                            [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
+                            >
+                                <a routerLink="{{ characterEntry.getAbsoluteRouterUrl() }}"> 
+                                    {{characterEntry.name_full}}
+                                </a>
+                            </li>
+                        </span>
+                    </ul>
+
+                    <!-- Spacer next group that can be removed during filtering -->
+                    <div class="mb-5" *ngIf="!filter.value"></div>
                 </div>
-                <!-- Single-Letter-Group-Names -->
-                <ul>
-                    <span *ngFor="let characterEntry of characterLetterEntries.value" class="row">
-                        <li 
-                        *ngIf="!characterEntry.player_character"
-                        class="col"
-                        [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
-                        >
-                            <a routerLink="{{ characterEntry.getAbsoluteRouterUrl() }}"> 
-                                {{characterEntry.name_full}}
-                            </a>
-                        </li>
-                    </span>
-                </ul>
             </div>
 
         </div>
-
+        <!-- TODO: Implement the quadro column thing for other overviews as well -->
         <!-- DiaryEntry Overview -->
         <div *ngIf="overviewType===diaryentryOverview">
             <div *ngFor="let authorDiaryEntries of listItems | groupBy: 'author_details.name'">
