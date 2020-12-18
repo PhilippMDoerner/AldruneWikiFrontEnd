@@ -50,3 +50,14 @@
 .hover-red:hover{
     color:red;
 }
+
+
+.mw-85{
+    max-width: 85%;
+}
+
+@media(max-width: 768px){
+    .mw-85{
+        max-width: 100%;
+    }
+}
