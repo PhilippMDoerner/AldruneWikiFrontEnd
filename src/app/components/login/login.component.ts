@@ -42,15 +42,20 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.model = {username: null, password: null};
   }
 
+  submitOnEnterPress(keyDownEvent){
+    if (keyDownEvent.key === "Enter") this.onSubmit();
+  }
+
   onSubmit(){
     this.tokenService.getJWTToken(this.model).pipe(first()).subscribe( jwtTokens => {
       this.tokenService.setTokens(jwtTokens);
-      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}`);
+      Constants.routeToPath(this.router, 'home1');
     }, error => {
       console.log(error);
       if(error.status === 401){
            this.resetModel();
-           this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/login/invalid-login`) ;   
+           const invalidLoginUrl = `${Constants.getRoutePath(this.router, 'login')}/invalid-login`;
+           this.router.navigateByUrl(invalidLoginUrl) ;   
       }
     });
 
