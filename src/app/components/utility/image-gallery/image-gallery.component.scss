@@ -81,3 +81,9 @@ a{
 a:hover{
     border-bottom: none;
 }
+
+@media(max-width: 768px){
+	.edit-image-buttons{
+        opacity: 1;
+    }
+}

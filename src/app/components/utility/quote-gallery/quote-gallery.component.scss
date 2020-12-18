@@ -27,6 +27,20 @@
     padding: 0.35rem;
 }
 
+.white-line{
+    background-color: white;
+}
+
 blockquote:hover ~ .icon-container, .icon-container:hover{
     opacity: 1;
+}
+
+@media(max-width: 768px){
+	.icon-container{
+        opacity: 1;
+    }
+
+    .vanish-icon{
+        display: inline;
+    }
 }

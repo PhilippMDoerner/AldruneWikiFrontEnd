@@ -1,14 +1,15 @@
 <!-- Display State -->
-<div class="image-area icon-container" *ngIf="componentState===constants.displayState">
+<div class="image-area icon-container mb-3 row" *ngIf="componentState===constants.displayState">
     <!-- Prior Image Arrow -->
-    <i 
-    [ngClass]="{'fa fa-arrow-left fa-2x mr-5 icon': true, 'mouseoverVisible': !isLastImage(), 'deactivated-icon': isLastImage()}" 
+    <i
+    class="col-md-1 col-2 fa fa-arrow-left fa-2x mr-5 icon"
+    [ngClass]="{'mouseoverVisible': !isLastImage(), 'deactivated-icon d-none': isLastImage()}" 
     aria-hidden="true"
     (click)="decreaseVisibleImageIndex()"
     ></i>
 
     <!-- Image Container -->
-    <div class="image-container">
+    <div class="image-container" [ngClass]="{'col-md-10 col-8': !isLastImage(), 'col-12': isLastImage()}">
 
         <!-- Images -->
         <div *ngIf="hasImages(); else defaultImage">
@@ -23,16 +24,38 @@
 
         <!-- Image Edit/Delete/Create Buttons -->
         <div class="edit-image-buttons">
-            <i class="fa fa-plus-square-o fa-2x icon" [ngClass]="{'d-none': !userHasCreatePermission()}"  aria-hidden="true" (click)="enableCreateState()"></i>
-            <i class="fa fa-pencil fa-2x icon" [ngClass]="{'d-none': !userHasUpdatePermission()}" aria-hidden="true" (click)="enableUpdateState()"></i>
-            <i [ngClass]="{'fa fa-trash fa-2x icon': true, 'd-none': isLastImage() || !userHasDeletePermission()}" aria-hidden="true" (click)="enableDeleteState()"></i>
+            <!-- Create Image Button -->
+            <i 
+            class="fa fa-plus-square-o fa-2x icon" 
+            [ngClass]="{'d-none': !userHasCreatePermission()}"  
+            aria-hidden="true" 
+            (click)="enableCreateState()"
+            ></i>
+
+            <!-- Update Image button -->
+            <i 
+            class="fa fa-pencil fa-2x icon" 
+            [ngClass]="{'d-none': !userHasUpdatePermission()}" 
+            aria-hidden="true" 
+            (click)="enableUpdateState()"
+            ></i>
+
+            <!-- Delete Image Button -->
+            <i 
+            class="fa fa-trash fa-2x icon"
+            [ngClass]="{'d-none': isLastImage() || !userHasDeletePermission()}" 
+            aria-hidden="true" 
+            (click)="enableDeleteState()"
+            ></i>
+
         </div>
 
     </div>
 
     <!-- Next Image Arrow -->
     <i
-    [ngClass]="{'fa fa-arrow-right fa-2x ml-5 icon': true, 'mouseoverVisible': !isLastImage(), 'deactivated-icon': isLastImage()}" 
+    class="col-md-1 col-2 fa fa-arrow-right fa-2x ml-5 icon"
+    [ngClass]="{'mouseoverVisible': !isLastImage(), 'deactivated-icon d-none': isLastImage()}" 
     aria-hidden="true" 
     (click)="incrementVisibleImageIndex()"
     ></i>
@@ -79,8 +102,8 @@
     <!-- Delete Question -->
     <div class="text-center mt-3">
         Do you really want to delete this image?
-        <div class="btn btn-dark mr-3" (click)="onCancel()"> No </div>
-        <div class="btn btn-outline-danger" (click)="deleteCurrentMainImage()"> Yes </div>
+        <div class="btn btn-secondary mr-3" (click)="onCancel()"> No </div>
+        <div class="btn btn-danger" (click)="deleteCurrentMainImage()"> Yes </div>
     </div>
 </div>
 

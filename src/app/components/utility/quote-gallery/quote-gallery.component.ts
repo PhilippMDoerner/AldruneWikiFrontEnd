@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -48,6 +49,7 @@ export class QuoteGalleryComponent extends PermissionUtilityFunctionMixin implem
     private formlyService: MyFormlyService,
     private quoteConnectionservice: QuoteConnectionService,
     private overviewService: OverviewService,
+    private router: Router
   ) { super() }
 
   ngOnInit(): void {
