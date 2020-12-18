@@ -70,12 +70,15 @@
         </div>
 
         <!-- Timestamp List -->
-        <app-timestamp-list 
-        [timestamps]="timestamps"
-        [sessionAudio]="sessionAudio"
-        [vimePlayer]="vimePlayer"
-        [createTimestampEventSubject]="createTimestampEventSubject"
-        ></app-timestamp-list>
+        <div class="mb-4">
+            <app-timestamp-list 
+            [timestamps]="timestamps"
+            [sessionAudio]="sessionAudio"
+            [vimePlayer]="vimePlayer"
+            [createTimestampEventSubject]="createTimestampEventSubject"
+            ></app-timestamp-list>
+        </div>
+
 
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer

@@ -396,6 +396,25 @@ div.ngb-dp-day .btn-light:hover{
 	color: black !important;
 }
 
+//Overwrite of Formly for SessionAudio Form
+.timestamp-input input{
+	background-color: #222 !important;
+	height: calc(1.5em + .75rem + 2px);
+	font-size: .9375rem;
+	line-height: 1.5;
+	background-clip: padding-box;
+	border: 1px solid #4c4c4c !important;
+	transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+	color: white;
+}
+
+.timestamp-input input:focus{
+	box-shadow: 0 0 0 0.2rem $secondary;
+}
+
+.timestamp-input .form-group{
+	margin-bottom: 0;
+}
 
 // Mobile CSS
 @media(max-width: 992px){
@@ -415,5 +434,11 @@ div.ngb-dp-day .btn-light:hover{
 
 	.hide-on-mobile{
 		display: none;
+	}
+
+	//SessionAudio
+	.timestamp-input input{
+		padding-left: 0.2rem;
+		padding-right: 0.2rem;
 	}
 }

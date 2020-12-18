@@ -51,6 +51,10 @@
     color:red;
 }
 
+.mt-custom{
+    margin-top: 2rem;
+}
+
 
 .mw-85{
     max-width: 85%;
@@ -59,5 +63,17 @@
 @media(max-width: 768px){
     .mw-85{
         max-width: 100%;
+    }
+
+    .row.ml-auto{
+        margin-left: 0 !important;
+    }
+
+    form .fa-times{
+        color: red;
+    }
+
+    form .fa-check{
+        color: green;
     }
 }
