@@ -338,6 +338,10 @@ body.is-preload #header .content .inner {
 }
 
 @media screen and (max-width: 756px) {
+    #header{
+        margin-top: 0;
+        padding: 0;
+    }
 
     #wrapper {
         padding: 1rem;
