@@ -75,7 +75,7 @@ import { SessionDeleteModalComponent } from './components/utility/session-delete
 import { ArticleFooterComponent } from './components/utility/article-footer/article-footer.component';
 
 // TODO: Turn AldruneWiki into a PWA
-// TODO: Apply grid to all articles
+// TODO: Fix tinymce URLs, make it so that they just link to an article to the same prefix, instead of a full url
 // TODO: Install ServiceWorker and make that work
 @NgModule({
   declarations: [

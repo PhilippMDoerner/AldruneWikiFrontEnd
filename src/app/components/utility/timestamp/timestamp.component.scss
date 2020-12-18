@@ -20,9 +20,17 @@
     padding: 0.5rem 0rem;
 }
 
+.mw-85{
+    max-width: 85%;
+}
+
 @media(max-width: 768px){
 	.row{
         margin-bottom: 1rem;
         line-height: 1.2;
+    }
+
+    .mw-85{
+        max-width: 100%;
     }
 }
