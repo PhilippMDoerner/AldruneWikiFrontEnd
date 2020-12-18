@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1608330144806,
+  "timestamp": 1608331283331,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -80,7 +80,7 @@
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/sessionaudio",
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/rule\\/"
       ],
-      "strategy": "freshness",
+      "strategy": "performance",
       "maxSize": 10,
       "maxAge": 3600000,
       "timeoutMs": 5000,

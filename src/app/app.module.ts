@@ -77,8 +77,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 // TODO: Turn AldruneWiki into a PWA
-// TODO: Fix tinymce URLs, make it so that they just link to an article to the same prefix, instead of a full url
-// TODO: Install ServiceWorker and make that work
+// TODO: Fix tinymce URLs, make it so that they just link to an article to the same prefix, instead of a full url. 
+//          Update: This is not an issue of /wiki2. Somehow /wiki1 with the same configs as /wiki2 has different behaviour here
+// TODO: Handle Internet Connection Errors
 // TODO: Ensure that Service Worker can load resources that CORS is blocking
 @NgModule({
   declarations: [
