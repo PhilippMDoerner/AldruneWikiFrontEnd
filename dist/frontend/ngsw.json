@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1608324969852,
+  "timestamp": 1608327538935,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -22,13 +22,13 @@
         "/styles.eb31c811321e0161531d.css"
       ],
       "patterns": [
-        "\\/static\\/frontpage\\/images\\/pic01\\.jpg",
-        "\\/static\\/frontpage\\/images\\/pic02\\.jpg",
-        "\\/static\\/frontpage\\/images\\/pic03\\.jpg",
-        "\\/static\\/frontpage\\/images\\/pic04\\.jpg",
-        "\\/static\\/frontpage\\/images\\/pic06\\.jpg",
-        "\\/static\\/frontpage\\/images\\/pic07\\.jpg",
-        "\\/static\\/wiki\\/images\\/404\\.png"
+        "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic01\\.jpg",
+        "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic02\\.jpg",
+        "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic03\\.jpg",
+        "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic04\\.jpg",
+        "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic06\\.jpg",
+        "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic07\\.jpg",
+        "https:\\/\\/www\\.aldrune\\.com\\/static\\/wiki\\/images\\/404\\.png"
       ]
     },
     {
@@ -82,6 +82,26 @@
       ],
       "strategy": "freshness",
       "maxSize": 10,
+      "maxAge": 3600000,
+      "timeoutMs": 5000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    },
+    {
+      "name": "aldruneWikiArticles",
+      "patterns": [
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/character\\/[^/]*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/location\\/[^/]*\\/[^/]*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/organization\\/[^/]*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/item\\/[^/]*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/diaryentry\\/[^/]*\\/[^/]*\\/[^/]*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/creature\\/[^/]*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/map\\/[^/]*"
+      ],
+      "strategy": "freshness",
+      "maxSize": 50,
       "maxAge": 3600000,
       "timeoutMs": 5000,
       "cacheQueryOptions": {
