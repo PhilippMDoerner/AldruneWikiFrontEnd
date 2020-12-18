@@ -73,10 +73,13 @@ import { FormlyFormcontainerComponent } from './components/utility/formly-formco
 import { LoginGuardService, PermissionGuardService } from './services/permission.service';
 import { SessionDeleteModalComponent } from './components/utility/session-delete-modal/session-delete-modal.component';
 import { ArticleFooterComponent } from './components/utility/article-footer/article-footer.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 // TODO: Turn AldruneWiki into a PWA
 // TODO: Fix tinymce URLs, make it so that they just link to an article to the same prefix, instead of a full url
 // TODO: Install ServiceWorker and make that work
+// TODO: Ensure that Service Worker can load resources that CORS is blocking
 @NgModule({
   declarations: [
     AppComponent,
@@ -162,6 +165,7 @@ import { ArticleFooterComponent } from './components/utility/article-footer/arti
     FormlyBootstrapModule,
     CommonModule,
     VimeModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },

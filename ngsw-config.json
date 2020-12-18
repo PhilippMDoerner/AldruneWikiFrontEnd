@@ -1,0 +1,62 @@
+{
+  "$schema": "./node_modules/@angular/service-worker/config/schema.json",
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "resources": {
+        "files": [
+          "/favicon.ico",
+          "/index.html",
+          "/manifest.webmanifest",
+          "/*.css",
+          "/*.js"
+        ],
+        "urls": [
+          "/static/frontpage/images/pic01.jpg",
+          "/static/frontpage/images/pic02.jpg",
+          "/static/frontpage/images/pic03.jpg",
+          "/static/frontpage/images/pic04.jpg",
+          "/static/frontpage/images/pic06.jpg",
+          "/static/frontpage/images/pic07.jpg",
+          "/static/wiki/images/404.png"
+        ]
+      }
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/**",
+          "/*.(eot|svg|cur|jpg|png|webp|gif|otf|ttf|woff|woff2|ani)"
+        ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "aldruneWikiOverview",
+      "urls": [
+        "https://www.aldrune.com/wiki1/api/overview/character",
+        "https://www.aldrune.com/wiki1/api/overview/location",
+        "https://www.aldrune.com/wiki1/api/overview/item",
+        "https://www.aldrune.com/wiki1/api/overview/organization",
+        "https://www.aldrune.com/wiki1/api/overview/diaryentry",
+        "https://www.aldrune.com/wiki1/api/overview/creature",
+        "https://www.aldrune.com/wiki1/api/overview/quest",
+        "https://www.aldrune.com/wiki1/api/overview/sessionaudio",
+        "https://www.aldrune.com/wiki1/api/rule/"
+
+      ],
+      "cacheConfig": {
+        "maxSize": 10,
+        "maxAge": "1h",
+        "timeout": "5s",
+        "strategy": "freshness"
+      }
+    }
+  ] 
+}

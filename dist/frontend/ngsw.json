@@ -1,0 +1,145 @@
+{
+  "configVersion": 1,
+  "timestamp": 1608324969852,
+  "index": "/index.html",
+  "assetGroups": [
+    {
+      "name": "app",
+      "installMode": "prefetch",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/4.d5c837075df5a8484b9c.js",
+        "/favicon.ico",
+        "/index.html",
+        "/main.62a503722901cc29a78d.js",
+        "/manifest.webmanifest",
+        "/polyfills.00e02af16340fdc82052.js",
+        "/runtime.6076814ef49a1a1583c0.js",
+        "/scripts.bf128fa19cb1f1099bb9.js",
+        "/styles.eb31c811321e0161531d.css"
+      ],
+      "patterns": [
+        "\\/static\\/frontpage\\/images\\/pic01\\.jpg",
+        "\\/static\\/frontpage\\/images\\/pic02\\.jpg",
+        "\\/static\\/frontpage\\/images\\/pic03\\.jpg",
+        "\\/static\\/frontpage\\/images\\/pic04\\.jpg",
+        "\\/static\\/frontpage\\/images\\/pic06\\.jpg",
+        "\\/static\\/frontpage\\/images\\/pic07\\.jpg",
+        "\\/static\\/wiki\\/images\\/404\\.png"
+      ]
+    },
+    {
+      "name": "assets",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "urls": [
+        "/assets/icons/icon-128x128.png",
+        "/assets/icons/icon-144x144.png",
+        "/assets/icons/icon-152x152.png",
+        "/assets/icons/icon-192x192.png",
+        "/assets/icons/icon-384x384.png",
+        "/assets/icons/icon-512x512.png",
+        "/assets/icons/icon-72x72.png",
+        "/assets/icons/icon-96x96.png",
+        "/assets/layers-2x.png",
+        "/assets/layers.png",
+        "/assets/marker-icon-2x.png",
+        "/assets/marker-icon.png",
+        "/assets/marker-shadow.png",
+        "/bg.0188b3f1e34cf2e8058f.jpg",
+        "/fontawesome-webfont.1e59d2330b4c6deb84b3.ttf",
+        "/fontawesome-webfont.20fd1704ea223900efa9.woff2",
+        "/fontawesome-webfont.8b43027f47b20503057d.eot",
+        "/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg",
+        "/fontawesome-webfont.f691f37e57f04c152e23.woff",
+        "/layers-2x.8f2c4d11474275fbc161.png",
+        "/layers.416d91365b44e4b4f477.png",
+        "/marker-icon.2b3e1faf89f94a483539.png",
+        "/overlay.eb1c6ead73ba2c71d71a.png"
+      ],
+      "patterns": []
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "aldruneWikiOverview",
+      "patterns": [
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/character",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/location",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/item",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/organization",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/diaryentry",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/creature",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/quest",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/sessionaudio",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/rule\\/"
+      ],
+      "strategy": "freshness",
+      "maxSize": 10,
+      "maxAge": 3600000,
+      "timeoutMs": 5000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    }
+  ],
+  "hashTable": {
+    "/4.d5c837075df5a8484b9c.js": "29a44e57e0e6a8cdda9064c72797f9f03a549320",
+    "/assets/icons/icon-128x128.png": "dae3b6ed49bdaf4327b92531d4b5b4a5d30c7532",
+    "/assets/icons/icon-144x144.png": "b0bd89982e08f9bd2b642928f5391915b74799a7",
+    "/assets/icons/icon-152x152.png": "7479a9477815dfd9668d60f8b3b2fba709b91310",
+    "/assets/icons/icon-192x192.png": "1abd80d431a237a853ce38147d8c63752f10933b",
+    "/assets/icons/icon-384x384.png": "329749cd6393768d3131ed6304c136b1ca05f2fd",
+    "/assets/icons/icon-512x512.png": "559d9c4318b45a1f2b10596bbb4c960fe521dbcc",
+    "/assets/icons/icon-72x72.png": "c457e56089a36952cd67156f9996bc4ce54a5ed9",
+    "/assets/icons/icon-96x96.png": "3914125a4b445bf111c5627875fc190f560daa41",
+    "/assets/layers-2x.png": "152a162333e46d24f9d89f566312fc0c64011dee",
+    "/assets/layers.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
+    "/assets/marker-icon-2x.png": "cf3a536596b1f58e0ac805404183c8e6d6bdacb5",
+    "/assets/marker-icon.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
+    "/assets/marker-shadow.png": "7b6a8df63930381e96604e705168d0527d6b82bc",
+    "/bg.0188b3f1e34cf2e8058f.jpg": "a4a953ba392cf723f616e16b06ec74e500b18f05",
+    "/favicon.ico": "3799a8c8926959171578b01b34f5ad5f426cfd70",
+    "/fontawesome-webfont.1e59d2330b4c6deb84b3.ttf": "13b1eab65a983c7a73bc7997c479d66943f7c6cb",
+    "/fontawesome-webfont.20fd1704ea223900efa9.woff2": "d6f48cba7d076fb6f2fd6ba993a75b9dc1ecbf0c",
+    "/fontawesome-webfont.8b43027f47b20503057d.eot": "d980c2ce873dc43af460d4d572d441304499f400",
+    "/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
+    "/fontawesome-webfont.f691f37e57f04c152e23.woff": "28b782240b3e76db824e12c02754a9731a167527",
+    "/index.html": "9386f9f96b6e9e7dbc8463951e7fa85d254918b5",
+    "/layers-2x.8f2c4d11474275fbc161.png": "152a162333e46d24f9d89f566312fc0c64011dee",
+    "/layers.416d91365b44e4b4f477.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
+    "/main.62a503722901cc29a78d.js": "0d79778c60f008079dcb2ec106a88dfe8906a1e4",
+    "/manifest.webmanifest": "63b272452f7323ec09705c84044faa394ce82a79",
+    "/marker-icon.2b3e1faf89f94a483539.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
+    "/overlay.eb1c6ead73ba2c71d71a.png": "428cb1e28c236e7a48194c7469347fe5a5e0caef",
+    "/polyfills.00e02af16340fdc82052.js": "dbc502f030c7bb83c7caa1feee7aff990831f7d9",
+    "/runtime.6076814ef49a1a1583c0.js": "60542d45ef1f7bfeb255f45ea6a167ec92d2cc96",
+    "/scripts.bf128fa19cb1f1099bb9.js": "6d59ec80d1b35c739545d443be90856459d0f015",
+    "/styles.eb31c811321e0161531d.css": "5e9ca4a72bdd2f3263078da6010798e16432dc70"
+  },
+  "navigationUrls": [
+    {
+      "positive": true,
+      "regex": "^\\/.*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*\\.[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*$"
+    },
+    {
+      "positive": false,
+      "regex": "^\\/(?:.+\\/)?[^/]*__[^/]*\\/.*$"
+    }
+  ]
+}
