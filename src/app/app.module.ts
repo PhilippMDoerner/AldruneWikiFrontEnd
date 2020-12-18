@@ -166,7 +166,7 @@ import { environment } from '../environments/environment';
     FormlyBootstrapModule,
     CommonModule,
     VimeModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' }),
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
