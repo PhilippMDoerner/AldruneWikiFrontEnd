@@ -432,6 +432,11 @@ const routes: Routes = [
 		data:{ name: "503"},
 	},
 	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/0`,
+		component: GatewayTimeoutComponent,
+		data:{ name: "0"},
+	},
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/**`,
 		component: NotFoundComponent,
 		data:{ name: "404"},

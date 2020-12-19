@@ -45,17 +45,10 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     this.overviewType = urlSplit[urlSplit.length - 1];
 
     const listItemObs = this.overviewService.getOverviewItems(this.overviewType);
-    this.listItemSubscription = listItemObs.subscribe((listItems: OverviewItemObject[]) => {
-      this.listItems = listItems;
-    }, error =>{
-      console.log(error);
-      if (error.status === 403){
-        const loginUrl: string = Constants.getRoutePath(this.router, 'login');
-        window.location.href = loginUrl;
-      } else {
-        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`);
-      }
-    });
+    this.listItemSubscription = listItemObs.subscribe(
+      (listItems: OverviewItemObject[]) => this.listItems = listItems, 
+      error => Constants.routeToErrorPage(error.status, this.router)
+    );
   }
 
   capitalizeString(s : string){

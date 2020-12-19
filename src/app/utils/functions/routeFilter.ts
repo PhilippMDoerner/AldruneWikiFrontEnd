@@ -1,5 +1,4 @@
 import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Constants } from 'src/app/app.constants';
 import { ApiObject } from 'src/app/models/base-models';
 
 export function getComponentRoutes(router: Router, componentName : string): string[]{
@@ -72,10 +71,13 @@ export function routeToApiObject(router: Router, object: ApiObject): void{
 }
 
 export function routeToErrorPage(status: number, router: Router): void{
-    console.log(`Routed via routeToErrorPage with status ${status}`);
+    console.log(`Routed via routeToErrorPage with status`);
+    console.log(status);
     if (hasRoutePath(router, `${status}`)){
+        console.log("Found fitting error path, routing to " + getRoutePath(router, `${status}`));
         routeToPath(router, `${status}`);
         return;
     }
+    console.log("No fitting error path, routing to plain error")
     routeToPath(router, 'error');
 }
