@@ -54,23 +54,23 @@
       "cacheConfig": {
         "maxSize": 10,
         "maxAge": "1h",
-        "timeout": "5s",
         "strategy": "performance"
       }
     },
     {
       "name": "aldruneWikiArticles",
       "urls": [
-        "https://www.aldrune.com/wiki1/api/character/*",
-        "https://www.aldrune.com/wiki1/api/location/*/*",
-        "https://www.aldrune.com/wiki1/api/organization/*",
-        "https://www.aldrune.com/wiki1/api/item/*",
-        "https://www.aldrune.com/wiki1/api/diaryentry/*/*/*",
-        "https://www.aldrune.com/wiki1/api/creature/*",
-        "https://www.aldrune.com/wiki1/api/map/*"
+        "https://www.aldrune.com/wiki1/api/character/**",
+        "https://www.aldrune.com/wiki1/api/location/**",
+        "https://www.aldrune.com/wiki1/api/organization/**",
+        "https://www.aldrune.com/wiki1/api/item/**",
+        "https://www.aldrune.com/wiki1/api/diaryentry/**",
+        "https://www.aldrune.com/wiki1/api/creature/**",
+        "https://www.aldrune.com/wiki1/api/map/**",
+        "https://www.aldrune.com/wiki1/api/randomquote/**"
       ],
       "cacheConfig": {
-        "maxSize": 50,
+        "maxSize": 100,
         "maxAge": "1h",
         "timeout": "5s",
         "strategy": "freshness"

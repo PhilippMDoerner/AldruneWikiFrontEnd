@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1608376773152,
+  "timestamp": 1608379878409,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -83,7 +83,6 @@
       "strategy": "performance",
       "maxSize": 10,
       "maxAge": 3600000,
-      "timeoutMs": 5000,
       "cacheQueryOptions": {
         "ignoreVary": true
       },
@@ -92,25 +91,17 @@
     {
       "name": "aldruneWikiArticles",
       "patterns": [
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/character\\/[^/]*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/character\\/[^/]*\\/",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/location\\/[^/]*\\/[^/]*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/location\\/[^/]*\\/[^/]*\\/",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/organization\\/[^/]*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/organization\\/[^/]*\\/",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/item\\/[^/]*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/item\\/[^/]*\\/",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/diaryentry\\/[^/]*\\/[^/]*\\/[^/]*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/diaryentry\\/[^/]*\\/[^/]*\\/[^/]*\\/",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/creature\\/[^/]*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/creature\\/[^/]*\\/",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/map\\/[^/]*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/map\\/[^/]*\\/",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/randomquote\\/[^/]*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/randomquote\\/[^/]*\\/"
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/character\\/.*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/location\\/.*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/organization\\/.*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/item\\/.*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/diaryentry\\/.*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/creature\\/.*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/map\\/.*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/randomquote\\/.*"
       ],
       "strategy": "freshness",
-      "maxSize": 50,
+      "maxSize": 100,
       "maxAge": 3600000,
       "timeoutMs": 5000,
       "cacheQueryOptions": {
