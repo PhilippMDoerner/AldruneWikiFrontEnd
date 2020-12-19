@@ -39,15 +39,11 @@ import { LoginGuardService,
 		PermissionGuardService } from './services/permission.service';
 import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
+import { Route } from '@angular/compiler/src/core';
 
-const routes: {path: string, component: any, data: {name: string, requiredPermissions?: string[]}, canActivate?: any}[] = [
-	// Wiki1 Route
-	{
-		path: `wiki1`,
-		component: Wiki1RequestComponent,
-		data:{ name: "wiki1"},
-	},
 
+
+const routes: Routes = [
 	//Home Routes
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, 
@@ -406,6 +402,19 @@ const routes: {path: string, component: any, data: {name: string, requiredPermis
 		canActivate: [PermissionGuardService]
 	},
 
+	// Wiki1 Route. Required as Cache may redirect people to /wiki2 when they want to visit /wiki1
+	{
+		path: "wiki1",
+		component: Wiki1RequestComponent,
+		data:{ name: "wiki1"},
+		children:[
+			{
+				path: '**',
+				component: Wiki1RequestComponent,
+			}
+		]
+	},
+
 	// Error Routes
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/error`,
@@ -418,9 +427,14 @@ const routes: {path: string, component: any, data: {name: string, requiredPermis
 		data:{ name: "504"},
 	},
 	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/503`,
+		component: GatewayTimeoutComponent,
+		data:{ name: "503"},
+	},
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/**`,
 		component: NotFoundComponent,
-		data:{ name: "not-found"},
+		data:{ name: "404"},
 	},
 ];
 
