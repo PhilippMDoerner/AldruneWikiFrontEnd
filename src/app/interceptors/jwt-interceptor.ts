@@ -20,6 +20,7 @@ export class JWTInterceptor implements HttpInterceptor{
             if (!this.tokenService.hasValidJWTToken()){
                 return this.handleByRoutingToLogin(request, next);
             }
+
             const accessToken = TokenService.getAccessToken();
             if (this.refreshTokenService.tokenNeedsRefresh(accessToken)){
                 return this.handleByRefreshingAccessToken(request, next);
@@ -38,40 +39,45 @@ export class JWTInterceptor implements HttpInterceptor{
 
     private handleByRefreshingAccessToken(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         return this.refreshTokenService.refreshAccessToken().pipe(
-          switchMap((newAccessToken: string) => {
-            request = this.addTokenToRequest(newAccessToken, request);
-            return next.handle(request);
-          }),
-          catchError(err =>{
-              if (err.status === 401){
+            switchMap((newAccessToken: string) => {
+                request = this.addTokenToRequest(newAccessToken, request);
+                return next.handle(request);
+            }),
+            catchError(err =>{
+                if (err.status === 401){
                 console.log("Error while refreshing access token");
-                this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/login/token-expired`);
-              }
-              console.log("Uncertain what error, but not unauthorized");
-              return EMPTY;
-          })
+                Constants.routeToPath(this.router, 'login-state', {state: 'token-expired'});
+                return EMPTY;
+                } 
+
+                Constants.routeToErrorPage(this.router, err.status);
+                return EMPTY;
+            })
         )
       }
     
     private handleByWaitingForRefresh(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
         return this.refreshTokenService.waitForAccessTokenRefresh().pipe(
             switchMap((newAccessToken: string) => {
-            request = this.addTokenToRequest(newAccessToken, request);
-            return next.handle(request);
+                request = this.addTokenToRequest(newAccessToken, request);
+                return next.handle(request);
             }),
             catchError(err =>{
                 if(err.status===401){
-                    console.log("Error while waiting for access token refresh")
-                    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/login/???`);
+                    console.log("Error while waiting for access token refresh");
+                    Constants.routeToPath(this.router, 'login-state', {state: '???'});
+                    return EMPTY;
                 }
+
                 console.log("Uncertain what error, but not unauthorized");
-                return EMPTY
+                Constants.routeToErrorPage(this.router, err.status);
+                return EMPTY;
             })
         )
     }
 
     private handleByRoutingToLogin(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/login/no-token`);
+        Constants.routeToPath(this.router, 'login-state', {state: 'no-token'});
         return EMPTY;
     }
 

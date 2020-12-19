@@ -1,6 +1,11 @@
 import { DecodedTokenPayload } from 'src/app/models/jwttoken';
 import { TokenService } from 'src/app/services/token.service';
 import { Constants } from 'src/app/app.constants';
+import { Router } from '@angular/router';
+
+/** This small library's purpose is solely to allow adding quick checks on whether a user has a specific permission or not
+ * This is solely intended for usage inside of components that apply the Decorator/Mixin Below
+ */
 
 export function CurrentUserHasPermissions(requiredPermissions: string[]): Function{
     /**Decorator to execute hasPermissions before the actual function. The original function shall
@@ -80,5 +85,5 @@ export class PermissionUtilityFunctionMixin{
 
     userHasCreatePermission = () => {
         return hasPermissions([Constants.apiCreatePermission]);
-    } 
+    }
 }

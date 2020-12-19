@@ -1,4 +1,5 @@
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Constants } from 'src/app/app.constants';
 import { ApiObject } from 'src/app/models/base-models';
 
 export function getComponentRoutes(router: Router, componentName : string): string[]{
@@ -42,6 +43,12 @@ function hasPathVariables(routePath: string): boolean{
     return routePath.includes('/:');
 }
 
+export function hasRoutePath(router: Router, routeName: string): boolean{
+    const routes = router.config;
+    const routesWithRouteName = routes.filter(pathObject => pathObject.data.name === routeName);
+    return routesWithRouteName.length > 0;
+}
+
 function getPathVariableNames(routePath: string): string[]{
     const routeSegments: string[] = routePath.split("/");
     const pathVariables: string[] = routeSegments.filter((segment: string) => segment.startsWith(":"));
@@ -62,4 +69,13 @@ export function routeToPath(router: Router, routeName: string, params = {}): voi
 export function routeToApiObject(router: Router, object: ApiObject): void{
     const objectUrl: string = object.getAbsoluteRouterUrl();
     router.navigateByUrl(objectUrl);
+}
+
+export function routeToErrorPage(status: number, router: Router): void{
+    console.log(`Routed via routeToErrorPage with status ${status}`);
+    if (hasRoutePath(router, `${status}`)){
+        routeToPath(router, `${status}`);
+        return;
+    }
+    routeToPath(router, 'error');
 }

@@ -1,4 +1,4 @@
-import { getRoutePath, routeToApiObject, routeToPath } from 'src/app/utils/functions/routeFilter';
+import { getRoutePath, routeToApiObject, routeToPath, hasRoutePath, routeToErrorPage } from 'src/app/utils/functions/routeFilter';
 
 export class Constants{
     public static get apiPrefix(): string { return "wiki1";}
@@ -22,9 +22,11 @@ export class Constants{
     public static get NONE_STRING(): string { return "None";} //This value must be identical to the NONE_STRING setting in the backend
     
     //accessing route-generating function
-    public static get getRoutePath() { return getRoutePath;};
-    public static get routeToPath() { return routeToPath;};
-    public static get routeToApiObject() { return routeToApiObject;};
+    public static get hasRoutePath(): Function { return hasRoutePath;};
+    public static get getRoutePath(): Function { return getRoutePath;};
+    public static get routeToPath(): Function { return routeToPath;};
+    public static get routeToApiObject(): Function { return routeToApiObject;};
+    public static get routeToErrorPage(): Function{ return routeToErrorPage;};
 
     //strings representing states
     public static get createState(): string { return "create";}
