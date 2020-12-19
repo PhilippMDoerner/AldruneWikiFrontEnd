@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1608393911870,
+  "timestamp": 1608396427224,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -29,6 +29,7 @@
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic06\\.jpg",
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic07\\.jpg",
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/wiki\\/images\\/404\\.png",
+        "https:\\/\\/www\\.aldrune\\.com\\/static\\/wiki\\/images\\/504\\.png",
         "https:\\/\\/fonts\\.googleapis\\.com\\/css\\?family=Source\\+Sans\\+Pro:300italic,600italic,300,600"
       ]
     },
@@ -99,12 +100,13 @@
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/diaryentry\\/.*",
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/creature\\/.*",
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/map\\/.*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/randomquote\\/.*"
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/randomquote\\/.*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/recentupdates"
       ],
       "strategy": "freshness",
       "maxSize": 100,
-      "maxAge": 3600000,
-      "timeoutMs": 5000,
+      "maxAge": 600000,
+      "timeoutMs": 10000,
       "cacheQueryOptions": {
         "ignoreVary": true
       },
