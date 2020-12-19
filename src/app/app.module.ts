@@ -75,6 +75,8 @@ import { SessionDeleteModalComponent } from './components/utility/session-delete
 import { ArticleFooterComponent } from './components/utility/article-footer/article-footer.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
+import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
 
 // TODO: Turn AldruneWiki into a PWA
 // TODO: Fix tinymce URLs, make it so that they just link to an article to the same prefix, instead of a full url. 
@@ -143,6 +145,8 @@ import { environment } from '../environments/environment';
     FormlyFormcontainerComponent,
     SessionDeleteModalComponent,
     ArticleFooterComponent,
+    GatewayTimeoutComponent,
+    Wiki1RequestComponent,
   ],
   imports: [
     BrowserModule,

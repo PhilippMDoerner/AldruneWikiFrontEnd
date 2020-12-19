@@ -37,347 +37,391 @@ import { LoginComponent } from './components/login/login.component';
 import { Constants } from './app.constants';
 import { LoginGuardService,
 		PermissionGuardService } from './services/permission.service';
+import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
+import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
 
 const routes: {path: string, component: any, data: {name: string, requiredPermissions?: string[]}, canActivate?: any}[] = [
-  //Home Routes
-  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, component: HomeComponent, data:{ name: "home1"}, canActivate: [LoginGuardService]},
-  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}`, component: HomeComponent, data:{ name: "home2"}, canActivate: [LoginGuardService]},
-  
-  //Login Routes
-  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login`, component: LoginComponent, data:{ name: "login"}},
-  {path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login/:state`, component: LoginComponent, data:{ name: "login-state"}},
-  
-  //Character Routes
-  {
-    path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character`, 
-    component: ArticleOverviewComponent, 
-    data:{ name: "character-overview", requiredPermissions: [Constants.apiViewPermission]}, 
-    canActivate: [PermissionGuardService]
-  },
-  {
-    path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/create`,
-    component: CharacterArticleUpdateComponent, 
-    data:{ name: "character-create", requiredPermissions: [Constants.apiCreatePermission]}, 
-    canActivate: [PermissionGuardService]
-  },
-  {
-    path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:name`, 
-    component: CharacterArticleComponent, 
-    data:{ name: "character", requiredPermissions: [Constants.apiViewPermission]}, 
-    canActivate: [PermissionGuardService]
-  },
-  {
-    path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:name/update`, 
-    component: CharacterArticleUpdateComponent, 
-    data:{ name: "character-update", requiredPermissions: [Constants.apiUpdatePermission]}, 
-    canActivate: [PermissionGuardService]
-  },
+	// Wiki1 Route
+	{
+		path: `wiki1`,
+		component: Wiki1RequestComponent,
+		data:{ name: "wiki1"},
+	},
 
-  //Encounter Routes
-  {
-    path: `${Constants.wikiUrlFrontendPrefixNoSlash}/encounter/:pk`, 
-    component: EncounterComponent, 
-    data:{ name: "encounter", requiredPermissions: [Constants.apiViewPermission]}, 
-    canActivate: [PermissionGuardService]
-  },
-  
-  //Location Routes
-  {
+	//Home Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, 
+		component: HomeComponent, data:{ name: "home1"}, 
+		canActivate: [LoginGuardService]},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}`, 
+		component: HomeComponent, data:{ name: "home2"}, 
+		canActivate: [LoginGuardService]
+	},
+
+	//Login Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login`, 
+		component: LoginComponent, 
+		data:{ name: "login"}
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login/:state`, 
+		component: LoginComponent, 
+		data:{ name: "login-state"}
+	},
+
+	//Character Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character`, 
+		component: ArticleOverviewComponent, 
+		data:{ name: "character-overview", requiredPermissions: [Constants.apiViewPermission]}, 
+		canActivate: [PermissionGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/create`,
+		component: CharacterArticleUpdateComponent, 
+		data:{ name: "character-create", requiredPermissions: [Constants.apiCreatePermission]}, 
+		canActivate: [PermissionGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:name`, 
+		component: CharacterArticleComponent, 
+		data:{ name: "character", requiredPermissions: [Constants.apiViewPermission]}, 
+		canActivate: [PermissionGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:name/update`, 
+		component: CharacterArticleUpdateComponent, 
+		data:{ name: "character-update", requiredPermissions: [Constants.apiUpdatePermission]}, 
+		canActivate: [PermissionGuardService]
+	},
+
+	//Encounter Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/encounter/:pk`, 
+		component: EncounterComponent, 
+		data:{ name: "encounter", requiredPermissions: [Constants.apiViewPermission]}, 
+		canActivate: [PermissionGuardService]
+	},
+
+	//Location Routes
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location`,
 		component: ArticleOverviewComponent,
 		data:{ name: "location-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/create`,
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:parent_name/:name`,
 		component: LocationArticleComponent,
 		data:{ name: "location", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:parent_name/:name/create`,
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-parentlocation-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:latitude/:longitude/:map_name/create`,
 		component: LocationArticleMapCreateComponent,
 		data:{ name: "location-map-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:parent_name/:name/update`,
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-
-  {
+	//DiaryEntry Routes
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry`,
 		component: ArticleOverviewComponent,
 		data:{ name: "diaryentry-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/create`,
 		component: DiaryentryArticleUpdateComponent,
 		data:{ name: "diaryentry-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:sessionNumber/:isMainSession/:authorName`,
 		component: DiaryentryArticleComponent,
 		data:{ name: "diaryentry", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:sessionNumber/:isMainSession/:authorName/update`,
 		component: DiaryentryArticleUpdateComponent,
 		data:{ name: "diaryentry-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  
-  {
+
+	//Creature Routes
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature`,
 		component: ArticleOverviewComponent,
 		data:{ name: "creature-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/create`,
 		component: CreatureArticleUpdateComponent,
 		data:{ name: "creature-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:name`,
 		component: CreatureArticleComponent,
 		data:{ name: "creature", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:name/update`,
 		component: CreatureArticleUpdateComponent,
 		data:{ name: "creature-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  
-  {
+
+	// Organization Routes
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization`,
 		component: ArticleOverviewComponent,
 		data:{ name: "organization-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/create`,
 		component: OrganizationArticleUpdateComponent,
 		data:{ name: "organization-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:name`,
 		component: OrganizationArticleComponent,
 		data:{ name: "organization", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:name/update`,
 		component: OrganizationArticleUpdateComponent,
 		data:{ name: "organization-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  
-  {
+
+	// Item Routes
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item`,
 		component: ArticleOverviewComponent,
 		data:{ name: "item-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/create`,
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:character_name/create`,
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-character-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:name`,
 		component: ItemArticleComponent,
 		data:{ name: "item", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:name/update`,
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 
-  {
+	// Quest Routes
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest`,
 		component: QuestOverviewComponent,
 		data:{ name: "quest-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/create`,
 		component: QuestArticleUpdateComponent,
 		data:{ name: "quest-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:name`,
 		component: QuestArticleComponent,
 		data:{ name: "quest", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:name/update`,
 		component: QuestArticleUpdateComponent,
 		data:{ name: "quest-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+
+	// Session Routes
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session`,
 		component: HomeComponent,
 		data:{name: "session-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/create`,
 		component: HomeComponent,
 		data:{name: "session-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:sessionNumber/:isMainSession`,
 		component: HomeComponent,
 		data:{name: "session", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:sessionNumber/:isMainSession/update`,
 		component: HomeComponent,
 		data:{name: "session-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  //TODO: Change this path to be :sesionNumber/:isMainSession as right now its the wrong way round
-  {
+
+	// SessionAudio Routes
+	//TODO: Change this path to be :sesionNumber/:isMainSession as right now its the wrong way round
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio`,
 		component: SessionAudioOverviewComponent,
 		data:{ name: "sessionaudio-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/create`,
 		component: SessionAudioUpdateComponent,
 		data:{ name: "sessionaudio-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-		 
-  {
+			
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:isMainSession/:sessionNumber`,
 		component: SessionAudioComponent,
 		data:{ name: "sessionaudio", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:isMainSession/:sessionNumber/update`,
 		component: SessionAudioUpdateComponent,
 		data:{ name: "sessionaudio-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 
-  {
+	// Marker Routes
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:parent_location_name/:location_name/create`,
 		component: MarkerUpdateComponent,
 		data:{ name: "marker-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:latitude/:longitude/:map_name/create`,
 		component: MarkerMapCreateComponent,
 		data:{ name: "marker-map-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:parent_location_name/:location_name/:map_name`,
 		component: MarkerComponent,
 		data:{ name: "marker", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:parent_location_name/:location_name/:map_name/update`,
 		component: MarkerUpdateComponent,
 		data:{ name: "marker-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 
-  {
+
+	// Map Routes
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/create`,
 		component: MapUpdateComponent,
 		data:{ name: "map-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:name`,
 		component: MapComponent,
 		data:{ name: "map", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:name/update`,
 		component: MapUpdateComponent,
 		data:{ name: "map-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 
-  {
+
+	// Core Route
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules`,
 		component: RulesComponent,
 		data:{ name: "rules", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells`,
 		component: SpellsComponent,
 		data:{ name: "spells", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/recent-updates`,
 		component: RecentlyUpdatedArticleComponent,
 		data:{ name: "recent-updates", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:searchString`,
 		component: SearchComponent,
 		data:{ name: "search", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
-  {
+
+	// Error Routes
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/error`,
 		component: NotFoundComponent,
 		data:{ name: "error"},
 	},
-  {
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/504`,
+		component: GatewayTimeoutComponent,
+		data:{ name: "504"},
+	},
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/**`,
 		component: NotFoundComponent,
-    data:{ name: "not-found"},
-  },
+		data:{ name: "not-found"},
+	},
 ];
 
 @NgModule({

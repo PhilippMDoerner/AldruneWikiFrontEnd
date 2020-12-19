@@ -1,0 +1,16 @@
+<div class="main d-flex flex-column">
+    <h1 class="text-center mb-5"> HTTP 504: Gateway Timeout </h1>
+    <img src="{{constants.wikiStaticUrl}}/wiki/images/504.jpeg" alt="" class="center mb-3"/>
+
+    <p class="text-center"> 
+        Your connection seems to be taking a short rest. <br> 
+        Sadly, we need internet to show you a page you haven't recently visited and thus cached. <br>
+        Please connect to the internet and try again.
+    </p>
+    
+    <div>
+        <a class="btn btn-secondary" routerLink="{{constants.getRoutePath(router, 'home1')}}"> 
+            Back To Frontpage 
+        </a>
+    </div>
+</div>
