@@ -1,8 +1,8 @@
 {
   "name": "AldruneWiki",
   "short_name": "AldruneWiki",
-  "theme_color": "#1976d2",
-  "background_color": "#fafafa",
+  "theme_color": "#1b1f22",
+  "background_color": "#fff",
   "display": "standalone",
   "scope": "./",
   "start_url": "./wiki2",
