@@ -1,7 +1,7 @@
 <div class="main">
     <article>
         <h1>Log In</h1>
-        <div class="mb-3">{{extraMessage}}</div>
+        <div class="mb-3 text-warning">{{extraMessage}}</div>
         <form (submit)="onSubmit()" (keydown)="submitOnEnterPress($event)">
             <formly-form [model]="model" [fields]="fields" [form]="form"></formly-form>
             <div class="btn btn-secondary" (click)="onSubmit()">Login</div>
