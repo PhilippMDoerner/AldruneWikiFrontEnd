@@ -1,6 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { Location, SubLocation } from 'src/app/models/location';
+import { Location, LocationObject, SubLocation } from 'src/app/models/location';
+import { LocationService } from 'src/app/services/location/location.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
@@ -10,10 +14,14 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 })
 export class LocationAccordionComponent extends PermissionUtilityFunctionMixin implements OnInit {
   constants: any = Constants;
-  @Input() sublocations: SubLocation[];
+  @Input() sublocations: LocationObject[];
   isOpen: object;
 
-  constructor() { super() }
+  constructor(
+    private locationService: LocationService,
+    private warnings: WarningsService,
+    private router: Router,
+  ) { super() }
 
   ngOnInit(): void {
     this.isOpen = {};
@@ -24,10 +32,16 @@ export class LocationAccordionComponent extends PermissionUtilityFunctionMixin i
     });
   }
 
-  onSublocationUpdate(updateText: string, encounterIndex: number){
-    this.sublocations[encounterIndex].description = updateText;
-    console.log("Sending updated Text");
-    console.log(updateText);
+  //TODO: Finish Sublocation component
+  onSublocationUpdate(updateText: string, sublocationIndex: number){
+    const sublocationToUpdate: LocationObject = this.sublocations[sublocationIndex];
+    const oldDescription = sublocationToUpdate.description;
+    sublocationToUpdate.description = updateText;
+
+    this.locationService.updateLocation(sublocationToUpdate).pipe(first()).subscribe(
+      (updatedSublocation: LocationObject) => {},
+      error => this.warnings.showWarning(error)
+    );
   }
 
   onPanelChange({panelId}){

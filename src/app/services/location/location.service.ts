@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Constants } from "src/app/app.constants";
 import { Observable } from "rxjs";
-import { Location, LocationObject } from "src/app/models/location";
+import { Location, LocationObject, SubLocation } from "src/app/models/location";
 import { characterLocation } from "src/app/models/character";
 import { mergeMap, toArray, map } from 'rxjs/operators';
 import { TransformArrayObservable, TransformObservable } from 'src/app/utils/functions/transform';
@@ -32,7 +32,7 @@ export class LocationService {
   }
 
   @TransformObservable(LocationObject)
-  updateLocation(location: Location): Observable<Location>{
+  updateLocation(location: Location | SubLocation): Observable<Location>{
     const url: string = `${this.locationUrl}/pk/${location.pk}/`;
     return this.http.put<Location>(url, location);
   }

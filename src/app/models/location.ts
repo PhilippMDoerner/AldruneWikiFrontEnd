@@ -15,7 +15,7 @@ export interface Location extends ArticleObject{
     },
     parent_location_list?: string[],
     characters?: LocationCharacter[],
-    sublocations?: SubLocation[],
+    sublocations?: Location[],
     marker_details?: [{map: string, map_icon: string}],
 
     getAbsoluteRouterUrlForParentLocation(): string
@@ -40,6 +40,7 @@ interface LocationCharacter{
 
 export class LocationObject implements Location{
     name: string;
+    name_full?: string;
     description: string;
     parent_location: number;
     parent_location_details?: {
@@ -49,6 +50,8 @@ export class LocationObject implements Location{
         name_full: string,
     }
     pk?: number;
+    characters?: LocationCharacter[];
+    sublocations?: Location[];
 
     constructor(object?: Location){
         if (object) Object.assign(this, object)

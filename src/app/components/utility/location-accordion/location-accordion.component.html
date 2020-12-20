@@ -5,13 +5,19 @@
         <!-- Header -->
         <ng-template ngbPanelTitle class="button-container">
             <span class="location-title"> 
-                <a routerLink="{{constants.wikiUrlFrontendPrefix}}/location/{{location.parent_location_name}}/{{location.name}}"> {{ location.name }} </a>
+                <a 
+                routerLink="{{constants.getRoutePath(router, 'location', {
+                        name: location.name, 
+                        parent_name: location.parent_location_details.name
+                    })
+                }}"
+                > 
+                    {{ location.name }} 
+                </a>
             </span>
-            <i [ngClass]="{
-                'fa float-right icon': true,
-                'fa-plus': !panelIsOpen(i),
-                'fa-minus': panelIsOpen(i)}"></i>
+            <i [ngClass]="{'fa float-right icon': true,'fa-plus': !panelIsOpen(i),'fa-minus': panelIsOpen(i)}"></i>
         </ng-template>
+
         <!-- Body -->
         <ng-template ngbPanelContent>
             <!-- Description -->
