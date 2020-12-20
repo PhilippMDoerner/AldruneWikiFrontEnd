@@ -7,8 +7,9 @@ import { type } from 'os';
 export class WarningsService {
 
   warnings: object = {
-    404: "The target for the requested action could not be found.",
-    504: "The action you requested requires an internet connection. <br> Please try again once you are connected."
+    0: "This can't be done without an internet connection",
+    404: "The target URL for the requested action does not seem to exist",
+    504: "This can't be done without an internet connection",
   }
 
   defaultWarning: string = "The requested action was not carried out. An unknown error occurred";
