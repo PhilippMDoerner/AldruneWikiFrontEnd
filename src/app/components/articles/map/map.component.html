@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="maps && currentMap; else loading">
+    <article *ngIf="maps && currentMap; else loading" class="container">
         <!-- Heading -->
         <app-edit-toggle></app-edit-toggle>
         
@@ -20,11 +20,14 @@
         </div>
 
         <!-- Leaflet Map -->
-        <div class="mx-3 mb-5">
-            <app-leaflet-map 
-            [map]="currentMap"
-            ></app-leaflet-map>
+        <div class="row">
+            <div class="mb-5 col">
+                <app-leaflet-map 
+                [map]="currentMap"
+                ></app-leaflet-map>
+            </div>
         </div>
+
 
 
         <!-- Footer (Move to other Article + Delete Article) -->
