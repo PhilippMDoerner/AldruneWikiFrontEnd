@@ -73,7 +73,7 @@
         "https://www.aldrune.com/wiki1/api/recentupdates"
       ],
       "cacheConfig": {
-        "maxSize": 100,
+        "maxSize": 500,
         "maxAge": "10m",
         "timeout": "10s",
         "strategy": "freshness"
