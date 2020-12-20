@@ -7,6 +7,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-image-gallery',
@@ -41,7 +42,8 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
 
   constructor(
     private imageUploadService: ImageUploadService,
-    private formlyService: MyFormlyService
+    private formlyService: MyFormlyService,
+    private warnings: WarningsService,
     ) { super() }
 
   @HostListener('document:keyup', ['$event'])
@@ -109,13 +111,16 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   }
 
   updateImage(): void{
-    this.imageUploadService.updateImage(this.model).pipe(first()).subscribe((updatedImage: ImageObject) => {
-      updatedImage.image = updatedImage.image.replace(Constants.wikiUrl, ""); //Backend somehow returns ImageObject where ImageObject.image includes the wikiUrl, which it shouldn't
-      this.images[this.visibleImageIndex] = updatedImage;
-      this.resetImageModel();
+    this.imageUploadService.updateImage(this.model).pipe(first()).subscribe(
+      (updatedImage: ImageObject) => {
+        updatedImage.image = updatedImage.image.replace(Constants.wikiUrl, ""); //Backend somehow returns ImageObject where ImageObject.image includes the wikiUrl, which it shouldn't
+        this.images[this.visibleImageIndex] = updatedImage;
+        this.resetImageModel();
 
-      this.enableDisplayState();
-    }, error => console.log(error));
+        this.enableDisplayState();
+      }, 
+      error => this.warnings.showWarning(error)
+    );
   }
 
   // Create Image
@@ -129,12 +134,15 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   }
 
   createImage(): void{
-    this.imageUploadService.postImage(this.model).pipe(first()).subscribe(createdImage => {
-      this.images.push(createdImage);
-      this.resetImageModel();
+    this.imageUploadService.postImage(this.model).pipe(first()).subscribe(
+      (createdImage: ImageObject) => {
+        this.images.push(createdImage);
+        this.resetImageModel();
 
-      this.enableDisplayState();
-    }, error => console.log(error));  
+        this.enableDisplayState();
+      }, 
+      error => this.warnings.showWarning(error)
+    );  
   }
 
   // Delete Image
@@ -146,14 +154,17 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   deleteCurrentMainImage(): void{
     const currentMainImage = this.getCurrentMainImage();
 
-    this.imageUploadService.deleteImage(currentMainImage.pk).pipe(first()).subscribe(response => {
-      this.images.splice(this.visibleImageIndex, 1);
-      if (this.visibleImageIndex === this.images.length){
-        this.visibleImageIndex = this.images.length - 1;
-      }
+    this.imageUploadService.deleteImage(currentMainImage.pk).pipe(first()).subscribe(
+      response => {
+        this.images.splice(this.visibleImageIndex, 1);
+        if (this.visibleImageIndex === this.images.length){
+          this.visibleImageIndex = this.images.length - 1;
+        }
 
-      this.enableDisplayState();
-    }, error => console.log(error))
+        this.enableDisplayState();
+      },
+      error => this.warnings.showWarning(error)
+    )
   }
 
   isLastImage(){

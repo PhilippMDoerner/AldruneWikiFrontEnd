@@ -1,9 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { OverviewItem } from 'src/app/models/overviewItem';
-import { SessionAudio } from 'src/app/models/sessionaudio';
+import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
 import { OverviewService } from 'src/app/services/overview.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -12,26 +13,20 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   templateUrl: './session-audio-overview.component.html',
   styleUrls: ['./session-audio-overview.component.scss']
 })
-export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
+export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
   constants: any = Constants;
 
   sessionAudioFiles: OverviewItem[];
 
-  sessionaudio_subscription: Subscription;
-
   constructor(
     private overviewService: OverviewService,
-    private router: Router, //Only used in template
+    private router: Router,
   ) { super() }
 
   ngOnInit(): void {
-    this.sessionaudio_subscription = this.overviewService.getOverviewItems('sessionaudio').subscribe(sessionAudioFiles =>{
-      this.sessionAudioFiles = sessionAudioFiles;
-    });
+    this.overviewService.getOverviewItems('sessionaudio').pipe(first()).subscribe(
+      (sessionAudioFiles: OverviewItem[]) => this.sessionAudioFiles = sessionAudioFiles,
+      error => Constants.routeToErrorPage(this.router, error)
+    );
   }
-
-  ngOnDestroy(){
-    if(this.sessionaudio_subscription) this.sessionaudio_subscription.unsubscribe();
-  }
-
 }

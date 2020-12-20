@@ -8,6 +8,7 @@ import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-session-audio-update',
@@ -32,7 +33,8 @@ export class SessionAudioUpdateComponent implements OnInit {
     private formlyService: MyFormlyService,
     private audioService: SessionAudioService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private warnings: WarningsService,
   ) { }
 
   ngOnInit(): void {
@@ -44,7 +46,7 @@ export class SessionAudioUpdateComponent implements OnInit {
         const sessionNumber: number = params['sessionNumber'];
         this.audioService.getSessionAudioFile(isMainSessionInt, sessionNumber).pipe(first()).subscribe(
           (sessionAudio: SessionAudioObject) => this.model = sessionAudio,
-          error => Constants.routeToPath(this.router, 'error')
+          error => Constants.routeToErrorPage(this.router, error)
         );
 
       } else if (this.formState === this.constants.createState) {
@@ -60,7 +62,7 @@ export class SessionAudioUpdateComponent implements OnInit {
     const responseObservable: Observable<SessionAudioObject> =  isFormInUpdateState ? this.audioService.updateSessionAudioFile(this.model) : this.audioService.createSessionAudioFile(this.model);
     responseObservable.pipe(first()).subscribe( 
       (sessionAudio: SessionAudioObject) => Constants.routeToApiObject(this.router, sessionAudio),
-      error => console.log(error)
+      error => this.warnings.showWarning(error)
     );
   }
 

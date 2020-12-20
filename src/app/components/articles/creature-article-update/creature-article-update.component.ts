@@ -8,6 +8,7 @@ import { Constants } from 'src/app/app.constants';
 import { Creature, CreatureObject } from 'src/app/models/creature';
 import { CreatureService } from 'src/app/services/creature/creature.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-creature-article-update',
@@ -30,6 +31,7 @@ export class CreatureArticleUpdateComponent implements OnInit {
     private creatureService: CreatureService,
     private router: Router,
     private route: ActivatedRoute,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +42,8 @@ export class CreatureArticleUpdateComponent implements OnInit {
         const creature_name: string = params.name;
         this.creatureService.getCreature(creature_name).pipe(first()).subscribe(
           (creature: CreatureObject) =>  this.model = creature, 
-          error => Constants.routeToPath(this.router, 'error'));
+          error => Constants.routeToErrorPage(this.router, error)
+        );
 
       } else if (this.formState === Constants.createState) {
         this.model = new CreatureObject();
@@ -53,9 +56,10 @@ export class CreatureArticleUpdateComponent implements OnInit {
     const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
     const responseObservable : Observable<Creature> =  isFormInUpdateState ? this.creatureService.updateCreature(this.model) : this.creatureService.createCreature(this.model);
 
-    responseObservable.pipe(first()).subscribe((creature: CreatureObject) => {
-      Constants.routeToApiObject(this.router, creature);
-    }, error => console.log(error));
+    responseObservable.pipe(first()).subscribe(
+      (creature: CreatureObject) =>  Constants.routeToApiObject(this.router, creature),
+      error => this.warnings.showWarning(error)
+    );
   }
 
   onCancel(){

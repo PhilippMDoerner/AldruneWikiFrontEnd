@@ -10,6 +10,7 @@ import { Character, CharacterObject } from "src/app/models/character";
 import { CharacterService } from "src/app/services/character/character.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-character-article-update',
@@ -39,7 +40,8 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
     private characterService: CharacterService,
     private formlyService: MyFormlyService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
@@ -50,8 +52,8 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
         const character_name: string = params.name;
         this.characterService.getCharacter(character_name).pipe(first()).subscribe(
           (character: CharacterObject) => this.model = character, 
-          error => Constants.routeToPath(this.router, 'error')
-        )
+          error =>Constants.routeToErrorPage(this.router, error)
+        );
       } else if (this.formState === Constants.createState) {
         this.model = new CharacterObject();
       }
@@ -63,9 +65,10 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
     const responseObservable: Observable<Character> =  isFormInUpdateState ? this.characterService.updateCharacter(this.model) : this.characterService.createCharacter(this.model);
 
-    responseObservable.pipe(first()).subscribe((character: CharacterObject) => {
-      Constants.routeToApiObject(this.router, character);
-    }, error => console.log(error));
+    responseObservable.pipe(first()).subscribe(
+      (character: CharacterObject) => Constants.routeToApiObject(this.router, character),
+      error => this.warnings.showWarning(error)
+    );
   }
 
   onCancel(){

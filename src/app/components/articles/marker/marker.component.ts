@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { MapMarker } from 'src/app/models/mapmarker';
+import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
 import { MarkerService } from 'src/app/services/marker.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-marker',
@@ -13,7 +14,7 @@ import { MarkerService } from 'src/app/services/marker.service';
 })
 export class MarkerComponent implements OnInit {
   constants: any = Constants;
-  marker: MapMarker;
+  marker: MapMarkerObject;
 
   parameter_subscription: Subscription;
 
@@ -21,6 +22,7 @@ export class MarkerComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private markerService: MarkerService,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
@@ -28,9 +30,10 @@ export class MarkerComponent implements OnInit {
       const parentLocationName: string = params['parent_location_name'];
       const locationName: string = params['location_name'];
       const mapName: string = params['map_name'];
-      this.markerService.getMapMarker(parentLocationName, locationName, mapName).pipe(first()).subscribe(marker => {
-        this.marker = marker;
-      }); 
+      this.markerService.getMapMarker(parentLocationName, locationName, mapName).pipe(first()).subscribe(
+        (marker: MapMarkerObject) => this.marker = marker,
+        error => Constants.routeToErrorPage(this.router, error)
+      ); 
     })
 
   }
@@ -39,10 +42,14 @@ export class MarkerComponent implements OnInit {
     const parentLocationName: string = this.marker.location_details.parent_location_name;
     const locationName: string = this.marker.location_details.name;
 
-    this.markerService.deleteMapMarker(this.marker.pk).pipe(first()).subscribe(response => {
-      const locationUrl: string = Constants.getRoutePath(this.router, 'location', {name: locationName, parent_name: parentLocationName});
-      this.router.navigateByUrl(locationUrl);
-    })
+    this.markerService.deleteMapMarker(this.marker.pk).pipe(first()).subscribe(
+      response =>  Constants.routeToPath(this.router, 'location', {
+          name: locationName, 
+          parent_name: parentLocationName
+        }
+      ),
+      error => this.warnings.showWarning(error)
+    )
   }
 
   ngOnDestroy(){

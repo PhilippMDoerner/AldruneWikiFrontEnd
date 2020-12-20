@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { Article } from 'src/app/models/recentlyUpdatedArticle';
+import { Article, ArticleObject } from 'src/app/models/recentlyUpdatedArticle';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
 
 @Component({
@@ -27,10 +27,11 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const searchString: string = params['searchString'];
-      this.articleService.getSearchedArticles(searchString).pipe(first()).subscribe(articles => {
-        this.articles = articles;
-      })
-    })
+      this.articleService.getSearchedArticles(searchString).pipe(first()).subscribe(
+        (articles: ArticleObject[]) => this.articles = articles,
+        error => Constants.routeToErrorPage(this.router, error)
+      )
+    });
   }
 
   sidebarColor(articleType: string): string{

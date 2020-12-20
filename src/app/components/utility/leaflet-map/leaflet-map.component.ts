@@ -22,7 +22,7 @@ L.Marker.prototype.options.icon = DefaultIcon;
   templateUrl: './leaflet-map.component.html',
   styleUrls: ['./leaflet-map.component.scss']
 })
-export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit {
+export class LeafletMapComponent implements OnInit, AfterContentInit {
   @Input() map: ExtendedMap;
   private leafletMap;
   constructor(private router: Router) { }
@@ -179,9 +179,5 @@ export class LeafletMapComponent implements OnInit, OnDestroy, AfterContentInit 
   //     markerColor: 'blue'
   //   })
   // }
-
-  ngOnDestroy(): void{
-
-  }
 
 }

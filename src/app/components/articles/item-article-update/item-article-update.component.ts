@@ -5,10 +5,12 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
+import { CharacterObject } from 'src/app/models/character';
 import { Item, ItemObject } from 'src/app/models/item';
 import { CharacterService } from 'src/app/services/character/character.service';
 import { ItemService } from 'src/app/services/item/item.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 import { routeNameMatches } from 'src/app/utils/functions/routeFilter';
 
 @Component({
@@ -25,7 +27,6 @@ export class ItemArticleUpdateComponent implements OnInit {
   isForAssociatedObjectCreation: boolean;
   formState: string;
 
-
   model: ItemObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: 'name'}),
@@ -38,6 +39,7 @@ export class ItemArticleUpdateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
@@ -50,13 +52,17 @@ export class ItemArticleUpdateComponent implements OnInit {
 
       if (this.formState === Constants.updateState){
         this.itemService.getItem(itemName).pipe(first()).subscribe(
-          (item: ItemObject) =>  this.model = item
+          (item: ItemObject) =>  this.model = item,
+          error => Constants.routeToErrorPage(error)
         );
       } else if (this.isForAssociatedObjectCreation){
-        this.characterService.getCharacter(itemOwnerName).pipe(first()).subscribe(itemOwner => {
-          this.model = new ItemObject();
-          this.model.owner = itemOwner.pk;
-        });
+        this.characterService.getCharacter(itemOwnerName).pipe(first()).subscribe(
+          (itemOwner: CharacterObject) => {
+            this.model = new ItemObject();
+            this.model.owner = itemOwner.pk;
+          },
+          error => Constants.routeToErrorPage(error)
+        );
       } else if (this.formState === Constants.createState) {
         this.model = new ItemObject();
       } 
@@ -69,7 +75,7 @@ export class ItemArticleUpdateComponent implements OnInit {
 
     responseObservable.pipe(first()).subscribe(
       (item: ItemObject) => Constants.routeToApiObject(this.router, item),
-      error => console.log(error)
+      error => this.warnings.showWarning(error)
     );
   }
 

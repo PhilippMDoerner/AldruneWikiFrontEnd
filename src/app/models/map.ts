@@ -15,6 +15,7 @@ export class MapObject implements ExtendedMap{
     name: string;
     icon: string;
     image: string;
+    pk?: number;
 
     constructor(object?: Map){
         if(object) Object.assign(this, object);

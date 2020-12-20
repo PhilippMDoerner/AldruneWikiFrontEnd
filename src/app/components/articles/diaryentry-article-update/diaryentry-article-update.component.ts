@@ -8,6 +8,7 @@ import { Constants } from 'src/app/app.constants';
 import { DiaryEntry, DiaryEntryObject } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-diaryentry-article-update',
@@ -31,7 +32,8 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
     private formlyService: MyFormlyService,
     private diaryEntryService: DiaryentryService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
   
         this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(
           (diaryEntry: DiaryEntryObject) => this.model = diaryEntry, 
-          error => Constants.routeToPath(this.router, 'error')
+          error => Constants.routeToErrorPage(this.router, error)
         );
 
       } else if (this.formState === Constants.createState) {
@@ -60,7 +62,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
 
     responseObservable.pipe(first()).subscribe(
       (diaryEntry: DiaryEntryObject) => Constants.routeToApiObject(this.router, diaryEntry),
-      error => console.log(error)
+      error => this.warnings.showWarning(error)
     );
   }
 
@@ -77,7 +79,6 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
       Constants.routeToPath(this.router, 'diaryentry-overview');
     }
   }
-  
 
   ngOnDestroy(){
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();

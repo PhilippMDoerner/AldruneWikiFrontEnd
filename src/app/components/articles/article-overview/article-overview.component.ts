@@ -47,7 +47,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     const listItemObs = this.overviewService.getOverviewItems(this.overviewType);
     this.listItemSubscription = listItemObs.subscribe(
       (listItems: OverviewItemObject[]) => this.listItems = listItems, 
-      error => Constants.routeToErrorPage(error.status, this.router)
+      error => Constants.routeToErrorPage(this.router, error)
     );
   }
 

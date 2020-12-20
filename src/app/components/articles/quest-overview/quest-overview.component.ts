@@ -11,7 +11,7 @@ import { QuestService } from 'src/app/services/quest.service';
   styleUrls: ['./quest-overview.component.scss']
 })
 export class QuestOverviewComponent implements OnInit {
-  quests: Array<{key:string, value:Quest}>;
+  quests: Array<{key:string, value:QuestObject}>;
   filterStateTypes: string[];
   filterStates: object;
   constants: any = Constants;
@@ -29,22 +29,28 @@ export class QuestOverviewComponent implements OnInit {
     const urlSplit = this.router.url.split('/');
     this.overviewType = urlSplit[urlSplit.length - 1];
 
-    this.quest_subscription = this.questService.getQuests().subscribe((quests: QuestObject[]) => {
-      this.quests = this.groupQuestsByTaker(quests);
+    this.quest_subscription = this.questService.getQuests().subscribe(
+      (quests: QuestObject[]) => {
+        this.quests = this.groupQuestsByTaker(quests);
 
-      this.filterStateTypes = [];
-      this.filterStates = {};
-      for(let quest of quests){
-        if (!this.filterStates[quest.taker]) this.filterStates[quest.taker] = 'Default';
+        this.filterStateTypes = [];
+        this.filterStates = {};
+        for(let quest of quests){
+          if (!this.filterStates[quest.taker]){
+            this.filterStates[quest.taker] = 'Default';
+          }
 
-        if (!this.filterStateTypes.includes(quest.status)){
-          this.filterStateTypes.push(quest.status);
-        }
-      }
-    }, error => console.log(error));
+          if (!this.filterStateTypes.includes(quest.status)){
+            this.filterStateTypes.push(quest.status);
+          }
+        };
+      }, 
+      error => Constants.routeToErrorPage(this.router, error)
+    );
   }
 
-  groupQuestsByTaker(itemArray: QuestObject[]): Array<{key:string, value:Quest}>{
+  groupQuestsByTaker(itemArray: QuestObject[]): Array<{key:string, value:QuestObject}>{
+    /**Turns an array of QuestObjects into an array of objects, which  */
     const callback = (accumulator: object, quest: Quest) => {
         const questTaker: string = quest.taker;
         if(accumulator.hasOwnProperty(questTaker)) accumulator[questTaker].push(quest);
@@ -54,6 +60,7 @@ export class QuestOverviewComponent implements OnInit {
     
     const groupedQuests = itemArray.reduce(callback, {});
     const result = Object.keys(groupedQuests).map(key => ({key, value: groupedQuests[key] }));
+  
     // Sort by Quest-Taker alphabetically, but put "Group" quests always at the start
     const sortedResults = result.sort((objA, objB) =>{
         if (objA.key === "Group") return -1;

@@ -11,6 +11,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { LocationObject, Location } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 import { first } from 'rxjs/operators';
+import { ExtendedMap, MapObject } from 'src/app/models/map';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-location-article-map-create',
@@ -36,6 +38,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
+    private warnings: WarningsService,
   ) { }
 
   location_fields: FormlyFieldConfig[] = this.formlyService.getFieldConfigForLocation();
@@ -54,25 +57,32 @@ export class LocationArticleMapCreateComponent implements OnInit {
       const latitude: number = params['latitude'];
       this.mapName = params['map_name'];
       
-      this.mapService.getMap(this.mapName).pipe(first()).subscribe(map =>{
-        this.markerModel = new MapMarkerObject();
-        this.markerModel.map = map.pk;
-        this.markerModel.latitude = latitude;
-        this.markerModel.longitude = longitude;
-      });
+      this.mapService.getMap(this.mapName).pipe(first()).subscribe(
+        (map: ExtendedMap) =>{
+          this.markerModel = new MapMarkerObject();
+          this.markerModel.map = map.pk;
+          this.markerModel.latitude = latitude;
+          this.markerModel.longitude = longitude;
+        },
+        error => Constants.routeToErrorPage(this.router, error)
+      );
   
       this.locationModel = new LocationObject();
-    })
+    });
   }
 
   onSubmit(){
-    this.locationService.createLocation(this.locationModel).pipe(first()).subscribe((location: Location) => {
-      this.markerModel.location = location.pk;
+    this.locationService.createLocation(this.locationModel).pipe(first()).subscribe(
+      (location: LocationObject) => {
+        this.markerModel.location = location.pk;
 
-      this.markerService.createMapMarker(this.markerModel).pipe(first()).subscribe(
-        (marker: MapMarker) => Constants.routeToApiObject(this.router, location), 
-        error => console.log(error));
-    })
+        this.markerService.createMapMarker(this.markerModel).pipe(first()).subscribe(
+          (marker: MapMarker) => Constants.routeToApiObject(this.router, location), 
+          error => this.warnings.showWarning(error)
+        ) 
+      },
+      error => this.warnings.showWarning(error)
+    );
   }
 
   onCancel(){

@@ -8,6 +8,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { QuestService } from 'src/app/services/quest.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-quest-article-update',
@@ -56,6 +57,7 @@ export class QuestArticleUpdateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
+    private warnings: WarningsService,
   ) { }
 
   ngOnInit(): void {
@@ -66,7 +68,8 @@ export class QuestArticleUpdateComponent implements OnInit {
 
       if (this.formState === this.constants.updateState){
         this.questService.getQuest(questName).pipe(first()).subscribe(
-          (quest: QuestObject) => this.model = quest
+          (quest: QuestObject) => this.model = quest,
+          error => Constants.routeToErrorPage(this.router, error)
         );
         
       } else if (this.formState === this.constants.createState) {
@@ -81,7 +84,7 @@ export class QuestArticleUpdateComponent implements OnInit {
 
     responseObservable.pipe(first()).subscribe(
       (quest: QuestObject) => Constants.routeToApiObject(this.router, quest), 
-      error => console.log(error)
+      error => this.warnings.showWarning(error)
     );
   }
 

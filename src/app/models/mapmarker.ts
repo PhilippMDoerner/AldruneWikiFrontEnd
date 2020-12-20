@@ -25,6 +25,7 @@ export class MapMarkerObject implements MapMarker{
     location: number;
     location_details?: {name: string, parent_location_name: string, description: string, sublocations: string[]};
     type: number;
+    pk?: number;
 
     constructor(object?: MapMarker){
         if(object) Object.assign(this, object);

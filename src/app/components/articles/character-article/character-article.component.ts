@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { Constants } from "src/app/app.constants";
 import { first } from 'rxjs/operators';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
+import { WarningsService } from 'src/app/services/warnings.service';
 @Component({
   selector: 'app-character-article',
   templateUrl: './character-article.component.html',
@@ -23,15 +24,16 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
   constructor(
     private characterService: CharacterService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private warnings: WarningsService,
     ) { super() }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe( params => {
       const character_name: string = params.name;
-      this.characterService.getCharacter(character_name).pipe(first()).subscribe((character: CharacterObject) => {
-        this.character = character;
-      }, error =>{ this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`);});
+      this.characterService.getCharacter(character_name).pipe(first()).subscribe(
+        (character: CharacterObject) => this.character = character, 
+        error => Constants.routeToErrorPage(this.router, error));
     });
   }
 
@@ -41,14 +43,15 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
     this.characterService.updateCharacter(this.character).pipe(first()).subscribe(character => {
     }, error =>{
       this.character.description = oldDescription;
-      console.log(error);
+      this.warnings.showWarning(error);
     })
   }
 
   deleteArticle(){
-      this.characterService.deleteCharacter(this.character).pipe(first()).subscribe(response => {
-        this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/character`)
-      }, error => console.log(error));
+      this.characterService.deleteCharacter(this.character).pipe(first()).subscribe(
+        response => Constants.routeToPath(this.router, 'character-overview'),
+        error => this.warnings.showWarning(error)
+      )
   }
 
   ngOnDestroy(){

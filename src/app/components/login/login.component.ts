@@ -8,6 +8,7 @@ import { Constants } from 'src/app/app.constants';
 import { User } from 'src/app/models/user';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { TokenService } from 'src/app/services/token.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-login',
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit, OnDestroy {
     private tokenService: TokenService,
     private route: ActivatedRoute,
     private router: Router,
+    private warnings: WarningsService,
     ) { }
 
   ngOnInit(): void {
@@ -51,11 +53,11 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.tokenService.setTokens(jwtTokens);
       Constants.routeToPath(this.router, 'home1');
     }, error => {
-      console.log(error);
+      this.warnings.showWarning(error);
+      this.resetModel();
       if(error.status === 401){
-           this.resetModel();
-           const invalidLoginUrl = `${Constants.getRoutePath(this.router, 'login')}/invalid-login`;
-           this.router.navigateByUrl(invalidLoginUrl) ;   
+        const invalidLoginUrl = `${Constants.getRoutePath(this.router, 'login')}/invalid-login`;
+        this.router.navigateByUrl(invalidLoginUrl);   
       }
     });
 

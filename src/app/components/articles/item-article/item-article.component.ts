@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { Item } from 'src/app/models/item';
+import { Item, ItemObject } from 'src/app/models/item';
 import { ItemService } from 'src/app/services/item/item.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-item-article',
@@ -22,34 +23,38 @@ export class ItemArticleComponent implements OnInit {
   constructor(
     private itemService: ItemService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const itemName = params.name;
 
-      this.itemService.getItem(itemName).pipe(first()).subscribe(item => {
-        this.item = item;
-      }, error =>{ this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`)});
+      this.itemService.getItem(itemName).pipe(first()).subscribe(
+        (item: ItemObject) => this.item = item,
+        error => Constants.routeToErrorPage(this.router, error)
+      );
     })
   }
 
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.item.description;
     this.item.description = updatedDescription;
-    this.itemService.updateItem(this.item).pipe(first()).subscribe(diaryEntry => {
-    }, error =>{
-      this.item.description = oldDescription;
-      console.log(error);
-    })
+    this.itemService.updateItem(this.item).pipe(first()).subscribe(
+      (item: ItemObject) => {},
+      error =>{
+        this.item.description = oldDescription;
+        this.warnings.showWarning(error);
+      }
+    );
   }
 
   deleteArticle(){
-      this.itemService.deleteItem(this.item.pk).pipe(first()).subscribe(response => {
-        const itemOverviewUrl: string = Constants.getRoutePath(this.router, 'item-overview');
-        this.router.navigateByUrl(itemOverviewUrl);
-      }, error => console.log(error));
+    this.itemService.deleteItem(this.item.pk).pipe(first()).subscribe(
+      response => Constants.routeToPath(this.router, 'item-overview'),
+      error => this.warnings.showWarning(error)
+    );
   }
 
   ngOnDestroy(){

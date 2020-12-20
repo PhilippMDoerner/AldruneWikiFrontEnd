@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Quest, QuestObject } from 'src/app/models/quest';
 import { QuestService } from 'src/app/services/quest.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-quest-article',
@@ -21,26 +22,30 @@ export class QuestArticleComponent implements OnInit {
   constructor(
     private questService: QuestService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const questName: string = params.name;
-      this.questService.getQuest(questName).pipe(first()).subscribe((quest: QuestObject) => {
-        this.quest = quest;
-      }, error => this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}/error`));
+      this.questService.getQuest(questName).pipe(first()).subscribe(
+        (quest: QuestObject) => this.quest = quest,
+        error => Constants.routeToErrorPage(this.router, error)
+      );
     })
   }
 
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.quest.description;
     this.quest.description = updatedDescription;
-    this.questService.updateQuest(this.quest).pipe(first()).subscribe(organization => {
-    }, error =>{
-      this.quest.description = oldDescription;
-      console.log(error);
-    })
+    this.questService.updateQuest(this.quest).pipe(first()).subscribe(
+      (quest: QuestObject) => {},
+      error =>{
+        this.quest.description = oldDescription;
+        this.warnings.showWarning(error);
+      }
+    );
   }
 
   deleteArticle(){

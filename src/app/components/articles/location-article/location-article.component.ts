@@ -3,8 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { Location } from 'src/app/models/location';
+import { Location, LocationObject } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 @Component({
   selector: 'app-location-article',
@@ -21,7 +22,8 @@ export class LocationArticleComponent extends PermissionUtilityFunctionMixin imp
   constructor(
     private locationService: LocationService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private warnings: WarningsService
   ) { super() }
 
   ngOnInit(): void {
@@ -29,20 +31,23 @@ export class LocationArticleComponent extends PermissionUtilityFunctionMixin imp
       const locationName: string = params['name'];
       const parentLocationName: string = params['parent_name'] ? params['parent_name'] : "None";
 
-      this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(location => {
-        this.location = location;
-      }, error =>{ console.log(error)});
-    }, error => console.log(error));
+      this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(
+        (location: LocationObject) => this.location = location,
+        error => Constants.routeToErrorPage(this.router, error)
+      );
+    });
   }
 
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.location.description;
     this.location.description = updatedDescription;
-    this.locationService.updateLocation(this.location).pipe(first()).subscribe(location => {
-    }, error =>{
-      this.location.description = oldDescription;
-      console.log(error);
-    })
+    this.locationService.updateLocation(this.location).pipe(first()).subscribe(
+      (location: LocationObject) => {},
+      error =>{
+        this.location.description = oldDescription;
+        this.warnings.showWarning(error);
+      }
+    );
   }
 
   buildLocationRoute(index: number){
@@ -52,15 +57,18 @@ export class LocationArticleComponent extends PermissionUtilityFunctionMixin imp
     const locationName: string = locationList[index];
     const parentLocationName: string = (index === 0) ? "None" : locationList[index-1];
 
-    const locationUrl: string = Constants.getRoutePath(this.router, 'location', {parent_name: parentLocationName, name: locationName});
+    const locationUrl: string = Constants.getRoutePath(this.router, 'location', {
+      parent_name: parentLocationName, 
+      name: locationName
+    });
     return locationUrl;
   }
 
   deleteArticle(){
-      this.locationService.deleteLocation(this.location.pk).pipe(first()).subscribe(response => {
-        const locationOverviewUrl: string = Constants.getRoutePath(this.router, 'location-overview');
-        this.router.navigateByUrl(locationOverviewUrl);
-      }, error => console.log(error));
+      this.locationService.deleteLocation(this.location.pk).pipe(first()).subscribe(
+        response => Constants.routeToPath(this.router, 'location-overview'),
+        error => this.warnings.showWarning(error)
+      );
   }
 
   ngOnDestroy(){

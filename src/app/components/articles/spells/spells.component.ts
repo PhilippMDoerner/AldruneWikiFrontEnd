@@ -1,5 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Spell, SpellObject } from 'src/app/models/spell';
 import { SpellService } from 'src/app/services/spell.service';
@@ -9,22 +11,27 @@ import { SpellService } from 'src/app/services/spell.service';
   templateUrl: './spells.component.html',
   styleUrls: ['./spells.component.scss']
 })
-export class SpellsComponent implements OnInit, OnDestroy {
+export class SpellsComponent implements OnInit {
   panelIsOpenArray: boolean[];
   spells: SpellObject[];
-  spell_subscription: Subscription;
   constants: any = Constants;
 
-  constructor(private spellService: SpellService) { }
+  constructor(
+    private spellService: SpellService,
+    private router: Router,
+  ) { }
 
   ngOnInit(): void {
-    this.spell_subscription = this.spellService.getSpells().subscribe((spells: SpellObject[]) => {
-      this.spells = spells;
-      this.panelIsOpenArray = [];
-      for (let spell of spells){
-        this.panelIsOpenArray.push(true);
-      }
-    })
+    this.spellService.getSpells().pipe(first()).subscribe(
+      (spells: SpellObject[]) => {
+        this.spells = spells;
+        this.panelIsOpenArray = [];
+        for (let spell of spells){
+          this.panelIsOpenArray.push(true);
+        };
+      },
+      error => Constants.routeToErrorPage(this.router, error)
+    );
   }
 
   panelIsOpen(i: number): boolean{
@@ -33,9 +40,5 @@ export class SpellsComponent implements OnInit, OnDestroy {
 
   togglePanel(i: number){
     this.panelIsOpenArray[i] = !this.panelIsOpenArray[i];
-  }
-
-  ngOnDestroy(){
-    if (this.spell_subscription) this.spell_subscription.unsubscribe();
   }
 }

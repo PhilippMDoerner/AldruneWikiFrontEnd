@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { Article } from 'src/app/models/recentlyUpdatedArticle';
+import { Article, ArticleObject } from 'src/app/models/recentlyUpdatedArticle';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
 
 @Component({
@@ -12,7 +12,7 @@ import { RecentlyUpdatedService } from 'src/app/services/recently-updated.servic
 })
 export class RecentlyUpdatedArticleComponent implements OnInit {
   article_subscription: Subscription;
-  articles: Article[];
+  articles: ArticleObject[];
   constants: any = Constants;
 
   constructor(
@@ -21,9 +21,10 @@ export class RecentlyUpdatedArticleComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.article_subscription = this.recentlyUpdatedArticleService.getRecentlyUpdatedArticle().subscribe(articles => {
-      this.articles = articles;
-    })
+    this.article_subscription = this.recentlyUpdatedArticleService.getRecentlyUpdatedArticle().subscribe(
+      (articles: ArticleObject[]) => this.articles = articles,
+      error => Constants.routeToErrorPage(this.router, error)
+    );
   }
 
   sidebarColor(articleType: string): string{

@@ -9,6 +9,8 @@ import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
+import { WarningsService } from 'src/app/services/warnings.service';
+import { MapObject } from 'src/app/models/map';
 @Component({
   selector: 'app-marker-map-create',
   templateUrl: './marker-map-create.component.html',
@@ -38,6 +40,7 @@ export class MarkerMapCreateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
@@ -46,19 +49,23 @@ export class MarkerMapCreateComponent implements OnInit {
       const latitude: number = params['latitude'];
       this.mapName = params['map_name'];
       
-      this.mapService.getMap(this.mapName).pipe(first()).subscribe(map =>{
-        this.model = new MapMarkerObject();
-        this.model.map = map.pk;
-        this.model.latitude = latitude;
-        this.model.longitude = longitude;
-      })
+      this.mapService.getMap(this.mapName).pipe(first()).subscribe(
+        (map: MapObject) =>{
+          this.model = new MapMarkerObject();
+          this.model.map = map.pk;
+          this.model.latitude = latitude;
+          this.model.longitude = longitude;
+        },
+        error => Constants.routeToErrorPage(this.router, error)
+      )
     });
   }
 
   onSubmit(){
     this.markerService.createMapMarker(this.model).pipe(first()).subscribe(
       (marker: MapMarker) => Constants.routeToPath(this.router, 'map', {name: marker.map_details.name}),
-      error => console.log(error));
+      error => this.warnings.showWarning(error)
+    );
   }
 
   onCancel(){

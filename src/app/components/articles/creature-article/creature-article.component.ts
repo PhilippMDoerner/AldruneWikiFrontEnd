@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Creature, CreatureObject } from 'src/app/models/creature';
 import { CreatureService } from 'src/app/services/creature/creature.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-creature-article',
@@ -21,33 +22,37 @@ export class CreatureArticleComponent implements OnInit {
   constructor(
     private creatureService: CreatureService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const creature_name: string = this.route.snapshot.params.name;
-      this.creatureService.getCreature(creature_name).pipe(first()).subscribe(creature => {
-        this.creature = creature;
-      }, error =>{ console.log(error)});
+      this.creatureService.getCreature(creature_name).pipe(first()).subscribe(
+        (creature: CreatureObject) => this.creature = creature,
+        error => Constants.routeToErrorPage(this.router, error)
+      );
     })
   }
 
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.creature.description;
     this.creature.description = updatedDescription;
-    this.creatureService.updateCreature(this.creature).pipe(first()).subscribe(creature => {
-    }, error =>{
-      this.creature.description = oldDescription;
-      console.log(error);
-    })
+    this.creatureService.updateCreature(this.creature).pipe(first()).subscribe(
+      (creature: CreatureObject) => {}, 
+      error => {
+        this.creature.description = oldDescription;
+        this.warnings.showWarning(error);
+      }
+    );
   }
 
   deleteArticle(){
-    this.creatureService.deleteCreature(this.creature.pk).pipe(first()).subscribe(response => {
-      const creatureOverviewUrl: string = Constants.getRoutePath(this.router, 'creature-overview');
-      this.router.navigateByUrl(creatureOverviewUrl);
-    }, error => console.log(error));
+    this.creatureService.deleteCreature(this.creature.pk).pipe(first()).subscribe(
+      response => Constants.routeToPath(this.router, 'creature-overview'), 
+      error => this.warnings.showWarning(error)
+    );
   }
 
   ngOnDestroy(){

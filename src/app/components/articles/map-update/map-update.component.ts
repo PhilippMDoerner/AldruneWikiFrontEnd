@@ -8,6 +8,7 @@ import { Constants } from 'src/app/app.constants';
 import { MapObject, Map } from 'src/app/models/map';
 import { MapService } from 'src/app/services/map.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-map-update',
@@ -33,7 +34,8 @@ export class MapUpdateComponent implements OnInit {
     private formlyService: MyFormlyService,
     private mapService: MapService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
@@ -45,7 +47,7 @@ export class MapUpdateComponent implements OnInit {
       if (this.formState === this.constants.updateState){
         this.mapService.getMap(mapName).pipe(first()).subscribe(
           (map: MapObject) => this.model = map,
-          error => console.log(error)
+          error => Constants.routeToErrorPage(this.router, error)
         );
       }  else if (this.formState === this.constants.createState){
         this.model = new MapObject();
@@ -59,7 +61,7 @@ export class MapUpdateComponent implements OnInit {
 
     responseObservable.pipe(first()).subscribe(
       (map: MapObject) => Constants.routeToApiObject(this.router, map),
-      error => console.log(error)
+      error => this.warnings.showWarning(error)
     );
   }
 

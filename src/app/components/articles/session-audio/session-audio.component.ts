@@ -4,9 +4,10 @@ import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
-import { Timestamp } from 'src/app/models/timestamp';
+import { Timestamp, TimestampObject } from 'src/app/models/timestamp';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 
@@ -47,6 +48,7 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
     private router: Router,
     private sessionAudioService: SessionAudioService,
     private timestampService: SessionAudioTimestampService,
+    private warnings: WarningsService,
     ) { super() }
 
   ngOnInit(): void {
@@ -54,20 +56,24 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
       const isMainSessionInt: number = params.isMainSession;
       const sessionNumber: number = params.sessionNumber;
 
-      this.sessionAudioService.getSessionAudioFile(isMainSessionInt, sessionNumber).pipe(first()).subscribe((sessionAudio: SessionAudioObject) => {
-        this.sessionAudio = sessionAudio;
-        this.priorSessionAudio = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
-        this.nextSessionAudio = sessionAudio.sessionAudioNeighbours.nextSessionAudio;
-      }, error => console.log(error));
+      this.sessionAudioService.getSessionAudioFile(isMainSessionInt, sessionNumber).pipe(first()).subscribe(
+        (sessionAudio: SessionAudioObject) => {
+          this.sessionAudio = sessionAudio;
+          this.priorSessionAudio = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
+          this.nextSessionAudio = sessionAudio.sessionAudioNeighbours.nextSessionAudio;
+        }, 
+        error => Constants.routeToErrorPage(this.router, error)
+      );
 
-      this.timestampService.getTimestamps(isMainSessionInt, sessionNumber).pipe(first()).subscribe(timestamps => {
-        this.timestamps = timestamps;
-      })
+      this.timestampService.getTimestamps(isMainSessionInt, sessionNumber).pipe(first()).subscribe(
+        (timestamps: TimestampObject[]) => this.timestamps = timestamps,
+        error => Constants.routeToErrorPage(this.router, error)
+      )
     })
 
-    this.create_timestamp_event_subscription = this.createTimestampEventSubject.subscribe((timestampTime: number) => {
-      this.toggleTimestampCreateState();
-    })
+    this.create_timestamp_event_subscription = this.createTimestampEventSubject.subscribe(
+      (timestampTime: number) => this.toggleTimestampCreateState()
+    );
   }
 
   routeToSessionAudio({isMainSessionInt, sessionNumber}){
@@ -78,10 +84,10 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
   }
 
   deleteArticle(){
-    this.sessionAudioService.deleteSessionAudioFile(this.sessionAudio.pk).pipe(first()).subscribe(response => {
-      const sessionAudioOverviewUrl = Constants.getRoutePath(this.router, 'sessionaudio-overview');
-      this.router.navigateByUrl(sessionAudioOverviewUrl);
-    }, error => console.log(error));
+    this.sessionAudioService.deleteSessionAudioFile(this.sessionAudio.pk).pipe(first()).subscribe(
+      response => Constants.routeToPath(this.router, 'sessionaudio-overview'),
+      error => this.warnings.showWarning(error)
+    );
   }
 
   @HostListener('document:keydown', ["$event"]) 

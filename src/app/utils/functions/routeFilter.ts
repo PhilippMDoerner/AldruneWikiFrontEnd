@@ -70,7 +70,10 @@ export function routeToApiObject(router: Router, object: ApiObject): void{
     router.navigateByUrl(objectUrl);
 }
 
-export function routeToErrorPage(status: number, router: Router): void{
+export function routeToErrorPage(router: Router, error: number| any): void{
+    if (typeof error !== "number" && !error.hasOwnProperty("status")) throw "Incorrect error input. The input does not contain an error status or an object with the error status. Can not route to error page without error status.";
+    if (typeof error !== "number" && error.hasOwnProperty("status")) error = error.status;
+
     console.log(`Routed via routeToErrorPage with status`);
     console.log(status);
     if (hasRoutePath(router, `${status}`)){

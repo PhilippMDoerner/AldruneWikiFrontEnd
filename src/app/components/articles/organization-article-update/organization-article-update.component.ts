@@ -9,6 +9,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { OverviewService } from 'src/app/services/overview.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-organization-article-update',
@@ -34,6 +35,7 @@ export class OrganizationArticleUpdateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
@@ -43,7 +45,8 @@ export class OrganizationArticleUpdateComponent implements OnInit {
       if (this.formState === this.constants.updateState){
         const organizationName: string = params.name;
         this.organizationService.getOrganization(organizationName).pipe(first()).subscribe(
-          (organization: OrganizationObject) => this.model = organization
+          (organization: OrganizationObject) => this.model = organization,
+          error => Constants.routeToErrorPage(this.router, error)
         );
         
       } else if (this.formState === this.constants.createState) {
@@ -59,7 +62,7 @@ export class OrganizationArticleUpdateComponent implements OnInit {
 
     responseObservable.pipe(first()).subscribe(
       (organization: OrganizationObject) => Constants.routeToApiObject(this.router, organization),
-      error => console.log(error)
+      error => this.warnings.showWarning(error)
     );
   }
   
