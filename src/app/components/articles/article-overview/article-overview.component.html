@@ -58,7 +58,10 @@
 
             <!-- NPC List -->
             <div class="row">
-                <div *ngFor="let characterLetterEntries of listItems | groupByFirstLetter: 'name'" class="col-lg-4">
+                <div 
+                *ngFor="let characterLetterEntries of listItems | groupByFirstLetter: 'name'" 
+                [ngClass]="{'py-4 col-md-6 border-bottom': !filter.value, 'col-12': filter.value}"
+                >
                     <!-- Single-Letter-Group-Heading -->
                     <h5 class="mb-0" [ngClass]="{'d-none': filter.value}"> {{ characterLetterEntries.key }} </h5>
 
@@ -76,8 +79,6 @@
                         </span>
                     </ul>
 
-                    <!-- Spacer next group that can be removed during filtering -->
-                    <div class="mb-5" *ngIf="!filter.value"></div>
                 </div>
             </div>
 
@@ -92,11 +93,11 @@
                 </div>
 
                 <!-- Author Entries -->
-                <ul>
+                <ul [ngClass]="{'mb-0': filter.value}">
                     <span class="row" *ngFor="let diaryEntry of authorDiaryEntries.value">
                         <li 
                         class="col"
-                        [ngClass]="{'d-none': !diaryEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
+                        [ngClass]="{'d-none': !buildDiaryEntryNameForList(diaryEntry).toLowerCase().includes(filter.value.toLowerCase())}"
                         >
                             <a routerLink="{{ diaryEntry.getAbsoluteRouterUrl()}}" >
                                 {{buildDiaryEntryNameForList(diaryEntry)}}
@@ -108,24 +109,24 @@
         </div>
         
         <!-- Item/Creature/Organization/Location Overview -->
-        <div *ngIf="overviewType===itemOverview || overviewType===creatureOverview || overviewType===organizationOverview || overviewType===locationOverview">
-            <div class="mb-5" *ngFor="let itemLetterEntries of listItems | groupByFirstLetter: 'name_full'">
+        <div class="row" *ngIf="overviewType===itemOverview || overviewType===creatureOverview || overviewType===organizationOverview || overviewType===locationOverview">
+            <div 
+            *ngFor="let itemLetterEntries of listItems | groupByFirstLetter: 'name_full'"
+            [ngClass]="{'py-4 col-md-6 border-bottom': !filter.value, 'col-12': filter.value}"
+            >
                 <!-- Letter Heading -->
-                <div class="row">
-                    <h5 class="col mb-0" [ngClass]="{'d-none': filter.value}"> {{ itemLetterEntries.key }} </h5>
-                </div>
+                 <h5 class="mb-0" [ngClass]="{'d-none': filter.value}"> {{ itemLetterEntries.key }} </h5>
+
                 <!-- Article List -->
-                <ul>
-                    <span class="row" *ngFor="let item of itemLetterEntries.value">
-                        <li 
-                        class="col"
-                        [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
-                        >
-                            <a routerLink="{{ item.getAbsoluteRouterUrl() }}">
-                                {{item.name_full}}
-                            </a>
-                        </li>
-                    </span>
+                <ul class="mb-0">
+                    <li 
+                    *ngFor="let item of itemLetterEntries.value"
+                    [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
+                    >
+                        <a routerLink="{{ item.getAbsoluteRouterUrl() }}">
+                            {{item.name_full}}
+                        </a>
+                    </li>
                 </ul>
 
             </div>
