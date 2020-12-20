@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { ExtendedMap, Map } from 'src/app/models/map';
+import { ExtendedMap } from 'src/app/models/map';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { MapService } from 'src/app/services/map.service';
 import { OverviewService } from 'src/app/services/overview.service';
