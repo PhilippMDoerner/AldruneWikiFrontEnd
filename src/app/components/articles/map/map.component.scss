@@ -7,6 +7,17 @@
     opacity: 1;
 }
 
+
+select {
+    background-color: #4c4c4c;
+    background-clip: padding-box;
+    border: 1px solid #222;
+    border-radius: .25rem;
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+    color: white;
+    font-weight: bold;
+}
+
 .main{
     max-width: 75rem;
 }
