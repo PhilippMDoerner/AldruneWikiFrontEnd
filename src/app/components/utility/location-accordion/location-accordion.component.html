@@ -28,11 +28,15 @@
                 (updateText)="onSublocationUpdate($event, i)"
                 ></app-textfield>
             </div> 
+
+            <!-- List of Characters at this location -->
             <div class="location-character mb-1" *ngIf="location.characters.length > 0">
                 <span class="mr-4"> Characters: </span>
                 <span class="d-inline-flex align-items-center flex-wrap">
                     <span class="badge badge-secondary mr-2 p-1 mb-1" *ngFor="let character of location.characters">
-                        <a routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{character.name}}">{{ character.name }}</a>
+                        <a routerLink="{{constants.getRoutePath(router, 'character', {name: character.name}) }}">
+                            {{ character.name }}
+                        </a>
                     </span>
                 </span>
             </div>       
