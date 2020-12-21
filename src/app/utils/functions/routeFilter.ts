@@ -1,4 +1,5 @@
 import { ActivatedRoute, Route, Router } from '@angular/router';
+import { Constants } from 'src/app/app.constants';
 import { ApiObject } from 'src/app/models/base-models';
 
 export function getComponentRoutes(router: Router, componentName : string): string[]{
@@ -31,6 +32,7 @@ export function getRoutePath(router: Router, routeName: string, params = {}): st
         const variableNames: string[] = getPathVariableNames(variableRoutePath);
         for (let variableName of variableNames){
             if(!params.hasOwnProperty(variableName)) throw `Tried to create path for route ${routeName} but lacked parameter ${variableName}`;
+            if (params[variableName] === null) params[variableName] = "None";//TODO: Replace this with Constants Nonestring. Turn this into a service and move it out of Constants to be able to do so
             variableRoutePath = variableRoutePath.replace(`:${variableName}`, params[variableName]);
         }
     }
