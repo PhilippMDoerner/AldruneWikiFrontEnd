@@ -73,14 +73,10 @@ export function routeToApiObject(router: Router, object: ApiObject): void{
 export function routeToErrorPage(router: Router, error: number| any): void{
     if (typeof error !== "number" && !error.hasOwnProperty("status")) throw "Incorrect error input. The input does not contain an error status or an object with the error status. Can not route to error page without error status.";
     if (typeof error !== "number" && error.hasOwnProperty("status")) error = error.status;
-
-    console.log(`Routed via routeToErrorPage with status`);
-    console.log(status);
-    if (hasRoutePath(router, `${status}`)){
-        console.log("Found fitting error path, routing to " + getRoutePath(router, `${status}`));
-        routeToPath(router, `${status}`);
+    const errorStatus: string = `${error}`;
+    if (hasRoutePath(router, errorStatus)){
+        routeToPath(router, errorStatus);
         return;
     }
-    console.log("No fitting error path, routing to plain error")
     routeToPath(router, 'error');
 }

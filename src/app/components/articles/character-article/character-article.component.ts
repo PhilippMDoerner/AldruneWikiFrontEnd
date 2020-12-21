@@ -33,7 +33,8 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
       const character_name: string = params.name;
       this.characterService.getCharacter(character_name).pipe(first()).subscribe(
         (character: CharacterObject) => this.character = character, 
-        error => Constants.routeToErrorPage(this.router, error));
+        error => Constants.routeToErrorPage(this.router, error)
+      );
     });
   }
 
