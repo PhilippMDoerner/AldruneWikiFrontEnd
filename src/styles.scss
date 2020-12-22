@@ -396,6 +396,11 @@ div.ngb-dp-day .btn-light:hover{
 	color: black !important;
 }
 
+// Overwrite Formly warning message styling for better visibility
+formly-validation-message{
+	color: #ff8b7f;
+}
+
 //Overwrite of Formly for SessionAudio Form
 .timestamp-input input{
 	background-color: #222 !important;
