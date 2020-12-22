@@ -5,6 +5,7 @@ export interface FormlyInterface{
     hide?: boolean,
     wrappers?: string[],
     className?: string,
+    validators?: string[],
 }
 export interface FormlyOverviewSelectConfig extends FormlyInterface{
     labelProp?: string,

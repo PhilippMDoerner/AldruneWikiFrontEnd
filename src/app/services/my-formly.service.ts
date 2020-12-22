@@ -13,6 +13,9 @@ export class MyFormlyService {
   ) { }
 
   genericSelect(config: FormlyOverviewSelectConfig): FormlyFieldConfig{
+    const validatorList = (config.validators) ? config.validators : [];
+    if (config.required === true ) validatorList.push('required');
+
     return {
       key: config.key,
       type: "select",
@@ -25,6 +28,9 @@ export class MyFormlyService {
         valueProp: (config.valueProp) ? config.valueProp : "pk",
         options: this.selectOptionService.getOverviewItems(config.optionsType),
         required: (typeof config.required === "boolean") ? config.required : true,
+      },
+      validators: {
+        validation: validatorList
       }
     };
   }
@@ -35,6 +41,9 @@ export class MyFormlyService {
       options.push({label: option, value: option});
     }
 
+    const validatorList = (config.validators) ? config.validators : [];
+    if (config.required === true ) validatorList.push('required');
+
     return {
       key: config.key,
       type: "select",
@@ -44,11 +53,17 @@ export class MyFormlyService {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         options: options,
         required: (typeof config.required === "boolean") ? config.required : true,
-      }
+      },
+      validators: {
+        validation: validatorList,
+      },
     }
   }
 
   genericInput(config: FormlyGenericInputConfig): FormlyFieldConfig{
+    const validatorList = (config.validators) ? config.validators : [];
+    if (config.required === true ) validatorList.push('required');
+
     return {
       key: config.key,
       type: "input",
@@ -62,11 +77,17 @@ export class MyFormlyService {
         type: (config.isNumberInput) ? "number" : "string",
         required: (typeof config.required === "boolean") ? config.required : true,
         placeholder: (config.placeholder) ? config.placeholder : null,
+      },
+      validators:{
+        validation: validatorList,
       }
     }
   }
 
   genericPasswordInput(config: FormlyInterface): FormlyFieldConfig{
+    const validatorList = (config.validators) ? config.validators : [];
+    if (config.required === true ) validatorList.push('required');
+    
     return {
       key: config.key,
       type: "input",
@@ -76,6 +97,9 @@ export class MyFormlyService {
         type: "password",
         required: true,
         placeholder: "Password",
+      },
+      validators:{
+        validation: validatorList
       }
     }
   }
@@ -94,6 +118,10 @@ export class MyFormlyService {
   }
 
   genericDatepicker(config: FormlyDatepickerConfig): FormlyFieldConfig{
+    const validatorList = (config.validators) ? config.validators : [];
+    validatorList.push('date');
+    if (config.required === true ) validatorList.push('required');
+
     return {
       key: config.key,
       type: "datepicker",
@@ -101,11 +129,17 @@ export class MyFormlyService {
       hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+      },
+      validators:{
+        validation: validatorList,
       }
     }
   }
 
   singleFileField(config: FormlyInterface): FormlyFieldConfig{
+    const validatorList = (config.validators) ? config.validators : [];
+    if (config.required === true ) validatorList.push('required');
+
     return {
       key: config.key,
       type: "file",
@@ -114,11 +148,17 @@ export class MyFormlyService {
       templateOptions: {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         required: (typeof config.required === "boolean") ? config.required : true,
+      },
+      validators:{
+        validation: validatorList,
       }
     }
   }
 
   genericTextField(config: FormlyInterface): FormlyFieldConfig{
+    const validatorList = (config.validators) ? config.validators : [];
+    if (config.required === true ) validatorList.push('required');
+
     return {
       key: config.key,
       type: "tinymce",
@@ -127,11 +167,14 @@ export class MyFormlyService {
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         required: (typeof config.required === "boolean") ? config.required : true,
+      },
+      validators:{
+        validation: validatorList
       }
     }
   }
 
-  capitalizeFirstLetter(s: string){
+  private capitalizeFirstLetter(s: string){
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
