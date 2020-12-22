@@ -44,6 +44,14 @@ import { Route } from '@angular/compiler/src/core';
 
 
 const routes: Routes = [
+	//Redirect Routes
+	{
+		path: "",
+		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/`,
+		pathMatch: 'full',
+		data: {name: 'start'}
+	},
+
 	//Home Routes
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, 
