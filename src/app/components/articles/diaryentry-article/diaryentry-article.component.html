@@ -8,10 +8,7 @@
         <!-- Heading -->
         <div class="row">
             <h1 class="text-center col">
-                Diary Entry #
-                <a routerLink="{{routingService.getRoutePath('session', {isMainSession: diaryEntry.session_details.is_main_session_int, sessionNumber: diaryEntry.session_details.session_number})}}">
-                    {{ diaryEntry.session_details.name }}
-                </a>
+                Diary Entry # {{ diaryEntry.session_details.name }}
             </h1>
         </div>
         <div class="row">
