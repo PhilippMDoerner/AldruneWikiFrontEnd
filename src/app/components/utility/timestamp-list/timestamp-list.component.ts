@@ -7,6 +7,7 @@ import { SessionAudioObject } from 'src/app/models/sessionaudio';
 import { TimestampObject } from 'src/app/models/timestamp';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-timestamp-list',
@@ -34,6 +35,7 @@ export class TimestampListComponent implements OnInit, OnDestroy {
   constructor(
     private timestampService: SessionAudioTimestampService,
     private formlyService: MyFormlyService,
+    private warningsService: WarningsService,
   ) { }
 
   ngOnInit(): void {
@@ -61,25 +63,27 @@ export class TimestampListComponent implements OnInit, OnDestroy {
     return hours*3600 + minutes*60 + seconds;
   }
 
-  createTimestamp(){
+  createTimestamp(): void{
     if (typeof this.timestampModel.time === "number") throw `Error during creation of request to create timestamp. The input ${this.timestampModel.time} is not the expected time-string`
     this.timestampModel.time = this.stringToTime(this.timestampModel.time);
 
-    this.timestampService.createTimestamp(this.timestampModel).pipe(first()).subscribe((timestamp: TimestampObject) => {
-      this.timestamps.unshift(timestamp);
-      this.timestampCreateState = false;
-      this.timestampCreate.emit();
-    });
+    this.timestampService.createTimestamp(this.timestampModel).pipe(first()).subscribe(
+      (timestamp: TimestampObject) => {
+        this.timestamps.unshift(timestamp);
+        this.timestampCreateState = false;
+        this.timestampCreate.emit();
+      },
+      error => this.warningsService.showWarning(error)
+    );
   }
 
-  cancelTimestampCreateState(){
+  cancelTimestampCreateState(): void{
     this.timestampCreateState = false;
   }
 
   deleteTimestamp(timestamp: TimestampObject){
     const index: number = this.timestamps.indexOf(timestamp);
     this.timestamps.splice(index, 1);
-    console.log(this.timestamps);
   }
 
   ngOnDestroy(): void{
