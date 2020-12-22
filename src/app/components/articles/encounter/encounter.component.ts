@@ -81,7 +81,8 @@ export class EncounterComponent implements OnInit {
     this.encounterConnectionService.deleteEncounterConnection(connection.pk).pipe(first()).subscribe(
       response => {
         const connectionIndex: number = this.encounter.encounterConnections.indexOf(connection);
-        if (connectionIndex > -1){
+        const hasConnection: boolean = connectionIndex > -1;
+        if (hasConnection){
           this.encounter.encounterConnections.splice(connectionIndex, 1);
         }
       },
