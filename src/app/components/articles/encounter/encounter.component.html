@@ -1,45 +1,80 @@
 <div class="main">
-    <article *ngIf="encounter; else loading">
-        <h1 class="text-center">{{encounter.name}}</h1>
+    <article *ngIf="encounter; else loading" class="container">
+        <div class="row">
+            <h1 class="text-center col">{{encounter.name}}</h1>
+        </div>
+
         <div class="mb-3">
+
+            <!-- Encounter Session -->
+            <div class="row">
+                <span class="col-md-3 col-6 bold"> Session: </span>
+                <span class="col-md-3 col-6">{{encounter.session_number_details.name_full}}</span>
+            </div>
+
+            <!-- Encounter Location -->
+            <div class="row">
+                <span class="col-md-3 col-6 bold">Location: </span>
+                <span class="col-md-3 col-6">
+                    <a 
+                    routerLink="{{routingService.getRoutePath('location', {
+                            parent_name: encounter.location_details.parent_location_name, 
+                            name: encounter.location_details.name
+                        })
+                    }}"
+                    >
+                        {{encounter.location_details.name}}
+                    </a>
+                </span>
+            </div>
+
             <!-- EncounterConnections -->
-            <div class="d-flex">
-                <span class="w-25 bold"> Session: </span>
-                {{encounter.session_number_details.name_full}}
-            </div>
-            <div class="d-flex">
-                <span class="w-25 bold">Location: </span> 
-                <a routerLink="{{routingService.getRoutePath('location', {parent_name: encounter.location_details.parent_location_name, name: encounter.location_details.name})}}">
-                    {{encounter.location_details.name}}
-                </a>
-            </div>
             <div>
-                <div class="w-25 bold icon-container">
+                <!-- EncounterConnection Heading -->
+                <div class="bold icon-container">
                     Characters: 
                     <i class="fa fa-plus icon ml-1" (click)="toggleAddEncounterConnectionState()"></i>
                 </div>
-                <form [ngClass]="{'d-none':!addEncounterConnectionState, 'd-flex align-items-center': addEncounterConnectionState}">
-                    <div class="mw-50 w-50">
+
+                <!--Add EncounterConnection Form -->
+                <form [ngClass]="{'d-none':!addEncounterConnectionState, 'row align-items-center': addEncounterConnectionState}">
+                    <!-- Encounter Connection Form Fields -->
+                    <div class="col-6">
                         <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
-                            <option *ngFor="let character of characters" value="{{character.pk}}">{{character.name}}</option>
+                            <option 
+                            *ngFor="let character of characters" 
+                            value="{{character.pk}}"
+                            >
+                                {{character.name}}
+                            </option>
                         </select>
                     </div>
 
-                    <i [ngClass]="{'fa icon mx-2 fa-1-5x': true, 'fa-plus': !addEncounterConnectionState, 'fa-times': addEncounterConnectionState}"
-                    (click)="toggleAddEncounterConnectionState()"></i>
-                    <i [ngClass]="{'fa icon fa-1-5x ': true, 'fa-check': addEncounterConnectionState}" (click)="createEncounterConnection()"></i>
+                    <!-- Show Encounter Connection Form/Cancel Encounter Connection Form Button-->
+                    <i 
+                    [ngClass]="{'fa icon mx-2 fa-1-5x': true, 'fa-plus': !addEncounterConnectionState, 'fa-times': addEncounterConnectionState}"
+                    (click)="toggleAddEncounterConnectionState()"
+                    ></i>
+
+                    <!-- Create Encounter Connection Button -->
+                    <i 
+                    [ngClass]="{'fa icon fa-1-5x ': true, 'fa-check': addEncounterConnectionState}" 
+                    (click)="createEncounterConnection()"
+                    ></i>
                 </form>
 
-
+                <!-- EncounterConnection List -->
                 <div *ngFor="let character of encounter.encounterConnections; let i = index" class="icon-container">
-                    <a routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{character.character_details.name}}">
+                    <a routerLink="{{routingService.getRoutePath('character', {name: character.character_details.name}) }}">
                         {{character.character_details.name}}
                     </a>
-                    <i class="fa fa-trash icon ml-3" (click)="deleteEncounterConnection(character)"></i>
+                    <i class="fa fa-trash icon ml-4" (click)="deleteEncounterConnection(character)"></i>
                 </div>
+
             </div>
         </div>
 
+        <!-- Encounter Text -->
         <div class="mb-1">
             <app-textfield 
             [initialText]="encounter.description"
@@ -47,8 +82,13 @@
             (updateText)="onEncounterUpdate($event)"
             ></app-textfield>
         </div>
-        <div class="btn btn-dark mr-3" routerLink="{{constants.wikiUrlFrontendPrefix}}">Back To Frontpage</div>
-        <app-delete-toggle (deleteEvent)="deleteEncounter()"></app-delete-toggle>
+
+        <app-article-footer
+        (delete)="deleteEncounter()"
+        [link]="routingService.getRoutePath('home1')"
+        [label]="'Back to Frontpage'"
+        [deleteMessage]="'Delete this Encounter?'"
+        ></app-article-footer>
 
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
