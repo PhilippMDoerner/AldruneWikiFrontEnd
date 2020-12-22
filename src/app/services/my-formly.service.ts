@@ -63,6 +63,7 @@ export class MyFormlyService {
   genericInput(config: FormlyGenericInputConfig): FormlyFieldConfig{
     const validatorList = (config.validators) ? config.validators : [];
     if (config.required === true ) validatorList.push('required');
+    if (config.isNumberInput === true) validatorList.push('notInteger');
 
     return {
       key: config.key,
