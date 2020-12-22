@@ -1,7 +1,7 @@
 import { FormControl, ValidationErrors } from "@angular/forms";
 
 // Validation Messages
-export const invalidTimeMessage = { name: "time", message: "The time does not follow the pattern 'hh:mm:ss'" };
+export const invalidTimeMessage = { name: "time", message: "Time must have 'hh:mm:ss' pattern" };
 export const requiredMessage = { name: 'required', message: 'This field is required' };
 export const dateMessage = { name: "date", message: "This date does not follow the pattern: 'YYYY-MM-DD'" };
 

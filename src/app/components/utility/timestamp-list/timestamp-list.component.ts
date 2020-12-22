@@ -25,8 +25,8 @@ export class TimestampListComponent implements OnInit, OnDestroy {
   timestampModel: TimestampObject = new TimestampObject();
   timestampForm: FormGroup = new FormGroup({});
   timestampFields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "time", maxLength: 8, minLength: 8, className: "timestamp-input black-background px-0 col-lg-2 col-3"}),
-    this.formlyService.genericInput({key: "name", label: "Title", className: "timestamp-input black-background px-0 col-lg-10 col-9"}),
+    this.formlyService.genericInput({key: "time", maxLength: 8, minLength: 8, className: "timestamp-input black-background px-0 col-lg-2 col-3", validators: ["time"], required: true}),
+    this.formlyService.genericInput({key: "name", label: "Title", className: "timestamp-input black-background px-0 col-lg-10 col-9", required: true}),
   ];
   timestampCreateState: boolean = false;
 
