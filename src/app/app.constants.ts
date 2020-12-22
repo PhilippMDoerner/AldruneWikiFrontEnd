@@ -65,6 +65,11 @@ export class Constants{
     public static get accessTokenKey(): string { return "access_token";}
     public static get refreshTokenKey(): string { return "refresh_token";}
 
+    // Static Image URLs
+    public static get audioImageUrl(): string { return `${this.wikiStaticUrl}/fileserver/images/audio_pic.png`; }
+    public static get timeoutImageUrl(): string { return `${this.wikiStaticUrl}/wiki/images/504.jpeg`; }
+    public static get pageNotFoundImageUrl(): string { return `${this.wikiStaticUrl}/wiki/images/404.png`; }
+
     //Login Custom Message to URL Mapping
     public static get loginMessageForState(): object { return {
         'token-expired': 'Your Session expired, please log in again',
