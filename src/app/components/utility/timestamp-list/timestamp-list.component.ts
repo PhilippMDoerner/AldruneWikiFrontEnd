@@ -19,6 +19,7 @@ export class TimestampListComponent implements OnInit, OnDestroy {
   @Input() vimePlayer: any;
   @Input() createTimestampEventSubject: Subject<number>;
   @Output() timestampClick: EventEmitter<number> = new EventEmitter();
+  @Output() timestampCreate: EventEmitter<any> = new EventEmitter();
 
   timestampModel: TimestampObject = new TimestampObject();
   timestampForm: FormGroup = new FormGroup({});
@@ -67,6 +68,7 @@ export class TimestampListComponent implements OnInit, OnDestroy {
     this.timestampService.createTimestamp(this.timestampModel).pipe(first()).subscribe((timestamp: TimestampObject) => {
       this.timestamps.unshift(timestamp);
       this.timestampCreateState = false;
+      this.timestampCreate.emit();
     });
   }
 
