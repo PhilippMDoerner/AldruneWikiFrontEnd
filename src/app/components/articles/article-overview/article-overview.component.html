@@ -83,7 +83,7 @@
             </div>
 
         </div>
-        <!-- TODO: Implement the quadro column thing for other overviews as well -->
+
         <!-- DiaryEntry Overview -->
         <div *ngIf="overviewType===diaryentryOverview">
             <div *ngFor="let authorDiaryEntries of listItems | groupBy: 'author_details.name'">
