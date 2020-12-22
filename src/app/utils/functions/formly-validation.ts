@@ -4,6 +4,8 @@ import { FormControl, ValidationErrors } from "@angular/forms";
 export const invalidTimeMessage = { name: "time", message: "Time must have 'hh:mm:ss' pattern" };
 export const requiredMessage = { name: 'required', message: 'This field is required' };
 export const dateMessage = { name: "date", message: "This date does not follow the pattern: 'YYYY-MM-DD'" };
+export const requiredIconMessage = { name: 'requiredIcon', message: "This field requires a fontawesome icon as input. Here is a list of them: https://fontawesome.com/v4.7.0/icons/" }
+export const faPrefixMessage = { name: 'faPrefix', message: "Icons are stored without the 'fa-' from font-awesome prefix" }
 
 // Validation Functions
 function timeValidation(control: FormControl): ValidationErrors{
@@ -18,6 +20,7 @@ function requiredValidation(control: FormControl): ValidationErrors{
     return (hasValue) ? null : { required: true };
 }
 export const requiredValidator = { name: "required", validation: requiredValidation };
+export const requiredIconValidator = { name: "requiredIcon", validation: requiredValidation};
 
 // TODO: Get date validation to work. The issue so far is that the control.value of datepicker is an object, not a YYYY-MM-DD string
 function dateValidation(control: FormControl): ValidationErrors{
@@ -28,3 +31,9 @@ function dateValidation(control: FormControl): ValidationErrors{
     return (dateHasYYYYMMDDFormat) ? null: { "date": true }
 }
 export const dateValidator = { name: "date", validation: dateValidation };
+
+function iconValidation(control:FormControl): ValidationErrors{
+    const hasFaPrefix = /fa-/.test(control.value);
+    return (hasFaPrefix) ? { faPrefix: true} : null
+}
+export const iconValidator = { name: "faPrefix", validation: iconValidation };

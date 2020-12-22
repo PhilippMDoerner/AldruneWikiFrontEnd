@@ -27,7 +27,7 @@ export class MapUpdateComponent implements OnInit {
   model: Map;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name"}),
-    this.formlyService.genericInput({key: "icon", label: "Map Icon", required: false}),
+    this.formlyService.genericInput({key: "icon", label: "Map Icon", validators: ['faPrefix'] }),
     this.formlyService.singleFileField({key: "image", label: "Map Image"})
   ];
 
