@@ -39,7 +39,7 @@
                 <!--Add EncounterConnection Form -->
                 <form [ngClass]="{'d-none':!addEncounterConnectionState, 'row align-items-center': addEncounterConnectionState}">
                     <!-- Encounter Connection Form Fields -->
-                    <div class="col-6">
+                    <div class="col-md-6 col-9 pr-0">
                         <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
                             <option 
                             *ngFor="let character of characters" 
@@ -50,17 +50,22 @@
                         </select>
                     </div>
 
-                    <!-- Show Encounter Connection Form/Cancel Encounter Connection Form Button-->
-                    <i 
-                    [ngClass]="{'fa icon mx-2 fa-1-5x': true, 'fa-plus': !addEncounterConnectionState, 'fa-times': addEncounterConnectionState}"
-                    (click)="toggleAddEncounterConnectionState()"
-                    ></i>
+                    <div class="col-md-2 col-3 pr-0">
+                        <!-- Show Encounter Connection Form/Cancel Encounter Connection Form Button-->
+                        <i 
+                        class="fa icon fa-1-5x mr-3"
+                        [ngClass]="{'fa-plus': !addEncounterConnectionState, 'fa-times': addEncounterConnectionState}"
+                        (click)="toggleAddEncounterConnectionState()"
+                        ></i>
+    
+                        <!-- Create Encounter Connection Button -->
+                        <i 
+                        class='fa icon fa-1-5x'
+                        [ngClass]="{'fa-check': addEncounterConnectionState}" 
+                        (click)="createEncounterConnection()"
+                        ></i>
+                    </div>
 
-                    <!-- Create Encounter Connection Button -->
-                    <i 
-                    [ngClass]="{'fa icon fa-1-5x ': true, 'fa-check': addEncounterConnectionState}" 
-                    (click)="createEncounterConnection()"
-                    ></i>
                 </form>
 
                 <!-- EncounterConnection List -->
