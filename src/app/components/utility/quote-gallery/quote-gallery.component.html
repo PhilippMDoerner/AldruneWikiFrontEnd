@@ -19,7 +19,7 @@
                 <span class="d-inline-flex align-items-center flex-wrap">
                     <!-- Display Existing Quote Connections -->
                     <span class="badge badge-secondary mr-2 text-center vanish-container" *ngFor="let connection of quote.connections">
-                        <a routerLink="{{constants.getRoutePath(router, 'character', {name: connection.character_details.name})}}">
+                        <a routerLink="{{ routingService.getRoutePath('character', {name: connection.character_details.name}) }}">
                             {{connection.character_details.name}}
                         </a>
                         

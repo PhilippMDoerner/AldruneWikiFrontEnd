@@ -7,6 +7,7 @@ import { Constants } from "src/app/app.constants";
 import { first } from 'rxjs/operators';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { RoutingService } from 'src/app/services/routing.service';
 @Component({
   selector: 'app-character-article',
   templateUrl: './character-article.component.html',
@@ -24,16 +25,16 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
   constructor(
     private characterService: CharacterService,
     private route: ActivatedRoute,
-    private router: Router,
-    private warnings: WarningsService,
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
     ) { super() }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe( params => {
-      const character_name: string = params.name;
-      this.characterService.getCharacter(character_name).pipe(first()).subscribe(
+      const characterName: string = params.name;
+      this.characterService.getCharacter(characterName).pipe(first()).subscribe(
         (character: CharacterObject) => this.character = character, 
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       );
     });
   }
@@ -41,16 +42,18 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.character.description;
     this.character.description = updatedDescription;
-    this.characterService.updateCharacter(this.character).pipe(first()).subscribe(character => {
-    }, error =>{
-      this.character.description = oldDescription;
-      this.warnings.showWarning(error);
-    })
+    this.characterService.updateCharacter(this.character).pipe(first()).subscribe(
+      (character: CharacterObject) => {},
+      error =>{
+        this.character.description = oldDescription;
+        this.warnings.showWarning(error);
+      }
+    );
   }
 
   deleteArticle(){
       this.characterService.deleteCharacter(this.character).pipe(first()).subscribe(
-        response => Constants.routeToPath(this.router, 'character-overview'),
+        response => this.routingService.routeToPath('character-overview'),
         error => this.warnings.showWarning(error)
       )
   }

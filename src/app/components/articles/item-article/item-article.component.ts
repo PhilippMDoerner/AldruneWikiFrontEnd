@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Item, ItemObject } from 'src/app/models/item';
 import { ItemService } from 'src/app/services/item/item.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -24,7 +25,8 @@ export class ItemArticleComponent implements OnInit {
     private itemService: ItemService,
     private route: ActivatedRoute,
     private router: Router,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -33,7 +35,7 @@ export class ItemArticleComponent implements OnInit {
 
       this.itemService.getItem(itemName).pipe(first()).subscribe(
         (item: ItemObject) => this.item = item,
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       );
     })
   }
@@ -52,7 +54,7 @@ export class ItemArticleComponent implements OnInit {
 
   deleteArticle(){
     this.itemService.deleteItem(this.item.pk).pipe(first()).subscribe(
-      response => Constants.routeToPath(this.router, 'item-overview'),
+      response => this.routingService.routeToPath('item-overview'),
       error => this.warnings.showWarning(error)
     );
   }

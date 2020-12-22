@@ -8,6 +8,7 @@ import { Constants } from 'src/app/app.constants';
 import { Creature, CreatureObject } from 'src/app/models/creature';
 import { CreatureService } from 'src/app/services/creature/creature.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -31,7 +32,8 @@ export class CreatureArticleUpdateComponent implements OnInit {
     private creatureService: CreatureService,
     private router: Router,
     private route: ActivatedRoute,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -42,7 +44,7 @@ export class CreatureArticleUpdateComponent implements OnInit {
         const creature_name: string = params.name;
         this.creatureService.getCreature(creature_name).pipe(first()).subscribe(
           (creature: CreatureObject) =>  this.model = creature, 
-          error => Constants.routeToErrorPage(this.router, error)
+          error => this.routingService.routeToErrorPage(error)
         );
 
       } else if (this.formState === Constants.createState) {
@@ -57,7 +59,7 @@ export class CreatureArticleUpdateComponent implements OnInit {
     const responseObservable : Observable<Creature> =  isFormInUpdateState ? this.creatureService.updateCreature(this.model) : this.creatureService.createCreature(this.model);
 
     responseObservable.pipe(first()).subscribe(
-      (creature: CreatureObject) =>  Constants.routeToApiObject(this.router, creature),
+      (creature: CreatureObject) =>  this.routingService.routeToApiObject(creature),
       error => this.warnings.showWarning(error)
     );
   }
@@ -66,9 +68,9 @@ export class CreatureArticleUpdateComponent implements OnInit {
     const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
     if (isFormInUpdateState){
       const creatureName: string = this.route.snapshot.params.name;
-      Constants.routeToPath(this.router, 'creature', {name: creatureName});
+      this.routingService.routeToPath('creature', {name: creatureName});
     } else {
-      Constants.routeToPath(this.router, 'creature-overview');
+      this.routingService.routeToPath('creature-overview');
     } 
   }
 

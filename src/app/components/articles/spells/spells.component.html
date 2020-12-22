@@ -66,7 +66,9 @@
             </div>
             
         </div>
-        <div class="btn btn-secondary" routerLink="{{constants.getRoutePath(router, 'home1')}}">Back To Frontpage</div>
+        <div class="btn btn-secondary" routerLink="{{routingService.getRoutePath('home1')}}">
+            Back To Frontpage
+        </div>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

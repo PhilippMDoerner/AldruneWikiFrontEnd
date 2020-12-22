@@ -2,7 +2,7 @@
     <!-- Header -->
     <header id="header">
         <div class="logo">
-            <a routerLink="{{ constants.getRoutePath(router, 'quest-overview') }}" class="article-link">
+            <a routerLink="{{ routingService.getRoutePath('quest-overview') }}" class="article-link">
                 <span class="fa fa-diamond fa-2x icon"></span>
             </a>
         </div>
@@ -17,13 +17,13 @@
         </div>
         <nav>
             <ul>
-                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'character-overview')}}">Characters</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'location-overview')}}">Places</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'diaryentry-overview')}}">Diary</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'organization-overview')}}">Groups</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'creature-overview')}}">Bestiary</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'item-overview')}}">Items</a></b></li>
-                <li><b><a class="article-link" routerLink="{{constants.getRoutePath(router, 'map', {name: constants.defaultMapName})}}">Map</a></b></li>
+                <li><b><a class="article-link" routerLink="{{routingService.getRoutePath('character-overview')}}">Characters</a></b></li>
+                <li><b><a class="article-link" routerLink="{{routingService.getRoutePath('location-overview')}}">Places</a></b></li>
+                <li><b><a class="article-link" routerLink="{{routingService.getRoutePath('diaryentry-overview')}}">Diary</a></b></li>
+                <li><b><a class="article-link" routerLink="{{routingService.getRoutePath('organization-overview')}}">Groups</a></b></li>
+                <li><b><a class="article-link" routerLink="{{routingService.getRoutePath('creature-overview')}}">Bestiary</a></b></li>
+                <li><b><a class="article-link" routerLink="{{routingService.getRoutePath('item-overview')}}">Items</a></b></li>
+                <li><b><a class="article-link" routerLink="{{routingService.getRoutePath('map', {name: constants.defaultMapName})}}">Map</a></b></li>
             </ul>
         </nav>
     </header>

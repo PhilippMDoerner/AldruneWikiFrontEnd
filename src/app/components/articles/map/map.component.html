@@ -14,7 +14,7 @@
                 <!-- Add Map Button -->
                 <i 
                 class="fa fa-plus icon ml-3" 
-                routerLink="{{constants.getRoutePath(router, 'map-create') }}"
+                routerLink="{{ routingService.getRoutePath('map-create') }}"
                 ></i>
             </h3>
         </div>
@@ -33,7 +33,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteMap()"
-        [link]="constants.getRoutePath(router, 'home1')"
+        [link]="routingService.getRoutePath('home1')"
         [label]="'Back to Frontpage'"
         [deleteMessage]="'Delete Map of '+currentMap.name+'?'"
         ></app-article-footer>

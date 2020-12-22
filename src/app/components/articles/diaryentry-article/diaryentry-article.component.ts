@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { DiaryEntry, DiaryEntryObject } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -22,8 +23,8 @@ export class DiaryentryArticleComponent implements OnInit {
   constructor(
     private diaryEntryService: DiaryentryService,
     private route: ActivatedRoute,
-    private router: Router,
-    private warning: WarningsService
+    private warning: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -34,7 +35,7 @@ export class DiaryentryArticleComponent implements OnInit {
   
       this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).pipe(first()).subscribe(
         diaryEntry => this.diaryEntry = diaryEntry,
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       );
     });
   }
@@ -53,7 +54,7 @@ export class DiaryentryArticleComponent implements OnInit {
 
   deleteArticle(){
     this.diaryEntryService.deleteDiaryEntry(this.diaryEntry.pk).pipe(first()).subscribe(
-      response => Constants.routeToErrorPage('diaryentry-overview'),
+      response => this.routingService.routeToErrorPage('diaryentry-overview'),
       error => this.warning.showWarning(error)
     );
   }

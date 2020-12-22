@@ -2,13 +2,23 @@
     <article class="mb-5" *ngIf="model; else loading">
         <!-- Heading -->
         <div *ngIf="formState===constants.updateState; else createState">
-            <app-edit-toggle [isInUpdateState]=true [link]="'..'"></app-edit-toggle>
+            <app-edit-toggle 
+            [isInUpdateState]=true 
+            [link]="'..'"
+            ></app-edit-toggle>
 
             <h2 class="text-center"> Updating Marker for {{model.location_details.name}} on {{model.map_details.name}} </h2>
         </div>
 
         <ng-template #createState>
-            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'location', {parent_name: model.location_details.parent_location_name, name: model.location_details.name})"></app-edit-toggle>
+            <app-edit-toggle 
+            [isInUpdateState]=true 
+            [link]="routingService.getRoutePath('location', {
+                    parent_name: model.location_details.parent_location_name, 
+                    name: model.location_details.name
+                }
+            )"
+            ></app-edit-toggle>
 
             <h2 class="text-center"> Adding a new Marker </h2>
         </ng-template>

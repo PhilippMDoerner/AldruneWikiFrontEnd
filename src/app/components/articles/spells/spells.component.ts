@@ -1,9 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { Spell, SpellObject } from 'src/app/models/spell';
+import { SpellObject } from 'src/app/models/spell';
+import { RoutingService } from 'src/app/services/routing.service';
 import { SpellService } from 'src/app/services/spell.service';
 
 @Component({
@@ -18,7 +17,7 @@ export class SpellsComponent implements OnInit {
 
   constructor(
     private spellService: SpellService,
-    private router: Router,
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -30,7 +29,7 @@ export class SpellsComponent implements OnInit {
           this.panelIsOpenArray.push(true);
         };
       },
-      error => Constants.routeToErrorPage(this.router, error)
+      error => this.routingService.routeToErrorPage(error)
     );
   }
 

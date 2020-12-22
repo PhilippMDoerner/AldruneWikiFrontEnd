@@ -20,6 +20,8 @@ export interface MapMarker extends ApiObject{
 export class MapMarkerObject implements MapMarker{
     latitude: number;
     longitude: number;
+    icon?: string;
+    color?: string;
     map: number;
     map_details?: {name: string};
     location: number;

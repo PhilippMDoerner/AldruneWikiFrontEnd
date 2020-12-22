@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
 import { Timestamp, TimestampObject } from 'src/app/models/timestamp';
+import { RoutingService } from 'src/app/services/routing.service';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -48,8 +49,9 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
     private router: Router,
     private sessionAudioService: SessionAudioService,
     private timestampService: SessionAudioTimestampService,
-    private warnings: WarningsService,
-    ) { super() }
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
+  ) { super() }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
@@ -62,12 +64,12 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
           this.priorSessionAudio = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
           this.nextSessionAudio = sessionAudio.sessionAudioNeighbours.nextSessionAudio;
         }, 
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       );
 
       this.timestampService.getTimestamps(isMainSessionInt, sessionNumber).pipe(first()).subscribe(
         (timestamps: TimestampObject[]) => this.timestamps = timestamps,
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       )
     })
 
@@ -78,14 +80,18 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
 
   routeToSessionAudio({isMainSessionInt, sessionNumber}){
     //Only needed because the vime player doesn't properly trigger events for src changes
-    const sessionAudioUrl: string = Constants.getRoutePath(this.router, 'sessionaudio', {isMainSession: isMainSessionInt, sessionNumber: sessionNumber});
+    const sessionAudioUrl: string = this.routingService.getRoutePath('sessionaudio', {
+        isMainSession: isMainSessionInt, 
+        sessionNumber: sessionNumber
+      }
+    );
     this.router.navigateByUrl(sessionAudioUrl);
     this.router.routeReuseStrategy.shouldReuseRoute = function () { return false; };
   }
 
   deleteArticle(){
     this.sessionAudioService.deleteSessionAudioFile(this.sessionAudio.pk).pipe(first()).subscribe(
-      response => Constants.routeToPath(this.router, 'sessionaudio-overview'),
+      response => this.routingService.routeToPath('sessionaudio-overview'),
       error => this.warnings.showWarning(error)
     );
   }

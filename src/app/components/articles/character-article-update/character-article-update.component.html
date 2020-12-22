@@ -2,14 +2,20 @@
     <article class="mb-5">
         <!-- Heading -->
         <div *ngIf="formState===constants.updateState && model; else createState">
-            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'character', {name: model.name})"></app-edit-toggle>
+            <app-edit-toggle 
+            [isInUpdateState]=true 
+            [link]="routingService.getRoutePath('character', {name: model.name})"
+            ></app-edit-toggle>
 
             <h2 class="text-center">
                 Updating Character {{ model.name }}
             </h2>
         </div>
         <ng-template #createState>
-            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'character-overview')"></app-edit-toggle>
+            <app-edit-toggle 
+            [isInUpdateState]=true 
+            [link]="routingService.getRoutePath('character-overview')"
+            ></app-edit-toggle>
 
             <h2 class="text-center">
                 Creating a new character

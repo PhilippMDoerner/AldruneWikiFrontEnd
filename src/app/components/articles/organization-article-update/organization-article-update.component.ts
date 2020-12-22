@@ -4,12 +4,11 @@ import { Observable, Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { OrganizationObject, Organization } from 'src/app/models/organization';
 import { OrganizationService } from 'src/app/services/organization/organization.service';
-import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { OverviewService } from 'src/app/services/overview.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-organization-article-update',
@@ -35,21 +34,22 @@ export class OrganizationArticleUpdateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
+    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
 
     this.paramter_subscription = this.route.params.subscribe(params => {
-      if (this.formState === this.constants.updateState){
+      if (this.formState === Constants.updateState){
         const organizationName: string = params.name;
         this.organizationService.getOrganization(organizationName).pipe(first()).subscribe(
           (organization: OrganizationObject) => this.model = organization,
-          error => Constants.routeToErrorPage(this.router, error)
+          error => this.routingService.routeToErrorPage(error)
         );
         
-      } else if (this.formState === this.constants.createState) {
+      } else if (this.formState === Constants.createState) {
         this.model = new OrganizationObject();
       }
     })
@@ -57,11 +57,11 @@ export class OrganizationArticleUpdateComponent implements OnInit {
   }
 
   onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
+    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
     const responseObservable: Observable<OrganizationObject> =  isFormInUpdateState ? this.organizationService.updateOrganization(this.model) : this.organizationService.createOrganization(this.model);
 
     responseObservable.pipe(first()).subscribe(
-      (organization: OrganizationObject) => Constants.routeToApiObject(this.router, organization),
+      (organization: OrganizationObject) => this.routingService.routeToApiObject(organization),
       error => this.warnings.showWarning(error)
     );
   }
@@ -70,9 +70,9 @@ export class OrganizationArticleUpdateComponent implements OnInit {
     const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
     if (isFormInUpdateState){
       const organizationName: string = this.route.snapshot.params.name;
-      Constants.routeToPath(this.router, 'organization', {name: organizationName});
+      this.routingService.routeToPath('organization', {name: organizationName});
     } else {
-      Constants.routeToPath(this.router, 'organization-overview');
+      this.routingService.routeToPath('organization-overview');
     } 
   }
 

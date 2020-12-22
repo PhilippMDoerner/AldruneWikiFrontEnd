@@ -49,7 +49,7 @@
                         <td>
                             <a 
                             id="quest{{ quest.pk }}" 
-                            routerLink="{{constants.getRoutePath(router, 'quest', {name: quest.name}) }}"
+                            routerLink="{{routingService.getRoutePath('quest', {name: quest.name}) }}"
                             >
                                  <span class="bold">{{ quest.name }}</span>
                             </a>
@@ -82,7 +82,7 @@
         <div class="row mx-0">
             <div 
             class="btn btn-secondary col-md-3" 
-            routerLink="{{constants.getRoutePath(router, 'home1')}}"
+            routerLink="{{routingService.getRoutePath('home1')}}"
             >
                 Back To Frontpage
             </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/app.constants';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-home',
@@ -10,13 +11,13 @@ import { Constants } from 'src/app/app.constants';
 export class HomeComponent {
   isLoaded: boolean = false;
   constants: any = Constants;
-  router: Router;
-  constructor(private secretRouter: Router) {
-    this.router = this.secretRouter;
+  constructor(
+    public routingService: RoutingService,
+  ) {
   }
 
   onWindowLoad():void{
     this.isLoaded = true;
-    setTimeout(()=>{this.isLoaded = false}, 100);
+    setTimeout( () => {this.isLoaded = false}, 100);
   }
 }

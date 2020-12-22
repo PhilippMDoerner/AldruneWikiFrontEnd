@@ -10,6 +10,7 @@ import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
 import { LocationService } from 'src/app/services/location/location.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -41,11 +42,12 @@ export class MarkerUpdateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
+    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
 
     this.parameter_subscription = this.route.params.subscribe(params =>{
       const parentLocationName = params['parent_location_name'];
@@ -55,7 +57,7 @@ export class MarkerUpdateComponent implements OnInit {
         const mapName: string = params['map_name'];
         this.markerService.getMapMarker(parentLocationName, locationName, mapName).pipe(first()).subscribe(
           (marker: MapMarkerObject) => this.model = marker,
-          error => Constants.routeToErrorPage(this.router, error)
+          error => this.routingService.routeToErrorPage(error)
         );
 
       } else if (this.formState === Constants.createState){
@@ -70,7 +72,7 @@ export class MarkerUpdateComponent implements OnInit {
               sublocations: null,
             };
           },
-          error => Constants.routeToErrorPage(this.router, error)
+          error => this.routingService.routeToErrorPage(error)
         );
       }
 
@@ -78,11 +80,11 @@ export class MarkerUpdateComponent implements OnInit {
   }
 
   onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
+    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
     const responseObservable: Observable<MapMarkerObject> =  isFormInUpdateState ? this.markerService.updateMapMarker(this.model) : this.markerService.createMapMarker(this.model);
     
     responseObservable.pipe(first()).subscribe(
-      (marker: MapMarkerObject) => Constants.routeToPath(this.router, 'marker', {
+      (marker: MapMarkerObject) => this.routingService.routeToPath('marker', {
           parent_location_name: marker.location_details.parent_location_name,
           location_name: marker.location_details.name,
           map_name: marker.map_details.name
@@ -97,14 +99,14 @@ export class MarkerUpdateComponent implements OnInit {
     const params = this.route.snapshot.params;
 
     if (isFormInUpdateState){
-      Constants.routeToPath(this.router, 'marker', {
+      this.routingService.routeToPath('marker', {
         location_name: params.location_name,
         parent_location_name: params.parent_location_name,
         map_name: params.map_name,
       });
 
     } else {
-      Constants.routeToPath(this.router, 'location', {
+      this.routingService.routeToPath('location', {
         name: params.location_name,
         parent_name: params.parent_location_name
       });

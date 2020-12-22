@@ -11,6 +11,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { MapObject } from 'src/app/models/map';
+import { RoutingService } from 'src/app/services/routing.service';
 @Component({
   selector: 'app-marker-map-create',
   templateUrl: './marker-map-create.component.html',
@@ -37,10 +38,10 @@ export class MarkerMapCreateComponent implements OnInit {
   constructor(
     private markerService: MarkerService,
     private mapService: MapService,
-    private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -56,20 +57,20 @@ export class MarkerMapCreateComponent implements OnInit {
           this.model.latitude = latitude;
           this.model.longitude = longitude;
         },
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       )
     });
   }
 
   onSubmit(){
     this.markerService.createMapMarker(this.model).pipe(first()).subscribe(
-      (marker: MapMarker) => Constants.routeToPath(this.router, 'map', {name: marker.map_details.name}),
+      (marker: MapMarker) => this.routingService.routeToPath('map', {name: marker.map_details.name}),
       error => this.warnings.showWarning(error)
     );
   }
 
   onCancel(){
-    Constants.routeToPath(this.router, 'map', {name: this.mapName});
+    this.routingService.routeToPath('map', {name: this.mapName});
   }
 
   ngOnDestroy(){

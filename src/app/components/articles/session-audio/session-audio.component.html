@@ -15,7 +15,7 @@
         <div class="mt-4 mb-1 row" #playerSection>
             <!-- Background Image -->
             <div class="black-background col-12 px-0" (click)="togglePlayer(vimePlayer)">
-                <img class="mw-100" src="{{constants.wikiStaticUrl}}/fileserver/images/audio_pic.png"/>
+                <img class="mw-100" src="{{constants.audioImageUrl}}"/>
             </div>
 
             <!-- Vime-Player -->
@@ -83,7 +83,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="constants.getRoutePath(router, 'sessionaudio-overview')"
+        [link]="routingService.getRoutePath('sessionaudio-overview')"
         [label]="'Back to SessionAudio Overview'"
         [deleteMessage]="'Delete recording?'"
         ></app-article-footer>

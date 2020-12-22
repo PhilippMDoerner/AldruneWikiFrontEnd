@@ -8,6 +8,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-image-gallery',
@@ -43,7 +44,8 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   constructor(
     private imageUploadService: ImageUploadService,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService,
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
     ) { super() }
 
   @HostListener('document:keyup', ['$event'])

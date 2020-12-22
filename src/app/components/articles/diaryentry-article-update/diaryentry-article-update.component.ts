@@ -8,6 +8,7 @@ import { Constants } from 'src/app/app.constants';
 import { DiaryEntry, DiaryEntryObject } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -33,7 +34,8 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
     private diaryEntryService: DiaryentryService,
     private router: Router,
     private route: ActivatedRoute,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService
   ) { }
 
   ngOnInit(): void {
@@ -47,7 +49,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
   
         this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(
           (diaryEntry: DiaryEntryObject) => this.model = diaryEntry, 
-          error => Constants.routeToErrorPage(this.router, error)
+          error => this.routingService.routeToErrorPage(error)
         );
 
       } else if (this.formState === Constants.createState) {
@@ -61,7 +63,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
     const responseObservable: any =  isFormInUpdateState ? this.diaryEntryService.updateDiaryEntry(this.model) : this.diaryEntryService.createDiaryEntry(this.model);
 
     responseObservable.pipe(first()).subscribe(
-      (diaryEntry: DiaryEntryObject) => Constants.routeToApiObject(this.router, diaryEntry),
+      (diaryEntry: DiaryEntryObject) => this.routingService.routeToApiObject(diaryEntry),
       error => this.warnings.showWarning(error)
     );
   }
@@ -70,13 +72,13 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
     const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
     if (isFormInUpdateState){
       const params = this.route.snapshot.params;
-      Constants.routeToPath(this.router, 'diaryentry', {
+      this.routingService.routeToPath('diaryentry', {
         sessionNumber: params.sessionNumber,
         isMainSession: params.isMainSession,
         authorName: params.authorName,
       });
     } else {
-      Constants.routeToPath(this.router, 'diaryentry-overview');
+      this.routingService.routeToPath('diaryentry-overview');
     }
   }
 

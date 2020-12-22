@@ -14,7 +14,7 @@
                 *ngFor="let marker of location.marker_details" 
                 title="Marker on Map of {{marker.map}}"
                 class="mx-1 no-underline pointer icon fa fa-{{marker.map_icon}}" 
-                routerLink="{{constants.getRoutePath(router, 'marker', {
+                routerLink="{{routingService.getRoutePath('marker', {
                         parent_location_name: location.parent_location_details.name, 
                         location_name: location.name, 
                         map_name: marker.map
@@ -27,7 +27,7 @@
                 class="fa fa-plus icon ml-3"
                 title="Add Marker"
                 [ngClass]="{'d-none': !userHasCreatePermission()}"
-                routerLink="{{constants.getRoutePath(router, 'marker-create', {
+                routerLink="{{routingService.getRoutePath('marker-create', {
                         parent_location_name: location.parent_location_details.name,
                         location_name: location.name
                     })
@@ -70,7 +70,7 @@
             [heading]="'Characters of Interest'" 
             [items]="location.characters" 
             [articleType]="'character'" 
-            [createLink]="constants.getRoutePath(router, 'character-create')"
+            [createLink]="routingService.getRoutePath('character-create')"
             ></app-object-list>
         </div>
 
@@ -84,7 +84,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="constants.getRoutePath(router, 'location-overview')"
+        [link]="routingService.getRoutePath('location-overview')"
         [label]="'Back to Locations'"
         [deleteMessage]="'Delete '+location.name+'?'"
         ></app-article-footer>

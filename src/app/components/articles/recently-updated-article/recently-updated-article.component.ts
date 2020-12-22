@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { Article, ArticleObject } from 'src/app/models/recentlyUpdatedArticle';
+import { ArticleObject } from 'src/app/models/recentlyUpdatedArticle';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-recently-updated-article',
@@ -17,13 +17,13 @@ export class RecentlyUpdatedArticleComponent implements OnInit {
 
   constructor(
     private recentlyUpdatedArticleService: RecentlyUpdatedService,
-    private router: Router,
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
     this.article_subscription = this.recentlyUpdatedArticleService.getRecentlyUpdatedArticle().subscribe(
       (articles: ArticleObject[]) => this.articles = articles,
-      error => Constants.routeToErrorPage(this.router, error)
+      error => this.routingService.routeToErrorPage(error)
     );
   }
 

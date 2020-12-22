@@ -9,6 +9,7 @@ import { QuestService } from 'src/app/services/quest.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-quest-article-update',
@@ -57,33 +58,34 @@ export class QuestArticleUpdateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService,
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
+    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
 
     this.parameter_subscription = this.route.params.subscribe(params => {
       const questName: string = params.name;
 
-      if (this.formState === this.constants.updateState){
+      if (this.formState === Constants.updateState){
         this.questService.getQuest(questName).pipe(first()).subscribe(
           (quest: QuestObject) => this.model = quest,
-          error => Constants.routeToErrorPage(this.router, error)
+          error => this.routingService.routeToErrorPage(error)
         );
         
-      } else if (this.formState === this.constants.createState) {
+      } else if (this.formState === Constants.createState) {
         this.model = new QuestObject();
       } 
     })
   }
 
   onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
+    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
     const responseObservable: Observable<QuestObject> =  isFormInUpdateState ? this.questService.updateQuest(this.model) : this.questService.createQuest(this.model);
 
     responseObservable.pipe(first()).subscribe(
-      (quest: QuestObject) => Constants.routeToApiObject(this.router, quest), 
+      (quest: QuestObject) => this.routingService.routeToApiObject(quest), 
       error => this.warnings.showWarning(error)
     );
   }
@@ -92,9 +94,9 @@ export class QuestArticleUpdateComponent implements OnInit {
     const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
     if (isFormInUpdateState){
       const questName: string = this.route.snapshot.params.name;
-      Constants.routeToPath(this.router, 'quest', {name: questName});
+      this.routingService.routeToPath('quest', {name: questName});
     } else {
-      Constants.routeToPath(this.router, 'quest-overview');
+      this.routingService.routeToPath('quest-overview');
     } 
   }
 

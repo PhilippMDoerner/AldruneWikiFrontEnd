@@ -9,7 +9,7 @@
         <div class="row">
             <h1 class="text-center col">
                 Diary Entry #
-                <a routerLink="{{constants.getRoutePath(router, 'session', {isMainSession: diaryEntry.session_details.is_main_session_int, sessionNumber: diaryEntry.session_details.session_number})}}">
+                <a routerLink="{{routingService.getRoutePath('session', {isMainSession: diaryEntry.session_details.is_main_session_int, sessionNumber: diaryEntry.session_details.session_number})}}">
                     {{ diaryEntry.session_details.name }}
                 </a>
             </h1>
@@ -30,7 +30,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="constants.getRoutePath(router, 'diaryentry-overview')"
+        [link]="routingService.getRoutePath('diaryentry-overview')"
         [label]="'Back to Diaryentries'"
         [deleteMessage]="'Delete this Diaryentry?'"
         ></app-article-footer>

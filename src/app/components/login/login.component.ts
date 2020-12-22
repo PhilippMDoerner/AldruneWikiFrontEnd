@@ -7,6 +7,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { User } from 'src/app/models/user';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
@@ -32,8 +33,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     private formlyService: MyFormlyService,
     private tokenService: TokenService,
     private route: ActivatedRoute,
-    private router: Router,
-    private warnings: WarningsService,
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
     ) { }
 
   ngOnInit(): void {
@@ -51,13 +52,12 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit(){
     this.tokenService.getJWTToken(this.model).pipe(first()).subscribe( jwtTokens => {
       this.tokenService.setTokens(jwtTokens);
-      Constants.routeToPath(this.router, 'home1');
+      this.routingService.routeToPath('home1');
     }, error => {
       this.warnings.showWarning(error);
       this.resetModel();
       if(error.status === 401){
-        const invalidLoginUrl = `${Constants.getRoutePath(this.router, 'login')}/invalid-login`;
-        this.router.navigateByUrl(invalidLoginUrl);   
+        this.routingService.routeToPath('login-state', {state: 'invalid-login'}); 
       }
     });
 

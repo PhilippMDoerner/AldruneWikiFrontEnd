@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
 import { MarkerService } from 'src/app/services/marker.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -20,9 +21,9 @@ export class MarkerComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private markerService: MarkerService,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -32,7 +33,7 @@ export class MarkerComponent implements OnInit {
       const mapName: string = params['map_name'];
       this.markerService.getMapMarker(parentLocationName, locationName, mapName).pipe(first()).subscribe(
         (marker: MapMarkerObject) => this.marker = marker,
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       ); 
     })
 
@@ -43,7 +44,7 @@ export class MarkerComponent implements OnInit {
     const locationName: string = this.marker.location_details.name;
 
     this.markerService.deleteMapMarker(this.marker.pk).pipe(first()).subscribe(
-      response =>  Constants.routeToPath(this.router, 'location', {
+      response =>  this.routingService.routeToPath('location', {
           name: locationName, 
           parent_name: parentLocationName
         }

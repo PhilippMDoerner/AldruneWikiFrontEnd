@@ -8,6 +8,7 @@ import { Constants } from 'src/app/app.constants';
 import { LocationObject, Location } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 
@@ -36,7 +37,8 @@ export class LocationArticleUpdateComponent implements OnInit {
     private locationService: LocationService,
     private router: Router,
     private route: ActivatedRoute,
-    private warnings: WarningsService,
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -50,7 +52,7 @@ export class LocationArticleUpdateComponent implements OnInit {
       if (this.formState === this.constants.updateState){
           this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(
             (location: LocationObject) => this.model = location,
-            error => Constants.routeToErrorPage(this.router, error)
+            error => this.routingService.routeToErrorPage(error)
           );
 
       } else if (this.isForAssociatedObjectCreation) {
@@ -65,7 +67,7 @@ export class LocationArticleUpdateComponent implements OnInit {
               name_full: location.name_full
             };
           },
-          error => Constants.routeToErrorPage(this.router, error)
+          error => this.routingService.routeToErrorPage(error)
         );
       } else if (this.formState === this.constants.createState){
         this.model = new LocationObject();
@@ -85,14 +87,14 @@ export class LocationArticleUpdateComponent implements OnInit {
 
   getRedirectUrl(location: LocationObject){
     if (this.formState === this.constants.updateState || this.isForAssociatedObjectCreation){
-      const locationUrl: string = Constants.getRoutePath(this.router, 'location', {
+      const locationUrl: string = this.routingService.getRoutePath('location', {
         name: location.name, 
         parent_name: location.parent_location_details.name
       });
       return locationUrl;
 
     } else {
-      const locationOverviewUrl: string = Constants.getRoutePath(this.router, 'location-overview');
+      const locationOverviewUrl: string = this.routingService.getRoutePath('location-overview');
       return locationOverviewUrl;
     }
   }
@@ -101,16 +103,16 @@ export class LocationArticleUpdateComponent implements OnInit {
     const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
 
     if(this.isForAssociatedObjectCreation){
-      Constants.routeToPath(this.router, 'location', {
+      this.routingService.routeToPath('location', {
         name: this.model.parent_location_details.name, 
         parent_name: this.model.parent_location_details.parent_location
       });
     } else if (isFormInUpdateState){
       const locationName: string = this.route.snapshot.params.name;
       const parentLocationName: string = this.route.snapshot.params.parent_name;
-      Constants.routeToPath(this.router, 'location', {name: locationName, parent_name: parentLocationName});
+      this.routingService.routeToPath('location', {name: locationName, parent_name: parentLocationName});
     } else {
-      Constants.routeToPath(this.router, 'location-overview');
+      this.routingService.routeToPath('location-overview');
     }
   }
 

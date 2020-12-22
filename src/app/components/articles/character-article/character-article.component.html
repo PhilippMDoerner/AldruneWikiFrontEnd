@@ -22,7 +22,7 @@
                     <span *ngIf="character.gender !=='Other'">{{ character.gender }}</span>
                     {{ character.race }}
                     <span *ngIf="character.organization"> of the 
-                        <a routerLink="{{ constants.getRoutePath(router, 'organization', {name: character.organization_details.name}) }}">
+                        <a routerLink="{{ routingService.getRoutePath('organization', {name: character.organization_details.name}) }}">
                             {{ character.organization_details.name }}
                         </a>
                     </span> 
@@ -33,7 +33,7 @@
             <div class="row">
                 <div *ngIf="character.current_location" class="col">
                     Last known location:
-                    <a routerLink="{{ constants.getRoutePath(router, 'location', {
+                    <a routerLink="{{ routingService.getRoutePath('location', {
                             name: character.current_location_details.name,
                             parent_name: character.current_location_details.parent_location
                         }) 
@@ -68,7 +68,7 @@
         <div class="mb-5">
             <app-object-list    
             [articleType]="'item'" 
-            [createLink]="constants.getRoutePath(router, 'item-character-create', {character_name: character.name})"
+            [createLink]="routingService.getRoutePath('item-character-create', {character_name: character.name})"
             [heading]="'Items of Note'"
             [items]="character.items"
             ></app-object-list>
@@ -83,7 +83,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="constants.getRoutePath(router, 'character-overview')"
+        [link]="routingService.getRoutePath('character-overview')"
         [label]="'Back to Characters'"
         [deleteMessage]="'Delete '+character.name+'?'"
         ></app-article-footer>

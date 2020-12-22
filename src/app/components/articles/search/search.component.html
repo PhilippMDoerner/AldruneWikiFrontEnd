@@ -10,7 +10,7 @@
         <!-- Article List -->
         <div class="my-3">
             <a 
-            routerLink="{{article.getAbsoluteRouterUrl()}}" 
+            routerLink="{{ article.getAbsoluteRouterUrl() }}" 
             *ngFor="let article of articles"
             [ngClass]="'card flex-row align-items-center sidebar-border py-2 row ' + sidebarColor(article.article_type)"
             >
@@ -31,7 +31,7 @@
         <div class="row">
             <div 
             class="btn btn-secondary col-md-3" 
-            routerLink="{{constants.getRoutePath(router, 'home1')}}"
+            routerLink="{{ routingService.getRoutePath('home1') }}"
             >
                 Back To Frontpage
             </div>

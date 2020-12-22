@@ -9,7 +9,7 @@
             </div>
             <div class="d-flex">
                 <span class="w-25 bold">Location: </span> 
-                <a routerLink="{{constants.getRoutePath(router, 'location', {parent_name: encounter.location_details.parent_location_name, name: encounter.location_details.name})}}">
+                <a routerLink="{{routingService.getRoutePath('location', {parent_name: encounter.location_details.parent_location_name, name: encounter.location_details.name})}}">
                     {{encounter.location_details.name}}
                 </a>
             </div>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/app.constants';
+import { RoutingService } from 'src/app/services/routing.service';
 
 
 @Component({
@@ -8,16 +9,10 @@ import { Constants } from 'src/app/app.constants';
   templateUrl: './gateway-timeout.component.html',
   styleUrls: ['./gateway-timeout.component.scss']
 })
-export class GatewayTimeoutComponent implements OnInit {
+export class GatewayTimeoutComponent {
   constants: any = Constants;
-  router: Router;
 
   constructor(
-    private privateRouter: Router
+    public routingService: RoutingService,
   ) { }
-
-  ngOnInit(): void {
-    this.router = this.privateRouter;
-  }
-
 }

@@ -11,6 +11,7 @@ import { CharacterService } from "src/app/services/character/character.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-character-article-update',
@@ -41,18 +42,19 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
     private formlyService: MyFormlyService,
     private route: ActivatedRoute,
     private router: Router,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
+    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
 
     this.parameter_subscription = this.route.params.subscribe(params => {
-      if (this.formState === this.constants.updateState){
+      if (this.formState === Constants.updateState){
         const character_name: string = params.name;
         this.characterService.getCharacter(character_name).pipe(first()).subscribe(
           (character: CharacterObject) => this.model = character, 
-          error =>Constants.routeToErrorPage(this.router, error)
+          error =>this.routingService.routeToErrorPage(error)
         );
       } else if (this.formState === Constants.createState) {
         this.model = new CharacterObject();
@@ -66,7 +68,7 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
     const responseObservable: Observable<Character> =  isFormInUpdateState ? this.characterService.updateCharacter(this.model) : this.characterService.createCharacter(this.model);
 
     responseObservable.pipe(first()).subscribe(
-      (character: CharacterObject) => Constants.routeToApiObject(this.router, character),
+      (character: CharacterObject) => this.routingService.routeToApiObject(character),
       error => this.warnings.showWarning(error)
     );
   }
@@ -75,9 +77,9 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
     const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
     if (isFormInUpdateState){
       const characterName: string = this.route.snapshot.params.name;
-      Constants.routeToPath(this.router, 'character', {name: characterName});
+      this.routingService.routeToPath('character', {name: characterName});
     } else {
-      Constants.routeToPath(this.router, 'character-overview');
+      this.routingService.routeToPath('character-overview');
     } 
   }
 

@@ -1,6 +1,10 @@
 <div class="main">
     <article class="mb-5" *ngIf="model; else loading">
-        <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'map', {name: mapName})"></app-edit-toggle>
+        <app-edit-toggle 
+        [isInUpdateState]=true 
+        [link]="routingService.getRoutePath('map', {name: mapName})"
+        ></app-edit-toggle>
+
         <h2 class="text-center"> Adding a new Marker </h2>
 
         <!-- Form -->

@@ -3,6 +3,7 @@ import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { Constants } from '../app.constants';
 import { DecodedTokenPayload } from '../models/jwttoken';
+import { RoutingService } from './routing.service';
 import { TokenService } from './token.service';
 
 @Injectable({
@@ -11,13 +12,13 @@ import { TokenService } from './token.service';
 export class LoginGuardService implements CanActivate{
 
   constructor(
-    private router: Router,
+    private routingService: RoutingService,
     private tokenService: TokenService
   ) { }
 
   canActivate(): boolean{
     if (!this.isUserLoggedIn()){
-      this.router.navigateByUrl(Constants.getRoutePath(this.router, 'login'));
+      this.routingService.routeToPath('login');
       return false;
     }
 
@@ -36,12 +37,13 @@ export class PermissionGuardService implements CanActivate{
 
   constructor(
     private router: Router,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    public routingService: RoutingService,
   ){}
 
   canActivate(route: ActivatedRouteSnapshot): boolean{
     if (!this.isUserLoggedIn()) {
-      this.router.navigateByUrl(Constants.getRoutePath(this.router, 'login'));
+      this.routingService.routeToPath('login');
       return false;
     }
 

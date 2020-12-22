@@ -1,8 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Character } from 'src/app/models/character';
@@ -13,6 +11,7 @@ import { EncounterConnectionService } from 'src/app/services/encounter-connectio
 import { EncounterServiceService } from "src/app/services/encounter/encounter-service.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -53,9 +52,9 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
     private overviewService: OverviewService,
     private encounterService: EncounterServiceService,
     private encounterConnectionService: EncounterConnectionService,
-    private router: Router,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService,
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { super(); }
 
   ngOnInit(): void {

@@ -9,6 +9,7 @@ import { SessionAudioService } from 'src/app/services/session-audio.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-session-audio-update',
@@ -34,22 +35,23 @@ export class SessionAudioUpdateComponent implements OnInit {
     private audioService: SessionAudioService,
     private router: Router,
     private route: ActivatedRoute,
-    private warnings: WarningsService,
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
+    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
 
     this.parameter_subscription = this.route.params.subscribe(params => {
-      if (this.formState === this.constants.updateState){
+      if (this.formState === Constants.updateState){
         const isMainSessionInt: number = params['isMainSession'];
         const sessionNumber: number = params['sessionNumber'];
         this.audioService.getSessionAudioFile(isMainSessionInt, sessionNumber).pipe(first()).subscribe(
           (sessionAudio: SessionAudioObject) => this.model = sessionAudio,
-          error => Constants.routeToErrorPage(this.router, error)
+          error => this.routingService.routeToErrorPage(error)
         );
 
-      } else if (this.formState === this.constants.createState) {
+      } else if (this.formState === Constants.createState) {
         this.model = new SessionAudioObject();
       } 
     })
@@ -57,11 +59,11 @@ export class SessionAudioUpdateComponent implements OnInit {
   }
 
   onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
+    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
 
     const responseObservable: Observable<SessionAudioObject> =  isFormInUpdateState ? this.audioService.updateSessionAudioFile(this.model) : this.audioService.createSessionAudioFile(this.model);
     responseObservable.pipe(first()).subscribe( 
-      (sessionAudio: SessionAudioObject) => Constants.routeToApiObject(this.router, sessionAudio),
+      (sessionAudio: SessionAudioObject) => this.routingService.routeToApiObject(sessionAudio),
       error => this.warnings.showWarning(error)
     );
   }
@@ -69,12 +71,12 @@ export class SessionAudioUpdateComponent implements OnInit {
   onCancel(){
     const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
     if (isFormInUpdateState){
-      Constants.routeToPath(this.router, 'sessionaudio', {
+      this.routingService.routeToPath('sessionaudio', {
         isMainSession: this.route.snapshot.params.isMainSession,
         sessionNumber: this.route.snapshot.params.sessionNumber
       });
     } else {
-      Constants.routeToPath(this.router, 'sessionaudio-overview');
+      this.routingService.routeToPath('sessionaudio-overview');
     } 
   }
 

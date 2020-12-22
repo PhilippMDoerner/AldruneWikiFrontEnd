@@ -14,7 +14,7 @@
                     <!-- Card Body -->
                     <!-- TODO: Fix the download button somehow -->
                     <div class="card-body d-flex justify-content-center flex-column">
-                        <a routerLink="{{constants.getRoutePath(router, 'sessionaudio', {isMainSession: sessionAudio.session_details.is_main_session_int, sessionNumber: sessionAudio.session_details.session_number})}}"
+                        <a routerLink="{{routingService.getRoutePath('sessionaudio', {isMainSession: sessionAudio.session_details.is_main_session_int, sessionNumber: sessionAudio.session_details.session_number})}}"
                             class="text-center btn btn-primary"> 
                             <strong> Stream </strong> 
                         </a>
@@ -35,7 +35,7 @@
 
         <!-- Button To Frontpage -->
         <div class="row mx-0">
-            <div class="col-md-3 mt-5 btn btn-secondary" routerLink="{{constants.getRoutePath(router, 'home1')}}">
+            <div class="col-md-3 mt-5 btn btn-secondary" routerLink="{{routingService.getRoutePath('home1')}}">
                 Back To Frontpage
             </div>
         </div>

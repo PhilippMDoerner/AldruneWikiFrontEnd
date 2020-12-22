@@ -1,12 +1,14 @@
 <div class="main d-flex flex-column">
     <h1 class="text-center mb-5"> HTTP 404: Not Found </h1>
-    <img src="{{constants.wikiUrl}}/static/wiki/images/404.png" alt="" class="center mb-3"/>
+    <img src="{{constants.pageNotFoundImageUrl}}" alt="" class="center mb-3"/>
 
-    <p class="text-center"> We couldn't find the site you are looking for. <br> 
-        But a dragon found you ! </p>
+    <p class="text-center"> 
+        We couldn't find the site you are looking for. <br> 
+        But a dragon found you ! 
+    </p>
     
     <div>
-        <a class="btn btn-secondary" routerLink="{{constants.getRoutePath(router, 'home1')}}"> 
+        <a class="btn btn-secondary" routerLink="{{ routingService.getRoutePath('home1') }}"> 
             Back To Frontpage 
         </a>
     </div>

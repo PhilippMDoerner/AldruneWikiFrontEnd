@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/app.constants';
+import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 
 @Component({
@@ -8,22 +9,19 @@ import { TokenService } from 'src/app/services/token.service';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.scss']
 })
-export class NavbarComponent implements OnInit{
+export class NavbarComponent{
   public searchString: string;
   public constants: any = Constants;
-  public router: Router;
 
   collapsed: boolean = true; 
 
-  constructor(private secretRouter: Router, private tokenService: TokenService) { }
-
-  ngOnInit(): void{
-    this.router = this.secretRouter;
-  }
+  constructor(
+    private tokenService: TokenService,  
+    public routingService: RoutingService,
+  ) { }
 
   search(){
-    const searchUrl: string = Constants.getRoutePath(this.router, 'search', {searchString: this.searchString});
-    this.router.navigateByUrl(searchUrl);
+    this.routingService.routeToPath('search', {searchString: this.searchString});
   }
 
   toggleCollapse(){
@@ -36,7 +34,6 @@ export class NavbarComponent implements OnInit{
       this.tokenService.removeJWTTokenFromLocalStorage();
     }
 
-    const logoutUrl: string = Constants.getRoutePath(this.router, 'login-state', {state: 'logged-out'});
-    this.router.navigateByUrl(logoutUrl);
+    this.routingService.getRoutePath('login-state', {state: 'logged-out'});
   }
 }

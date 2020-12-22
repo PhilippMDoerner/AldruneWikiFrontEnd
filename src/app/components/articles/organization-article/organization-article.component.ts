@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Organization, OrganizationObject } from 'src/app/models/organization';
 import { OrganizationService } from 'src/app/services/organization/organization.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -22,8 +23,8 @@ export class OrganizationArticleComponent implements OnInit {
   constructor(
     private organizationService: OrganizationService,
     private route: ActivatedRoute,
-    private router: Router,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -32,7 +33,7 @@ export class OrganizationArticleComponent implements OnInit {
 
       this.organizationService.getOrganization(organizationName).pipe(first()).subscribe(
         (organization: OrganizationObject) => this.organization = organization,
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       );
     })
 
@@ -53,7 +54,7 @@ export class OrganizationArticleComponent implements OnInit {
 
   deleteArticle(){
     this.organizationService.deleteOrganization(this.organization.pk).pipe(first()).subscribe(
-      response => Constants.routeToPath(this.router, 'organization-overview'),
+      response => this.routingService.routeToPath('organization-overview'),
       error => this.warnings.showWarning(error)
     );
   }

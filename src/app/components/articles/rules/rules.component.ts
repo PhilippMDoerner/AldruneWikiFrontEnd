@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Rule, RuleObject } from "src/app/models/rule";
+import { RoutingService } from 'src/app/services/routing.service';
 import { RuleService } from 'src/app/services/rule.service';
 @Component({
   selector: 'app-rules',
@@ -17,7 +18,7 @@ export class RulesComponent implements OnInit {
 
   constructor(
     private ruleService: RuleService,
-    private router: Router,
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -30,7 +31,7 @@ export class RulesComponent implements OnInit {
           this.panelIsOpenArray.push(true);
         }
       },
-      error => Constants.routeToErrorPage(this.router, error)
+      error => this.routingService.routeToErrorPage(error)
     )
   }
 

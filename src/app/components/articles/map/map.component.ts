@@ -7,6 +7,7 @@ import { ExtendedMap, MapObject } from 'src/app/models/map';
 import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
 import { MapService } from 'src/app/services/map.service';
 import { OverviewService } from 'src/app/services/overview.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -31,7 +32,8 @@ export class MapComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private mapService: MapService,
     private overviewService: OverviewService,
-    private warnings: WarningsService,
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -39,12 +41,12 @@ export class MapComponent implements OnInit, OnDestroy {
       const mapName = params['name'];
       this.mapService.getMap(mapName).pipe(first()).subscribe( 
         (map: MapObject) => this.currentMap = map,
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       );
 
       this.overviewService.getOverviewItems('map').pipe(first()).subscribe(
         (overviewItems: OverviewItemObject[]) => this.maps = overviewItems,
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       );
     })
   }
@@ -77,7 +79,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   routeToMap(newMap: string){
-    const mapUrl: string = Constants.getRoutePath(this.router, 'map', {name: newMap});
+    const mapUrl: string = this.routingService.getRoutePath('map', {name: newMap});
     this.router.navigateByUrl(mapUrl);
     this.router.routeReuseStrategy.shouldReuseRoute = function () {return false;};
   }

@@ -8,6 +8,7 @@ import { Constants } from 'src/app/app.constants';
 import { MapObject, Map } from 'src/app/models/map';
 import { MapService } from 'src/app/services/map.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -35,7 +36,8 @@ export class MapUpdateComponent implements OnInit {
     private mapService: MapService,
     private router: Router,
     private route: ActivatedRoute,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -47,7 +49,7 @@ export class MapUpdateComponent implements OnInit {
       if (this.formState === this.constants.updateState){
         this.mapService.getMap(mapName).pipe(first()).subscribe(
           (map: MapObject) => this.model = map,
-          error => Constants.routeToErrorPage(this.router, error)
+          error => this.routingService.routeToErrorPage(error)
         );
       }  else if (this.formState === this.constants.createState){
         this.model = new MapObject();
@@ -60,7 +62,7 @@ export class MapUpdateComponent implements OnInit {
     const responseObservable: any =  isFormInUpdateState ? this.mapService.updateMap(this.model) : this.mapService.createMap(this.model);
 
     responseObservable.pipe(first()).subscribe(
-      (map: MapObject) => Constants.routeToApiObject(this.router, map),
+      (map: MapObject) => this.routingService.routeToApiObject(map),
       error => this.warnings.showWarning(error)
     );
   }
@@ -69,9 +71,9 @@ export class MapUpdateComponent implements OnInit {
     const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
     if (isFormInUpdateState){
       const mapName: string = this.route.snapshot.params.name;
-      Constants.routeToPath(this.router, 'map', {name: mapName});
+      this.routingService.routeToPath('map', {name: mapName});
     } else {
-      Constants.routeToPath(this.router, 'map', {name: Constants.defaultMapName});
+      this.routingService.routeToPath('map', {name: Constants.defaultMapName});
     } 
   }
 

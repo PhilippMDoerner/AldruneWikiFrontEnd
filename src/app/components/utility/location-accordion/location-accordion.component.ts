@@ -1,9 +1,9 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { Location, LocationObject, SubLocation } from 'src/app/models/location';
+import { LocationObject } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -20,7 +20,7 @@ export class LocationAccordionComponent extends PermissionUtilityFunctionMixin i
   constructor(
     private locationService: LocationService,
     private warnings: WarningsService,
-    private router: Router,
+    public routingService: RoutingService,
   ) { super() }
 
   ngOnInit(): void {

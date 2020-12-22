@@ -10,7 +10,10 @@
         </div>
         
         <ng-template #createState>
-            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'location-overview')"></app-edit-toggle>
+            <app-edit-toggle 
+            [isInUpdateState]=true 
+            [link]="routingService.getRoutePath('location-overview')"
+            ></app-edit-toggle>
 
             <h2 class="text-center">
                 Adding a new Location

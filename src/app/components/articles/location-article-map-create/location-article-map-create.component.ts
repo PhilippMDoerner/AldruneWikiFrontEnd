@@ -13,6 +13,7 @@ import { LocationService } from 'src/app/services/location/location.service';
 import { first } from 'rxjs/operators';
 import { ExtendedMap, MapObject } from 'src/app/models/map';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-location-article-map-create',
@@ -35,10 +36,10 @@ export class LocationArticleMapCreateComponent implements OnInit {
     private markerService: MarkerService,
     private mapService: MapService,
     private locationService: LocationService,
-    private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService,
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   location_fields: FormlyFieldConfig[] = this.formlyService.getFieldConfigForLocation();
@@ -64,7 +65,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
           this.markerModel.latitude = latitude;
           this.markerModel.longitude = longitude;
         },
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       );
   
       this.locationModel = new LocationObject();
@@ -77,7 +78,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
         this.markerModel.location = location.pk;
 
         this.markerService.createMapMarker(this.markerModel).pipe(first()).subscribe(
-          (marker: MapMarker) => Constants.routeToApiObject(this.router, location), 
+          (marker: MapMarker) => this.routingService.routeToApiObject(location), 
           error => this.warnings.showWarning(error)
         ) 
       },
@@ -86,7 +87,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
   }
 
   onCancel(){
-      Constants.routeToPath(this.router, 'map', {name: this.mapName});
+    this.routingService.routeToPath('map', {name: this.mapName});
   }
 
   ngOnDestroy(){

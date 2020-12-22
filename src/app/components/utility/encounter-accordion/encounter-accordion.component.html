@@ -54,15 +54,23 @@
                     <div class="d-inline-flex align-items-center flex-wrap">
                         <!-- Connection List -->
                         <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections">
-                            <a routerLink="{{constants.wikiUrlFrontendPrefix}}/character/{{connection.character_details.name}}">{{ connection.character_details.name }}</a>
-                            <i class="fa fa-trash icon ml-1" (click)="deleteEncounterConnection(encounter, connection)" [ngClass]="{'d-none': !userHasDeletePermission()}"></i>
+                            <a routerLink="{{ routingService.getRoutePath('character', {name: connection.character_details.name}) }}">
+                                {{ connection.character_details.name }}
+                            </a>
+                            <i 
+                            class="fa fa-trash icon ml-1" 
+                            (click)="deleteEncounterConnection(encounter, connection)" 
+                            [ngClass]="{'d-none': !userHasDeletePermission()}"
+                            ></i>
                         </span>
+
                         <!-- Connection Create Form -->
                         <form [ngClass]="{'d-none':!inEncounterConnectionCreationState, 'd-inline-block': inEncounterConnectionCreationState}">
                             <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
                                 <option *ngFor="let character of characters" value="{{character.pk}}">{{character.name}}</option>
                             </select>
                         </form>
+                        
                         <!-- Connection Create Icon-Buttons -->
                         <div [ngClass]="{'d-none': !userHasCreatePermission()}">
                             <i 

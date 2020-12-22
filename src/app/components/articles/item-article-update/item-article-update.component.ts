@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
@@ -10,8 +9,8 @@ import { Item, ItemObject } from 'src/app/models/item';
 import { CharacterService } from 'src/app/services/character/character.service';
 import { ItemService } from 'src/app/services/item/item.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
-import { routeNameMatches } from 'src/app/utils/functions/routeFilter';
 
 @Component({
   selector: 'app-item-article-update',
@@ -39,7 +38,8 @@ export class ItemArticleUpdateComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -53,7 +53,7 @@ export class ItemArticleUpdateComponent implements OnInit {
       if (this.formState === Constants.updateState){
         this.itemService.getItem(itemName).pipe(first()).subscribe(
           (item: ItemObject) =>  this.model = item,
-          error => Constants.routeToErrorPage(error)
+          error => this.routingService.routeToErrorPage(error)
         );
       } else if (this.isForAssociatedObjectCreation){
         this.characterService.getCharacter(itemOwnerName).pipe(first()).subscribe(
@@ -61,7 +61,7 @@ export class ItemArticleUpdateComponent implements OnInit {
             this.model = new ItemObject();
             this.model.owner = itemOwner.pk;
           },
-          error => Constants.routeToErrorPage(error)
+          error => this.routingService.routeToErrorPage(error)
         );
       } else if (this.formState === Constants.createState) {
         this.model = new ItemObject();
@@ -74,23 +74,23 @@ export class ItemArticleUpdateComponent implements OnInit {
     const responseObservable: any =  isFormInUpdateState ? this.itemService.updateItem(this.model) : this.itemService.createItem(this.model);
 
     responseObservable.pipe(first()).subscribe(
-      (item: ItemObject) => Constants.routeToApiObject(this.router, item),
+      (item: ItemObject) => this.routingService.routeToApiObject(item),
       error => this.warnings.showWarning(error)
     );
   }
 
   onCancel(){
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    const isItemCharacterCreateUrl: boolean = routeNameMatches(this.route, "item-character-create");
+    const isItemCharacterCreateUrl: boolean = this.routingService.routeNameMatches(this.route, "item-character-create");
 
     if (isItemCharacterCreateUrl){
       const characterName: string = this.route.snapshot.params['character_name'];
-      Constants.routeToPath(this.router, 'character', {name: characterName});
+      this.routingService.routeToPath('character', {name: characterName});
     } else if (isFormInUpdateState){
       const itemName: string = this.route.snapshot.params.name;
-      Constants.routeToPath(this.router, 'item', {name: itemName});
+      this.routingService.routeToPath('item', {name: itemName});
     } else {
-      Constants.routeToPath(this.router, 'item-overview');
+      this.routingService.routeToPath('item-overview');
     }
   }
 

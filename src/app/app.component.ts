@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from './app.constants';
+import { RoutingService } from './services/routing.service';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ export class AppComponent {
 
   constructor(
     private router: Router,  
+    public routingService: RoutingService
   ){}
   title = 'frontend';
 
@@ -18,8 +20,7 @@ export class AppComponent {
     if (event.target.attributes.id){
       const clickTargetId = event.target.attributes.id.nodeValue;
       if (clickTargetId === "background-div"){
-        const homeUrl: string = Constants.getRoutePath(this.router, 'home2')
-        this.router.navigateByUrl(homeUrl);
+        this.routingService.routeToPath('home2');
       }
     }
   }

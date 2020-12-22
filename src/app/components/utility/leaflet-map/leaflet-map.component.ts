@@ -2,10 +2,11 @@ import { AfterContentInit, Component, Input, OnDestroy, OnInit } from '@angular/
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/app.constants';
 import { ExtendedMap } from 'src/app/models/map';
-import { MapMarker } from 'src/app/models/mapmarker';
+import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
 import { Marker } from 'leaflet';
 import * as L from "node_modules/leaflet";
 import 'leaflet/dist/leaflet.css';
+import { RoutingService } from 'src/app/services/routing.service';
 
 let DefaultIcon = L.icon({
   iconUrl: `${Constants.wikiMediaUrl}/leaflet/marker-icon.png`,
@@ -25,7 +26,10 @@ L.Marker.prototype.options.icon = DefaultIcon;
 export class LeafletMapComponent implements OnInit, AfterContentInit {
   @Input() map: ExtendedMap;
   private leafletMap;
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,  
+    public routingService: RoutingService,
+  ) { }
 
   mouseLatitude: number;
   mouseLongitude: number;
@@ -59,41 +63,56 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
     this.leafletMap.on('click', event => {
       const latitude = parseInt(event.latlng.lat);
       const longitude = parseInt(event.latlng.lng);
-      const contentHTML: string = `
+
+      const popupContentHTML = this.makeFreePopupContentHTML(longitude, latitude);
+
+      L.popup()
+        .setLatLng([latitude, longitude])
+        .setContent(popupContentHTML)
+        .openOn(this.leafletMap);
+    })
+  }
+
+  makeFreePopupContentHTML(longitude: number, latitude: number): string{
+    const markerMapCreateUrl: string = this.routingService.getRoutePath('marker-map-create', {
+      latitude: latitude,
+      longitude: longitude,
+      map_name: this.map.name
+    });
+
+    const locationMapCreateUrl: string = this.routingService.getRoutePath('location-map-create', {
+      latitude: latitude, 
+      longitude: longitude, 
+      map_name: this.map.name
+    });
+
+    const popupContentHTML: string = `
       <div class="mb-2 pointer"> 
-        <a href="${Constants.spaPrefix}/marker/${latitude}/${longitude}/${this.map.name}/create">
+        <a href="${markerMapCreateUrl}">
           <i class="fa fa-map-marker"></i> Add Marker
         </a>
       </div>
 
       <div class="pointer"> 
-        <a href="${Constants.spaPrefix}/location/${latitude}/${longitude}/${this.map.name}/create">
+        <a href="${locationMapCreateUrl}">
           <i class="fa fa-home"></i> Add Marker and Location
         </a>
       </div>
-
     `;
 
-      L.popup()
-        .setLatLng([latitude, longitude])
-        .setContent(contentHTML)
-        .openOn(this.leafletMap);
-    })
+    return popupContentHTML;
   }
 
-  routeToAddLocationUrl(latitude: number, longitude: number){
-    this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}}/location/${latitude}/${longitude}/create`);
-  }
-
-  addMapImage(){
+  addMapImage(): void{
     const bounds: L.LatLngBoundsExpression = [[200, 140], [800, 1160]];
     L.imageOverlay(this.map.image, bounds).addTo(this.leafletMap)
     this.leafletMap.fitBounds(bounds);  
   }
 
-  addMarkers(){
+  addMarkers(): void{
     const layers = {};
 
+    // Groups markers into their respective layers
     for (let mapMarker of this.map.markers){
       const layerName = mapMarker.type_details.name;
       const layer = (layers.hasOwnProperty(layerName)) ? layers[layerName] : L.layerGroup();  
@@ -103,14 +122,17 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
       marker.addTo(layer);
     }
 
+    // Adds every layer to leaflet map
     for(const layerName in layers){
       layers[layerName].addTo(this.leafletMap);
     }
+
+    // Add Layer-Control to Leaflet Map
     L.control.layers(null, layers, {sortLayers: true}).addTo(this.leafletMap);
   }
 
 
-  createTextMarker(mapMarker: MapMarker): Marker{
+  createTextMarker(mapMarker: MapMarkerObject): Marker{
     const markerColor = this.getMarkerColor(mapMarker);
     const textColor = (['beige', 'lightgreen'].includes(markerColor)) ? "black" : "white";
     return L.marker([mapMarker.latitude, mapMarker.longitude], {
@@ -138,35 +160,48 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
 
   createDefaultMarker(mapMarker: MapMarker): Marker{
     return L.marker([mapMarker.latitude, mapMarker.longitude], {})
-    .bindPopup(this.getPopupText(mapMarker))
-    .bindTooltip(mapMarker.location_details.name);
+      .bindPopup(this.getPopupText(mapMarker))
+      .bindTooltip(mapMarker.location_details.name);
   }
 
   getPopupText(marker: MapMarker){
     // Heading and Description
+    const locationHeading: string = this.makeLocationHeading(marker);
+    const locationDescription: string = this.makeLocationDescription(marker);
+    const sublocationList: string = this.makeSublocationList(marker);
+
+    return `${locationHeading} <br> ${locationDescription} <br> ${sublocationList}`;
+  }
+
+  makeLocationHeading(marker: MapMarkerObject): string{
     const location_url = `${Constants.wikiUrlFrontendPrefix}/location/${marker.location_details.parent_location_name}/${marker.location_details.name}`;
     const heading: string = `<a href="${location_url}"> <b>${marker.location_details.name}</b> </a>`
+    return heading;
+  }
 
+  makeLocationDescription(marker: MapMarkerObject): string{
     let description: string = marker.location_details.description;
     if (description && description.split(" ").length >= 35) description += "...";
+    return description;
+  }
 
-    let text: string = `${heading} <br> ${description} <br>`;
-
-    // Add Sublocations
+  makeSublocationList(marker: MapMarkerObject): string{
     if (marker.location_details.sublocations.length > 0){
-      const subHeading = '<h5 class="popup-heading"> Locations of Interest: </h5>';
+      const sublocationListHeading = '<h5 class="popup-heading"> Locations of Interest: </h5>';
 
       let sublocationList: string = " <ul>";
       for(let sublocationName of marker.location_details.sublocations){
-        const sublocation_url = `/location/${marker.location_details.name}/${sublocationName}`;
-        sublocationList += `<li><a routerLink="${Constants.wikiUrlFrontendPrefix}/${sublocation_url}"> ${sublocationName}</a></li>`
+        const sublocationUrl = this.routingService.getRoutePath('location', {
+          parent_name: marker.location_details.name,
+          name: sublocationName
+        });
+        sublocationList += `<li><a href="${sublocationUrl}"> ${sublocationName}</a></li>`
       }
       sublocationList += '</ul>';
 
-      text += `${subHeading} ${sublocationList}`;
+      return `${sublocationListHeading} ${sublocationList}`;
     }
-
-    return text;
+    return "";
   }
 
   //TODO: Find a way to get Awesome Markers to work

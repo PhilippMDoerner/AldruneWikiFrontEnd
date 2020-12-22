@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Location, LocationObject } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 @Component({
@@ -22,8 +23,8 @@ export class LocationArticleComponent extends PermissionUtilityFunctionMixin imp
   constructor(
     private locationService: LocationService,
     private route: ActivatedRoute,
-    private router: Router,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { super() }
 
   ngOnInit(): void {
@@ -33,7 +34,7 @@ export class LocationArticleComponent extends PermissionUtilityFunctionMixin imp
 
       this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(
         (location: LocationObject) => this.location = location,
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       );
     });
   }
@@ -57,7 +58,7 @@ export class LocationArticleComponent extends PermissionUtilityFunctionMixin imp
     const locationName: string = locationList[index];
     const parentLocationName: string = (index === 0) ? "None" : locationList[index-1];
 
-    const locationUrl: string = Constants.getRoutePath(this.router, 'location', {
+    const locationUrl: string = this.routingService.getRoutePath('location', {
       parent_name: parentLocationName, 
       name: locationName
     });
@@ -66,7 +67,7 @@ export class LocationArticleComponent extends PermissionUtilityFunctionMixin imp
 
   deleteArticle(){
       this.locationService.deleteLocation(this.location.pk).pipe(first()).subscribe(
-        response => Constants.routeToPath(this.router, 'location-overview'),
+        response => this.routingService.routeToPath('location-overview'),
         error => this.warnings.showWarning(error)
       );
   }

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Quest, QuestObject } from 'src/app/models/quest';
 import { QuestService } from 'src/app/services/quest.service';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-quest-overview',
@@ -11,25 +13,21 @@ import { QuestService } from 'src/app/services/quest.service';
   styleUrls: ['./quest-overview.component.scss']
 })
 export class QuestOverviewComponent implements OnInit {
-  quests: Array<{key:string, value:QuestObject}>;
+  quests: Array<{key:string, value:QuestObject[]}>;
   filterStateTypes: string[];
   filterStates: object;
   constants: any = Constants;
-
-  overviewType: string = "quest";
 
   private quest_subscription: Subscription;
 
   constructor(
     private questService: QuestService,
-    private router: Router
+    private router: Router,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
-    const urlSplit = this.router.url.split('/');
-    this.overviewType = urlSplit[urlSplit.length - 1];
-
-    this.quest_subscription = this.questService.getQuests().subscribe(
+    this.questService.getQuests().pipe(first()).subscribe(
       (quests: QuestObject[]) => {
         this.quests = this.groupQuestsByTaker(quests);
 
@@ -45,12 +43,15 @@ export class QuestOverviewComponent implements OnInit {
           }
         };
       }, 
-      error => Constants.routeToErrorPage(this.router, error)
+      error => this.routingService.routeToErrorPage(error)
     );
   }
 
-  groupQuestsByTaker(itemArray: QuestObject[]): Array<{key:string, value:QuestObject}>{
-    /**Turns an array of QuestObjects into an array of objects, which  */
+  groupQuestsByTaker(itemArray: QuestObject[]): Array<{key:string, value:QuestObject[]}>{
+    /**
+     * Turns an array of QuestObjects into an array of objects, the object containing 
+     * an array of all quests associated with a given quest Taker 
+     * */
     const callback = (accumulator: object, quest: Quest) => {
         const questTaker: string = quest.taker;
         if(accumulator.hasOwnProperty(questTaker)) accumulator[questTaker].push(quest);

@@ -9,6 +9,7 @@ import { OverviewItem } from 'src/app/models/overviewItem';
 import { EncounterConnectionService } from 'src/app/services/encounter-connection.service';
 import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
 import { OverviewService } from 'src/app/services/overview.service';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-encounter',
@@ -31,7 +32,8 @@ export class EncounterComponent implements OnInit {
     private encounterConnectionService: EncounterConnectionService,
     private overviewService: OverviewService,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -84,9 +86,9 @@ export class EncounterComponent implements OnInit {
   }
 
   deleteEncounter(){
-    this.encounterService.deleteEncounter(this.encounter.pk).pipe(first()).subscribe(response => {
-      this.router.navigateByUrl(`${Constants.wikiUrlFrontendPrefix}`);
-    }, error => console.log(error));
+    this.encounterService.deleteEncounter(this.encounter.pk).pipe(first()).subscribe(
+      response => this.routingService.routeToPath('home1'),
+      error => console.log(error));
   }
 
   ngOnDestroy(){

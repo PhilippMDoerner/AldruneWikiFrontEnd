@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Article, ArticleObject } from 'src/app/models/recentlyUpdatedArticle';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-search',
@@ -21,7 +22,8 @@ export class SearchComponent implements OnInit, OnDestroy {
   constructor(
     private articleService: RecentlyUpdatedService,
     private route: ActivatedRoute,
-    private router: Router,
+    private router: Router,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -29,7 +31,7 @@ export class SearchComponent implements OnInit, OnDestroy {
       const searchString: string = params['searchString'];
       this.articleService.getSearchedArticles(searchString).pipe(first()).subscribe(
         (articles: ArticleObject[]) => this.articles = articles,
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       )
     });
   }

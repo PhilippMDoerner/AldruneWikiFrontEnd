@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark p-0">
     <!-- Brand -->
-    <a routerLink="{{constants.getRoutePath(router, 'home1')}}" class="navbar-brand mx-5">
+    <a routerLink="{{ routingService.getRoutePath('home1') }}" class="navbar-brand mx-5">
         <strong> Aldrune Wiki </strong>
     </a>
 
@@ -37,14 +37,14 @@
         <ul class="navbar-nav">
             <!-- Recent Updates -->
             <li class="nav-item mx-2">
-                <a routerLink="{{constants.getRoutePath(router, 'recent-updates')}}" class="nav-link"> 
+                <a routerLink="{{ routingService.getRoutePath('recent-updates') }}" class="nav-link"> 
                     <span class="nav-link-text">Recent Updates</span>
                 </a>
             </li>
 
             <!-- Rules -->
             <li class="nav-item mx-2">
-                <a routerLink="{{constants.getRoutePath(router, 'rules')}}" class="nav-link"> 
+                <a routerLink="{{ routingService.getRoutePath('rules')}}" class="nav-link"> 
                     <span class="nav-link-text mr-3 d-none">Rules</span> 
                     <i class="fa fa-book fa-2x" aria-hidden="true"></i>
                 </a>
@@ -52,7 +52,7 @@
 
             <!-- Session Audio -->
             <li class="nav-item mx-2">
-                <a class="nav-link" routerLink="{{constants.getRoutePath(router, 'sessionaudio-overview')}}"> 
+                <a class="nav-link" routerLink="{{ routingService.getRoutePath('sessionaudio-overview') }}"> 
                     <span class="nav-link-text mr-3 d-none">Session Audio</span> 
                     <i class="fa fa-file-audio-o fa-2x" aria-hidden="true"></i> 
                 </a>

@@ -2,7 +2,10 @@
     <article class="mb-5">
         <!-- Heading -->
         <div *ngIf="formState===constants.updateState && model; else createState">
-            <app-edit-toggle [isInUpdateState]=true [link]="'..'"></app-edit-toggle>
+            <app-edit-toggle 
+            [isInUpdateState]=true 
+            [link]="'..'"
+            ></app-edit-toggle>
 
             <h2 class="text-center">
                 Updating Organization {{ model.name }}
@@ -10,7 +13,10 @@
         </div>
         
         <ng-template #createState>
-            <app-edit-toggle [isInUpdateState]=true [link]="constants.getRoutePath(router, 'quest-overview')"></app-edit-toggle>
+            <app-edit-toggle 
+            [isInUpdateState]=true 
+            [link]="routingService.getRoutePath('quest-overview')"
+            ></app-edit-toggle>
 
             <h2 class="text-center">
                 Creating a new Quest

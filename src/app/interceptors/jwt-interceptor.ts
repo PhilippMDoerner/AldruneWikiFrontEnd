@@ -6,13 +6,15 @@ import { Constants } from "src/app/app.constants";
 import { Router } from '@angular/router';
 import { RefreshTokenService } from '../services/refresh-token.service';
 import { TokenService } from '../services/token.service';
+import { RoutingService } from '../services/routing.service';
 
 @Injectable({providedIn: 'root'})
 export class JWTInterceptor implements HttpInterceptor{
     constructor(
         private refreshTokenService: RefreshTokenService,
         private tokenService: TokenService,
-        private router: Router,
+        private router: Router,  
+        public routingService: RoutingService,
     ){}
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
@@ -43,14 +45,14 @@ export class JWTInterceptor implements HttpInterceptor{
                 request = this.addTokenToRequest(newAccessToken, request);
                 return next.handle(request);
             }),
-            catchError(err =>{
-                if (err.status === 401){
+            catchError(error =>{
+                if (error.status === 401){
                 console.log("Error while refreshing access token");
-                Constants.routeToPath(this.router, 'login-state', {state: 'token-expired'});
+                this.routingService.routeToPath('login-state', {state: 'token-expired'});
                 return EMPTY;
                 } 
 
-                Constants.routeToErrorPage(this.router, err.status);
+                this.routingService.routeToErrorPage(error);
                 return EMPTY;
             })
         )
@@ -62,22 +64,22 @@ export class JWTInterceptor implements HttpInterceptor{
                 request = this.addTokenToRequest(newAccessToken, request);
                 return next.handle(request);
             }),
-            catchError(err =>{
-                if(err.status===401){
+            catchError(error =>{
+                if(error.status===401){
                     console.log("Error while waiting for access token refresh");
-                    Constants.routeToPath(this.router, 'login-state', {state: '???'});
+                    this.routingService.routeToPath('login-state', {state: '???'});
                     return EMPTY;
                 }
 
-                console.log("Uncertain what error, but not unauthorized");
-                Constants.routeToErrorPage(this.router, err.status);
+                console.log("Error during token refresh. Uncertain what error, but status "+error.status);
+                this.routingService.routeToErrorPage(error.status);
                 return EMPTY;
             })
         )
     }
 
     private handleByRoutingToLogin(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-        Constants.routeToPath(this.router, 'login-state', {state: 'no-token'});
+        this.routingService.routeToPath('login-state', {state: 'no-token'});
         return EMPTY;
     }
 

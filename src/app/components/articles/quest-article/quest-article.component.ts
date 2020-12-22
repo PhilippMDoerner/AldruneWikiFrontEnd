@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Quest, QuestObject } from 'src/app/models/quest';
 import { QuestService } from 'src/app/services/quest.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -22,8 +23,8 @@ export class QuestArticleComponent implements OnInit {
   constructor(
     private questService: QuestService,
     private route: ActivatedRoute,
-    private router: Router,
-    private warnings: WarningsService
+    private warnings: WarningsService,  
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
@@ -31,7 +32,7 @@ export class QuestArticleComponent implements OnInit {
       const questName: string = params.name;
       this.questService.getQuest(questName).pipe(first()).subscribe(
         (quest: QuestObject) => this.quest = quest,
-        error => Constants.routeToErrorPage(this.router, error)
+        error => this.routingService.routeToErrorPage(error)
       );
     })
   }
@@ -49,10 +50,10 @@ export class QuestArticleComponent implements OnInit {
   }
 
   deleteArticle(){
-      this.questService.deleteQuest(this.quest.pk).pipe(first()).subscribe(response => {
-        const questOverviewUrl: string = Constants.getRoutePath(this.router, 'quest-overview');
-        this.router.navigateByUrl(questOverviewUrl);
-      }, error => console.log(error));
+      this.questService.deleteQuest(this.quest.pk).pipe(first()).subscribe(
+        response => this.routingService.routeToPath('quest-overview'),
+        error => this.warnings.showWarning(error)
+      );
   }
 
   ngOnDestroy(){
