@@ -1,10 +1,10 @@
-<app-navbar></app-navbar>
+<app-navbar [outsideClickSubject]="outsideClickSubject"></app-navbar>
 <div 
 id="background-div"
 class="d-flex justify-content-center align-items-center pt-4 pb-4"
-(click)="routeToHome($event)"
+(click)="routeToHome($event); closeNavbarMenu()"
 >
-    <router-outlet></router-outlet>
+    <router-outlet (click)="closeNavbarMenu()"></router-outlet>
 </div>
 
 <!-- BG -->

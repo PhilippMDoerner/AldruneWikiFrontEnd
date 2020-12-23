@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, Subject } from 'rxjs';
 import { Constants } from './app.constants';
 import { RoutingService } from './services/routing.service';
 
@@ -9,12 +10,12 @@ import { RoutingService } from './services/routing.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
+  title = 'AldruneWiki';
+  outsideClickSubject: Subject<any> = new Subject();
 
   constructor(
-    private router: Router,  
     public routingService: RoutingService
   ){}
-  title = 'frontend';
 
   routeToHome(event: any){
     if (event.target.attributes.id){
@@ -24,5 +25,11 @@ export class AppComponent {
       }
     }
   }
+
+
+  closeNavbarMenu(): void{
+    this.outsideClickSubject.next();
+  }
+
 
 }

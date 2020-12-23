@@ -34,7 +34,7 @@
         </form>
 
         <!-- Nav Items -->
-        <ul class="navbar-nav">
+        <ul class="navbar-nav" (click)="outsideClickSubject.next()">
             <!-- Recent Updates -->
             <li class="nav-item">
                 <a routerLink="{{ routingService.getRoutePath('recent-updates') }}" class="nav-link"> 
