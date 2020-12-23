@@ -37,3 +37,9 @@ table{
 .border-bottom-grey{
     border-bottom: 1px grey solid;
 }
+
+@media(max-width:767px){
+    .column-heading{
+        font-size: medium;
+    }
+}
