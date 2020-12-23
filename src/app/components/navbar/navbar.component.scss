@@ -15,10 +15,6 @@
     padding-right: 1rem;
 }
 
-.navbar-nav{
-    margin-right: 3rem;
-}
-
 .navbar a.nav-link:hover{
     background-color: grey;
 }
@@ -45,7 +41,6 @@
 .search-input{
     background-color: #1f1e1f;
     border: none;
-    flex: 1;
     outline: none;
     color: white;
 }
@@ -78,6 +73,13 @@ form:focus-within{
     border-bottom: none;
 }
 
+@media(max-width: 961px){
+    li.nav-item{
+        margin-right: 0.25rem !important;
+        margin-left: 0.25rem !important;
+    }
+}
+
 @media(max-width:767px){
     .nav-link-text{
         font-size: 20px;
@@ -92,7 +94,7 @@ form:focus-within{
         width: 100%;
     }
 
-    .navbar-nav{
-        margin-right: 0;
+    .nav-item.mr-5{
+        margin-right: 0.5rem !important;
     }
 }

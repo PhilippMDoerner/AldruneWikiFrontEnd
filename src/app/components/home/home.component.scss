@@ -36,13 +36,6 @@
     margin-top: 3.5rem;
 }
 
-@media(max-width:720px){
-    #header {
-        margin-top: 2.5rem;
-
-    }
-}
-
 #header > *:before {
     content: '';
     display: block;
@@ -210,86 +203,6 @@ body.is-preload #header .content .inner {
     opacity: 0;
 }
 
-@media screen and (max-width: 980px) {
-
-    #header .content p br {
-        display: none;
-    }
-
-}
-
-@media screen and (max-width: 756px) {
-
-    #header > * {
-        margin-top: 2rem;
-    }
-
-    #header > *:before {
-        top: calc(-2rem - 1px);
-        height: calc(2rem + 1px);
-    }
-
-    #header .logo {
-        width: 4.75rem;
-        height: 4.75rem;
-        line-height: 4.75rem;
-    }
-
-    #header .logo .icon:before {
-        font-size: 1.75rem;
-    }
-
-    #header .content .inner {
-        padding: 2.5rem 1rem;
-    }
-
-    #header .content p {
-        line-height: 1.875;
-    }
-
-}
-
-@media screen and (max-width: 894px) {
-
-    #header {
-        padding: 3rem 0;
-    }
-
-    #header .content .inner {
-        padding: 2.5rem 0;
-    }
-
-    #header nav ul {
-        -moz-flex-direction: column;
-        -webkit-flex-direction: column;
-        -ms-flex-direction: column;
-        flex-direction: column;
-        min-width: 10rem;
-        max-width: 100%;
-    }
-
-    #header nav ul li {
-        border-left: 0;
-        border-top: solid 1px #ffffff;
-    }
-
-    #header nav ul li:first-child {
-        border-top: 0;
-    }
-
-    #header nav ul li a {
-        height: 3rem;
-        line-height: 3rem;
-        min-width: 0;
-        width: 100%;
-    }
-
-    #header nav.use-middle:after {
-        display: none;
-    }
-
-}
-
 /* Wrapper */
 
 #wrapper {
@@ -319,34 +232,6 @@ body.is-preload #header .content .inner {
 #wrapper:before {
     content: '';
     display: block;
-}
-
-@media screen and (max-width: 1680px) {
-
-    #wrapper {
-        padding: 3rem 2rem;
-    }
-
-}
-
-@media screen and (max-width: 756px) {
-
-    #wrapper {
-        padding: 2rem 1rem;
-    }
-
-}
-
-@media screen and (max-width: 756px) {
-    #header{
-        margin-top: 0;
-        padding: 0;
-    }
-
-    #wrapper {
-        padding: 1rem;
-    }
-
 }
 
 .is-preload *, .is-preload *:before, .is-preload *:after {
@@ -391,3 +276,99 @@ body.is-preload #header .content .inner {
     font-weight:bold;
 }
 
+@media screen and (max-width: 1680px) {
+    #wrapper {
+        padding: 3rem 2rem;
+    }
+}
+
+@media screen and (max-width: 980px) {
+
+    #header .content p br {
+        display: none;
+    }
+
+}
+
+@media screen and (max-width: 894px) {
+
+    #header {
+        padding: 0;
+    }
+
+    #header .content .inner {
+        padding: 2.5rem 0;
+    }
+
+    #header nav ul {
+        -moz-flex-direction: column;
+        -webkit-flex-direction: column;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        min-width: 10rem;
+        max-width: 100%;
+    }
+
+    #header nav ul li {
+        border-left: 0;
+        border-top: solid 1px #ffffff;
+    }
+
+    #header nav ul li:first-child {
+        border-top: 0;
+    }
+
+    #header nav ul li a {
+        height: 3rem;
+        line-height: 3rem;
+        min-width: 0;
+        width: 100%;
+    }
+
+    #header nav.use-middle:after {
+        display: none;
+    }
+
+    #wrapper {
+        padding: 1rem;
+    }
+}
+
+@media screen and (max-width: 756px) {
+
+    #header > * {
+        margin-top: 2rem;
+    }
+
+    #header > *:before {
+        top: calc(-2rem - 1px);
+        height: calc(2rem + 1px);
+    }
+
+    #header .logo {
+        width: 4.75rem;
+        height: 4.75rem;
+        line-height: 4.75rem;
+    }
+
+    #header .logo .icon:before {
+        font-size: 1.75rem;
+    }
+
+    #header .content .inner {
+        padding: 2.5rem 1rem;
+    }
+
+    #header .content p {
+        line-height: 1.875;
+    }
+
+}
+
+
+@media screen and (max-width: 756px) {
+    #header{
+        margin-top: 0;
+        padding: 0;
+    }
+}

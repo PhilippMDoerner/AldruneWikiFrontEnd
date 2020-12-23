@@ -36,14 +36,14 @@
         <!-- Nav Items -->
         <ul class="navbar-nav">
             <!-- Recent Updates -->
-            <li class="nav-item mx-2">
+            <li class="nav-item">
                 <a routerLink="{{ routingService.getRoutePath('recent-updates') }}" class="nav-link"> 
                     <span class="nav-link-text">Recent Updates</span>
                 </a>
             </li>
 
             <!-- Rules -->
-            <li class="nav-item mx-2">
+            <li class="nav-item">
                 <a routerLink="{{ routingService.getRoutePath('rules')}}" class="nav-link"> 
                     <span class="nav-link-text mr-3 d-none">Rules</span> 
                     <i class="fa fa-book fa-2x" aria-hidden="true"></i>
@@ -51,7 +51,7 @@
             </li>
 
             <!-- Session Audio -->
-            <li class="nav-item mx-2">
+            <li class="nav-item">
                 <a class="nav-link" routerLink="{{ routingService.getRoutePath('sessionaudio-overview') }}"> 
                     <span class="nav-link-text mr-3 d-none">Session Audio</span> 
                     <i class="fa fa-file-audio-o fa-2x" aria-hidden="true"></i> 
@@ -59,7 +59,7 @@
             </li>
 
             <!-- Log out -->
-            <li class="nav-item mx-2">
+            <li class="nav-item mr-5">
                 <a (click)="logout()" class="nav-link"> 
                     <span class="nav-link-text mr-3 d-none">Logout</span> 
                     <i class="fa fa-sign-out fa-2x" aria-hidden="true"></i> 
