@@ -34,6 +34,6 @@ export class NavbarComponent{
       this.tokenService.removeJWTTokenFromLocalStorage();
     }
 
-    this.routingService.getRoutePath('login-state', {state: 'logged-out'});
+    this.routingService.routeToPath('login-state', {state: 'logged-out'});
   }
 }
