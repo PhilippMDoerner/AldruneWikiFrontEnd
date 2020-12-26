@@ -80,9 +80,12 @@ form:focus-within{
         margin-right: 0.25rem !important;
         margin-left: 0.25rem !important;
     }
-}
 
-@media(max-width:767px){
+    .nav-link{
+        width: 100%;
+        justify-content: center;
+    }
+
     .nav-link-text{
         font-size: 20px;
         display: inline !important;
@@ -92,11 +95,11 @@ form:focus-within{
         text-align: center;
     }
 
-    .nav-link{
-        width: 100%;
-    }
-
     .nav-item.mr-5{
         margin-right: 0.5rem !important;
     }
+}
+
+@media(max-width:767px){
+
 }
