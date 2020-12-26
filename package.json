@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve --proxy-config proxyconfig.json",
     "build": "ng build --prod",
-    "postbuild": "python3 .git/hooks/pre-commit && npm run commit",
+    "postbuild": "npm run commit",
     "commit": "git add dist/* && git commit -m 'build update' && git push origin",
     "test": "ng test",
     "lint": "ng lint",
