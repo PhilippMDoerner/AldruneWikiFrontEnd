@@ -35,6 +35,7 @@ export class QuestArticleUpdateComponent implements OnInit {
         labelProp: "label",
         valueProp: "value",
         options: this.questService.getQuestStates(),
+        required: true,
       }
     },
     this.formlyService.genericSelect({key: "giver", label: "Quest Giver", optionsType: "character"}),
