@@ -22,7 +22,6 @@ export class QuestOverviewComponent implements OnInit {
 
   constructor(
     private questService: QuestService,
-    private router: Router,  
     public routingService: RoutingService,
   ) { }
 
@@ -34,14 +33,15 @@ export class QuestOverviewComponent implements OnInit {
         this.filterStateTypes = [];
         this.filterStates = {};
         for(let quest of quests){
-          if (!this.filterStates[quest.taker]){
-            this.filterStates[quest.taker] = 'Default';
+          if (!this.filterStates[quest.taker_details.name]){
+            this.filterStates[quest.taker_details.name] = 'Default';
           }
 
           if (!this.filterStateTypes.includes(quest.status)){
             this.filterStateTypes.push(quest.status);
           }
         };
+        console.log(quests);
       }, 
       error => this.routingService.routeToErrorPage(error)
     );
@@ -53,13 +53,14 @@ export class QuestOverviewComponent implements OnInit {
      * an array of all quests associated with a given quest Taker 
      * */
     const callback = (accumulator: object, quest: Quest) => {
-        const questTaker: string = quest.taker;
+        const questTaker: string = quest.taker_details.name;
         if(accumulator.hasOwnProperty(questTaker)) accumulator[questTaker].push(quest);
         else accumulator[questTaker] = [quest];
         return accumulator;
     }
-    
     const groupedQuests = itemArray.reduce(callback, {});
+    console.log(groupedQuests);
+
     const result = Object.keys(groupedQuests).map(key => ({key, value: groupedQuests[key] }));
   
     // Sort by Quest-Taker alphabetically, but put "Group" quests always at the start

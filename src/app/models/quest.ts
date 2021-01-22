@@ -4,11 +4,12 @@ import { ArticleObject } from './base-models';
 
 export interface Quest extends ArticleObject{
     status: string,
-    taker: string,
+    taker: number,
+    taker_details?: {name: string, name_full: string, pk: number}
     abstract: string,
     description: string,
     giver: number,
-    giver_details?: {name: string, name_full: string, pk: number, image: string} ,
+    giver_details?: {name: string, name_full: string, pk: number} ,
     start_session: number,
     start_session_details?: Session,    
     end_session: number,
@@ -19,10 +20,11 @@ export class QuestObject implements Quest{
     name: string;
     status: string;
     abstract: string;
-    taker: string;
+    taker: number;
+    taker_details?: {name: string, name_full: string, pk: number}
     description: string;
     giver: number;
-    giver_details?: {name: string, name_full: string, pk: number, image: string};
+    giver_details?: {name: string, name_full: string, pk: number};
     start_session: number;
     start_session_details?: Session;    
     end_session: number;
