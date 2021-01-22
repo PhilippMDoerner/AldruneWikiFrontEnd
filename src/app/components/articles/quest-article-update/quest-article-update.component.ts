@@ -44,7 +44,7 @@ export class QuestArticleUpdateComponent implements OnInit {
       templateOptions:{
         label: "Quest Taker",
         labelProp: "name",
-        valueProp: "name",
+        valueProp: "pk",
         options: this.questService.getQuestTakers(),
       }
     },
