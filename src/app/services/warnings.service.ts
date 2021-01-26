@@ -17,13 +17,30 @@ export class WarningsService {
   constructor() { }
 
   showWarning(error: number | any){
-    if (typeof error !== "number" && !error.hasOwnProperty("status")) throw "Invalid error input to show warning";
+    if (typeof error !== "number" && (!error.hasOwnProperty("status") || !error.hasOwnProperty("error"))) throw "Invalid error input to show warning";
+
+    const errorStatus: number = (typeof error !== "number") ? error.status : error;
+    const httpErrorMessage:string = (typeof error !== "number") ? this.getHttpErrorMessages(error) : "";
+    
     if (typeof error !== "number" && error.hasOwnProperty("status")) error = error.status;
     //TODO Turn this way of alerting somebody to an issue into something nicer looking
 
-    const warningMessage = (this.warnings[error]) ? this.warnings[error] : this.defaultWarning;
-    alert(warningMessage);
+    const warningMessage = (this.warnings[errorStatus]) ? this.warnings[errorStatus] : this.defaultWarning;
+    alert(warningMessage + "\n\n" + httpErrorMessage);
   }
 
+  getHttpErrorMessages(httpErrorObject: any): string{
+    let httpErrorMessages: string = "The errors you received were because of:\n";
+
+    for(let formField in httpErrorObject.error){
+      httpErrorMessages += `  ${formField}\n`;
+      const formFieldErrors: string[] = httpErrorObject.error[formField];
+      formFieldErrors.forEach(errorMessage => {
+        httpErrorMessages += `    - ${errorMessage} \n`;
+      });
+    }
+
+    return httpErrorMessages;
+  }
 
 }
