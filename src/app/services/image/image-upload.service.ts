@@ -22,7 +22,6 @@ export class ImageUploadService {
 
   getArticleImages(articleType: string, pk: number): Observable<Image[]>{
     const url = `${this.imageUrl}/${articleType}/${pk}`;
-    console.log(url);
     return this.http.get<Image[]>(url);
   }
 

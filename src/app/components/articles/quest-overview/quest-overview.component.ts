@@ -41,7 +41,6 @@ export class QuestOverviewComponent implements OnInit {
             this.filterStateTypes.push(quest.status);
           }
         };
-        console.log(quests);
       }, 
       error => this.routingService.routeToErrorPage(error)
     );
@@ -59,7 +58,6 @@ export class QuestOverviewComponent implements OnInit {
         return accumulator;
     }
     const groupedQuests = itemArray.reduce(callback, {});
-    console.log(groupedQuests);
 
     const result = Object.keys(groupedQuests).map(key => ({key, value: groupedQuests[key] }));
   

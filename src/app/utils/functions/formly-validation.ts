@@ -27,9 +27,6 @@ export const requiredIconValidator = { name: "requiredIcon", validation: require
 // TODO: Get date validation to work. The issue so far is that the control.value of datepicker is an object, not a YYYY-MM-DD string
 function dateValidation(control: FormControl): ValidationErrors{
     const dateHasYYYYMMDDFormat: boolean = /[1-2]\d{3}-(0\d|1[0-2])-[0-3]\d/.test(control.value);
-    // console.log(control.value);
-    // console.log("Date was validated as:");
-    // console.log(dateHasYYYYMMDDFormat);
     return (dateHasYYYYMMDDFormat) ? null: { "date": true }
 }
 export const dateValidator = { name: "date", validation: dateValidation };

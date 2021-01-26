@@ -39,8 +39,6 @@ export class SessionService {
   updateSession(model: SessionObject): Observable<Session>{
     const isMainSession = (model.is_main_session) ? 1 : 0;
     const url: string = `${this.sessionUrl}/pk/${model.pk}/`;
-    console.log("Update session called with this model");
-    console.log(model);
     return this.http.put<Session>(url, model);
   }
 
