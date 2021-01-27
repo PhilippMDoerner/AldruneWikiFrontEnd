@@ -24,7 +24,7 @@ export class OrganizationArticleUpdateComponent implements OnInit {
 
   model: OrganizationObject;
   fields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "name"}),
+    this.formlyService.genericInput({key: "name", isNameInput: true}),
     this.formlyService.genericSelect({key: "leader", valueProp: "name", optionsType: "character", required: false}),
     this.formlyService.genericSelect({key: "headquarter", optionsType: "location", required: false}),
   ];

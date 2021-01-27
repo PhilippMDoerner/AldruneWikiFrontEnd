@@ -77,7 +77,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
-import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerValidator, invalidTimeMessage, notIntegerMessage, requiredIconMessage, requiredIconValidator, requiredMessage, requiredValidator, timeValidator } from './utils/functions/formly-validation';
+import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerValidator, invalidTimeMessage, notIntegerMessage, requiredIconMessage, requiredIconValidator, requiredMessage, requiredValidator, timeValidator, specialCharacterValidator, hasSpecialCharactersMessage } from './utils/functions/formly-validation';
 
 // TODO: Turn AldruneWiki into a PWA
 // TODO: Fix tinymce URLs, make it so that they just link to an article to the same prefix, instead of a full url. 
@@ -174,6 +174,7 @@ import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerVali
           requiredIconMessage,
           faPrefixMessage,
           notIntegerMessage,
+          hasSpecialCharactersMessage,
         ],
         validators:[
           timeValidator,
@@ -182,6 +183,7 @@ import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerVali
           requiredIconValidator,
           iconValidator,
           integerValidator,
+          specialCharacterValidator
         ]
       }), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,

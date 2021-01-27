@@ -1,13 +1,13 @@
 import { FormControl, ValidationErrors } from "@angular/forms";
-import { isInteger } from "lodash";
 
 // Validation Messages
 export const invalidTimeMessage = { name: "time", message: "Time must have 'hh:mm:ss' pattern" };
 export const requiredMessage = { name: 'required', message: 'This field is required' };
 export const dateMessage = { name: "date", message: "This date does not follow the pattern: 'YYYY-MM-DD'" };
-export const requiredIconMessage = { name: 'requiredIcon', message: "This field requires a fontawesome icon as input. Here is a list of them: https://fontawesome.com/v4.7.0/icons/" }
-export const faPrefixMessage = { name: 'faPrefix', message: "Icons are stored without the 'fa-' from font-awesome prefix" }
-export const notIntegerMessage = { name: 'notInteger', message: "Your input is not an integer. This field requires an integer number" }
+export const requiredIconMessage = { name: 'requiredIcon', message: "This field requires a fontawesome icon as input. Here is a list of them: https://fontawesome.com/v4.7.0/icons/" };
+export const faPrefixMessage = { name: 'faPrefix', message: "Icons are stored without the 'fa-' from font-awesome prefix" };
+export const notIntegerMessage = { name: 'notInteger', message: "Your input is not an integer. This field requires an integer number" };
+export const hasSpecialCharactersMessage = { name: 'hasSpecialCharacters', message: 'Your input includes one of the following invalid special characters: [ ] { } ? | \\ " % ~ # < > \' ' };
 
 // Validation Functions
 function timeValidation(control: FormControl): ValidationErrors{
@@ -31,14 +31,32 @@ function dateValidation(control: FormControl): ValidationErrors{
 }
 export const dateValidator = { name: "date", validation: dateValidation };
 
+
 function iconValidation(control:FormControl): ValidationErrors{
     const hasFaPrefix = /fa-/.test(control.value);
     return (hasFaPrefix) ? { faPrefix: true} : null
 }
 export const iconValidator = { name: "faPrefix", validation: iconValidation };
 
+
 function isIntegerValidation(control: FormControl): ValidationErrors{
     const isInteger = (typeof control.value === "number") && Number.isInteger(control.value);
     return (isInteger) ? null : { 'notInteger': true};
 }
 export const integerValidator = { name: 'notInteger', validation: isIntegerValidation};
+
+
+function hasNoSpecialCharactersValidation(control: FormControl): ValidationErrors{
+    const isString = (typeof control.value === "string");
+    if (isString){
+        const specialCharacters: string[] = ['[', ']', '{', '}', '|', '\\', '\"', '%', '~', '#', '<', '>', ']', '?', '\''];
+        for (const specialCharacter of specialCharacters){
+            if (control.value.includes(specialCharacter)){
+                return { 'hasSpecialCharacters': true };
+            }
+        };
+    }
+
+    return null;
+}
+export const specialCharacterValidator = { name: 'hasSpecialCharacters', validation: hasNoSpecialCharactersValidation};

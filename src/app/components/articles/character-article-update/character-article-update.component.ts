@@ -27,7 +27,7 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericCheckbox({key: "player_character", label: "Player Character", defaultValue: false}),
     this.formlyService.genericCheckbox({key: "alive", defaultValue: true}),
-    this.formlyService.genericInput({key: "name"}),
+    this.formlyService.genericInput({key: "name", isNameInput: true}),
     this.formlyService.genericInput({key: "title", required: false}),
     this.formlyService.customStringSelect({key:"gender", label: "Sex", options: ["Other", "Female", "Male"]}),
     this.formlyService.genericInput({key: "race"}),
@@ -47,6 +47,7 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
+    console.log(this.fields);
     this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
 
     this.parameter_subscription = this.route.params.subscribe(params => {

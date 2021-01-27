@@ -26,7 +26,7 @@ export class QuestArticleUpdateComponent implements OnInit {
   form = new FormGroup({});
   model: QuestObject;
   fields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "name", placeholder: "Quest Name"}),
+    this.formlyService.genericInput({key: "name", placeholder: "Quest Name", isNameInput: true}),
     {
       key: "status",
       type: "select",

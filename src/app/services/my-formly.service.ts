@@ -62,8 +62,10 @@ export class MyFormlyService {
 
   genericInput(config: FormlyGenericInputConfig): FormlyFieldConfig{
     const validatorList = (config.validators) ? config.validators : [];
-    if (config.required === true ) validatorList.push('required');
+    if (config.required === true ) validatorList.push('required'); //This is non functional as required is only rarely set at this point
     if (config.isNumberInput === true) validatorList.push('notInteger');
+    //Why "hasSpecialCharacters" validation? Names are used in URLs, they mustn't have special characters
+    if (config.isNameInput === true) validatorList.push('hasSpecialCharacters');
 
     return {
       key: config.key,
@@ -257,6 +259,9 @@ export class MyFormlyService {
         type: "input",
         templateOptions:{
           label: "Name"
+        },
+        validators: {
+          validation: ['hasSpecialCharacters']
         }
       },
       {

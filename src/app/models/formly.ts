@@ -19,6 +19,7 @@ export interface FormlyGenericInputConfig extends FormlyInterface{
     maxLength?: number,
     minLength?: number,
     parsers?: any,
+    isNameInput?: boolean,
 }
 
 export interface FormlyCustomStringSelectConfig extends FormlyInterface{

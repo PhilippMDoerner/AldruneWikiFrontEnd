@@ -14,7 +14,10 @@ export class RoutingService {
 
   public routeToApiObject(object: ApiObject): void{
     //The replaces here are required due to router.navigateByUrl mucking up if presented with such a url.
-    const objectUrl: string = object.getAbsoluteRouterUrl().replace("(", "%28").replace(")", "%29");
+    const objectUrl: string = object.getAbsoluteRouterUrl()
+      .replace("(", "%28")
+      .replace(")", "%29")
+      .replace("?", "\?");
     this.router.navigateByUrl(objectUrl);
   }
 

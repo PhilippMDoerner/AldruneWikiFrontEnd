@@ -22,7 +22,7 @@ export class CreatureArticleUpdateComponent implements OnInit {
 
   model: CreatureObject;
   fields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "name"}),
+    this.formlyService.genericInput({key: "name", isNameInput: true}),
   ]
 
   private parameter_subscription: Subscription;
