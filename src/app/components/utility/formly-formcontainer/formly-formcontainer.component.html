@@ -1,6 +1,20 @@
 <!-- Form -->
 <form [formGroup]="form" enctype="{{enctype}}">
     <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-    <div class="btn btn-dark mr-3" (click)="onCancel()">Cancel</div>
-    <div class="btn btn-secondary" (click)="onSubmit()">Submit</div>
+    <div class="btn btn-dark mr-3" (click)="onCancel()">
+        Cancel
+    </div>
+    <div 
+    class="btn btn-secondary" 
+    [ngClass]="{'d-none': form.valid, 'strikethrough': !form.valid}"
+    placement="top" 
+    ngbTooltip="The form is not yet correctly filled out!"
+    >
+        <i class="fa fa-lock mr-2" aria-hidden="true"></i>
+        Submit *
+    </div>
+
+    <div class="btn btn-secondary" (click)="onSubmit()" [ngClass]="{'d-none': !form.valid}">
+        Submit
+    </div>
 </form>

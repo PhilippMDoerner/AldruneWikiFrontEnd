@@ -7,7 +7,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
   templateUrl: './formly-formcontainer.component.html',
   styleUrls: ['./formly-formcontainer.component.scss']
 })
-export class FormlyFormcontainerComponent{
+export class FormlyFormcontainerComponent {
   form = new FormGroup({});
 
   @Input() model: {any};
@@ -19,7 +19,9 @@ export class FormlyFormcontainerComponent{
   constructor() {}
 
   onSubmit(): void{
-    this.submit.emit(this.model);
+    if(this.form.valid){
+      this.submit.emit(this.model);
+    }
   }
 
   onCancel(): void{
