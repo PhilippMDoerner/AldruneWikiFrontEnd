@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormlyCheckboxConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewSelectConfig } from "src/app/models/formly";
-import { FormlyFieldConfig } from "@ngx-formly/core";
+import { FormlyField, FormlyFieldConfig } from "@ngx-formly/core";
 import { OverviewService } from './overview.service';
 
 @Injectable({
@@ -12,7 +12,15 @@ export class MyFormlyService {
     private selectOptionService: OverviewService
   ) { }
 
+  setDefaultValues(config: any): any{
+    if (config.required === undefined) config.required = true;
+
+    return config
+  }
+
   genericSelect(config: FormlyOverviewSelectConfig): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
     const validatorList = (config.validators) ? config.validators : [];
     if (config.required === true ) validatorList.push('required');
 
@@ -61,6 +69,8 @@ export class MyFormlyService {
   }
 
   genericInput(config: FormlyGenericInputConfig): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
     const validatorList = (config.validators) ? config.validators : [];
     if (config.required === true ) validatorList.push('required'); //This is non functional as required is only rarely set at this point
     if (config.isNumberInput === true) validatorList.push('notInteger');

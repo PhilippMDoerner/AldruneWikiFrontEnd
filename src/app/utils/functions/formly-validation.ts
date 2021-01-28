@@ -2,12 +2,12 @@ import { FormControl, ValidationErrors } from "@angular/forms";
 
 // Validation Messages
 export const invalidTimeMessage = { name: "time", message: "Time must have 'hh:mm:ss' pattern" };
-export const requiredMessage = { name: 'required', message: 'This field is required' };
-export const dateMessage = { name: "date", message: "This date does not follow the pattern: 'YYYY-MM-DD'" };
+export const requiredMessage = { name: 'required', message: 'YOOOOOOOOO This field is required ma friend!' };
+export const dateMessage = { name: "date", message: "This date does not follow the pattern: 'YYYY-MM-DD'. Sorry to be such a Nazi about it. The computer is forcing me." };
 export const requiredIconMessage = { name: 'requiredIcon', message: "This field requires a fontawesome icon as input. Here is a list of them: https://fontawesome.com/v4.7.0/icons/" };
 export const faPrefixMessage = { name: 'faPrefix', message: "Icons are stored without the 'fa-' from font-awesome prefix" };
-export const notIntegerMessage = { name: 'notInteger', message: "Your input is not an integer. This field requires an integer number" };
-export const hasSpecialCharactersMessage = { name: 'hasSpecialCharacters', message: 'Your input includes one of the following invalid special characters: [ ] { } ? | \\ " % ~ # < > \' ' };
+export const notIntegerMessage = { name: 'notInteger', message: "Your input is not an integer. This field requires an integer number. No amount of revolution can overcome this." };
+export const hasSpecialCharactersMessage = { name: 'hasSpecialCharacters', message: 'Your input includes one of the following invalid special characters: [ ] { } ? | \\ " % ~ # < > \'. If you need to rebel, please dont against this.' };
 
 // Validation Functions
 function timeValidation(control: FormControl): ValidationErrors{
