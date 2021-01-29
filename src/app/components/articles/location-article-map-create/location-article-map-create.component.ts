@@ -48,8 +48,8 @@ export class LocationArticleMapCreateComponent implements OnInit {
     this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
     this.formlyService.genericSelect({key: "map", optionsType: "map"}),
     this.formlyService.genericSelect({key: "type", label: "Marker Type", optionsType:"marker_type"}),
-    this.formlyService.genericInput({key: "color", label: "Custom Color"}),
-    this.formlyService.genericInput({key: "icon", label: "Custom Icon"})
+    this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
+    this.formlyService.genericInput({key: "icon", label: "Custom Icon", required: false})
   ]
 
   ngOnInit(): void {

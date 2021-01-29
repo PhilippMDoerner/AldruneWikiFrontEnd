@@ -29,7 +29,7 @@ export class ItemArticleUpdateComponent implements OnInit {
   model: ItemObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
-    this.formlyService.genericSelect({key: 'owner', optionsType: 'character'})
+    this.formlyService.genericSelect({key: 'owner', optionsType: 'character', required: false})
   ];
 
   constructor(

@@ -268,7 +268,8 @@ export class MyFormlyService {
         key: "name",
         type: "input",
         templateOptions:{
-          label: "Name"
+          label: "Name",
+          required: true
         },
         validators: {
           validation: ['hasSpecialCharacters']

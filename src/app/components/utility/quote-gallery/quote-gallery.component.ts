@@ -42,7 +42,7 @@ export class QuoteGalleryComponent extends PermissionUtilityFunctionMixin implem
   form = new FormGroup({});
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericTextField({key: "quote", required: true}),
-    this.formlyService.genericInput({key: "description"}),
+    this.formlyService.genericInput({key: "description", required: true}),
     this.formlyService.genericSelect({key: "session", optionsType: "session", required: true}),
     this.formlyService.genericSelect({key: "encounter", optionsType: "encounter", required: false})
   ]

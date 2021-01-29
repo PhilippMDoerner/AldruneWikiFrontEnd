@@ -29,7 +29,7 @@ export class LocationArticleUpdateComponent implements OnInit {
   model: LocationObject;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
-    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", optionsType: "location"}),
+    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", optionsType: "location", required: false}),
   ];
 
   constructor(
