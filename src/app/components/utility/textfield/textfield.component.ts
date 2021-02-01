@@ -10,9 +10,10 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 export class TextfieldComponent extends PermissionUtilityFunctionMixin implements OnInit, OnChanges {
   @Input() initialText: string;
   @Input() heading: string;
+  @Input() allowEdit: boolean = true;
+  @Input() isEditState : boolean = false;
   @Output() updateText: EventEmitter<string> = new EventEmitter();
   updatedText: string;
-  isEditState: boolean = false;
   constants = Constants;
 
   constructor() { super() }
@@ -26,15 +27,20 @@ export class TextfieldComponent extends PermissionUtilityFunctionMixin implement
   }
 
   enableEdit(){
+    if(!this.allowEdit) return;
     this.isEditState = true;
   }
 
   finishEdit(){
+    if(!this.allowEdit) return;
+
     this.isEditState = false;
     this.updateText.emit(this.updatedText);
   }
 
   cancelEdit(){
+    if(!this.allowEdit) return;
+
     this.isEditState = false;
     this.updatedText = this.initialText;
   }
