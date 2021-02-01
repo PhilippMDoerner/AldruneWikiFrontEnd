@@ -6,7 +6,8 @@ export interface Session{
     session_date: string,
     start_day?: number,
     end_day?: number,
-    name?: string
+    name?: string,
+    title: string,
 }
 
 export class SessionObject implements Session{
@@ -18,6 +19,7 @@ export class SessionObject implements Session{
     start_day?: number;
     end_day?: number;
     name?: string;
+    title: string;
 
     constructor(object?: Session){
         if (object) Object.assign(this, object)
