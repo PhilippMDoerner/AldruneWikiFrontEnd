@@ -4,7 +4,7 @@ export interface ApiObject{
 }
 
 export interface ArticleObject extends ApiObject{
-    name: string,
+    name?: string,
     creation_datetime?: string,
     update_datetime?: string,
 }

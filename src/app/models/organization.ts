@@ -12,7 +12,7 @@ export interface Organization extends ArticleObject{
 }
 
 export class OrganizationObject implements Organization{
-    name: string;
+    name?: string;
     leader: string;
     description:string;
     headquarter: number;

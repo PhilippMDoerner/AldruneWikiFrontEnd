@@ -17,7 +17,7 @@ export interface Quest extends ArticleObject{
 }
 
 export class QuestObject implements Quest{
-    name: string;
+    name?: string;
     status: string;
     abstract: string;
     taker: number;

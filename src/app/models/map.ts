@@ -12,7 +12,7 @@ export interface ExtendedMap extends Map{
 }
 
 export class MapObject implements ExtendedMap{
-    name: string;
+    name?: string;
     icon: string;
     image: string;
     pk?: number;

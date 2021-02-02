@@ -10,7 +10,7 @@ export interface Item extends ArticleObject{
 }
 
 export class ItemObject implements Item{
-    name: string;
+    name?: string;
     description: string;
     owner: number;
     owner_details?: {name: string, pk: number};

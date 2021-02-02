@@ -39,7 +39,7 @@ interface LocationCharacter{
 }
 
 export class LocationObject implements Location{
-    name: string;
+    name?: string;
     name_full?: string;
     description: string;
     parent_location: number;

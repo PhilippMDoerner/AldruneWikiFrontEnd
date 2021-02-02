@@ -10,7 +10,7 @@ export interface Creature extends ArticleObject{
 export class CreatureObject implements Creature{
     pk?: number;
     images?: Image;
-    name: string;
+    name?: string;
     description: string;
 
     constructor(object?: Creature){

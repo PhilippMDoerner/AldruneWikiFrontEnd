@@ -29,7 +29,7 @@ export class SpellObject implements Spell{
     damage: string;
     description: string;
     classes: string[]
-    name: string;
+    name?: string;
     pk?: number;
 
     constructor(object?: Spell){

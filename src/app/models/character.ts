@@ -21,13 +21,13 @@ export interface Character extends ArticleObject{
 
 export interface characterLocation{
     pk: number,
-    name: string,
+    name?: string,
     name_full: string,
     parent_location: string
 }
 
 interface characterEncounter{
-    name: string,
+    name?: string,
     creation_datetime: string,
     update_datetime:string,
     encounterConnections: characterEncounterConnections[]

@@ -27,7 +27,6 @@ export class EncounterObject implements Encounter {
     session_number: number;
     encounterConnections?: EncounterConnection[];
     location: number;
-    name: string;
     author: number;
     author_details?: diaryEntryUser;
     title: string;
