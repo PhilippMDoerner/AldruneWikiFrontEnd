@@ -16,7 +16,6 @@ export class Constants{
     public static get wikiMediaUrl(): string { return `${this.wikiUrl}/media`;}
     public static get wikiTokenUrl(): string { return `${this.wikiApiUrl}/token`;}
     public static get wikiTokenRefreshUrl(): string {return `${this.wikiTokenUrl}/refresh`;}
-    public static get wikiTinyMCEUrl(): string { return `${this.wikiUrl}/tinymce`;}
     public static get wikiUrlFrontendPrefix(): string { return '/wiki2';};
     public static get wikiUrlFrontendPrefixNoSlash(): string { return 'wiki2';};
 
@@ -97,7 +96,7 @@ export class Constants{
             convert_urls: false,
             relative_urls: false,
             branding: false,
-            base_url: this.wikiTinyMCEUrl,
+            base_url: '/tinymce',
             suffix: '.min'
         }
     }
