@@ -19,6 +19,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 export class SessionAudioUpdateComponent implements OnInit {
   constants: any = Constants;
 
+  isWaitingForResponse: boolean = false;
   private parameter_subscription: Subscription;
 
   formState: string;
@@ -61,9 +62,15 @@ export class SessionAudioUpdateComponent implements OnInit {
   onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
 
+    this.isWaitingForResponse = true;
     const responseObservable: Observable<SessionAudioObject> =  isFormInUpdateState ? this.audioService.updateSessionAudioFile(this.model) : this.audioService.createSessionAudioFile(this.model);
     responseObservable.pipe(first()).subscribe( 
-      (sessionAudio: SessionAudioObject) => this.routingService.routeToApiObject(sessionAudio),
+      (sessionAudio: SessionAudioObject) => {
+        this.isWaitingForResponse = false;
+        console.log("NEW AUDIO");
+        console.log(sessionAudio);
+        this.routingService.routeToApiObject(sessionAudio);
+      },
       error => this.warnings.showWarning(error)
     );
   }
