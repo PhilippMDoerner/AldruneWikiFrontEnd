@@ -1,16 +1,9 @@
+<!-- Heading -->
 <div class="row">
-    <h4 class="col">
-        Encounters 
-        <i 
-        class="fa fa-plus icon ml-1" 
-        (click)="toggleEncounterCreateState()" 
-        [ngClass]="{'d-none': !userHasCreatePermission()}"
-        ></i>
-    </h4>
+    <h4 class="col"> Encounters </h4>
 </div>
 
-
-<div class="encounter-list mb-5 mt-3" *ngIf="!isEncounterCreateState && !isEncounterUpdateState; else EncounterForm">
+<div class="encounter-list mb-5 mt-3" *ngIf="!isEncounterUpdateState; else EncounterForm">
     <ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)">
         <ngb-panel id="static-{{i}}" *ngFor="let encounter of encounters; let i = index">
 
@@ -105,18 +98,11 @@
     </ngb-accordion>
 </div>
 
-<!-- Form to create Encounters -->
+<!-- Form to Update Encounters -->
 <ng-template #EncounterForm>
-    <div class="my-3 py-3 px-4 card">
-        <!-- Create Encounter Form -->
-        <form [formGroup]="form" *ngIf="isEncounterCreateState && !isEncounterUpdateState">
-            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <div class="btn btn-secondary mr-3" (click)="toggleEncounterCreateState()">Cancel</div>
-            <div class="btn btn-secondary" (click)="createEncounter(model)">Submit</div>
-        </form>    
-        
+    <div class="my-3 py-3 px-4 card">        
         <!-- Update Encounter Form -->
-        <form [formGroup]="form" *ngIf="!isEncounterCreateState && isEncounterUpdateState">
+        <form [formGroup]="form" *ngIf="isEncounterUpdateState">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
             <div class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</div>
             <div class="btn btn-secondary" (click)="updateEncounter(model)">Submit</div>

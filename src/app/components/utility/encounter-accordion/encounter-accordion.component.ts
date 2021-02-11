@@ -4,9 +4,13 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Character } from 'src/app/models/character';
+import { diaryEntryEncounterConnection } from 'src/app/models/diaryencounterconnection';
+import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { EncounterObject, Encounter } from "src/app/models/encounter";
 import { EncounterConnectionObject, EncounterConnection } from 'src/app/models/encounterconnection';
 import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
+import { DiaryentryEncounterConnectionService } from 'src/app/services/diaryentry-encounter-connection.service';
+import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { EncounterConnectionService } from 'src/app/services/encounter-connection.service';
 import { EncounterServiceService } from "src/app/services/encounter/encounter-service.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -22,7 +26,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 })
 export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin implements OnInit {
   constants: any = Constants;
-  @Input() encounters: Encounter[];
+  @Input() encounters: EncounterObject[];
   @Input() articleCharacter: Character;
   characters : OverviewItem[];
   isOpen: object;
@@ -31,7 +35,6 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
   baseEncounterConnection: EncounterConnectionObject = new EncounterConnectionObject();
 
   isEncounterDeleteState: boolean = false;
-  isEncounterCreateState: boolean = false;
   isEncounterUpdateState: boolean = false;
 
   form = new FormGroup({});
@@ -80,10 +83,9 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
     this.isEncounterUpdateState = !this.isEncounterUpdateState;
   }
 
-  fullEditEncounter(encounter: Encounter){
+  fullEditEncounter(encounter: EncounterObject){
     this.model = encounter;
     this.isEncounterUpdateState = true;
-    this.isEncounterCreateState = false;
   }
 
   updateEncounter(model: Encounter, encounterIndex: number){
@@ -110,35 +112,10 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
     );
   }
 
-  toggleEncounterCreateState(){
-    this.isEncounterCreateState = !this.isEncounterCreateState;
-    
-    if (this.isEncounterCreateState){
-      this.model = new EncounterObject();
-    }
-  }
-
   resetEncounterForm(){
     this.model = new EncounterObject();
   }
 
-  createEncounter(model: Encounter){
-    this.encounterService.createEncounter(model).pipe(first()).subscribe(
-      (encounter: EncounterObject) => {
-        this.toggleEncounterCreateState();
-        this.encounters.unshift(encounter);
-        this.connectCharacterToEncounter(encounter);
-      }, 
-      error => this.warnings.showWarning(error)
-    );
-  }
-
-  connectCharacterToEncounter(encounter: Encounter){
-    this.resetBaseEncounterConnection()
-    this.baseEncounterConnection.encounter = encounter.pk;
-    this.baseEncounterConnection.character = this.articleCharacter.pk;
-    this.createEncounterConnection(encounter);
-  }
 
   //### Handling Accordion ###
   onPanelChange({panelId}){
