@@ -36,6 +36,12 @@ export class CharacterService {
     return this.http.get<OverviewItem[]>(url);
   }
 
+  @TransformArrayObservable(OverviewItemObject)
+  getNonPlayerCharacters(): Observable<OverviewItem[]>{
+    const url = `${Constants.wikiApiUrl}/nonplayercharacters`;
+    return this.http.get<OverviewItem[]>(url);  
+  }
+
   @TransformObservable(CharacterObject)
   deleteCharacter(character: Character): Observable<Character>{
     const url = `${this.characterUrl}/pk/${character.pk}/`;
