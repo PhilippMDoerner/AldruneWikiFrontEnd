@@ -23,6 +23,7 @@ export class EncounterServiceService {
     return this.http.get<Encounter[]>(url);
   }
 
+  @TransformArrayObservable(EncounterObject)
   getDiaryEntryEncounters(session_pk: number, authorName: string): Observable<Encounter[]>{
     const url = `${this.encounterUrl}/session/${session_pk}/${authorName}`;
     return this.http.get<Encounter[]>(url);
