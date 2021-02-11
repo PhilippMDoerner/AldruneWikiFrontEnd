@@ -61,11 +61,11 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   }
 
   buildDiaryEntryNameForList(diaryEntry: OverviewItemObject): string{
-    const startWithSessionNumber: string = diaryEntry.name_full;
+    const startWithSessionNumber: string = `Diary entry #${diaryEntry.session_details.session_number}`;
 
     let daysCoveredByEntry: string = "";
     if(diaryEntry.session_details.start_day && diaryEntry.session_details.end_day){
-      const padLength = 3;
+      const padLength: number = 3;
       const startDay: string = this.padNumber(diaryEntry.session_details.start_day, padLength, "");
       const endDay: string = this.padNumber(diaryEntry.session_details.end_day, padLength, "");
       daysCoveredByEntry = `- Days ${startDay}-${endDay}`;
