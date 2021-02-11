@@ -1,0 +1,17 @@
+.expand .btn{
+    transition: visibility 0.2s;
+    visibility: hidden;
+}
+
+.expand:hover .btn{
+    visibility: visible;
+}
+
+.expand{
+    transition: height 0.2s;
+    height: 3rem;
+}
+
+.expand:hover{
+    height: 6rem;
+}

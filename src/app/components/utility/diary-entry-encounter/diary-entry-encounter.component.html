@@ -1,0 +1,122 @@
+<div class="hover-highlight encounter container"> 
+
+    <!-- Encounter Heading -->
+    <div class="row">
+        <h4 class="heading col-12">
+            {{ encounter.title }}
+             - order: {{ encounter.connection.order_index }} <!-- TODO: DELETE THIS LINE UPON FEATURE IMPLEMENTATION -->
+    
+            <!-- Edit Toggler -->
+            <div 
+            class="btn btn-secondary float-right encounter-hidden" 
+            (click)="toggleFormState()" 
+            [ngClass]="{'d-none': !userHasUpdatePermission()}"
+            >
+                <i class="fa fa-pencil" *ngIf="!isEncounterCreateState && !isEncounterUpdateState"></i>
+                <i class="fa fa-times" *ngIf="isEncounterCreateState || isEncounterUpdateState"></i>
+            </div>
+        </h4>
+
+        <!-- Encounter Location (Must only be rendered for existing encounters, not during create state)-->
+        <div class="container encounter-hidden">
+            <i class="row" *ngIf="!isEncounterCreateState">
+                <span class="col-2">Location:</span>
+                <span class="col-10">
+                    <a routerLink="{{ encounter.getAbsoluteLocationRouterUrl() }}">
+                        {{ encounter.location_details.name }}
+                    </a>
+                </span>
+            </i>
+            <i class="row" *ngIf="!isEncounterCreateState">
+                <span class="col-2">Author:</span>
+                <span class="col-10">{{ encounter.author_details.name }}</span>
+            </i>    
+        </div>
+    </div> 
+
+    <!-- Encounter Body -->
+    <div class="row" *ngIf="!isEncounterUpdateState && !isEncounterCreateState; else EncounterForm">
+        <div class="col-sm-11 ">
+    
+            <!-- Encounter Description-->
+            <app-textfield
+            [initialText]="encounter.description"
+            [allowEdit]="false"
+            (updateText)="onDescriptionUpdate($event)"
+            ></app-textfield>
+        
+            <!-- Encounter Connections -->
+            <div class="encounter-connections encounter-hidden">
+                <hr class="white-line">
+        
+                <span class="mr-4 tag-label"> Characters: </span>
+                <div class="d-inline-flex align-items-center flex-wrap">
+                    <!-- Connection List -->
+                    <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections">
+                        <a routerLink="{{ routingService.getRoutePath('character', {name: connection.character_details.name}) }}">
+                            {{ connection.character_details.name }}
+                        </a>
+                        <i 
+                        class="fa fa-trash icon ml-1" 
+                        (click)="deleteEncounterConnection(encounter, connection)" 
+                        [ngClass]="{'d-none': !userHasDeletePermission()}"
+                        ></i>
+                    </span>
+        
+                    <!-- Connection Create Form -->
+                    <form [ngClass]="{'d-none':!inEncounterConnectionCreationState, 'd-inline-block': inEncounterConnectionCreationState}">
+                        <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
+                            <option *ngFor="let character of characterOptions" value="{{character.pk}}">
+                                {{character.name}}
+                            </option>
+                        </select>
+                    </form>
+                    
+                    <!-- Connection Create Icon-Buttons -->
+                    <div [ngClass]="{'d-none': !userHasCreatePermission()}">
+                        <i 
+                        [ngClass]="{'fa icon mx-2': true, 'fa-plus': !inEncounterConnectionCreationState, 'fa-times': inEncounterConnectionCreationState}"
+                        (click)="toggleEncounterConnectionCreationState()"
+                        ></i>
+        
+                        <i 
+                        [ngClass]="{'fa icon': true, 'fa-check': inEncounterConnectionCreationState}" 
+                        (click)="createEncounterConnection(encounter)"
+                        ></i>    
+                    </div>
+                </div>
+        
+                <!-- Delete Article -->
+                <app-delete-toggle
+                [deleteMessage]="'Delete this encounter?'"
+                (deleteEvent)="deleteArticle()"
+                class="float-right px-0"
+                ></app-delete-toggle>
+            </div>
+        </div>
+        <!-- Encounter Order Arrows -->
+        <div class="d-flex flex-column order-arrows justify-content-start align-items-end col-sm-1">
+            <i class="fa fa-3x my-2 icon fa-long-arrow-up" (click)="decreaseEncounterOrderIndex()"></i>
+            <i class="fa fa-3x my-2 icon fa-long-arrow-down" (click)="increaseEncounterOrderIndex()"></i>
+        </div>
+    </div>
+
+</div>
+
+<!-- Form to update Encounters -->
+<ng-template #EncounterForm>
+    <!-- Encounter Form -->
+        <!-- Create Encounter Form -->
+        <form [formGroup]="form" *ngIf="isEncounterCreateState && !isEncounterUpdateState">
+            <formly-form [form]="form" [fields]="fields" [model]="encounter"></formly-form>
+            <div class="btn btn-secondary mr-3" (click)="toggleEncounterCreateState()">Cancel</div>
+            <div class="btn btn-secondary" (click)="createEncounter(encounter)">Submit</div>
+        </form>
+        
+        <!-- Update Encounter Form -->
+        <form [formGroup]="form" *ngIf="!isEncounterCreateState && isEncounterUpdateState">
+            <formly-form [form]="form" [fields]="fields" [model]="encounter"></formly-form>
+            <div class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</div>
+            <div class="btn btn-secondary" (click)="updateEncounter(encounter)">Submit</div>
+        </form>
+</ng-template>

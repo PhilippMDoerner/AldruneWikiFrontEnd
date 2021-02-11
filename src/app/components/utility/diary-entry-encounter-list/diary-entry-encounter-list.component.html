@@ -1,0 +1,34 @@
+<div class="container px-0" *ngIf="!isWaitingForResponse; else waiting">
+    <!-- Insert new first Encounter -->
+    <div class="expand col-12 d-flex justify-content-center">
+        <div>
+            <div class="btn btn-secondary">
+                <i class="fa fa-3x fa-plus pointer" (click)="toggleEncounterCreateState(-1)"></i>
+            </div>
+        </div>
+    </div>
+    <!-- Diaryentry - Encounters -->
+    <div *ngFor="let encounter of encounters; let encounterIndex = index" class="row">
+        <!-- Encounters -->
+        <app-diary-entry-encounter
+        class="col-12 px-0"
+        [encounter]="encounter"
+        [encounterIndex]="encounterIndex"
+        (encounterDelete)="deleteEncounter(encounterIndex)"
+        (encounterOrderIncrease)="onEncounterOrderIncrease(encounterIndex)"
+        (encounterOrderDecrease)="onEncounterOrderDecrease(encounterIndex)"
+        (encounterCreate)="onEncounterCreate(encounterIndex)"
+        ></app-diary-entry-encounter>
+
+        <!-- Insert new Encounter -->
+        <div class="expand col-12 d-flex justify-content-center">
+            <div>
+                <div class="btn btn-secondary">
+                    <i class="fa fa-3x fa-plus pointer" (click)="toggleEncounterCreateState(encounterIndex)"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #waiting class="mb-4"> <app-spinner></app-spinner> </ng-template> 

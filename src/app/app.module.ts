@@ -78,6 +78,8 @@ import { environment } from '../environments/environment';
 import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
 import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerValidator, invalidTimeMessage, notIntegerMessage, requiredIconMessage, requiredIconValidator, requiredMessage, requiredValidator, timeValidator, specialCharacterValidator, hasSpecialCharactersMessage } from './utils/functions/formly-validation';
+import { DiaryEntryEncounterComponent } from './components/utility/diary-entry-encounter/diary-entry-encounter.component';
+import { DiaryEntryEncounterListComponent } from './components/utility/diary-entry-encounter-list/diary-entry-encounter-list.component';
 
 // TODO: Turn AldruneWiki into a PWA
 // TODO: Fix tinymce URLs, make it so that they just link to an article to the same prefix, instead of a full url. 
@@ -148,6 +150,8 @@ import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerVali
     ArticleFooterComponent,
     GatewayTimeoutComponent,
     Wiki1RequestComponent,
+    DiaryEntryEncounterComponent,
+    DiaryEntryEncounterListComponent,
   ],
   imports: [
     BrowserModule,

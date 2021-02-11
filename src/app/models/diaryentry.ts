@@ -1,28 +1,35 @@
 import { Session } from "src/app/models/session";
 import { Constants } from '../app.constants';
 import { ApiObject, ArticleObject } from './base-models';
+import { diaryEntryEncounterConnection, DiaryEntryEncounterConnectionObject } from "./diaryencounterconnection";
+import { Encounter } from "./encounter";
 
 export interface DiaryEntry extends ApiObject{
     title: string,
-    entry: string,
     author: number,
     author_details?: diaryEntryUser
     session: number
     session_details?: Session,
+    encounters: diaryEntryEncounter[]
 }
 
 interface diaryEntryUser{
     pk: number,
     name: string
 }
+
+export interface diaryEntryEncounter extends Encounter{
+    connection: DiaryEntryEncounterConnectionObject
+}
+
 export class DiaryEntryObject implements DiaryEntry{
     title: string;
-    entry: string;
     session: number;
     pk?: number;
     session_details?: Session;
     author: number;
     author_details?: diaryEntryUser;
+    encounters: diaryEntryEncounter[]
 
     constructor(object?: DiaryEntry){
         if(object) Object.assign(this, object);

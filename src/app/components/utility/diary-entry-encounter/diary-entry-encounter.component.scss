@@ -1,0 +1,136 @@
+.heading{
+    margin-bottom: 0rem;
+}
+
+.encounter{
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+}
+
+.encounter:hover{
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+
+.encounter:hover .encounter-hidden{
+    visibility: visible;
+    display: block;
+}
+
+.encounter-hidden{
+    visibility: hidden;
+    display: none;
+    transition: 0.2s visibility;
+}
+
+.encounter-connections{
+    flex-direction: row;
+    justify-content: flex-start;
+    font-size: 16px;
+    padding-bottom: 1rem; //Exists so that the delete-button does not overflow
+}
+
+.badge a{
+    border-bottom: none;
+}
+
+.badge{
+    background-color: #1b1f22;
+}
+
+.badge a:hover{
+    color: royalblue !important;
+}
+
+.badge .icon{
+    transition: display 0.2s;
+    display: none;
+}
+
+.badge:hover .icon{
+    display: inline;
+}
+
+.encounter-connections .icon{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.encounter-connections:hover .icon{
+    opacity: 1;
+}
+
+.fa-check:hover{
+    color: green;
+}
+
+.fa-times:hover{
+    color: red;
+}
+
+.badge .fa-trash:hover{
+    color: red;
+}
+
+.white-line{
+    background-color: white;
+    margin: 0.3rem 0
+}
+
+.tag-label{
+    font-size: 14px;
+}
+
+
+.btn-secondary{
+    background-color: #1b1f22;
+}
+
+.btn-outline-secondary{
+    border-color: #1b1f22;
+    color: white;
+}
+
+.btn-outline-secondary:hover{
+    background-color: #1b1f22;
+}
+
+.delete-request .btn-secondary{
+    background-color: #393e41;
+}
+
+.order-arrows{
+    visibility: hidden;
+    transition: 0.2s visibility;
+}
+
+.order-arrows .fa{
+    border-color: #393e41;
+    background-color: #1b1f22;
+    border-radius: 0.25rem;
+    padding: 0.33rem 0.5rem;
+}
+
+.encounter:hover .order-arrows{
+    visibility: visible;
+}
+
+@media(max-width: 768px){
+	.edit-image-buttons{
+        opacity: 1;
+    }
+}
+
+@media(max-width: 576px){
+    div.order-arrows.flex-column{
+        flex-direction: row !important;
+    }
+
+    div.order-arrows.justify-content-start {
+        justify-content: center !important;
+    }
+
+    div.order-arrows .fa{
+        margin: 0 2rem;
+    }
+}
