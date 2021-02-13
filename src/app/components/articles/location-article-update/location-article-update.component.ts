@@ -71,6 +71,7 @@ export class LocationArticleUpdateComponent implements OnInit {
         );
       } else if (this.formState === this.constants.createState){
         this.model = new LocationObject();
+        this.model.parent_location = null;
       }
     })
   }
