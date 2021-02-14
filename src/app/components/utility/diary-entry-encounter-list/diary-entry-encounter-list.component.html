@@ -12,17 +12,18 @@
     <!-- Insert new first Encounter -->
     <div *ngIf="!diaryEntryView" class="expand col-12 d-flex justify-content-center">
         <div>
-            <div class="btn btn-secondary">
-                <i class="fa fa-3x fa-plus pointer" (click)="toggleEncounterCreateState(-1)"></i>
+            <div class="btn btn-secondary" (click)="toggleEncounterCreateState(-1)">
+                <i class="fa fa-3x fa-plus pointer"></i>
             </div>
         </div>
     </div>
 
     <!-- Diaryentry - Encounters -->
     <div class="row">
-        <div *ngFor="let encounter of encounters; let encounterIndex = index">
+        <div *ngFor="let encounter of encounters; let encounterIndex = index" class="w-100">
             <!-- Encounters -->
             <app-diary-entry-encounter
+            *ngIf="!isEncounterUpdating[encounterIndex] else waiting;"
             class="col-12 px-0"
             [encounter]="encounter"
             [encounterIndex]="encounterIndex"
@@ -32,15 +33,16 @@
             (encounterOrderDecrease)="onEncounterOrderDecrease(encounterIndex)"
             (encounterCreate)="onEncounterCreate(encounterIndex)"
             ></app-diary-entry-encounter>
-    
+
             <!-- Insert new Encounter -->
             <div *ngIf="!diaryEntryView" class="expand col-12 d-flex justify-content-center">
                 <div>
-                    <div class="btn btn-secondary">
-                        <i class="fa fa-3x fa-plus pointer" (click)="toggleEncounterCreateState(encounterIndex)"></i>
+                    <div class="btn btn-secondary" (click)="toggleEncounterCreateState(encounterIndex)">
+                        <i class="fa fa-3x fa-plus pointer"></i>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

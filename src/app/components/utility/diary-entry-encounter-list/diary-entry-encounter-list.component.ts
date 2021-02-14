@@ -19,12 +19,12 @@ import { WarningsService } from 'src/app/services/warnings.service';
 export class DiaryEntryEncounterListComponent implements OnInit{
 
   @Input() diaryEntry: DiaryEntryObject;
-  encounters: EncounterObject[] = [];
+  encounters: Encounter[] = [];
+  isEncounterUpdating: boolean[] = [];
   isWaitingForResponse: boolean = false;
   diaryEntryView: boolean = true;
 
   constructor(
-    private formlyService: MyFormlyService,
     private warning: WarningsService,
     private encounterService: EncounterServiceService,
     private routingService: RoutingService,
@@ -36,7 +36,9 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     for(const diaryEncounter of this.diaryEntry.encounters){
       const encounter: EncounterObject = new EncounterObject (diaryEncounter);
       this.encounters.push(encounter);
+      this.isEncounterUpdating.push(false);
     }
+    console.log(this.isEncounterUpdating);
 
     this.sortEncounters();
   }
@@ -88,67 +90,48 @@ export class DiaryEntryEncounterListComponent implements OnInit{
   }
 
   /**
-   * Is triggered when a new encounter shall be created. Before this can be done, all other encounters that
-   * come after this one need their connection's order_index shifted upwards. This is done recursively, one connection
-   * after the other.
+   * Is triggered when a new encounter shall be created. Together with an encounter, you must create an
+   * encounterConnection to this diaryentry.
    * @param createdEncounterIndex : The index in this.encounters of the new created Encounter
    */
-  onEncounterCreate(createdEncounterIndex: number): void{
-    const lastEncounterIndex = this.encounters.length - 1;
+  async onEncounterCreate(createdEncounterIndex: number): Promise<void>{
     this.isWaitingForResponse = true;
 
     const pendingEncounter = this.encounters[createdEncounterIndex];
-    this.encounterService.createEncounter(pendingEncounter).pipe(first()).subscribe(
-      (encounter: EncounterObject) => {
-        encounter.connection = pendingEncounter.connection;
-        encounter.connection.encounter = encounter.pk; //Needed to create the connection
-        this.encounters[createdEncounterIndex] = encounter;
-        this.updateConnectionsCreateEncounter(createdEncounterIndex, lastEncounterIndex);
-      },
-      error => this.warning.showWarning(error)
-    );
+    const newEncounter: Encounter = await this.encounterService.createEncounter(pendingEncounter).toPromise();
 
-    //this.recursiveIndexUpdate(createdEncounterIndex, lastEncounterIndex);
+    newEncounter.connection = pendingEncounter.connection;
+    newEncounter.connection.encounter = newEncounter.pk; //Needed to create the connection
+    this.encounters[createdEncounterIndex] = newEncounter;
+    this.updateConnectionsCreateEncounter(createdEncounterIndex);
+
   }
 
-  updateConnectionsCreateEncounter(encounterIndexLimit: number, currentEncounterIndex: number): void{
-    //Error Case 
-    if(currentEncounterIndex < encounterIndexLimit){
-      throw `Index error! Only encounters up to ${encounterIndexLimit} should be updated, but this function 
-      attempted an update for ${currentEncounterIndex} !`;
-    }
+  /**
+   * Creates encounterConnection for newly created Encounter. Updates all encounters following after the newly created one
+   * first though, to avoid assigning the same order_index to 2 different encounterConnections.
+   * @param encounterIndexLimit 
+   */
+  async updateConnectionsCreateEncounter(encounterIndexLimit: number): Promise<void>{
 
-    const hasUnupdatedConnections: boolean = currentEncounterIndex > encounterIndexLimit
-
-    // Base Case: Create connection for new Encounter
-    if(!hasUnupdatedConnections){
-      const newEncounter: EncounterObject = this.encounters[encounterIndexLimit];
-      const newConnection: DiaryEntryEncounterConnectionObject = newEncounter.connection;
-      newConnection.order_index = newConnection.nextOrderIndex();
-
-      this.diaryEntryEncounterConnectionService.createConnection(newConnection).pipe(first()).subscribe(
-        (newCreatedConnection: DiaryEntryEncounterConnectionObject) => {
-          newEncounter.connection = newCreatedConnection;
-          this.isWaitingForResponse = false;
-        },
-        error => this.warning.showWarning(error)
-      );
-
-      
-    } else {  //Recursive Step: Update all connections with that are placed after the newly created Encounter
-    
-      const connection: DiaryEntryEncounterConnectionObject = this.encounters[currentEncounterIndex].connection;
+    //Increment all order-indices of encounters after the encounter at encounterIndexLimit
+    const maxIndex: number = this.encounters.length - 1;
+    for (let encounterIndex = maxIndex; encounterIndex > encounterIndexLimit; encounterIndex--){
+      const connection: DiaryEntryEncounterConnectionObject = this.encounters[encounterIndex].connection;
       connection.order_index = connection.nextOrderIndex();
 
-      this.diaryEntryEncounterConnectionService.updateConnection(connection).pipe(first()).subscribe(
-        (newConnection: DiaryEntryEncounterConnectionObject) => {
-          const nextEncounterIndex = currentEncounterIndex - 1;
-          this.updateConnectionsCreateEncounter(encounterIndexLimit, nextEncounterIndex);
-        },
-        error => console.log(error) //TODO: Replace this with warnings call
-      );
-
+      await this.diaryEntryEncounterConnectionService.updateConnection(connection).toPromise();
     }
+
+    //Create the encounterConnection for the new encounter in the Db
+    const newEncounter: Encounter = this.encounters[encounterIndexLimit];
+    const newConnection: DiaryEntryEncounterConnectionObject = newEncounter.connection;
+    newConnection.order_index = newConnection.nextOrderIndex();
+
+    this.diaryEntryEncounterConnectionService.createConnection(newConnection).pipe(first()).subscribe(
+      (newCreatedConnection: DiaryEntryEncounterConnectionObject) => newEncounter.connection = newCreatedConnection,
+      error => this.warning.showWarning(error)
+    );
 
   }
 
@@ -170,7 +153,6 @@ export class DiaryEntryEncounterListComponent implements OnInit{
   }
 
   onEncounterOrderIncrease(encounterIndex: number): void{
-    console.log("increase triggered");
     const isLastEncounter = encounterIndex === this.encounters.length - 1;
     if(isLastEncounter) return; //encounter is already last
 
@@ -180,7 +162,6 @@ export class DiaryEntryEncounterListComponent implements OnInit{
   }
 
   onEncounterOrderDecrease(encounterIndex: number): void{
-    console.log("Decrease Triggered");
     const isFirstEncounter = encounterIndex === 0;
     if(isFirstEncounter) return; //encounter is already first
 
@@ -189,7 +170,12 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     this.swapEncounters(encounterIndex, priorEncounterIndex);
   }
 
-  swapEncounters(encounterIndex1: number, encounterIndex2: number): void{
+  async swapEncounters(encounterIndex1: number, encounterIndex2: number): Promise<void>{
+    // Hide Encounters during Update
+    this.isEncounterUpdating[encounterIndex1] = true;
+    this.isEncounterUpdating[encounterIndex2] = true;
+
+    // Swap order indices of both encounter's connections
     const encounterConnection1: DiaryEntryEncounterConnectionObject = this.encounters[encounterIndex1].connection;
     const encounterConnection2: DiaryEntryEncounterConnectionObject = this.encounters[encounterIndex2].connection;
 
@@ -197,37 +183,31 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     encounterConnection1.order_index = encounterConnection2.order_index;
     encounterConnection2.order_index = temp;
 
-    this.updateSwappedEncountersToDb(encounterConnection1, encounterConnection2);
+    await this.updateSwappedEncountersToDb(encounterConnection1, encounterConnection2);
+
+    // Display Encounters again
+    this.isEncounterUpdating[encounterIndex1] = false;
+    this.isEncounterUpdating[encounterIndex2] = false;
+
+    this.sortEncounters();
   }
 
-  updateSwappedEncountersToDb(connection1: DiaryEntryEncounterConnectionObject, connection2: DiaryEntryEncounterConnectionObject): void{
+  async updateSwappedEncountersToDb(connection1: DiaryEntryEncounterConnectionObject, connection2: DiaryEntryEncounterConnectionObject): Promise<any>{
     //Ensure you don't trigger unique-together db-constraint by shifting/unshifting the encounter's order_index
     connection1.swapOrderIndexState();
     connection2.swapOrderIndexState();
 
-    this.isWaitingForResponse = true;
-    this.diaryEntryEncounterConnectionService.updateConnection(connection1).pipe(first()).subscribe(
-      (updatedConnection1: DiaryEntryEncounterConnectionObject) => {
+    const updatedConnection1Promise = this.diaryEntryEncounterConnectionService.updateConnection(connection1).toPromise();
+    const updatedConnection2Promise = this.diaryEntryEncounterConnectionService.updateConnection(connection2).toPromise();
 
-        this.diaryEntryEncounterConnectionService.updateConnection(connection2).pipe(first()).subscribe(
-          (updatedConnection2: DiaryEntryEncounterConnectionObject) => {
-            this.sortEncounters();
-            this.isWaitingForResponse = false;
-          },
-          error => this.warning.showWarning(error)
-        );
-
-      },
-      error => this.warning.showWarning(error)
-    );
-
+    return Promise.all([updatedConnection1Promise, updatedConnection2Promise]);  
   }
 
 
   //Only use on a sorted encounters array where last connection means highest orderIndex
   getNewHighestOrderIndex(): number{
     const lastEncounterIndex: number = this.encounters.length - 1;
-    const lastEncounterWithHighestOrderIndex: EncounterObject = this.encounters[lastEncounterIndex];
+    const lastEncounterWithHighestOrderIndex: Encounter = this.encounters[lastEncounterIndex];
     const lastConnection: DiaryEntryEncounterConnectionObject = lastEncounterWithHighestOrderIndex.connection;
 
     return lastConnection.nextOrderIndex();

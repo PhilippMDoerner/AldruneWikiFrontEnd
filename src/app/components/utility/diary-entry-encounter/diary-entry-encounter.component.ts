@@ -53,7 +53,6 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
     private encounterService: EncounterServiceService,
     private warning: WarningsService,
     public routingService: RoutingService,
-    private overviewService: OverviewService,
     private characterService: CharacterService,
     private encounterConnectionService: EncounterConnectionService,
     private formlyService: MyFormlyService,
@@ -84,9 +83,11 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
   }
 
   toggleFormState(){
-    if(this.isEncounterUpdateState || this.isEncounterCreateState){
+    if(this.isEncounterUpdateState){
       this.isEncounterCreateState = false;
       this.isEncounterUpdateState = false;
+    } else if (this.isEncounterCreateState){
+      this.encounterDelete.emit(this.encounter);
     } else {
       this.isEncounterUpdateState = true;
     }

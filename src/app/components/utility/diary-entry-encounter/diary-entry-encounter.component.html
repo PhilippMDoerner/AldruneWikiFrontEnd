@@ -1,9 +1,11 @@
-<div class="container" [ngClass]="{'highlight encounter': !diaryEntryView, 'mb-3': diaryEntryView}"> 
-
+<div 
+class="container" 
+[ngClass]="{'highlight encounter': !diaryEntryView, 'mb-3': diaryEntryView}"
+> 
     <!-- Encounter Heading -->
     <div class="row">
         <h4 class="heading col-12">
-            {{ encounter.title }}
+            {{ encounter.connection.order_index }} - {{ encounter.title }}
     
             <!-- Edit Toggler -->
             <div 
@@ -104,7 +106,6 @@
             <i class="fa fa-3x my-2 icon fa-long-arrow-down" (click)="increaseEncounterOrderIndex()"></i>
         </div>
     </div>
-
 </div>
 
 <!-- Form to update Encounters -->
