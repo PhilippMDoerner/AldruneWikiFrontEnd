@@ -3,24 +3,12 @@
 }
 
 .encounter{
-    padding-top: 0rem;
-    padding-bottom: 0rem;
-}
-
-.encounter:hover{
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
 }
 
-.encounter:hover .encounter-hidden{
-    visibility: visible;
+.encounter .encounter-hidden{
     display: block;
-}
-
-.encounter-hidden{
-    visibility: hidden;
-    display: none;
-    transition: 0.2s visibility;
 }
 
 .encounter-connections{
@@ -99,10 +87,6 @@
     background-color: #393e41;
 }
 
-.order-arrows{
-    visibility: hidden;
-    transition: 0.2s visibility;
-}
 
 .order-arrows .fa{
     border-color: #393e41;
@@ -111,9 +95,10 @@
     padding: 0.33rem 0.5rem;
 }
 
-.encounter:hover .order-arrows{
-    visibility: visible;
+.encounter .order-arrows .fa{
+    display: inline-block;
 }
+
 
 @media(max-width: 768px){
 	.edit-image-buttons{

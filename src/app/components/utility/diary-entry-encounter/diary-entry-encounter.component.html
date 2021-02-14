@@ -1,16 +1,15 @@
-<div class="hover-highlight encounter container"> 
+<div class="container" [ngClass]="{'highlight encounter': !diaryEntryView, 'mb-3': diaryEntryView}"> 
 
     <!-- Encounter Heading -->
     <div class="row">
         <h4 class="heading col-12">
             {{ encounter.title }}
-             - order: {{ encounter.connection.order_index }} <!-- TODO: DELETE THIS LINE UPON FEATURE IMPLEMENTATION -->
     
             <!-- Edit Toggler -->
             <div 
             class="btn btn-secondary float-right encounter-hidden" 
             (click)="toggleFormState()" 
-            [ngClass]="{'d-none': !userHasUpdatePermission()}"
+            [ngClass]="{'d-none': !userHasUpdatePermission() || diaryEntryView}"
             >
                 <i class="fa fa-pencil" *ngIf="!isEncounterCreateState && !isEncounterUpdateState"></i>
                 <i class="fa fa-times" *ngIf="isEncounterCreateState || isEncounterUpdateState"></i>
@@ -18,7 +17,7 @@
         </h4>
 
         <!-- Encounter Location (Must only be rendered for existing encounters, not during create state)-->
-        <div class="container encounter-hidden">
+        <div class="container" [ngClass]="{'d-none': diaryEntryView}">
             <i class="row" *ngIf="!isEncounterCreateState">
                 <span class="col-2">Location:</span>
                 <span class="col-10">
@@ -36,7 +35,7 @@
 
     <!-- Encounter Body -->
     <div class="row" *ngIf="!isEncounterUpdateState && !isEncounterCreateState; else EncounterForm">
-        <div class="col-sm-11 ">
+        <div [ngClass]="{'col-sm-11': !diaryEntryView, 'col-12': diaryEntryView}">
     
             <!-- Encounter Description-->
             <app-textfield
@@ -46,7 +45,7 @@
             ></app-textfield>
         
             <!-- Encounter Connections -->
-            <div class="encounter-connections encounter-hidden">
+            <div class="encounter-connections" [ngClass]="{'d-none': diaryEntryView}">
                 <hr class="white-line">
         
                 <span class="mr-4 tag-label"> Characters: </span>
@@ -74,13 +73,15 @@
                     
                     <!-- Connection Create Icon-Buttons -->
                     <div [ngClass]="{'d-none': !userHasCreatePermission()}">
-                        <i 
-                        [ngClass]="{'fa icon mx-2': true, 'fa-plus': !inEncounterConnectionCreationState, 'fa-times': inEncounterConnectionCreationState}"
+                        <i
+                        class="fa icon mx-2"
+                        [ngClass]="{'fa-plus': !inEncounterConnectionCreationState, 'fa-times': inEncounterConnectionCreationState}"
                         (click)="toggleEncounterConnectionCreationState()"
                         ></i>
         
                         <i 
-                        [ngClass]="{'fa icon': true, 'fa-check': inEncounterConnectionCreationState}" 
+                        class="fa icon"
+                        [ngClass]="{'fa-check': inEncounterConnectionCreationState}" 
                         (click)="createEncounterConnection(encounter)"
                         ></i>    
                     </div>
@@ -94,8 +95,11 @@
                 ></app-delete-toggle>
             </div>
         </div>
+
         <!-- Encounter Order Arrows -->
-        <div class="d-flex flex-column order-arrows justify-content-start align-items-end col-sm-1">
+        <div 
+        *ngIf="!diaryEntryView"
+        class="d-flex flex-column order-arrows justify-content-start align-items-end col-sm-1">
             <i class="fa fa-3x my-2 icon fa-long-arrow-up" (click)="decreaseEncounterOrderIndex()"></i>
             <i class="fa fa-3x my-2 icon fa-long-arrow-down" (click)="increaseEncounterOrderIndex()"></i>
         </div>

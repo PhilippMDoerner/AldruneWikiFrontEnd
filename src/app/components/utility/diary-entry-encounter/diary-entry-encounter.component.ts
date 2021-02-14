@@ -24,6 +24,8 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin implements OnInit {
   @Input() encounter: EncounterObject;
   @Input() encounterIndex: number;
+  @Input() diaryEntryView: boolean;
+  
   @Output() encounterDelete: EventEmitter<EncounterObject> = new EventEmitter();
   @Output() encounterOrderIncrease: EventEmitter<number> = new EventEmitter();
   @Output() encounterOrderDecrease: EventEmitter<number> = new EventEmitter();

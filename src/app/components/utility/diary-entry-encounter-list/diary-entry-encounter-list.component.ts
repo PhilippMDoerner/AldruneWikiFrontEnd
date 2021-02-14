@@ -21,6 +21,7 @@ export class DiaryEntryEncounterListComponent implements OnInit{
   @Input() diaryEntry: DiaryEntryObject;
   encounters: EncounterObject[] = [];
   isWaitingForResponse: boolean = false;
+  diaryEntryView: boolean = true;
 
   constructor(
     private formlyService: MyFormlyService,
@@ -32,8 +33,6 @@ export class DiaryEntryEncounterListComponent implements OnInit{
   ) { }
 
   ngOnInit(){
-    
-
     for(const diaryEncounter of this.diaryEntry.encounters){
       const encounter: EncounterObject = new EncounterObject (diaryEncounter);
       this.encounters.push(encounter);
@@ -42,20 +41,29 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     this.sortEncounters();
   }
 
+  toggleDiaryEntryView(){
+    this.diaryEntryView = !this.diaryEntryView;
+  }
+
 
   toggleEncounterCreateState(encounterIndex: number): void{
-    const isNewFirstEncounter = encounterIndex < 0;
-
+    const isNewFirstEncounter: boolean = encounterIndex < 0;
+    const isEmptyDiaryEntry: boolean = this.encounters.length === 0;
+    
     let newOrderIndex: number;
-    if (isNewFirstEncounter){
+    if (isEmptyDiaryEntry){
+      newOrderIndex = 0;
+
+    } else if (!isEmptyDiaryEntry && isNewFirstEncounter){
       const firstEncounterConnection: DiaryEntryEncounterConnectionObject = this.encounters[0].connection;
-      newOrderIndex = (firstEncounterConnection == null) ? 0 : firstEncounterConnection.priorOrderIndex();
+      newOrderIndex = firstEncounterConnection.priorOrderIndex();
+
     } else {
-      
-      //Create Connection Object for new Encounter
       const priorEncounterConnection: DiaryEntryEncounterConnectionObject = this.encounters[encounterIndex].connection;
-      newOrderIndex = (priorEncounterConnection == null) ? 0 : priorEncounterConnection.getShiftedOrderIndex();
+      newOrderIndex = priorEncounterConnection.getShiftedOrderIndex();
     }
+
+    //Create Connection Object for new Encounter
     const newConnection: DiaryEntryEncounterConnectionObject = new DiaryEntryEncounterConnectionObject({
       diaryentry: this.diaryEntry.pk,
       encounter: null,
@@ -72,6 +80,7 @@ export class DiaryEntryEncounterListComponent implements OnInit{
       getAbsoluteRouterUrl: null,
       connection: newConnection
     };
+
     //Insert encounter
     const entriesToDelete: number = 0;
     const insertionIndex: number = (isNewFirstEncounter) ? 0 : encounterIndex + 1;
