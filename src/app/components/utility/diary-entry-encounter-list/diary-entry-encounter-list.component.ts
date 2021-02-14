@@ -47,7 +47,11 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     this.diaryEntryView = !this.diaryEntryView;
   }
 
-
+  /**
+   * Creates the objects that shall be the new encounter for the UI. This includes an encounter and an
+   * encounter connection, both of which shall be updated to the database upon submission.
+   * @param encounterIndex Index at which the new encounter shall be created
+   */
   toggleEncounterCreateState(encounterIndex: number): void{
     const isNewFirstEncounter: boolean = encounterIndex < 0;
     const isEmptyDiaryEntry: boolean = this.encounters.length === 0;
