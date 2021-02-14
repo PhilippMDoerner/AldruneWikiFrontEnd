@@ -13,7 +13,9 @@
             </h1>
         </div>
         <div class="row">
-            <p class="text-center mb-5 col"> Written by: {{ getAuthorString() }}
+            <p class="text-center mb-5 col"> 
+                Written by: {{ diaryEntry.author_details.name }} <br>
+                <span *ngIf="coAuthors"> Together with: {{ coAuthors }} </span> 
             </p>
         </div>
 
