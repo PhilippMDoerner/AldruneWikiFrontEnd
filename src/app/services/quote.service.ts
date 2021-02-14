@@ -20,6 +20,10 @@ export class QuoteService {
     return this.http.get<Quote>(`${Constants.wikiApiUrl}/randomquote/${character_name}`);
   }
 
+  getAllCharacterQuotes(character_name: string): Observable<Quote[]>{
+    return this.http.get<Quote[]>(`${Constants.wikiApiUrl}/allquotes/${character_name}`);
+  }
+
   createQuote(quote: Quote): Observable<Quote>{
     return this.http.post<Quote>(`${this.quoteUrl}/`, quote);
   }

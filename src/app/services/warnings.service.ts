@@ -43,4 +43,8 @@ export class WarningsService {
     return httpErrorMessages;
   }
 
+  showTextModal(text: string){
+    alert(text);
+  }
+
 }

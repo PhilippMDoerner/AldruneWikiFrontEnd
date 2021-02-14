@@ -1,0 +1,77 @@
+<div class="main">
+    <article class="container" *ngIf="quotes; else loading">
+        <h3 class="text-center"> Quote Overview </h3>
+
+        <div *ngFor="let quote of quotes" class="mb-3">
+            <!-- Quote Heading -->
+            <h4>{{ quote.session_details.name }} </h4>
+            
+            <!-- Quote Body -->
+            <blockquote>
+                <!-- Quote -->
+                <div [innerHTML]="quote.quote"></div>
+    
+                <!-- Quote Description -->
+                <div class="mb-3 ml-4">
+                    <span *ngIf="quote.description" [innerHTML]="'- ' + quote.description"></span>
+                </div>
+    
+                <!-- Quote Connections -->
+                <div class="quote-connections d-flex row icon-container">
+                    <span class="col-md-2 col-4 tag-label"> Characters: </span>
+    
+                    <span class="d-inline-flex align-items-center flex-wrap">
+                        <!-- Display Existing Quote Connections -->
+                        <span class="badge badge-secondary mr-2 text-center vanish-container" *ngFor="let connection of quote.connections">
+                            <a routerLink="{{ routingService.getRoutePath('character', {name: connection.character_details.name}) }}">
+                                {{connection.character_details.name}}
+                            </a>
+                            
+                            <i 
+                            class="fa fa-trash icon vanish-icon ml-2" 
+                            (click)="deleteQuoteConnection(connection)" 
+                            [ngClass]="{'d-none': !userHasDeletePermission()}"
+                            ></i>
+                        </span>
+    
+                        <!-- Form for Creating Quote Connections -->
+                        <form [ngClass]="{'d-none':!inQuoteConnectionCreateState, 'd-inline-block': inQuoteConnectionCreateState}">
+                            <select class="form-control" name="character" id="character" [(ngModel)]="baseQuoteConnection.character">
+                                <option 
+                                *ngFor="let character of characters" 
+                                value="{{character.pk}}" 
+                                [attr.disabled]="hasConnection(character) ? true : null"
+                                >
+                                    {{character.name}}
+                                </option>
+                            </select>
+                        </form>
+    
+                        <i 
+                        class="fa icon mx-2"
+                        [ngClass]="{
+                            'fa-plus hide-icon': !inQuoteConnectionCreateState, 
+                            'fa-times': inQuoteConnectionCreateState, 
+                            'd-none': !userHasCreatePermission()
+                        }"
+                        (click)="toggleQuoteConnectionCreateState()"
+                        ></i>
+    
+                        <i
+                        class="fa icon"
+                        [ngClass]="{
+                            'fa-check': inQuoteConnectionCreateState, 
+                            'd-none': !userHasCreatePermission()
+                        }" 
+                        (click)="createQuoteConnection()"
+                        ></i>
+                    </span>
+                </div>
+            </blockquote>    
+        </div>
+
+    </article>
+
+    <!-- Loading Spinner -->
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

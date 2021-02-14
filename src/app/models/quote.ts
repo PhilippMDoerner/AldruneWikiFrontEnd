@@ -1,8 +1,11 @@
+import { Session } from "./session";
+
 export interface Quote{
     quote: string,
     description: string,
     pk?: number,
     session: number,
+    session_details: Session,
     encounter: number,
     connections?: QuoteConnection[],
 }
@@ -17,6 +20,7 @@ export interface QuoteConnection{
 export class QuoteObject implements Quote{
     quote:string;
     description: string;
+    session_details: Session;
     session: number;
     encounter: number;
     pk?: number;

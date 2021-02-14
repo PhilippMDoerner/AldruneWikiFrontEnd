@@ -40,6 +40,7 @@ import { LoginGuardService,
 import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
 import { Route } from '@angular/compiler/src/core';
+import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
 
 
 
@@ -279,6 +280,13 @@ const routes: Routes = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:name/update`,
 		component: QuestArticleUpdateComponent,
 		data:{ name: "quest-update", requiredPermissions: [Constants.apiUpdatePermission]},
+		canActivate: [PermissionGuardService]
+	},
+	//Quote Route
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quotes/:name`,
+		component: QuoteOverviewComponent,
+		data: { name: "quote-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 
