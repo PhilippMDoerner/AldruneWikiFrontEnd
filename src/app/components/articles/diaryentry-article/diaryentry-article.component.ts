@@ -23,6 +23,8 @@ export class DiaryentryArticleComponent implements OnInit {
   diaryEntry: DiaryEntry;
   articleType: string = 'diaryEntry';
 
+  coAuthors: string;
+
   private parameter_subscription: Subscription;
 
   constructor(
@@ -41,20 +43,23 @@ export class DiaryentryArticleComponent implements OnInit {
       const authorName: string = params.authorName;
   
       this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).pipe(first()).subscribe(
-        diaryEntry => {this.diaryEntry = diaryEntry; console.log(diaryEntry)},
+        diaryEntry => {
+          this.diaryEntry = diaryEntry;
+          this.coAuthors = this.getCoAuthorString();
+        },
         error => this.routingService.routeToErrorPage(error)
       );
     });
   }
 
-  getAuthorString(): string{
+  getCoAuthorString(): string{
     let authorString: string = "";
     for(const encounter of this.diaryEntry.encounters){
       const isEncounterInCreateState = encounter.pk == null;
       if (isEncounterInCreateState) continue;
       
       const authorName = encounter.author_details.name;
-      if(!authorString.includes(authorName)){
+      if(!authorString.includes(authorName) && !this.diaryEntry.author_details.name.includes(authorName) ){
         authorString += ` ${authorName},`;
       }
     }
