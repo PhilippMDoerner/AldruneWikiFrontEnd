@@ -128,7 +128,6 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
     this.encounterOrderIncrease.emit(this.encounterIndex);
   }
 
-  //TODO: Reduce the amount of selectable characters to add to a scene to NPCs, PCs should not be selectable
   decreaseEncounterOrderIndex(){
     this.encounterOrderDecrease.emit(this.encounterIndex);
   }

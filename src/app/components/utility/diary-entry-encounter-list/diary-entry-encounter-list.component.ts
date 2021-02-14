@@ -98,13 +98,18 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     this.isWaitingForResponse = true;
 
     const pendingEncounter = this.encounters[createdEncounterIndex];
-    const newEncounter: Encounter = await this.encounterService.createEncounter(pendingEncounter).toPromise();
+    let newEncounter: Encounter;
+    try{
+      newEncounter = await this.encounterService.createEncounter(pendingEncounter).toPromise();
+    } catch (error){
+      this.warning.showWarning(error);
+      return;
+    }
 
     newEncounter.connection = pendingEncounter.connection;
     newEncounter.connection.encounter = newEncounter.pk; //Needed to create the connection
     this.encounters[createdEncounterIndex] = newEncounter;
     this.updateConnectionsCreateEncounter(createdEncounterIndex);
-
   }
 
   /**
@@ -120,7 +125,12 @@ export class DiaryEntryEncounterListComponent implements OnInit{
       const connection: DiaryEntryEncounterConnectionObject = this.encounters[encounterIndex].connection;
       connection.order_index = connection.nextOrderIndex();
 
-      await this.diaryEntryEncounterConnectionService.updateConnection(connection).toPromise();
+      try{
+        await this.diaryEntryEncounterConnectionService.updateConnection(connection).toPromise();
+      } catch(error){
+        this.warning.showWarning(error);
+        return;
+      }
     }
 
     //Create the encounterConnection for the new encounter in the Db
@@ -183,7 +193,11 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     encounterConnection1.order_index = encounterConnection2.order_index;
     encounterConnection2.order_index = temp;
 
-    await this.updateSwappedEncountersToDb(encounterConnection1, encounterConnection2);
+    try{
+      await this.updateSwappedEncountersToDb(encounterConnection1, encounterConnection2);
+    } catch(error){
+      this.warning.showWarning(error);
+    }
 
     // Display Encounters again
     this.isEncounterUpdating[encounterIndex1] = false;
