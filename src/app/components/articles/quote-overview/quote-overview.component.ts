@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
-import { Quote, QuoteConnection, QuoteConnectionObject } from 'src/app/models/quote';
-import { OverviewService } from 'src/app/services/overview.service';
-import { QuoteConnectionService } from 'src/app/services/quote-connection.service';
+import { CharacterObject } from 'src/app/models/character';
+import { OverviewItem } from 'src/app/models/overviewItem';
+import { Quote, QuoteConnection, QuoteConnectionObject, QuoteObject } from 'src/app/models/quote';
+import { CharacterService } from 'src/app/services/character/character.service';
 import { QuoteService } from 'src/app/services/quote.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -16,36 +16,45 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   templateUrl: './quote-overview.component.html',
   styleUrls: ['./quote-overview.component.scss']
 })
-export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
+export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
   quotes: Quote[];
+  character: CharacterObject;
 
   baseQuoteConnection: QuoteConnection = new QuoteConnectionObject();
+  inQuoteCreateState: boolean = false;
   inQuoteConnectionCreateState: boolean = false;
   characters: OverviewItem[];
+
+  quoteModel: Quote;
 
   parameter_subscription: Subscription;
 
 
   constructor(
     private quoteService: QuoteService,
+    private characterService: CharacterService,
     private route: ActivatedRoute,
     private warning: WarningsService,
     public routingService: RoutingService,
-    private quoteConnectionservice: QuoteConnectionService,
-    private overviewService: OverviewService
   ) { super() }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(
       params => {
-        const characterName: string = params.name;
+        const characterName = params.name;
+        // Get Character
+        this.characterService.getCharacter(characterName).pipe(first()).subscribe(
+          (character: CharacterObject) => this.character = character,
+          error => this.routingService.routeToErrorPage(error)
+        );
         
+        // Get Character Quotes
         this.quoteService.getAllCharacterQuotes(characterName).pipe(first()).subscribe(
           (quotes: Quote[]) => {
             this.quotes = quotes;
             this.quotes.sort(this.sortQuotesBySession);
           },
-          error => this.warning.showWarning(error)
+          error => this.routingService.routeToErrorPage(error)
         );
 
       },
@@ -59,55 +68,21 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
     return 0;
   }
 
-  hasConnection(character: OverviewItem, quoteIndex: number){
-    const quote: Quote = this.quotes[quoteIndex];
-    for(let connection of quote.connections){
-      if (connection.character_details.pk === character.pk){
-        return true;
-      }
-    }
-    return false;
+  toggleQuoteCreateState(){
+    this.inQuoteCreateState = !this.inQuoteCreateState;
+
+    if(this.inQuoteCreateState){
+      this.quotes.unshift(new QuoteObject());
+    };
   }
 
-  toggleQuoteConnectionCreateState(){
-    this.inQuoteConnectionCreateState = !this.inQuoteConnectionCreateState;
-
-    if (!this.characters){
-      this.overviewService.getOverviewItems('character').pipe(first()).subscribe(
-        (characters: OverviewItemObject[]) => this.characters = characters,
-        error => this.warning.showWarning(error)
-      );
-    }
+  deleteQuote(quoteIndex: number){
+    const quotesToDeleteCount: number = 1;
+    this.quotes.splice(quoteIndex, quotesToDeleteCount);
   }
 
-  resetBaseQuoteConnection(){
-    this.baseQuoteConnection = new QuoteConnectionObject();
-  }
-
-  createQuoteConnection(quoteIndex: number){
-    const quote: Quote = this.quotes[quoteIndex];
-
-    this.baseQuoteConnection.quote = quote.pk;
-    this.quoteConnectionservice.createQuoteConnection(this.baseQuoteConnection).pipe(first()).subscribe(
-      (quoteConnection: QuoteConnection) => {
-        quote.connections.push(quoteConnection);
-        this.inQuoteConnectionCreateState = false;
-        this.resetBaseQuoteConnection();
-      },
-      error => this.warning.showWarning(error)
-    );
-  }
-
-
-  deleteQuoteConnection(quoteIndex: number, quoteConnection: QuoteConnection){
-    const quote: Quote = this.quotes[quoteIndex];
-    this.quoteConnectionservice.deleteQuoteConnection(quoteConnection.pk).pipe(first()).subscribe(
-      response => {
-        const quoteConnectionIndex: number = quote.connections.indexOf(quoteConnection);
-        quote.connections.splice(quoteConnectionIndex, 1);
-      },
-      error => this.warning.showWarning(error)
-    );
+  ngOnDestroy(){
+    if(this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 
 }

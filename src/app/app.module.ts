@@ -81,6 +81,7 @@ import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerVali
 import { DiaryEntryEncounterComponent } from './components/utility/diary-entry-encounter/diary-entry-encounter.component';
 import { DiaryEntryEncounterListComponent } from './components/utility/diary-entry-encounter-list/diary-entry-encounter-list.component';
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
+import { QuotefieldComponent } from './components/utility/quotefield/quotefield.component';
 
 // TODO: Turn AldruneWiki into a PWA
 // TODO: Fix tinymce URLs, make it so that they just link to an article to the same prefix, instead of a full url. 
@@ -154,6 +155,7 @@ import { QuoteOverviewComponent } from './components/articles/quote-overview/quo
     DiaryEntryEncounterComponent,
     DiaryEntryEncounterListComponent,
     QuoteOverviewComponent,
+    QuotefieldComponent,
   ],
   imports: [
     BrowserModule,
