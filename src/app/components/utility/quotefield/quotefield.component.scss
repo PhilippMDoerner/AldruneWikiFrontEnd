@@ -1,0 +1,46 @@
+.hide-icon{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.vanish-icon{
+    display: none;
+}
+
+.icon-container:hover .hide-icon{
+    opacity: 1;
+}
+
+.vanish-container:hover .vanish-icon{
+    display: inline-block;
+}
+
+.fa-trash:hover{
+    color: red;
+}
+
+.tag-label{
+    font-size: 0.9rem;
+}
+
+.badge.badge-secondary{
+    padding: 0.35rem;
+}
+
+.white-line{
+    background-color: white;
+}
+
+blockquote:hover ~ .icon-container, .icon-container:hover{
+    opacity: 1;
+}
+
+@media(max-width: 768px){
+	.icon-container{
+        opacity: 1;
+    }
+
+    .vanish-icon{
+        display: inline;
+    }
+}
