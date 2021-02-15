@@ -10,6 +10,22 @@
 
         <div class="btn btn-secondary my-3" (click)="toggleQuoteCreateState()"> Add Quote </div>
 
+        <blockquote *ngIf="inQuoteCreateState">
+
+            <!-- Heading -->
+            <h5 class="border-white border-bottom">
+                Create Quote for {{character.name}}
+            </h5>
+    
+            <!-- Form -->
+            <form [formGroup]="quoteForm">
+                <formly-form [form]="quoteForm" [fields]="quoteFields" [model]="quoteModel"></formly-form>
+                <div class="btn btn-secondary mr-3" (click)="onCancel()">Cancel</div>
+                <div class="btn btn-secondary" (click)="onSubmit()">Submit</div>
+            </form>
+    
+        </blockquote>
+
         <div *ngFor="let quote of quotes; let quoteIndex = index" class="mb-5">
             <!-- Quote Heading -->
             <h4 *ngIf="quote.pk"> Session {{ quote.session_details.session_number }} </h4>

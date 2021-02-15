@@ -1,11 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { CharacterObject } from 'src/app/models/character';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { Quote, QuoteConnection, QuoteConnectionObject, QuoteObject } from 'src/app/models/quote';
 import { CharacterService } from 'src/app/services/character/character.service';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { QuoteConnectionService } from 'src/app/services/quote-connection.service';
 import { QuoteService } from 'src/app/services/quote.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -25,13 +29,22 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
   inQuoteConnectionCreateState: boolean = false;
   characters: OverviewItem[];
 
-  quoteModel: Quote;
+  quoteModel: QuoteObject;
+  quoteForm = new FormGroup({});
+  quoteFields: FormlyFieldConfig[] = [
+    this.formlyService.genericTextField({key: "quote", required: true}),
+    this.formlyService.genericInput({key: "description", required: true}),
+    this.formlyService.genericSelect({key: "session", optionsType: "session", required: true}),
+    this.formlyService.genericSelect({key: "encounter", optionsType: "encounter", required: false})
+  ]
 
   parameter_subscription: Subscription;
 
 
   constructor(
+    private formlyService: MyFormlyService,
     private quoteService: QuoteService,
+    private quoteConnectionService: QuoteConnectionService,
     private characterService: CharacterService,
     private route: ActivatedRoute,
     private warning: WarningsService,
@@ -72,8 +85,34 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
     this.inQuoteCreateState = !this.inQuoteCreateState;
 
     if(this.inQuoteCreateState){
-      this.quotes.unshift(new QuoteObject());
+      this.quoteModel = new QuoteObject();
+      this.quoteModel.encounter = null;
     };
+  }
+
+  async onSubmit(){
+    try{
+      // Create Quote
+      const quote: QuoteObject = await this.quoteService.createQuote(this.quoteModel).toPromise();
+
+      // Create QuoteConnection
+      const connectionToThisCharacter: QuoteConnection = {"quote": quote.pk, "character": this.character.pk};
+      const connection: QuoteConnectionObject = await this.quoteConnectionService.createQuoteConnection(connectionToThisCharacter).toPromise();
+      
+      // Combine in Frontend, add to quotes and sort
+      quote.connections = [connection];
+      this.quotes.unshift(quote);
+      this.quotes.sort(this.sortQuotesBySession);
+
+    } catch (error){
+      this.warning.showWarning(error);
+    }
+
+    this.inQuoteCreateState = false;
+  }
+
+  onCancel(){
+    this.inQuoteCreateState = false;
   }
 
   deleteQuote(quoteIndex: number){

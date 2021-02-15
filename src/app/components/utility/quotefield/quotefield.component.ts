@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
@@ -21,7 +21,7 @@ import { createNew } from 'typescript';
   templateUrl: './quotefield.component.html',
   styleUrls: ['./quotefield.component.scss']
 })
-export class QuotefieldComponent extends PermissionUtilityFunctionMixin implements OnInit{
+export class QuotefieldComponent extends PermissionUtilityFunctionMixin implements OnInit, OnChanges{
   constants: any = Constants;
 
   @Input() quote: Quote;
@@ -29,12 +29,12 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   @Input() enableRandomQuotes: boolean = false;
   @Input() enableLinkToOverview: boolean = false;
   @Input() enableCreatingQuotes: boolean = false;
+  @Input() inCreateState: boolean = false;
 
   @Output() delete: EventEmitter<Quote> = new EventEmitter<Quote>();
 
   quote_subscription: Subscription;
 
-  inCreateState: boolean = false;
   inDeleteState: boolean = false;
   inEditState: boolean = false;
   isLoadingNextQuote: boolean = false;
@@ -62,8 +62,13 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   ) { super() }
 
   ngOnInit(){
-    const isRequestToCreateNewQuest = this.quote.pk == null;
-    if(isRequestToCreateNewQuest){
+    if(this.inCreateState){
+      this.toggleCreateState();
+    }
+  }
+
+  ngOnChanges(){
+    if(this.inCreateState){
       this.toggleCreateState();
     }
   }

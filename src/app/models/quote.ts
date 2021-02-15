@@ -1,3 +1,4 @@
+import { QuoteConnectionService } from "../services/quote-connection.service";
 import { Session } from "./session";
 
 export interface Quote{
@@ -24,6 +25,7 @@ export class QuoteObject implements Quote{
     session: number;
     encounter: number;
     pk?: number;
+    connections?: QuoteConnection[];
 
     constructor(object?: Quote){
         if (object) Object.assign(this, object)

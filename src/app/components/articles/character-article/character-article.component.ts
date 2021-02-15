@@ -8,6 +8,8 @@ import { first } from 'rxjs/operators';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { QuoteObject } from 'src/app/models/quote';
+import { QuoteService } from 'src/app/services/quote.service';
 @Component({
   selector: 'app-character-article',
   templateUrl: './character-article.component.html',
@@ -20,10 +22,14 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
   confirmationModal: Subject<void> = new Subject<void>();
   articleType: string = 'character';
 
+  quote: QuoteObject;
+  quoteCreateState: boolean = false;
+
   private parameter_subscription: Subscription;
 
   constructor(
     private characterService: CharacterService,
+    private quoteService: QuoteService,
     private route: ActivatedRoute,
     private warnings: WarningsService,  
     public routingService: RoutingService,
@@ -36,6 +42,7 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
         (character: CharacterObject) => this.character = character, 
         error => this.routingService.routeToErrorPage(error)
       );
+
     });
   }
 

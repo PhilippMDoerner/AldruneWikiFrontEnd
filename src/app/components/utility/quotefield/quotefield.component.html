@@ -1,5 +1,5 @@
 <div *ngIf="!inCreateState && !inEditState; else quoteForm" class="mb-3">
-    <div>
+    <div *ngIf="quote.pk">
         <blockquote *ngIf="!isLoadingNextQuote; else loading">
             <!-- Quote -->
             <div [innerHTML]="quote.quote"></div>
@@ -82,6 +82,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Loading Spinner -->
 <ng-template #loading><app-spinner></app-spinner></ng-template>
