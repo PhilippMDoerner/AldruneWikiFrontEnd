@@ -23,6 +23,7 @@
     "@angular/platform-browser-dynamic": "^10.2.3",
     "@angular/router": "^10.2.3",
     "@angular/service-worker": "^10.2.3",
+    "@fortawesome/fontawesome-free": "^5.15.2",
     "@ng-bootstrap/ng-bootstrap": "7.0.0",
     "@ngx-formly/bootstrap": "^5.10.9",
     "@ngx-formly/core": "^5.10.9",
