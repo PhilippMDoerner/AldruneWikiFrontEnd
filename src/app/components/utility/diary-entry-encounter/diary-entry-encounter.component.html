@@ -5,16 +5,20 @@ class="container"
     <!-- Encounter Heading -->
     <div class="row">
         <h4 class="heading col-12">
-            {{ encounter.title }}
+            {{ encounter.title }} - {{ encounter.connection.order_index}}
     
-            <!-- Edit Toggler -->
-            <div 
-            class="btn btn-secondary float-right encounter-hidden" 
-            (click)="toggleFormState()" 
-            [ngClass]="{'d-none': !userHasUpdatePermission() || diaryEntryView}"
-            >
-                <i class="fa fa-pencil" *ngIf="!isEncounterCreateState && !isEncounterUpdateState"></i>
-                <i class="fa fa-times" *ngIf="isEncounterCreateState || isEncounterUpdateState"></i>
+            <!-- Edit Toggler + Cut Toggler-->
+            <div class="float-right flex-row" [ngClass]="{'d-none': !userHasUpdatePermission() || diaryEntryView, 'd-flex': userHasUpdatePermission() && !diaryEntryView}">
+                <!-- Cut Toggler -->
+                <div class="btn btn-secondary encounter-hidden mr-2" (click)="toggleCutState()">
+                    <i class="fas fa-cut"></i>
+                </div>
+
+                <!-- Edit Toggler -->
+                <div class="btn btn-secondary encounter-hidden" (click)="toggleFormState()">
+                    <i class="fa fa-pencil" *ngIf="!isEncounterCreateState && !isEncounterUpdateState"></i>
+                    <i class="fa fa-times" *ngIf="isEncounterCreateState || isEncounterUpdateState"></i>
+                </div>
             </div>
         </h4>
 

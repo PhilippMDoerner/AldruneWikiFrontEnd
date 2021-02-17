@@ -1,4 +1,4 @@
-<div class="container px-0" *ngIf="!isWaitingForResponse; else waiting">
+<div class="container px-0" *ngIf="!isUpdating; else waiting">
     <div class="row mb-5">
         <div class="col-4"></div>
         <div class="col-4 btn btn-secondary" (click)="toggleDiaryEntryView()">
@@ -10,12 +10,18 @@
     </div>
 
     <!-- Insert new first Encounter -->
-    <div *ngIf="!diaryEntryView" class="expand col-12 d-flex justify-content-center">
-        <div>
+    <div *ngIf="!diaryEntryView" class="expand row">
+        <div class="col-md-3 col-0"></div>
+        <div class="col-md-6 d-flex justify-content-around">
             <div class="btn btn-secondary" (click)="toggleEncounterCreateState(-1)">
                 <i class="fa fa-3x fa-plus pointer"></i>
             </div>
+
+            <div class="btn btn-secondary" [ngClass]="{'disabled': cutEncounterIndex == null}" (click)="insertExcisedEncounter(-1 + 1)">
+                <i class="fas fa-3x fa-file-import pointer"></i>
+            </div>
         </div>
+        <div class="col-md-3 col-0"></div>
     </div>
 
     <!-- Diaryentry - Encounters -->
@@ -25,6 +31,7 @@
             <app-diary-entry-encounter
             *ngIf="!isEncounterUpdating[encounterIndex] else waiting;"
             class="col-12 px-0"
+            [ngClass]="{'isBeingCutOut': cutEncounterIndex === encounterIndex}"
             [encounter]="encounter"
             [encounterIndex]="encounterIndex"
             [diaryEntryView]="diaryEntryView"
@@ -32,15 +39,23 @@
             (encounterOrderIncrease)="onEncounterOrderIncrease(encounterIndex)"
             (encounterOrderDecrease)="onEncounterOrderDecrease(encounterIndex)"
             (encounterCreate)="onEncounterCreate(encounterIndex)"
+            (excisionStart)="onExcisionStart(encounterIndex)"
+            (excisionCancel)="onExcisionCancel(encounterIndex)"
             ></app-diary-entry-encounter>
 
             <!-- Insert new Encounter -->
-            <div *ngIf="!diaryEntryView" class="expand col-12 d-flex justify-content-center">
-                <div>
+            <div *ngIf="!diaryEntryView" class="expand row">
+                <div class="col-md-3 col-0"></div>
+                <div class="col-md-6 d-flex justify-content-around">
                     <div class="btn btn-secondary" (click)="toggleEncounterCreateState(encounterIndex)">
                         <i class="fa fa-3x fa-plus pointer"></i>
                     </div>
+                    <!-- insertExcisedEncounter has encounterIndex+1 because the insertion is supposed to happen AFTER this encounter, not before it -->
+                    <div class="btn btn-secondary" [ngClass]="{'disabled': cutEncounterIndex == null}" (click)="insertExcisedEncounter(encounterIndex + 1)">
+                        <i class="fas fa-3x fa-file-import pointer"></i>
+                    </div>
                 </div>
+                <div class="col-md-3 col-0"></div>
             </div>
 
         </div>

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
@@ -10,7 +9,6 @@ import { CharacterService } from 'src/app/services/character/character.service';
 import { EncounterConnectionService } from 'src/app/services/encounter-connection.service';
 import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -30,11 +28,15 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
   @Output() encounterOrderIncrease: EventEmitter<number> = new EventEmitter();
   @Output() encounterOrderDecrease: EventEmitter<number> = new EventEmitter();
   @Output() encounterCreate: EventEmitter<EncounterObject> = new EventEmitter();
+  @Output() excisionStart: EventEmitter<void> = new EventEmitter();
+  @Output() excisionCancel: EventEmitter<void> = new EventEmitter();
 
   characterOptions : OverviewItem[];
 
   isEncounterCreateState: boolean = false;
   isEncounterUpdateState: boolean = false;
+
+  isBeingCutState: boolean = false;
 
   form = new FormGroup({});
   model: EncounterObject;
@@ -91,7 +93,15 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
     } else {
       this.isEncounterUpdateState = true;
     }
+  }
 
+  toggleCutState(){
+    this.isBeingCutState = !this.isBeingCutState;
+    if(this.isBeingCutState){
+      this.excisionStart.emit();
+    } else {
+      this.excisionCancel.emit();
+    }
   }
 
   toggleEncounterUpdateState(){

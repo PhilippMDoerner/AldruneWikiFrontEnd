@@ -1,6 +1,10 @@
 //Fonts
 @import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600");
 
+//Fontawesome 5 icons
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+
 // Overwriting leaflet CSS
 h5.popup-heading{
 	color: black;

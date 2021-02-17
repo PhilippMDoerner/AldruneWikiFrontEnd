@@ -1,12 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { DiaryEntryEncounterConnectionObject, diaryEntryEncounterConnection } from 'src/app/models/diaryencounterconnection';
-import { DiaryEntry, diaryEntryEncounter, DiaryEntryObject } from 'src/app/models/diaryentry';
+import { diaryEntryEncounterConnection, DiaryEntryEncounterConnectionObject } from 'src/app/models/diaryencounterconnection';
+import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
-import { SessionObject } from 'src/app/models/session';
 import { DiaryentryEncounterConnectionService } from 'src/app/services/diaryentry-encounter-connection.service';
 import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
-import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -21,8 +19,10 @@ export class DiaryEntryEncounterListComponent implements OnInit{
   @Input() diaryEntry: DiaryEntryObject;
   encounters: Encounter[] = [];
   isEncounterUpdating: boolean[] = [];
-  isWaitingForResponse: boolean = false;
+  isUpdating: boolean = false;
   diaryEntryView: boolean = true;
+
+  cutEncounterIndex: number;
 
   constructor(
     private warning: WarningsService,
@@ -97,10 +97,8 @@ export class DiaryEntryEncounterListComponent implements OnInit{
    * Is triggered when a new encounter shall be created. Together with an encounter, you must create an
    * encounterConnection to this diaryentry.
    * @param createdEncounterIndex : The index in this.encounters of the new created Encounter
-   */
+   */ //TODO: Create a decorator to apply try-catch-warning.showWarning to any function you want. Ideally as part of the warning Service
   async onEncounterCreate(createdEncounterIndex: number): Promise<void>{
-    this.isWaitingForResponse = true;
-
     const pendingEncounter = this.encounters[createdEncounterIndex];
     let newEncounter: Encounter;
     try{
@@ -110,43 +108,118 @@ export class DiaryEntryEncounterListComponent implements OnInit{
       return;
     }
 
+    //Increment Encounters up to last-encounter to order-index of next encounter
     newEncounter.connection = pendingEncounter.connection;
-    newEncounter.connection.encounter = newEncounter.pk; //Needed to create the connection
     this.encounters[createdEncounterIndex] = newEncounter;
-    this.updateConnectionsCreateEncounter(createdEncounterIndex);
-  }
-
-  /**
-   * Creates encounterConnection for newly created Encounter. Updates all encounters following after the newly created one
-   * first though, to avoid assigning the same order_index to 2 different encounterConnections.
-   * @param encounterIndexLimit 
-   */
-  async updateConnectionsCreateEncounter(encounterIndexLimit: number): Promise<void>{
-
-    //Increment all order-indices of encounters after the encounter at encounterIndexLimit
-    const maxIndex: number = this.encounters.length - 1;
-    for (let encounterIndex = maxIndex; encounterIndex > encounterIndexLimit; encounterIndex--){
-      const connection: DiaryEntryEncounterConnectionObject = this.encounters[encounterIndex].connection;
-      connection.order_index = connection.nextOrderIndex();
-
-      try{
-        await this.diaryEntryEncounterConnectionService.updateConnection(connection).toPromise();
-      } catch(error){
-        this.warning.showWarning(error);
-        return;
-      }
-    }
+    const lastIndex = this.encounters.length - 1;
+    const firstEncounterAfterCreatedEncounter = createdEncounterIndex + 1;
+    await this.incrementOrderIndices(firstEncounterAfterCreatedEncounter, lastIndex);
 
     //Create the encounterConnection for the new encounter in the Db
-    const newEncounter: Encounter = this.encounters[encounterIndexLimit];
     const newConnection: DiaryEntryEncounterConnectionObject = newEncounter.connection;
     newConnection.order_index = newConnection.nextOrderIndex();
+    newConnection.encounter = newEncounter.pk;  //Needed to create the connection
 
     this.diaryEntryEncounterConnectionService.createConnection(newConnection).pipe(first()).subscribe(
       (newCreatedConnection: DiaryEntryEncounterConnectionObject) => newEncounter.connection = newCreatedConnection,
       error => this.warning.showWarning(error)
     );
 
+  }
+
+  /**
+   * Updates each encounter within the range to the orderIndex of its following encounter.
+   * @param rangeStartIndex - An index on the encounters array
+   * @param rangeEndIndex - An index on the encounters array after rangeStartIndex. Must be smaller than the last
+   * index of encounters, as you can not increment the last encounter to a higher order-index, since there is no 
+   * encounter after it.
+   */
+  async incrementOrderIndices(rangeStartIndex: number, rangeEndIndex: number): Promise<diaryEntryEncounterConnection[]>{
+    //Guard Clauses
+    if(rangeEndIndex >= this.encounters.length) throw `IndexOutOfBoundsException. You can not increment 
+    encounters at index ${rangeEndIndex}! You only have ${this.encounters.length} encounter(s)!`;
+    if(rangeStartIndex < 0) throw `IndexOutOfBoundsExceptions. You can not increment encounters at index 
+    ${rangeStartIndex}, Indices must be positive!`;
+    if(rangeStartIndex > rangeEndIndex) throw `Invalid Index Exception. Your start index ${rangeStartIndex} is larger
+    than your end index ${rangeEndIndex}`;
+
+    const hasLastIndex: boolean = rangeEndIndex === this.encounters.length - 1;
+    const adjustedEndIndex: number = (hasLastIndex) ? rangeEndIndex - 1 : rangeEndIndex;
+
+    const connectionUpdatePromises: Promise<diaryEntryEncounterConnection>[] = [];
+    for(let i=rangeStartIndex; i <= adjustedEndIndex; i++){
+      const encounter: Encounter = this.encounters[i];
+      const nextEncounter: Encounter = this.encounters[i+1];
+
+      encounter.connection.order_index = nextEncounter.connection.order_index;
+      encounter.connection.swapOrderIndexState();
+
+      const updatePromise = this.diaryEntryEncounterConnectionService.updateConnection(encounter.connection).toPromise();
+      connectionUpdatePromises.push(updatePromise);
+    }
+
+    //Handle incrementing last encounter if necessary
+    if(hasLastIndex){
+      const lastEncounterIndex: number = this.encounters.length - 1;
+      const lastEncounter: Encounter = this.encounters[lastEncounterIndex];
+      lastEncounter.connection.order_index = lastEncounter.connection.nextOrderIndex();
+
+      const updatePromise =  this.diaryEntryEncounterConnectionService.updateConnection(lastEncounter.connection).toPromise();
+      connectionUpdatePromises.push(updatePromise);  
+    }
+
+    return Promise.all(connectionUpdatePromises);
+  }
+
+  /**
+   * Updates each encounter within the range to the orderIndex of its prior encounter.
+   * @param rangeStartIndex - An index on the encounters array. Must be larger than 0, as you can not
+   * decrement the first encounter to a smaller order-index, since there is no encounter prior to it.
+   * @param rangeEndIndex - An index on the encounters array after rangeStartIndex.
+   */
+  async decrementOrderIndices(rangeStartIndex: number, rangeEndIndex: number): Promise<diaryEntryEncounterConnection[]>{
+    //Guard Clauses
+    if(rangeStartIndex < 0) throw `IndexOutOfBoundsExceptions. You can not increment encounters at index 
+    ${rangeStartIndex}, Indices must be positive!`;
+    if(rangeEndIndex >= this.encounters.length) throw `IndexOutOfBoundsExceptions. You can not decrement encounter at index
+    ${rangeEndIndex}, you only have ${this.encounters.length} encounter(s)!`;
+    if(rangeStartIndex > rangeEndIndex) throw `Invalid Index Exception. Your start index ${rangeStartIndex} is larger
+    than your end index ${rangeEndIndex}`;
+
+    const hasFirstIndex: boolean = rangeStartIndex === 0;
+    const adjustedStartIndex: number = (hasFirstIndex) ? 1 : rangeEndIndex;
+
+    const connectionUpdatePromises: Promise<diaryEntryEncounterConnection>[] = [];
+    for(let i=rangeEndIndex; i >= adjustedStartIndex; i--){
+      const encounter: Encounter = this.encounters[i];
+      const priorEncounter: Encounter = this.encounters[i-1];
+
+      encounter.connection.order_index = priorEncounter.connection.order_index;
+      encounter.connection.swapOrderIndexState();
+      const updatePromise = this.diaryEntryEncounterConnectionService.updateConnection(encounter.connection).toPromise();
+      connectionUpdatePromises.push(updatePromise);
+    }
+
+    //Handle decrementing first encounter if necessary
+    if(hasFirstIndex){
+      const firstEncounter: Encounter = this.encounters[0];
+      firstEncounter.connection.order_index = firstEncounter.connection.priorOrderIndex();
+      
+      const updatePromise =  this.diaryEntryEncounterConnectionService.updateConnection(firstEncounter.connection).toPromise();
+      connectionUpdatePromises.push(updatePromise);  
+    }
+
+    return Promise.all(connectionUpdatePromises);
+  }
+
+  deleteEncounter(encounterIndex: number): void{
+    const numberOfEncountersToDelete = 1;
+    this.encounters.splice(encounterIndex, numberOfEncountersToDelete);
+
+    const hasNoEncounters = this.encounters.length === 0;
+    if(hasNoEncounters){
+      this.routingService.routeToPath('diaryentry-overview');
+    }
   }
 
   sortEncounters(){
@@ -166,6 +239,7 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     })
   }
 
+  //SWAP ENCOUNTERS FUNCTIONALITY
   onEncounterOrderIncrease(encounterIndex: number): void{
     const isLastEncounter = encounterIndex === this.encounters.length - 1;
     if(isLastEncounter) return; //encounter is already last
@@ -222,25 +296,64 @@ export class DiaryEntryEncounterListComponent implements OnInit{
   }
 
 
-  //Only use on a sorted encounters array where last connection means highest orderIndex
-  getNewHighestOrderIndex(): number{
-    const lastEncounterIndex: number = this.encounters.length - 1;
-    const lastEncounterWithHighestOrderIndex: Encounter = this.encounters[lastEncounterIndex];
-    const lastConnection: DiaryEntryEncounterConnectionObject = lastEncounterWithHighestOrderIndex.connection;
-
-    return lastConnection.nextOrderIndex();
+  //ENCOUNTER EXCISSION FUNCTIONALITY
+  onExcisionStart(encounterIndex: number): void{
+    this.cutEncounterIndex = encounterIndex;
   }
 
-  deleteEncounter(encounterIndex: number): void{
-    const numberOfEncountersToDelete = 1;
-    this.encounters.splice(encounterIndex, numberOfEncountersToDelete);
-
-    if(this.hasNoEncounters()){
-      this.routingService.routeToPath('diaryentry-overview');
+  onExcisionCancel(encounterIndex: number): void{
+    if (this.cutEncounterIndex === encounterIndex){
+      this.cutEncounterIndex = null;
     }
   }
+  
+  async insertExcisedEncounter(insertionIndex: number){
+    //Guard clauses
+    if(this.cutEncounterIndex == null) return;
+    const isInsertingAfterItself = this.cutEncounterIndex + 1 === insertionIndex;
+    if(isInsertingAfterItself) return;
 
-  hasNoEncounters(): boolean{
-    return this.encounters.length === 0;
+    //Hide UI while updating
+    this.isUpdating = true;
+
+    // Update encounter-orderIndices between the cut encounter and the place where it shall be inserted
+    let insertionOrderIndex: number; //Temp Store for future orderIndex of cut encounter
+    const isInsertingAfterCutIndex: boolean = insertionIndex > this.cutEncounterIndex;
+
+    if (isInsertingAfterCutIndex){
+      const rangeStart: number = this.cutEncounterIndex + 1; //You do not want to update the cut encounter
+      const rangeEnd: number = insertionIndex - 1; //Range ends before the place where cutEncounter is inserted
+
+      insertionOrderIndex = this.encounters[rangeEnd].connection.order_index;
+
+      try{
+        await this.decrementOrderIndices(rangeStart, rangeEnd);
+      } catch(error){
+        this.warning.showWarning(error);
+      }
+    } else {
+      const rangeStart: number = insertionIndex; //Range starts directly where character is inserted
+      const rangeEnd: number = this.cutEncounterIndex - 1; //You do not want to update the cut encounter
+
+      insertionOrderIndex = this.encounters[rangeStart].connection.order_index;
+
+      try{
+        await this.incrementOrderIndices(rangeStart, rangeEnd);
+      } catch(error){
+        this.warning.showWarning(error);
+      }
+      
+    }
+
+    // Update cut encounter
+    const cutEncounter: Encounter = this.encounters[this.cutEncounterIndex];
+    cutEncounter.connection.order_index = insertionOrderIndex;
+    await this.diaryEntryEncounterConnectionService.updateConnection(cutEncounter.connection).toPromise();
+
+    this.cutEncounterIndex = null; //Reset cut feature
+    this.sortEncounters();
+
+    // Show UI again
+    this.isUpdating = false;
   }
 }
