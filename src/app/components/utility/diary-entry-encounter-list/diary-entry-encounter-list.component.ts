@@ -187,7 +187,7 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     than your end index ${rangeEndIndex}`;
 
     const hasFirstIndex: boolean = rangeStartIndex === 0;
-    const adjustedStartIndex: number = (hasFirstIndex) ? 1 : rangeEndIndex;
+    const adjustedStartIndex: number = (hasFirstIndex) ? 1 : rangeStartIndex;
 
     const connectionUpdatePromises: Promise<diaryEntryEncounterConnection>[] = [];
     for(let i=rangeEndIndex; i >= adjustedStartIndex; i--){
@@ -348,6 +348,7 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     // Update cut encounter
     const cutEncounter: Encounter = this.encounters[this.cutEncounterIndex];
     cutEncounter.connection.order_index = insertionOrderIndex;
+    cutEncounter.connection.swapOrderIndexState();
     await this.diaryEntryEncounterConnectionService.updateConnection(cutEncounter.connection).toPromise();
 
     this.cutEncounterIndex = null; //Reset cut feature
