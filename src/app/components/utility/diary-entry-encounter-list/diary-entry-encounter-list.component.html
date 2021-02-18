@@ -31,9 +31,9 @@
             <app-diary-entry-encounter
             *ngIf="!isEncounterUpdating[encounterIndex] else waiting;"
             class="col-12 px-0"
-            [ngClass]="{'isBeingCutOut': cutEncounterIndex === encounterIndex}"
             [encounter]="encounter"
             [encounterIndex]="encounterIndex"
+            [cutEncounterIndex]="cutEncounterIndex"
             [diaryEntryView]="diaryEntryView"
             (encounterDelete)="deleteEncounter(encounterIndex)"
             (encounterOrderIncrease)="onEncounterOrderIncrease(encounterIndex)"

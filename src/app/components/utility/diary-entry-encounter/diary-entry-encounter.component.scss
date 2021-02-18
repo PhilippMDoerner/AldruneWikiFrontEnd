@@ -99,6 +99,10 @@
     display: inline-block;
 }
 
+.isBeingCutOut{
+    opacity: 0.5;
+}
+
 
 @media(max-width: 768px){
 	.edit-image-buttons{

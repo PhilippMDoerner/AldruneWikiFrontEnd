@@ -8,6 +8,7 @@ import { EncounterServiceService } from 'src/app/services/encounter/encounter-se
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { tryCatch } from 'src/app/utils/functions/utilityDecorators'
 
 @Component({
   selector: 'app-diary-entry-encounter-list',
@@ -38,7 +39,6 @@ export class DiaryEntryEncounterListComponent implements OnInit{
       this.encounters.push(encounter);
       this.isEncounterUpdating.push(false);
     }
-    console.log(this.isEncounterUpdating);
 
     this.sortEncounters();
   }
@@ -98,6 +98,7 @@ export class DiaryEntryEncounterListComponent implements OnInit{
    * encounterConnection to this diaryentry.
    * @param createdEncounterIndex : The index in this.encounters of the new created Encounter
    */ //TODO: Create a decorator to apply try-catch-warning.showWarning to any function you want. Ideally as part of the warning Service
+  @tryCatch
   async onEncounterCreate(createdEncounterIndex: number): Promise<void>{
     const pendingEncounter = this.encounters[createdEncounterIndex];
     let newEncounter: Encounter;
@@ -140,8 +141,7 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     encounters at index ${rangeEndIndex}! You only have ${this.encounters.length} encounter(s)!`;
     if(rangeStartIndex < 0) throw `IndexOutOfBoundsExceptions. You can not increment encounters at index 
     ${rangeStartIndex}, Indices must be positive!`;
-    if(rangeStartIndex > rangeEndIndex) throw `Invalid Index Exception. Your start index ${rangeStartIndex} is larger
-    than your end index ${rangeEndIndex}`;
+    if(rangeStartIndex > rangeEndIndex) return;
 
     const hasLastIndex: boolean = rangeEndIndex === this.encounters.length - 1;
     const adjustedEndIndex: number = (hasLastIndex) ? rangeEndIndex - 1 : rangeEndIndex;
@@ -178,13 +178,13 @@ export class DiaryEntryEncounterListComponent implements OnInit{
    * @param rangeEndIndex - An index on the encounters array after rangeStartIndex.
    */
   async decrementOrderIndices(rangeStartIndex: number, rangeEndIndex: number): Promise<diaryEntryEncounterConnection[]>{
+    console.log(`Range Start: ${rangeStartIndex} - Range End ${rangeEndIndex}`);
     //Guard Clauses
     if(rangeStartIndex < 0) throw `IndexOutOfBoundsExceptions. You can not increment encounters at index 
     ${rangeStartIndex}, Indices must be positive!`;
     if(rangeEndIndex >= this.encounters.length) throw `IndexOutOfBoundsExceptions. You can not decrement encounter at index
     ${rangeEndIndex}, you only have ${this.encounters.length} encounter(s)!`;
-    if(rangeStartIndex > rangeEndIndex) throw `Invalid Index Exception. Your start index ${rangeStartIndex} is larger
-    than your end index ${rangeEndIndex}`;
+    if(rangeStartIndex > rangeEndIndex) return;
 
     const hasFirstIndex: boolean = rangeStartIndex === 0;
     const adjustedStartIndex: number = (hasFirstIndex) ? 1 : rangeStartIndex;
@@ -306,12 +306,17 @@ export class DiaryEntryEncounterListComponent implements OnInit{
       this.cutEncounterIndex = null;
     }
   }
+
   
   async insertExcisedEncounter(insertionIndex: number){
     //Guard clauses
     if(this.cutEncounterIndex == null) return;
-    const isInsertingAfterItself = this.cutEncounterIndex + 1 === insertionIndex;
-    if(isInsertingAfterItself) return;
+    const isInsertingAfterItself: boolean = this.cutEncounterIndex + 1 === insertionIndex;
+    const isInsertingBeforeItself: boolean = this.cutEncounterIndex === insertionIndex;
+    if(isInsertingAfterItself || isInsertingBeforeItself){
+      this.cutEncounterIndex = null; //Reset the index;
+      return;
+    };
 
     //Hide UI while updating
     this.isUpdating = true;
@@ -326,23 +331,14 @@ export class DiaryEntryEncounterListComponent implements OnInit{
 
       insertionOrderIndex = this.encounters[rangeEnd].connection.order_index;
 
-      try{
-        await this.decrementOrderIndices(rangeStart, rangeEnd);
-      } catch(error){
-        this.warning.showWarning(error);
-      }
+      await this.decrementOrderIndices(rangeStart, rangeEnd);
     } else {
       const rangeStart: number = insertionIndex; //Range starts directly where character is inserted
       const rangeEnd: number = this.cutEncounterIndex - 1; //You do not want to update the cut encounter
 
       insertionOrderIndex = this.encounters[rangeStart].connection.order_index;
 
-      try{
-        await this.incrementOrderIndices(rangeStart, rangeEnd);
-      } catch(error){
-        this.warning.showWarning(error);
-      }
-      
+      await this.incrementOrderIndices(rangeStart, rangeEnd);
     }
 
     // Update cut encounter

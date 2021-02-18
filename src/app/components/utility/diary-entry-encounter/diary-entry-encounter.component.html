@@ -1,16 +1,16 @@
 <div 
 class="container" 
-[ngClass]="{'highlight encounter': !diaryEntryView, 'mb-3': diaryEntryView}"
+[ngClass]="{'highlight encounter': !diaryEntryView, 'mb-3': diaryEntryView, 'isBeingCutOut': cutEncounterIndex === encounterIndex}"
 > 
     <!-- Encounter Heading -->
     <div class="row">
         <h4 class="heading col-12">
-            {{ encounter.title }} - {{ encounter.connection.order_index}}
-    
+            {{ encounter.title }}
+            
             <!-- Edit Toggler + Cut Toggler-->
             <div class="float-right flex-row" [ngClass]="{'d-none': !userHasUpdatePermission() || diaryEntryView, 'd-flex': userHasUpdatePermission() && !diaryEntryView}">
                 <!-- Cut Toggler -->
-                <div class="btn btn-secondary encounter-hidden mr-2" (click)="toggleCutState()">
+                <div class="btn btn-secondary encounter-hidden mr-2" (click)="toggleCutState()" title="Cut Encounter">
                     <i class="fas fa-cut"></i>
                 </div>
 

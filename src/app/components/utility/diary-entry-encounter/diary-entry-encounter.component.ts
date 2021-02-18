@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
@@ -23,6 +23,7 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
   @Input() encounter: EncounterObject;
   @Input() encounterIndex: number;
   @Input() diaryEntryView: boolean;
+  @Input() cutEncounterIndex: number;
   
   @Output() encounterDelete: EventEmitter<EncounterObject> = new EventEmitter();
   @Output() encounterOrderIncrease: EventEmitter<number> = new EventEmitter();
@@ -35,8 +36,6 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
 
   isEncounterCreateState: boolean = false;
   isEncounterUpdateState: boolean = false;
-
-  isBeingCutState: boolean = false;
 
   form = new FormGroup({});
   model: EncounterObject;
@@ -96,8 +95,8 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
   }
 
   toggleCutState(){
-    this.isBeingCutState = !this.isBeingCutState;
-    if(this.isBeingCutState){
+    const isBeingCut = this.cutEncounterIndex === this.encounterIndex;
+    if(!isBeingCut){
       this.excisionStart.emit();
     } else {
       this.excisionCancel.emit();

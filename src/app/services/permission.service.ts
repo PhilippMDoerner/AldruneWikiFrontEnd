@@ -36,7 +36,6 @@ export class LoginGuardService implements CanActivate{
 export class PermissionGuardService implements CanActivate{
 
   constructor(
-    private router: Router,
     private tokenService: TokenService,
     public routingService: RoutingService,
   ){}
