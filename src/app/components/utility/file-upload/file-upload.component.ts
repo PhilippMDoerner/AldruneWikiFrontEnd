@@ -3,10 +3,7 @@ import { FieldType } from '@ngx-formly/core';
 
 @Component({
   selector: 'formly-field-file',
-  template: `
-  <div> 
-    <input type="file" [formControl]="formControl" [formlyAttributes]="field">
-  </div>
-  `,
+  templateUrl: './file-upload.component.html',
 })
-export class FormlyFieldFile extends FieldType {}
+export class FormlyFieldFile extends FieldType {
+}

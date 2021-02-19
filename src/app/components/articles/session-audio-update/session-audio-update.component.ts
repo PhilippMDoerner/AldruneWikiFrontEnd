@@ -10,6 +10,8 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { HttpEvent } from '@angular/common/http';
+import { update } from 'lodash';
 
 @Component({
   selector: 'app-session-audio-update',
@@ -21,6 +23,9 @@ export class SessionAudioUpdateComponent implements OnInit {
 
   isWaitingForResponse: boolean = false;
   private parameter_subscription: Subscription;
+  private file_subscription: Subscription;
+
+  fileUploadProgress: number;
 
   formState: string;
 
@@ -59,20 +64,23 @@ export class SessionAudioUpdateComponent implements OnInit {
 
   }
 
-  onSubmit(){
+  onSubmit(){ //TODO: Make this work also for file updates. There's some kind of issue with that on the session-audio-upload service with the put method
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
+    if(isFormInUpdateState){
+      const updateObservable = this.audioService.updateSessionAudioFile(this.model);
+      updateObservable.pipe(first()).subscribe(
+        (sessionAudio: SessionAudio) => this.routeToSessionAudio(sessionAudio),
+        error => this.warnings.showWarning(error)
+      );
 
-    this.isWaitingForResponse = true;
-    const responseObservable: Observable<SessionAudioObject> =  isFormInUpdateState ? this.audioService.updateSessionAudioFile(this.model) : this.audioService.createSessionAudioFile(this.model);
-    responseObservable.pipe(first()).subscribe( 
-      (sessionAudio: SessionAudioObject) => {
-        this.isWaitingForResponse = false;
-        console.log("NEW AUDIO");
-        console.log(sessionAudio);
-        this.routingService.routeToApiObject(sessionAudio);
-      },
-      error => this.warnings.showWarning(error)
-    );
+    } else {
+      const createObservable = this.audioService.createSessionAudioFile(this.model);
+      this.file_subscription = createObservable.subscribe(
+        (event) => this.handleFileUpload(event),
+        error => this.warnings.showWarning(error)
+      )
+    }
+
   }
 
   onCancel(){
@@ -87,7 +95,30 @@ export class SessionAudioUpdateComponent implements OnInit {
     } 
   }
 
+  handleFileUpload(event){
+    const uploadInProgress = event.type === 1;
+    const uploadFinished = event.type === 4;
+    if (uploadInProgress){ //Update recorded upload-progress
+      this.fileUploadProgress = (event.loaded / event.total * 100)
+
+    } else if(uploadFinished){ //Route to newly created object
+      this.file_subscription.unsubscribe();
+      const sessionAudio: SessionAudio = event.body;
+      this.routeToSessionAudio(sessionAudio);
+    }
+  }
+
+  routeToSessionAudio(sessionAudio: SessionAudio){
+    const pathParams = {
+      isMainSession: sessionAudio.session_details.is_main_session_int,
+      sessionNumber: sessionAudio.session_details.session_number
+    }
+
+    this.routingService.routeToPath('sessionaudio', pathParams);
+  }
+
   ngOnDestroy(){
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
+    if (this.file_subscription) this.file_subscription.unsubscribe();
   }
 }

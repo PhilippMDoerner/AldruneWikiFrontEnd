@@ -12,7 +12,7 @@
             </h2>
         </div>
 
-        <div *ngIf="!isWaitingForResponse; else loading">
+        <div *ngIf="!fileUploadProgress; else uploadBar">
             <!-- Form -->
             <app-formly-formcontainer 
             [model]="model" 
@@ -40,4 +40,13 @@
     <h2 class="text-center">
         Uploading Session Audio File
     </h2>
+</ng-template>
+
+<ng-template #uploadBar>
+    <h4 class="text-center">File Upload Progress</h4>
+    <div class="progress">
+        <div class="progress-bar" role="progressbar" [attr.aria-valuenow]="fileUploadProgress" aria-valuemin="0" aria-valuemax="100" [style.width.%]="fileUploadProgress">
+            {{ fileUploadProgress | number: '1.0-1' }}%
+        </div>
+    </div>
 </ng-template>

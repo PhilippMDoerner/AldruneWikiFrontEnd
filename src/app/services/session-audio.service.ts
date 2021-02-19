@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpEvent } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
@@ -20,19 +20,21 @@ export class SessionAudioService {
     return this.http.get<SessionAudio>(url);
   }
 
-  @TransformObservable(SessionAudioObject)
-  createSessionAudioFile(sessionAudioModel: SessionAudio): Observable<SessionAudio>{
+  createSessionAudioFile(sessionAudioModel: SessionAudio): Observable<any>{
     const formData: FormData = convertSingleFileModelToFormData(sessionAudioModel, "audio_file");
-    return this.http.post<SessionAudio>(`${this.sessionAudioUrl}/`, formData);
+    return this.http.post<any>(`${this.sessionAudioUrl}/`, formData, {
+      reportProgress: true,
+      observe: 'events'
+    });
   }
 
-  @TransformObservable(SessionAudioObject)
-  updateSessionAudioFile(sessionAudioModel: SessionAudio): Observable<SessionAudio>{
+  updateSessionAudioFile(sessionAudioModel: SessionAudio): Observable<any>{
     const url = `${this.sessionAudioUrl}/pk/${sessionAudioModel.pk}`;
-    return this.http.put<SessionAudio>(url, sessionAudioModel);
+    const formData: FormData = convertSingleFileModelToFormData(sessionAudioModel, "audio_file");
+
+    return this.http.put<any>(url, formData);
   }
 
-  @TransformObservable(SessionAudioObject)
   deleteSessionAudioFile(sessionAudioEntry_pk: number): any{
     const url = `${this.sessionAudioUrl}/pk/${sessionAudioEntry_pk}`;
     return this.http.delete(url);
