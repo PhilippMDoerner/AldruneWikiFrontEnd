@@ -32,7 +32,7 @@ export function getRoutePath(router: Router, routeName: string, params = {}): st
         const variableNames: string[] = getPathVariableNames(variableRoutePath);
         for (let variableName of variableNames){
             if(!params.hasOwnProperty(variableName)) throw `Tried to create path for route ${routeName} but lacked parameter ${variableName}`;
-            if (params[variableName] === null) params[variableName] = "None";//TODO: Replace this with Constants Nonestring. Turn this into a service and move it out of Constants to be able to do so
+            if (params[variableName] === null) params[variableName] = Constants.NONE_STRING;
             variableRoutePath = variableRoutePath.replace(`:${variableName}`, params[variableName]);
         }
     }

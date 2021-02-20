@@ -63,14 +63,14 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
   ngOnInit(): void {
     this.encounter;
     this.isEncounterCreateState = this.encounter.pk == null;
-
+    console.log(this.encounter);
     if (this.isEncounterCreateState){
       this.encounter.author = this.tokenService.getCurrentUserPk();
     }
   }
 
   //Code About Encounter
-  onDescriptionUpdate(updatedDescription: string){ //TODO: Replace original onDescriptionUpdate with this upon finished implementation
+  onDescriptionUpdate(updatedDescription: string){
     const oldDescription = this.encounter.description;
 
     this.encounter.description = updatedDescription;
@@ -175,9 +175,9 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
   deleteEncounterConnection(encounter: Encounter, connection: EncounterConnection){
     this.encounterConnectionService.deleteEncounterConnection(connection.pk).pipe(first()).subscribe(
       response => {
-         //TODO: Refactor this entire function to use includes here to be more semantic
         const connectionIndex: number = encounter.encounterConnections.indexOf(connection);
-        if (connectionIndex > -1){
+        const encounterHasConnection = connectionIndex > -1;
+        if (encounterHasConnection){
           encounter.encounterConnections.splice(connectionIndex, 1);
         }
       },

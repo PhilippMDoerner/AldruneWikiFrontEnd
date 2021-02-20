@@ -29,8 +29,6 @@ export class DiaryentryArticleComponent implements OnInit {
 
   constructor(
     private diaryEntryService: DiaryentryService,
-    private encounterService: EncounterServiceService, //TODO: Remove after testing
-    private sessionService: SessionService,
     private route: ActivatedRoute,
     private warning: WarningsService,  
     public routingService: RoutingService,
@@ -67,12 +65,11 @@ export class DiaryentryArticleComponent implements OnInit {
     return authorString;
   }
 
-  //TODO: Doublecheck this
   deleteDiaryEntry(): void{
     this.diaryEntryService.deleteDiaryEntry(this.diaryEntry.pk).pipe(first()).subscribe(
       (response) => this.routingService.routeToPath('diaryentry-overview'),
-      error => console.log(error)//TODO: Replace this with "Warning";
-    )
+      error => this.warning.showWarning(error)
+    );
   }
 
   ngOnDestroy(){

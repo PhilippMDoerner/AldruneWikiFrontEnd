@@ -32,7 +32,6 @@ export class LocationAccordionComponent extends PermissionUtilityFunctionMixin i
     });
   }
 
-  //TODO: Finish Sublocation component
   onSublocationUpdate(updateText: string, sublocationIndex: number){
     const sublocationToUpdate: LocationObject = this.sublocations[sublocationIndex];
     const oldDescription = sublocationToUpdate.description;
