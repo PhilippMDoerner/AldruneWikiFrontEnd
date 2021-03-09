@@ -1,16 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Session } from 'inspector';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { DiaryEntry, DiaryEntryObject } from 'src/app/models/diaryentry';
-import { Encounter, EncounterObject } from 'src/app/models/encounter';
-import { SessionObject } from 'src/app/models/session';
+import { DiaryEntry } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
-import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
 import { RoutingService } from 'src/app/services/routing.service';
-import { SessionService } from 'src/app/services/session.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({

@@ -1,5 +1,6 @@
 <div class="form-group" [ngClass]="{'d-none': to.hidden}">
     <!-- Heading --> 
+    <!-- to = TemplateOptions -->
     <label for="datepicker">
         <strong>
             {{to.label}}
@@ -9,7 +10,7 @@
 
     <!-- Input -->
     <div class="input-group">
-        <input 
+        <input
         class="form-control" 
         placeholder="yyyy-mm-dd" 
         name="datepicker" 

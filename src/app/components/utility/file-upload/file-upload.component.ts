@@ -5,5 +5,4 @@ import { FieldType } from '@ngx-formly/core';
   selector: 'formly-field-file',
   templateUrl: './file-upload.component.html',
 })
-export class FormlyFieldFile extends FieldType {
-}
+export class FormlyFieldFile extends FieldType {}

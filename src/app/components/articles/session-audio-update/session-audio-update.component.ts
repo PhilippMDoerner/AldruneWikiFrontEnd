@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -10,8 +10,6 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
-import { HttpEvent } from '@angular/common/http';
-import { update } from 'lodash';
 
 @Component({
   selector: 'app-session-audio-update',
@@ -98,6 +96,8 @@ export class SessionAudioUpdateComponent implements OnInit {
   handleFileUpload(event){
     const uploadInProgress = event.type === 1;
     const uploadFinished = event.type === 4;
+    console.log("Handling File Upload!");
+    console.log(event);
     if (uploadInProgress){ //Update recorded upload-progress
       this.fileUploadProgress = (event.loaded / event.total * 100)
 

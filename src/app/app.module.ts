@@ -83,9 +83,6 @@ import { DiaryEntryEncounterListComponent } from './components/utility/diary-ent
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
 import { QuotefieldComponent } from './components/utility/quotefield/quotefield.component';
 
-// TODO: Fix tinymce URLs, make it so that they just link to an article to the same prefix, instead of a full url. 
-//          Update: This is not an issue of /wiki2. Somehow /wiki1 with the same configs as /wiki2 has different behaviour here
-// TODO: Handle Internet Connection Errors
 @NgModule({
   declarations: [
     AppComponent,
