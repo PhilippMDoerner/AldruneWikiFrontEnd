@@ -63,7 +63,14 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
     const responseObservable: any =  isFormInUpdateState ? this.diaryEntryService.updateDiaryEntry(this.model) : this.diaryEntryService.createDiaryEntry(this.model);
 
     responseObservable.pipe(first()).subscribe(
-      (diaryEntry: DiaryEntryObject) => this.routingService.routeToApiObject(diaryEntry),
+      (diaryEntry: DiaryEntryObject) => {
+        this.routingService.routeToPath('diaryentry2', {
+          sessionNumber: diaryEntry.session_details.session_number,
+          isMainSession: diaryEntry.session_details.is_main_session_int,
+          authorName: diaryEntry.author_details.name,
+          displayMode: "encounter"
+        });
+      },
       error => this.warnings.showWarning(error)
     );
   }

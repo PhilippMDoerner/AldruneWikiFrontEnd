@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { diaryEntryEncounterConnection, DiaryEntryEncounterConnectionObject } from 'src/app/models/diaryencounterconnection';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
@@ -29,11 +30,15 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     private warning: WarningsService,
     private encounterService: EncounterServiceService,
     private routingService: RoutingService,
+    private route: ActivatedRoute,
     private tokenService: TokenService,
     private diaryEntryEncounterConnectionService: DiaryentryEncounterConnectionService
   ) { }
 
   ngOnInit(){
+    const hasDisplayModeParam = !(this.route.snapshot.params['displayMode'] == null);
+    this.diaryEntryView = (hasDisplayModeParam) ? this.route.snapshot.params['displayMode'] === "diaryEntry" : true;
+
     for(const diaryEncounter of this.diaryEntry.encounters){
       const encounter: EncounterObject = new EncounterObject (diaryEncounter);
       this.encounters.push(encounter);
@@ -178,7 +183,6 @@ export class DiaryEntryEncounterListComponent implements OnInit{
    * @param rangeEndIndex - An index on the encounters array after rangeStartIndex.
    */
   async decrementOrderIndices(rangeStartIndex: number, rangeEndIndex: number): Promise<diaryEntryEncounterConnection[]>{
-    console.log(`Range Start: ${rangeStartIndex} - Range End ${rangeEndIndex}`);
     //Guard Clauses
     if(rangeStartIndex < 0) throw `IndexOutOfBoundsExceptions. You can not increment encounters at index 
     ${rangeStartIndex}, Indices must be positive!`;
