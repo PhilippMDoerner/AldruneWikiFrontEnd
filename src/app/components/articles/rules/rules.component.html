@@ -12,7 +12,7 @@
             <!-- Rules Panel Heading -->
             <h5 class="pointer col-12 justify-content-between d-flex align-items-center" (click)="togglePanel(i)"> 
                 <span>{{ rule.name }}</span>
-                <i [ngClass]="{'fa icon float-right': true, 'fa-plus': panelIsOpen(i), 'fa-minus': !panelIsOpen(i)}"></i>
+                <i [ngClass]="{'fa icon float-right': true, 'fa-chevron-down': panelIsOpen(i), 'fa-chevron-up': !panelIsOpen(i)}"></i>
             </h5>
 
             <!-- Rules Panel Content -->

@@ -13,8 +13,8 @@
                     <span class="encounter-title" [innerHTML]="encounter.name"></span>
                     <i [ngClass]="{
                         'fa float-right icon': true,
-                        'fa-plus': !panelIsOpen(i),
-                        'fa-minus': panelIsOpen(i)
+                        'fa-chevron-down': !panelIsOpen(i),
+                        'fa-chevron-up': panelIsOpen(i)
                     }"
                     ></i>
                 </div>
