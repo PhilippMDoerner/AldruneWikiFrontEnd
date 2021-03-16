@@ -1,17 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Character } from 'src/app/models/character';
-import { EncounterConnectionObject } from 'src/app/models/encounterconnection';
-import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
-import { QuoteObject, QuoteConnectionObject, Quote, QuoteConnection } from 'src/app/models/quote';
-import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { OverviewService } from 'src/app/services/overview.service';
-import { QuoteConnectionService } from 'src/app/services/quote-connection.service';
+import { QuoteObject, Quote } from 'src/app/models/quote';
 import { QuoteService } from 'src/app/services/quote.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -36,9 +28,6 @@ export class QuoteGalleryComponent extends PermissionUtilityFunctionMixin implem
 
   constructor(
     private quoteService: QuoteService,
-    private formlyService: MyFormlyService,
-    private quoteConnectionservice: QuoteConnectionService,
-    private overviewService: OverviewService,
     private warningsService: WarningsService,
     public routingService: RoutingService,
   ) { super() }
