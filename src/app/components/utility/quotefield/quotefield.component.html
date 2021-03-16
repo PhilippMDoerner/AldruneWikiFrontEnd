@@ -67,12 +67,42 @@
 
         <!-- Quote Refresh/Create/Edit/Delete Icons -->
         <div class="icon-container hide-icon mt-1" *ngIf="!inDeleteState; else deleteRequest">
-            <i class="fa fa-refresh fa-1-5x icon mx-3" [ngClass]="{'d-none': !enableRandomQuotes}" (click)="getNextRandomQuote()"></i>
-            <i class="fa fa-pencil fa-1-5x icon mx-3" [ngClass]="{'d-none': !userHasUpdatePermission()}" (click)="toggleEditState()"></i>
-            <i class="fa fa-plus fa-1-5x icon mx-3" [ngClass]="{'d-none': !userHasCreatePermission() || !enableCreatingQuotes}" (click)="toggleCreateState()"></i>
-            <i class="fa fa-trash fa-1-5x icon mx-3" [ngClass]="{'d-none': !userHasDeletePermission()}" (click)="inDeleteState=true"></i>
-            
-            <!-- Hyperlink to Quote field -->
+            <!-- Load Next Quote -->
+            <i 
+            class="fa fa-refresh fa-1-5x icon mx-3" 
+            [ngClass]="{'d-none': !enableRandomQuotes}" 
+            (click)="getNextRandomQuote()"
+            title="Load new quote"
+            ></i>
+            <!-- Edit Quote -->
+            <i 
+            class="fa fa-pencil fa-1-5x icon mx-3" 
+            [ngClass]="{'d-none': !userHasUpdatePermission()}" 
+            (click)="toggleEditState()"
+            title="Edit Quote"
+            ></i>
+            <!-- Create Quote -->
+            <i 
+            class="fa fa-plus fa-1-5x icon mx-3" 
+            [ngClass]="{'d-none': !userHasCreatePermission() || !enableCreatingQuotes}" 
+            (click)="toggleCreateState()"
+            title="Create Quote"
+            ></i>
+            <!-- Delete Quote -->
+            <i 
+            class="fa fa-trash fa-1-5x icon mx-3" 
+            [ngClass]="{'d-none': !userHasDeletePermission()}" 
+            (click)="inDeleteState=true"
+            title="Delete Quote"
+            ></i>
+            <!-- Copy to Clipboard -->
+            <i 
+            class="fa fa-clipboard fa-1-5x icon mx-3" 
+            (click)="copyQuoteToClipboard()"
+            title="Copy Quote to Clipboard"
+            ></i>
+
+            <!-- Hyperlink to Quote Overview -->
             <i 
             class="fa fa-th-list fa-1-5x icon mx-3" 
             title="See all quotes" 

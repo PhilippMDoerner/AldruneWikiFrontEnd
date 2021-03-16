@@ -13,8 +13,8 @@ import { QuoteConnectionService } from 'src/app/services/quote-connection.servic
 import { QuoteService } from 'src/app/services/quote.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { copyToClipboard } from 'src/app/utils/functions/copy-to-clipboard';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
-import { createNew } from 'typescript';
 
 @Component({
   selector: 'app-quotefield',
@@ -160,15 +160,24 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
 
   hasConnection(character: OverviewItem){
     for(let connection of this.quote.connections){
-      if (connection.character_details.pk === character.pk){
-        return true;
-      }
+      if (connection.character_details.pk === character.pk) return true;
     }
     return false;
   }
 
   resetBaseQuoteConnection(){
     this.baseQuoteConnection = new QuoteConnectionObject();
+  }
+
+  copyQuoteToClipboard(){
+    console.log(this.quote);
+    const quoteLines = this.quote.quote.split("<br />");
+    const modifiedQuoteLines = quoteLines.map( (line: string) => `\>${line.trim().trimStart()}`);
+    const modifiedQuote = modifiedQuoteLines.join("<br />");
+
+    const descriptionSuffix = `- ${this.quote.description} `;
+    const text = `${modifiedQuote}\n>${descriptionSuffix}`;
+    copyToClipboard(text);
   }
 
   deleteQuote(){
