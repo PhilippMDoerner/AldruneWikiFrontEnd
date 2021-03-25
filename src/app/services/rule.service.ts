@@ -30,11 +30,11 @@ export class RuleService {
 
   @TransformObservable(RuleObject)
   updateRule(rule: Rule): Observable<Rule>{
-    return this.http.put<Rule>(`${this.rulesUrl}/${rule.name}`, rule);
+    return this.http.put<Rule>(`${this.rulesUrl}/pk/${rule.id}`, rule);
   }
 
   @TransformObservable(RuleObject)
   deleteRule(rule_pk: number): Observable<Rule>{
-    return this.http.delete<Rule>(`${this.rulesUrl}/${rule_pk}`);
+    return this.http.delete<Rule>(`${this.rulesUrl}/pk/${rule_pk}`);
   }
 }

@@ -33,11 +33,13 @@ export class SpellsComponent implements OnInit {
     );
   }
 
-  panelIsOpen(i: number): boolean{
-    return this.panelIsOpenArray[i];
+  addSpell(){
+    const newSpell = new SpellObject();
+    newSpell.name = "New Spell";
+    this.spells.push(newSpell);
   }
 
-  togglePanel(i: number){
-    this.panelIsOpenArray[i] = !this.panelIsOpenArray[i];
+  onSpellDelete(index: number){
+    this.spells.splice(index, 1);
   }
 }

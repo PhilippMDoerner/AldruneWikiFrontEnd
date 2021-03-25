@@ -1,5 +1,5 @@
 export interface Rule{
-    pk?: number,
+    id?: number,
     name: string,
     creation_datetime?: string,
     update_datetime?: string,
@@ -7,7 +7,7 @@ export interface Rule{
 }
 
 export class RuleObject implements Rule{
-    pk?: number;
+    id?: number;
     name: string;
     creation_datetime?: string;
     update_datetime?: string;

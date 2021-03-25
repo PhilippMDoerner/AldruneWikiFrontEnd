@@ -13,7 +13,8 @@ export interface Spell extends ArticleObject{
     saving_throw: string,
     damage: string,
     description: string,
-    classes: string[]
+    classes: string[],
+    id?: number,
 }
 
 export class SpellObject implements Spell{
@@ -30,7 +31,7 @@ export class SpellObject implements Spell{
     description: string;
     classes: string[]
     name?: string;
-    pk?: number;
+    id?: number;
 
     constructor(object?: Spell){
         if (object) Object.assign(this, object)

@@ -35,11 +35,13 @@ export class RulesComponent implements OnInit {
     )
   }
 
-  panelIsOpen(i: number): boolean{
-    return this.panelIsOpenArray[i];
+  addRule(){
+    const newRule = new RuleObject();
+    newRule.name = "New Rule";
+    this.rules.push(newRule);
   }
 
-  togglePanel(i: number){
-    this.panelIsOpenArray[i] = !this.panelIsOpenArray[i];
+  onRuleDelete(index: number){
+    this.rules.splice(index, 1);
   }
 }

@@ -26,6 +26,10 @@ export interface FormlyCustomStringSelectConfig extends FormlyInterface{
     options: string[]
 }
 
+export interface FormlyCustomSelectConfig extends FormlyInterface{
+    options: {label: String, value: String | Number}[]
+}
+
 export interface FormlyCheckboxConfig extends FormlyInterface{
     defaultValue: boolean
 }

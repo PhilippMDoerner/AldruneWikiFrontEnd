@@ -7,18 +7,18 @@
         </div>
 
         <!-- Rules -->
-        <div *ngFor="let rule of rules; let i = index" class="card row mb-3 px-4 pt-3 pb-1">
+        <div *ngFor="let rule of rules; let i = index">
+            <app-rule
+            [rule] = "rule"
+            [index] = "i"
+            (deleteRule) = onRuleDelete(i)
+            ></app-rule>
+        </div>
 
-            <!-- Rules Panel Heading -->
-            <h5 class="pointer col-12 justify-content-between d-flex align-items-center" (click)="togglePanel(i)"> 
-                <span>{{ rule.name }}</span>
-                <i [ngClass]="{'fa icon float-right': true, 'fa-chevron-down': panelIsOpen(i), 'fa-chevron-up': !panelIsOpen(i)}"></i>
-            </h5>
-
-            <!-- Rules Panel Content -->
-            <div class="col-12" [ngbCollapse]="panelIsOpen(i)">
-                <hr class="white-separator">
-                <div [innerHTML]="rule.description"></div>
+        <!-- Insert new Rule -->
+        <div class="expand row justify-content-center">
+            <div class="btn btn-secondary" (click)="addRule()">
+                <i class="fa fa-3x fa-plus pointer" title="Add Rule"></i>
             </div>
         </div>
 

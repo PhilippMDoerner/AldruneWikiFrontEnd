@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormlyCheckboxConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewSelectConfig } from "src/app/models/formly";
+import { FormlyCheckboxConfig, FormlyCustomSelectConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewSelectConfig } from "src/app/models/formly";
 import { FormlyField, FormlyFieldConfig } from "@ngx-formly/core";
 import { OverviewService } from './overview.service';
 
@@ -41,6 +41,26 @@ export class MyFormlyService {
         validation: validatorList
       }
     };
+  }
+
+  customSelect(config: FormlyCustomSelectConfig): FormlyFieldConfig{
+    const validatorList = (config.validators) ? config.validators : [];
+    if (config.required === true ) validatorList.push('required');
+
+    return {
+      key: config.key,
+      type: "select",
+      className: config.className,
+      hideExpression: (config.hide) ? config.hide : false,
+      templateOptions:{
+        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+        options: config.options,
+        required: (typeof config.required === "boolean") ? config.required : true,
+      },
+      validators: {
+        validation: validatorList,
+      },
+    }
   }
 
   customStringSelect(config: FormlyCustomStringSelectConfig): FormlyFieldConfig{

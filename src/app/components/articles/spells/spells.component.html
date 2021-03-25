@@ -4,85 +4,20 @@
 
 
         <!-- Spells -->
-        <div *ngFor="let spell of spells; let i = index" class="card mb-3 px-4 pt-3 pb-1">
+        <div *ngFor="let spell of spells; let i = index">
+            <app-spell
+            [index] = "i"
+            [spell] = "spell"
+            (deleteSpell) = "onSpellDelete(i)"
+            ></app-spell>
+        </div>
 
-            <!-- Spell Panel Heading -->
-            <h5 class="pointer justify-content-between d-flex align-items-center" (click)="togglePanel(i)"> 
-                <strong>
-                    {{spell.name}}
-                    <span *ngIf="spell.concentration" class="ml-2">(C)</span>
-                    <span *ngIf="spell.ritual" class="ml-2">(R)</span>
-                    <div class="ml-4 d-inline">
-                        <span *ngFor="let class of spell.classes" class="badge badge-secondary mr-3">{{class}}</span>
-                    </div>
-                </strong>
 
-                <i [ngClass]="{'fa icon float-right': true, 'fa-chevron-down': panelIsOpen(i), 'fa-chevron-up': !panelIsOpen(i)}"></i>
-            </h5>
-
-            <!-- Rules Panel Content -->
-            <div class="col-12" [ngbCollapse]="panelIsOpen(i)">
-                <div class="row">
-                    <hr class="col whiteline">
-                </div>
-                <div class="row">
-                    <!-- Spell Level -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">SPELL LEVEL</strong>
-                        <div class="column-body" *ngIf="spell.spell_level"> {{ (spell.spell_level) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.spell_level"> Placeholder </div>
-                    </div>
-                    <!-- Casting Time -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">CASTING TIME</strong>
-                        <div class="column-body" *ngIf="spell.casting_time"> {{ (spell.casting_time) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.casting_time"> Placeholder </div>
-                    </div>
-                    <!-- Range/Area -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">RANGE/AREA</strong>
-                        <div class="column-body" *ngIf="spell.range"> {{ (spell.range) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.range"> Placeholder </div>
-                    </div>
-                    <!-- Components -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">COMPONENTS</strong>
-                        <div class="column-body" *ngIf="spell.components"> {{ (spell.components) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.components"> Placeholder </div>
-                    </div>
-                    <!-- Duration -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">DURATION</strong>
-                        <div class="column-body" *ngIf="spell.duration"> {{ (spell.duration) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.duration"> Placeholder </div>
-                    </div>
-                    <!-- School -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">SCHOOL</strong>
-                        <div class="column-body" *ngIf="spell.school"> {{ (spell.school) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.school"> Placeholder </div>
-                    </div>
-                    <!-- Attack/Save -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">ATTACK/SAVE</strong>
-                        <div class="column-body" *ngIf="spell.saving_throw"> {{ (spell.saving_throw) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.saving_throw"> Placeholder </div>
-                    </div>
-                    <!-- Damage/Effect -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">EFFECT</strong>
-                        <div class="column-body" *ngIf="spell.damage"> {{ (spell.damage) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.damage"> Placeholder </div>
-                    </div>
-                    <!-- Description -->
-                    <div class="col-12 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">DESCRIPTION</strong>
-                        <div class="column-body" [innerHTML]="spell.description"></div>
-                    </div>
-                    
-                </div>
+        <!-- Insert new Rule -->
+        <div class="expand row justify-content-center">
+            <div class="btn btn-secondary" (click)="addSpell()">
+                <i class="fa fa-3x fa-plus pointer" title="Add Spell"></i>
             </div>
-
         </div>
 
         <div class="btn btn-secondary" routerLink="{{routingService.getRoutePath('home1')}}">
