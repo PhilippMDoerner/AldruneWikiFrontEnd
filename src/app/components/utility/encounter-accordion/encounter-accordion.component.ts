@@ -1,16 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Character } from 'src/app/models/character';
-import { diaryEntryEncounterConnection } from 'src/app/models/diaryencounterconnection';
-import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { EncounterObject, Encounter } from "src/app/models/encounter";
 import { EncounterConnectionObject, EncounterConnection } from 'src/app/models/encounterconnection';
 import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
-import { DiaryentryEncounterConnectionService } from 'src/app/services/diaryentry-encounter-connection.service';
-import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { EncounterConnectionService } from 'src/app/services/encounter-connection.service';
 import { EncounterServiceService } from "src/app/services/encounter/encounter-service.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
