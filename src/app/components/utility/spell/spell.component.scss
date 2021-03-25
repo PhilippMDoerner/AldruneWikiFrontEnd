@@ -1,0 +1,49 @@
+table{
+    background-color: transparent;
+}
+
+.card{
+    background-color: rgba(27, 31, 34, 0.95) !important;
+    border-color: grey;
+}
+
+.card-title{
+    font-size: 1.3rem;
+}
+
+.whiteline{
+    background-color: white;
+    margin: 0 0 1rem 0;
+}
+
+.column-heading{
+    background-color: hsla(0,0%,100%,.05);
+    padding: 0.75rem;
+}
+
+.column-body{
+    background-color: rgba(27,31,34,.95);
+    padding: 0.75rem;
+}
+
+.spell{
+    padding: 0;
+}
+
+.placeholder{
+    color: transparent;
+}
+
+.border-bottom-grey{
+    border-bottom: 1px grey solid;
+}
+
+@media(max-width:767px){
+    .column-heading{
+        font-size: medium;
+    }
+}
+
+#edit-section{
+    margin-bottom: 1rem;
+}

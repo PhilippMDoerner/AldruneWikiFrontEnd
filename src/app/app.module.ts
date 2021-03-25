@@ -82,6 +82,8 @@ import { DiaryEntryEncounterComponent } from './components/utility/diary-entry-e
 import { DiaryEntryEncounterListComponent } from './components/utility/diary-entry-encounter-list/diary-entry-encounter-list.component';
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
 import { QuotefieldComponent } from './components/utility/quotefield/quotefield.component';
+import { SpellComponent } from './components/utility/spell/spell.component';
+import { RuleComponent } from './components/utility/rule/rule.component';
 
 @NgModule({
   declarations: [
@@ -151,6 +153,8 @@ import { QuotefieldComponent } from './components/utility/quotefield/quotefield.
     DiaryEntryEncounterListComponent,
     QuoteOverviewComponent,
     QuotefieldComponent,
+    SpellComponent,
+    RuleComponent,
   ],
   imports: [
     BrowserModule,
