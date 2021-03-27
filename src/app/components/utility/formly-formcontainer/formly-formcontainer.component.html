@@ -5,7 +5,7 @@
         Cancel
     </div>
     <div 
-    class="btn btn-secondary" 
+    class="btn btn-dark" 
     [ngClass]="{'d-none': form.valid, 'strikethrough': !form.valid}"
     placement="top" 
     ngbTooltip="The form is not yet correctly filled out!"
@@ -14,7 +14,7 @@
         Submit *
     </div>
 
-    <div class="btn btn-secondary" (click)="onSubmit()" [ngClass]="{'d-none': !form.valid}">
+    <div class="btn btn-primary" (click)="onSubmit()" [ngClass]="{'d-none': !form.valid}">
         Submit
     </div>
 </form>

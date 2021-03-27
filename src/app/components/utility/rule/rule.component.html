@@ -12,13 +12,16 @@
             <hr class="white-separator mb-2">
 
             <!-- Heading -->
-            <h4 class="d-inline"> {{ rule.name }}</h4>
-    
-            <!-- Edit Toggler -->
-            <div class="btn btn-secondary float-right" (click)="toggleFormState()">
-                <i class="fa fa-pencil" *ngIf="!isCreateState && !isUpdateState"></i>
-                <i class="fa fa-times" *ngIf="isCreateState || isUpdateState"></i>
+            <div class="mb-3">
+                <h4 class="d-inline"> {{ rule.name }}</h4>
+        
+                <!-- Edit Toggler -->
+                <div class="btn btn-secondary float-right" (click)="toggleFormState()">
+                    <i class="fa fa-pencil" *ngIf="!isCreateState && !isUpdateState"></i>
+                    <i class="fa fa-times" *ngIf="isCreateState || isUpdateState"></i>
+                </div>
             </div>
+
 
             <!-- Body -->
             <div [innerHTML]="rule.description" *ngIf="!isUpdateState && !isCreateState; else formField"></div>
