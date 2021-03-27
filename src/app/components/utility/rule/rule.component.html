@@ -5,23 +5,25 @@
         <i [ngClass]="{'fa icon float-right': true, 'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}"></i>
     </h5>
 
-
-    <!-- Separator + Edit Toggler -->
-    <div class="col-12" *ngIf="isOpen">
-        <hr class="white-separator mb-2">
-
-        <!-- Edit Toggler -->
-        <div class="btn btn-secondary float-right" (click)="toggleFormState()">
-            <i class="fa fa-pencil" *ngIf="!isCreateState && !isUpdateState"></i>
-            <i class="fa fa-times" *ngIf="isCreateState || isUpdateState"></i>
-        </div>
-    </div>
-
     <!-- Rules Panel Content -->
-    <div class="col-12" [ngbCollapse]="!isOpen">
-        <div [innerHTML]="rule.description" *ngIf="!isUpdateState && !isCreateState; else formField"></div>
+    <div class="mb-3" [ngbCollapse]="!isOpen">
+        <div class="col-12">
+            <!-- Separator -->
+            <hr class="white-separator mb-2">
 
-        <div class="mb-3">
+            <!-- Heading -->
+            <h4 class="d-inline"> {{ rule.name }}</h4>
+    
+            <!-- Edit Toggler -->
+            <div class="btn btn-secondary float-right" (click)="toggleFormState()">
+                <i class="fa fa-pencil" *ngIf="!isCreateState && !isUpdateState"></i>
+                <i class="fa fa-times" *ngIf="isCreateState || isUpdateState"></i>
+            </div>
+
+            <!-- Body -->
+            <div [innerHTML]="rule.description" *ngIf="!isUpdateState && !isCreateState; else formField"></div>
+
+            <!-- Delete Toggler -->
             <app-delete-toggle
             [deleteMessage] = "'Delete this rule ?'"
             (deleteEvent) = "onDelete()"
