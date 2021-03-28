@@ -28,6 +28,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   state: string;
   extraMessage: string;
   parameter_subscription: Subscription;
+  hasConfirmedLogin: boolean = false;
 
   constructor(
     private formlyService: MyFormlyService,
@@ -52,7 +53,9 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit(){
     this.tokenService.getJWTToken(this.model).pipe(first()).subscribe( jwtTokens => {
       this.tokenService.setTokens(jwtTokens);
-      this.routingService.routeToPath('home1');
+      //Starts the transition to home. The animation-end will trigger a transitionend event which 
+      //then routes to home
+      this.hasConfirmedLogin = true;
     }, error => {
       this.warnings.showWarning(error);
       this.resetModel();
@@ -61,6 +64,15 @@ export class LoginComponent implements OnInit, OnDestroy {
       }
     });
 
+  }
+
+  routeToStartPage(){
+    if(this.hasConfirmedLogin) this.routingService.routeToPath('home1');
+  }
+
+  log(event){
+    console.log(event);
+    console.log(event.target);
   }
 
   resetModel(){
