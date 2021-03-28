@@ -5,7 +5,7 @@ import { ImageUploadService } from "src/app/services/image/image-upload.service"
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { first } from 'rxjs/operators';
+import { first, throwIfEmpty } from 'rxjs/operators';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -24,6 +24,9 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   @Input() article_pk: number;
   visibleImageIndex: number = 0;
   componentState: string = Constants.displayState;
+  slideRight: String = "right";
+  slideLeft: String = "left";
+  imageSlideDirection: String;
 
   model: Image;
   form: FormGroup = new FormGroup({});
@@ -51,10 +54,20 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   @HostListener('document:keyup', ['$event'])
   changeMainImage(event): void{
     if(event.code === "ArrowRight"){
-      this.incrementVisibleImageIndex();
+      this.showNextImage();
     } else if (event.code === "ArrowLeft"){
-      this.decreaseVisibleImageIndex();
+      this.showPriorImage();
     }
+  }
+
+  showNextImage(): void{
+    this.incrementVisibleImageIndex();
+    this.imageSlideDirection = this.slideLeft;
+  }
+
+  showPriorImage(): void{
+    this.decreaseVisibleImageIndex();
+    this.imageSlideDirection = this.slideRight;
   }
 
   // Main Image Gallery controls

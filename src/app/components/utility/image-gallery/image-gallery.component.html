@@ -6,7 +6,7 @@
         class="col-md-1 col-1 fa fa-arrow-left fa-1-5x icon"
         [ngClass]="{'mouseoverVisible': !isLastImage(), 'deactivated-icon d-none': isLastImage()}" 
         aria-hidden="true"
-        (click)="decreaseVisibleImageIndex()"
+        (click)="showPriorImage()"
         ></i>
     
         <!-- Image Container -->
@@ -14,10 +14,17 @@
     
             <!-- Images -->
             <div *ngIf="hasImages(); else defaultImage">
-                <a [href]="constants.wikiUrl + image.image"
+                <a 
+                class ="animate__animated"
+                [href]="constants.wikiUrl + image.image"
                 *ngFor="let image of images; let i = index"
                 (keydown)="changeMainImage($event)"
-                [ngClass]="{'main-image': i === visibleImageIndex, 'side-image': i !== visibleImageIndex}">
+                [ngClass]="{
+                    'main-image': i === visibleImageIndex, 
+                    'side-image': i !== visibleImageIndex,
+                    'animate__slideInRight': imageSlideDirection === slideRight,
+                    'animate__slideInLeft' : imageSlideDirection === slideLeft
+                }">
                     <img title="None" class="gallery-image" [src]="constants.wikiUrl + image.image" alt="">
                 </a>
             </div>
@@ -58,7 +65,7 @@
         class="col-md-1 col-1 fa fa-arrow-right fa-1-5x icon"
         [ngClass]="{'mouseoverVisible': !isLastImage(), 'deactivated-icon d-none': isLastImage()}" 
         aria-hidden="true" 
-        (click)="incrementVisibleImageIndex()"
+        (click)="showNextImage()"
         ></i>
     </div>
     
