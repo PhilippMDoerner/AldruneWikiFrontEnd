@@ -1,8 +1,7 @@
-import { Component, EventEmitter, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
-import { Observable, Subject } from 'rxjs';
-import { Constants } from './app.constants';
+import { Subject } from 'rxjs';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { RoutingService } from './services/routing.service';
 import { WarningsService } from './services/warnings.service';
 
@@ -14,6 +13,8 @@ import { WarningsService } from './services/warnings.service';
 export class AppComponent implements OnInit{
   title = 'AldruneWiki';
   outsideClickSubject: Subject<any> = new Subject();
+
+  @ViewChild('routerOutlet') routerOutlet: ElementRef;
 
   constructor(
     public routingService: RoutingService,
@@ -33,8 +34,14 @@ export class AppComponent implements OnInit{
   routeToHome(event: any){
     if (event.target.attributes.id){
       const clickTargetId = event.target.attributes.id.nodeValue;
-      if (clickTargetId === "background-div"){
-        this.routingService.routeToPath('home2');
+      const isClickOnBackground: boolean = clickTargetId === "background-div";
+      const mainCard: HTMLElement = document.querySelector('.main');
+      const hasMainCard: boolean = !(mainCard == null);
+      if (isClickOnBackground && hasMainCard){
+        animateElement(mainCard, 'fadeOut')
+          .then(() => this.routingService.routeToPath('home2'));
+      } else if (isClickOnBackground){
+        this.routingService.routeToPath('home2')
       }
     }
   }
