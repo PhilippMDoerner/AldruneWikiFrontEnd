@@ -5,6 +5,13 @@
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 @import '~@fortawesome/fontawesome-free/scss/solid';
 
+//Animations
+@import '~animate.css/animate.min';
+
+.main.animate__animated.animate__zoomIn{
+	--animate-duration: 0.35s;
+}
+
 // Overwriting leaflet CSS
 h5.popup-heading{
 	color: black;
@@ -185,6 +192,7 @@ a:hover{
     padding: 2.5rem 2.5rem 5rem 2.5rem;
     color: white;
 	font-size: 18px;
+	transition: height 0.2s ease-in;
 }
 
 article{
