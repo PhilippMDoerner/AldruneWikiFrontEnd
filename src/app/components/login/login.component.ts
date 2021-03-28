@@ -57,11 +57,13 @@ export class LoginComponent implements OnInit, OnDestroy {
       //then routes to home
       this.hasConfirmedLogin = true;
     }, error => {
-      this.warnings.showWarning(error);
-      this.resetModel();
       if(error.status === 401){
         this.routingService.routeToPath('login-state', {state: 'invalid-login'}); 
+      } else {
+        this.warnings.showWarning(error);
       }
+
+      this.resetModel();
     });
 
   }

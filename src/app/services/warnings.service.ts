@@ -17,6 +17,7 @@ export class WarningsService {
   constructor() { }
 
   showWarning(error: number | any){
+    console.log(error);
     if (typeof error !== "number" && (!error.hasOwnProperty("status") || !error.hasOwnProperty("error"))) throw "Invalid error input to show warning";
 
     const errorStatus: number = (typeof error !== "number") ? error.status : error;
@@ -34,10 +35,18 @@ export class WarningsService {
 
     for(let formField in httpErrorObject.error){
       httpErrorMessages += `  ${formField}\n`;
-      const formFieldErrors: string[] = httpErrorObject.error[formField];
-      formFieldErrors.forEach(errorMessage => {
+      const isSingleErrorMessage = typeof httpErrorObject.error[formField] === "string";
+
+      if(!isSingleErrorMessage){
+        const formFieldErrors: string[] = httpErrorObject.error[formField];
+        formFieldErrors.forEach(errorMessage => {
+          httpErrorMessages += `    - ${errorMessage} \n`;
+        });
+      } else {
+        const errorMessage = httpErrorObject.error[formField];
         httpErrorMessages += `    - ${errorMessage} \n`;
-      });
+      }
+
     }
 
     return httpErrorMessages;
