@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1616934762078,
+  "timestamp": 1616957849913,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -14,12 +14,12 @@
         "/4.d5c837075df5a8484b9c.js",
         "/favicon.ico",
         "/index.html",
-        "/main.685bbcbcb3149adae410.js",
+        "/main.88a2b63668ddc6700372.js",
         "/manifest.webmanifest",
         "/polyfills.00e02af16340fdc82052.js",
         "/runtime.6076814ef49a1a1583c0.js",
         "/scripts.bf128fa19cb1f1099bb9.js",
-        "/styles.77343cbf7d6448894e67.css"
+        "/styles.dd0bfb419255b213457d.css"
       ],
       "patterns": [
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic01\\.jpg",
@@ -145,17 +145,17 @@
     "/fontawesome-webfont.8b43027f47b20503057d.eot": "d980c2ce873dc43af460d4d572d441304499f400",
     "/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/fontawesome-webfont.f691f37e57f04c152e23.woff": "28b782240b3e76db824e12c02754a9731a167527",
-    "/index.html": "e5e68093febc88c2afc6a06d8e4bf4d7b942c417",
+    "/index.html": "1c05722777672fe1b547c039315ceaab8b7cac98",
     "/layers-2x.8f2c4d11474275fbc161.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/layers.416d91365b44e4b4f477.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/main.685bbcbcb3149adae410.js": "d9bc952e1e48a69c53fe78d531539acecc8828ae",
+    "/main.88a2b63668ddc6700372.js": "13768cdafa27a14dffd2290c5a391a1f988f3873",
     "/manifest.webmanifest": "116c35892aa2a2a2ae967202ecd0a917f9fe39db",
     "/marker-icon.2b3e1faf89f94a483539.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/overlay.eb1c6ead73ba2c71d71a.png": "428cb1e28c236e7a48194c7469347fe5a5e0caef",
     "/polyfills.00e02af16340fdc82052.js": "dbc502f030c7bb83c7caa1feee7aff990831f7d9",
     "/runtime.6076814ef49a1a1583c0.js": "60542d45ef1f7bfeb255f45ea6a167ec92d2cc96",
     "/scripts.bf128fa19cb1f1099bb9.js": "6d59ec80d1b35c739545d443be90856459d0f015",
-    "/styles.77343cbf7d6448894e67.css": "c707aa507a00f3c05351d5ba04ad8e9fa17f2440"
+    "/styles.dd0bfb419255b213457d.css": "531ad915f03bc582ad0c1082f87098647df4897b"
   },
   "navigationUrls": [
     {
