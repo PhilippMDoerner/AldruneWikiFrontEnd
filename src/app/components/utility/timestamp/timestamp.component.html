@@ -18,7 +18,7 @@
 </div>
 
 <ng-template #deleteRequest>
-    <div class="row">
+    <div class="row animate__animated" [ngClass]="{'animate__slideInRight': isInDeleteState}">
         <div class="col-lg-2 col-0"></div>
         <div class="col-lg-7 col-12 timestamp-box">
             <span class="ml-2">Delete Timestamp?</span> 
