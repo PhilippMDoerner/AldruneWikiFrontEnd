@@ -16,6 +16,7 @@ import { first } from 'rxjs/operators';
 })
 export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
   listItems: OverviewItemObject[];
+  isInitialAnimationFinished: boolean = false;
 
   constants: any = Constants;
   overviewImages = {

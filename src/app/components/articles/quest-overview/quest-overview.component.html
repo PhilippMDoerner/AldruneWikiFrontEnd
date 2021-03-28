@@ -1,4 +1,4 @@
-<div class="main">
+<div class="main" [ngClass]="{'animate__animated animate__zoomIn': !isInitialAnimationFinished}" (transitionend)="isInitialAnimationFinished = true">
     <article *ngIf="quests; else loading" class="container">
         <div *ngFor="let questTaker of quests">
             <div class="mb-3 mx-0 row">

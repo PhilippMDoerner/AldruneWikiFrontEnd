@@ -1,4 +1,4 @@
-<div class="main">
+<div class="main" [ngClass]="{'animate__animated animate__zoomIn': !isInitialAnimationFinished}" (transitionend)="isInitialAnimationFinished = true">
     <article *ngIf="listItems; else loading" class="pr-4 pl-4 container">
         <!-- Heading -->
         <div class="row">

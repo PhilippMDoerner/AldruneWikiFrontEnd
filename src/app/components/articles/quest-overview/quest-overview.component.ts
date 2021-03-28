@@ -17,6 +17,7 @@ export class QuestOverviewComponent implements OnInit {
   filterStateTypes: string[];
   filterStates: object;
   constants: any = Constants;
+  isInitialAnimationFinished: boolean = false;
 
   private quest_subscription: Subscription;
 

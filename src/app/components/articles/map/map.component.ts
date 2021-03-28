@@ -1,10 +1,10 @@
-import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { ExtendedMap, MapObject } from 'src/app/models/map';
-import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
+import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { MapService } from 'src/app/services/map.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -20,6 +20,7 @@ export class MapComponent implements OnInit, OnDestroy {
   currentMap: ExtendedMap;
   constants: any = Constants;
 
+  isInitialAnimationFinished: boolean = false;
   //Must be ViewChildren instead of ViewChild. Otherwise the Element is not loaded in ngAfterViewInit.
   //That is because the ngIf on <article> leads to the element not being loaded in time, see the following link
   // https://stackoverflow.com/questions/34947154/angular-2-viewchild-annotation-returns-undefined
