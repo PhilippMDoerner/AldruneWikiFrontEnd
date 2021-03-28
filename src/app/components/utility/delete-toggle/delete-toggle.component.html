@@ -1,8 +1,8 @@
 <div class="float-right" [ngClass]="{'d-none': !userHasDeletePermission()}">
-    <div *ngIf="!isInDeleteState" class="btn btn-outline-danger" (click)="toggleDeleteState()">
+    <div *ngIf="!isInDeleteState" class="btn btn-outline-danger animate__animated animate__flipInY" (click)="toggleDeleteState()">
         <i class="fa fa-trash"></i>
     </div>
-    <div *ngIf="isInDeleteState" class="delete-request">
+    <div *ngIf="isInDeleteState" class="delete-request animate__animated animate__flipInY">
         <span class="mr-3"> <strong>{{deleteMessage}}</strong> </span>  
         <div class="btn btn-danger float-right mr-2" (click)="emitDeleteEvent()"> Yes </div>
         <div class="btn btn-secondary float-right" (click)="toggleDeleteState()"> No </div>
