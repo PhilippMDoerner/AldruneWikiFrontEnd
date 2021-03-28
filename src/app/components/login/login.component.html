@@ -1,8 +1,4 @@
-<div 
-class="main animate__animated" 
-[ngClass]="{'animate__zoomOutDown' : hasConfirmedLogin, 'animate__backInUp': !hasConfirmedLogin}"
-(animationend) = "routeToStartPage()"
->
+<div class="main" #loginMainCard>
     <article>
         <h1>Log In</h1>
         <div class="mb-3 text-warning">{{extraMessage}}</div>

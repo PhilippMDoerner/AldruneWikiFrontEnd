@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -10,13 +10,14 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator'
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   model: User;
   form = new FormGroup({});
@@ -24,6 +25,8 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.formlyService.genericInput({key: 'username', placeholder: 'Username'}),
     this.formlyService.genericPasswordInput({key: 'password'})
   ]
+
+  @ViewChild('loginMainCard') loginMainCard: ElementRef;
 
   state: string;
   extraMessage: string;
@@ -46,6 +49,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.model = {username: null, password: null};
   }
 
+  ngAfterViewInit(): void {
+    animateElement(this.loginMainCard.nativeElement, 'backInUp');
+  }
+
   submitOnEnterPress(keyDownEvent){
     if (keyDownEvent.key === "Enter") this.onSubmit();
   }
@@ -53,9 +60,8 @@ export class LoginComponent implements OnInit, OnDestroy {
   onSubmit(){
     this.tokenService.getJWTToken(this.model).pipe(first()).subscribe( jwtTokens => {
       this.tokenService.setTokens(jwtTokens);
-      //Starts the transition to home. The animation-end will trigger a transitionend event which 
-      //then routes to home
-      this.hasConfirmedLogin = true;
+      animateElement(this.loginMainCard.nativeElement, 'zoomOutDown')
+        .then(() => this.routingService.routeToPath('home1'));
     }, error => {
       if(error.status === 401){
         this.routingService.routeToPath('login-state', {state: 'invalid-login'}); 
@@ -66,15 +72,6 @@ export class LoginComponent implements OnInit, OnDestroy {
       this.resetModel();
     });
 
-  }
-
-  routeToStartPage(){
-    if(this.hasConfirmedLogin) this.routingService.routeToPath('home1');
-  }
-
-  log(event){
-    console.log(event);
-    console.log(event.target);
   }
 
   resetModel(){
