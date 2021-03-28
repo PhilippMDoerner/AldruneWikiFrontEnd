@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { MapService } from 'src/app/services/map.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 
 @Component({
   selector: 'app-map',
@@ -25,6 +26,8 @@ export class MapComponent implements OnInit, OnDestroy {
   //That is because the ngIf on <article> leads to the element not being loaded in time, see the following link
   // https://stackoverflow.com/questions/34947154/angular-2-viewchild-annotation-returns-undefined
   @ViewChildren('mapChoice') mapChoice: QueryList<any>;
+
+  @ViewChild('mapMainCard') mapMainCard: ElementRef;
 
   parameter_subscription: Subscription;
 
@@ -56,6 +59,8 @@ export class MapComponent implements OnInit, OnDestroy {
     this.mapChoice.changes.pipe(first()).subscribe((components: QueryList<any>) =>{
       this.setInitialMapChoiceValue();
     })
+
+    animateElement(this.mapMainCard.nativeElement, 'zoomIn');
   }
 
   setInitialMapChoiceValue(): void{

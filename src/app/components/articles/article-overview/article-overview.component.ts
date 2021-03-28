@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
 import { Router } from '@angular/router';
-
-import { Observable, Subscription } from 'rxjs';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
+import { Observable } from 'rxjs';
 import { OverviewService } from 'src/app/services/overview.service';
 import { Constants } from 'src/app/app.constants';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
@@ -14,9 +14,11 @@ import { first } from 'rxjs/operators';
   templateUrl: './article-overview.component.html',
   styleUrls: ['./article-overview.component.scss'],
 })
-export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
+export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, AfterViewInit {
   listItems: OverviewItemObject[];
   isInitialAnimationFinished: boolean = false;
+
+  @ViewChild('overviewMainCard') overviewMainCard: ElementRef;
 
   constants: any = Constants;
   overviewImages = {
@@ -51,6 +53,10 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
       (listItems: OverviewItemObject[]) => this.listItems = listItems, 
       error => this.routingService.routeToErrorPage(error)
     );
+  }
+
+  ngAfterViewInit(): void{
+    animateElement(this.overviewMainCard.nativeElement, 'zoomIn');
   }
 
   capitalizeString(s : string){

@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
@@ -12,12 +12,12 @@ import { RoutingService } from 'src/app/services/routing.service';
   templateUrl: './quest-overview.component.html',
   styleUrls: ['./quest-overview.component.scss']
 })
-export class QuestOverviewComponent implements OnInit {
+export class QuestOverviewComponent implements OnInit, AfterViewInit {
   quests: Array<{key:string, value:QuestObject[]}>;
   filterStateTypes: string[];
   filterStates: object;
   constants: any = Constants;
-  isInitialAnimationFinished: boolean = false;
+  @ViewChild('questMainCard') questMainCard: ElementRef;
 
   private quest_subscription: Subscription;
 
@@ -45,6 +45,10 @@ export class QuestOverviewComponent implements OnInit {
       }, 
       error => this.routingService.routeToErrorPage(error)
     );
+  }
+
+  ngAfterViewInit(){
+    animateElement(this.questMainCard.nativeElement, 'zoomIn');
   }
 
   groupQuestsByTaker(itemArray: QuestObject[]): Array<{key:string, value:QuestObject[]}>{
