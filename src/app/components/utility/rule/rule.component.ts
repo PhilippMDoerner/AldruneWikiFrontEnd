@@ -16,7 +16,7 @@ import { WarningsService } from 'src/app/services/warnings.service';
 })
 export class RuleComponent implements OnInit {
   isOpen: boolean = false;
-  isUpdateState: boolean;
+  isUpdateState: boolean = false;
   isCreateState: boolean;
 
   @Input() rule: RuleObject;
@@ -38,8 +38,6 @@ export class RuleComponent implements OnInit {
 
   ngOnInit(): void {
     this.isCreateState = this.rule.name === "New Rule";
-    this.isUpdateState = false;
-
     this.isOpen = this.isCreateState
   }
 
@@ -78,9 +76,11 @@ export class RuleComponent implements OnInit {
   toggleFormState(){
     if(!this.isCreateState && !this.isUpdateState){
       this.isUpdateState = true;
-    } else if (this.isCreateState || this.isUpdateState){
+    } else if (this.isUpdateState){
       this.isCreateState = false;
       this.isUpdateState = false;
+    } else if (this.isCreateState){
+      this.deleteRule.emit(this.index);
     }
   }
 }
