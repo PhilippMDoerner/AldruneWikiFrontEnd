@@ -24,7 +24,7 @@ export class SpellComponent implements OnInit {
 
   @Output() deleteSpell: EventEmitter<number> = new EventEmitter();
   isCreateState: Boolean;
-  isUpdateState: Boolean;
+  isUpdateState: Boolean = false;
   constants: any = Constants;
   formState: string;
 
@@ -144,8 +144,6 @@ export class SpellComponent implements OnInit {
 
   ngOnInit(): void {
     this.isCreateState = this.spell.name === "New Spell";
-    this.isUpdateState = false;
-
     this.isPanelOpen = this.isCreateState
   }
 
@@ -183,9 +181,11 @@ export class SpellComponent implements OnInit {
   toggleFormState(){
     if(!this.isCreateState && !this.isUpdateState){
       this.isUpdateState = true;
-    } else if (this.isCreateState || this.isUpdateState){
+    } else if (this.isUpdateState){
       this.isCreateState = false;
       this.isUpdateState = false;
+    } else if (this.isCreateState){ //If you are in create state and toggle out of it, you want to remove the added spell
+      this.deleteSpell.emit(this.index);
     }
   }
 }
