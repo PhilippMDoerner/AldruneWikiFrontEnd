@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { TimestampObject } from 'src/app/models/timestamp';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 
 @Component({
   selector: 'app-timestamp',
@@ -13,6 +14,7 @@ export class TimestampComponent extends PermissionUtilityFunctionMixin implement
   @Input() timestamp: TimestampObject;
   @Input() vimePlayer: any;
   @Output() timestampDelete: EventEmitter<TimestampObject> = new EventEmitter();
+  @ViewChild('timestampDeleteElement') timestampDeleteElementRef : ElementRef;
   isInDeleteState: boolean = false;
 
   constructor(
@@ -31,6 +33,15 @@ export class TimestampComponent extends PermissionUtilityFunctionMixin implement
 
   toggleDeleteState(): void{
     this.isInDeleteState = !this.isInDeleteState;
+  }
+
+  onCancelClick(): void{
+    if(this.isInDeleteState){
+      animateElement(this.timestampDeleteElementRef.nativeElement, 'slideOutRight')
+        .then(() => this.toggleDeleteState());
+    } else {
+      this.toggleDeleteState();
+    }
   }
 
   deleteTimestamp(){
