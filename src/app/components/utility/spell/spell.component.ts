@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
@@ -9,6 +9,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { SpellService } from 'src/app/services/spell.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 
 @Component({
   selector: 'app-spell',
@@ -19,6 +20,8 @@ export class SpellComponent implements OnInit {
   @Input() spell: SpellObject;
   @Input() index: number;
   isPanelOpen: Boolean = false;
+
+  @ViewChild('spellCard') spellCard: ElementRef;
 
   //EDIT VARIABLES
 
@@ -168,13 +171,18 @@ export class SpellComponent implements OnInit {
   onCancel(){
     this.isUpdateState = false;
     if(this.isCreateState){
-      this.deleteSpell.emit(this.index);
+      this.removeSpell();
     }
+  }
+
+  removeSpell(){
+    animateElement(this.spellCard.nativeElement, 'fadeOutDown')
+      .then(() => this.deleteSpell.emit(this.index));
   }
 
   onDelete(){
     this.spellService.deleteSpell(this.spell.id).pipe(first()).subscribe(
-      () => this.deleteSpell.emit(this.index),
+      () => this.removeSpell(),
       error => this.warnings.showWarning(error)
     );
   }
@@ -186,7 +194,7 @@ export class SpellComponent implements OnInit {
       this.isCreateState = false;
       this.isUpdateState = false;
     } else if (this.isCreateState){ //If you are in create state and toggle out of it, you want to remove the added spell
-      this.deleteSpell.emit(this.index);
+      this.removeSpell();
     }
   }
 }

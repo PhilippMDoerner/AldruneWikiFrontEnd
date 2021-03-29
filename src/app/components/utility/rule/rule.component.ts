@@ -1,5 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -8,6 +7,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { RuleService } from 'src/app/services/rule.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 
 @Component({
   selector: 'app-rule',
@@ -23,6 +23,8 @@ export class RuleComponent implements OnInit {
   @Input() index: number;
 
   @Output() deleteRule: EventEmitter<number> = new EventEmitter();
+
+  @ViewChild('ruleCard') ruleCard: ElementRef;
 
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name"}),
@@ -61,14 +63,19 @@ export class RuleComponent implements OnInit {
   onCancel(){
     this.isUpdateState = false;
     if(this.isCreateState){
-      this.deleteRule.emit(this.index);
+      this.removeRule();
     }
+  }
+
+  removeRule(){
+    animateElement(this.ruleCard.nativeElement, 'fadeOutDown')
+      .then(() => this.deleteRule.emit(this.index));
   }
 
 
   onDelete(){
     this.ruleService.deleteRule(this.rule.id).pipe(first()).subscribe(
-      () => this.deleteRule.emit(this.index),
+      () => this.removeRule(),
       error => this.warnings.showWarning(error)
     );
   }
@@ -80,7 +87,7 @@ export class RuleComponent implements OnInit {
       this.isCreateState = false;
       this.isUpdateState = false;
     } else if (this.isCreateState){
-      this.deleteRule.emit(this.index);
+      this.removeRule();
     }
   }
 }
