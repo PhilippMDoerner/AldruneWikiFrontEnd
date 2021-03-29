@@ -142,6 +142,7 @@ export class SpellComponent implements OnInit {
     public routingService: RoutingService,
   ) { }
 
+  //TODO: Fix "ExpressionChangedAfterItHasBeenChecked" error
   ngOnInit(): void {
     this.isCreateState = this.spell.name === "New Spell";
     this.isPanelOpen = this.isCreateState
