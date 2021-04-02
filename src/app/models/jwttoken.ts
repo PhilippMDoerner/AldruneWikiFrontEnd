@@ -10,5 +10,6 @@ export interface DecodedTokenPayload{
     user_id: number,
     user_name: string,
     permissions: string[],
-    isAdmin: boolean
+    isAdmin: boolean,
+    isSuperUser: boolean,
 }

@@ -106,6 +106,12 @@ export class TokenService {
     return currentUserAccessTokenPayload.isAdmin;
   }
 
+  public isSuperUser(): boolean{
+    const currentUserAccessToken: string = this.getAccessToken();
+    const currentUserAccessTokenPayload: DecodedTokenPayload = this.decodeTokenPayload(currentUserAccessToken);
+    return currentUserAccessTokenPayload.isSuperUser;
+  }
+
   public isTokenExpired(token: string): boolean{
     const payload: DecodedTokenPayload = this.decodeTokenPayload(token);
     const expiryTimestamp = payload.exp;
