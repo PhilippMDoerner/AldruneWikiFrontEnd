@@ -23,8 +23,23 @@ export class UserService {
     private tokenService: TokenService
   ) { }
 
+  @TransformArrayObservable(UserObject)
   getUsers(): Observable<User[]>{
     return this.http.get<User[]>(this.userUrl);
+  }
+
+  @TransformObservable(UserObject)
+  addUser(user: User): Observable<User>{
+    return this.http.post<User>(`${this.userUrl}/`, user);
+  }
+
+  @TransformObservable(UserObject)
+  updateUser(user: User): Observable<User>{
+    return this.http.put<User>(`${this.userUrl}/pk/${user.pk}/`, user);
+  }
+
+  deleteUser(user_pk: number): Observable<any>{
+    return this.http.delete(`${this.userUrl}/pk/${user_pk}`);
   }
 
   @TransformObservable(UserObject)

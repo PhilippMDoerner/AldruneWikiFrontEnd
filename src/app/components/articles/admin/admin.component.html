@@ -1,0 +1,132 @@
+<div class="main" #adminCard>
+    <!-- TODO: Make Design mobile useable -->
+    <article>
+        <!-- Users Section -->
+        <div class="mb-3">
+            <!-- Section Heading -->
+            <div class="d-flex justify-content-between">
+                <h3 class="mb-0"> 
+                    <span class="fa fa-user"></span>
+                    Users
+                </h3>
+                
+                <!-- Heading Buttons -->
+                <div class="align-self-end position-relative top1">
+                    <!-- Add Users -->
+                    <div class="btn btn-dark border-white" (click)="toggleUserCreateState()">
+                        <span *ngIf="!isUserCreateState">
+                            <span class="fa fa-user-plus"></span>
+                            Add User
+                        </span>
+                        <span *ngIf="isUserCreateState">
+                            <span class="fa fa-times"></span>
+                            Cancel User Creation
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+    
+            <hr class="white-separator">
+
+            <!-- New Table Entry -->
+
+            <div *ngIf="isUserCreateState" class="my-2 card p-3">
+                <h4>Adding new User</h4>
+                <!-- Form -->
+                <app-formly-formcontainer 
+                [model]="userModel" 
+                [fields]="userFields" 
+                (submit)="saveNewUser()" 
+                (cancel)="toggleUserCreateState()"
+                ></app-formly-formcontainer>
+            </div>
+    
+            <!-- Table -->
+            <div class="usertable container">
+                <!-- Table Heading -->
+                <div class="row">
+                    <h4 class="col-3 d-flex flex-column">
+                        <div>
+                            <span class="fa fa-user"></span>
+                            Username
+                        </div>
+                    </h4>
+                    <h4 class="col-2">
+                        Admin SU
+                    </h4>
+                    <h4 class="col-3">
+                        <span class="fa fa-group"></span>
+                        Groups
+                    </h4>
+                    <h4 class="col-3">
+                        <span class="fa fa-envelope-o"></span>
+                        Email
+                    </h4>
+                </div>
+    
+                <!-- Table Entries -->
+                <div class="" *ngFor="let user of users; let i=index" [ngClass]="{'light-row': i%2===0}">
+                    <app-user-row
+                    [index] = "i"
+                    [user] = "user"
+                    (delete)="removeDeletedUser(i)"
+                    ></app-user-row>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Database Section -->
+        <div class="mb-3">
+            <!-- Section Heading -->
+            <h3 class="mb-0"> 
+                <span class="fa fa-database"></span>
+                Database
+            </h3>
+    
+            <hr class="white-separator">
+            
+            <!-- Section Body -->
+
+            <div class="btn btn-primary mb-5" (click)="startDatabaseDownload()"> 
+                <span class="fa fa-database"></span>
+                Download Database 
+            </div>
+
+            <!-- Clear Database -->
+            <div>
+                <div  *ngIf="databaseDeleteConfirmationCount > 0" class="card warning p-3 mb-2">
+                    <span>
+                        This will delete the contents of the entire database, including any articles, images, recorded sessions, spells, rules.
+                        Are you sure you want to do this?
+                    </span>
+                    <span *ngIf="databaseDeleteConfirmationCount > 1">
+                        You are aware this will not be recoverable?
+                    </span>
+                    <span *ngIf="databaseDeleteConfirmationCount > 2">
+                        Seriously, only do this for a new game!
+                    </span>
+                    <span *ngIf="databaseDeleteConfirmationCount > 3">
+                        Alright, I did what I could to warn you.
+                    </span>
+                </div>
+
+                <button class="btn btn-secondary mr-4" *ngIf="databaseDeleteConfirmationCount > 0"  (click)="databaseDeleteConfirmationCount = 0">Cancel </button>
+                <div class="btn btn-danger" (click)="progressClearDatabaseState()">
+                    <span class="fa fa-trash mr-1"></span>
+                    <span *ngIf="databaseDeleteConfirmationCount === 0">Clear Database For New Game?</span>
+                    <span *ngIf="databaseDeleteConfirmationCount === 1">You really want to clear the Database?</span>
+                    <span *ngIf="databaseDeleteConfirmationCount === 2">You are absolutely certain you want to clear the database?</span>
+                    <span *ngIf="databaseDeleteConfirmationCount === 3">You know what you're doing and want to clear the database?</span>
+                    <span *ngIf="databaseDeleteConfirmationCount === 4">Click one last time to finally clear the database</span>
+                </div>
+            </div>
+
+        </div>
+
+    </article>
+
+    <!-- Loading Spinner -->
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

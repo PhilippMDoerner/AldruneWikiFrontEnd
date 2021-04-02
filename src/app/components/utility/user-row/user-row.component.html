@@ -1,0 +1,32 @@
+<div class="py-2 row">
+    <div class="col-sm-3 col-6 d-flex align-items-center">
+        <span class="ml-3">
+            {{user.username}}
+        </span>
+    </div>
+    <div class="col-sm-1 col-3 d-flex align-items-center">
+        <input type="checkbox" [checked]="user.is_staff" (change)="updateUser()">
+    </div>
+    <div class="col-sm-1 col-3 d-flex align-items-center">
+        <input type="checkbox" [checked]="user.is_superuser" (change)="updateUser()">
+    </div>
+    <div class="col-sm-3 col-6 d-flex flex-column justify-content-center">
+        <span *ngFor="let group of user.groups">  {{ group }} </span>
+    </div>
+    <div class="col-sm-3 col-6 align-items-center" [ngClass]="{'d-none': isDeleteState, 'd-flex': !isDeleteState}">
+        <span class="d-block text-break"> {{user.email}} </span>
+    </div>
+    <div class="d-flex align-items-center justify-content-center" [ngClass]="{'col-sm-1 col-3': !isDeleteState, 'col-sm-4 col-12': isDeleteState}">
+        <span *ngIf="!isDeleteState; else userDelete" class="fa fa-trash icon" (click)="toggleDeleteState()"></span>
+    </div>
+</div>
+
+<ng-template #userDelete>
+    <div class="delete-request d-flex animate__animated animate__flipInY">
+        <div class="mr-3"><strong>Delete {{user.username}}?</strong></div>
+        <div class="d-inline-flex">
+            <div class="btn btn-danger float-right mr-2" (click)="deleteUser()"> Yes </div>
+            <div class="btn btn-secondary float-right" (click)="toggleDeleteState()"> No </div>
+        </div>
+    </div>
+</ng-template>

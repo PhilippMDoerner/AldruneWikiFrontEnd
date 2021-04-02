@@ -35,6 +35,13 @@
 
         <!-- Nav Items -->
         <ul class="navbar-nav" (click)="outsideClickSubject.next()">
+            <!-- Admin Section -->
+            <li class="nav-item" *ngIf="tokenService.isAdmin()">
+                <a routerLink="{{ routingService.getRoutePath('admin') }}" class="nav-link align-items-center">
+                    <span class="nav-link-text mr-3"> Admin </span>
+                    <i class="fa fa-lock fa-2x"></i>
+                </a>
+            </li>
             <!-- Recent Updates -->
             <li class="nav-item">
                 <a routerLink="{{ routingService.getRoutePath('recent-updates') }}" class="nav-link"> 

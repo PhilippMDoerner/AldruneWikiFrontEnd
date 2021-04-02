@@ -41,6 +41,7 @@ import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-ti
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
 import { Route } from '@angular/compiler/src/core';
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
+import { AdminComponent } from './components/articles/admin/admin.component';
 
 
 
@@ -62,6 +63,14 @@ const routes: Routes = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}`, 
 		component: HomeComponent, data:{ name: "home2"}, 
 		canActivate: [LoginGuardService]
+	},
+
+	//Admin Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/admin`,
+		component: AdminComponent,
+		data: { name: "admin"},
+		//canActivate: [PermissionGuardService] //TODO: Implement as part of PermissionGuardService the "adminPermission" so that it can check for being admin
 	},
 
 	//Login Routes

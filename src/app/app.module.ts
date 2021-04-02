@@ -77,13 +77,15 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
-import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerValidator, invalidTimeMessage, notIntegerMessage, requiredIconMessage, requiredIconValidator, requiredMessage, requiredValidator, timeValidator, specialCharacterValidator, hasSpecialCharactersMessage } from './utils/functions/formly-validation';
+import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerValidator, invalidTimeMessage, notIntegerMessage, requiredIconMessage, requiredIconValidator, requiredMessage, requiredValidator, timeValidator, specialCharacterValidator, hasSpecialCharactersMessage, fieldMatchValidator, fieldsDontMatchMessage } from './utils/functions/formly-validation';
 import { DiaryEntryEncounterComponent } from './components/utility/diary-entry-encounter/diary-entry-encounter.component';
 import { DiaryEntryEncounterListComponent } from './components/utility/diary-entry-encounter-list/diary-entry-encounter-list.component';
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
 import { QuotefieldComponent } from './components/utility/quotefield/quotefield.component';
 import { SpellComponent } from './components/utility/spell/spell.component';
 import { RuleComponent } from './components/utility/rule/rule.component';
+import { AdminComponent } from './components/articles/admin/admin.component';
+import { UserRowComponent } from './components/utility/user-row/user-row.component';
 
 @NgModule({
   declarations: [
@@ -155,6 +157,8 @@ import { RuleComponent } from './components/utility/rule/rule.component';
     QuotefieldComponent,
     SpellComponent,
     RuleComponent,
+    AdminComponent,
+    UserRowComponent,
   ],
   imports: [
     BrowserModule,
@@ -182,6 +186,7 @@ import { RuleComponent } from './components/utility/rule/rule.component';
           faPrefixMessage,
           notIntegerMessage,
           hasSpecialCharactersMessage,
+          fieldsDontMatchMessage,
         ],
         validators:[
           timeValidator,
@@ -190,7 +195,8 @@ import { RuleComponent } from './components/utility/rule/rule.component';
           requiredIconValidator,
           iconValidator,
           integerValidator,
-          specialCharacterValidator
+          specialCharacterValidator,
+          fieldMatchValidator,
         ]
       }), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,

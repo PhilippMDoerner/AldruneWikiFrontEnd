@@ -20,7 +20,7 @@ export class NavbarComponent implements OnInit, OnDestroy{
   collapsed: boolean = true; 
 
   constructor(
-    private tokenService: TokenService,  
+    public tokenService: TokenService,  
     public routingService: RoutingService,
   ) { }
 
