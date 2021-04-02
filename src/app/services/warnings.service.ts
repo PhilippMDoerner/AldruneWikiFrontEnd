@@ -20,23 +20,22 @@ export class WarningsService {
   showWarning(error: number | any){
     console.log(error);
     if (typeof error !== "number" && (!error.hasOwnProperty("status") || !error.hasOwnProperty("error"))) throw "Invalid error input to show warning";
-    const isSyntaxError: boolean = error.error.error.toString().startsWith("SyntaxError");
-    const isFormlyFieldError: boolean = typeof error === "number";
+    const hasSingleError: boolean = typeof error.error === "string";
+    const isGenericHTTPError: boolean = typeof error === "number";
 
-    const errorStatus: number = (typeof error !== "number") ? error.status : error;
     // Get individual errors
     let httpErrorMessage: string;
-    if(isSyntaxError){
-      httpErrorMessage = error.error.error;
-    } else if (isFormlyFieldError){
+    if(hasSingleError){
+      httpErrorMessage = "The error was caused by: \n    " + error.error;
+    } else if (isGenericHTTPError){
       httpErrorMessage = "";
     } else {
       httpErrorMessage = this.getHttpErrorMessages(error)
     }
     
+    const errorStatus: number = (typeof error !== "number") ? error.status : error;
     if (typeof error !== "number" && error.hasOwnProperty("status")) error = error.status;
     //TODO Turn this way of alerting somebody to an issue into something nicer looking
-
 
     const warningMessage = (this.warnings[errorStatus]) ? this.warnings[errorStatus] : this.defaultWarning;
     alert(warningMessage + "\n\n" + httpErrorMessage);
