@@ -35,6 +35,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
   groups: PermissionGroup[];
 
   //DATABASE VARIABLES
+  statistics: any;
   databaseDeleteConfirmationCount: number = 0;
 
   constructor(
@@ -61,7 +62,12 @@ export class AdminComponent implements OnInit, AfterViewInit {
     this.groupService.getGroups().pipe(first()).subscribe(
       (groups: PermissionGroup[]) => this.groups = groups,
       error => this.warnings.showWarning(error)
-    )
+    );
+
+    this.adminService.getStatistics().pipe(first()).subscribe(
+      statisticsData => this.statistics = statisticsData,
+      error => this.warnings.showWarning(error)
+    );
   }
 
   ngAfterViewInit(): void{
@@ -94,7 +100,28 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
   //DATABASE
   startDatabaseDownload(): void{
+    this.adminService.downloadDatabase().pipe(first()).subscribe(
+      (dataBlob: Blob) => {
+        const a = document.createElement('a')
+        
+        const blobAsFileUrl = URL.createObjectURL(dataBlob)
+        a.href = blobAsFileUrl
+        a.download = 'db.sqlite3';
+        a.click();
+        URL.revokeObjectURL(blobAsFileUrl);
+      },
+      error => this.warnings.showWarning(error)
+    )
+  }
 
+  blobToFile = (theBlob: Blob, fileName:string): File => {
+    var b: any = theBlob; //Needed to get past TypeScripts "Blob" data-type annotation
+    //A Blob() is almost a File() - it's just missing the two properties below which we will add
+    b.lastModifiedDate = new Date();
+    b.name = fileName;
+
+    //Cast to a File() type
+    return <File>theBlob;
   }
 
   progressClearDatabaseState(): void{

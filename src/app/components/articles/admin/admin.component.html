@@ -1,6 +1,6 @@
 <div class="main" #adminCard>
     <!-- TODO: Make Design mobile useable -->
-    <article *ngIf="users && groups; else loading">
+    <article *ngIf="users && groups && statistics; else loading">
         <!-- Users Section -->
         <div class="mb-3">
             <!-- Section Heading -->
@@ -81,19 +81,31 @@
         <!-- Database Section -->
         <div class="mb-3">
             <!-- Section Heading -->
-            <h3 class="mb-0"> 
-                <span class="fa fa-database"></span>
-                Database
-            </h3>
-    
+            <div class="d-flex justify-content-between">
+                <h3 class="mb-0"> 
+                    <span class="fa fa-database"></span>
+                    Database
+                </h3>
+
+                <!-- Heading Buttons -->
+                <!-- Download Dataabase -->
+                <div class="btn btn-primary align-self-end border-white position-relative top1" (click)="startDatabaseDownload()"> 
+                    <span class="fa fa-database"></span>
+                    Download Database 
+                </div>
+            </div>
+
             <hr class="white-separator">
             
             <!-- Section Body -->
-
-            <div class="btn btn-primary mb-5" (click)="startDatabaseDownload()"> 
-                <span class="fa fa-database"></span>
-                Download Database 
+            <!-- Statistics -->
+            <div class="container mb-5">
+                <div class="row" *ngFor="let statistic of statistics | keyvalue">
+                    <div class="col-6 col-sm-3"> {{ statistic.key }}</div>
+                    <div class="col-6 col-sm-3"> {{ statistic.value }}</div>
+                </div>
             </div>
+
 
             <!-- Clear Database -->
             <div>
