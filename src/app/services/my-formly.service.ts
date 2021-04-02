@@ -97,6 +97,15 @@ export class MyFormlyService {
     //Why "hasSpecialCharacters" validation? Names are used in URLs, they mustn't have special characters
     if (config.isNameInput === true) validatorList.push('hasSpecialCharacters');
 
+    let inputType: string;
+    if(config.isPasswordInput){
+      inputType = "password";
+    } else if (config.isNumberInput){
+      inputType = "number";
+    } else {
+      inputType = "string";
+    }
+
     return {
       key: config.key,
       type: "input",
@@ -107,7 +116,7 @@ export class MyFormlyService {
         maxLength: config.maxLength,
         minLength: config.minLength,
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
-        type: (config.isNumberInput) ? "number" : "string",
+        type: inputType,
         required: (typeof config.required === "boolean") ? config.required : true,
         placeholder: (config.placeholder) ? config.placeholder : null,
       },
@@ -122,14 +131,15 @@ export class MyFormlyService {
     if (config.required === true ) validatorList.push('required');
     
     return {
-      key: config.key,
+      key: "password", //Hard coded, fieldMatch validator depends on this
       type: "input",
       className: config.className,
       templateOptions:{
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+        label: (config.label) ? config.label : "Password",
         type: "password",
         required: true,
-        placeholder: "Password",
+        placeholder: "Your password",
+        minLength: 7,
       },
       validators:{
         validation: validatorList
@@ -137,9 +147,55 @@ export class MyFormlyService {
     }
   }
 
+
+  confirmedPasswordInput(config: FormlyInterface): FormlyFieldConfig{
+    const validatorList = (config.validators) ? config.validators : [];
+    if (config.required === true ) validatorList.push('required');
+    
+    const passwordField = {
+      key: "password", //Hard coded, fieldMatch validator depends on this
+      type: "input",
+      className: config.className,
+      templateOptions:{
+        label: (config.label) ? config.label : "Password",
+        type: "password",
+        required: true,
+        placeholder: "Password, at least 7 characters",
+        minLength: 7,
+      },
+      validators:{
+        validation: validatorList
+      }
+    }
+
+    const confirmPasswordField = {
+      key: "passwordConfirm", //Hard coded, fieldMatch validator depends on this
+      type: "input",
+      className: config.className,
+      templateOptions:{
+        label: (config.label) ? "Confirm" + config.label : "Password Confirmation",
+        type: "password",
+        required: true,
+        placeholder: "Please re-enter your password",
+      },
+    }
+
+    return {
+      validators: {
+        validation: [
+          { name: 'fieldMatch', options: { errorPath: 'passwordConfirm' } },
+        ]
+      },
+      fieldGroup: [
+        passwordField,
+        confirmPasswordField
+      ]
+    }
+  }
+
   genericCheckbox(config: FormlyCheckboxConfig): FormlyFieldConfig{
     return{
-      key: config.key,
+      key: "passwordConfirm",
       type: "checkbox",
       className: config.className,
       defaultValue: config.defaultValue,

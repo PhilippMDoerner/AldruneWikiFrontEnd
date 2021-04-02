@@ -1,4 +1,4 @@
-import { FormControl, ValidationErrors } from "@angular/forms";
+import { AbstractControl, FormControl, ValidationErrors } from "@angular/forms";
 
 // Validation Messages
 export const invalidTimeMessage = { name: "time", message: "Time must have 'hh:mm:ss' pattern" };
@@ -8,6 +8,7 @@ export const requiredIconMessage = { name: 'requiredIcon', message: "This field 
 export const faPrefixMessage = { name: 'faPrefix', message: "Icons are stored without the 'fa-' from font-awesome prefix" };
 export const notIntegerMessage = { name: 'notInteger', message: "Your input is not an integer. This field requires an integer number. No amount of revolution can overcome this." };
 export const hasSpecialCharactersMessage = { name: 'hasSpecialCharacters', message: 'Your input includes one of the following invalid special characters: [ ] { } ? | \\ " % ~ # < > \'. If you need to rebel, please dont against this.' };
+export const fieldsDontMatchMessage = { name: 'fieldMatch', message: 'Password Not Matching'};
 
 // Validation Functions
 function timeValidation(control: FormControl): ValidationErrors{
@@ -60,3 +61,26 @@ function hasNoSpecialCharactersValidation(control: FormControl): ValidationError
     return null;
 }
 export const specialCharacterValidator = { name: 'hasSpecialCharacters', validation: hasNoSpecialCharactersValidation};
+
+/**
+ * 
+ * @param {AbstractControl} control - An object acting as a dictionary. Maps the key of a form-field to 
+ *  the field's value. Must contain 
+ * @returns 
+ */
+function passwordMatchValidation(control: AbstractControl): ValidationErrors {
+    const { password, passwordConfirm } = control.value;
+  
+    // avoid displaying the message error when values are empty
+    const isAnyPasswordFieldEmpty = !passwordConfirm || !password
+    if (isAnyPasswordFieldEmpty) {
+      return null;
+    }
+  
+    if (passwordConfirm === password) {
+      return null;
+    }
+  
+    return { passwordMatch: { message: "The passwords aren't matching" } };
+  }
+export const fieldMatchValidator = {name: "fieldMatch", validation: passwordMatchValidation};
