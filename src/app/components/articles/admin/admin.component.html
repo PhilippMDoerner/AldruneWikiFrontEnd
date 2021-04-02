@@ -126,7 +126,7 @@
                 </div>
 
                 <button class="btn btn-secondary mr-4" *ngIf="databaseDeleteConfirmationCount > 0"  (click)="databaseDeleteConfirmationCount = 0">Cancel </button>
-                <div class="btn btn-danger" (click)="progressClearDatabaseState()">
+                <div class="btn btn-danger" (click)="progressClearDatabaseState()" *ngIf="tokenService.isSuperUser()">
                     <span class="fa fa-trash mr-1"></span>
                     <span *ngIf="databaseDeleteConfirmationCount === 0">Clear Database For New Game?</span>
                     <span *ngIf="databaseDeleteConfirmationCount === 1">You really want to clear the Database?</span>

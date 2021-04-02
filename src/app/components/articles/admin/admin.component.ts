@@ -7,6 +7,7 @@ import { AdminService } from 'src/app/services/admin.service';
 import { GroupService } from 'src/app/services/group.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { UserService } from 'src/app/services/user.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
@@ -45,6 +46,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
     private adminService: AdminService,
     public routingService: RoutingService,
     private groupService: GroupService,
+    public tokenService: TokenService,
   ) { }
 
   ngOnInit(): void {
@@ -90,7 +92,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
     this.isUserCreateState = !this.isUserCreateState;
 
     if(this.isUserCreateState){
-      this.userModel = {username: null, groups:[], email: null};
+      this.userModel = {username: null, email: ""};
     }
   }
 
