@@ -55,7 +55,7 @@
                 <option 
                 *ngFor="let group of groups" 
                 value="{{group.id}}" 
-                [attr.disabled]="false ? true : null"
+                [attr.disabled]="isUserInGroup(group.id) ? true : null"
                 >
                     {{group.name}}
                 </option>

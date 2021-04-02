@@ -56,6 +56,10 @@ export class UserRowComponent implements OnInit {
   }
 
   //GROUPS
+  isUserInGroup(groupPk: number): boolean{
+    return this.user.groups.includes(groupPk);
+  }
+
   getGroupName(pk: number): string{
     const groupsWithPk: PermissionGroup[] = this.groups.filter((group) => group.id === pk);
     const hasNoGroupWithPk = groupsWithPk.length === 0;
