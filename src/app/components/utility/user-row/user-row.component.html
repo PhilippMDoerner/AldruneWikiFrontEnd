@@ -1,30 +1,42 @@
 <div class="py-2 row">
+    <!-- Username Column -->
     <div class="col-sm-3 col-6 d-flex align-items-center">
         <span class="ml-3">
             {{user.username}}
         </span>
     </div>
+
+    <!-- is_staff checkbox Column-->
     <div class="col-sm-1 col-3 d-flex align-items-center">
         <input type="checkbox" [checked]="user.is_staff" #isAdminInput (change)="updateUserAdminRights()">
     </div>
+
+    <!-- is admin checkbox Columnn -->
     <div class="col-sm-1 col-3 d-flex align-items-center">
         <input type="checkbox" [checked]="user.is_superuser" #isSUInput (change)="updateUserAdminRights()">
     </div>
+
+    <!-- Group Column -->
     <div class="col-sm-3 col-6 d-flex flex-column justify-content-center hide-container">
-        <span *ngFor="let groupPk of user.groups" class="badge bg-dark vanish-container">  
+        <span *ngFor="let groupPk of user.groups" class="badge bg-dark border-white vanish-container">  
             {{ getGroupName(groupPk) }} 
             <span class="fa fa-times icon vanish-icon" (click)="removeUserFromGroup(groupPk)"></span>
         </span>
         <i class="fa fa-plus icon hide-icon text-center" (click)="toggleGroupAddState()" *ngIf="!isAddGroupstate; else addGroup"></i>
     </div>
+
+    <!-- Email Column -->
     <div class="col-sm-3 col-6 align-items-center" [ngClass]="{'d-none': isDeleteState, 'd-flex': !isDeleteState}">
         <span class="d-block text-break"> {{user.email}} </span>
     </div>
+
+    <!-- Delete Column -->
     <div class="d-flex align-items-center justify-content-center" [ngClass]="{'col-sm-1 col-3': !isDeleteState, 'col-sm-4 col-12': isDeleteState}">
         <span *ngIf="!isDeleteState; else userDelete" class="fa fa-trash icon" (click)="toggleDeleteState()"></span>
     </div>
 </div>
 
+<!-- Confirmation Window about deleting a user -->
 <ng-template #userDelete>
     <div class="delete-request d-flex animate__animated animate__flipInY">
         <div class="mr-3"><strong>Delete {{user.username}}?</strong></div>
@@ -35,27 +47,30 @@
     </div>
 </ng-template>
 
+<!-- Mini-Form to add group to user -->
 <ng-template #addGroup>
-    <form>
-        <select class="form-control" name="character" id="character" [(ngModel)]="newGroup">
-            <option 
-            *ngFor="let group of groups" 
-            value="{{group.id}}" 
-            [attr.disabled]="false ? true : null"
-            >
-                {{group.name}}
-            </option>
-        </select>
-    </form>
-    <div class="d-flex justify-content-around">
-        <i 
-        class="fa icon fa-times mx-2"
-        (click)="toggleGroupAddState()"
-        ></i>
-    
-        <i
-        class="fa icon fa-check"
-        (click)="addUserToSelectedGroup()"
-        ></i>
+    <div class="mt-3">
+        <form>
+            <select class="form-control" name="character" id="character" [(ngModel)]="newGroup">
+                <option 
+                *ngFor="let group of groups" 
+                value="{{group.id}}" 
+                [attr.disabled]="false ? true : null"
+                >
+                    {{group.name}}
+                </option>
+            </select>
+        </form>
+        <div class="d-flex justify-content-around">
+            <i 
+            class="fa icon fa-times mx-2"
+            (click)="toggleGroupAddState()"
+            ></i>
+        
+            <i
+            class="fa icon fa-check"
+            (click)="addUserToSelectedGroup()"
+            ></i>
+        </div>
     </div>
 </ng-template>
