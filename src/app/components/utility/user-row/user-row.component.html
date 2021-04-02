@@ -8,12 +8,24 @@
 
     <!-- is_staff checkbox Column-->
     <div class="col-sm-1 col-3 d-flex align-items-center">
-        <input type="checkbox" [checked]="user.is_staff" #isAdminInput (change)="updateUserAdminRights()">
+        <input 
+        type="checkbox" 
+        [checked]="user.is_staff"
+        [disabled]="!tokenService.isSuperUser()" 
+        #isAdminInput 
+        (change)="updateUserAdminRights()"
+        >
     </div>
 
     <!-- is admin checkbox Columnn -->
     <div class="col-sm-1 col-3 d-flex align-items-center">
-        <input type="checkbox" [checked]="user.is_superuser" #isSUInput (change)="updateUserAdminRights()">
+        <input 
+        type="checkbox" 
+        [checked]="user.is_superuser" 
+        [disabled]="!tokenService.isSuperUser()"
+        #isSUInput 
+        (change)="updateUserAdminRights()"
+        >
     </div>
 
     <!-- Group Column -->

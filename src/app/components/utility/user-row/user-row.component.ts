@@ -3,6 +3,7 @@ import { first } from 'rxjs/operators';
 import { PermissionGroup } from 'src/app/models/group';
 import { UserObject } from 'src/app/models/user';
 import { GroupService } from 'src/app/services/group.service';
+import { TokenService } from 'src/app/services/token.service';
 import { UserService } from 'src/app/services/user.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
@@ -33,6 +34,7 @@ export class UserRowComponent implements OnInit {
   constructor(
     private userService: UserService,
     private warnings: WarningsService,
+    public tokenService: TokenService,
   ) { }
 
   ngOnInit(): void {
