@@ -13,7 +13,7 @@ export class AdminService {
   constructor(private http: HttpClient) { }
 
   clearDatabase(): Observable<any>{
-    return this.http.delete(`${this.adminUrl}/database`);
+    return this.http.delete(`${this.adminUrl}/dbclear`);
   }
 
   downloadDatabase(): Observable<any>{

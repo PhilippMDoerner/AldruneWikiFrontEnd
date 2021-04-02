@@ -130,12 +130,13 @@ export class AdminComponent implements OnInit, AfterViewInit {
     const confirmationCountForDeletion = 5;
     if(this.databaseDeleteConfirmationCount === confirmationCountForDeletion){
       this.clearDatabase();
+      this.databaseDeleteConfirmationCount = 0;
     } 
   }
 
   clearDatabase(): void{
     this.adminService.clearDatabase().pipe(first()).subscribe(
-      (response) => this.routingService.routeToPath('home'),
+      (response) => this.routingService.routeToPath('home1'),
       error => this.warnings.showWarning(error)
     )
   }
