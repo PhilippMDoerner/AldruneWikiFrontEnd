@@ -5,13 +5,17 @@
         </span>
     </div>
     <div class="col-sm-1 col-3 d-flex align-items-center">
-        <input type="checkbox" [checked]="user.is_staff" (change)="updateUser()">
+        <input type="checkbox" [checked]="user.is_staff" #isAdminInput (change)="updateUserAdminRights()">
     </div>
     <div class="col-sm-1 col-3 d-flex align-items-center">
-        <input type="checkbox" [checked]="user.is_superuser" (change)="updateUser()">
+        <input type="checkbox" [checked]="user.is_superuser" #isSUInput (change)="updateUserAdminRights()">
     </div>
-    <div class="col-sm-3 col-6 d-flex flex-column justify-content-center">
-        <span *ngFor="let group of user.groups">  {{ group }} </span>
+    <div class="col-sm-3 col-6 d-flex flex-column justify-content-center hide-container">
+        <span *ngFor="let groupPk of user.groups" class="badge bg-dark vanish-container">  
+            {{ getGroupName(groupPk) }} 
+            <span class="fa fa-times icon vanish-icon" (click)="removeUserFromGroup(groupPk)"></span>
+        </span>
+        <i class="fa fa-plus icon hide-icon text-center" (click)="toggleGroupAddState()" *ngIf="!isAddGroupstate; else addGroup"></i>
     </div>
     <div class="col-sm-3 col-6 align-items-center" [ngClass]="{'d-none': isDeleteState, 'd-flex': !isDeleteState}">
         <span class="d-block text-break"> {{user.email}} </span>
@@ -28,5 +32,30 @@
             <div class="btn btn-danger float-right mr-2" (click)="deleteUser()"> Yes </div>
             <div class="btn btn-secondary float-right" (click)="toggleDeleteState()"> No </div>
         </div>
+    </div>
+</ng-template>
+
+<ng-template #addGroup>
+    <form>
+        <select class="form-control" name="character" id="character" [(ngModel)]="newGroup">
+            <option 
+            *ngFor="let group of groups" 
+            value="{{group.id}}" 
+            [attr.disabled]="false ? true : null"
+            >
+                {{group.name}}
+            </option>
+        </select>
+    </form>
+    <div class="d-flex justify-content-around">
+        <i 
+        class="fa icon fa-times mx-2"
+        (click)="toggleGroupAddState()"
+        ></i>
+    
+        <i
+        class="fa icon fa-check"
+        (click)="addUserToSelectedGroup()"
+        ></i>
     </div>
 </ng-template>

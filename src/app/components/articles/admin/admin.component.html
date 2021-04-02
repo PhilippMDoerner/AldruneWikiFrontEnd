@@ -1,6 +1,6 @@
 <div class="main" #adminCard>
     <!-- TODO: Make Design mobile useable -->
-    <article>
+    <article *ngIf="users && groups; else loading">
         <!-- Users Section -->
         <div class="mb-3">
             <!-- Section Heading -->
@@ -70,6 +70,7 @@
                     <app-user-row
                     [index] = "i"
                     [user] = "user"
+                    [groups]="groups"
                     (delete)="removeDeletedUser(i)"
                     ></app-user-row>
                 </div>

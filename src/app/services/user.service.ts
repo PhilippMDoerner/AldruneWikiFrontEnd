@@ -33,9 +33,33 @@ export class UserService {
     return this.http.post<User>(`${this.userUrl}/`, user);
   }
 
+  /**
+   * @description Updates a user in the database with a given pk. Do not use to set admin permission.
+   * @param {User} user - A fully fledged user object. Must have a defined pk attribute inside.
+   * @returns {Observable<User>}
+   */
   @TransformObservable(UserObject)
   updateUser(user: User): Observable<User>{
     return this.http.put<User>(`${this.userUrl}/pk/${user.pk}/`, user);
+  }
+
+  @TransformObservable(UserObject)
+  updateUserGroups(user: User): Observable<User>{
+    const data = {groups: user.groups};
+    return this.http.patch<User>(`${this.userUrl}/pk/${user.pk}/`, data);
+  }
+
+  /** 
+   * @description An alternate method to set superuser/admin rights for a given user. Only updates
+   * the 2 parameters "is_staff" and "is_superuser" to update, nothing else.
+  */
+  @TransformObservable(UserObject)
+  updateUserAdminState(user: User): Observable<User>{
+    const data = {
+      is_staff: user.is_staff,
+      is_superuser: user.is_superuser
+    }
+    return this.http.patch<User>(`${this.userUrl}/pk/${user.pk}/`, data);
   }
 
   deleteUser(user_pk: number): Observable<any>{

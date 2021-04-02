@@ -1,0 +1,16 @@
+.hide-icon{
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.hide-container:hover .hide-icon{
+    opacity: 1;
+}
+
+.vanish-icon{
+    display: none;
+}
+
+.vanish-container:hover .vanish-icon{
+    display: inline-block;
+}

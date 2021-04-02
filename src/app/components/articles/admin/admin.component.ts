@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
+import { PermissionGroup } from 'src/app/models/group';
 import { User, UserObject } from 'src/app/models/user';
 import { AdminService } from 'src/app/services/admin.service';
+import { GroupService } from 'src/app/services/group.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { UserService } from 'src/app/services/user.service';
@@ -26,10 +28,11 @@ export class AdminComponent implements OnInit, AfterViewInit {
   userFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "username", isNameInput: true, required: true}),
     this.formlyService.confirmedPasswordInput({key: "password", required: true}),
-    // this.formlyService.genericInput({key: "password", isPasswordInput: true, required: true}),
-    // this.formlyService.genericInput({key: "password2", label: "Repeat Password", isPasswordInput: true, required: true}),
     this.formlyService.genericInput({key: "email", isNameInput: true, required: false}),
   ];
+
+  //GROUP VARIABLES
+  groups: PermissionGroup[];
 
   //DATABASE VARIABLES
   databaseDeleteConfirmationCount: number = 0;
@@ -40,6 +43,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
     private formlyService: MyFormlyService,
     private adminService: AdminService,
     private routingService: RoutingService,
+    private groupService: GroupService,
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +56,11 @@ export class AdminComponent implements OnInit, AfterViewInit {
         });
       },
       error => this.warnings.showWarning(error)
+    );
+
+    this.groupService.getGroups().pipe(first()).subscribe(
+      (groups: PermissionGroup[]) => this.groups = groups,
+      error => this.warnings.showWarning(error)
     )
   }
 
@@ -60,7 +69,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
     console.log(this.users); //TODO: Remove this later
   }
 
-
+  //USERS
   saveNewUser(){
     this.userService.addUser(this.userModel).pipe(first()).subscribe(
       (newUser: UserObject) => {
@@ -83,6 +92,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
     this.users.splice(index, 1);
   }
 
+  //DATABASE
   startDatabaseDownload(): void{
 
   }

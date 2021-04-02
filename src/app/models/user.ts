@@ -3,7 +3,9 @@ export interface User{
     password?: string,
     pk?: number,
     api_permissions?: string[],
-    groups?: string[],
+    groups?: number[],
+    is_staff?: boolean,
+    is_superuser?: boolean,
     email?: string,
 }
 
@@ -15,7 +17,7 @@ export class UserObject implements User{
     api_permissions?: string[];
     is_staff: boolean;
     is_superuser: boolean;
-    groups?: string[];
+    groups?: number[];
 
     constructor(object?: User){
         if (object) Object.assign(this, object)

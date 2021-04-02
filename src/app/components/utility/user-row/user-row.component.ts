@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { first } from 'rxjs/operators';
+import { PermissionGroup } from 'src/app/models/group';
 import { UserObject } from 'src/app/models/user';
+import { GroupService } from 'src/app/services/group.service';
 import { UserService } from 'src/app/services/user.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
@@ -12,14 +14,25 @@ import { WarningsService } from 'src/app/services/warnings.service';
 export class UserRowComponent implements OnInit {
   @Input() user: UserObject;
   @Input() index: number;
+  @Input() groups: PermissionGroup[];
+
 
   @Output() delete: EventEmitter<number> = new EventEmitter();
 
+  //USER VARIABLES
+  @ViewChild('isSUInput') suInput: ElementRef;
+  @ViewChild('isAdminInput') adminInput: ElementRef;
+
   isDeleteState: boolean = false;
+
+  //GROUP VARIABLES
+  isAddGroupstate: boolean = false;
+  newGroup: number = null;
+  
 
   constructor(
     private userService: UserService,
-    private warnings: WarningsService
+    private warnings: WarningsService,
   ) { }
 
   ngOnInit(): void {
@@ -30,6 +43,52 @@ export class UserRowComponent implements OnInit {
       (updatedUser: UserObject) => this.user = updatedUser,
       error => this.warnings.showWarning(error)
     )
+  }
+
+  updateUserAdminRights(): void{
+    this.user.is_staff = this.adminInput.nativeElement.checked;
+    this.user.is_superuser = this.adminInput.nativeElement.checked;
+    
+    this.userService.updateUserAdminState(this.user).pipe(first()).subscribe(
+      (updatedUser: UserObject) => this.user = updatedUser,
+      error => this.warnings.showWarning(error)
+    )
+  }
+
+  //GROUPS
+  getGroupName(pk: number): string{
+    const groupsWithPk: PermissionGroup[] = this.groups.filter((group) => group.id === pk);
+    const hasNoGroupWithPk = groupsWithPk.length === 0;
+    return (hasNoGroupWithPk) ? "" : groupsWithPk[0].name;
+  }
+
+  removeUserFromGroup(groupPk: number): void{
+    const groupIndex: number = this.user.groups.indexOf(groupPk);
+    this.user.groups.splice(groupIndex, 1);
+    this.updateUserGroups();
+  }
+
+  addUserToSelectedGroup(): void{
+    this.user.groups.push(this.newGroup);
+    this.updateUserGroups();
+  }
+
+  updateUserGroups(){
+    this.userService.updateUserGroups(this.user).pipe(first()).subscribe(
+      (updatedUser: UserObject) => {
+        this.user = updatedUser;
+        this.isAddGroupstate = false;
+      },
+      error => this.warnings.showWarning(error)
+    );
+  }
+
+  toggleGroupAddState(): void{
+    this.isAddGroupstate = !this.isAddGroupstate;
+
+    if(this.isAddGroupstate){
+      this.newGroup = null;
+    }
   }
 
   toggleDeleteState(): void{
