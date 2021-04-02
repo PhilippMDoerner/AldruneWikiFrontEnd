@@ -102,12 +102,16 @@ export class TokenService {
 
   public isAdmin(): boolean{
     const currentUserAccessToken: string = this.getAccessToken();
+    if (currentUserAccessToken == null) return false;
+
     const currentUserAccessTokenPayload: DecodedTokenPayload = this.decodeTokenPayload(currentUserAccessToken);
     return currentUserAccessTokenPayload.isAdmin;
   }
 
   public isSuperUser(): boolean{
     const currentUserAccessToken: string = this.getAccessToken();
+    if (currentUserAccessToken == null) return false;
+
     const currentUserAccessTokenPayload: DecodedTokenPayload = this.decodeTokenPayload(currentUserAccessToken);
     return currentUserAccessTokenPayload.isSuperUser;
   }
