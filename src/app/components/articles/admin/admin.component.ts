@@ -42,7 +42,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
     private warnings: WarningsService,
     private formlyService: MyFormlyService,
     private adminService: AdminService,
-    private routingService: RoutingService,
+    public routingService: RoutingService,
     private groupService: GroupService,
   ) { }
 
