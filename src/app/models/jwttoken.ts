@@ -9,5 +9,6 @@ export interface DecodedTokenPayload{
     token_type: string,
     user_id: number,
     user_name: string,
-    permissions: string[]
+    permissions: string[],
+    isAdmin: boolean
 }
