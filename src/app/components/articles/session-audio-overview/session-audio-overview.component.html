@@ -12,11 +12,20 @@
                     </div>
 
                     <!-- Card Body -->
-                    <!-- TODO: Fix the download button somehow -->
+                    <!-- TODO: Fix the download button somehow 
+                        Gained Intel so far:
+                        - You ideally want to NOT handle this in angular. Angular is prone to crashing. So download from file-url or a django view
+                        - If you download from django-view, it needs to be without login
+                            Problem here: Getting this done with a url that isn't snatched by the angular router
+                        - If you download from file-url, you would use the download attribute on an anchor tag
+                            So far that just isn't working
+                    
+                    -->
                     <div class="card-body d-flex justify-content-center flex-column">
                         <a routerLink="{{routingService.getRoutePath('sessionaudio', {isMainSession: sessionAudio.session_details.is_main_session_int, sessionNumber: sessionAudio.session_details.session_number})}}"
                             class="text-center btn btn-primary"> 
                             <strong> Stream </strong>
+                            <span class="fa fa-desktop"></span>
                         </a>
                     </div>
                 </div>
