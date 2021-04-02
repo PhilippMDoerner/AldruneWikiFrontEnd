@@ -3,12 +3,12 @@
     transition: opacity 0.2s;
 }
 
-.vanish-icon{
-    display: none;
-}
-
 .icon-container:hover .hide-icon{
     opacity: 1;
+}
+
+.vanish-icon{
+    display: none;
 }
 
 .vanish-container:hover .vanish-icon{
