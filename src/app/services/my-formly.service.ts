@@ -161,7 +161,6 @@ export class MyFormlyService {
         type: "password",
         required: true,
         placeholder: "Password, at least 7 characters",
-        minLength: 7,
       },
       validators:{
         validation: validatorList
