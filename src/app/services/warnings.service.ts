@@ -42,12 +42,13 @@ export class WarningsService {
 
   getHttpErrorMessages(httpErrorObject: any): string{
     let httpErrorMessages: string = "The errors you received were because of:\n";
+    console.log(httpErrorObject);
 
     for(let formField in httpErrorObject.error){
       httpErrorMessages += `  ${formField}\n`;
-      const isSingleErrorMessage = typeof httpErrorObject.error[formField] === "string";
+      const isErrorMessageArray = Array.isArray(httpErrorObject.error[formField]);
 
-      if(!isSingleErrorMessage){
+      if(isErrorMessageArray){
         const formFieldErrors: string[] = httpErrorObject.error[formField];
         formFieldErrors.forEach(errorMessage => {
           httpErrorMessages += `    - ${errorMessage} \n`;
