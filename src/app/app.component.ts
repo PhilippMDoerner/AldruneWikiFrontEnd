@@ -47,8 +47,8 @@ export class AppComponent implements OnInit{
   }
 
 
-  closeNavbarMenu(): void{
-    this.outsideClickSubject.next();
+  closeNavbarMenu(event: Event): void{
+    this.outsideClickSubject.next(event);
   }
 
 
