@@ -42,6 +42,7 @@ import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.
 import { Route } from '@angular/compiler/src/core';
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
 import { AdminComponent } from './components/articles/admin/admin.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 
 
@@ -83,6 +84,13 @@ const routes: Routes = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login/:state`, 
 		component: LoginComponent, 
 		data:{ name: "login-state"}
+	},
+
+	//User Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/profile/:username`,
+		component: ProfileComponent,
+		data: { name: "profile"}
 	},
 
 	//Character Routes

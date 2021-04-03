@@ -1,0 +1,70 @@
+<div class="main" #profileCard>
+    <article class="container" *ngIf="user; else loading">
+        <!-- Section Heading -->
+        <div class="row">
+            <div class="d-flex justify-content-between col-12">
+                <h3 class="mb-0"> 
+                    <span class="fa fa-user-circle"></span>
+                    Profile
+                </h3>
+    
+                <!-- Header Buttons -->
+                <div class="position-relative top1 align-self-end">
+                    <div class="btn btn-secondary border-white" (click)="toggleProfileEditState()">
+                        Edit Profile
+                        <i class="fa fa-pencil"></i>
+                    </div>
+
+                    <div class="btn btn-secondary border-white" (click)="togglePasswordEditState()">
+                        Edit Password
+                        <i class="fa fa-pencil"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="white-separator">
+
+        <!-- Profile -->
+        <div class="row" *ngIf="!profileEditState; else profileForm">
+            <div class="col-6">Username</div>
+            <div class="col-6">{{ user.username }}</div>
+
+            <div class="col-6">Email</div>
+            <div class="col-6">{{ user.email }}</div>
+        </div>
+
+        <!-- Password Form -->
+        <div class="my-3 card p-3" *ngIf="passwordEditState">
+            <app-formly-formcontainer
+            [model] = "passwordModel"
+            [fields] = "passwordFields"
+            (cancel) = "togglePasswordEditState()"
+            (submit) = "updatePassword()"
+            ></app-formly-formcontainer>
+        </div>
+
+        <div class="mt-5">
+            <app-article-footer
+            (delete)="deleteThisUser()"
+            [link]="routingService.getRoutePath('home1')"
+            [label]="'Home'"
+            [deleteMessage]="'Delete your account?'"
+            ></app-article-footer>
+        </div>
+    </article>
+
+    <ng-template #profileForm>
+        <div class="card p-3 my-3">
+            <app-formly-formcontainer
+            [model] = "profileModel"
+            [fields] = "profileFields"
+            (cancel) = "toggleProfileEditState()"
+            (submit) = "updateProfile()"
+            ></app-formly-formcontainer>
+        </div>
+    </ng-template>
+
+    <!-- Loading Spinner -->
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>
