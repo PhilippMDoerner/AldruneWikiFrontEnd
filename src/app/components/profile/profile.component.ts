@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
   profileModel: {};
   profileFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "username"}),
-    this.formlyService.genericInput({key: "email"})
+    this.formlyService.genericInput({key: "email", required: false})
   ]
 
   constructor(

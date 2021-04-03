@@ -1,0 +1,16 @@
+.header-buttons{
+    display:flex;
+    justify-content: flex-end;
+    position:relative;
+    top: -1px;
+}
+
+#profile-data div{
+    word-break: break-all;
+}
+
+@media(max-width: 576px){
+    .header-buttons{
+        justify-content: space-evenly;
+    }
+}

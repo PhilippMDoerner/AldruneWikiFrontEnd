@@ -1,24 +1,22 @@
 <div class="main" #profileCard>
     <article class="container" *ngIf="user; else loading">
         <!-- Section Heading -->
-        <div class="row">
-            <div class="d-flex justify-content-between col-12">
-                <h3 class="mb-0"> 
-                    <span class="fa fa-user-circle"></span>
-                    Profile
-                </h3>
-    
-                <!-- Header Buttons -->
-                <div class="position-relative top1 align-self-end">
-                    <div class="btn btn-secondary border-white" (click)="toggleProfileEditState()">
-                        Edit Profile
-                        <i class="fa fa-pencil"></i>
-                    </div>
+        <div class="d-flex justify-content-between row">
+            <h3 class="mb-0 col-12 col-sm-6"> 
+                <span class="fa fa-user-circle"></span>
+                Profile
+            </h3>
 
-                    <div class="btn btn-secondary border-white" (click)="togglePasswordEditState()">
-                        Edit Password
-                        <i class="fa fa-pencil"></i>
-                    </div>
+            <!-- Header Buttons -->
+            <div class="position-relative top1 col-12 col-sm-6 d-flex align-self-end justify-content-end">
+                <div class="btn btn-secondary border-white" (click)="toggleProfileEditState()">
+                    Edit Profile
+                    <i class="fa fa-pencil"></i>
+                </div>
+
+                <div class="btn btn-secondary border-white" (click)="togglePasswordEditState()">
+                    Edit Password
+                    <i class="fa fa-pencil"></i>
                 </div>
             </div>
         </div>
@@ -26,7 +24,7 @@
         <hr class="white-separator">
 
         <!-- Profile -->
-        <div class="row" *ngIf="!profileEditState; else profileForm">
+        <div class="row" id="profile-data" *ngIf="!profileEditState; else profileForm">
             <div class="col-6">Username</div>
             <div class="col-6">{{ user.username }}</div>
 
