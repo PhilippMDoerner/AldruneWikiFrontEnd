@@ -10,13 +10,13 @@
             <!-- Header Buttons -->
             <div class="position-relative top1 col-12 col-sm-6 d-flex align-self-end justify-content-end">
                 <div class="btn btn-secondary border-white" (click)="toggleProfileEditState()">
-                    Edit Profile
-                    <i class="fa fa-pencil"></i>
+                    <span *ngIf="!profileEditState"> Edit Profile <i class="fa fa-pencil"></i> </span>
+                    <span *ngIf="profileEditState"> Cancel Profile Edit <i class="fa fa-times"></i> </span>
                 </div>
 
                 <div class="btn btn-secondary border-white" (click)="togglePasswordEditState()">
-                    Edit Password
-                    <i class="fa fa-pencil"></i>
+                    <span *ngIf="!passwordEditState">Edit Password <i class="fa fa-pencil"></i> </span>
+                    <span *ngIf="passwordEditState">Cancel Password Edit <i class="fa fa-times"></i> </span>                     
                 </div>
             </div>
         </div>
