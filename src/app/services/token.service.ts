@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { String } from 'lodash';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
 import { DecodedTokenPayload, EncodedJWTToken } from '../models/jwttoken';
@@ -114,6 +113,14 @@ export class TokenService {
 
     const currentUserAccessTokenPayload: DecodedTokenPayload = this.decodeTokenPayload(currentUserAccessToken);
     return currentUserAccessTokenPayload.isSuperUser;
+  }
+
+  public getCurrentUserName(): string{
+    const currentUserAccessToken: string = this.getAccessToken();
+    if(currentUserAccessToken == null) return "";
+
+    const currentUserAccessTokenPayload: DecodedTokenPayload = this.decodeTokenPayload(currentUserAccessToken);
+    return currentUserAccessTokenPayload.user_name;  
   }
 
   public isTokenExpired(token: string): boolean{
