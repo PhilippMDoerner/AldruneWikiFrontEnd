@@ -3,6 +3,7 @@
     <div class="col-sm-3 col-6 d-flex align-items-center">
         <span class="ml-3">
             {{user.username}}
+            <span title="Deleted/Deactivated" *ngIf="!user.is_active"> (†) </span>
         </span>
     </div>
 
@@ -43,7 +44,7 @@
     </div>
 
     <!-- Delete Column -->
-    <div class="d-flex align-items-center justify-content-center" [ngClass]="{'col-sm-1 col-3': !isDeleteState, 'col-sm-4 col-12': isDeleteState}">
+    <div class="d-flex align-items-center justify-content-center" [ngClass]="{'col-sm-1 col-3': !isDeleteState, 'col-sm-4 col-12': isDeleteState}" *ngIf="user.is_active">
         <span *ngIf="!isDeleteState; else userDelete" class="fa fa-trash icon" (click)="toggleDeleteState()"></span>
     </div>
 </div>
