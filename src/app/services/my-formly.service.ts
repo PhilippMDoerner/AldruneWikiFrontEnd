@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormlyCheckboxConfig, FormlyCustomSelectConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewSelectConfig } from "src/app/models/formly";
+import { FormlyCheckboxConfig, FormlyCustomSelectConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewSelectConfig, FormlyPasswordInterface } from "src/app/models/formly";
 import { FormlyField, FormlyFieldConfig } from "@ngx-formly/core";
 import { OverviewService } from './overview.service';
 
@@ -148,9 +148,9 @@ export class MyFormlyService {
   }
 
 
-  confirmedPasswordInput(config: FormlyInterface): FormlyFieldConfig{
+  confirmedPasswordInput(config: FormlyPasswordInterface): FormlyFieldConfig{
     const validatorList = (config.validators) ? config.validators : [];
-    if (config.required === true ) validatorList.push('required');
+    validatorList.push('required');
     
     const passwordField = {
       key: "password", //Hard coded, fieldMatch validator depends on this
@@ -172,7 +172,7 @@ export class MyFormlyService {
       type: "input",
       className: config.className,
       templateOptions:{
-        label: (config.label) ? "Confirm" + config.label : "Password Confirmation",
+        label: (config.label) ? "Confirm " + config.label : "Password Confirmation",
         type: "password",
         required: true,
         placeholder: "Please re-enter your password",
