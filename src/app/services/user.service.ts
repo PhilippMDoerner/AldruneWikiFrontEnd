@@ -19,7 +19,6 @@ export class UserService {
 
   constructor(
     private http : HttpClient, 
-    private router: Router,
     private tokenService: TokenService
   ) { }
 
@@ -60,6 +59,11 @@ export class UserService {
       is_superuser: user.is_superuser
     }
     return this.http.patch<User>(`${this.userUrl}/pk/${user.pk}/`, data);
+  }
+
+  @TransformObservable(UserObject)
+  patchUser(userPk: number, data: any): Observable<User>{
+    return this.http.patch<User>(`${this.userUrl}/pk/${userPk}/`, data);
   }
 
   deleteUser(user_pk: number): Observable<any>{
