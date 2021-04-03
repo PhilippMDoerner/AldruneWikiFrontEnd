@@ -2,9 +2,9 @@
 <div 
 id="background-div"
 class="d-flex justify-content-center align-items-center pt-4 pb-4"
-(click)="routeToHome($event); closeNavbarMenu()"
+(click)="routeToHome($event); closeNavbarMenu($event)"
 >
-    <router-outlet #routerOutlet (click)="closeNavbarMenu()"></router-outlet>
+    <router-outlet #routerOutlet (click)="closeNavbarMenu($event)"></router-outlet>
 </div>
 
 <!-- BG -->
