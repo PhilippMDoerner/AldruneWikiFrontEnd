@@ -131,7 +131,7 @@ export class MyFormlyService {
     if (config.required === true ) validatorList.push('required');
     
     return {
-      key: "password", //Hard coded, fieldMatch validator depends on this
+      key: config.key,
       type: "input",
       className: config.className,
       templateOptions:{
@@ -139,7 +139,6 @@ export class MyFormlyService {
         type: "password",
         required: true,
         placeholder: "Your password",
-        minLength: 7,
       },
       validators:{
         validation: validatorList
