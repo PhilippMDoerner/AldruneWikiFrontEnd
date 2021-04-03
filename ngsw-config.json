@@ -78,6 +78,15 @@
         "timeout": "10s",
         "strategy": "freshness"
       }
+    },
+    {
+      "name": "IgnoreURLS",
+      "urls": ["https://www.aldrune.com/wiki1/api/sessionaudio/"],
+      "cacheConfig": {
+        "maxSize": 0,
+        "maxAge": "0u",
+        "strategy": "freshness"
+      }
     }
   ] 
 }
