@@ -1,4 +1,4 @@
-import { HttpClient, HttpEvent } from '@angular/common/http';
+import { HttpClient, HttpEvent, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
@@ -21,10 +21,13 @@ export class SessionAudioService {
   }
 
   createSessionAudioFile(sessionAudioModel: SessionAudio): Observable<any>{
+    const headers = new HttpHeaders({ 'ngsw-bypass': ''});
+
     const formData: FormData = convertSingleFileModelToFormData(sessionAudioModel, "audio_file");
     return this.http.post<any>(`${this.sessionAudioUrl}/`, formData, {
       reportProgress: true,
-      observe: 'events'
+      observe: 'events',
+      headers: headers
     });
   }
 
