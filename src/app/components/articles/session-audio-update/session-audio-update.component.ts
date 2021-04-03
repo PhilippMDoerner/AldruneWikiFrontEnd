@@ -10,6 +10,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { HttpEvent, HttpEventType, HttpUploadProgressEvent } from '@angular/common/http';
 
 @Component({
   selector: 'app-session-audio-update',
@@ -96,9 +97,9 @@ export class SessionAudioUpdateComponent implements OnInit {
     } 
   }
 
-  handleFileUpload(event){
-    const uploadInProgress = event.type === 1;
-    const uploadFinished = event.type === 4;
+  handleFileUpload(event: any){
+    const uploadInProgress: boolean = event.type === HttpEventType.UploadProgress;
+    const uploadFinished: boolean = event.type === HttpEventType.Response;
     console.log("handleFileUpload");
     console.log(event);
     if (uploadInProgress){ //Update recorded upload-progress
