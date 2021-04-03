@@ -7,6 +7,7 @@ export interface User{
     is_staff?: boolean,
     is_superuser?: boolean,
     email?: string,
+    is_active?: boolean,
 }
 
 export class UserObject implements User{
@@ -18,6 +19,7 @@ export class UserObject implements User{
     is_staff: boolean;
     is_superuser: boolean;
     groups?: number[];
+    is_active?: boolean;
 
     constructor(object?: User){
         if (object) Object.assign(this, object)
