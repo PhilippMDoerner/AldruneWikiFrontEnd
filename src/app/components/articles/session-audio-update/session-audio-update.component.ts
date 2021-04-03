@@ -63,8 +63,10 @@ export class SessionAudioUpdateComponent implements OnInit {
   }
 
   onSubmit(){ //TODO: Make this work also for file updates. There's some kind of issue with that on the session-audio-upload service with the put method
+    console.log("Submitted File")
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
     if(isFormInUpdateState){
+      console.log("Updating File");
       const updateObservable = this.audioService.updateSessionAudioFile(this.model);
       updateObservable.pipe(first()).subscribe(
         (sessionAudio: SessionAudio) => this.routeToSessionAudio(sessionAudio),
@@ -72,6 +74,7 @@ export class SessionAudioUpdateComponent implements OnInit {
       );
 
     } else {
+      console.log("Creating File");
       const createObservable = this.audioService.createSessionAudioFile(this.model);
       this.file_subscription = createObservable.subscribe(
         (event) => this.handleFileUpload(event),
@@ -96,7 +99,7 @@ export class SessionAudioUpdateComponent implements OnInit {
   handleFileUpload(event){
     const uploadInProgress = event.type === 1;
     const uploadFinished = event.type === 4;
-    console.log("Handling File Upload!");
+    console.log("handleFileUpload");
     console.log(event);
     if (uploadInProgress){ //Update recorded upload-progress
       this.fileUploadProgress = (event.loaded / event.total * 100)
