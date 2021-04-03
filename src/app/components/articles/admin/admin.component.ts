@@ -28,7 +28,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
   userModel: User;
   userFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "username", isNameInput: true, required: true}),
-    this.formlyService.confirmedPasswordInput({key: "password", required: true}),
+    this.formlyService.confirmedPasswordInput({}),
     this.formlyService.genericInput({key: "email", isNameInput: true, required: false}),
   ];
 
@@ -74,7 +74,6 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void{
     animateElement(this.adminCard.nativeElement, 'zoomIn');
-    console.log(this.users); //TODO: Remove this later
   }
 
   //USERS
