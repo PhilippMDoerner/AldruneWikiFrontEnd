@@ -5,6 +5,7 @@ import { Constants } from '../app.constants';
 import { SessionAudio, SessionAudioObject } from '../models/sessionaudio';
 import { convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
 import { TransformObservable } from '../utils/functions/transform';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class SessionAudioService {
   }
 
   createSessionAudioFile(sessionAudioModel: SessionAudio): Observable<any>{
-    const headers = new HttpHeaders({ 'ngsw-bypass': ''});
+    const headers = new HttpHeaders({ 'ngsw-bypass': 'true'});
 
     const formData: FormData = convertSingleFileModelToFormData(sessionAudioModel, "audio_file");
     return this.http.post<any>(`${this.sessionAudioUrl}/`, formData, {
