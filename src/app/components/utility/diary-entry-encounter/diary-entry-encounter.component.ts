@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
@@ -63,7 +63,7 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
   ngOnInit(): void {
     this.encounter;
     this.isEncounterCreateState = this.encounter.pk == null;
-    console.log(this.encounter);
+
     if (this.isEncounterCreateState){
       this.encounter.author = this.tokenService.getCurrentUserPk();
     }
