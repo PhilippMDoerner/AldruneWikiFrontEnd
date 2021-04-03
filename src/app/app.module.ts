@@ -86,6 +86,7 @@ import { SpellComponent } from './components/utility/spell/spell.component';
 import { RuleComponent } from './components/utility/rule/rule.component';
 import { AdminComponent } from './components/articles/admin/admin.component';
 import { UserRowComponent } from './components/utility/user-row/user-row.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -159,6 +160,7 @@ import { UserRowComponent } from './components/utility/user-row/user-row.compone
     RuleComponent,
     AdminComponent,
     UserRowComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,
