@@ -1,15 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CharacterObject } from "src/app/models/character";
 import { CharacterService } from "src/app/services/character/character.service";
-import { Subject, Observable, Subscription } from "rxjs";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Subject, Subscription } from "rxjs";
+import { ActivatedRoute } from "@angular/router";
 import { Constants } from "src/app/app.constants";
 import { first } from 'rxjs/operators';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { QuoteObject } from 'src/app/models/quote';
-import { QuoteService } from 'src/app/services/quote.service';
+
 @Component({
   selector: 'app-character-article',
   templateUrl: './character-article.component.html',
@@ -29,7 +29,6 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
 
   constructor(
     private characterService: CharacterService,
-    private quoteService: QuoteService,
     private route: ActivatedRoute,
     private warnings: WarningsService,  
     public routingService: RoutingService,
