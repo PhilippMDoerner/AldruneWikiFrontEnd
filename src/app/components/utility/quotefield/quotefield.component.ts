@@ -170,7 +170,6 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   }
 
   copyQuoteToClipboard(){
-    console.log(this.quote);
     const quoteLines = this.quote.quote.split("<br />");
     const modifiedQuoteLines = quoteLines.map( (line: string) => `\>${line.trim().trimStart()}`);
     const modifiedQuote = modifiedQuoteLines.join("<br />");

@@ -15,9 +15,6 @@ export function copyToClipboard(text : string){
     copyCurrentSelection();
 
     //remove the selection range (Chrome throws a warning if we don't.) and HTML element
-    console.log(copyRange);
-    console.log(textContainerElement);
-    console.log(textContainerElement.textContent);
     window.getSelection().removeRange(copyRange);
     document.body.removeChild(textContainerElement);
 

@@ -20,7 +20,6 @@ export class WarningsService {
   constructor() { }
 
   showWarning(error: number | any){
-    console.log("ShowWarning error");
     console.log(error);
     if (typeof error !== "number" && (!error.hasOwnProperty("status") || !error.hasOwnProperty("error"))) throw "Invalid error input to show warning";
     const hasSingleError: boolean = typeof error.error === "string";
