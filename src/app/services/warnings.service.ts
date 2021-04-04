@@ -74,13 +74,13 @@ export class WarningsService {
     const notificationHTML = `
     <div class="card notification animate__animated animate__fadeInDown">
         <div class="card-body">
-          <i class="fa fa-times fa-1-5x icon float-right" id="close"></i>
+          <i class="fa fa-times fa-1-5x icon float-right" id="closeIcon"></i>
           <div class="card-title">${heading}</div>
           <hr class="white-separator">
           <div class="card-subtitle"></div>
           <div class="card-text">${body}</div>
           <div class="mt-3">
-              <div class="btn btn-secondary" id="close"> <i class="fa fa-times"></i> Close </div>
+              <div class="btn btn-secondary" id="closeBtn"> <i class="fa fa-times"></i> Close </div>
               <div class="btn btn-secondary" id="copy"> <i class="fa fa-clipboard"></i> Copy Full Error</div>
           </div>
         </div>
@@ -96,11 +96,12 @@ export class WarningsService {
   }
 
   onNotificationClick(event: any, error: any): void{
-    const isClickOnCloseIcon = event.target.id === "close";
-    const isClickOnCloseButton = event.target.id === "close";
+    const isClickOnCloseIcon = event.target.id === "closeIcon";
+    const isClickOnCloseButton = event.target.id === "closeBtn";
 
     if (isClickOnCloseIcon){
       const notificationElement = event.target.parentElement.parentElement;
+      console.log(notificationElement);
       animateElement(notificationElement, 'fadeOutUp')
         .then(() => notificationElement.parentElement.remove());
     }
