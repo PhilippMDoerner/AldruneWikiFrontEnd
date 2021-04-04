@@ -100,15 +100,15 @@ export class WarningsService {
     const isClickOnCloseButton = event.target.id === "close";
 
     if (isClickOnCloseIcon){
-      const notificationElement = event.target.parentElement.parentElement.parentElement;
+      const notificationElement = event.target.parentElement.parentElement;
       animateElement(notificationElement, 'fadeOutUp')
-        .then(() => notificationElement.remove());
+        .then(() => notificationElement.parentElement.remove());
     }
 
     if (isClickOnCloseButton){
-      const notificationElement = event.target.parentElement.parentElement.parentElement.parentElement;
+      const notificationElement = event.target.parentElement.parentElement.parentElement;
       animateElement(notificationElement, 'fadeOutUp')
-        .then(() => notificationElement.remove());
+        .then(() => notificationElement.parentElement.remove());
       
     }
 
