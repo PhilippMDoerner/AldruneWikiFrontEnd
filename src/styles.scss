@@ -457,8 +457,26 @@ formly-validation-message{
 	margin-bottom: 0;
 }
 
+//Notifications
+.notification{
+	background-color: rgb(175, 31, 34) !important;
+	position: fixed;
+	top: 10%;
+	right: 40%;
+	width: 20%;
+	max-height: 50%;
+	overflow-y: auto;
+	z-index: 1000;
+}
+
 // Mobile CSS
 @media(max-width: 992px){
+	//Notifications
+	.notification{
+		right: 30%;
+		width: 40%;
+	}
+
 	.main{
 		padding: 2.5rem 1rem 2.5rem 1rem;
 	}
@@ -485,5 +503,13 @@ formly-validation-message{
 	.timestamp-input input{
 		padding-left: 0.2rem;
 		padding-right: 0.2rem;
+	}
+}
+
+@media(max-width: 576px){
+	//Notifications
+	.notification{
+		right: 5%;
+		width: 90%;
 	}
 }
