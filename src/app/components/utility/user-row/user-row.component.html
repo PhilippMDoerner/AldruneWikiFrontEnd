@@ -31,7 +31,7 @@
 
     <!-- Group Column -->
     <div class="col-sm-3 col-6 d-flex flex-column justify-content-center hide-container">
-        <span *ngFor="let groupPk of user.groups" class="badge bg-dark border-white vanish-container">  
+        <span *ngFor="let groupPk of user.groups" class="badge cursor-default bg-dark border-white vanish-container">  
             {{ getGroupName(groupPk) }} 
             <span class="fa fa-times icon vanish-icon" (click)="removeUserFromGroup(groupPk)"></span>
         </span>
