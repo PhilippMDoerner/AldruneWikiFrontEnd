@@ -99,10 +99,17 @@ export class WarningsService {
     const isClickOnCloseIcon = event.target.id === "close";
     const isClickOnCloseButton = event.target.id === "close";
 
-    if (isClickOnCloseIcon || isClickOnCloseButton){
-      const notificationElement = event.target.parentElement.parentElement;
+    if (isClickOnCloseIcon){
+      const notificationElement = event.target.parentElement.parentElement.parentElement;
       animateElement(notificationElement, 'fadeOutUp')
-        .then(() => notificationElement.remove())
+        .then(() => notificationElement.remove());
+    }
+
+    if (isClickOnCloseButton){
+      const notificationElement = event.target.parentElement.parentElement.parentElement.parentElement;
+      animateElement(notificationElement, 'fadeOutUp')
+        .then(() => notificationElement.remove());
+      
     }
 
     const isClickOnCopyErrorButton = event.target.id === "copy";
