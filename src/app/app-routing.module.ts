@@ -71,7 +71,7 @@ const routes: Routes = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/admin`,
 		component: AdminComponent,
 		data: { name: "admin", requiredPermissions: [Constants.adminPermission]},
-		canActivate: [AdminGuardService] //TODO: Implement as part of PermissionGuardService the "adminPermission" so that it can check for being admin
+		canActivate: [AdminGuardService]
 	},
 
 	//Login Routes
