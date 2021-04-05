@@ -8,7 +8,6 @@
 //Animations
 @import '~animate.css/animate.min';
 
-//TODO: Remove superfluous CSS from animated elements where --animate-duration is set to 0.35s
 .animate__animated{
 	--animate-duration: 0.35s;
 }
