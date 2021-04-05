@@ -10,10 +10,14 @@ export class GroupByPipe implements PipeTransform{
             //grouped Field Value = The name of the field by which you're grouping.
             //item = The value being grouped
             //Accumulator = Object with groupedFieldValue as key and an array of items associated with that Field as value
-            //TODO: Replace the below if-else with a ternary operator expression
             const groupedFieldValue =  this.getFieldValue(field, item);
-            if (accumulator.hasOwnProperty(groupedFieldValue)) accumulator[groupedFieldValue].push(item);
-            else accumulator[groupedFieldValue] = [item];
+
+            if (accumulator.hasOwnProperty(groupedFieldValue)){
+                accumulator[groupedFieldValue].push(item);
+            } else {
+                accumulator[groupedFieldValue] = [item];
+            }
+
             return accumulator;
         }
         const groupedObj: {any : OverviewItemObject[]} = itemArray.reduce(callback, {});
