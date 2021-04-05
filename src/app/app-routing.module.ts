@@ -35,7 +35,7 @@ import { MarkerMapCreateComponent } from './components/articles/marker-map-creat
 import { LocationArticleMapCreateComponent } from './components/articles/location-article-map-create/location-article-map-create.component';
 import { LoginComponent } from './components/login/login.component';
 import { Constants } from './app.constants';
-import { LoginGuardService,
+import { AdminGuardService, LoginGuardService,
 		PermissionGuardService } from './services/permission.service';
 import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
@@ -70,8 +70,8 @@ const routes: Routes = [
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/admin`,
 		component: AdminComponent,
-		data: { name: "admin"},
-		//canActivate: [PermissionGuardService] //TODO: Implement as part of PermissionGuardService the "adminPermission" so that it can check for being admin
+		data: { name: "admin", requiredPermissions: [Constants.adminPermission]},
+		canActivate: [AdminGuardService] //TODO: Implement as part of PermissionGuardService the "adminPermission" so that it can check for being admin
 	},
 
 	//Login Routes
@@ -90,7 +90,8 @@ const routes: Routes = [
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/profile/:username`,
 		component: ProfileComponent,
-		data: { name: "profile"}
+		data: { name: "profile"},
+		canActivate: [LoginGuardService]
 	},
 
 	//Character Routes
