@@ -1,4 +1,7 @@
-/**Decorator to apply try-catch. Currently only used in diary-entry-encounter-list */
+/**
+ * Decorator to apply try-catch. Automatically display a notification if it does not work out. 
+ * Currently only used in diary-entry-encounter-list 
+ */
 export function tryCatch(target: any, propertyKey: string, descriptor: PropertyDescriptor){
 
     const originalMethod = descriptor.value;

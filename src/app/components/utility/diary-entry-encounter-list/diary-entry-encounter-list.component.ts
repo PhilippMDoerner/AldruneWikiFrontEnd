@@ -102,7 +102,6 @@ export class DiaryEntryEncounterListComponent implements OnInit{
    * Is triggered when a new encounter shall be created. Together with an encounter, you must create an
    * encounterConnection to this diaryentry.
    * @param createdEncounterIndex : The index in this.encounters of the new created Encounter
-   */ //TODO: Create a decorator to apply try-catch-warning.showWarning to any function you want. Ideally as part of the warning Service
   @tryCatch
   async onEncounterCreate(createdEncounterIndex: number): Promise<void>{
     const pendingEncounter = this.encounters[createdEncounterIndex];
