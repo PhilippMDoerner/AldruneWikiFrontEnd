@@ -25,7 +25,7 @@ export class AppComponent implements OnInit{
   ngOnInit(){
     this.serviceWorkerUpdate.available.subscribe(
       event => {
-        this.warnings.showTextModal("There's an update to this webpage! Reloading cache...");
+        this.warnings.showAlert("There's an update to this webpage! Reloading cache...");
         location.reload();
       }
     )

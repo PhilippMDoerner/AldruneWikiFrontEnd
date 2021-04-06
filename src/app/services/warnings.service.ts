@@ -65,7 +65,7 @@ export class WarningsService {
     return httpErrorMessages;
   }
 
-  showTextModal(text: string){
+  showAlert(text: string){
     alert(text);
   }
 
@@ -90,12 +90,12 @@ export class WarningsService {
 
     const notificationElement: HTMLElement = document.createElement("div")
     notificationElement.innerHTML = notificationHTML;
-    notificationElement.onclick = (event) => this.onNotificationClick(event, error);
+    notificationElement.onclick = (event) => this.onErrorNotificationClick(event, error);
 
     bodyElement.appendChild(notificationElement);
   }
 
-  onNotificationClick(event: any, error: any): void{
+  onErrorNotificationClick(event: any, error: any): void{
     const isClickOnCloseIcon = event.target.id === "closeIcon";
     const isClickOnCloseButton = event.target.id === "closeBtn";
 
