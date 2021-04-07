@@ -15,6 +15,7 @@
     <p> Forgot your account’s password? Enter your account name and we’ll send you a recovery link to your email address.</p>
     <form class="d-flex flex-column">
         <formly-form [model]="recoveryModel" [fields]="recoveryFields" [form]="recoveryForm"></formly-form>
+        <div class="btn btn-secondary mb-3" (click)="togglePasswordResetView()">I do have a password !</div>
         <div class="btn btn-primary" (click)="requestPasswordReset()">Send recovery email</div>
     </form>
 </ng-template>

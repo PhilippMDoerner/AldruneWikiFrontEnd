@@ -91,12 +91,10 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   togglePasswordResetView(){
-    animateElement(this.loginMainCard.nativeElement, 'flipOutY')
-      .then(() => {
-        this.isRequestingPasswordReset = !this.isRequestingPasswordReset;
-        this.recoveryModel = {username: null};
-        animateElement(this.loginMainCard.nativeElement, 'flipInY');
-      })
+    this.isRequestingPasswordReset = !this.isRequestingPasswordReset;
+    this.recoveryModel = {username: null};
+
+    animateElement(this.loginMainCard.nativeElement, 'flip');
   }
 
   requestPasswordReset(){
