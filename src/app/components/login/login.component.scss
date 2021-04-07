@@ -5,3 +5,18 @@
 .animate__animated{
     --animate-duration: 1s;
 }
+
+.animate__animated.animate__flipInY, .animate__animated.animate__flipOutY{
+    --animate-duration: 0.75s;
+}
+
+.pseudo-link{
+    border-bottom: 1px dotted grey;
+    font-size: 0.9rem;
+}
+
+.pseudo-link:hover{
+    color: #839cff;
+    text-decoration: none !important;
+    border-bottom: 2px solid grey;
+}

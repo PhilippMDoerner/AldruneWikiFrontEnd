@@ -6,11 +6,13 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { User } from 'src/app/models/user';
+import { MailService } from 'src/app/services/mail.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator'
+import { isThisTypeNode } from 'typescript';
 
 @Component({
   selector: 'app-login',
@@ -23,8 +25,14 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   form = new FormGroup({});
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: 'username', placeholder: 'Username'}),
-    this.formlyService.genericPasswordInput({key: 'password'})
-  ]
+    this.formlyService.genericPasswordInput({key: 'password', className:"mb-0", fieldGroupClassName: "mb-0"})
+  ];
+
+  recoveryModel: {username: string};
+  recoveryForm = new FormGroup({});
+  recoveryFields: FormlyFieldConfig[] = [
+    this.formlyService.genericInput({key: 'username', placeholder: 'Username'})
+  ];
 
   @ViewChild('loginMainCard') loginMainCard: ElementRef;
 
@@ -33,12 +41,16 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   parameter_subscription: Subscription;
   hasConfirmedLogin: boolean = false;
 
+  isRequestingPasswordReset: boolean = false;
+  reset_subscription: Subscription;
+
   constructor(
     private formlyService: MyFormlyService,
     private tokenService: TokenService,
     private route: ActivatedRoute,
     private warnings: WarningsService,  
     public routingService: RoutingService,
+    private mailService: MailService
     ) { }
 
   ngOnInit(): void {
@@ -78,8 +90,27 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     this.model = {username: null, password: null};
   }
 
+  togglePasswordResetView(){
+    animateElement(this.loginMainCard.nativeElement, 'flipOutY')
+      .then(() => {
+        this.isRequestingPasswordReset = !this.isRequestingPasswordReset;
+        this.recoveryModel = {username: null};
+        animateElement(this.loginMainCard.nativeElement, 'flipInY');
+      })
+  }
+
+  requestPasswordReset(){
+    this.mailService.requestPasswordReset(this.recoveryModel.username).pipe(first()).subscribe(
+      (response) => {
+        console.log(response);
+      },
+      (error) => console.log(error)
+    )
+  }
+
   ngOnDestroy(){
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
+    if (this.reset_subscription) this.reset_subscription.unsubscribe();
   }
 
 }
