@@ -3,22 +3,26 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpHeaders} from
 import { EMPTY, Observable } from 'rxjs';
 import { catchError, switchMap } from 'rxjs/operators';
 import { Constants } from "src/app/app.constants";
-import { Router } from '@angular/router';
 import { RefreshTokenService } from '../services/refresh-token.service';
 import { TokenService } from '../services/token.service';
 import { RoutingService } from '../services/routing.service';
 
 @Injectable({providedIn: 'root'})
 export class JWTInterceptor implements HttpInterceptor{
+    apiNonTokenURLEndings: string[] = [ //Endings of API URLs that require no tokem to be used
+        "/token", //Request new authentication token with refresh token
+        "/token/refresh", //Request new refresh token with login data
+        "/mail/reset", //Send password recovery mail
+    ]
+
     constructor(
         private refreshTokenService: RefreshTokenService,
         private tokenService: TokenService,
-        private router: Router,  
         public routingService: RoutingService,
     ){}
 
     public intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-        if (this.isApiUrl(request.url)){
+        if (this.isApiUrlRequiringJWTToken(request.url)){
             if (!this.tokenService.hasValidJWTToken()){
                 return this.handleByRoutingToLogin(request, next);
             }
@@ -83,11 +87,21 @@ export class JWTInterceptor implements HttpInterceptor{
         return EMPTY;
     }
 
-    private isApiUrl(url: string): boolean{
+    private isApiUrlRequiringJWTToken(url: string): boolean{
         const isApiUrl: boolean = url.startsWith(Constants.wikiApiUrl);
-        const isTokenLoginUrl: boolean = url.endsWith('/token');
-        const isTokenRefreshUrl: boolean = url.endsWith('/token/refresh');
-        return isApiUrl && !isTokenLoginUrl && !isTokenRefreshUrl;
+        let requiresJWTToken = true;
+        for(let urlEnding of this.apiNonTokenURLEndings){
+            const isApiEndpointThatDoesNotRequireToken = url.endsWith(urlEnding);
+            if(isApiEndpointThatDoesNotRequireToken){
+                requiresJWTToken = false;
+                break;
+            }
+        }
+        console.log(`intercepted url ${url} which is an api url? (${isApiUrl}) and requires JWTToken? (${requiresJWTToken})`);
+        console.log(url)
+        //const isTokenLoginUrl: boolean = url.endsWith('/token');
+        //const isTokenRefreshUrl: boolean = url.endsWith('/token/refresh');
+        return isApiUrl && requiresJWTToken;
     }
 
     private addTokenToRequest(token: string, request: HttpRequest<any>): HttpRequest<any>{
