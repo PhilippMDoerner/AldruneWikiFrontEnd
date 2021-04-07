@@ -11,6 +11,7 @@ export interface FormlyInterface{
     hide?: boolean,
     wrappers?: string[],
     className?: string,
+    fieldGroupClassName?: string,
     validators?: string[],
 }
 

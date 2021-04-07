@@ -134,6 +134,7 @@ export class MyFormlyService {
       key: config.key,
       type: "input",
       className: config.className,
+      fieldGroupClassName: config.fieldGroupClassName,
       templateOptions:{
         label: (config.label) ? config.label : "Password",
         type: "password",
