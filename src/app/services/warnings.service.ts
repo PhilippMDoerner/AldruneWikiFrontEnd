@@ -69,7 +69,7 @@ export class WarningsService {
     alert(text);
   }
 
-  showErrorNotification(heading: string, body: string, error: number | any = {}) {
+  private showErrorNotification(heading: string, body: string, error: number | any = {}) {
     const bodyElement: HTMLElement = document.querySelector("body");
     const notificationHTML = `
     <div class="card notification animate__animated animate__fadeInDown">
