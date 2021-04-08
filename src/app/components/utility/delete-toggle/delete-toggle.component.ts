@@ -1,12 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
 import { AddPermissionUtilityFunctions, CurrentUserHasPermissions, hasPermissions, PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { PermissionGuardService } from 'src/app/services/permission.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 
 @Component({
   selector: 'app-delete-toggle',
   templateUrl: './delete-toggle.component.html',
-  styleUrls: ['./delete-toggle.component.scss']
+  styleUrls: ['./delete-toggle.component.scss'],
 })
 @AddPermissionUtilityFunctions()
 export class DeleteToggleComponent extends PermissionUtilityFunctionMixin implements OnInit {
@@ -15,9 +16,9 @@ export class DeleteToggleComponent extends PermissionUtilityFunctionMixin implem
   @Input() deleteMessage: string = "Delete this object?";
   @Output() deleteEvent : EventEmitter<string> = new EventEmitter();
 
-  constructor(
-    private permissionService: PermissionGuardService
-  ) { super() }
+  @ViewChild("deleteButton") deleteButton: ElementRef;
+
+  constructor() { super() }
 
   ngOnInit(): void {
   }
@@ -25,6 +26,7 @@ export class DeleteToggleComponent extends PermissionUtilityFunctionMixin implem
   @CurrentUserHasPermissions([Constants.apiDeletePermission])
   toggleDeleteState(){
     this.isInDeleteState = !this.isInDeleteState
+    animateElement( this.deleteButton.nativeElement , 'flipInY');
   }
 
   @CurrentUserHasPermissions([Constants.apiDeletePermission])
