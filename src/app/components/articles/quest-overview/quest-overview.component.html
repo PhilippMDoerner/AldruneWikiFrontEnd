@@ -1,11 +1,16 @@
 <div class="main" #questMainCard>
     <article *ngIf="quests; else loading" class="container">
+        <!-- Heading -->
+        <div class="row">
+            <h2 class="major col mb-4 pb-1 border-bottom">Quests</h2>
+        </div>
+
         <div *ngFor="let questTaker of quests">
             <div class="mb-3 mx-0 row">
                 <!-- Outer Table Heading -->
                 <h4 class="col-lg-6 px-0 my-auto">
                     {{questTaker.key}}'s Quests
-                    <i class="fa fa-plus icon ml-2" routerLink="create"></i>
+                    <i *ngIf="userHasCreatePermission()" class="fa fa-plus icon ml-2" routerLink="create"></i>
                 </h4>
 
                 <div class="col-3"></div>

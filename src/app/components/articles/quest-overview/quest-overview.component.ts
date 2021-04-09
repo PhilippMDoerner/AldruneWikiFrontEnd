@@ -6,13 +6,14 @@ import { Constants } from 'src/app/app.constants';
 import { Quest, QuestObject } from 'src/app/models/quest';
 import { QuestService } from 'src/app/services/quest.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-quest-overview',
   templateUrl: './quest-overview.component.html',
   styleUrls: ['./quest-overview.component.scss']
 })
-export class QuestOverviewComponent implements OnInit, AfterViewInit {
+export class QuestOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, AfterViewInit {
   quests: Array<{key:string, value:QuestObject[]}>;
   filterStateTypes: string[];
   filterStates: object;
@@ -24,7 +25,7 @@ export class QuestOverviewComponent implements OnInit, AfterViewInit {
   constructor(
     private questService: QuestService,
     public routingService: RoutingService,
-  ) { }
+  ) { super() }
 
   ngOnInit(): void {
     this.questService.getQuests().pipe(first()).subscribe(
