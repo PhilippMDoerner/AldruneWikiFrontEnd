@@ -9,6 +9,7 @@ import { EncounterServiceService } from 'src/app/services/encounter/encounter-se
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { tryCatch } from 'src/app/utils/functions/utilityDecorators'
 
 @Component({
@@ -16,7 +17,7 @@ import { tryCatch } from 'src/app/utils/functions/utilityDecorators'
   templateUrl: './diary-entry-encounter-list.component.html',
   styleUrls: ['./diary-entry-encounter-list.component.scss']
 })
-export class DiaryEntryEncounterListComponent implements OnInit{
+export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionMixin implements OnInit{
 
   @Input() diaryEntry: DiaryEntryObject;
   encounters: Encounter[] = [];
@@ -33,7 +34,7 @@ export class DiaryEntryEncounterListComponent implements OnInit{
     private route: ActivatedRoute,
     private tokenService: TokenService,
     private diaryEntryEncounterConnectionService: DiaryentryEncounterConnectionService
-  ) { }
+  ) { super() }
 
   ngOnInit(){
     const hasDisplayModeParam = !(this.route.snapshot.params['displayMode'] == null);
@@ -102,6 +103,8 @@ export class DiaryEntryEncounterListComponent implements OnInit{
    * Is triggered when a new encounter shall be created. Together with an encounter, you must create an
    * encounterConnection to this diaryentry.
    * @param createdEncounterIndex : The index in this.encounters of the new created Encounter
+   */
+   
   @tryCatch
   async onEncounterCreate(createdEncounterIndex: number): Promise<void>{
     const pendingEncounter = this.encounters[createdEncounterIndex];

@@ -1,7 +1,7 @@
 <div class="container px-0" *ngIf="!isUpdating; else waiting">
     <div class="row mb-5">
         <div class="col-4"></div>
-        <div class="col-4 btn btn-secondary" (click)="toggleDiaryEntryView()">
+        <div class="col-4 btn btn-secondary" (click)="toggleDiaryEntryView()" *ngIf="userHasUpdatePermission() && userHasDeletePermission() && userHasCreatePermission()">
             Currently viewing as : 
             <span *ngIf="diaryEntryView"> Diary entry </span>
             <span *ngIf="!diaryEntryView"> Encounter list </span>
@@ -10,7 +10,7 @@
     </div>
 
     <!-- Insert new first Encounter -->
-    <div *ngIf="!diaryEntryView" class="expand row">
+    <div *ngIf="!diaryEntryView && userHasUpdatePermission() && userHasDeletePermission() && userHasCreatePermission()" class="expand row">
         <div class="col-md-3 col-0"></div>
         <div class="col-md-6 d-flex justify-content-around">
             <div class="btn btn-secondary" (click)="toggleEncounterCreateState(-1)">
