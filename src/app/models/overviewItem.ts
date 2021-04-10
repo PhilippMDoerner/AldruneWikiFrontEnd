@@ -12,6 +12,7 @@ import { SessionObject } from './session';
 import { MapObject } from './map';
 import { TimestampObject } from './timestamp';
 import { MapMarkerObject } from './mapmarker';
+import { Image } from './image';
 
 export interface OverviewItem{
     article_type: string,
@@ -23,6 +24,7 @@ export interface OverviewItem{
 
     //For Character-Type OverviewItems
     player_character?: boolean,
+    images?: Image[]
 
     //For Location-Type OverviewItems
     parent_location_details?: {name: string, pk: number},
@@ -46,6 +48,7 @@ export class OverviewItemObject implements OverviewItem{
     name_full: string;
     description: string;
     update_date?: string;
+    images?: Image[];
 
     //For Character-Type OverviewItems
     player_character?: boolean;

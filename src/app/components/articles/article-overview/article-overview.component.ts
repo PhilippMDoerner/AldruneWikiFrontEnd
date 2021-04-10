@@ -8,6 +8,8 @@ import { Constants } from 'src/app/app.constants';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { RoutingService } from 'src/app/services/routing.service';
 import { first } from 'rxjs/operators';
+import { Character, CharacterObject } from 'src/app/models/character';
+import { CharacterService } from 'src/app/services/character/character.service';
 
 @Component({
   selector: 'app-article-overview',
@@ -16,6 +18,7 @@ import { first } from 'rxjs/operators';
 })
 export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, AfterViewInit {
   listItems: OverviewItemObject[];
+  playerCharacters: OverviewItemObject[];
   isInitialAnimationFinished: boolean = false;
 
   @ViewChild('overviewMainCard') overviewMainCard: ElementRef;
@@ -41,7 +44,8 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   constructor(
     private overviewService: OverviewService,
     private router: Router,  
-    public routingService: RoutingService
+    public routingService: RoutingService,
+    private characterService: CharacterService,
   ) { super() }
 
   ngOnInit(): void {
@@ -53,6 +57,13 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
       (listItems: OverviewItemObject[]) => this.listItems = listItems, 
       error => this.routingService.routeToErrorPage(error)
     );
+
+    if(this.overviewType === this.characterOverview){
+      this.characterService.getPlayerCharacters().pipe(first()).subscribe(
+        (playerCharacters: OverviewItemObject[]) => this.playerCharacters = playerCharacters,
+        error => this.routingService.routeToErrorPage(error)
+      )
+    }
   }
 
   ngAfterViewInit(): void{

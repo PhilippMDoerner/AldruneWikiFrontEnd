@@ -2,39 +2,41 @@
     <article *ngIf="listItems; else loading" class="pr-4 pl-4 container">
         <!-- Heading -->
         <div class="row">
-            <h2 class="major col mb-4 pb-1 border-bottom">{{ capitalizeString(overviewType) }}s</h2>
+            <h1 class="major col mb-4 pb-1 border-bottom">{{ capitalizeString(overviewType) }}s</h1>
         </div>
 
         <!-- Image -->
-        <div class="row">
+        <div class="row" *ngIf="overviewType!==characterOverview">
             <img class="col px-0 mb-4" src="{{overviewImages[overviewType]}}" alt=""/>
         </div>
 
-        <!-- Adding Item button -->
-        <div class="mb-3 row" [ngClass]="{'d-none': !userHasCreatePermission()}">
-            <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
-                Add {{ capitalizeString(overviewType) }}
-            </a>
-        </div>
-
         <!-- Character OverView Snippet | PC List-->
-        <div *ngIf="overviewType===characterOverview">
+        <div *ngIf="overviewType===characterOverview" id="player-characters">
             <!-- PC List Heaidng -->
             <div class="row">
-                <h4 class="col mb-0"> Player Characters </h4>
+                <h3 class="col mb-0"> Player Characters </h3>
             </div>
 
             <!-- PC List -->
-            <ul class="mb-5">
-                <span *ngFor="let item of listItems" class="row">
-                    <li *ngIf="item.player_character" class="col">
-                        <a routerLink="{{ item.getAbsoluteRouterUrl() }}">
-                            {{ item.name_full }}
-                        </a> 
-                    </li>
-                </span>
-            </ul>
+            <div class="mb-5 row">
+                <div *ngFor="let playerCharacter of playerCharacters" class="mb-4 col-md-4 col-sm-6 col-12">
+                    <a routerLink="{{ playerCharacter.getAbsoluteRouterUrl() }}">
+                        <div class="card">
+                            <img class="card-img-top" [src]="constants.wikiUrl + playerCharacter.images[0].image" alt="https://www.aldrune.com/media/resources/dndicon.png">
+                            <div class="card-body p-3">
+                                <h5 class="card-title mb-0 text-center">{{ playerCharacter.name_full }}</h5>
+                            </div>
+                        </div>
+                    </a> 
+                </div>
+            </div>
+        </div>
 
+        <!-- Adding Item button -->
+        <div class="mb-3 row" *ngIf="userHasCreatePermission()">
+            <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
+                Add {{ capitalizeString(overviewType) }}
+            </a>
         </div>
 
         <!-- Filter Bar -->
@@ -53,7 +55,7 @@
         <div *ngIf="overviewType===characterOverview">
             <!-- NPC List Heading -->
             <div class="row">
-                <h4 class="mb-3 col"> Non-Player Characters </h4>
+                <h3 class="mb-3 col"> Non-Player Characters </h3>
             </div>
 
             <!-- NPC List -->
