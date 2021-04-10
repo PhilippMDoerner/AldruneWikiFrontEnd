@@ -61,7 +61,7 @@
         <div class="row justify-content-center mb-3">
             <div 
             class="btn btn-primary mx-auto col-lg-4" 
-            [ngClass]="{'d-none': !userHasCreatePermission()}" 
+            *ngIf = "userHasCreatePermission()"
             (click)="createTimestampEventSubject.next(this.vimePlayer.currentTime)"
             >
                 Add Timestamp <i class="fa fa-clock-o ml-1"></i>
