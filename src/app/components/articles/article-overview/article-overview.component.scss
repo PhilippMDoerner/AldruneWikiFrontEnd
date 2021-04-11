@@ -9,7 +9,7 @@
     color: white;
 }
 
-input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus, input[type="tel"]:focus, select:focus, textarea:focus {
+.filter-bar:focus {
     background: rgba(255, 255, 255, 0.1);
     border-color: #ffffff;
     box-shadow: 0 0 0 2px #ffffff;
