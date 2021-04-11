@@ -13,7 +13,7 @@
     <div *ngIf="!diaryEntryView && userHasUpdatePermission() && userHasDeletePermission() && userHasCreatePermission()" class="expand row">
         <div class="col-md-3 col-0"></div>
         <div class="col-md-6 d-flex justify-content-around">
-            <div class="btn btn-secondary" (click)="toggleEncounterCreateState(-1)">
+            <div class="btn btn-primary" (click)="toggleEncounterCreateState(-1)">
                 <i class="fa fa-3x fa-plus pointer" title="Add Encounter to Diaryentry"></i>
             </div>
 

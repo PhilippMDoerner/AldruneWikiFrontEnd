@@ -6,6 +6,7 @@ import { Constants } from 'src/app/app.constants';
 import { Rule, RuleObject } from "src/app/models/rule";
 import { RoutingService } from 'src/app/services/routing.service';
 import { RuleService } from 'src/app/services/rule.service';
+import { TokenService } from 'src/app/services/token.service';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
@@ -19,6 +20,7 @@ export class RulesComponent implements OnInit {
   constructor(
     private ruleService: RuleService,
     public routingService: RoutingService,
+    public tokenService: TokenService,
   ) { }
 
   ngOnInit(): void {

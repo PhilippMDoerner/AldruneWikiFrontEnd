@@ -119,13 +119,13 @@ class="container"
         <form [formGroup]="form" *ngIf="isEncounterCreateState && !isEncounterUpdateState">
             <formly-form [form]="form" [fields]="fields" [model]="encounter"></formly-form>
             <div class="btn btn-secondary mr-3" (click)="toggleEncounterCreateState()">Cancel</div>
-            <div class="btn btn-secondary" (click)="createEncounter(encounter)">Submit</div>
+            <div class="btn btn-primary" (click)="createEncounter(encounter)">Submit</div>
         </form>
         
         <!-- Update Encounter Form -->
         <form [formGroup]="form" *ngIf="!isEncounterCreateState && isEncounterUpdateState">
             <formly-form [form]="form" [fields]="fields" [model]="encounter"></formly-form>
             <div class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</div>
-            <div class="btn btn-secondary" (click)="updateEncounter(encounter)">Submit</div>
+            <div class="btn btn-primary" (click)="updateEncounter(encounter)">Submit</div>
         </form>
 </ng-template>

@@ -4,6 +4,7 @@ import { Constants } from 'src/app/app.constants';
 import { SpellObject } from 'src/app/models/spell';
 import { RoutingService } from 'src/app/services/routing.service';
 import { SpellService } from 'src/app/services/spell.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-spells',
@@ -18,6 +19,7 @@ export class SpellsComponent implements OnInit {
   constructor(
     private spellService: SpellService,
     public routingService: RoutingService,
+    public tokenService: TokenService,
   ) { }
 
   ngOnInit(): void {
