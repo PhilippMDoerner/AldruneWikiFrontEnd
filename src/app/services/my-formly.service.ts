@@ -194,7 +194,7 @@ export class MyFormlyService {
 
   genericCheckbox(config: FormlyCheckboxConfig): FormlyFieldConfig{
     return{
-      key: "passwordConfirm",
+      key: config.key,
       type: "checkbox",
       className: config.className,
       defaultValue: config.defaultValue,
