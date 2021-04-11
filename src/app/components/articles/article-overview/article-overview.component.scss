@@ -26,6 +26,6 @@ input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focu
     transition: max-height 0.2s ease-in-out;
 }
 
-#player-characters img:hover{
+#player-characters .card:hover > img{
     max-height: 20rem;
 }
