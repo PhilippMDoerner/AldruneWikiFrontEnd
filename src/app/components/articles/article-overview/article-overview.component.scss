@@ -29,3 +29,9 @@
 #player-characters .card:hover > img{
     max-height: 20rem;
 }
+
+@media(max-width: 768px){
+    li{
+        font-size: larger;
+    }
+}
