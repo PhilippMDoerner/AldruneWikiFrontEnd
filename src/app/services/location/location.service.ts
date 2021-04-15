@@ -1,10 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Constants } from "src/app/app.constants";
 import { Observable } from "rxjs";
 import { Location, LocationObject, SubLocation } from "src/app/models/location";
-import { characterLocation } from "src/app/models/character";
-import { mergeMap, toArray, map } from 'rxjs/operators';
 import { TransformArrayObservable, TransformObservable } from 'src/app/utils/functions/transform';
 
 @Injectable({
