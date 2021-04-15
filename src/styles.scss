@@ -51,6 +51,7 @@ $marker-width: 100px;
 /* Default Vime theme. ~960B */
 @import '~@vime/core/themes/default.css';
 
+/* Custom Colors */
 body {
     color: #ffffff;
     font-family: "Source Sans Pro", sans-serif !important;
@@ -58,6 +59,8 @@ body {
     font-size: 1rem;
 	line-height: 1.65;
 	overflow-x: hidden;
+	--dark-red:     hsl(358, 50%, 15%);
+	--light-red:     hsl(358, 50%, 60%);
 }
 
 //headings
