@@ -17,8 +17,8 @@ export interface Character extends ArticleObject{
     current_location_details?: characterLocation,
     items?: characterItem[],
     encounters?: characterEncounter[],
-    images?: Image[];
-    class?: PlayerClass
+    images?: Image[],
+    player_class?: PlayerClass[],
 }
 
 export interface characterLocation{
@@ -72,6 +72,7 @@ export class CharacterObject implements Character{
     items?: characterItem[];
     encounters?: characterEncounter[];
     images?: Image[];
+    player_class?: PlayerClass[];
 
     getAbsoluteRouterUrl(): string{
         return `${Constants.wikiUrlFrontendPrefix}/character/${this.name}`;
