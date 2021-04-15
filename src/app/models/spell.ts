@@ -1,5 +1,6 @@
 import { Constants } from '../app.constants';
 import { ArticleObject } from './base-models';
+import { PlayerClass } from './playerclass';
 
 export interface Spell extends ArticleObject{
     spell_level: number,
@@ -13,7 +14,7 @@ export interface Spell extends ArticleObject{
     saving_throw: string,
     damage: string,
     description: string,
-    classes: string[],
+    classes: PlayerClass[],
     id?: number,
 }
 
@@ -29,7 +30,7 @@ export class SpellObject implements Spell{
     saving_throw: string;
     damage: string;
     description: string;
-    classes: string[]
+    classes: PlayerClass[]
     name?: string;
     id?: number;
 
