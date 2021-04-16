@@ -16,7 +16,7 @@ export interface CharacterPlayerClassConnection{
     pk?: number,
     player_class: number,
     character: number
-    player_class_details: PlayerClass,
+    player_class_details?: PlayerClass,
 }
 
 export interface SpellClassConnection{

@@ -21,7 +21,7 @@
                 <div class="col">
                     <span *ngIf="character.gender !=='Other'">{{ character.gender }}</span>
                     {{ character.race }}
-                    {{ character.player_class.join(", ")}}
+                    {{ createPlayerClassString() }}
                     <span *ngIf="character.organization"> of the 
                         <a routerLink="{{ routingService.getRoutePath('organization', {name: character.organization_details.name}) }}">
                             {{ character.organization_details.name }}

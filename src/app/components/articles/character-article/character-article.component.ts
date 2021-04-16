@@ -9,6 +9,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { QuoteObject } from 'src/app/models/quote';
+import { CharacterPlayerClassConnection } from 'src/app/models/playerclass';
 
 @Component({
   selector: 'app-character-article',
@@ -55,6 +56,12 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
         this.warnings.showWarning(error);
       }
     );
+  }
+
+  createPlayerClassString(){
+    return this.character.player_class_connections
+      .map((connection: CharacterPlayerClassConnection) => connection.player_class_details.name)
+      .join(", ");
   }
 
   deleteArticle(){

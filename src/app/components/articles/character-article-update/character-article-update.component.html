@@ -11,19 +11,24 @@
                 Updating Character {{ model.name }}
             </h2>
         </div>
-        <ng-template #createState>
-            <app-edit-toggle 
-            [isInUpdateState]=true 
-            [link]="routingService.getRoutePath('character-overview')"
-            ></app-edit-toggle>
 
-            <h2 class="text-center">
-                Creating a new character
-            </h2>
-        </ng-template>
+        <!-- Connections -->
+        <h4 class="mb-0"> Classes </h4>
+        <hr class="white-separator">
 
+        <div id="player-classes" class="mb-5" *ngIf="model">
+            <span class="badge badge-secondary mr-3" *ngFor="let connection of model.player_class_connections">
+                {{ connection.player_class_details.name }}
+                <span class="ml-2 fa fa-trash icon" (click)="deletePlayerClassConnection(connection)"></span>
+            </span>
+
+            <span class="mx-3 fa fa-plus icon fa-1-5x" (click)="toggleConnectionCreateState()" *ngIf="!isCharacterConnectionCreationState; else connectionForm"></span>
+        </div>
 
         <!-- Form -->
+        <h4 class="mb-0"> Character Data </h4>
+        <hr class="white-separator">
+
         <app-formly-formcontainer 
         [model]="model" 
         [fields]="fields" 
@@ -36,3 +41,33 @@
 <!-- Spinner while loading -->
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
+
+<ng-template #createState>
+    <app-edit-toggle 
+    [isInUpdateState]=true 
+    [link]="routingService.getRoutePath('character-overview')"
+    ></app-edit-toggle>
+
+    <h2 class="text-center">
+        Creating a new character
+    </h2>
+</ng-template>
+
+
+<ng-template #connectionForm>
+    <!-- Form for Creating Quote Connections -->
+    <form class="d-inline-flex align-items-center">
+        <select class="form-control d-inline-block" name="connection" id="connection" [(ngModel)]="connectionModel.player_class">
+            <option 
+            *ngFor="let playerClass of playerClasses" 
+            value="{{playerClass.pk}}" 
+            [attr.disabled]="hasConnection(playerClass) ? true : null"
+            >
+                {{playerClass.name}}
+            </option>
+        </select>
+
+        <i class="fa fa-times icon mx-2" (click)="toggleConnectionCreateState()"></i>
+        <i class="fa fa-check icon" (click)="createPlayerClassConnection(connectionModel)"></i>
+    </form>
+</ng-template>

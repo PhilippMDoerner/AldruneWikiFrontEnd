@@ -12,6 +12,9 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { CharacterPlayerClassConnection, PlayerClass } from 'src/app/models/playerclass';
+import { PlayerClassService } from 'src/app/services/player-class.service';
+import { CharacterPlayerClassConnectionService } from 'src/app/services/character-player-class-connection.service';
 
 @Component({
   selector: 'app-character-article-update',
@@ -22,6 +25,9 @@ import { RoutingService } from 'src/app/services/routing.service';
 export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   constants: any = Constants;
   formState: string;
+  playerClasses: PlayerClass[];
+  isCharacterConnectionCreationState: boolean = false;
+  connectionModel: CharacterPlayerClassConnection;
 
   model: CharacterObject;
   fields: FormlyFieldConfig[] = [
@@ -44,6 +50,8 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
     private router: Router,
     private warnings: WarningsService,  
     public routingService: RoutingService,
+    private playerClassService: PlayerClassService,
+    private characterConnectionService: CharacterPlayerClassConnectionService,
   ) { }
 
   ngOnInit(): void {
@@ -82,6 +90,48 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
       this.routingService.routeToPath('character-overview');
     } 
   }
+
+  toggleConnectionCreateState(){
+    if(!this.playerClasses){
+      this.playerClassService.getPlayerClasses().pipe(first()).subscribe(
+        (playerClasses: PlayerClass[]) => this.playerClasses = playerClasses,
+        error => this.warnings.showWarning(error)
+      );
+    }
+
+    this.isCharacterConnectionCreationState = !this.isCharacterConnectionCreationState;
+
+    this.resetConnectionModel();
+  }
+
+  deletePlayerClassConnection(connection: CharacterPlayerClassConnection){
+    this.characterConnectionService.deleteCharacterClassConnection(connection.pk).pipe(first()).subscribe(
+      (response) => {
+        const spellConnectionIndex: number =  this.model.player_class_connections.indexOf(connection);
+        this.model.player_class_connections.splice(spellConnectionIndex, 1);
+      },
+      (error) => this.warnings.showWarning(error),
+    )
+  }
+
+  createPlayerClassConnection(connection: CharacterPlayerClassConnection){
+    this.characterConnectionService.createCharacterClassConnection(connection).pipe(first()).subscribe(
+      (connection: CharacterPlayerClassConnection) => {
+        this.model.player_class_connections.push(connection);
+        this.toggleConnectionCreateState();
+      },
+      error => this.warnings.showWarning(error)
+    )
+  }
+
+  resetConnectionModel(){
+    this.connectionModel = {player_class: null, character: this.model.pk};
+  }
+
+  hasConnection(playerClass: PlayerClass){
+    return this.model.player_class_connections.some((connection: CharacterPlayerClassConnection) => connection.player_class === playerClass.pk);
+  }
+
 
   ngOnDestroy(): void{
     if (this.parameter_subscription) this.parameter_subscription.unsubscribe();

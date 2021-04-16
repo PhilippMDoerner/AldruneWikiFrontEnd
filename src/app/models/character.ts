@@ -74,7 +74,7 @@ export class CharacterObject implements Character{
     items?: characterItem[];
     encounters?: characterEncounter[];
     images?: Image[];
-    player_class?: PlayerClass[];
+    player_class_connections?: CharacterPlayerClassConnection[];
 
     getAbsoluteRouterUrl(): string{
         return `${Constants.wikiUrlFrontendPrefix}/character/${this.name}`;
