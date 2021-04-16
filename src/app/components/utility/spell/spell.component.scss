@@ -33,6 +33,25 @@ table{
     border-bottom: 1px grey solid;
 }
 
+.spell-title .fa-trash, .spell-title .fa-plus{
+    visibility: hidden;
+    transition: visibility 0.2s ease-in-out;
+}
+
+.badge-secondary:hover{
+    background-color: var(--#{dark});
+    color: var(--light-red);
+}
+
+.badge-secondary:hover .fa-trash{
+    visibility: visible;
+}
+
+.spell-title:hover .fa-plus{
+    visibility: visible;
+}
+
+
 @media(max-width:767px){
     .column-heading{
         font-size: medium;

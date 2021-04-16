@@ -1,14 +1,29 @@
 <!-- Spells -->
 <div class="card mb-3 px-4 pt-3 pb-1" #spellCard [ngClass] = "{'animate__animated animate__fadeInUp': isCreateState}">
     <!-- Spell Panel Heading -->
-    <h5 class="pointer col-12 justify-content-between d-flex align-items-center" (click)="togglePanel()">
+    <h5 class="pointer col-12 justify-content-between d-flex align-items-center spell-title" (click)="togglePanel($event)">
         <!-- Spell Title -->
         <strong>
             {{spell.name}}
             <span *ngIf="spell.concentration" class="ml-2">(C)</span>
             <span *ngIf="spell.ritual" class="ml-2">(R)</span>
             <div class="ml-4 d-inline">
-                <span *ngFor="let class of spell.classes" class="badge badge-secondary mr-3">{{class}}</span>
+                <span
+                *ngFor="let connection of spell.player_class_connections" 
+                class="badge badge-secondary mr-3"
+                (click)="emitClassSelectEvent($event, connection.player_class_details.name)"
+                >
+                    {{connection.player_class_details.name}}
+                    <span *ngIf="tokenService.isAdmin()" class="fa fa-trash icon" (click)="deleteSpellPlayerClassConnection(connection)"></span>
+                </span>
+
+                <span *ngIf="tokenService.isAdmin()">
+                    <span 
+                    class="icon fa fa-plus" 
+                    (click)="toggleConnectionCreateState()" 
+                    *ngIf="!isSpellConnectionCreateState; else connectionForm"
+                    ></span>
+                </span>
             </div>
         </strong>
 
@@ -114,4 +129,22 @@
         (cancel)="onCancel()"
         ></app-formly-formcontainer>
     </div>
+</ng-template>
+
+<ng-template #connectionForm>
+    <!-- Form for Creating Quote Connections -->
+    <form class="d-inline-flex align-items-center">
+        <select class="form-control d-inline-block" name="connection" id="connection" [(ngModel)]="connectionModel.player_class">
+            <option 
+            *ngFor="let playerClass of playerClasses" 
+            value="{{playerClass.pk}}" 
+            [attr.disabled]="hasConnection(playerClass) ? true : null"
+            >
+                {{playerClass.name}}
+            </option>
+        </select>
+
+        <i class="fa fa-times icon mx-2" (click)="toggleConnectionCreateState()"></i>
+        <i class="fa fa-check icon" (click)="createSpellPlayerClassConnection(connectionModel)"></i>
+    </form>
 </ng-template>

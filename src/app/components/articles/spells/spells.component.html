@@ -1,6 +1,15 @@
 <div class="main">
     <article *ngIf="spells; else loading" class="container">
-        <h1 class="text-center mb-3">Spells</h1>
+        <h1 class="text-center mb-3">
+            Spells
+            <span 
+            *ngFor="let selectedClass of selectedClasses; let i = index" 
+            class="badge badge-secondary icon" 
+            (click)="selectedClasses.splice(i, 1)"
+            >
+                {{ selectedClass }} <i class="fa fa-times"></i>
+            </span>
+        </h1>
 
 
         <!-- Spells -->
@@ -9,6 +18,8 @@
             [index] = "i"
             [spell] = "spell"
             (deleteSpell) = "onSpellDelete(i)"
+            (classSelect) = "selectClass($event)"
+            *ngIf="hasSelectedClasses(spell)"
             ></app-spell>
         </div>
 

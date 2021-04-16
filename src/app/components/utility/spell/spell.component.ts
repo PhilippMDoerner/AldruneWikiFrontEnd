@@ -1,35 +1,44 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { Spell, SpellObject } from 'src/app/models/spell';
+import { PlayerClass, PlayerClassObject } from 'src/app/models/playerclass';
+import { Spell, SpellObject, SpellPlayerClassConnection } from 'src/app/models/spell';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { PlayerClassService } from 'src/app/services/player-class.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { SpellPlayerClassConnectionService } from 'src/app/services/spell-player-class-connection.service';
 import { SpellService } from 'src/app/services/spell.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-spell',
   templateUrl: './spell.component.html',
   styleUrls: ['./spell.component.scss']
 })
-export class SpellComponent implements OnInit {
+export class SpellComponent extends PermissionUtilityFunctionMixin implements OnInit {
   @Input() spell: SpellObject;
   @Input() index: number;
-  isPanelOpen: Boolean = false;
+
+  @Output() classSelect: EventEmitter<String> = new EventEmitter();
+  @Output() deleteSpell: EventEmitter<number> = new EventEmitter();
 
   @ViewChild('spellCard') spellCard: ElementRef;
 
   //EDIT VARIABLES
 
-  @Output() deleteSpell: EventEmitter<number> = new EventEmitter();
   isCreateState: Boolean;
   isUpdateState: Boolean = false;
+  isSpellConnectionCreateState: boolean = false;
+  connectionModel: SpellPlayerClassConnection;
+  playerClasses: PlayerClass[];
+
+  isPanelOpen: Boolean = false;
   constants: any = Constants;
-  formState: string;
 
   castingTimeOptions: {label: String, value: String | Number}[] = [
     {label: '1 Action',       value: '1 Action'},
@@ -143,14 +152,22 @@ export class SpellComponent implements OnInit {
     private formlyService: MyFormlyService,
     private warnings: WarningsService,  
     public routingService: RoutingService,
-  ) { }
+    private spellConnectionService: SpellPlayerClassConnectionService,
+    private playerClassService: PlayerClassService,
+    public tokenService: TokenService,
+  ) { super() }
 
   ngOnInit(): void {
     this.isCreateState = this.spell.name === "New Spell";
     this.isPanelOpen = this.isCreateState
   }
 
-  togglePanel(){
+  togglePanel(event: any){
+    const isClickOnClassBadge = event.target.classList.contains("badge");
+    const isClickOnIcon = event.target.classList.contains("icon");
+    const isClickOnForm = event.target.tagName === "FORM" || event.target.parentElement?.tagName === "FORM" || event.target.parentElement?.parentElement?.tagName === "FORM";
+    if(isClickOnClassBadge || isClickOnIcon || isClickOnForm) return;
+
     this.isPanelOpen = !this.isPanelOpen;
   }
 
@@ -180,7 +197,7 @@ export class SpellComponent implements OnInit {
   }
 
   onDelete(){
-    this.spellService.deleteSpell(this.spell.id).pipe(first()).subscribe(
+    this.spellService.deleteSpell(this.spell.pk).pipe(first()).subscribe(
       () => this.removeSpell(),
       error => this.warnings.showWarning(error)
     );
@@ -195,5 +212,54 @@ export class SpellComponent implements OnInit {
     } else if (this.isCreateState){ //If you are in create state and toggle out of it, you want to remove the added spell
       this.removeSpell();
     }
+  }
+
+  emitClassSelectEvent(event:any, className: string){
+    const isClickOnConnectionIcon = event.target.classList.contains("icon");
+    if(isClickOnConnectionIcon) return;
+
+    this.classSelect.emit(className);
+  }
+
+  //SPELL PLAYERCLASS CONNECTION
+  toggleConnectionCreateState(){
+    if(!this.playerClasses){
+      this.playerClassService.getPlayerClasses().pipe(first()).subscribe(
+        (playerClasses: PlayerClass[]) => this.playerClasses = playerClasses,
+        error => this.warnings.showWarning(error)
+      );
+    }
+
+    this.isSpellConnectionCreateState = !this.isSpellConnectionCreateState;
+
+    this.resetConnectionModel();
+  }
+
+  deleteSpellPlayerClassConnection(connection: SpellPlayerClassConnection){
+    this.spellConnectionService.deleteSpellClassConnection(connection.pk).pipe(first()).subscribe(
+      (response) => {
+        const spellConnectionIndex: number =  this.spell.player_class_connections.indexOf(connection);
+        this.spell.player_class_connections.splice(spellConnectionIndex, 1);
+      },
+      (error) => this.warnings.showWarning(error),
+    )
+  }
+
+  createSpellPlayerClassConnection(connection: SpellPlayerClassConnection){
+    this.spellConnectionService.createSpellClassConnection(connection).pipe(first()).subscribe(
+      (connection: SpellPlayerClassConnection) => {
+        this.spell.player_class_connections.push(connection);
+        this.toggleConnectionCreateState();
+      },
+      error => this.warnings.showWarning(error)
+    )
+  }
+
+  resetConnectionModel(){
+    this.connectionModel = {player_class: null, spell: this.spell.pk};
+  }
+
+  hasConnection(playerClass: PlayerClass){
+    return this.spell.player_class_connections.some((connection: SpellPlayerClassConnection) => connection.player_class === playerClass.pk);
   }
 }

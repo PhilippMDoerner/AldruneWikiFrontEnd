@@ -30,7 +30,7 @@ export class SpellService {
 
   @TransformObservable(SpellObject)
   updateSpell(spell: Spell){
-    return this.http.put<Spell>(`${this.spellUrl}/pk/${spell.id}`, spell);
+    return this.http.put<Spell>(`${this.spellUrl}/pk/${spell.pk}`, spell);
   }
   
   @TransformObservable(SpellObject)

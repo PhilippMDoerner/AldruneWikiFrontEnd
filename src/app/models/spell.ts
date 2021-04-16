@@ -14,8 +14,15 @@ export interface Spell extends ArticleObject{
     saving_throw: string,
     damage: string,
     description: string,
-    classes: PlayerClass[],
-    id?: number,
+    player_class_connections: SpellPlayerClassConnection[],
+    pk?: number,
+}
+
+export interface SpellPlayerClassConnection{
+    pk?: number,
+    player_class: number,
+    spell: number,
+    player_class_details?: PlayerClass
 }
 
 export class SpellObject implements Spell{
@@ -30,9 +37,9 @@ export class SpellObject implements Spell{
     saving_throw: string;
     damage: string;
     description: string;
-    classes: PlayerClass[]
+    player_class_connections: SpellPlayerClassConnection[]
     name?: string;
-    id?: number;
+    pk?: number;
 
     constructor(object?: Spell){
         if (object) Object.assign(this, object)
