@@ -93,7 +93,7 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
 
   toggleConnectionCreateState(){
     if(!this.playerClasses){
-      this.playerClassService.getPlayerClasses().pipe(first()).subscribe(
+      this.playerClassService.list().pipe(first()).subscribe(
         (playerClasses: PlayerClass[]) => this.playerClasses = playerClasses,
         error => this.warnings.showWarning(error)
       );

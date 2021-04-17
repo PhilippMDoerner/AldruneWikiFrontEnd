@@ -87,6 +87,7 @@ import { RuleComponent } from './components/utility/rule/rule.component';
 import { AdminComponent } from './components/articles/admin/admin.component';
 import { UserRowComponent } from './components/utility/user-row/user-row.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ConfigTablesComponent } from './components/articles/config-tables/config-tables.component';
 
 @NgModule({
   declarations: [
@@ -161,6 +162,7 @@ import { ProfileComponent } from './components/profile/profile.component';
     AdminComponent,
     UserRowComponent,
     ProfileComponent,
+    ConfigTablesComponent,
   ],
   imports: [
     BrowserModule,

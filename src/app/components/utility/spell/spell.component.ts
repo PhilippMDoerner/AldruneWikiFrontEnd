@@ -224,7 +224,7 @@ export class SpellComponent extends PermissionUtilityFunctionMixin implements On
   //SPELL PLAYERCLASS CONNECTION
   toggleConnectionCreateState(){
     if(!this.playerClasses){
-      this.playerClassService.getPlayerClasses().pipe(first()).subscribe(
+      this.playerClassService.list().pipe(first()).subscribe(
         (playerClasses: PlayerClass[]) => this.playerClasses = playerClasses,
         error => this.warnings.showWarning(error)
       );
