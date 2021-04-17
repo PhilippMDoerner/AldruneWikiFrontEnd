@@ -3,5 +3,5 @@ export interface MapMarkerType{
     is_text_marker: boolean,
     icon: string,
     color: string,
-    pk: number
+    pk?: number
 }
