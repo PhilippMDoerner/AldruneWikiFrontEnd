@@ -1,0 +1,60 @@
+<div class="main" #adminCard>
+    <article *ngIf="true; else loading">
+        <!-- Sections -->
+        <div *ngFor="let table of tables; let i = index" class="mb-3">
+            <!-- Section Heading -->
+            <div class="d-flex justify-content-between">
+                <h3 class="mb-0"> 
+                    <span class="fa fa-{{table.icon}}"></span>
+                    {{ table.name }}
+                </h3>
+                
+                <!-- Heading Buttons -->
+                <div class="align-self-end position-relative top1">
+                    <!-- Add Users -->
+                    <div class="btn btn-dark border-white" (click)="createStateArray[i] = !createStateArray[i]">
+                        <!-- Create Entry -->
+                        <span *ngIf="!createStateArray[i]">
+                            <span class="fa fa-plus"></span>
+                            Add {{ table.name }}
+                        </span>
+
+                        <!-- Cancel creating entry -->
+                        <span *ngIf="createStateArray[i]">
+                            <span class="fa fa-times"></span>
+                            Cancel {{ table.name }} creation
+                        </span>
+                    </div>
+
+                    <div class="btn btn-primary border-white" (click)="loadTableEntries(i)">
+                        <span class="fa fa-refresh"></span>
+                        Load table data
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="white-separator">
+
+            <!-- Section Body -->
+
+            <div *ngIf="!createStateArray[i]">
+                Here will be table records
+            </div>
+
+            <div *ngIf="createStateArray[i]" class="my-2 card p-3">
+                <h4>Adding new {{ table.name }}</h4>
+                <!-- Form -->
+                <app-formly-formcontainer 
+                [model]="table.model" 
+                [fields]="table.formFields" 
+                (submit)="createNewTableEntry(i)" 
+                (cancel)="createStateArray[i] = !createStateArray[i]"
+                ></app-formly-formcontainer>
+            </div>
+        </div>
+    </article>
+</div>
+
+<!-- Loading Spinner -->
+<ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
