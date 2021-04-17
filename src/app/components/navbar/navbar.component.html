@@ -99,6 +99,13 @@
                         </a>
                     </li>
 
+                    <li *ngIf="tokenService.isAdmin()">
+                        <a class="dropdown-item nav-link d-flex justify-content-center" routerLink="{{ routingService.getRoutePath('config-tables') }}" >
+                            <span class="nav-link-text mr-3"> Config Tables </span>
+                            <i class="fa fa-table fa-2x"></i>
+                        </a>
+                    </li>
+
                     <!-- Profile Section -->
                     <li>
                         <a class="dropdown-item nav-link d-flex justify-content-center" routerLink="{{ routingService.getRoutePath('profile', {username: tokenService.getCurrentUserName()})}}">

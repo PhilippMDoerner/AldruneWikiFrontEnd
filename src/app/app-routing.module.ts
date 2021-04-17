@@ -39,10 +39,10 @@ import { AdminGuardService, LoginGuardService,
 		PermissionGuardService } from './services/permission.service';
 import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
-import { Route } from '@angular/compiler/src/core';
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
 import { AdminComponent } from './components/articles/admin/admin.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { ConfigTablesComponent } from './components/articles/config-tables/config-tables.component';
 
 
 
@@ -71,6 +71,12 @@ const routes: Routes = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/admin`,
 		component: AdminComponent,
 		data: { name: "admin", requiredPermissions: [Constants.adminPermission]},
+		canActivate: [AdminGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/configtables`,
+		component: ConfigTablesComponent,
+		data: { name: "config-tables", requiredPermissions: [Constants.adminPermission]},
 		canActivate: [AdminGuardService]
 	},
 
