@@ -2,14 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
-import { PlayerClass } from '../models/playerclass';
+import { MapMarker } from '../models/mapmarker';
+import { MapMarkerType } from '../models/mapmarkertype';
 import { GenericService } from './generic.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class PlayerClassService extends GenericService{
-  baseUrl: string = `${Constants.wikiApiUrl}/player_class`;
+export class MarkerTypeService extends GenericService{
+  baseUrl: string = `${Constants.wikiApiUrl}/markertype`;
 
   constructor(
     http: HttpClient
