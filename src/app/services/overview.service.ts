@@ -1,9 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Constants } from '../app.constants';
 import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
 import { Observable } from 'rxjs';
-import { UserService } from './user.service';
 import { TransformArrayObservable } from '../utils/functions/transform';
 
 @Injectable({
