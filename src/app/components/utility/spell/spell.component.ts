@@ -236,7 +236,7 @@ export class SpellComponent extends PermissionUtilityFunctionMixin implements On
   }
 
   deleteSpellPlayerClassConnection(connection: SpellPlayerClassConnection){
-    this.spellConnectionService.deleteSpellClassConnection(connection.pk).pipe(first()).subscribe(
+    this.spellConnectionService.delete(connection.pk).pipe(first()).subscribe(
       (response) => {
         const spellConnectionIndex: number =  this.spell.player_class_connections.indexOf(connection);
         this.spell.player_class_connections.splice(spellConnectionIndex, 1);
@@ -246,7 +246,7 @@ export class SpellComponent extends PermissionUtilityFunctionMixin implements On
   }
 
   createSpellPlayerClassConnection(connection: SpellPlayerClassConnection){
-    this.spellConnectionService.createSpellClassConnection(connection).pipe(first()).subscribe(
+    this.spellConnectionService.create(connection).pipe(first()).subscribe(
       (connection: SpellPlayerClassConnection) => {
         this.spell.player_class_connections.push(connection);
         this.toggleConnectionCreateState();

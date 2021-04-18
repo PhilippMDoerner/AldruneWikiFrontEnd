@@ -3,21 +3,12 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
 import { SpellPlayerClassConnection } from '../models/spell';
+import { GenericService } from './generic.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class SpellPlayerClassConnectionService {
-  spellConnectionUrl: string = `${Constants.wikiApiUrl}/spellclassconnection`;
-  constructor(private http: HttpClient) { }
-
-
-  createSpellClassConnection(model: SpellPlayerClassConnection): Observable<SpellPlayerClassConnection>{
-    return this.http.post<SpellPlayerClassConnection>(`${this.spellConnectionUrl}/`, model);
-  }
-
-  deleteSpellClassConnection(connection_pk: number): Observable<any>{
-    const url: string = `${this.spellConnectionUrl}/pk/${connection_pk}`;
-    return this.http.delete(url);
-  }
+export class SpellPlayerClassConnectionService extends GenericService{
+  baseUrl: string = `${Constants.wikiApiUrl}/spellclassconnection`;
+  constructor(http: HttpClient) { super(http) }
 }
