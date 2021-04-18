@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
 import { Timestamp, TimestampObject } from '../models/timestamp';
 import { TransformArrayObservable, TransformObservable, transformObservableContent } from '../utils/functions/transform';
+import { GenericObjectService } from './generic-object.service';
 
 const httpOptions = {
   headers: new HttpHeaders({"Content-Type": "application/json"}),
@@ -12,24 +13,13 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class SessionAudioTimestampService {
+export class SessionAudioTimestampService extends GenericObjectService{
   timestampUrl:string = `${Constants.wikiApiUrl}/timestamp`
 
-  constructor(private http: HttpClient) { }
+  constructor(http: HttpClient) { super(http, TimestampObject) }
 
   @TransformArrayObservable(TimestampObject)
   getTimestamps(isMainSessionInt: number, sessionNumber: number): Observable<Timestamp[]>{
     return this.http.get<Timestamp[]>(`${this.timestampUrl}list/${isMainSessionInt}/${sessionNumber}`);
-  }
-
-  @TransformObservable(TimestampObject)
-  createTimestamp(timestamp: TimestampObject): Observable<Timestamp>{
-    const url: string = `${this.timestampUrl}/`;
-    return this.http.post<Timestamp>(url, timestamp);
-  }
-
-  deleteTimestamp(timestamp_pk:number){
-    const url: string = `${this.timestampUrl}/pk/${timestamp_pk}`;
-    return this.http.delete(url);
   }
 }

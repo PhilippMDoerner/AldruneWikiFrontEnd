@@ -67,7 +67,7 @@ export class TimestampListComponent implements OnInit, OnDestroy {
     if (typeof this.timestampModel.time === "number") throw `Error during creation of request to create timestamp. The input ${this.timestampModel.time} is not the expected time-string`
     this.timestampModel.time = this.stringToTime(this.timestampModel.time);
 
-    this.timestampService.createTimestamp(this.timestampModel).pipe(first()).subscribe(
+    this.timestampService.create(this.timestampModel).pipe(first()).subscribe(
       (timestamp: TimestampObject) => {
         this.timestamps.unshift(timestamp);
         this.timestampCreateState = false;

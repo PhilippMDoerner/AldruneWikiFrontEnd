@@ -45,7 +45,7 @@ export class TimestampComponent extends PermissionUtilityFunctionMixin implement
   }
 
   deleteTimestamp(){
-    this.timestampService.deleteTimestamp(this.timestamp.pk).pipe(first()).subscribe(response => {
+    this.timestampService.delete(this.timestamp.pk).pipe(first()).subscribe(response => {
       this.isInDeleteState = false;
       this.timestampDelete.emit(this.timestamp);
     })
