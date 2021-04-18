@@ -24,7 +24,7 @@ export class RulesComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.ruleService.getRules().pipe(first()).subscribe( 
+    this.ruleService.list().pipe(first()).subscribe( 
       (rules: RuleObject[]) => {
         this.rules = rules;
 

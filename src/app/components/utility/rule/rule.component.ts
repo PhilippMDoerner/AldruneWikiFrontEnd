@@ -48,7 +48,9 @@ export class RuleComponent implements OnInit {
   }
 
   onSubmit(){
-    const responseObservable: Observable<RuleObject> =  this.isUpdateState ? this.ruleService.updateRule(this.rule) : this.ruleService.createRule(this.rule);
+    const responseObservable: Observable<RuleObject> =  this.isUpdateState ? 
+        this.ruleService.update(this.rule.id, this.rule) : 
+        this.ruleService.create(this.rule);
 
     responseObservable.pipe(first()).subscribe(
       (rule: RuleObject) => {
@@ -74,7 +76,7 @@ export class RuleComponent implements OnInit {
 
 
   onDelete(){
-    this.ruleService.deleteRule(this.rule.id).pipe(first()).subscribe(
+    this.ruleService.delete(this.rule.id).pipe(first()).subscribe(
       () => this.removeRule(),
       error => this.warnings.showWarning(error)
     );
