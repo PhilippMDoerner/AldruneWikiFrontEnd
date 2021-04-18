@@ -10,7 +10,7 @@ import { GenericObjectService } from '../generic-object.service';
   providedIn: 'root'
 })
 export class CreatureService extends GenericObjectService{
-  creatureUrl: string = `${Constants.wikiApiUrl}/creature`
+  baseUrl: string = `${Constants.wikiApiUrl}/creature`
   constructor(http : HttpClient) { 
     super(http, CreatureObject)  //Second param indicates which class the data of this service is turned into
   }
