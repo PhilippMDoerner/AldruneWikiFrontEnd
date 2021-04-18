@@ -31,7 +31,7 @@ export class OrganizationArticleComponent implements OnInit {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const organizationName = params.name;
 
-      this.organizationService.getOrganization(organizationName).pipe(first()).subscribe(
+      this.organizationService.readByParam(organizationName).pipe(first()).subscribe(
         (organization: OrganizationObject) => this.organization = organization,
         error => this.routingService.routeToErrorPage(error)
       );
@@ -43,7 +43,7 @@ export class OrganizationArticleComponent implements OnInit {
     const oldDescription = this.organization.description;
     this.organization.description = updatedDescription;
 
-    this.organizationService.updateOrganization(this.organization).pipe(first()).subscribe(
+    this.organizationService.update(this.organization.pk, this.organization).pipe(first()).subscribe(
       (organization: OrganizationObject) => {},
       error =>{
         this.organization.description = oldDescription;
@@ -53,7 +53,7 @@ export class OrganizationArticleComponent implements OnInit {
   }
 
   deleteArticle(){
-    this.organizationService.deleteOrganization(this.organization.pk).pipe(first()).subscribe(
+    this.organizationService.delete(this.organization.pk).pipe(first()).subscribe(
       response => this.routingService.routeToPath('organization-overview'),
       error => this.warnings.showWarning(error)
     );

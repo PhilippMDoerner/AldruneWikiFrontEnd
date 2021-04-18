@@ -44,7 +44,7 @@ export class OrganizationArticleUpdateComponent implements OnInit {
     this.paramter_subscription = this.route.params.subscribe(params => {
       if (this.formState === Constants.updateState){
         const organizationName: string = params.name;
-        this.organizationService.getOrganization(organizationName).pipe(first()).subscribe(
+        this.organizationService.readByParam(organizationName).pipe(first()).subscribe(
           (organization: OrganizationObject) => this.model = organization,
           error => this.routingService.routeToErrorPage(error)
         );
@@ -58,7 +58,9 @@ export class OrganizationArticleUpdateComponent implements OnInit {
 
   onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    const responseObservable: Observable<OrganizationObject> =  isFormInUpdateState ? this.organizationService.updateOrganization(this.model) : this.organizationService.createOrganization(this.model);
+    const responseObservable: Observable<OrganizationObject> =  isFormInUpdateState ? 
+        this.organizationService.update(this.model.pk, this.model) : 
+        this.organizationService.create(this.model);
 
     responseObservable.pipe(first()).subscribe(
       (organization: OrganizationObject) => this.routingService.routeToApiObject(organization),
