@@ -7,7 +7,7 @@ import { GenericService } from './generic.service';
   providedIn: 'root'
 })
 export class EncounterConnectionService extends GenericService{
-  encounterConnectionUrl = `${Constants.wikiApiUrl}/encounterconnection`;
+  baseUrl = `${Constants.wikiApiUrl}/encounterconnection`;
 
   constructor(http : HttpClient) { super(http)}
 }

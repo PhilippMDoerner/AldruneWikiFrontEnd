@@ -14,12 +14,12 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class SessionAudioTimestampService extends GenericObjectService{
-  timestampUrl:string = `${Constants.wikiApiUrl}/timestamp`
+  baseUrl:string = `${Constants.wikiApiUrl}/timestamp`
 
   constructor(http: HttpClient) { super(http, TimestampObject) }
 
   @TransformArrayObservable(TimestampObject)
   getTimestamps(isMainSessionInt: number, sessionNumber: number): Observable<Timestamp[]>{
-    return this.http.get<Timestamp[]>(`${this.timestampUrl}list/${isMainSessionInt}/${sessionNumber}`);
+    return this.http.get<Timestamp[]>(`${this.baseUrl}list/${isMainSessionInt}/${sessionNumber}`);
   }
 }

@@ -7,7 +7,7 @@ import { GenericService } from './generic.service';
   providedIn: 'root'
 })
 export class GroupService extends GenericService{
-  groupUrl: string = `${Constants.wikiApiUrl}/group`;
+  baseUrl: string = `${Constants.wikiApiUrl}/group`;
 
   constructor(
     http: HttpClient
