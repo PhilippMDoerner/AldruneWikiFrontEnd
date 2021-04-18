@@ -97,10 +97,7 @@ export class JWTInterceptor implements HttpInterceptor{
                 break;
             }
         }
-        console.log(`intercepted url ${url} which is an api url? (${isApiUrl}) and requires JWTToken? (${requiresJWTToken})`);
-        console.log(url)
-        //const isTokenLoginUrl: boolean = url.endsWith('/token');
-        //const isTokenRefreshUrl: boolean = url.endsWith('/token/refresh');
+
         return isApiUrl && requiresJWTToken;
     }
 
