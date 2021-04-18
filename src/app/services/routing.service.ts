@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Constants } from 'src/app/app.constants';
 import { ApiObject } from 'src/app/models/base-models';
+import { WarningsService } from './warnings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +11,7 @@ export class RoutingService {
 
   constructor(
     private router: Router,
+    private warning: WarningsService,
   ) { }
 
   public routeToApiObject(object: ApiObject): void{
@@ -42,7 +44,11 @@ export class RoutingService {
   }
 
   public routeToErrorPage(error: number| any): void{
-    if (typeof error !== "number" && !error.hasOwnProperty("status")) throw "Incorrect error input. The input does not contain an error status or an object with the error status. Can not route to error page without error status.";
+    if (typeof error !== "number" && !error.hasOwnProperty("status")){
+      this.warning.showWarning(error);
+      throw "Incorrect error input. The input does not contain an error status or an object with the error status. Can not route to error page without error status.";
+    }
+    
     if (typeof error !== "number" && error.hasOwnProperty("status")) error = error.status;
   
     const errorStatus: string = `${error}`;
