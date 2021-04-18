@@ -162,7 +162,7 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
 
   createEncounterConnection(encounter: Encounter){
     this.baseEncounterConnection.encounter = encounter.pk;
-    this.encounterConnectionService.createEncounterConnection(this.baseEncounterConnection).pipe(first()).subscribe(
+    this.encounterConnectionService.create(this.baseEncounterConnection).pipe(first()).subscribe(
       (encounterConnection: EncounterConnectionObject) => {
         encounter.encounterConnections.push(encounterConnection);
         this.resetBaseEncounterConnection();
@@ -173,7 +173,7 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
   }
 
   deleteEncounterConnection(encounter: Encounter, connection: EncounterConnection){
-    this.encounterConnectionService.deleteEncounterConnection(connection.pk).pipe(first()).subscribe(
+    this.encounterConnectionService.delete(connection.pk).pipe(first()).subscribe(
       response => {
         const connectionIndex: number = encounter.encounterConnections.indexOf(connection);
         const encounterHasConnection = connectionIndex > -1;

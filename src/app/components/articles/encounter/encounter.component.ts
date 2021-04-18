@@ -67,7 +67,7 @@ export class EncounterComponent implements OnInit {
 
   createEncounterConnection(){
     this.baseEncounterConnection.encounter = this.encounter.pk;
-    this.encounterConnectionService.createEncounterConnection(this.baseEncounterConnection).pipe(first()).subscribe(
+    this.encounterConnectionService.create(this.baseEncounterConnection).pipe(first()).subscribe(
       (encounterConnection: EncounterConnectionObject) => {
         this.encounter.encounterConnections.push(encounterConnection);
         this.resetBaseEncounterConnection();
@@ -78,7 +78,7 @@ export class EncounterComponent implements OnInit {
   }
 
   deleteEncounterConnection(connection: EncounterConnectionObject){
-    this.encounterConnectionService.deleteEncounterConnection(connection.pk).pipe(first()).subscribe(
+    this.encounterConnectionService.delete(connection.pk).pipe(first()).subscribe(
       response => {
         const connectionIndex: number = this.encounter.encounterConnections.indexOf(connection);
         const hasConnection: boolean = connectionIndex > -1;
