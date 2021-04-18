@@ -73,7 +73,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
   }
 
   onSubmit(){
-    this.locationService.createLocation(this.locationModel).pipe(first()).subscribe(
+    this.locationService.create(this.locationModel).pipe(first()).subscribe(
       (location: LocationObject) => {
         this.markerModel.location = location.pk;
 

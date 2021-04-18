@@ -42,7 +42,7 @@ export class LocationArticleComponent extends PermissionUtilityFunctionMixin imp
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.location.description;
     this.location.description = updatedDescription;
-    this.locationService.updateLocation(this.location).pipe(first()).subscribe(
+    this.locationService.update(this.location.pk, this.location).pipe(first()).subscribe(
       (location: LocationObject) => {},
       error =>{
         this.location.description = oldDescription;
@@ -66,7 +66,7 @@ export class LocationArticleComponent extends PermissionUtilityFunctionMixin imp
   }
 
   deleteArticle(){
-      this.locationService.deleteLocation(this.location.pk).pipe(first()).subscribe(
+      this.locationService.delete(this.location.pk).pipe(first()).subscribe(
         response => this.routingService.routeToPath('location-overview'),
         error => this.warnings.showWarning(error)
       );

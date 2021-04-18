@@ -78,7 +78,9 @@ export class LocationArticleUpdateComponent implements OnInit {
 
   onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
-    const responseObservable: any =  isFormInUpdateState ? this.locationService.updateLocation(this.model) : this.locationService.createLocation(this.model);
+    const responseObservable: any =  isFormInUpdateState ? 
+        this.locationService.update(this.model.pk, this.model) : 
+        this.locationService.create(this.model);
 
     responseObservable.pipe(first()).subscribe(
       (location: LocationObject) => this.router.navigateByUrl(this.getRedirectUrl(location)),

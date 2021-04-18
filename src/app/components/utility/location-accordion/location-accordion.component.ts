@@ -37,7 +37,7 @@ export class LocationAccordionComponent extends PermissionUtilityFunctionMixin i
     const oldDescription = sublocationToUpdate.description;
     sublocationToUpdate.description = updateText;
 
-    this.locationService.updateLocation(sublocationToUpdate).pipe(first()).subscribe(
+    this.locationService.update(sublocationToUpdate.pk, sublocationToUpdate).pipe(first()).subscribe(
       (updatedSublocation: LocationObject) => {},
       error => this.warnings.showWarning(error)
     );
