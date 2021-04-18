@@ -3,19 +3,13 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
 import { CharacterPlayerClassConnection } from '../models/playerclass';
+import { GenericObjectService } from './generic-object.service';
+import { GenericService } from './generic.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CharacterPlayerClassConnectionService {
-  characterPlayerClassConnectionUrl: string = `${Constants.wikiApiUrl}/characterplayerclassconnection`
-  constructor(private http: HttpClient) { }
-
-  deleteCharacterClassConnection(connection_pk: number): Observable<any>{
-    return this.http.delete(`${this.characterPlayerClassConnectionUrl}/pk/${connection_pk}`);
-  }
-
-  createCharacterClassConnection(connection: CharacterPlayerClassConnection): Observable<CharacterPlayerClassConnection>{
-    return this.http.post<CharacterPlayerClassConnection>(`${this.characterPlayerClassConnectionUrl}/`, connection);
-  }
+export class CharacterPlayerClassConnectionService extends GenericService{
+  baseUrl: string = `${Constants.wikiApiUrl}/characterplayerclassconnection`
+  constructor(http: HttpClient) { super(http) }
 }

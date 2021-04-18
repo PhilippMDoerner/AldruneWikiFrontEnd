@@ -107,7 +107,7 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   }
 
   deletePlayerClassConnection(connection: CharacterPlayerClassConnection){
-    this.characterConnectionService.deleteCharacterClassConnection(connection.pk).pipe(first()).subscribe(
+    this.characterConnectionService.delete(connection.pk).pipe(first()).subscribe(
       (response) => {
         const spellConnectionIndex: number =  this.model.player_class_connections.indexOf(connection);
         this.model.player_class_connections.splice(spellConnectionIndex, 1);
@@ -117,7 +117,7 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   }
 
   createPlayerClassConnection(connection: CharacterPlayerClassConnection){
-    this.characterConnectionService.createCharacterClassConnection(connection).pipe(first()).subscribe(
+    this.characterConnectionService.create(connection).pipe(first()).subscribe(
       (connection: CharacterPlayerClassConnection) => {
         this.model.player_class_connections.push(connection);
         this.toggleConnectionCreateState();
