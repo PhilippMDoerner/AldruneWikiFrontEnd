@@ -26,7 +26,7 @@ export class SpellsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.spellService.getSpells().pipe(first()).subscribe(
+    this.spellService.list().pipe(first()).subscribe(
       (spells: SpellObject[]) => {
         this.spells = spells;
         this.panelIsOpenArray = [];

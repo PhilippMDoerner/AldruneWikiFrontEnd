@@ -172,7 +172,9 @@ export class SpellComponent extends PermissionUtilityFunctionMixin implements On
   }
 
   onSubmit(){
-    const responseObservable: Observable<Spell> =  this.isUpdateState ? this.spellService.updateSpell(this.spell) : this.spellService.createSpell(this.spell);
+    const responseObservable: Observable<Spell> =  this.isUpdateState ? 
+        this.spellService.update(this.spell.pk, this.spell) : 
+        this.spellService.create(this.spell);
 
     responseObservable.pipe(first()).subscribe(
       (spell: SpellObject) => {
@@ -197,7 +199,7 @@ export class SpellComponent extends PermissionUtilityFunctionMixin implements On
   }
 
   onDelete(){
-    this.spellService.deleteSpell(this.spell.pk).pipe(first()).subscribe(
+    this.spellService.delete(this.spell.pk).pipe(first()).subscribe(
       () => this.removeSpell(),
       error => this.warnings.showWarning(error)
     );
