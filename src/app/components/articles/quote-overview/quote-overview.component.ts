@@ -97,7 +97,7 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
 
       // Create QuoteConnection
       const connectionToThisCharacter: QuoteConnection = {"quote": quote.pk, "character": this.character.pk};
-      const connection: QuoteConnectionObject = await this.quoteConnectionService.createQuoteConnection(connectionToThisCharacter).toPromise();
+      const connection: QuoteConnectionObject = await this.quoteConnectionService.create(connectionToThisCharacter).toPromise();
       
       // Combine in Frontend, add to quotes and sort
       quote.connections = [connection];

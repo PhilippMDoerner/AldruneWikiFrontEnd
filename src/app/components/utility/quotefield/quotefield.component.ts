@@ -93,7 +93,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
 
       if(this.inCreateState){
         const connectionToThisCharacter: QuoteConnection = {"quote": this.quote.pk, "character": this.character.pk};
-        const connection: QuoteConnectionObject = await this.quoteConnectionservice.createQuoteConnection(connectionToThisCharacter).toPromise();
+        const connection: QuoteConnectionObject = await this.quoteConnectionservice.create(connectionToThisCharacter).toPromise();
         this.quote.connections = [connection];
         this.inCreateState = false;
       } else {
@@ -138,7 +138,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
 
   createQuoteConnection(){
     this.baseQuoteConnection.quote = this.quote.pk;
-    this.quoteConnectionservice.createQuoteConnection(this.baseQuoteConnection).pipe(first()).subscribe(
+    this.quoteConnectionservice.create(this.baseQuoteConnection).pipe(first()).subscribe(
       (quoteConnection: QuoteConnection) => {
         this.quote.connections.push(quoteConnection);
         this.inQuoteConnectionCreateState = false;
@@ -149,7 +149,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   }
 
   deleteQuoteConnection(quoteConnection: QuoteConnection){
-    this.quoteConnectionservice.deleteQuoteConnection(quoteConnection.pk).pipe(first()).subscribe(
+    this.quoteConnectionservice.delete(quoteConnection.pk).pipe(first()).subscribe(
       response => {
         const quoteConnectionIndex: number = this.quote.connections.indexOf(quoteConnection);
         this.quote.connections.splice(quoteConnectionIndex, 1);
