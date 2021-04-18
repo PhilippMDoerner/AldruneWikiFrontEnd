@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { MarkerTypeService } from 'src/app/services/marker-type.service';
-import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { PlayerClassService } from 'src/app/services/player-class.service';
 import { WarningsService } from 'src/app/services/warnings.service';
