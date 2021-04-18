@@ -39,7 +39,7 @@ export class SessionDeleteModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(modal){
-    this.sessionService.deleteSession(this.sessionPk).pipe(first()).subscribe(response => {
+    this.sessionService.delete(this.sessionPk).pipe(first()).subscribe(response => {
       this.deleteSession.emit();
       modal.close();
     })

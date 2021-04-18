@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
 import { Session, SessionObject } from '../models/session';
 import { TransformArrayObservable, TransformObservable } from '../utils/functions/transform';
+import { GenericObjectService } from './generic-object.service';
 
 const httpOptions = {
   headers: new HttpHeaders({"Content-Type": "application/json"}),
@@ -14,41 +15,14 @@ const httpOptions = {
 })
 
 
-export class SessionService {
-  sessionUrl: string = `${Constants.wikiApiUrl}/session`;
+export class SessionService extends GenericObjectService {
+  baseUrl: string = `${Constants.wikiApiUrl}/session`;
 
-  constructor(private http : HttpClient) { }
-
-  @TransformArrayObservable(SessionObject)
-  getSessions(): Observable<Session[]>{
-    return this.http.get<Session[]>(this.sessionUrl);
-  }
+  constructor(http : HttpClient) { super(http, SessionObject)}
 
   @TransformObservable(SessionObject)
   getSession(sessionNumber: number, isMainSession: boolean | number): Observable<Session>{
     if (typeof isMainSession === "boolean") isMainSession = (isMainSession) ? 1 : 0;
-    return this.http.get<Session>(`${this.sessionUrl}/${sessionNumber}/${isMainSession}`);
-  }
-
-  @TransformObservable(SessionObject)
-  getSessionByPk(session_pk: number): Observable<Session>{
-    return this.http.get<Session>(`${this.sessionUrl}/pk/${session_pk}`);
-  }
-
-  @TransformObservable(SessionObject)
-  updateSession(model: SessionObject): Observable<Session>{
-    const isMainSession = (model.is_main_session) ? 1 : 0;
-    const url: string = `${this.sessionUrl}/pk/${model.pk}/`;
-    return this.http.put<Session>(url, model);
-  }
-
-  @TransformObservable(SessionObject)
-  createSession(model: SessionObject): Observable<Session>{
-    return this.http.post<Session>(`${this.sessionUrl}/`, model);
-  }
-
-  deleteSession(session_pk: number): Observable<any>{
-    const url: string = `${this.sessionUrl}/pk/${session_pk}`;
-    return this.http.delete(url);
+    return this.http.get<Session>(`${this.baseUrl}/${sessionNumber}/${isMainSession}`);
   }
 }

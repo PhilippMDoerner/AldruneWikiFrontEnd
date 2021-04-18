@@ -49,12 +49,12 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
       this.sessionpk_subscription = this.session_pk_subject.pipe(
         filter(sessionPk => !!sessionPk),
       ).subscribe((sessionPk: number) => {
-        this.sessionService.getSessionByPk(sessionPk).pipe(first()).subscribe((session: SessionObject) => {
+        this.sessionService.read(sessionPk).pipe(first()).subscribe((session: SessionObject) => {
           this.model = session;
         })
       })
     } else if (this.formState === Constants.createState){
-      this.sessionService.getSessions().pipe(first()).subscribe((sessions: SessionObject[]) => {
+      this.sessionService.list().pipe(first()).subscribe((sessions: SessionObject[]) => {
         const lastSession = sessions[0];
         this.model = new SessionObject();
 
@@ -79,7 +79,9 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
 
   onSubmit(modal: NgbActiveModal): void{
     const isFormInUpdateState: boolean = this.formState === Constants.updateState;
-    const responseObservable: Observable<SessionObject> = (isFormInUpdateState) ? this.sessionService.updateSession(this.model) : this.sessionService.createSession(this.model);
+    const responseObservable: Observable<SessionObject> = (isFormInUpdateState) ? 
+        this.sessionService.update(this.model.pk, this.model) : 
+        this.sessionService.create(this.model);
 
     responseObservable.pipe(first()).subscribe(session =>{
       const emitter: EventEmitter<SessionObject> = (this.formState === Constants.updateState) ? this.updateSession : this.createSession;
