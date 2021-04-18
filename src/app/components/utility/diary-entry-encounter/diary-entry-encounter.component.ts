@@ -74,7 +74,7 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
     const oldDescription = this.encounter.description;
 
     this.encounter.description = updatedDescription;
-    this.encounterService.updateEncounter(this.encounter).pipe(first()).subscribe(
+    this.encounterService.update(this.encounter.pk, this.encounter).pipe(first()).subscribe(
       (encounter: EncounterObject) => {},
       error => {
         this.encounter.description = oldDescription;
@@ -109,7 +109,7 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
   }
 
   updateEncounter(model: Encounter){
-    this.encounterService.updateEncounter(model).pipe(first()).subscribe(
+    this.encounterService.update(model.pk, model).pipe(first()).subscribe(
       (updatedEncounter: EncounterObject) => {
         //You need to tranfer the connection object as the returning encounter won't carry a connection object - 
         //it's API endpoint isn't diaryentries, where they are added, but the encounter-api, where you wouldn't 
@@ -142,7 +142,7 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
   }
 
   deleteArticle(): void{
-    this.encounterService.deleteEncounter(this.encounter.pk).pipe(first()).subscribe(
+    this.encounterService.delete(this.encounter.pk).pipe(first()).subscribe(
       response => this.encounterDelete.emit(this.encounter),
       error => this.warning.showWarning(error)
     );

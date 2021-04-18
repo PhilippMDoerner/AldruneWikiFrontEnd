@@ -110,7 +110,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     const pendingEncounter = this.encounters[createdEncounterIndex];
     let newEncounter: Encounter;
     try{
-      newEncounter = await this.encounterService.createEncounter(pendingEncounter).toPromise();
+      newEncounter = await this.encounterService.create(pendingEncounter).toPromise();
     } catch (error){
       this.warning.showWarning(error);
       return;

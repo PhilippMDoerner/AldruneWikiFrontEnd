@@ -69,7 +69,7 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
   onEncounterUpdate(updateText: string, encounterIndex: number){
     const encounter: Encounter = this.encounters[encounterIndex];
     encounter.description = updateText;
-    this.encounterService.updateEncounter(encounter).pipe(first()).subscribe(
+    this.encounterService.update(encounter.pk, encounter).pipe(first()).subscribe(
       (encounter: EncounterObject) => this.encounters[encounterIndex] = encounter,
       error => this.warnings.showWarning(error)
     );
@@ -85,7 +85,7 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
   }
 
   updateEncounter(model: Encounter, encounterIndex: number){
-    this.encounterService.updateEncounter(model).pipe(first()).subscribe(
+    this.encounterService.update(model.pk, model).pipe(first()).subscribe(
       (updatedEncounter: EncounterObject) => {
         this.encounters[encounterIndex] = updatedEncounter;
         this.isEncounterUpdateState = false;
@@ -99,7 +99,7 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
   }
 
   deleteEncounter(encounter: Encounter, encounterIndex: number){
-    this.encounterService.deleteEncounter(encounter.pk).pipe(first()).subscribe(
+    this.encounterService.delete(encounter.pk).pipe(first()).subscribe(
       response => {
         this.encounters.splice(encounterIndex, 1);
         this.toggleEncounterDeleteState();

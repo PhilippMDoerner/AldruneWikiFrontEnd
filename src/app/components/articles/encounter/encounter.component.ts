@@ -40,7 +40,7 @@ export class EncounterComponent implements OnInit {
   ngOnInit(): void {
     this.route.params.subscribe( params => {
       const pk: number = params['pk'];
-      this.encounterService.getEncounter(pk).pipe(first()).subscribe(
+      this.encounterService.read(pk).pipe(first()).subscribe(
         (encounter: EncounterObject) => this.encounter = encounter,
         error => this.routingService.routeToErrorPage(error)
       );
@@ -49,7 +49,7 @@ export class EncounterComponent implements OnInit {
 
   onEncounterUpdate(updateText: string){
     this.encounter.description = updateText;
-    this.encounterService.updateEncounter(this.encounter).pipe(first()).subscribe(
+    this.encounterService.update(this.encounter.pk, this.encounter).pipe(first()).subscribe(
       (encounter: EncounterObject) => this.encounter = encounter,
       error => this.warningsService.showWarning(error)
     );
@@ -99,7 +99,7 @@ export class EncounterComponent implements OnInit {
   }
 
   deleteEncounter(){
-    this.encounterService.deleteEncounter(this.encounter.pk).pipe(first()).subscribe(
+    this.encounterService.delete(this.encounter.pk).pipe(first()).subscribe(
       response => this.routingService.routeToPath('home1'),
       error => this.warningsService.showWarning(error)
     );
