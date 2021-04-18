@@ -18,20 +18,20 @@ const httpOptions = {
 export class CharacterService extends GenericObjectService{
   baseUrl: string =  `${Constants.wikiApiUrl}/character`;
   
-  constructor(private http2: HttpClient) { 
-    super(http2, CharacterObject) //Second param indicates which class the data of this service is turned into
+  constructor(http: HttpClient) { 
+    super(http, CharacterObject) //Second param indicates which class the data of this service is turned into
   }
 
   @TransformArrayObservable(OverviewItemObject)
   getPlayerCharacters(): Observable<OverviewItem[]>{
     const url = `${Constants.wikiApiUrl}/playercharacters`;
-    return this.http2.get<OverviewItem[]>(url);
+    return this.http.get<OverviewItem[]>(url);
   }
 
   @TransformArrayObservable(OverviewItemObject)
   getNonPlayerCharacters(): Observable<OverviewItem[]>{
     const url = `${Constants.wikiApiUrl}/nonplayercharacters`;
-    return this.http2.get<OverviewItem[]>(url);  
+    return this.http.get<OverviewItem[]>(url);  
   }
 }
 
