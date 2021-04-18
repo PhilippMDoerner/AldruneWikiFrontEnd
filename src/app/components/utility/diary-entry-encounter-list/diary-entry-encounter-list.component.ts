@@ -128,7 +128,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     newConnection.order_index = newConnection.nextOrderIndex();
     newConnection.encounter = newEncounter.pk;  //Needed to create the connection
 
-    this.diaryEntryEncounterConnectionService.createConnection(newConnection).pipe(first()).subscribe(
+    this.diaryEntryEncounterConnectionService.create(newConnection).pipe(first()).subscribe(
       (newCreatedConnection: DiaryEntryEncounterConnectionObject) => newEncounter.connection = newCreatedConnection,
       error => this.warning.showWarning(error)
     );
@@ -161,7 +161,8 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
       encounter.connection.order_index = nextEncounter.connection.order_index;
       encounter.connection.swapOrderIndexState();
 
-      const updatePromise = this.diaryEntryEncounterConnectionService.updateConnection(encounter.connection).toPromise();
+      const pk: number = encounter.connection.pk;
+      const updatePromise = this.diaryEntryEncounterConnectionService.update(pk, encounter.connection).toPromise();
       connectionUpdatePromises.push(updatePromise);
     }
 
@@ -171,7 +172,8 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
       const lastEncounter: Encounter = this.encounters[lastEncounterIndex];
       lastEncounter.connection.order_index = lastEncounter.connection.nextOrderIndex();
 
-      const updatePromise =  this.diaryEntryEncounterConnectionService.updateConnection(lastEncounter.connection).toPromise();
+      const pk: number = lastEncounter.connection.pk;
+      const updatePromise =  this.diaryEntryEncounterConnectionService.update(pk, lastEncounter.connection).toPromise();
       connectionUpdatePromises.push(updatePromise);  
     }
 
@@ -202,7 +204,8 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
 
       encounter.connection.order_index = priorEncounter.connection.order_index;
       encounter.connection.swapOrderIndexState();
-      const updatePromise = this.diaryEntryEncounterConnectionService.updateConnection(encounter.connection).toPromise();
+      const pk: number = encounter.connection.pk;
+      const updatePromise = this.diaryEntryEncounterConnectionService.update(pk, encounter.connection).toPromise();
       connectionUpdatePromises.push(updatePromise);
     }
 
@@ -211,7 +214,8 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
       const firstEncounter: Encounter = this.encounters[0];
       firstEncounter.connection.order_index = firstEncounter.connection.priorOrderIndex();
       
-      const updatePromise =  this.diaryEntryEncounterConnectionService.updateConnection(firstEncounter.connection).toPromise();
+      const pk: number = firstEncounter.connection.pk;
+      const updatePromise =  this.diaryEntryEncounterConnectionService.update(pk, firstEncounter.connection).toPromise();
       connectionUpdatePromises.push(updatePromise);  
     }
 
@@ -295,8 +299,8 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     connection1.swapOrderIndexState();
     connection2.swapOrderIndexState();
 
-    const updatedConnection1Promise = this.diaryEntryEncounterConnectionService.updateConnection(connection1).toPromise();
-    const updatedConnection2Promise = this.diaryEntryEncounterConnectionService.updateConnection(connection2).toPromise();
+    const updatedConnection1Promise = this.diaryEntryEncounterConnectionService.update(connection1.pk, connection1).toPromise();
+    const updatedConnection2Promise = this.diaryEntryEncounterConnectionService.update(connection2.pk, connection2).toPromise();
 
     return Promise.all([updatedConnection1Promise, updatedConnection2Promise]);  
   }
@@ -351,7 +355,8 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     const cutEncounter: Encounter = this.encounters[this.cutEncounterIndex];
     cutEncounter.connection.order_index = insertionOrderIndex;
     cutEncounter.connection.swapOrderIndexState();
-    await this.diaryEntryEncounterConnectionService.updateConnection(cutEncounter.connection).toPromise();
+    const pk: number = cutEncounter.connection.pk;
+    await this.diaryEntryEncounterConnectionService.update(pk, cutEncounter.connection).toPromise();
 
     this.cutEncounterIndex = null; //Reset cut feature
     this.sortEncounters();
