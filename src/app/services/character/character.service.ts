@@ -6,6 +6,7 @@ import { Observable } from "rxjs";
 import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
 import { map } from 'rxjs/operators';
 import { TransformObservable, TransformArrayObservable } from "src/app/utils/functions/transform"
+import { GenericObjectService } from '../generic-object.service';
 
 const httpOptions = {
   headers: new HttpHeaders({"Content-Type": "application/json"}),
@@ -14,49 +15,23 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class CharacterService {
-  characterUrl: string = `${Constants.wikiApiUrl}/character`;
-  constructor(private http: HttpClient) { }
-
-  @TransformArrayObservable(CharacterObject)
-  getCharacters(): Observable<Character[]>{
-    return this.http.get<Character[]>(this.characterUrl);
+export class CharacterService extends GenericObjectService{
+  baseUrl: string =  `${Constants.wikiApiUrl}/character`;
+  
+  constructor(private http2: HttpClient) { 
+    super(http2, CharacterObject) //Second param indicates which class the data of this service is turned into
   }
-
-  @TransformObservable(CharacterObject)
-  getCharacter(character: number | string): Observable<Character>{
-    const url = (typeof character === 'number') ? `${this.characterUrl}/pk/${character}/` :  `${this.characterUrl}/${character}`;
-    return this.http.get<Character>(url);
-  }
-
 
   @TransformArrayObservable(OverviewItemObject)
   getPlayerCharacters(): Observable<OverviewItem[]>{
     const url = `${Constants.wikiApiUrl}/playercharacters`;
-    return this.http.get<OverviewItem[]>(url);
+    return this.http2.get<OverviewItem[]>(url);
   }
 
   @TransformArrayObservable(OverviewItemObject)
   getNonPlayerCharacters(): Observable<OverviewItem[]>{
     const url = `${Constants.wikiApiUrl}/nonplayercharacters`;
-    return this.http.get<OverviewItem[]>(url);  
-  }
-
-  @TransformObservable(CharacterObject)
-  deleteCharacter(character: Character): Observable<Character>{
-    const url = `${this.characterUrl}/pk/${character.pk}/`;
-    return this.http.delete<Character>(url, httpOptions);
-  }
-
-  @TransformObservable(CharacterObject)
-  updateCharacter(character: Character): Observable<Character>{
-    const url = `${this.characterUrl}/pk/${character.pk}/`;
-    return this.http.put<Character>(url, character, httpOptions);
-  }
-
-  @TransformObservable(CharacterObject)
-  createCharacter(character: Character): Observable<Character>{
-    return this.http.post<Character>(`${this.characterUrl}/`, character, httpOptions);
+    return this.http2.get<OverviewItem[]>(url);  
   }
 }
 

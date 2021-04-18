@@ -56,7 +56,7 @@ export class ItemArticleUpdateComponent implements OnInit {
           error => this.routingService.routeToErrorPage(error)
         );
       } else if (this.isForAssociatedObjectCreation){
-        this.characterService.getCharacter(itemOwnerName).pipe(first()).subscribe(
+        this.characterService.readByParam(itemOwnerName).pipe(first()).subscribe(
           (itemOwner: CharacterObject) => {
             this.model = new ItemObject();
             this.model.owner = itemOwner.pk;

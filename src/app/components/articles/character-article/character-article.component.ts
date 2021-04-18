@@ -38,7 +38,7 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe( params => {
       const characterName: string = params.name;
-      this.characterService.getCharacter(characterName).pipe(first()).subscribe(
+      this.characterService.readByParam(characterName).pipe(first()).subscribe(
         (character: CharacterObject) => this.character = character, 
         error => this.routingService.routeToErrorPage(error)
       );
@@ -49,7 +49,7 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.character.description;
     this.character.description = updatedDescription;
-    this.characterService.updateCharacter(this.character).pipe(first()).subscribe(
+    this.characterService.update(this.character.pk, this.character).pipe(first()).subscribe(
       (character: CharacterObject) => {},
       error =>{
         this.character.description = oldDescription;
@@ -65,7 +65,7 @@ export class CharacterArticleComponent extends PermissionUtilityFunctionMixin im
   }
 
   deleteArticle(){
-      this.characterService.deleteCharacter(this.character).pipe(first()).subscribe(
+      this.characterService.delete(this.character.pk).pipe(first()).subscribe(
         response => this.routingService.routeToPath('character-overview'),
         error => this.warnings.showWarning(error)
       )

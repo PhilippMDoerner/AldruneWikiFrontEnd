@@ -60,7 +60,7 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
     this.parameter_subscription = this.route.params.subscribe(params => {
       if (this.formState === Constants.updateState){
         const character_name: string = params.name;
-        this.characterService.getCharacter(character_name).pipe(first()).subscribe(
+        this.characterService.readByParam(character_name).pipe(first()).subscribe(
           (character: CharacterObject) => this.model = character, 
           error =>this.routingService.routeToErrorPage(error)
         );
@@ -73,7 +73,9 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
 
   onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    const responseObservable: Observable<Character> =  isFormInUpdateState ? this.characterService.updateCharacter(this.model) : this.characterService.createCharacter(this.model);
+    const responseObservable: Observable<Character> =  isFormInUpdateState ? 
+        this.characterService.update(this.model.pk, this.model) : 
+        this.characterService.create(this.model);
 
     responseObservable.pipe(first()).subscribe(
       (character: CharacterObject) => this.routingService.routeToApiObject(character),
