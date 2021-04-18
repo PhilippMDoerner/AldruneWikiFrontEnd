@@ -10,7 +10,7 @@ export abstract class GenericObjectService{
   baseUrl: string;
 
   constructor(
-    private http: HttpClient,
+    public http: HttpClient,
     public objectClass: any,
   ) { }
 
