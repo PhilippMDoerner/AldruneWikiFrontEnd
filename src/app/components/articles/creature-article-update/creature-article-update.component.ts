@@ -42,7 +42,7 @@ export class CreatureArticleUpdateComponent implements OnInit {
     this.parameter_subscription = this.route.params.subscribe(params => {
       if (this.formState === Constants.updateState){
         const creature_name: string = params.name;
-        this.creatureService.getCreature(creature_name).pipe(first()).subscribe(
+        this.creatureService.readByParam(creature_name).pipe(first()).subscribe(
           (creature: CreatureObject) =>  this.model = creature, 
           error => this.routingService.routeToErrorPage(error)
         );
@@ -56,7 +56,9 @@ export class CreatureArticleUpdateComponent implements OnInit {
 
   onSubmit(){
     const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
-    const responseObservable : Observable<Creature> =  isFormInUpdateState ? this.creatureService.updateCreature(this.model) : this.creatureService.createCreature(this.model);
+    const responseObservable : Observable<Creature> =  isFormInUpdateState ? 
+        this.creatureService.update(this.model.pk, this.model) : 
+        this.creatureService.create(this.model);
 
     responseObservable.pipe(first()).subscribe(
       (creature: CreatureObject) =>  this.routingService.routeToApiObject(creature),

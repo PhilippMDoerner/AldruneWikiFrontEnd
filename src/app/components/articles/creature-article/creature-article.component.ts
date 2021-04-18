@@ -31,7 +31,7 @@ export class CreatureArticleComponent implements OnInit {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const creatureName: string = params.name;
 
-      this.creatureService.getCreature(creatureName).pipe(first()).subscribe(
+      this.creatureService.readByParam(creatureName).pipe(first()).subscribe(
         (creature: CreatureObject) => this.creature = creature,
         error => this.routingService.routeToErrorPage(error)
       );
@@ -42,7 +42,7 @@ export class CreatureArticleComponent implements OnInit {
     const oldDescription = this.creature.description;
     this.creature.description = updatedDescription;
 
-    this.creatureService.updateCreature(this.creature).pipe(first()).subscribe(
+    this.creatureService.update(this.creature.pk, this.creature).pipe(first()).subscribe(
       (creature: CreatureObject) => {}, 
       error => {
         this.creature.description = oldDescription;
@@ -52,7 +52,7 @@ export class CreatureArticleComponent implements OnInit {
   }
 
   deleteArticle(){
-    this.creatureService.deleteCreature(this.creature.pk).pipe(first()).subscribe(
+    this.creatureService.delete(this.creature.pk).pipe(first()).subscribe(
       response => this.routingService.routeToPath('creature-overview'), 
       error => this.warnings.showWarning(error)
     );
