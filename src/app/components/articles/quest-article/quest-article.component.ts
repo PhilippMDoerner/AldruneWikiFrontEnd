@@ -30,7 +30,7 @@ export class QuestArticleComponent implements OnInit {
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const questName: string = params.name;
-      this.questService.getQuest(questName).pipe(first()).subscribe(
+      this.questService.readByParam(questName).pipe(first()).subscribe(
         (quest: QuestObject) => this.quest = quest,
         error => this.routingService.routeToErrorPage(error)
       );
@@ -40,7 +40,7 @@ export class QuestArticleComponent implements OnInit {
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.quest.description;
     this.quest.description = updatedDescription;
-    this.questService.updateQuest(this.quest).pipe(first()).subscribe(
+    this.questService.update(this.quest.pk, this.quest).pipe(first()).subscribe(
       (quest: QuestObject) => {},
       error =>{
         this.quest.description = oldDescription;
@@ -50,7 +50,7 @@ export class QuestArticleComponent implements OnInit {
   }
 
   deleteArticle(){
-      this.questService.deleteQuest(this.quest.pk).pipe(first()).subscribe(
+      this.questService.delete(this.quest.pk).pipe(first()).subscribe(
         response => this.routingService.routeToPath('quest-overview'),
         error => this.warnings.showWarning(error)
       );

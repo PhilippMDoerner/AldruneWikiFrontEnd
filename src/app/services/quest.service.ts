@@ -7,25 +7,21 @@ import { OverviewItem, OverviewItemObject } from '../models/overviewItem';
 import { Quest, QuestObject } from '../models/quest';
 import { TransformArrayObservable, TransformObservable } from '../utils/functions/transform';
 import { CharacterService } from './character/character.service';
+import { GenericObjectService } from './generic-object.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class QuestService {
-  questUrl: string = `${Constants.wikiApiUrl}/quest`;
+export class QuestService extends GenericObjectService{
+  baseUrl: string = `${Constants.wikiApiUrl}/quest`;
 
   constructor(
-    private http : HttpClient,
+    http : HttpClient,
     private characterService: CharacterService,
-    ) { }
-
-  @TransformArrayObservable(QuestObject)
-  getQuests(): Observable<Quest[]>{
-    return this.http.get<Quest[]>(this.questUrl);
-  }
+    ) { super(http, QuestObject) }
 
   getQuestStates(): Observable<string[]>{
-    return this.http.get<string[]>(`${this.questUrl}states`);
+    return this.http.get<string[]>(`${this.baseUrl}states`);
   }
 
   @TransformArrayObservable(OverviewItemObject)
@@ -37,28 +33,4 @@ export class QuestService {
       return characters;
     }));
   }
-
-  @TransformObservable(QuestObject)
-  getQuest(quest: number | string): Observable<Quest>{
-    const url: string = (typeof quest === 'number') ? `${this.questUrl}/pk/${quest}` :  `${this.questUrl}/${quest}`;
-    return this.http.get<Quest>(url);
-  }
-
-  @TransformObservable(QuestObject)
-  createQuest(quest: Quest): Observable<Quest>{
-    return this.http.post<Quest>(`${this.questUrl}/`, quest);
-  }
-
-  @TransformObservable(QuestObject)
-  updateQuest(quest: Quest): Observable<Quest>{
-    const url: string = `${this.questUrl}/pk/${quest.pk}/`;
-    return this.http.put<Quest>(url, quest);
-  }
-
-  @TransformObservable(QuestObject)
-  deleteQuest(quest_pk: number){
-    const url: string = `${this.questUrl}/pk/${quest_pk}/`;
-    return this.http.delete<Quest>(url);
-  }
-
 }

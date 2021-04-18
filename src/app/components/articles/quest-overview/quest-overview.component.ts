@@ -28,7 +28,7 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
   ) { super() }
 
   ngOnInit(): void {
-    this.questService.getQuests().pipe(first()).subscribe(
+    this.questService.list().pipe(first()).subscribe(
       (quests: QuestObject[]) => {
         this.quests = this.groupQuestsByTaker(quests);
 

@@ -70,7 +70,7 @@ export class QuestArticleUpdateComponent implements OnInit {
       const questName: string = params.name;
 
       if (this.formState === Constants.updateState){
-        this.questService.getQuest(questName).pipe(first()).subscribe(
+        this.questService.readByParam(questName).pipe(first()).subscribe(
           (quest: QuestObject) => this.model = quest,
           error => this.routingService.routeToErrorPage(error)
         );
@@ -83,7 +83,9 @@ export class QuestArticleUpdateComponent implements OnInit {
 
   onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    const responseObservable: Observable<QuestObject> =  isFormInUpdateState ? this.questService.updateQuest(this.model) : this.questService.createQuest(this.model);
+    const responseObservable: Observable<QuestObject> =  isFormInUpdateState ?
+        this.questService.update(this.model.pk, this.model) : 
+        this.questService.create(this.model);
 
     responseObservable.pipe(first()).subscribe(
       (quest: QuestObject) => this.routingService.routeToApiObject(quest), 
