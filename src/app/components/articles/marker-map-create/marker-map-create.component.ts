@@ -63,7 +63,7 @@ export class MarkerMapCreateComponent implements OnInit {
   }
 
   onSubmit(){
-    this.markerService.createMapMarker(this.model).pipe(first()).subscribe(
+    this.markerService.create(this.model).pipe(first()).subscribe(
       (marker: MapMarker) => this.routingService.routeToPath('map', {name: marker.map_details.name}),
       error => this.warnings.showWarning(error)
     );

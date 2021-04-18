@@ -77,7 +77,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
       (location: LocationObject) => {
         this.markerModel.location = location.pk;
 
-        this.markerService.createMapMarker(this.markerModel).pipe(first()).subscribe(
+        this.markerService.create(this.markerModel).pipe(first()).subscribe(
           (marker: MapMarker) => this.routingService.routeToApiObject(location), 
           error => this.warnings.showWarning(error)
         ) 

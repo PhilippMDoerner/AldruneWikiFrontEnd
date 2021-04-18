@@ -43,7 +43,7 @@ export class MarkerComponent implements OnInit {
     const parentLocationName: string = this.marker.location_details.parent_location_name;
     const locationName: string = this.marker.location_details.name;
 
-    this.markerService.deleteMapMarker(this.marker.pk).pipe(first()).subscribe(
+    this.markerService.delete(this.marker.pk).pipe(first()).subscribe(
       response =>  this.routingService.routeToPath('location', {
           name: locationName, 
           parent_name: parentLocationName

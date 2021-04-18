@@ -81,7 +81,9 @@ export class MarkerUpdateComponent implements OnInit {
 
   onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    const responseObservable: Observable<MapMarkerObject> =  isFormInUpdateState ? this.markerService.updateMapMarker(this.model) : this.markerService.createMapMarker(this.model);
+    const responseObservable: Observable<MapMarkerObject> =  isFormInUpdateState ? 
+        this.markerService.update(this.model.pk, this.model) : 
+        this.markerService.create(this.model);
     
     responseObservable.pipe(first()).subscribe(
       (marker: MapMarkerObject) => this.routingService.routeToPath('marker', {
