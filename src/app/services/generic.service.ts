@@ -9,7 +9,9 @@ export abstract class GenericService {
 
   baseUrl: string;
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    public http: HttpClient
+  ) { }
 
   list(): Observable<any[]>{
     return this.http.get<any[]>(this.baseUrl);
