@@ -14,41 +14,46 @@ export abstract class GenericObjectService{
     public objectClass: any,
   ) { }
 
-  @TransformArrayObservable("objectClass")
   list(): Observable<any[]>{
-    return this.http.get<any[]>(this.baseUrl);
+    const obs: Observable<any[]> = this.http.get<any[]>(this.baseUrl);
+    const transformedObs = transformObservableArrayContent(obs, this.objectClass);
+    return transformedObs;
   }
 
-  @TransformObservable("objectClass")
   create(data: any): Observable<any>{
-    return this.http.post(`${this.baseUrl}/`, data);
+    const obs: Observable<any> = this.http.post(`${this.baseUrl}/`, data);
+    const transformedObs = transformObservableContent(obs, this.objectClass);
+    return transformedObs;
   }
 
-  @TransformObservable("objectClass")
   update(pk: number, data: any): Observable<any>{
-    return this.http.put(`${this.baseUrl}/pk/${pk}/`, data);
+    const obs: Observable<any> = this.http.put(`${this.baseUrl}/pk/${pk}/`, data);
+    const transformedObs = transformObservableContent(obs, this.objectClass);
+    return transformedObs;
   }
 
-  @TransformObservable("objectClass")
   read(pk: number): Observable<any>{
-    return this.http.get(`${this.baseUrl}/pk/${pk}`);
+    const obs: Observable<any> = this.http.get(`${this.baseUrl}/pk/${pk}`);
+    const transformedObs = transformObservableContent(obs, this.objectClass);
+    return transformedObs;
   }
 
   /**
    * @description Allows you to send a read query based on a param, e.g. "name", assuming the backend is set up for it.
    * The targetted URL will be "${baseURL of API Endpoint}/param"
    * @param param 
-   * @returns The data from that endpoint transformed into an object specified by the service this inherits from.
+   * @returns The data from that endpoint transformed into an object specified by the service
    */
-  @TransformObservable("objectClass")
   readByParam(param: number | string): Observable<any>{
-    return this.http.get(`${this.baseUrl}/${param}`);
-
+    const obs: Observable<any> = this.http.get(`${this.baseUrl}/${param}`);
+    const transformedObs = transformObservableContent(obs, this.objectClass);
+    return transformedObs;
   }
 
-  @TransformObservable("objectClass")
   delete(pk: number): Observable<any>{
-    return this.http.delete(`${this.baseUrl}/pk/${pk}`);
+    const obs: Observable<any> = this.http.delete(`${this.baseUrl}/pk/${pk}`);
+    const transformedObs = transformObservableContent(obs, this.objectClass);
+    return transformedObs;
   }
 
 }
