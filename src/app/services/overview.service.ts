@@ -14,7 +14,7 @@ export class OverviewService {
 
   constructor(
     private http : HttpClient,
-    private userService: UserService) { }
+  ) { }
 
   @TransformArrayObservable(OverviewItemObject)
   getOverviewItems(overviewType: string): Observable<OverviewItem[]>{
