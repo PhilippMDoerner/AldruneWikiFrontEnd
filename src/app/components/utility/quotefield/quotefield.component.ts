@@ -87,7 +87,9 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   }
 
   async onSubmit(){
-    const responseObservable = (this.inCreateState) ? this.quoteService.createQuote(this.model) : this.quoteService.updateQuote(this.model);
+    const responseObservable = (this.inCreateState) ? 
+        this.quoteService.create(this.model) : 
+        this.quoteService.update(this.model.pk, this.model);
     try{
       this.quote = await responseObservable.toPromise();
 
@@ -180,7 +182,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   }
 
   deleteQuote(){
-    this.quoteService.deleteQuote(this.quote.pk).pipe(first()).subscribe(
+    this.quoteService.delete(this.quote.pk).pipe(first()).subscribe(
       response => {
         this.inDeleteState = false;
         this.delete.emit(this.quote);

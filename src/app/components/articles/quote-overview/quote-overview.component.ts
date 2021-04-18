@@ -93,7 +93,7 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
   async onSubmit(){
     try{
       // Create Quote
-      const quote: QuoteObject = await this.quoteService.createQuote(this.quoteModel).toPromise();
+      const quote: QuoteObject = await this.quoteService.create(this.quoteModel).toPromise();
 
       // Create QuoteConnection
       const connectionToThisCharacter: QuoteConnection = {"quote": quote.pk, "character": this.character.pk};
