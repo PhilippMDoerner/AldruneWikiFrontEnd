@@ -33,7 +33,7 @@ export class ItemArticleComponent implements OnInit {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const itemName = params.name;
 
-      this.itemService.getItem(itemName).pipe(first()).subscribe(
+      this.itemService.readByParam(itemName).pipe(first()).subscribe(
         (item: ItemObject) => this.item = item,
         error => this.routingService.routeToErrorPage(error)
       );
@@ -43,7 +43,7 @@ export class ItemArticleComponent implements OnInit {
   onDescriptionUpdate(updatedDescription){
     const oldDescription = this.item.description;
     this.item.description = updatedDescription;
-    this.itemService.updateItem(this.item).pipe(first()).subscribe(
+    this.itemService.update(this.item.pk, this.item).pipe(first()).subscribe(
       (item: ItemObject) => {},
       error =>{
         this.item.description = oldDescription;
@@ -53,7 +53,7 @@ export class ItemArticleComponent implements OnInit {
   }
 
   deleteArticle(){
-    this.itemService.deleteItem(this.item.pk).pipe(first()).subscribe(
+    this.itemService.delete(this.item.pk).pipe(first()).subscribe(
       response => this.routingService.routeToPath('item-overview'),
       error => this.warnings.showWarning(error)
     );

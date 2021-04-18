@@ -51,7 +51,7 @@ export class ItemArticleUpdateComponent implements OnInit {
       this.isForAssociatedObjectCreation = itemOwnerName && this.formState === Constants.createState;
 
       if (this.formState === Constants.updateState){
-        this.itemService.getItem(itemName).pipe(first()).subscribe(
+        this.itemService.readByParam(itemName).pipe(first()).subscribe(
           (item: ItemObject) =>  this.model = item,
           error => this.routingService.routeToErrorPage(error)
         );
@@ -71,7 +71,9 @@ export class ItemArticleUpdateComponent implements OnInit {
 
   onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    const responseObservable: any =  isFormInUpdateState ? this.itemService.updateItem(this.model) : this.itemService.createItem(this.model);
+    const responseObservable: any =  isFormInUpdateState ? 
+        this.itemService.update(this.model.pk, this.model) : 
+        this.itemService.create(this.model);
 
     responseObservable.pipe(first()).subscribe(
       (item: ItemObject) => this.routingService.routeToApiObject(item),
