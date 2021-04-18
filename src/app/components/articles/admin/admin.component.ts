@@ -61,7 +61,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
       error => this.warnings.showWarning(error)
     );
 
-    this.groupService.getGroups().pipe(first()).subscribe(
+    this.groupService.list().pipe(first()).subscribe(
       (groups: PermissionGroup[]) => this.groups = groups,
       error => this.warnings.showWarning(error)
     );

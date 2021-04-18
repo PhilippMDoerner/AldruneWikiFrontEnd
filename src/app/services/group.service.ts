@@ -1,20 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
-import { PermissionGroup } from '../models/group';
+import { GenericService } from './generic.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GroupService {
+export class GroupService extends GenericService{
   groupUrl: string = `${Constants.wikiApiUrl}/group`;
 
   constructor(
-    private http: HttpClient
-  ) { }
-
-  getGroups(): Observable<PermissionGroup[]>{
-    return this.http.get<PermissionGroup[]>(`${this.groupUrl}`);
-  }
+    http: HttpClient
+  ) { super(http)}
 }
