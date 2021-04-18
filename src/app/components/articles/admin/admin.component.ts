@@ -50,7 +50,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.userService.getUsers().pipe(first()).subscribe(
+    this.userService.list().pipe(first()).subscribe(
       (users: UserObject[]) => {
         this.users = users.sort((user1 :UserObject, user2: UserObject) => {
           const username1: string = user1.username.toLocaleLowerCase();
@@ -78,7 +78,7 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
   //USERS
   saveNewUser(){
-    this.userService.addUser(this.userModel).pipe(first()).subscribe(
+    this.userService.create(this.userModel).pipe(first()).subscribe(
       (newUser: UserObject) => {
         this.users.push(newUser);
         this.isUserCreateState = false;

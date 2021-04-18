@@ -40,7 +40,7 @@ export class UserRowComponent implements OnInit {
   }
 
   updateUser(): void{
-    this.userService.updateUser(this.user).pipe(first()).subscribe(
+    this.userService.update(this.user.pk, this.user).pipe(first()).subscribe(
       (updatedUser: UserObject) => this.user = updatedUser,
       error => this.warnings.showWarning(error)
     )
@@ -101,7 +101,7 @@ export class UserRowComponent implements OnInit {
   }
 
   deleteUser(userIndex: number): void{
-    this.userService.deleteUser(this.user.pk).pipe(first()).subscribe(
+    this.userService.delete(this.user.pk).pipe(first()).subscribe(
       (response) => {this.delete.emit(this.index)},
       error => this.warnings.showWarning(error)
     )
