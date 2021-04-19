@@ -67,7 +67,10 @@ export class ConfigTablesComponent implements OnInit {
     const table = this.tables[tableIndex];
     const obs: Observable<any> = table.service.list()
     obs.pipe(first()).subscribe(
-      (entries: any[]) => table.entries,
+      (entries: any[]) => table.entries = entries.sort((a, b) => {
+        if (a.id != null && b.id != null) return a.id - b.id;
+        if (a.pk != null && b.pk != null) return a.pk - b.pk;
+      }),
       error => this.warnings.showWarning(error)
     );
   }
@@ -84,7 +87,9 @@ export class ConfigTablesComponent implements OnInit {
   deleteTableEntry(tableIndex: number, entryIndex: number){
     const table = this.tables[tableIndex];
     const entry = table.entries[entryIndex];
-    table.service.delete(entry.pk).pipe(first()).subscribe(
+    const entryPk = (entry.pk == null) ? entry.id : entry.pk;
+
+    table.service.delete(entryPk).pipe(first()).subscribe(
       (response) => table.entries.splice(entryIndex, 1),
       (error) => this.warnings.showWarning(error)
     )
