@@ -91,11 +91,20 @@
                 </h3>
 
                 <!-- Heading Buttons -->
-                <!-- Download Dataabase -->
-                <div class="btn btn-primary align-self-end border-white position-relative top1" (click)="startDatabaseDownload()"> 
-                    <span class="fa fa-database"></span>
-                    Download Database 
+                <div class="align-self-end position-relative top1">
+                    <!-- Download Database -->
+                    <div class="btn btn-primary border-white" (click)="startDatabaseDownload()"> 
+                        <span class="fa fa-database"></span>
+                        Download Database 
+                    </div>
+    
+                    <!-- Clear Tokens -->
+                    <!-- <div class="btn btn-danger border-white"> 
+                        <span class="fa fa-trash"></span>
+                        Clear > 7 day old Tokens 
+                    </div> -->
                 </div>
+
             </div>
 
             <hr class="white-separator">
