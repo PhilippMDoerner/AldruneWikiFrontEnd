@@ -31,17 +31,18 @@ export function TransformObservable(modelClass: any){
     /**Decorator to apply transformObservableContent */
     return function(target: any, propertyKey: string, descriptor: PropertyDescriptor){
 
-        //This section allows you to access the object within which the decorator is written and its properties.
-        //This way you can use that objects properties as decorator parameters. Since everything is a JS object
-        //You can just access the properties via a dictionary
-        const decoratorArgumentIsTargetProperty = typeof modelClass === "string";
-        if(decoratorArgumentIsTargetProperty){ //If this is the case, then target = the object within which the decorator is written
-            modelClass = target[modelClass]
-        }
-
         const originalMethod = descriptor.value;
         descriptor.value = function(){
             const observable = originalMethod.apply(this, arguments);
+
+            //This section allows you to access the object within which the decorator is written and its properties.
+            //This way you can use that objects properties as decorator parameters. Since everything is a JS object
+            //You can just access the properties from this like in a dictionary
+            const decoratorArgumentIsTargetProperty = ["String", "string"].includes(typeof modelClass);
+            if(decoratorArgumentIsTargetProperty){ //If this is the case, then target = the object within which the decorator is written
+                modelClass = this[modelClass];
+            }
+
             return transformObservableContent(observable, modelClass);
         }
         return descriptor;
@@ -54,6 +55,14 @@ export function TransformArrayObservable(modelClass: any){
 
         const originalMethod = descriptor.value;
         descriptor.value = function(){
+            //This section allows you to access the object within which the decorator is written and its properties.
+            //This way you can use that objects properties as decorator parameters. Since everything is a JS object
+            //You can just access the properties from this like in a dictionary
+            const decoratorArgumentIsTargetProperty = ["String", "string"].includes(typeof modelClass);
+            if(decoratorArgumentIsTargetProperty){ //If this is the case, then target = the object within which the decorator is written
+                modelClass = this[modelClass];
+            }
+
             const observable = originalMethod.apply(this, arguments);
             return transformObservableArrayContent(observable, modelClass);
         }
