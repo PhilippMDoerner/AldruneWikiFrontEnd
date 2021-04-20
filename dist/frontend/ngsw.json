@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1618151150267,
+  "timestamp": 1618929455622,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -14,12 +14,12 @@
         "/4.d5c837075df5a8484b9c.js",
         "/favicon.ico",
         "/index.html",
-        "/main.f3d00067d075c5aeb860.js",
+        "/main.309fe7f3981d72b6b8e1.js",
         "/manifest.webmanifest",
         "/polyfills.00e02af16340fdc82052.js",
         "/runtime.6076814ef49a1a1583c0.js",
         "/scripts.bf128fa19cb1f1099bb9.js",
-        "/styles.3fcfd694a85824e9ef78.css"
+        "/styles.7a06f2b5593a230df423.css"
       ],
       "patterns": [
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic01\\.jpg",
@@ -158,17 +158,17 @@
     "/fontawesome-webfont.8b43027f47b20503057d.eot": "d980c2ce873dc43af460d4d572d441304499f400",
     "/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/fontawesome-webfont.f691f37e57f04c152e23.woff": "28b782240b3e76db824e12c02754a9731a167527",
-    "/index.html": "ff842f602788d1b10471ff51074bea6e3132216d",
+    "/index.html": "dfdce943c87450972f00c6763901caf86e8e7827",
     "/layers-2x.8f2c4d11474275fbc161.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/layers.416d91365b44e4b4f477.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/main.f3d00067d075c5aeb860.js": "c6d84aab2f3d3e6b47d939925e93df7895f9dc36",
+    "/main.309fe7f3981d72b6b8e1.js": "e42e5290faf9828588f45d692fee213136c83418",
     "/manifest.webmanifest": "116c35892aa2a2a2ae967202ecd0a917f9fe39db",
     "/marker-icon.2b3e1faf89f94a483539.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/overlay.eb1c6ead73ba2c71d71a.png": "428cb1e28c236e7a48194c7469347fe5a5e0caef",
     "/polyfills.00e02af16340fdc82052.js": "dbc502f030c7bb83c7caa1feee7aff990831f7d9",
     "/runtime.6076814ef49a1a1583c0.js": "60542d45ef1f7bfeb255f45ea6a167ec92d2cc96",
     "/scripts.bf128fa19cb1f1099bb9.js": "6d59ec80d1b35c739545d443be90856459d0f015",
-    "/styles.3fcfd694a85824e9ef78.css": "674ebe271b7b9d13ea30eb80e384ce7d5b81f70b"
+    "/styles.7a06f2b5593a230df423.css": "ff778dfbee1a1b367dfd8486976efa6915e01e34"
   },
   "navigationUrls": [
     {
