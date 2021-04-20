@@ -36,11 +36,17 @@ export class WarningsService {
     }
     
     const errorStatus: number = (typeof error !== "number") ? error.status : error;
-    const warningMessage = (this.warnings[errorStatus]) ? this.warnings[errorStatus] : this.defaultWarning;
+    if (errorStatus === 500){
+      const notificationHeading = "Impossibility Error";
+      const notificationBody = "What you are trying to do is impossible for various reasons. Please copy the full error message and send it to the developer"
+      this.showErrorNotification(notificationHeading, notificationBody, error);
+    } else {
+      const warningMessage = (this.warnings[errorStatus]) ? this.warnings[errorStatus] : this.defaultWarning;
 
-    const notificationBody = warningMessage + "\n\n" + httpErrorMessage;
-    const notificationHeading = `Error ${errorStatus}`;
-    this.showErrorNotification(notificationHeading, notificationBody, error);
+      const notificationBody = warningMessage + "\n\n" + httpErrorMessage;
+      const notificationHeading = `Error ${errorStatus}`;
+      this.showErrorNotification(notificationHeading, notificationBody, error);
+    }
   }
 
   getHttpErrorMessages(httpErrorObject: any): string{

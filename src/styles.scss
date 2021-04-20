@@ -458,8 +458,8 @@ formly-field.mb-0 .form-group{
 	background-color: rgb(175, 31, 34) !important;
 	position: fixed;
 	top: 10%;
-	right: 40%;
-	width: 20%;
+	right: 25%;
+	width: 50%;
 	max-height: 50%;
 	overflow-y: auto;
 	z-index: 1000;
@@ -469,8 +469,8 @@ formly-field.mb-0 .form-group{
 @media(max-width: 992px){
 	//Notifications
 	.notification{
-		right: 30%;
-		width: 40%;
+		right: 17%;
+		width: 66%;
 	}
 
 	.main{
