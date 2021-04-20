@@ -46,10 +46,10 @@ export class MarkerMapCreateComponent implements OnInit {
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params =>{
-      const longitude: number = params['longitude'];
-      const latitude: number = params['latitude'];
+      const longitude: number = parseInt(params['longitude']);
+      const latitude: number = parseInt(params['latitude']);
       this.mapName = params['map_name'];
-      
+
       this.mapService.getMap(this.mapName).pipe(first()).subscribe(
         (map: MapObject) =>{
           this.model = new MapMarkerObject();
