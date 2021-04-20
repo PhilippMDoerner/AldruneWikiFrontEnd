@@ -28,7 +28,7 @@ export class MarkerMapCreateComponent implements OnInit {
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
     this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
-    this.formlyService.genericSelect({key: "Location", optionsType: 'location'}),
+    this.formlyService.genericSelect({key: "location", optionsType: 'location'}),
     this.formlyService.genericSelect({key: "map", optionsType: "map"}),
     this.formlyService.genericSelect({key: 'type', label: "Marker Type", optionsType: "marker_type"}),
     this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
