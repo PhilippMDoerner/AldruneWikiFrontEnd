@@ -79,11 +79,16 @@ export class ConfigTablesComponent implements OnInit {
     const table = this.tables[tableIndex];
     const model: any = table.model;
     table.service.create(model).pipe(first()).subscribe(
-      (newEntry: any) => table.entries.push(newEntry),
+      (newEntry: any) => {
+        table.entries.push(newEntry);
+        this.createStateArray[tableIndex] = false;
+      },
       (error) => this.warnings.showWarning(error)
     );
   }
 
+  //TODO: Implement a generic way to check if a given entry is being used by any other table as a foreign key
+  //TODO: Either figure out how to query that or 
   deleteTableEntry(tableIndex: number, entryIndex: number){
     const table = this.tables[tableIndex];
     const entry = table.entries[entryIndex];
