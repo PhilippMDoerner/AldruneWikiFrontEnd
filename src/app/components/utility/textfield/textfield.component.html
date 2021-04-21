@@ -12,12 +12,24 @@
 <form class="mt-2">
     <div class="textfield">
         <div *ngIf="isEditState">
-            <editor 
-            [init]="constants.tinyMCESettings"
-            name="textEditField"
-            [(ngModel)]="updatedText"
-            class="mb-2"
-            ></editor>
+            <form (submit)="finishEdit()">
+                <editor 
+                [init]="constants.tinyMCESettings"
+                name="textEditField"
+                [(ngModel)]="updatedText"
+                class="mb-2"
+                ></editor>
+
+                <div class="btn btn-secondary mx-2" (click)="cancelEdit()">
+                    <span class="fa icon fa-times"></span>
+                    Cancel
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <span class="fa fa-check"></span>
+                    Submit
+                </button>
+            </form>
+
         </div>
 
         <div *ngIf="!isEditState" [innerHTML]="updatedText | safeHtml"></div>
