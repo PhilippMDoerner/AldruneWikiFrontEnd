@@ -51,7 +51,7 @@ class="container"
             ></app-textfield>
         
             <!-- Encounter Connections -->
-            <hr class="white-line">
+            <hr class="white-line" *ngIf="!diaryEntryView">
 
             <div class="encounter-connections d-flex align-items-center" *ngIf="!diaryEntryView">
         
@@ -101,6 +101,7 @@ class="container"
                     
             <!-- Delete Article -->
             <app-delete-toggle
+            *ngIf="!diaryEntryView"
             [deleteMessage]="'Delete this encounter?'"
             (deleteEvent)="deleteArticle()"
             class="float-right px-0"
