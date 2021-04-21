@@ -64,3 +64,8 @@ table{
 .expand:hover{
     height: 8rem;
 }
+
+.badge-secondary:hover{
+    background-color: var(--#{dark});
+    color: var(--link-blue);
+}

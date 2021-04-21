@@ -31,7 +31,7 @@
                     </span>
 
                     <!-- Form for Creating Quote Connections -->
-                    <form [ngClass]="{'d-none':!inQuoteConnectionCreateState, 'd-inline-block': inQuoteConnectionCreateState}">
+                    <form class="d-flex align-items-center" *ngIf="inQuoteConnectionCreateState">
                         <select class="form-control" name="character" id="character" [(ngModel)]="baseQuoteConnection.character">
                             <option 
                             *ngFor="let character of characters" 
@@ -41,25 +41,22 @@
                                 {{character.name}}
                             </option>
                         </select>
+
+                        <i 
+                        class="fa icon mx-2 fa-times fa-1-5x"
+                        (click)="toggleQuoteConnectionCreateState()"
+                        ></i>
+                        
+                        <button type="submit" class="mx-2">
+                            <i class="fa icon fa-check fa-1-5x" (click)="createQuoteConnection()"></i>
+                        </button>
+                       
                     </form>
 
                     <i 
-                    class="fa icon mx-2"
-                    [ngClass]="{
-                        'fa-plus hide-icon': !inQuoteConnectionCreateState, 
-                        'fa-times': inQuoteConnectionCreateState, 
-                        'd-none': !userHasCreatePermission()
-                    }"
+                    class="fa icon fa-plus mx-2 fa-1-5x" 
                     (click)="toggleQuoteConnectionCreateState()"
-                    ></i>
-
-                    <i
-                    class="fa icon"
-                    [ngClass]="{
-                        'fa-check': inQuoteConnectionCreateState, 
-                        'd-none': !userHasCreatePermission()
-                    }" 
-                    (click)="createQuoteConnection()"
+                    *ngIf="userHasCreatePermission() && !inQuoteConnectionCreateState"
                     ></i>
                 </span>
             </div>
@@ -128,10 +125,10 @@
         </h5>
 
         <!-- Form -->
-        <form [formGroup]="form">
+        <form [formGroup]="form" (submit)="onSubmit()">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
             <div class="btn btn-secondary mr-3" (click)="onCancel()">Cancel</div>
-            <div class="btn btn-primary" (click)="onSubmit()">Submit</div>
+            <button type="submit" class="btn btn-primary"> Submit </button>
         </form>
 
     </blockquote>

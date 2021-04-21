@@ -38,9 +38,13 @@ table{
     transition: visibility 0.2s ease-in-out;
 }
 
+.spell-title .fa-trash:hover{
+    color: var(--red);
+}
+
 .badge-secondary:hover{
     background-color: var(--#{dark});
-    color: var(--light-red);
+    color: var(--link-blue);
 }
 
 .badge-secondary:hover .fa-trash{

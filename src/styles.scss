@@ -64,6 +64,8 @@ body {
 	overflow-x: hidden;
 	--dark-red:     hsl(358, 50%, 25%);
 	--light-red:     hsl(358, 50%, 60%);
+	--lightest-red: hsl(358, 100%, 80%);
+	--link-blue: hsl(228, 100%, 76%);
 }
 
 //headings
@@ -174,7 +176,7 @@ a{
 }
 
 a:hover{
-	color: #839cff;
+	color: var(--link-blue);
 	text-decoration: none !important;
 	border-bottom: solid 2px gray;
 }
@@ -428,7 +430,7 @@ div.ngb-dp-day .btn-light:hover{
 //FORMLY
 // Overwrite Formly warning message styling for better visibility
 formly-validation-message{
-	color: #ff8b7f;
+	color: var(--lightest-red);
 }
 
 //Overwrite Formly's form-group margin when it isn't desired

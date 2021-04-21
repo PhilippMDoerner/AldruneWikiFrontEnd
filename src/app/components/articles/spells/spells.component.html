@@ -4,7 +4,7 @@
             Spells
             <span 
             *ngFor="let selectedClass of selectedClasses; let i = index" 
-            class="badge badge-secondary icon" 
+            class="badge badge-secondary pointer" 
             (click)="selectedClasses.splice(i, 1)"
             >
                 {{ selectedClass }} <i class="fa fa-times"></i>

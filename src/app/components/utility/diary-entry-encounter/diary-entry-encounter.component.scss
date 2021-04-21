@@ -27,7 +27,7 @@
 }
 
 .badge a:hover{
-    color: royalblue !important;
+    color: var(--link-blue);
 }
 
 .badge .icon{
@@ -37,15 +37,6 @@
 
 .badge:hover .icon{
     display: inline;
-}
-
-.encounter-connections .icon{
-    opacity: 0;
-    transition: opacity 0.2s;
-}
-
-.encounter-connections:hover .icon{
-    opacity: 1;
 }
 
 .fa-check:hover{

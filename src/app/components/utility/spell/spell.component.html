@@ -133,7 +133,7 @@
 
 <ng-template #connectionForm>
     <!-- Form for Creating Quote Connections -->
-    <form class="d-inline-flex align-items-center">
+    <form class="d-inline-flex align-items-center" (submit)="createSpellPlayerClassConnection(connectionModel)">
         <select class="form-control d-inline-block" name="connection" id="connection" [(ngModel)]="connectionModel.player_class">
             <option 
             *ngFor="let playerClass of playerClasses" 
@@ -144,7 +144,9 @@
             </option>
         </select>
 
-        <i class="fa fa-times icon mx-2" (click)="toggleConnectionCreateState()"></i>
-        <i class="fa fa-check icon" (click)="createSpellPlayerClassConnection(connectionModel)"></i>
+        <i class="fa fa-times icon mx-2 fa-1-5x" (click)="toggleConnectionCreateState()"></i>
+        <button type="submit" class="mx-2">
+            <i class="fa fa-check icon fa-1-5x"></i>
+        </button>
     </form>
 </ng-template>

@@ -51,55 +51,60 @@ class="container"
             ></app-textfield>
         
             <!-- Encounter Connections -->
-            <div class="encounter-connections" [ngClass]="{'d-none': diaryEntryView}">
-                <hr class="white-line">
+            <hr class="white-line">
+
+            <div class="encounter-connections d-flex align-items-center" *ngIf="!diaryEntryView">
         
                 <span class="mr-4 tag-label"> Characters: </span>
                 <div class="d-inline-flex align-items-center flex-wrap">
                     <!-- Connection List -->
-                    <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections">
+                    <span class="badge badge-secondary p-2 mr-2" *ngFor="let connection of encounter.encounterConnections">
                         <a routerLink="{{ routingService.getRoutePath('character', {name: connection.character_details.name}) }}">
                             {{ connection.character_details.name }}
                         </a>
                         <i 
                         class="fa fa-trash icon ml-1" 
-                        (click)="deleteEncounterConnection(encounter, connection)" 
-                        [ngClass]="{'d-none': !userHasDeletePermission()}"
+                        (click)="deleteEncounterConnection(encounter, connection)"
+                        *ngIf="userHasDeletePermission()"
                         ></i>
                     </span>
         
                     <!-- Connection Create Form -->
-                    <form [ngClass]="{'d-none':!inEncounterConnectionCreationState, 'd-inline-block': inEncounterConnectionCreationState}">
+                    <form class="d-flex align-items-center" *ngIf="inEncounterConnectionCreationState" (submit)="createEncounterConnection(encounter)">
                         <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
                             <option *ngFor="let character of characterOptions" value="{{character.pk}}">
                                 {{character.name}}
                             </option>
                         </select>
-                    </form>
-                    
-                    <!-- Connection Create Icon-Buttons -->
-                    <div [ngClass]="{'d-none': !userHasCreatePermission()}">
+
                         <i
-                        class="fa icon mx-2"
-                        [ngClass]="{'fa-plus': !inEncounterConnectionCreationState, 'fa-times': inEncounterConnectionCreationState}"
+                        class="fa icon mx-2 fa-times fa-1-5x"
                         (click)="toggleEncounterConnectionCreationState()"
                         ></i>
         
-                        <i 
-                        class="fa icon"
-                        [ngClass]="{'fa-check': inEncounterConnectionCreationState}" 
-                        (click)="createEncounterConnection(encounter)"
-                        ></i>    
-                    </div>
+                        <button type="submit" class="mx-2">
+                            <i class="fa icon fa-check fa-1-5x"></i>
+                        </button>   
+                    </form>
+
+                    
+                    <!-- Connection Create Icon-Buttons -->
+                    <i
+                    *ngIf="userHasCreatePermission() && !inEncounterConnectionCreationState"
+                    class="fa icon mx-2 fa-plus fa-1-5x"
+                    (click)="toggleEncounterConnectionCreationState()"
+                    ></i> 
                 </div>
-        
-                <!-- Delete Article -->
-                <app-delete-toggle
-                [deleteMessage]="'Delete this encounter?'"
-                (deleteEvent)="deleteArticle()"
-                class="float-right px-0"
-                ></app-delete-toggle>
+
             </div>
+
+                    
+            <!-- Delete Article -->
+            <app-delete-toggle
+            [deleteMessage]="'Delete this encounter?'"
+            (deleteEvent)="deleteArticle()"
+            class="float-right px-0"
+            ></app-delete-toggle>
         </div>
 
         <!-- Encounter Order Arrows -->
@@ -116,16 +121,16 @@ class="container"
 <ng-template #EncounterForm>
     <!-- Encounter Form -->
         <!-- Create Encounter Form -->
-        <form [formGroup]="form" *ngIf="isEncounterCreateState && !isEncounterUpdateState">
+        <form [formGroup]="form" *ngIf="isEncounterCreateState && !isEncounterUpdateState" (submit)="createEncounter(encounter)">
             <formly-form [form]="form" [fields]="fields" [model]="encounter"></formly-form>
             <div class="btn btn-secondary mr-3" (click)="toggleEncounterCreateState()">Cancel</div>
-            <div class="btn btn-primary" (click)="createEncounter(encounter)">Submit</div>
+            <button class="btn btn-primary">Submit</button>
         </form>
         
         <!-- Update Encounter Form -->
-        <form [formGroup]="form" *ngIf="!isEncounterCreateState && isEncounterUpdateState">
+        <form [formGroup]="form" *ngIf="!isEncounterCreateState && isEncounterUpdateState" (submit)="updateEncounter(encounter)">
             <formly-form [form]="form" [fields]="fields" [model]="encounter"></formly-form>
             <div class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</div>
-            <div class="btn btn-primary" (click)="updateEncounter(encounter)">Submit</div>
+            <button class="btn btn-primary" type="submit">Submit</button>
         </form>
 </ng-template>
