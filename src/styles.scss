@@ -62,7 +62,7 @@ body {
     font-size: 1rem;
 	line-height: 1.65;
 	overflow-x: hidden;
-	--dark-red:     hsl(358, 50%, 15%);
+	--dark-red:     hsl(358, 50%, 25%);
 	--light-red:     hsl(358, 50%, 60%);
 }
 
@@ -454,6 +454,12 @@ formly-field.mb-0 .form-group{
 
 .timestamp-input .form-group{
 	margin-bottom: 0;
+}
+
+//For buttons in forms remove default styling
+button{
+	border: 0;
+	background: none;
 }
 
 //Notifications
