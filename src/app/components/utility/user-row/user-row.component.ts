@@ -73,12 +73,15 @@ export class UserRowComponent implements OnInit {
     this.updateUserGroups();
   }
 
-  addUserToSelectedGroup(): void{
-    this.user.groups.push(this.newGroup);
+  addUserToSelectedGroup(groupPk: number | string): void{
+    groupPk = (typeof groupPk ==="string") ? parseInt(groupPk) : groupPk;
+    this.user.groups.push(groupPk);
     this.updateUserGroups();
   }
 
   updateUserGroups(){
+    console.log("Updating user groups ");
+    console.log(this.user)
     this.userService.updateUserGroups(this.user).pipe(first()).subscribe(
       (updatedUser: UserObject) => {
         this.user = updatedUser;

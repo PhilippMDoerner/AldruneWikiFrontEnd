@@ -35,7 +35,7 @@
             {{ getGroupName(groupPk) }} 
             <span class="fa fa-times icon vanish-icon" (click)="removeUserFromGroup(groupPk)"></span>
         </span>
-        <i class="fa fa-plus icon hide-icon text-center" (click)="toggleGroupAddState()" *ngIf="!isAddGroupstate; else addGroup"></i>
+        <i class="fa fa-plus fa-1-5x icon hide-icon text-center" (click)="toggleGroupAddState()" *ngIf="!isAddGroupstate; else addGroup"></i>
     </div>
 
     <!-- Email Column -->
@@ -63,8 +63,8 @@
 <!-- Mini-Form to add group to user -->
 <ng-template #addGroup>
     <div class="mt-3">
-        <form>
-            <select class="form-control" name="character" id="character" [(ngModel)]="newGroup">
+        <form (submit)="addUserToSelectedGroup(groupField.value)">
+            <select class="form-control" name="character" id="character" [(ngModel)]="newGroup" #groupField>
                 <option 
                 *ngFor="let group of groups" 
                 value="{{group.id}}" 
@@ -73,17 +73,19 @@
                     {{group.name}}
                 </option>
             </select>
+
+            <div class="d-flex justify-content-around">
+                <i 
+                class="fa icon fa-times mx-2 fa-1-5x"
+                (click)="toggleGroupAddState()"
+                ></i>
+                
+                <button type="submit" class="d-flex">
+                    <i class="fa icon fa-check fa-1-5x"></i>
+                </button>
+    
+            </div>
         </form>
-        <div class="d-flex justify-content-around">
-            <i 
-            class="fa icon fa-times mx-2"
-            (click)="toggleGroupAddState()"
-            ></i>
-        
-            <i
-            class="fa icon fa-check"
-            (click)="addUserToSelectedGroup()"
-            ></i>
-        </div>
+
     </div>
 </ng-template>
