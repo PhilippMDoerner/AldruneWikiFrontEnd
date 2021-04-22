@@ -1,11 +1,11 @@
 <!-- Form -->
 <form [formGroup]="form" enctype="{{enctype}}" (submit)="onSubmit()">
     <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-    <div class="btn btn-dark mr-3" (click)="onCancel()">
+    <div class="btn btn-dark mr-3" (click)="onCancel()" *ngIf="enableSubmitButtons">
         Cancel
     </div>
     <div
-    *ngIf="!form.valid"
+    *ngIf="!form.valid && enableSubmitButtons"
     class="btn btn-dark strikethrough" 
     placement="top" 
     ngbTooltip="The form is not yet correctly filled out!"
@@ -14,7 +14,7 @@
         Submit *
     </div>
 
-    <button type="submit" class="btn btn-primary" *ngIf="form.valid">
+    <button type="submit" class="btn btn-primary" *ngIf="form.valid && enableSubmitButtons">
         Submit
     </button>
 </form>

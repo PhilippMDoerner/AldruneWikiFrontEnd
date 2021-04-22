@@ -13,6 +13,7 @@ export class FormlyFormcontainerComponent {
   @Input() model: {any};
   @Input() fields: FormlyFieldConfig[];
   @Input() enctype: string = "application/x-www-form-urlencoded"; //Default form enctype in HTML5
+  @Input() enableSubmitButtons: boolean = true;
   @Output() submit: EventEmitter<any> = new EventEmitter();
   @Output() cancel: EventEmitter<any> = new EventEmitter();
 
