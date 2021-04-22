@@ -1,12 +1,14 @@
 <!-- Timestamps -->
 <div>
     <!-- Timestamp Create Form -->
-    <form [formGroup]="timestampForm" [ngClass]="{'d-none': !timestampCreateState, 'row mt-1 mb-4 ml-auto mw-85 animate__animated animate__flipInX': timestampCreateState}">
+    <form [formGroup]="timestampForm" *ngIf="timestampCreateState" class="row mt-1 mb-4 ml-auto mw-85 animate__animated animate__flipInX" (submit)="createTimestamp()">
         <formly-form class="d-flex col-lg-10 col-10 px-0" [form]="timestampForm" [fields]="timestampFields" [model]="timestampModel"></formly-form>
         <div class="col-2 d-flex align-items-center px-0">
             <div class="d-flex mt-custom">
                 <i class="icon hover-red fa fa-1-5x fa-times mx-1" (click)="cancelTimestampCreateState()"></i>
-                <i class="icon hover-green fa fa-1-5x fa-check mx-1" (click)="createTimestamp()"></i>
+                <button type="submit">
+                    <i class="icon hover-green fa fa-1-5x fa-check mx-1"></i>
+                </button>
             </div>
         </div>
     </form>

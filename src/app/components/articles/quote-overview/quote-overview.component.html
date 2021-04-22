@@ -18,10 +18,10 @@
             </h5>
     
             <!-- Form -->
-            <form [formGroup]="quoteForm">
+            <form [formGroup]="quoteForm" (submit)="onSubmit()">
                 <formly-form [form]="quoteForm" [fields]="quoteFields" [model]="quoteModel"></formly-form>
                 <div class="btn btn-secondary mr-3" (click)="onCancel()">Cancel</div>
-                <div class="btn btn-secondary" (click)="onSubmit()">Submit</div>
+                <button type="submit" class="btn btn-secondary">Submit</button>
             </form>
     
         </blockquote>

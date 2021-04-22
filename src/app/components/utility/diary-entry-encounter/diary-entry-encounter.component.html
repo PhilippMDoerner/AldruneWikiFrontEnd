@@ -125,7 +125,7 @@ class="container"
         <form [formGroup]="form" *ngIf="isEncounterCreateState && !isEncounterUpdateState" (submit)="createEncounter(encounter)">
             <formly-form [form]="form" [fields]="fields" [model]="encounter"></formly-form>
             <div class="btn btn-secondary mr-3" (click)="toggleEncounterCreateState()">Cancel</div>
-            <button class="btn btn-primary">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>
         
         <!-- Update Encounter Form -->

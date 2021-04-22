@@ -37,7 +37,7 @@
                 </div>
 
                 <!--Add EncounterConnection Form -->
-                <form [ngClass]="{'d-none':!addEncounterConnectionState, 'row align-items-center': addEncounterConnectionState}">
+                <form class="row align-items-center" *ngIf="addEncounterConnectionState" (submit)="createEncounterConnection()">
                     <!-- Encounter Connection Form Fields -->
                     <div class="col-md-6 col-9 pr-0">
                         <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
@@ -59,11 +59,10 @@
                         ></i>
     
                         <!-- Create Encounter Connection Button -->
-                        <i 
-                        class='fa icon fa-1-5x'
-                        [ngClass]="{'fa-check': addEncounterConnectionState}" 
-                        (click)="createEncounterConnection()"
-                        ></i>
+                        <button type="submit">
+                            <i class='fa icon fa-1-5x fa-check'></i>
+                        </button>
+         
                     </div>
 
                 </form>

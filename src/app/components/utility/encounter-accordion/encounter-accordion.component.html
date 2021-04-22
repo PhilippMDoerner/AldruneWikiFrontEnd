@@ -53,29 +53,30 @@
                             <i 
                             class="fa fa-trash icon ml-1" 
                             (click)="deleteEncounterConnection(encounter, connection)" 
-                            [ngClass]="{'d-none': !userHasDeletePermission()}"
+                            *ngIf="userHasDeletePermission()"
                             ></i>
                         </span>
 
                         <!-- Connection Create Form -->
-                        <form [ngClass]="{'d-none':!inEncounterConnectionCreationState, 'd-inline-block': inEncounterConnectionCreationState}">
+                        <form class="d-flex align-items-center" *ngIf="inEncounterConnectionCreationState && userHasCreatePermission()" (submit)="createEncounterConnection(encounter)">
                             <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
                                 <option *ngFor="let character of characters" value="{{character.pk}}">{{character.name}}</option>
                             </select>
-                        </form>
-                        
-                        <!-- Connection Create Icon-Buttons -->
-                        <div [ngClass]="{'d-none': !userHasCreatePermission()}">
-                            <i 
-                            [ngClass]="{'fa icon mx-2': true, 'fa-plus': !inEncounterConnectionCreationState, 'fa-times': inEncounterConnectionCreationState}"
-                            (click)="toggleEncounterConnectionCreationState()"
-                            ></i>
 
-                            <i 
-                            [ngClass]="{'fa icon': true, 'fa-check': inEncounterConnectionCreationState}" 
-                            (click)="createEncounterConnection(encounter)"
-                            ></i>    
-                        </div>
+                                                    <!-- Connection Create Icon-Buttons -->
+                            <i class="fa icon mx-2 fa-times fa-1-5x" (click)="toggleEncounterConnectionCreationState()"></i>
+
+                            <button type="submit">
+                                <i class="fa icon fa-check fa-1-5x"></i>
+                            </button>
+                            
+                        </form>
+
+                        <i 
+                        class="fa icon mx-2 fa-plus fa-1-5x" 
+                        *ngIf="!inEncounterConnectionCreationState && userHasCreatePermission()"
+                        (click)="toggleEncounterConnectionCreationState()"
+                        ></i>
                     </div>
                 </div>
 
@@ -102,10 +103,10 @@
 <ng-template #EncounterForm>
     <div class="my-3 py-3 px-4 card">        
         <!-- Update Encounter Form -->
-        <form [formGroup]="form" *ngIf="isEncounterUpdateState">
+        <form [formGroup]="form" *ngIf="isEncounterUpdateState" (submit)="updateEncounter(model)">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
             <div class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</div>
-            <div class="btn btn-secondary" (click)="updateEncounter(model)">Submit</div>
+            <button type="submit" class="btn btn-secondary">Submit</button>
         </form>    
     </div>
 </ng-template>

@@ -31,7 +31,7 @@
                     </span>
 
                     <!-- Form for Creating Quote Connections -->
-                    <form class="d-flex align-items-center" *ngIf="inQuoteConnectionCreateState">
+                    <form class="d-flex align-items-center" *ngIf="inQuoteConnectionCreateState" (submit)="createQuoteConnection()">
                         <select class="form-control" name="character" id="character" [(ngModel)]="baseQuoteConnection.character">
                             <option 
                             *ngFor="let character of characters" 
@@ -48,7 +48,7 @@
                         ></i>
                         
                         <button type="submit" class="mx-2">
-                            <i class="fa icon fa-check fa-1-5x" (click)="createQuoteConnection()"></i>
+                            <i class="fa icon fa-check fa-1-5x"></i>
                         </button>
                        
                     </form>

@@ -2,10 +2,10 @@
     <article *ngIf="!this.isRequestingPasswordReset; else passwordResetView">
         <h1>Log In</h1>
         <div class="mb-3 text-warning">{{extraMessage}}</div>
-        <form (submit)="onSubmit()" (keydown)="submitOnEnterPress($event)" class="d-flex flex-column">
+        <form (submit)="onSubmit()" class="d-flex flex-column">
             <formly-form [model]="model" [fields]="fields" [form]="form"></formly-form>
             <div><span class="pointer pseudo-link" (click)="togglePasswordResetView()"> Forgot your password?</span></div>
-            <div class="btn btn-secondary mt-4" (click)="onSubmit()">Login</div>
+            <button type="submit" class="btn btn-secondary mt-4">Login</button>
         </form>
     </article>
 </div>
@@ -13,9 +13,9 @@
 <ng-template #passwordResetView>
     <h1> Password Reset </h1>
     <p> Forgot your account’s password? Enter your account name and we’ll send you a recovery link to your email address.</p>
-    <form class="d-flex flex-column">
+    <form class="d-flex flex-column" (submit)="requestPasswordReset()">
         <formly-form [model]="recoveryModel" [fields]="recoveryFields" [form]="recoveryForm"></formly-form>
         <div class="btn btn-secondary mb-3" (click)="togglePasswordResetView()">I do have a password !</div>
-        <div class="btn btn-primary" (click)="requestPasswordReset()">Send recovery email</div>
+        <button class="btn btn-primary" type="submit">Send recovery email</button>
     </form>
 </ng-template>
