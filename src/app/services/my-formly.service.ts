@@ -13,7 +13,8 @@ export class MyFormlyService {
   ) { }
 
   setDefaultValues(config: any): any{
-    if (config.required === undefined) config.required = true;
+    if (config.required == null) config.required = true;
+    if (config.disabled == null) config.disabled = false;
 
     return config
   }
@@ -36,6 +37,7 @@ export class MyFormlyService {
         valueProp: (config.valueProp) ? config.valueProp : "pk",
         options: this.selectOptionService.getOverviewItems(config.optionsType),
         required: (typeof config.required === "boolean") ? config.required : true,
+        disabled: config.disabled,
       },
       validators: {
         validation: validatorList
@@ -44,6 +46,8 @@ export class MyFormlyService {
   }
 
   customSelect(config: FormlyCustomSelectConfig): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
     const validatorList = (config.validators) ? config.validators : [];
     if (config.required === true ) validatorList.push('required');
 
@@ -56,6 +60,7 @@ export class MyFormlyService {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         options: config.options,
         required: (typeof config.required === "boolean") ? config.required : true,
+        disabled: config.disabled,
       },
       validators: {
         validation: validatorList,
@@ -64,6 +69,8 @@ export class MyFormlyService {
   }
 
   customStringSelect(config: FormlyCustomStringSelectConfig): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
     let options: {label: string, value: string}[] = [];
     for (let option of config.options){
       options.push({label: option, value: option});
@@ -81,6 +88,7 @@ export class MyFormlyService {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         options: options,
         required: (typeof config.required === "boolean") ? config.required : true,
+        disabled: config.disabled,
       },
       validators: {
         validation: validatorList,
@@ -119,6 +127,7 @@ export class MyFormlyService {
         type: inputType,
         required: (typeof config.required === "boolean") ? config.required : true,
         placeholder: (config.placeholder) ? config.placeholder : null,
+        disabled: config.disabled,
       },
       validators:{
         validation: validatorList,
@@ -127,6 +136,8 @@ export class MyFormlyService {
   }
 
   genericPasswordInput(config: FormlyInterface): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
     const validatorList = (config.validators) ? config.validators : [];
     if (config.required === true ) validatorList.push('required');
     
@@ -140,6 +151,7 @@ export class MyFormlyService {
         type: "password",
         required: true,
         placeholder: "Your password",
+        disabled: config.disabled,
       },
       validators:{
         validation: validatorList
@@ -149,6 +161,8 @@ export class MyFormlyService {
 
 
   confirmedPasswordInput(config: FormlyPasswordInterface): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
     const validatorList = (config.validators) ? config.validators : [];
     validatorList.push('required');
     
@@ -161,6 +175,7 @@ export class MyFormlyService {
         type: "password",
         required: true,
         placeholder: "Password, at least 7 characters",
+        disabled: config.disabled,
       },
       validators:{
         validation: validatorList
@@ -176,6 +191,7 @@ export class MyFormlyService {
         type: "password",
         required: true,
         placeholder: "Please re-enter your password",
+        disabled: config.disabled,
       },
     }
 
@@ -193,6 +209,8 @@ export class MyFormlyService {
   }
 
   genericCheckbox(config: FormlyCheckboxConfig): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
     return{
       key: config.key,
       type: "checkbox",
@@ -201,11 +219,14 @@ export class MyFormlyService {
       hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
-      }
+        disabled: config.disabled,
+      },
     }
   }
 
   genericDatepicker(config: FormlyDatepickerConfig): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
     const validatorList = (config.validators) ? config.validators : [];
     validatorList.push('date');
     if (config.required === true ) validatorList.push('required');
@@ -217,6 +238,7 @@ export class MyFormlyService {
       hideExpression: (config.hide) ? config.hide : false,
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+        disabled: config.disabled,
       },
       validators:{
         validation: validatorList,
@@ -225,6 +247,8 @@ export class MyFormlyService {
   }
 
   singleFileField(config: FormlyInterface): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
     const validatorList = (config.validators) ? config.validators : [];
     if (config.required === true ) validatorList.push('required');
 
@@ -236,6 +260,7 @@ export class MyFormlyService {
       templateOptions: {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         required: (typeof config.required === "boolean") ? config.required : true,
+        disabled: config.disabled,
       },
       validators:{
         validation: validatorList,
@@ -244,6 +269,8 @@ export class MyFormlyService {
   }
 
   genericTextField(config: FormlyInterface): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
     const validatorList = (config.validators) ? config.validators : [];
     if (config.required === true ) validatorList.push('required');
 
@@ -255,6 +282,7 @@ export class MyFormlyService {
       templateOptions:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         required: (typeof config.required === "boolean") ? config.required : true,
+        disabled: config.disabled,
       },
       validators:{
         validation: validatorList

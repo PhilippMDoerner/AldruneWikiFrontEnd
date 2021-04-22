@@ -1,7 +1,8 @@
 export interface FormlyPasswordInterface{
     label?: string,
-    className?: string
-    validators?: string[]
+    className?: string,
+    validators?: string[],
+    disabled?: boolean,
 }
 
 export interface FormlyInterface{
@@ -13,6 +14,7 @@ export interface FormlyInterface{
     className?: string,
     fieldGroupClassName?: string,
     validators?: string[],
+    disabled?: boolean,
 }
 
 export interface FormlyOverviewSelectConfig extends FormlyInterface{
