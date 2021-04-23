@@ -14,18 +14,18 @@ export class FormlyFormcontainerComponent {
   @Input() fields: FormlyFieldConfig[];
   @Input() enctype: string = "application/x-www-form-urlencoded"; //Default form enctype in HTML5
   @Input() enableSubmitButtons: boolean = true;
-  @Output() submit: EventEmitter<any> = new EventEmitter();
-  @Output() cancel: EventEmitter<any> = new EventEmitter();
+  @Output() formlySubmit: EventEmitter<any> = new EventEmitter();
+  @Output() formlyCancel: EventEmitter<any> = new EventEmitter();
 
   constructor() {}
 
   onSubmit(): void{
     if(this.form.valid){
-      this.submit.emit(this.model);
+      this.formlySubmit.emit(this.model);
     }
   }
 
   onCancel(): void{
-    this.cancel.emit(this.model);
+    this.formlyCancel.emit(this.model);
   }
 }

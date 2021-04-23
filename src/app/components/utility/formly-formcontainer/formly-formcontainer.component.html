@@ -1,9 +1,12 @@
 <!-- Form -->
 <form [formGroup]="form" enctype="{{enctype}}" (submit)="onSubmit()">
     <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+    <!-- Cancel Button -->
     <div class="btn btn-dark mr-3" (click)="onCancel()" *ngIf="enableSubmitButtons">
         Cancel
     </div>
+
+    <!-- Submit Button -->
     <div
     *ngIf="!form.valid && enableSubmitButtons"
     class="btn btn-dark strikethrough" 
