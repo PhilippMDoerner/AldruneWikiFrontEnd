@@ -37,8 +37,8 @@
                 <app-formly-formcontainer 
                 [model]="userModel" 
                 [fields]="userFields" 
-                (submit)="saveNewUser()" 
-                (cancel)="toggleUserCreateState()"
+                (formlySubmit)="saveNewUser()" 
+                (formlyCancel)="toggleUserCreateState()"
                 ></app-formly-formcontainer>
             </div>
     

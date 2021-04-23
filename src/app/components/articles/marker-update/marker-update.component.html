@@ -27,8 +27,8 @@
         <app-formly-formcontainer 
         [model]="model" 
         [fields]="fields" 
-        (submit)="onSubmit()" 
-        (cancel)="onCancel()"
+        (formlySubmit)="onSubmit()" 
+        (formlyCancel)="onCancel()"
         ></app-formly-formcontainer>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

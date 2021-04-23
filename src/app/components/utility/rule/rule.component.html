@@ -42,8 +42,8 @@
         <app-formly-formcontainer 
         [model]="rule" 
         [fields]="fields" 
-        (submit)="onSubmit()" 
-        (cancel)="onCancel()"
+        (formlySubmit)="onSubmit()" 
+        (formlyCancel)="onCancel()"
         ></app-formly-formcontainer>
     </div>
 </ng-template>

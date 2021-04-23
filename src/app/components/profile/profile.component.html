@@ -37,8 +37,8 @@
             <app-formly-formcontainer
             [model] = "passwordModel"
             [fields] = "passwordFields"
-            (cancel) = "togglePasswordEditState()"
-            (submit) = "updatePassword()"
+            (formlyCancel) = "togglePasswordEditState()"
+            (formlySubmit) = "updatePassword()"
             ></app-formly-formcontainer>
         </div>
 
@@ -57,8 +57,8 @@
             <app-formly-formcontainer
             [model] = "profileModel"
             [fields] = "profileFields"
-            (cancel) = "toggleProfileEditState()"
-            (submit) = "updateProfile()"
+            (formlyCancel) = "toggleProfileEditState()"
+            (formlySubmit) = "updateProfile()"
             ></app-formly-formcontainer>
         </div>
     </ng-template>

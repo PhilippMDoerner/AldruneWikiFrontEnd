@@ -76,8 +76,8 @@
                 <app-formly-formcontainer 
                 [model]="table.model" 
                 [fields]="table.formFields" 
-                (submit)="createNewTableEntry(tableIndex)" 
-                (cancel)="createStateArray[tableIndex] = !createStateArray[tableIndex]"
+                (formlySubmit)="createNewTableEntry(tableIndex)" 
+                (formlyCancel)="createStateArray[tableIndex] = !createStateArray[tableIndex]"
                 ></app-formly-formcontainer>
             </div>
         </div>
