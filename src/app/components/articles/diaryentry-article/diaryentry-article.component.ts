@@ -35,7 +35,7 @@ export class DiaryentryArticleComponent implements OnInit {
       const sessionNumber: number = parseInt(params.sessionNumber);
       const authorName: string = params.authorName;
   
-      this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).pipe(first()).subscribe(
+      this.diaryEntryService.readByParam({isMainSession, sessionNumber, authorName}).pipe(first()).subscribe(
         diaryEntry => {
           this.diaryEntry = diaryEntry;
           this.coAuthors = this.getCoAuthorString();
@@ -61,7 +61,7 @@ export class DiaryentryArticleComponent implements OnInit {
   }
 
   deleteDiaryEntry(): void{
-    this.diaryEntryService.deleteDiaryEntry(this.diaryEntry.pk).pipe(first()).subscribe(
+    this.diaryEntryService.delete(this.diaryEntry.pk).pipe(first()).subscribe(
       (response) => this.routingService.routeToPath('diaryentry-overview'),
       error => this.warning.showWarning(error)
     );

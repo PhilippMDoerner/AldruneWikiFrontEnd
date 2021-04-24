@@ -47,7 +47,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
         const sessionNumber: string = params.sessionNumber;
         const authorName: string = params.authorName;
   
-        this.diaryEntryService.getDiaryEntry(isMainSession, sessionNumber, authorName).subscribe(
+        this.diaryEntryService.readByParam({isMainSession, sessionNumber, authorName}).subscribe(
           (diaryEntry: DiaryEntryObject) => this.model = diaryEntry, 
           error => this.routingService.routeToErrorPage(error)
         );
@@ -60,7 +60,7 @@ export class DiaryentryArticleUpdateComponent implements OnInit {
 
   onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    const responseObservable: any =  isFormInUpdateState ? this.diaryEntryService.updateDiaryEntry(this.model) : this.diaryEntryService.createDiaryEntry(this.model);
+    const responseObservable: any =  isFormInUpdateState ? this.diaryEntryService.update(this.model.pk, this.model) : this.diaryEntryService.create(this.model);
 
     responseObservable.pipe(first()).subscribe(
       (diaryEntry: DiaryEntryObject) => {
