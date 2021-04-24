@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Observable, Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
-import { FormGroup } from "@angular/forms";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 //models and constants
+import { ArticleFormMixin } from "src/app/utils/functions/articleFormMixin"
 import { Constants } from "src/app/app.constants";
 import { Character, CharacterObject } from "src/app/models/character";
 //services
@@ -22,15 +22,14 @@ import { CharacterPlayerClassConnectionService } from 'src/app/services/characte
   styleUrls: ['./character-article-update.component.scss']
 })
 
-export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
-  constants: any = Constants;
-  formState: string;
-  playerClasses: PlayerClass[];
-  isCharacterConnectionCreationState: boolean = false;
-  connectionModel: CharacterPlayerClassConnection;
+export class CharacterArticleUpdateComponent extends ArticleFormMixin implements OnInit, OnDestroy {
+  //Defining ArticleFormMixin Properties
+  serverModel: CharacterObject;
+  userModel: CharacterObject;
+  updateCancelRoute = {routeName: "character", params: {name: null}};
+  creationCancelRoute = {routeName: "character-overview", params: {}};
 
-  model: CharacterObject;
-  fields: FormlyFieldConfig[] = [
+  formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericCheckbox({key: "player_character", label: "Player Character", defaultValue: false}),
     this.formlyService.genericCheckbox({key: "alive", defaultValue: true}),
     this.formlyService.genericInput({key: "name", isNameInput: true}),
@@ -41,56 +40,49 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
     this.formlyService.genericSelect({key: "current_location", label: "Location", optionsType: "location", required: false}),
   ];
 
+  //Custom Properties
+  playerClasses: PlayerClass[];
+  isCharacterConnectionCreationState: boolean = false;
+  connectionModel: CharacterPlayerClassConnection;
+
   private parameter_subscription: Subscription;
 
   constructor(
-    private characterService: CharacterService,
+    characterService: CharacterService,
+    router: Router,
     private formlyService: MyFormlyService,
     private route: ActivatedRoute,
-    private router: Router,
-    private warnings: WarningsService,  
+    public warnings: WarningsService,  
     public routingService: RoutingService,
     private playerClassService: PlayerClassService,
     private characterConnectionService: CharacterPlayerClassConnectionService,
-  ) { }
+  ) { 
+    super(
+      router,
+      routingService, 
+      warnings, 
+      characterService //articleService
+    ) 
+  }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
-
     this.parameter_subscription = this.route.params.subscribe(params => {
-      if (this.formState === Constants.updateState){
+      if (this.isInUpdateState()){
         const character_name: string = params.name;
-        this.characterService.readByParam(character_name).pipe(first()).subscribe(
-          (character: CharacterObject) => this.model = character, 
-          error =>this.routingService.routeToErrorPage(error)
+
+        //Update Cancel Route Params
+        this.updateCancelRoute.params.name = character_name;
+
+        //Get character
+        this.articleService.readByParam(character_name).pipe(first()).subscribe(
+          (character: CharacterObject) => this.userModel = character, 
+          error => this.routingService.routeToErrorPage(error)
         );
-      } else if (this.formState === Constants.createState) {
-        this.model = new CharacterObject();
+      } else if (this.isInCreateState()) {
+        this.userModel = new CharacterObject();
       }
     });
 
-  }
-
-  onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    const responseObservable: Observable<Character> =  isFormInUpdateState ? 
-        this.characterService.update(this.model.pk, this.model) : 
-        this.characterService.create(this.model);
-
-    responseObservable.pipe(first()).subscribe(
-      (character: CharacterObject) => this.routingService.routeToApiObject(character),
-      error => this.warnings.showWarning(error)
-    );
-  }
-
-  onCancel(){
-    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
-    if (isFormInUpdateState){
-      const characterName: string = this.route.snapshot.params.name;
-      this.routingService.routeToPath('character', {name: characterName});
-    } else {
-      this.routingService.routeToPath('character-overview');
-    } 
   }
 
   toggleConnectionCreateState(){
@@ -109,8 +101,8 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   deletePlayerClassConnection(connection: CharacterPlayerClassConnection){
     this.characterConnectionService.delete(connection.pk).pipe(first()).subscribe(
       (response) => {
-        const spellConnectionIndex: number =  this.model.player_class_connections.indexOf(connection);
-        this.model.player_class_connections.splice(spellConnectionIndex, 1);
+        const spellConnectionIndex: number =  this.userModel.player_class_connections.indexOf(connection);
+        this.userModel.player_class_connections.splice(spellConnectionIndex, 1);
       },
       (error) => this.warnings.showWarning(error),
     )
@@ -119,7 +111,7 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   createPlayerClassConnection(connection: CharacterPlayerClassConnection){
     this.characterConnectionService.create(connection).pipe(first()).subscribe(
       (connection: CharacterPlayerClassConnection) => {
-        this.model.player_class_connections.push(connection);
+        this.userModel.player_class_connections.push(connection);
         this.toggleConnectionCreateState();
       },
       error => this.warnings.showWarning(error)
@@ -127,11 +119,11 @@ export class CharacterArticleUpdateComponent implements OnInit, OnDestroy {
   }
 
   resetConnectionModel(){
-    this.connectionModel = {player_class: null, character: this.model.pk};
+    this.connectionModel = {player_class: null, character: this.userModel.pk};
   }
 
   hasConnection(playerClass: PlayerClass){
-    return this.model.player_class_connections.some((connection: CharacterPlayerClassConnection) => connection.player_class === playerClass.pk);
+    return this.userModel.player_class_connections.some((connection: CharacterPlayerClassConnection) => connection.player_class === playerClass.pk);
   }
 
 

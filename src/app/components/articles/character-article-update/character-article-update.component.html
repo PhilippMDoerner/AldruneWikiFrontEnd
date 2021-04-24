@@ -1,24 +1,24 @@
 <div class="main">
     <article class="mb-5">
         <!-- Heading -->
-        <div *ngIf="formState===constants.updateState && model; else createState">
+        <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
             <app-edit-toggle 
             [isInUpdateState]=true 
-            [link]="routingService.getRoutePath('character', {name: model.name})"
+            [link]="routingService.getRoutePath('character', {name: userModel.name})"
             ></app-edit-toggle>
 
             <h2 class="text-center">
-                Updating Character {{ model.name }}
+                Updating Character {{ userModel.name }}
             </h2>
         </div>
 
         <!-- Connections -->
-        <div *ngIf="formState===constants.updateState">
+        <div *ngIf="isInUpdateState()">
             <h4 class="mb-0"> Classes </h4>
             <hr class="white-separator">
     
-            <div id="player-classes" class="mb-5" *ngIf="model">
-                <span class="badge badge-secondary mr-3" *ngFor="let connection of model.player_class_connections">
+            <div id="player-classes" class="mb-5" *ngIf="userModel">
+                <span class="badge badge-secondary mr-3" *ngFor="let connection of userModel.player_class_connections">
                     {{ connection.player_class_details.name }}
                     <span class="ml-2 fa fa-trash icon" (click)="deletePlayerClassConnection(connection)"></span>
                 </span>
@@ -31,12 +31,22 @@
         <h4 class="mb-0"> Character Data </h4>
         <hr class="white-separator">
 
-        <app-formly-formcontainer 
-        [model]="model" 
-        [fields]="fields" 
+        <app-formly-formcontainer
+        *ngIf="isInUpdateState() || isInCreateState()"
+        [model]="userModel" 
+        [fields]="formlyFields" 
         (formlySubmit)="onSubmit()" 
         (formlyCancel)="onCancel()"
         ></app-formly-formcontainer>
+
+        <app-compare-form-container
+        *ngIf="isInOutdatedUpdateState()"
+        [formlyFields]="formlyFields"
+        [modelFromUser]="userModel"
+        [modelFromServer]="serverModel"
+        (updateSubmit)="onSubmit()"
+        (cancel)="onCancel()"
+        ></app-compare-form-container>
 
 
     </article>
