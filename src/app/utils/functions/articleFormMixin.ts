@@ -1,3 +1,4 @@
+import { Router } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { Observable } from "rxjs";
 import { first } from "rxjs/operators";
@@ -20,10 +21,26 @@ export class ArticleFormMixin{
     creationCancelRoute: { routeName: string, params: any }; //Data to generate route to go to if creation of article is cancelled
 
     constructor(
+        public router: Router,
         public routingService: RoutingService,
         public warnings: WarningsService,
         public articleService: GenericService | GenericObjectService
-    ){}
+    ){
+        const isUpdateRoute : boolean = this.router.url.includes("update");
+        this.formState = isUpdateRoute ? Constants.updateState : Constants.createState;
+    }
+
+    isInCreateState(): boolean{
+        return this.formState === Constants.createState;
+    }
+
+    isInUpdateState(): boolean{
+        return this.formState === Constants.updateState;
+    }
+
+    isInOutdatedUpdateState(): boolean{
+        return this.formState === Constants.outdatedUpdateState;
+    }
 
 
     onSubmit(){
