@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable, Subscription } from 'rxjs';
@@ -10,70 +9,56 @@ import { CreatureService } from 'src/app/services/creature/creature.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 
 @Component({
   selector: 'app-creature-article-update',
   templateUrl: './creature-article-update.component.html',
   styleUrls: ['./creature-article-update.component.scss']
 })
-export class CreatureArticleUpdateComponent implements OnInit {
-  constants: any = Constants;
-  formState: string;
+export class CreatureArticleUpdateComponent extends ArticleFormMixin implements OnInit {
+  //Defining ArticleFormMixin Properties
+  serverModel: CreatureObject;
+  userModel: Creature;
+  updateCancelRoute = {routeName: "creature", params: {name: null}};
+  creationCancelRoute = {routeName: "creature-overview", params: {}};
 
-  model: CreatureObject;
-  fields: FormlyFieldConfig[] = [
+  formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
   ]
 
   private parameter_subscription: Subscription;
 
   constructor(
+    creatureService: CreatureService,
+    router: Router,
     private formlyService: MyFormlyService,
-    private creatureService: CreatureService,
-    private router: Router,
     private route: ActivatedRoute,
-    private warnings: WarningsService,  
+    public warnings: WarningsService,  
     public routingService: RoutingService,
-  ) { }
+  ) {
+    super(router, routingService, warnings, creatureService)
+  }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
 
     this.parameter_subscription = this.route.params.subscribe(params => {
-      if (this.formState === Constants.updateState){
-        const creature_name: string = params.name;
-        this.creatureService.readByParam(creature_name).pipe(first()).subscribe(
-          (creature: CreatureObject) =>  this.model = creature, 
+      if (this.isInUpdateState()){
+        const creatureName: string = params.name;
+        //Update Cancel Route Params
+        this.updateCancelRoute.params.name = creatureName;
+
+        //Get Creature 
+        this.articleService.readByParam(creatureName).pipe(first()).subscribe(
+          (creature: CreatureObject) =>  this.userModel = creature, 
           error => this.routingService.routeToErrorPage(error)
         );
 
-      } else if (this.formState === Constants.createState) {
-        this.model = new CreatureObject();
+      } else if (this.isInCreateState()) {
+        this.userModel = new CreatureObject();
       }
     })
 
-  }
-
-  onSubmit(){
-    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
-    const responseObservable : Observable<Creature> =  isFormInUpdateState ? 
-        this.creatureService.update(this.model.pk, this.model) : 
-        this.creatureService.create(this.model);
-
-    responseObservable.pipe(first()).subscribe(
-      (creature: CreatureObject) =>  this.routingService.routeToApiObject(creature),
-      error => this.warnings.showWarning(error)
-    );
-  }
-
-  onCancel(){
-    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
-    if (isFormInUpdateState){
-      const creatureName: string = this.route.snapshot.params.name;
-      this.routingService.routeToPath('creature', {name: creatureName});
-    } else {
-      this.routingService.routeToPath('creature-overview');
-    } 
   }
 
   ngOnDestroy(){

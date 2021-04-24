@@ -1,11 +1,10 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Observable, Subscription } from "rxjs";
+import { Subscription } from "rxjs";
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 //models and constants
 import { ArticleFormMixin } from "src/app/utils/functions/articleFormMixin"
-import { Constants } from "src/app/app.constants";
-import { Character, CharacterObject } from "src/app/models/character";
+import { CharacterObject } from "src/app/models/character";
 //services
 import { CharacterService } from "src/app/services/character/character.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
