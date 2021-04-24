@@ -1,0 +1,21 @@
+<div class="form-group" *ngFor="let field of formlyFields">
+    <div class="d-flex align-items-center">
+        <input 
+        *ngIf="field.type==='checkbox'"
+        type="checkbox" 
+        disabled 
+        class="custom-control mr-2"
+        [checked]="modelCopy[field.key]"
+        >
+    
+        <label [ngClass]="{'mb-0': field.type==='checkbox'}">
+            {{ field.templateOptions.label }}
+            <span *ngIf="field.templateOptions.required">*</span>
+        </label>
+    </div>
+
+    <div class="form-control" *ngIf="field.type !== 'checkbox'">
+        {{ modelCopy[field.key] }}    
+    </div>
+</div>
+
