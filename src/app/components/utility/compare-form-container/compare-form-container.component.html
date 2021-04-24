@@ -1,0 +1,30 @@
+<div #compareFormContainer class="container row">
+    <div class="alert alert-info">
+        <span class="fa fa-info-circle"></span>
+        While you were updating this article, somebody else went ahead and updated it as well. Please include their changes in your update before submitting.
+    </div>
+
+    <div class="card flex-row">
+        <div class="col-lg-6 col-12">
+            <div class="p-3">
+                <h3> Server Version </h3>
+                <app-display-form-container
+                [model]="modelFromServer" 
+                [formlyFields]="formlyFields"
+                ></app-display-form-container>
+            </div>
+        </div>
+    
+        <div class="col-lg-6 col-12">
+            <div class="p-3">
+                <h3> User Version </h3>
+                <app-formly-formcontainer
+                [model]="modelFromUser" 
+                [fields]="formlyFields" 
+                (formlySubmit)="onSubmit()"
+                (formlyCancel)="onCancel()"
+                ></app-formly-formcontainer>
+            </div>
+        </div>
+    </div>
+</div>

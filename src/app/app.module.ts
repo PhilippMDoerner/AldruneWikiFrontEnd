@@ -88,6 +88,8 @@ import { AdminComponent } from './components/articles/admin/admin.component';
 import { UserRowComponent } from './components/utility/user-row/user-row.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ConfigTablesComponent } from './components/articles/config-tables/config-tables.component';
+import { CompareFormContainerComponent } from './components/utility/compare-form-container/compare-form-container.component';
+import { DisplayFormContainerComponent } from './components/utility/display-form-container/display-form-container.component';
 
 @NgModule({
   declarations: [
@@ -163,6 +165,8 @@ import { ConfigTablesComponent } from './components/articles/config-tables/confi
     UserRowComponent,
     ProfileComponent,
     ConfigTablesComponent,
+    CompareFormContainerComponent,
+    DisplayFormContainerComponent,
   ],
   imports: [
     BrowserModule,
