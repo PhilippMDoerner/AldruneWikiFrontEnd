@@ -202,6 +202,12 @@ const routes: Routes = [
 		data:{ name: "diaryentry2", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:sessionNumber/:isMainSession/:authorName/:displayMode/update`,
+		component: DiaryentryArticleUpdateComponent,
+		data:{ name: "diaryentry2-update", requiredPermissions: [Constants.apiViewPermission]},
+		canActivate: [PermissionGuardService]
+	},
 
 	//Creature Routes
 	{
