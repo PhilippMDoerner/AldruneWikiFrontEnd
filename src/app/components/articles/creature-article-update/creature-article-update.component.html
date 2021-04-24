@@ -1,11 +1,11 @@
 <div class="main">
     <article class="mb-5">
         <!-- Heading -->
-        <div *ngIf="formState===constants.updateState && model; else createState">
-            <app-edit-toggle [isInUpdateState]=true [link]="routingService.getRoutePath('creature', {name: model.name})"></app-edit-toggle>
+        <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
+            <app-edit-toggle [isInUpdateState]=true [link]="routingService.getRoutePath('creature', {name: userModel.name})"></app-edit-toggle>
 
             <h2 class="text-center">
-                Updating Creature {{ model.name }}
+                Updating Creature {{ userModel.name }}
             </h2>
         </div>
         <ng-template #createState>
@@ -19,8 +19,8 @@
 
         <!-- Form -->
         <app-formly-formcontainer 
-        [model]="model" 
-        [fields]="fields" 
+        [model]="userModel" 
+        [fields]="formlyFields" 
         (formlySubmit)="onSubmit()" 
         (formlyCancel)="onCancel()"
         ></app-formly-formcontainer>
