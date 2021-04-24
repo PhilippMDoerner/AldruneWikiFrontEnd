@@ -29,6 +29,16 @@ export abstract class GenericService {
     return this.http.get(`${this.baseUrl}/pk/${pk}`);
   }
 
+  /**
+   * @description Allows you to send a read query based on a param, e.g. "name", assuming the backend is set up for it.
+   * The targetted URL will be "${baseURL of API Endpoint}/param"
+   * @param param 
+   * @returns The data from that endpoint by the service
+   */
+  readByParam(param: number | string): Observable<any>{
+    return this.http.get(`${this.baseUrl}/${param}`);
+  }
+
   delete(pk: number): Observable<any>{
     return this.http.delete(`${this.baseUrl}/pk/${pk}`);
   }
