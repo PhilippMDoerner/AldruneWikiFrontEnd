@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
@@ -10,73 +9,63 @@ import { MapService } from 'src/app/services/map.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 
 @Component({
   selector: 'app-map-update',
   templateUrl: './map-update.component.html',
   styleUrls: ['./map-update.component.scss']
 })
-export class MapUpdateComponent implements OnInit {
+export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
+  //Defining ArticleFormMixin Properties
+  userModel: MapObject;
+  serverModel: Map;
+  updateCancelRoute = {routeName: 'map', params: {name: null}};
+  creationCancelRoute = {routeName: 'map', params: {name: Constants.defaultMapName}};
 
-  private parameter_subscription: Subscription;
-
-  constants: any = Constants;
-
-  formState: string;
-
-  model: Map;
-  fields: FormlyFieldConfig[] = [
+  formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true, required: true}),
     this.formlyService.genericInput({key: "icon", label: "Map Icon", validators: ['faPrefix'], required: false }),
-    this.formlyService.singleFileField({key: "image", label: "Map Image", required: true})
+    this.formlyService.singleFileField({key: "image", label: "Map Image", required: this.isInCreateState()})
   ];
+
+  //Custom Properties
+  private parameter_subscription: Subscription;
+
 
   constructor(
     private formlyService: MyFormlyService,
-    private mapService: MapService,
-    private router: Router,
+    mapService: MapService,
+    router: Router,
     private route: ActivatedRoute,
-    private warnings: WarningsService,  
+    public warnings: WarningsService,  
     public routingService: RoutingService,
-  ) { }
+  ) { 
+    super(
+      router, 
+      routingService, 
+      warnings, 
+      mapService
+    ) 
+  }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
-
     this.parameter_subscription = this.route.params.subscribe(params => {
       const mapName: string = params['name'];
 
-      if (this.formState === this.constants.updateState){
-        this.mapService.readByParam(mapName).pipe(first()).subscribe(
-          (map: MapObject) => this.model = map,
+      //Update Cancel Route Params
+      this.updateCancelRoute.params.name = mapName;
+
+      //Get Map
+      if (this.isInUpdateState()){
+        this.articleService.readByParam(mapName).pipe(first()).subscribe(
+          (map: MapObject) => this.userModel = map,
           error => this.routingService.routeToErrorPage(error)
         );
-      }  else if (this.formState === this.constants.createState){
-        this.model = new MapObject();
+      }  else if (this.isInCreateState()){
+        this.userModel = new MapObject();
       }
     })
-  }
-
-  onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
-    const responseObservable: any =  isFormInUpdateState ? 
-        this.mapService.update(this.model.pk, this.model) : 
-        this.mapService.create(this.model);
-
-    responseObservable.pipe(first()).subscribe(
-      (map: MapObject) => this.routingService.routeToApiObject(map),
-      error => this.warnings.showWarning(error)
-    );
-  }
-
-  onCancel(){
-    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
-    if (isFormInUpdateState){
-      const mapName: string = this.route.snapshot.params.name;
-      this.routingService.routeToPath('map', {name: mapName});
-    } else {
-      this.routingService.routeToPath('map', {name: Constants.defaultMapName});
-    } 
   }
 
   ngOnDestroy(){
