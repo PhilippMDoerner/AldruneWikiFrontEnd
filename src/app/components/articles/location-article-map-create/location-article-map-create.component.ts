@@ -11,7 +11,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { LocationObject, Location } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 import { first } from 'rxjs/operators';
-import { ExtendedMap, MapObject } from 'src/app/models/map';
+import { ExtendedMap } from 'src/app/models/map';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 
@@ -58,7 +58,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
       const latitude: number = params['latitude'];
       this.mapName = params['map_name'];
       
-      this.mapService.getMap(this.mapName).pipe(first()).subscribe(
+      this.mapService.readByParam(this.mapName).pipe(first()).subscribe(
         (map: ExtendedMap) =>{
           this.markerModel = new MapMarkerObject();
           this.markerModel.map = map.pk;

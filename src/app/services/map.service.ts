@@ -5,34 +5,25 @@ import { Constants } from '../app.constants';
 import { ExtendedMap, Map, MapObject } from '../models/map';
 import { convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
 import { TransformObservable } from '../utils/functions/transform';
+import { GenericObjectService } from './generic-object.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class MapService {
+export class MapService extends GenericObjectService{
   mapUrl: string = `${Constants.wikiApiUrl}/map`;
 
-  constructor(private http: HttpClient) { }
+  constructor(http: HttpClient) { super(http, MapObject)}
 
   @TransformObservable(MapObject)
-  getMap(mapName: string): Observable<ExtendedMap>{
-    return this.http.get<ExtendedMap>(`${this.mapUrl}/${mapName}`);
-  }
-
-  @TransformObservable(MapObject)
-  createMap(map: Map): Observable<ExtendedMap>{
+  create(map: Map): Observable<ExtendedMap>{
     const formData: FormData = convertSingleFileModelToFormData(map, "image");
     return this.http.post<ExtendedMap>(`${this.mapUrl}/`, formData);
   }
 
-  deleteMap(map_pk: number): Observable<any>{
-    return this.http.delete(`${this.mapUrl}/pk/${map_pk}`)
-  }
-
   @TransformObservable(MapObject)
-  updateMap(map: Map): Observable<ExtendedMap>{
+  update(mapPk: number, map: Map): Observable<ExtendedMap>{
     const formData: FormData = convertSingleFileModelToFormData(map, "image");
-    const url: string = `${this.mapUrl}/pk/${map.pk}`;
-    return this.http.put<ExtendedMap>(url, formData);
+    return this.http.put<ExtendedMap>(`${this.mapUrl}/pk/${mapPk}`, formData);
   }
 }

@@ -50,13 +50,13 @@ export class LocationArticleUpdateComponent implements OnInit {
       this.isForAssociatedObjectCreation = locationName && parentLocationName && this.formState === this.constants.createState;
   
       if (this.formState === this.constants.updateState){
-          this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(
+          this.locationService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
             (location: LocationObject) => this.model = location,
             error => this.routingService.routeToErrorPage(error)
           );
 
       } else if (this.isForAssociatedObjectCreation) {
-        this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(
+        this.locationService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
           (location: LocationObject) => {
             this.model = new LocationObject();
             this.model.parent_location = location.pk;
