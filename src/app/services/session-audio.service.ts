@@ -34,11 +34,18 @@ export class SessionAudioService extends GenericObjectService {
     });
   }
 
-  @TransformObservable(SessionAudioObject)
+  //@TransformObservable(SessionAudioObject)
   update(audioPk: number, sessionAudioModel: SessionAudio): Observable<any>{
     const url = `${this.baseUrl}/pk/${audioPk}/`;
     const formData: FormData = convertSingleFileModelToFormData(sessionAudioModel, "audio_file");
+    const headers = new HttpHeaders({ 'ngsw-bypass': 'true'});
 
-    return this.http.put<any>(url, formData);
+    return this.http.put<any>(url, formData, { 
+      headers: headers,
+      observe: 'events', 
+      reportProgress: true
+    } as any); //This bit is only required as otherwise there's some typescript definition missing and throwing errors
   }
+
+  
 }
