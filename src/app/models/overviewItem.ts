@@ -35,6 +35,9 @@ export interface OverviewItem{
 
     //For Session Audio-Type OverviewItems
     audio_url?: string
+
+    //For Map-Type OverviewItems
+    icon?: string,
 }
 
 export class OverviewItemObject implements OverviewItem{
@@ -61,7 +64,10 @@ export class OverviewItemObject implements OverviewItem{
     author_details?: {pk: number, name: string};
 
     //For Session Audio-Type OverviewItems
-    audio_url?: string
+    audio_url?: string;
+
+    //For Map-Type OverviewItems
+    icon?: string;
 
     getAbsoluteRouterUrl(): string{
         if (!this.article_type) throw "Can not generate URL for undefined article_type";
