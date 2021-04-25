@@ -23,7 +23,15 @@ export class MapService extends GenericObjectService{
 
   @TransformObservable(MapObject)
   update(mapPk: number, map: Map): Observable<ExtendedMap>{
-    const formData: FormData = convertSingleFileModelToFormData(map, "image");
-    return this.http.put<ExtendedMap>(`${this.baseUrl}/pk/${mapPk}/`, formData);
+    const hasImageFile = map.image.constructor.name === "FileList";
+    let formData: FormData | Map;
+    if(hasImageFile){
+      formData = convertSingleFileModelToFormData(map, "image");
+    } else {
+      delete map.image;
+      formData = map;
+    }
+    console.log(formData);
+    return this.http.patch<ExtendedMap>(`${this.baseUrl}/pk/${mapPk}/`, formData);
   }
 }
