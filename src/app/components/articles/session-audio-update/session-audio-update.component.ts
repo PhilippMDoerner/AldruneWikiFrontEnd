@@ -51,7 +51,7 @@ export class SessionAudioUpdateComponent implements OnInit {
       if (this.formState === Constants.updateState){
         const isMainSessionInt: number = params['isMainSession'];
         const sessionNumber: number = params['sessionNumber'];
-        this.audioService.getSessionAudioFile(isMainSessionInt, sessionNumber).pipe(first()).subscribe(
+        this.audioService.readByParam({isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
           (sessionAudio: SessionAudioObject) => this.model = sessionAudio,
           error => this.routingService.routeToErrorPage(error)
         );
@@ -68,7 +68,7 @@ export class SessionAudioUpdateComponent implements OnInit {
     const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
     if(isFormInUpdateState){
       console.log("Updating File");
-      const updateObservable = this.audioService.updateSessionAudioFile(this.model);
+      const updateObservable = this.audioService.update(this.model.pk, this.model);
       updateObservable.pipe(first()).subscribe(
         (sessionAudio: SessionAudio) => this.routeToSessionAudio(sessionAudio),
         error => this.warnings.showWarning(error)
@@ -76,7 +76,7 @@ export class SessionAudioUpdateComponent implements OnInit {
 
     } else {
       console.log("Creating File");
-      const createObservable = this.audioService.createSessionAudioFile(this.model);
+      const createObservable = this.audioService.create(this.model);
       this.file_subscription = createObservable.subscribe(
         (event) => this.handleFileUpload(event),
         error => this.warnings.showWarning(error)
