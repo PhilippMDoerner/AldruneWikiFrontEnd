@@ -61,7 +61,7 @@ export class MarkerUpdateComponent implements OnInit {
         );
 
       } else if (this.formState === Constants.createState){
-        this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(
+        this.locationService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
           (location: LocationObject) => {
             this.model = new MapMarkerObject();
             this.model.location = location.pk;

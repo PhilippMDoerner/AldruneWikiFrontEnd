@@ -47,7 +47,7 @@ export class MapUpdateComponent implements OnInit {
       const mapName: string = params['name'];
 
       if (this.formState === this.constants.updateState){
-        this.mapService.getMap(mapName).pipe(first()).subscribe(
+        this.mapService.readByParam(mapName).pipe(first()).subscribe(
           (map: MapObject) => this.model = map,
           error => this.routingService.routeToErrorPage(error)
         );
@@ -59,7 +59,9 @@ export class MapUpdateComponent implements OnInit {
 
   onSubmit(){
     const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
-    const responseObservable: any =  isFormInUpdateState ? this.mapService.updateMap(this.model) : this.mapService.createMap(this.model);
+    const responseObservable: any =  isFormInUpdateState ? 
+        this.mapService.update(this.model.pk, this.model) : 
+        this.mapService.create(this.model);
 
     responseObservable.pipe(first()).subscribe(
       (map: MapObject) => this.routingService.routeToApiObject(map),

@@ -43,7 +43,7 @@ export class MapComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const mapName = params['name'];
-      this.mapService.getMap(mapName).pipe(first()).subscribe( 
+      this.mapService.readByParam(mapName).pipe(first()).subscribe( 
         (map: MapObject) => this.currentMap = map,
         error => this.routingService.routeToErrorPage(error)
       );
@@ -96,7 +96,7 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   deleteMap(){
-    this.mapService.deleteMap(this.currentMap.pk).pipe(first()).subscribe(
+    this.mapService.delete(this.currentMap.pk).pipe(first()).subscribe(
       response => this.routeToMap(Constants.defaultMapName),
       error => this.warnings.showWarning(error)
     );

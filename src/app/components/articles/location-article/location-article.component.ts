@@ -32,7 +32,7 @@ export class LocationArticleComponent extends PermissionUtilityFunctionMixin imp
       const locationName: string = params['name'];
       const parentLocationName: string = params['parent_name'] ? params['parent_name'] : "None";
 
-      this.locationService.getLocation(parentLocationName, locationName).pipe(first()).subscribe(
+      this.locationService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
         (location: LocationObject) => this.location = location,
         error => this.routingService.routeToErrorPage(error)
       );
