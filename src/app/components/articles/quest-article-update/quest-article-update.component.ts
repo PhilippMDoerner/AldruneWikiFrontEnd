@@ -1,31 +1,28 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { Constants } from 'src/app/app.constants';
+import { Subscription } from 'rxjs';
 import { QuestObject, Quest } from 'src/app/models/quest';
-import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { QuestService } from 'src/app/services/quest.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 
 @Component({
   selector: 'app-quest-article-update',
   templateUrl: './quest-article-update.component.html',
   styleUrls: ['./quest-article-update.component.scss']
 })
-export class QuestArticleUpdateComponent implements OnInit {
-  constants: any = Constants;
+export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnInit {
+  //Defining ArticleFormMixin Properties
+  userModel: QuestObject;
+  serverModel: Quest;
+  updateCancelRoute = {routeName: "quest", params: {name: null}};
+  creationCancelRoute = {routeName: "quest-overview", params: {}};
 
-  private parameter_subscription: Subscription;
-
-  formState: string;
-
-  form = new FormGroup({});
-  model: QuestObject;
-  fields: FormlyFieldConfig[] = [
+  formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", placeholder: "Quest Name", isNameInput: true}),
     {
       key: "status",
@@ -54,53 +51,43 @@ export class QuestArticleUpdateComponent implements OnInit {
     this.formlyService.genericInput({key: "abstract", placeholder: "Quest Summary...", required: false, maxLength: 65})
   ];
 
+  //Custom Properties
+  private parameter_subscription: Subscription;
+
   constructor(
     private questService: QuestService,
-    private router: Router,
+    router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService,  
+    public warnings: WarningsService,  
     public routingService: RoutingService,
-  ) { }
+  ) { 
+    super(
+      router,
+      routingService,
+      warnings,
+      questService
+    )
+  }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
-
     this.parameter_subscription = this.route.params.subscribe(params => {
       const questName: string = params.name;
 
-      if (this.formState === Constants.updateState){
-        this.questService.readByParam(questName).pipe(first()).subscribe(
-          (quest: QuestObject) => this.model = quest,
+      //Update Cancel Route Param
+      this.updateCancelRoute.params.name = questName;
+
+      //Get Quest
+      if (this.isInUpdateState()){
+        this.articleService.readByParam(questName).pipe(first()).subscribe(
+          (quest: QuestObject) => this.userModel = quest,
           error => this.routingService.routeToErrorPage(error)
         );
         
-      } else if (this.formState === Constants.createState) {
-        this.model = new QuestObject();
+      } else if (this.isInCreateState()) {
+        this.userModel = new QuestObject();
       } 
     })
-  }
-
-  onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    const responseObservable: Observable<QuestObject> =  isFormInUpdateState ?
-        this.questService.update(this.model.pk, this.model) : 
-        this.questService.create(this.model);
-
-    responseObservable.pipe(first()).subscribe(
-      (quest: QuestObject) => this.routingService.routeToApiObject(quest), 
-      error => this.warnings.showWarning(error)
-    );
-  }
-
-  onCancel(){
-    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
-    if (isFormInUpdateState){
-      const questName: string = this.route.snapshot.params.name;
-      this.routingService.routeToPath('quest', {name: questName});
-    } else {
-      this.routingService.routeToPath('quest-overview');
-    } 
   }
 
   ngOnDestroy(){

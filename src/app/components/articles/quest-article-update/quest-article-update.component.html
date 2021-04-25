@@ -1,14 +1,14 @@
 <div class="main">
     <article class="mb-5">
         <!-- Heading -->
-        <div *ngIf="formState===constants.updateState && model; else createState">
+        <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
             <app-edit-toggle 
             [isInUpdateState]=true 
             [link]="'..'"
             ></app-edit-toggle>
 
             <h2 class="text-center">
-                Updating Organization {{ model.name }}
+                Updating Organization {{ userModel.name }}
             </h2>
         </div>
         
@@ -25,12 +25,22 @@
 
 
         <!-- Form -->
-        <app-formly-formcontainer 
-        [model]="model" 
-        [fields]="fields" 
+        <app-formly-formcontainer
+        *ngIf="isInUpdateState() || isInCreateState()"
+        [model]="userModel" 
+        [fields]="formlyFields" 
         (formlySubmit)="onSubmit()" 
         (formlyCancel)="onCancel()"
         ></app-formly-formcontainer>
+
+        <app-compare-form-container
+        *ngIf="isInOutdatedUpdateState()"
+        [formlyFields]="formlyFields"
+        [modelFromUser]="userModel"
+        [modelFromServer]="serverModel"
+        (updateSubmit)="onSubmit()"
+        (cancel)="onCancel()"
+        ></app-compare-form-container>
 
     </article>
     <!-- Spinner while loading -->
