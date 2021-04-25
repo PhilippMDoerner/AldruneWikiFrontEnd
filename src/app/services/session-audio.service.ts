@@ -36,7 +36,7 @@ export class SessionAudioService extends GenericObjectService {
 
   @TransformObservable(SessionAudioObject)
   update(audioPk: number, sessionAudioModel: SessionAudio): Observable<any>{
-    const url = `${this.baseUrl}/pk/${audioPk}`;
+    const url = `${this.baseUrl}/pk/${audioPk}/`;
     const formData: FormData = convertSingleFileModelToFormData(sessionAudioModel, "audio_file");
 
     return this.http.put<any>(url, formData);
