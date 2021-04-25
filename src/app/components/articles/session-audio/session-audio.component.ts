@@ -58,7 +58,7 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
       const isMainSessionInt: number = params.isMainSession;
       const sessionNumber: number = params.sessionNumber;
 
-      this.sessionAudioService.getSessionAudioFile(isMainSessionInt, sessionNumber).pipe(first()).subscribe(
+      this.sessionAudioService.readByParam({isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
         (sessionAudio: SessionAudioObject) => {
           this.sessionAudio = sessionAudio;
           this.priorSessionAudio = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
@@ -90,7 +90,7 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
   }
 
   deleteArticle(){
-    this.sessionAudioService.deleteSessionAudioFile(this.sessionAudio.pk).pipe(first()).subscribe(
+    this.sessionAudioService.delete(this.sessionAudio.pk).pipe(first()).subscribe(
       response => this.routingService.routeToPath('sessionaudio-overview'),
       error => this.warnings.showWarning(error)
     );
