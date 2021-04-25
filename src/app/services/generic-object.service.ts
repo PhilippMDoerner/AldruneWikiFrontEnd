@@ -42,10 +42,14 @@ export abstract class GenericObjectService{
    */
   @TransformObservable("objectClass")
   readByParam(params: any): Observable<any>{
-    if (typeof params !== "string" || typeof params !== "number") throw `Invalid params exception. You tried to use the 
-    base readByParams with a parameter that is neither a string nor a number, indicating your call is more complex than 
-    this base implementation is useful for. Overwrite readByParam in the service that inherits from GenericService/
-    GenericObjectService and implement the function yourself`;
+    if (typeof params !== "string" && typeof params !== "number"){
+      console.error("The params you used")
+      console.log(params)
+      throw `Invalid params exception. You tried to use the base readByParams of GenericObjectService with a parameter 
+      of type ${typeof params}, which is neither a string nor a number. This indicates your call is more complex than 
+      this base implementation is useful for. Overwrite readByParam in the service that inherits from  
+      GenericObjectService and implement the function yourself`;
+    } 
 
     return this.http.get(`${this.baseUrl}/${params}`);
   }
