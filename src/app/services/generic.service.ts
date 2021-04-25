@@ -52,4 +52,7 @@ export abstract class GenericService {
     return this.http.delete(`${this.baseUrl}/pk/${pk}`);
   }
 
+  patch(pk: number, data: any): Observable<any>{
+    return this.http.patch(`${this.baseUrl}/pk/${pk}/`, data);
+  }
 }
