@@ -6,6 +6,7 @@
         <div class="row text-center">
             <h3 class="icon-container col">
                 <!-- Map-Selector -->
+                <!-- TODO: Add font awesome icons to the select choices like this https://stackoverflow.com/questions/36743041/font-awesome-icon-in-select-option -->
                 Map of
                 <select name="map" id="map" #mapChoice (change)="onMapChange($event)">
                     <option *ngFor="let map of maps" value="{{map.name}}">{{map.name}}</option>
