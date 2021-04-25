@@ -141,14 +141,15 @@ export class ArticleFormMixin{
     //TODO: Find a more elegant solution than passing an execution context
     onCancel(context?: any){
         const isCalledFromOverwritingFunction = this.routingService == null;
-        const routingService = isCalledFromOverwritingFunction ? context.routingService : this.routingService;
+        context = isCalledFromOverwritingFunction ? context : this;
 
-        if (this.isInUpdateState() || this.isInOutdatedUpdateState()){
-            const updateCancelRoute = isCalledFromOverwritingFunction ? context.updateCancelRoute : this.updateCancelRoute;
-            routingService.routeToPath(updateCancelRoute.routeName, updateCancelRoute.params);
+        if (context.isInUpdateState() || context.isInOutdatedUpdateState()){
+            const {routeName, params} = context.updateCancelRoute;
+            console.log("Routing to update cancel route: " + routeName)
+            context.routingService.routeToPath(routeName, params);
         } else {
-            const creationCancelRoute = isCalledFromOverwritingFunction ? context.creationCancelRoute : this.creationCancelRoute;
-            routingService.routeToPath(creationCancelRoute.routeName, creationCancelRoute.params);
+            const {routeName, params} = context.creationCancelRoute;
+            context.routingService.routeToPath(routeName, params);
         } 
     }
 }
