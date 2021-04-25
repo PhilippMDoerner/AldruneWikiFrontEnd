@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -11,97 +11,102 @@ import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { HttpEvent, HttpEventType, HttpUploadProgressEvent } from '@angular/common/http';
+import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 
 @Component({
   selector: 'app-session-audio-update',
   templateUrl: './session-audio-update.component.html',
   styleUrls: ['./session-audio-update.component.scss']
 })
-export class SessionAudioUpdateComponent implements OnInit {
-  constants: any = Constants;
+export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnInit {
+  //Defining ArticleFormMixin Properties
+  userModel: SessionAudioObject;
+  serverModel: SessionAudio;
+  updateCancelRoute = {routeName: "sessionaudio", params: {isMainSession: null, sessionNumber: null}};
+  creationCancelRoute = {routeName: "sessionaudio-overview", params: {}};
 
+  formlyFields: FormlyFieldConfig[] = [
+    this.formlyService.genericSelect({key: "session", optionsType: "session", wrappers: ["session-update-wrapper"]}),
+    this.formlyService.singleFileField({key: "audio_file", label: "Audio File", required: this.isInCreateState()}),
+  ];
+
+  //Custom Properties
   isWaitingForResponse: boolean = false;
   private parameter_subscription: Subscription;
   private file_subscription: Subscription;
-
   fileUploadProgress: number;
-
-  formState: string;
-
-  form = new FormGroup({});
-  model: SessionAudio;
-  fields: FormlyFieldConfig[] = [
-    this.formlyService.genericSelect({key: "session", optionsType: "session", wrappers: ["session-update-wrapper"]}),
-    this.formlyService.singleFileField({key: "audio_file", label: "Audio File"}),
-  ];
 
   constructor(
     private formlyService: MyFormlyService,
-    private audioService: SessionAudioService,
-    private router: Router,
+    audioService: SessionAudioService,
+    router: Router,
     private route: ActivatedRoute,
-    private warnings: WarningsService,  
+    public warnings: WarningsService,  
     public routingService: RoutingService,
-  ) { }
+  ) { 
+    super(
+      router,
+      routingService,
+      warnings,
+      audioService
+    )
+  }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
-
     this.parameter_subscription = this.route.params.subscribe(params => {
-      if (this.formState === Constants.updateState){
+      if (this.isInUpdateState()){
         const isMainSessionInt: number = params['isMainSession'];
         const sessionNumber: number = params['sessionNumber'];
-        this.audioService.readByParam({isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
-          (sessionAudio: SessionAudioObject) => this.model = sessionAudio,
+
+        //Update Cancel Route Params
+        this.updateCancelRoute.params.isMainSession = isMainSessionInt;
+        this.updateCancelRoute.params.sessionNumber = sessionNumber;
+
+        //Get SessionAudioObject
+        this.articleService.readByParam({isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
+          (sessionAudio: SessionAudioObject) => this.userModel = sessionAudio,
           error => this.routingService.routeToErrorPage(error)
         );
 
-      } else if (this.formState === Constants.createState) {
-        this.model = new SessionAudioObject();
+      } else if (this.isInCreateState()) {
+        this.userModel = new SessionAudioObject();
       } 
     })
 
   }
 
-  onSubmit(){ //TODO: Make this work also for file updates. There's some kind of issue with that on the session-audio-upload service with the put method
-    console.log("Submitted File")
-    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    if(isFormInUpdateState){
-      console.log("Updating File");
-      const updateObservable = this.audioService.update(this.model.pk, this.model);
-      updateObservable.pipe(first()).subscribe(
-        (sessionAudio: SessionAudio) => this.routeToSessionAudio(sessionAudio),
+  onSubmit(){ //Allow for put requests
+    //If you're not uploading a file, just send a patch request
+    const skipFileUpload: boolean = this.userModel.audio_file.constructor.name.toLowerCase() === "string";
+    if((this.isInUpdateState() || this.isInOutdatedUpdateState()) && skipFileUpload){
+      //Remove audio file to not overwrite this piece of data later
+      delete this.userModel.audio_file;
+      this.articleService.patch(this.userModel.pk, this.userModel).pipe(first()).subscribe(
+        (sessionAudio: SessionAudioObject) => this.routeToSessionAudio(sessionAudio),
         error => this.warnings.showWarning(error)
       );
-
-    } else {
-      console.log("Creating File");
-      const createObservable = this.audioService.create(this.model);
-      this.file_subscription = createObservable.subscribe(
-        (event) => this.handleFileUpload(event),
-        error => this.warnings.showWarning(error)
-      )
+      return;
     }
 
-  }
-
-  onCancel(){
-    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
-    if (isFormInUpdateState){
-      this.routingService.routeToPath('sessionaudio', {
-        isMainSession: this.route.snapshot.params.isMainSession,
-        sessionNumber: this.route.snapshot.params.sessionNumber
-      });
+    //If you are uploading a file, send a put/post request depending on if you're updating/creating an entry
+    let observable: Observable<any>;
+    if(this.isInUpdateState()){
+      observable = this.articleService.update(this.userModel.pk, this.userModel);
     } else {
-      this.routingService.routeToPath('sessionaudio-overview');
-    } 
+      observable = this.articleService.create(this.userModel);
+    }
+
+    this.file_subscription = observable.subscribe(
+      (event) => this.handleFileUpload(event),
+      error => this.warnings.showWarning(error)
+    )
   }
 
   handleFileUpload(event: any){
     const uploadInProgress: boolean = event.type === HttpEventType.UploadProgress;
     const uploadFinished: boolean = event.type === HttpEventType.Response;
-    console.log("handleFileUpload");
-    console.log(event);
+    // console.log("handleFileUpload");
+    // console.log(event);
     if (uploadInProgress){ //Update recorded upload-progress
       this.fileUploadProgress = (event.loaded / event.total * 100)
 
