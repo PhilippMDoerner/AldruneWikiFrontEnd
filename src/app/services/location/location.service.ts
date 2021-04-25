@@ -15,8 +15,8 @@ export class LocationService extends GenericObjectService{
   constructor(http : HttpClient) { super(http, LocationObject) }
 
   @TransformObservable(LocationObject)
-  getLocation(parentLocationName: string, locationName: string): Observable<Location>{
-    const url = `${this.baseUrl}/${parentLocationName}/${locationName}/`;
+  readByParam(params: {parentLocationName: string, locationName: string}): Observable<Location>{
+    const url = `${this.baseUrl}/${params.parentLocationName}/${params.locationName}/`;
     return this.http.get<Location>(url);
   }
 }
