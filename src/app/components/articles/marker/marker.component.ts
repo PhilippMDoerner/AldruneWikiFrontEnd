@@ -31,7 +31,7 @@ export class MarkerComponent implements OnInit {
       const parentLocationName: string = params['parent_location_name'];
       const locationName: string = params['location_name'];
       const mapName: string = params['map_name'];
-      this.markerService.getMapMarker(parentLocationName, locationName, mapName).pipe(first()).subscribe(
+      this.markerService.readByParam({parentLocationName, locationName, mapName}).pipe(first()).subscribe(
         (marker: MapMarkerObject) => this.marker = marker,
         error => this.routingService.routeToErrorPage(error)
       ); 
