@@ -88,7 +88,8 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnIn
       this.routingService.routeToPath('character', {name: characterName});
 
     } else { //Is "normal" article creation and thus "normal" cancel
-      ArticleFormMixin.prototype.onCancel();
+      const executionContext = this;
+      ArticleFormMixin.prototype.onCancel(executionContext);
     }
   }
 

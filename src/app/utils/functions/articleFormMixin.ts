@@ -133,11 +133,22 @@ export class ArticleFormMixin{
         }
     }
     
-    onCancel(){
+    /**
+     * @description Executes when somebody hits the cancel button on the form.
+     * @param context - optional parameter. REQUIRED to be passed from a child-service if it is overwritten. Grants an 
+     * execution context which is the object that calls this function, allowing access to routingService.
+     */
+    //TODO: Find a more elegant solution than passing an execution context
+    onCancel(context?: any){
+        const isCalledFromOverwritingFunction = this.routingService == null;
+        const routingService = isCalledFromOverwritingFunction ? context.routingService : this.routingService;
+
         if (this.isInUpdateState() || this.isInOutdatedUpdateState()){
-            this.routingService.routeToPath(this.updateCancelRoute.routeName, this.updateCancelRoute.params);
+            const updateCancelRoute = isCalledFromOverwritingFunction ? context.updateCancelRoute : this.updateCancelRoute;
+            routingService.routeToPath(updateCancelRoute.routeName, updateCancelRoute.params);
         } else {
-            this.routingService.routeToPath(this.creationCancelRoute.routeName, this.creationCancelRoute.params);
+            const creationCancelRoute = isCalledFromOverwritingFunction ? context.creationCancelRoute : this.creationCancelRoute;
+            routingService.routeToPath(creationCancelRoute.routeName, creationCancelRoute.params);
         } 
     }
 }
