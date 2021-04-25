@@ -9,73 +9,59 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 
 @Component({
   selector: 'app-organization-article-update',
   templateUrl: './organization-article-update.component.html',
   styleUrls: ['./organization-article-update.component.scss']
 })
-export class OrganizationArticleUpdateComponent implements OnInit {
-  constants: any = Constants;
+export class OrganizationArticleUpdateComponent extends ArticleFormMixin implements OnInit {
+  //Defining ArticleFormMixin
+  userModel: OrganizationObject;
+  serverModel: Organization;
+  updateCancelRoute = {routeName: 'organization', params: {name: null }};
+  creationCancelRoute = {routeName: 'organization-overview', params: {}};
 
-  private paramter_subscription: Subscription;
-
-  formState: string;
-
-  model: OrganizationObject;
-  fields: FormlyFieldConfig[] = [
+  formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
     this.formlyService.genericSelect({key: "leader", valueProp: "name", optionsType: "character", required: false}),
     this.formlyService.genericSelect({key: "headquarter", optionsType: "location", required: false}),
   ];
 
+  //Custom Properties
+  private paramter_subscription: Subscription;
+
   constructor(
-    private organizationService: OrganizationService,
-    private router: Router,
+    organizationService: OrganizationService,
+    router: Router,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService,  
+    public warnings: WarningsService,  
     public routingService: RoutingService,
-  ) { }
+  ) { 
+    super(
+      router,
+      routingService,
+      warnings,
+      organizationService
+    )
+  }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? Constants.updateState : Constants.createState;
-
     this.paramter_subscription = this.route.params.subscribe(params => {
-      if (this.formState === Constants.updateState){
+      if (this.isInUpdateState()){
         const organizationName: string = params.name;
-        this.organizationService.readByParam(organizationName).pipe(first()).subscribe(
-          (organization: OrganizationObject) => this.model = organization,
+        this.articleService.readByParam(organizationName).pipe(first()).subscribe(
+          (organization: OrganizationObject) => this.userModel = organization,
           error => this.routingService.routeToErrorPage(error)
         );
         
-      } else if (this.formState === Constants.createState) {
-        this.model = new OrganizationObject();
+      } else if (this.isInCreateState()) {
+        this.userModel = new OrganizationObject();
       }
     })
 
-  }
-
-  onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === Constants.updateState);
-    const responseObservable: Observable<OrganizationObject> =  isFormInUpdateState ? 
-        this.organizationService.update(this.model.pk, this.model) : 
-        this.organizationService.create(this.model);
-
-    responseObservable.pipe(first()).subscribe(
-      (organization: OrganizationObject) => this.routingService.routeToApiObject(organization),
-      error => this.warnings.showWarning(error)
-    );
-  }
-  
-  onCancel(){
-    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
-    if (isFormInUpdateState){
-      const organizationName: string = this.route.snapshot.params.name;
-      this.routingService.routeToPath('organization', {name: organizationName});
-    } else {
-      this.routingService.routeToPath('organization-overview');
-    } 
   }
 
   ngOnDestroy(){
