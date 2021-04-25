@@ -17,15 +17,15 @@ export class RoutingService {
   public routeToApiObject(object: ApiObject): void{
     //The replaces here are required due to router.navigateByUrl mucking up if presented with such a url.
     const objectUrl: string = object.getAbsoluteRouterUrl()
-      .replace("(", "%28")
-      .replace(")", "%29")
-      .replace("?", "\?");
-    this.router.navigateByUrl(objectUrl);
+    const cleanedObjectUrl: string = this.replaceSpecialUnicodeCharacters(objectUrl);
+
+    this.router.navigateByUrl(cleanedObjectUrl);
   }
 
   public routeToPath(routeName: string, params = {}): void{
-    const routePath: string = this.getRoutePath(routeName, params);
-    this.router.navigateByUrl(routePath);
+    const routePath: string = this.getRoutePath(routeName, params)
+    const cleanedObjectUrl: string = this.replaceSpecialUnicodeCharacters(routePath);
+    this.router.navigateByUrl(cleanedObjectUrl);
   }
 
   public getRoutePath(routeName: string, params = {}): string{
@@ -63,6 +63,14 @@ export class RoutingService {
   public routeNameMatches(route: ActivatedRoute, routeName: string): boolean{
     const routeData = route.snapshot.data;
     return routeData.name === routeName;
+  }
+
+  private replaceSpecialUnicodeCharacters(routePath: string){
+    return routePath
+      .replace("(", "%28")
+      .replace(")", "%29")
+      .replace("?", "\?")
+      .replace("†", "%E2%80%A0");
   }
 
   private getVariableRouteByName(routeName: string): Route{
