@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
@@ -10,6 +9,7 @@ import { LocationService } from 'src/app/services/location/location.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 
 
 @Component({
@@ -17,106 +17,106 @@ import { WarningsService } from 'src/app/services/warnings.service';
   templateUrl: './location-article-update.component.html',
   styleUrls: ['./location-article-update.component.scss']
 })
-export class LocationArticleUpdateComponent implements OnInit {
-  private parameter_subscription: Subscription;
-
-  constants: any = Constants;
-
-  formState: string;
-  isForAssociatedObjectCreation: boolean;
-
-  form = new FormGroup({});
-  model: LocationObject;
-  fields: FormlyFieldConfig[] = [
+export class LocationArticleUpdateComponent extends ArticleFormMixin implements OnInit {
+  //Defining ArticleFormMixin Properties
+  serverModel: Location;
+  userModel: LocationObject;
+  updateCancelRoute = {routeName: "location", params: {name: null, parent_name: null}};
+  creationCancelRoute = {routeName: "location-overview", params: {}};//Only used when creating normally, not when creating item for a specific character
+  
+  formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
     this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", optionsType: "location", required: false}),
   ];
 
+  //Custom properties
+  private parameter_subscription: Subscription;
+
   constructor(
     private formlyService: MyFormlyService,
-    private locationService: LocationService,
-    private router: Router,
+    locationService: LocationService,
+    router: Router,
     private route: ActivatedRoute,
-    private warnings: WarningsService,  
-    public routingService: RoutingService,
-  ) { }
+    warnings: WarningsService,  
+    routingService: RoutingService,
+  ) { 
+    super(
+      router,
+      routingService,
+      warnings,
+      locationService
+    )
+  }
 
   ngOnInit(): void {
-    this.formState = (this.router.url.includes("update")) ? this.constants.updateState : this.constants.createState;
-
     this.parameter_subscription = this.route.params.subscribe(params => {
       const locationName: string = params.name;
       const parentLocationName: string = params.parent_name;
-      this.isForAssociatedObjectCreation = locationName && parentLocationName && this.formState === this.constants.createState;
-  
-      if (this.formState === this.constants.updateState){
-          this.locationService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
-            (location: LocationObject) => this.model = location,
+      
+      //Update Cancel Route Params
+      this.updateCancelRoute.params.name = locationName;
+      this.updateCancelRoute.params.parent_name = parentLocationName;
+
+      //Get Location
+      if (this.isInUpdateState()){
+          this.articleService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
+            (location: LocationObject) => this.userModel = location,
             error => this.routingService.routeToErrorPage(error)
           );
 
-      } else if (this.isForAssociatedObjectCreation) {
-        this.locationService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
-          (location: LocationObject) => {
-            this.model = new LocationObject();
-            this.model.parent_location = location.pk;
-            this.model.parent_location_details = {
-              pk: location.pk,
-              name: location.name,
-              parent_location: location.parent_location_details.name,
-              name_full: location.name_full
-            };
-          },
-          error => this.routingService.routeToErrorPage(error)
-        );
-      } else if (this.formState === this.constants.createState){
-        this.model = new LocationObject();
-        this.model.parent_location = null;
+      } else if (this.isInCreateState()){
+        //Base Location model
+        this.userModel = new LocationObject();
+        this.userModel.parent_location = null;
+
+        //Aditional info to user model if this is a sublocation
+        if(this.isForAssociatedObjectCreation()){
+          this.articleService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
+            (location: LocationObject) => {
+              this.userModel = new LocationObject();
+              this.userModel.parent_location = location.pk;
+              this.userModel.parent_location_details = {
+                pk: location.pk,
+                name: location.name,
+                parent_location: location.parent_location_details.name,
+                name_full: location.name_full
+              };
+            },
+            error => this.routingService.routeToErrorPage(error)
+          );
+        } 
       }
     })
   }
 
-  onSubmit(){
-    const isFormInUpdateState: boolean = (this.formState === this.constants.updateState);
-    const responseObservable: any =  isFormInUpdateState ? 
-        this.locationService.update(this.model.pk, this.model) : 
-        this.locationService.create(this.model);
 
-    responseObservable.pipe(first()).subscribe(
-      (location: LocationObject) => this.router.navigateByUrl(this.getRedirectUrl(location)),
-      error => this.warnings.showWarning(error)
-    );
-  }
-
-  getRedirectUrl(location: LocationObject){
-    if (this.formState === this.constants.updateState || this.isForAssociatedObjectCreation){
-      const locationUrl: string = this.routingService.getRoutePath('location', {
-        name: location.name, 
-        parent_name: location.parent_location_details.name
-      });
-      return locationUrl;
-
-    } else {
-      const locationOverviewUrl: string = this.routingService.getRoutePath('location-overview');
-      return locationOverviewUrl;
-    }
-  }
-
+  /**
+   * @description Executes when cancel button is clicked. Extends normal cancel logic for the extra step, that locations may be
+   * created from the context, that you're creating it as a sublocation for another location. In such a case, cancel 
+   * should route you back to the original location for which you were creating this. This is the logic that happens here.
+   */
   onCancel(){
-    const isFormInUpdateState : boolean = (this.formState === Constants.updateState)
-
-    if(this.isForAssociatedObjectCreation){
+    console.log(this);
+    if(this.isForAssociatedObjectCreation()){
       this.routingService.routeToPath('location', {
-        name: this.model.parent_location_details.name, 
-        parent_name: this.model.parent_location_details.parent_location
+        name: this.userModel.parent_location_details.name, 
+        parent_name: this.userModel.parent_location_details.parent_location
       });
-    } else if (isFormInUpdateState){
-      const locationName: string = this.route.snapshot.params.name;
-      const parentLocationName: string = this.route.snapshot.params.parent_name;
-      this.routingService.routeToPath('location', {name: locationName, parent_name: parentLocationName});
+
     } else {
-      this.routingService.routeToPath('location-overview');
+      console.log("Calling form mixin cancel")
+      const executionContext = this;
+      ArticleFormMixin.prototype.onCancel(executionContext);
     }
+  }
+
+  /**
+   * @description Checks if the route through which the Component is visited is the "location-parentlocation-create" route, which means
+   * the location is being created as a sublocation, whose name is available as request parameter ":parent_name"
+   * @returns {boolean} True if this route is currently "location-parentlocation-create",false if it isn't
+   */
+   private isForAssociatedObjectCreation(): boolean{
+    return this.routingService.routeNameMatches(this.route, "location-parentlocation-create");
   }
 
   ngOnDestroy(){
