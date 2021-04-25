@@ -1,6 +1,5 @@
 import { Router } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
-import { Observable } from "rxjs";
 import { first } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
 import { ApiObject } from "src/app/models/base-models";
