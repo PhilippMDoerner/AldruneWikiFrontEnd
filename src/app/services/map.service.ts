@@ -24,6 +24,6 @@ export class MapService extends GenericObjectService{
   @TransformObservable(MapObject)
   update(mapPk: number, map: Map): Observable<ExtendedMap>{
     const formData: FormData = convertSingleFileModelToFormData(map, "image");
-    return this.http.put<ExtendedMap>(`${this.baseUrl}/pk/${mapPk}`, formData);
+    return this.http.put<ExtendedMap>(`${this.baseUrl}/pk/${mapPk}/`, formData);
   }
 }
