@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Constants } from 'src/app/app.constants';
-import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
