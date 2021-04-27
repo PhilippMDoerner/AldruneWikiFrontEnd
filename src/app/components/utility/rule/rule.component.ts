@@ -2,94 +2,49 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { Constants } from 'src/app/app.constants';
 import { RuleObject } from 'src/app/models/rule';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { RuleService } from 'src/app/services/rule.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
+import { CardFormMixin } from 'src/app/utils/functions/cardMixin';
 
 @Component({
   selector: 'app-rule',
   templateUrl: './rule.component.html',
   styleUrls: ['./rule.component.scss']
 })
-export class RuleComponent implements OnInit {
-  isOpen: boolean = false;
-  isUpdateState: boolean = false;
-  isCreateState: boolean;
+//TODO: Write a mixin for card-like entities such as encounters, rules and spells
+export class RuleComponent extends CardFormMixin implements OnInit {
+  @Input() cardData: RuleObject;
+  @ViewChild('card') card: ElementRef;
+  cardDelete = new EventEmitter<number>()
 
-  @Input() rule: RuleObject;
-  @Input() index: number;
-
-  @Output() deleteRule: EventEmitter<number> = new EventEmitter();
-
-  @ViewChild('ruleCard') ruleCard: ElementRef;
-
-  fields: FormlyFieldConfig[] = [
+  formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name"}),
     this.formlyService.genericTextField({key: "description"}),
   ];
 
   constructor(
-    private ruleService: RuleService,
+    ruleService: RuleService,
     private formlyService: MyFormlyService,
-    private warnings: WarningsService,  
-    public routingService: RoutingService,
-  ) { }
+    public warnings: WarningsService,  
+  ) { 
+    super(
+      warnings,
+      ruleService
+    )
+  }
 
   ngOnInit(): void {
-    this.isCreateState = this.rule.name === "New Rule";
-    this.isOpen = this.isCreateState
-  }
+    const isCreateState: boolean = this.cardData.name === "New Rule";
+    this.formState = isCreateState ? Constants.createState : Constants.displayState;
+    this.isOpen = isCreateState;
 
-  togglePanel(): void{
-    this.isOpen = !this.isOpen;
-  }
-
-  onSubmit(){
-    const responseObservable: Observable<RuleObject> =  this.isUpdateState ? 
-        this.ruleService.update(this.rule.id, this.rule) : 
-        this.ruleService.create(this.rule);
-
-    responseObservable.pipe(first()).subscribe(
-      (rule: RuleObject) => {
-        this.rule = rule;
-        this.isUpdateState = false;
-        this.isCreateState = false;
-      },
-      error => this.warnings.showWarning(error)
-    );
-  }
-
-  onCancel(){
-    this.isUpdateState = false;
-    if(this.isCreateState){
-      this.removeRule();
-    }
-  }
-
-  removeRule(){
-    animateElement(this.ruleCard.nativeElement, 'fadeOutDown')
-      .then(() => this.deleteRule.emit(this.index));
-  }
-
-
-  onDelete(){
-    this.ruleService.delete(this.rule.id).pipe(first()).subscribe(
-      () => this.removeRule(),
-      error => this.warnings.showWarning(error)
-    );
-  }
-
-  toggleFormState(){
-    if(!this.isCreateState && !this.isUpdateState){
-      this.isUpdateState = true;
-    } else if (this.isUpdateState){
-      this.isCreateState = false;
-      this.isUpdateState = false;
-    } else if (this.isCreateState){
-      this.removeRule();
+    if(isCreateState){
+      this.userModel = new RuleObject();
     }
   }
 }

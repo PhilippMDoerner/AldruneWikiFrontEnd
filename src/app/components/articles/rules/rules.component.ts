@@ -44,6 +44,7 @@ export class RulesComponent implements OnInit {
   }
 
   onRuleDelete(index: number){
+    console.log("onRuleDelete")
     this.rules.splice(index, 1);
   }
 }
