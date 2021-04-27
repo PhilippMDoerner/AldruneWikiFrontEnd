@@ -14,7 +14,8 @@ export class CompareFormContainerComponent implements OnInit {
   @Input() formlyFields : FormlyFieldConfig[];
   @Input() modelFromUser : any;
   @Input() modelFromServer: any;
-  @Input() isVisibleSubject: BehaviorSubject<boolean> = new BehaviorSubject(false)
+  @Input() isVisibleSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  @Input() displayVertically: boolean = false;
 
   @Output() updateSubmit: EventEmitter<void> = new EventEmitter();
   @Output() cancel: EventEmitter<void> = new EventEmitter();
