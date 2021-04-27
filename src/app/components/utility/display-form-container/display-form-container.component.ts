@@ -12,6 +12,7 @@ export class DisplayFormContainerComponent implements OnInit {
 
   @Input() formlyFields : FormlyFieldConfig[];
   @Input() model: any;
+  
   modelCopy: any;
 
 
