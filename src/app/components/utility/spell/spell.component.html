@@ -7,7 +7,7 @@
             {{spell.name}}
             <span *ngIf="spell.concentration" class="ml-2">(C)</span>
             <span *ngIf="spell.ritual" class="ml-2">(R)</span>
-            <div class="ml-4 d-inline">
+            <div class="ml-4 d-inline-flex align-items-center">
                 <span
                 *ngFor="let connection of spell.player_class_connections" 
                 class="badge badge-secondary mr-3"
