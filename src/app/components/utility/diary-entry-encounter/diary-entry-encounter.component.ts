@@ -91,8 +91,6 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
   }
 
   onCreationSuccess(createdArticle: EncounterObject, parentClass: CardFormMixin){
-    console.log("Newly created article in component:")
-    console.log(createdArticle);
     createdArticle.connection = this.cardData.connection;
     super.onCreationSuccess(createdArticle, parentClass);
     this.cardCreate.emit(createdArticle);

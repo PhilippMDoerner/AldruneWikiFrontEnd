@@ -54,9 +54,20 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
   }
 
   /**
-   * Creates the objects that shall be the new encounter for the UI. This includes an encounter and an
-   * encounter connection, both of which shall be updated to the database upon submission.
-   * @param encounterIndex Index at which the new encounter shall be created
+   * @description This function is in a complex relationship with "this.onEncounterCreate" and from
+   * the child component "diary-entry-encounter" the function "OnCreationSuccess". 
+   * They are triggered in that order: toggleEncounterCreate --> OnCreationSuccess --> onEncounterCreate
+   * 1) A diary-entry-encounter needs first an initial own dataset, which is stored HERE as well as in the child-component.
+   * Secondly it needs a connection to this encounter, which requires an order-index that tells you where to put the encounter.
+   * The order-index must be given from the start, so you create the first half of that in here and put that into the
+   * dummy dataset.
+   * 2) When the form is submitted in the child-component, that triggers its OnCreationSuccess. The parents OnCreationSuccess will
+   * REPLACE the current data with the new dataset that was received. That would lose you the connection created in 1) though!
+   * So you move that over to the new dataset and emit that, so taht onEncounterCreate has access to it
+   * 3) In OnEncounterCreate you now need to replace the old dataset with the new one. On top of that, you need to create
+   * the half-finished connection, which is possible now since what was missing was a primary key of the encounter 
+   * (Since that didn't exist before). So you finish the connection and put the finished connection into the created Encounter.
+   * @param {number} encounterIndex Index at which the new encounter shall be created
    */
   toggleEncounterCreateState(encounterIndex: number): void{
     const isNewFirstEncounter: boolean = encounterIndex < 0;
