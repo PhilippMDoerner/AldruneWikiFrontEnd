@@ -1,9 +1,8 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { PlayerClass, PlayerClassObject } from 'src/app/models/playerclass';
+import { PlayerClass } from 'src/app/models/playerclass';
 import { Spell, SpellObject, SpellPlayerClassConnection } from 'src/app/models/spell';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { PlayerClassService } from 'src/app/services/player-class.service';
@@ -12,7 +11,6 @@ import { SpellPlayerClassConnectionService } from 'src/app/services/spell-player
 import { SpellService } from 'src/app/services/spell.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
-import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { CardFormMixin } from 'src/app/utils/functions/cardMixin';
 
 @Component({
