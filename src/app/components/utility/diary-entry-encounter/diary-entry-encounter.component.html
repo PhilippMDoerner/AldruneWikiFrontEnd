@@ -1,11 +1,12 @@
 <div 
 class="container" 
-[ngClass]="{'highlight encounter': !diaryEntryView, 'mb-3': diaryEntryView, 'isBeingCutOut': cutEncounterIndex === encounterIndex}"
+[ngClass]="{'highlight encounter': !diaryEntryView, 'mb-3': diaryEntryView, 'isBeingCutOut': cutEncounterIndex === index}"
+#card
 > 
     <!-- Encounter Heading -->
     <div class="row">
         <h4 class="heading col-12">
-            {{ encounter.title }}
+            {{ cardData.title }}
             
             <!-- Edit Toggler + Cut Toggler-->
             <div class="float-right flex-row" [ngClass]="{'d-none': !userHasUpdatePermission() || diaryEntryView, 'd-flex': userHasUpdatePermission() && !diaryEntryView}">
@@ -16,61 +17,80 @@ class="container"
 
                 <!-- Edit Toggler -->
                 <div class="btn btn-secondary encounter-hidden" (click)="toggleFormState()">
-                    <i class="fa fa-pencil" *ngIf="!isEncounterCreateState && !isEncounterUpdateState"></i>
-                    <i class="fa fa-times" *ngIf="isEncounterCreateState || isEncounterUpdateState"></i>
+                    <i class="fa" [ngClass]= "{'fa-pencil': isInDisplayState(), 'fa-times': !isInDisplayState()}"></i>
                 </div>
             </div>
         </h4>
 
         <!-- Encounter Location (Must only be rendered for existing encounters, not during create state)-->
         <div class="container" [ngClass]="{'d-none': diaryEntryView}">
-            <i class="row" *ngIf="!isEncounterCreateState">
+            <i class="row" *ngIf="!isInCreateState()">
                 <span class="col-2">Location:</span>
                 <span class="col-10">
-                    <a routerLink="{{ encounter.getAbsoluteLocationRouterUrl() }}">
-                        {{ encounter.location_details.name }}
+                    <a routerLink="{{ cardData.getAbsoluteLocationRouterUrl() }}">
+                        {{ cardData.location_details.name }}
                     </a>
                 </span>
             </i>
-            <i class="row" *ngIf="!isEncounterCreateState">
+            <i class="row" *ngIf="!isInCreateState()">
                 <span class="col-2">Author:</span>
-                <span class="col-10">{{ encounter.author_details.name }}</span>
+                <span class="col-10">{{ cardData.author_details.name }}</span>
             </i>    
         </div>
     </div> 
 
     <!-- Encounter Body -->
-    <div class="row" *ngIf="!isEncounterUpdateState && !isEncounterCreateState; else EncounterForm">
+    <div class="row">
         <div [ngClass]="{'col-sm-11': !diaryEntryView, 'col-12': diaryEntryView}">
     
             <!-- Encounter Description-->
             <app-textfield
-            [initialText]="encounter.description"
+            *ngIf="isInDisplayState()"
+            [initialText]="cardData.description"
             [allowEdit]="false"
-            (updateText)="onDescriptionUpdate($event)"
+            (updateText)="onSubmit($event)"
             ></app-textfield>
+
+            <app-formly-formcontainer 
+            *ngIf="isInCreateState() || isInUpdateState()"
+            [model]="userModel" 
+            [fields]="formlyFields" 
+            (formlySubmit)="onSubmit()" 
+            (formlyCancel)="onCancel()"
+            ></app-formly-formcontainer>
+    
+            <app-compare-form-container
+            class="d-flex justify-content-center"
+            *ngIf="isInOutdatedUpdateState()"
+            [formlyFields]="formlyFields"
+            [modelFromUser]="userModel"
+            [modelFromServer]="serverModel"
+            [displayVertically]="true"
+            (updateSubmit)="onSubmit()"
+            (cancel)="onCancel()"
+            ></app-compare-form-container>
         
             <!-- Encounter Connections -->
-            <hr class="white-line" *ngIf="!diaryEntryView">
+            <hr class="white-line mt-4" *ngIf="!diaryEntryView">
 
             <div class="encounter-connections d-flex align-items-center" *ngIf="!diaryEntryView">
         
                 <span class="mr-4 tag-label"> Characters: </span>
                 <div class="d-inline-flex align-items-center flex-wrap">
                     <!-- Connection List -->
-                    <span class="badge badge-secondary p-2 mr-2" *ngFor="let connection of encounter.encounterConnections">
+                    <span class="badge badge-secondary p-2 mr-2" *ngFor="let connection of cardData.encounterConnections">
                         <a routerLink="{{ routingService.getRoutePath('character', {name: connection.character_details.name}) }}">
                             {{ connection.character_details.name }}
                         </a>
                         <i 
                         class="fa fa-trash icon ml-1" 
-                        (click)="deleteEncounterConnection(encounter, connection)"
+                        (click)="deleteEncounterConnection(cardData, connection)"
                         *ngIf="userHasDeletePermission()"
                         ></i>
                     </span>
         
                     <!-- Connection Create Form -->
-                    <form class="d-flex align-items-center" *ngIf="inEncounterConnectionCreationState" (submit)="createEncounterConnection(encounter)">
+                    <form class="d-flex align-items-center" *ngIf="inEncounterConnectionCreationState" (submit)="createEncounterConnection(cardData)">
                         <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
                             <option *ngFor="let character of characterOptions" value="{{character.pk}}">
                                 {{character.name}}
@@ -103,7 +123,7 @@ class="container"
             <app-delete-toggle
             *ngIf="!diaryEntryView"
             [deleteMessage]="'Delete this encounter?'"
-            (deleteEvent)="deleteArticle()"
+            (deleteEvent)="articleDelete(cardData)"
             class="float-right px-0"
             ></app-delete-toggle>
         </div>
@@ -117,21 +137,3 @@ class="container"
         </div>
     </div>
 </div>
-
-<!-- Form to update Encounters -->
-<ng-template #EncounterForm>
-    <!-- Encounter Form -->
-        <!-- Create Encounter Form -->
-        <form [formGroup]="form" *ngIf="isEncounterCreateState && !isEncounterUpdateState" (submit)="createEncounter(encounter)">
-            <formly-form [form]="form" [fields]="fields" [model]="encounter"></formly-form>
-            <div class="btn btn-secondary mr-3" (click)="toggleEncounterCreateState()">Cancel</div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-        
-        <!-- Update Encounter Form -->
-        <form [formGroup]="form" *ngIf="!isEncounterCreateState && isEncounterUpdateState" (submit)="updateEncounter(encounter)">
-            <formly-form [form]="form" [fields]="fields" [model]="encounter"></formly-form>
-            <div class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</div>
-            <button class="btn btn-primary" type="submit">Submit</button>
-        </form>
-</ng-template>

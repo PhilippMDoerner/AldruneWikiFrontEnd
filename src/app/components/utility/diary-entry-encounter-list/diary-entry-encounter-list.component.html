@@ -31,14 +31,14 @@
             <app-diary-entry-encounter
             *ngIf="!isEncounterUpdating[encounterIndex] else waiting;"
             class="col-12 px-0"
-            [encounter]="encounter"
-            [encounterIndex]="encounterIndex"
+            [cardData]="encounter"
+            [index]="encounterIndex"
             [cutEncounterIndex]="cutEncounterIndex"
             [diaryEntryView]="diaryEntryView"
-            (encounterDelete)="deleteEncounter(encounterIndex)"
+            (cardDelete)="deleteEncounter(encounterIndex)"
+            (cardCreate)="onEncounterCreate($event, encounterIndex)"
             (encounterOrderIncrease)="onEncounterOrderIncrease(encounterIndex)"
             (encounterOrderDecrease)="onEncounterOrderDecrease(encounterIndex)"
-            (encounterCreate)="onEncounterCreate(encounterIndex)"
             (excisionStart)="onExcisionStart(encounterIndex)"
             (excisionCancel)="onExcisionCancel(encounterIndex)"
             ></app-diary-entry-encounter>

@@ -1,7 +1,8 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
+import { Constants } from 'src/app/app.constants';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
 import { EncounterConnection, EncounterConnectionObject } from 'src/app/models/encounterconnection';
 import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
@@ -12,6 +13,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { CardFormMixin } from 'src/app/utils/functions/cardMixin';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
@@ -19,27 +21,17 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   templateUrl: './diary-entry-encounter.component.html',
   styleUrls: ['./diary-entry-encounter.component.scss']
 })
-export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin implements OnInit {
-  @Input() encounter: EncounterObject;
-  @Input() encounterIndex: number;
-  @Input() diaryEntryView: boolean;
-  @Input() cutEncounterIndex: number;
-  
-  @Output() encounterDelete: EventEmitter<EncounterObject> = new EventEmitter();
-  @Output() encounterOrderIncrease: EventEmitter<number> = new EventEmitter();
-  @Output() encounterOrderDecrease: EventEmitter<number> = new EventEmitter();
-  @Output() encounterCreate: EventEmitter<EncounterObject> = new EventEmitter();
-  @Output() excisionStart: EventEmitter<void> = new EventEmitter();
-  @Output() excisionCancel: EventEmitter<void> = new EventEmitter();
+export class DiaryEntryEncounterComponent extends CardFormMixin implements OnInit {
+  //CardFormMixin variables
+  cardData: EncounterObject;
+  userModel: EncounterObject;
+  serverModel: Encounter;
 
-  characterOptions : OverviewItem[];
+  cardDelete = new EventEmitter();
 
-  isEncounterCreateState: boolean = false;
-  isEncounterUpdateState: boolean = false;
+  @ViewChild('card') card: ElementRef;
 
-  form = new FormGroup({});
-  model: EncounterObject;
-  fields: FormlyFieldConfig[] = [
+  formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title"}),
     this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
     this.formlyService.genericSelect({key: "session_number", label: "Session", optionsType: "session"}),
@@ -47,55 +39,72 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
     this.formlyService.genericTextField({key: "description", required: true}),
   ];
 
+  //Custom Variables
+  @Input() diaryEntryView: boolean;
+  @Input() cutEncounterIndex: number;
+  
+  @Output() encounterOrderIncrease: EventEmitter<number> = new EventEmitter();
+  @Output() encounterOrderDecrease: EventEmitter<number> = new EventEmitter();
+  @Output() cardCreate: EventEmitter<EncounterObject> = new EventEmitter();
+  @Output() excisionStart: EventEmitter<void> = new EventEmitter();
+  @Output() excisionCancel: EventEmitter<void> = new EventEmitter();
+
+
+  characterOptions : OverviewItem[];
+
   inEncounterConnectionCreationState: boolean = false;
   baseEncounterConnection: EncounterConnectionObject = new EncounterConnectionObject();
 
   constructor(
-    private encounterService: EncounterServiceService,
-    private warning: WarningsService,
+    encounterService: EncounterServiceService,
+    public warning: WarningsService,
     public routingService: RoutingService,
     private characterService: CharacterService,
     private encounterConnectionService: EncounterConnectionService,
     private formlyService: MyFormlyService,
     private tokenService: TokenService,
-  ) { super(); }
+  ) { 
+    super(
+      warning,
+      encounterService,
+    ); 
+  }
 
   ngOnInit(): void {
-    this.encounter;
-    this.isEncounterCreateState = this.encounter.pk == null;
+    const isEncounterCreateState: boolean = this.cardData.pk == null;
+    this.formState = isEncounterCreateState ? Constants.createState : Constants.displayState;
 
-    if (this.isEncounterCreateState){
-      this.encounter.author = this.tokenService.getCurrentUserPk();
+    if (isEncounterCreateState){
+      this.userModel = new EncounterObject();
+      this.userModel.author = this.tokenService.getCurrentUserPk();
     }
   }
 
   //Code About Encounter
-  onDescriptionUpdate(updatedDescription: string){
-    const oldDescription = this.encounter.description;
+  onUpdateSuccess(updatedArticle: EncounterObject, parentClass: CardFormMixin){
+    //You need to tranfer the connection object as the returning encounter won't carry a connection object - 
+    //its API endpoint isn't diaryentries, where they are added, but the encounter-api, where you wouldn't 
+    //know which connection you'd want with this encounter
+    updatedArticle.connection = parentClass.cardData.connection;
 
-    this.encounter.description = updatedDescription;
-    this.encounterService.update(this.encounter.pk, this.encounter).pipe(first()).subscribe(
-      (encounter: EncounterObject) => {},
-      error => {
-        this.encounter.description = oldDescription;
-        this.warning.showWarning(error);
-      }
-    )
+    super.onUpdateSuccess(updatedArticle, parentClass);
   }
 
-  toggleFormState(){
-    if(this.isEncounterUpdateState){
-      this.isEncounterCreateState = false;
-      this.isEncounterUpdateState = false;
-    } else if (this.isEncounterCreateState){
-      this.encounterDelete.emit(this.encounter);
-    } else {
-      this.isEncounterUpdateState = true;
-    }
+  onCreationSuccess(createdArticle: EncounterObject, parentClass: CardFormMixin){
+    console.log("Newly created article in component:")
+    console.log(createdArticle);
+    createdArticle.connection = this.cardData.connection;
+    super.onCreationSuccess(createdArticle, parentClass);
+    this.cardCreate.emit(createdArticle);
+  }
+
+  onDeletionSuccess(deletionResponse: any, parentClass: CardFormMixin){
+    super.onDeletionSuccess(deletionResponse, parentClass);
+    this.cardDelete.emit(this.index);
   }
 
   toggleCutState(){
-    const isBeingCut = this.cutEncounterIndex === this.encounterIndex;
+    const isBeingCut = this.cutEncounterIndex === this.index;
     if(!isBeingCut){
       this.excisionStart.emit();
     } else {
@@ -103,54 +112,18 @@ export class DiaryEntryEncounterComponent extends PermissionUtilityFunctionMixin
     }
   }
 
-  toggleEncounterUpdateState(){
-    this.isEncounterUpdateState = !this.isEncounterUpdateState;
-    this.isEncounterCreateState = false;
-  }
-
-  updateEncounter(model: Encounter){
-    this.encounterService.update(model.pk, model).pipe(first()).subscribe(
-      (updatedEncounter: EncounterObject) => {
-        //You need to tranfer the connection object as the returning encounter won't carry a connection object - 
-        //it's API endpoint isn't diaryentries, where they are added, but the encounter-api, where you wouldn't 
-        //know which connection you'd want with this encounter
-        updatedEncounter.connection = this.encounter.connection; 
-
-        this.encounter = updatedEncounter;
-        this.isEncounterUpdateState = false;
-      },
-      error => this.warning.showWarning(error)
-    );
-  }
-
-  toggleEncounterCreateState(){
-    this.isEncounterCreateState = !this.isEncounterCreateState;
-    this.isEncounterUpdateState = false;
-  }
-
-  createEncounter(model: EncounterObject){
-    this.isEncounterCreateState = false;
-    this.encounterCreate.emit(model);
-  }
-
   increaseEncounterOrderIndex(){
-    this.encounterOrderIncrease.emit(this.encounterIndex);
+    this.encounterOrderIncrease.emit(this.index);
   }
 
   decreaseEncounterOrderIndex(){
-    this.encounterOrderDecrease.emit(this.encounterIndex);
+    this.encounterOrderDecrease.emit(this.index);
   }
 
-  deleteArticle(): void{
-    this.encounterService.delete(this.encounter.pk).pipe(first()).subscribe(
-      response => this.encounterDelete.emit(this.encounter),
-      error => this.warning.showWarning(error)
-    );
-  }
 
   //Code about EncounterConnection
-   //### Handling EncounterConnections ###
-   toggleEncounterConnectionCreationState(){
+  //### Handling EncounterConnections ###
+  toggleEncounterConnectionCreationState(){
     this.inEncounterConnectionCreationState = !this.inEncounterConnectionCreationState;
     if (!this.characterOptions){
       this.characterService.getNonPlayerCharacters().pipe(first()).subscribe(

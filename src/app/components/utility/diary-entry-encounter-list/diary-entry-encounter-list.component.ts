@@ -75,7 +75,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
       newOrderIndex = priorEncounterConnection.getShiftedOrderIndex();
     }
 
-    //Create Connection Object for new Encounter
+    //Create Connection Object for new Encounter, must be created here so that it has the accurate order index
     const newConnection: DiaryEntryEncounterConnectionObject = new DiaryEntryEncounterConnectionObject({
       diaryentry: this.diaryEntry.pk,
       encounter: null,
@@ -88,7 +88,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
       session_number: this.diaryEntry.session,
       location: null,
       author: this.tokenService.getCurrentUserPk(),
-      title: null,
+      title: "New Encounter",
       getAbsoluteRouterUrl: null,
       connection: newConnection
     };
@@ -106,30 +106,24 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
    */
    
   @tryCatch
-  async onEncounterCreate(createdEncounterIndex: number): Promise<void>{
-    const pendingEncounter = this.encounters[createdEncounterIndex];
-    let newEncounter: Encounter;
-    try{
-      newEncounter = await this.encounterService.create(pendingEncounter).toPromise();
-    } catch (error){
-      this.warning.showWarning(error);
-      return;
-    }
+  async onEncounterCreate(createdEncounter: EncounterObject, createdEncounterIndex: number): Promise<void>{
+    //Replace the newly createdEncounter with the Dataset currently being a placeholder for it at the given index
+    const placeholderEncounter = this.encounters[createdEncounterIndex];
+    this.encounters[createdEncounterIndex] = createdEncounter;
 
     //Increment Encounters up to last-encounter to order-index of next encounter
-    newEncounter.connection = pendingEncounter.connection;
-    this.encounters[createdEncounterIndex] = newEncounter;
+    this.encounters[createdEncounterIndex] = createdEncounter;
     const lastIndex = this.encounters.length - 1;
     const firstEncounterAfterCreatedEncounter = createdEncounterIndex + 1;
     await this.incrementOrderIndices(firstEncounterAfterCreatedEncounter, lastIndex);
 
     //Create the encounterConnection for the new encounter in the Db
-    const newConnection: DiaryEntryEncounterConnectionObject = newEncounter.connection;
+    const newConnection: DiaryEntryEncounterConnectionObject = placeholderEncounter.connection;
     newConnection.order_index = newConnection.nextOrderIndex();
-    newConnection.encounter = newEncounter.pk;  //Needed to create the connection
+    newConnection.encounter = createdEncounter.pk;  //Needed to create the connection
 
     this.diaryEntryEncounterConnectionService.create(newConnection).pipe(first()).subscribe(
-      (newCreatedConnection: DiaryEntryEncounterConnectionObject) => newEncounter.connection = newCreatedConnection,
+      (newCreatedConnection: DiaryEntryEncounterConnectionObject) => createdEncounter.connection = newCreatedConnection,
       error => this.warning.showWarning(error)
     );
 
