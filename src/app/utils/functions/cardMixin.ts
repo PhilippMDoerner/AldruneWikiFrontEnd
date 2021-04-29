@@ -6,9 +6,10 @@ import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
 import { WarningsService } from "src/app/services/warnings.service";
 import { animateElement } from "./animationDecorator";
+import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 
 @Directive()
-export abstract class CardFormMixin{
+export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
     constants = Constants;
     formState: string;
     isOpen: boolean;
@@ -36,7 +37,7 @@ export abstract class CardFormMixin{
     constructor(
         public warnings: WarningsService,
         public articleService: GenericService | GenericObjectService,
-    ){}
+    ){ super() }
 
     isInCreateState(): boolean{
         return this.formState === Constants.createState;
