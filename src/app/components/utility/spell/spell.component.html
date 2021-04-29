@@ -1,15 +1,15 @@
 <!-- Spells -->
-<div class="card mb-3 px-4 pt-3 pb-1" #spellCard [ngClass] = "{'animate__animated animate__fadeInUp': isCreateState}">
+<div class="card mb-3 px-4 pt-3 pb-1" #spellCard [ngClass] = "{'animate__animated animate__fadeInUp': isInCreateState()}">
     <!-- Spell Panel Heading -->
-    <h5 class="pointer col-12 justify-content-between d-flex align-items-center spell-title" (click)="togglePanel($event)">
+    <h5 class="pointer col-12 justify-content-between d-flex align-items-center spell-title" (click)="toggleSpellCard($event)">
         <!-- Spell Title -->
         <strong>
-            {{spell.name}}
-            <span *ngIf="spell.concentration" class="ml-2">(C)</span>
-            <span *ngIf="spell.ritual" class="ml-2">(R)</span>
+            {{cardData.name}}
+            <span *ngIf="cardData.concentration" class="ml-2">(C)</span>
+            <span *ngIf="cardData.ritual" class="ml-2">(R)</span>
             <div class="ml-4 d-inline-flex align-items-center">
                 <span
-                *ngFor="let connection of spell.player_class_connections" 
+                *ngFor="let connection of cardData.player_class_connections" 
                 class="badge badge-secondary mr-3"
                 (click)="emitClassSelectEvent($event, connection.player_class_details.name)"
                 >
@@ -27,107 +27,125 @@
             </div>
         </strong>
 
-        <i [ngClass]="{'fa icon float-right': true, 'fa-chevron-down': !isPanelOpen, 'fa-chevron-up': isPanelOpen}"></i>
+        <i [ngClass]="{'fa icon float-right': true, 'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}"></i>
     </h5>
 
 
     <!-- Spell Panel Content -->
-    <div class="mb-3" [ngbCollapse]="!isPanelOpen">
+    <div class="mb-3" [ngbCollapse]="!isOpen">
         <div class="col-12">
             <!-- Separating line -->
             <hr class="white-separator mb-2">
 
             <!-- Spell Heading -->
             <div class="w-100 mb-4">
-                <h4 class="d-inline"> {{ spell.name }}</h4>
+                <h4 class="d-inline"> {{ cardData.name }}</h4>
 
                 <!-- Edit Toggler -->
                 <div class="btn btn-secondary float-right" (click)="toggleFormState()">
-                    <i class="fa fa-pencil" *ngIf="!isCreateState && !isUpdateState"></i>
-                    <i class="fa fa-times" *ngIf="isCreateState || isUpdateState"></i>
+                    <i class="fa" [ngClass]= "{'fa-pencil': isInDisplayState(), 'fa-times': !isInDisplayState()}"></i>
                 </div>
             </div>
 
             <!-- Spell Table -->
-            <div class="container" *ngIf="!isCreateState && !isUpdateState; else formField">
+            <div class="container" *ngIf="isInDisplayState()">
                 <div class="row">
                     <!-- Spell Level -->
                     <div class="col-md-3 col-6 d-flex flex-column spell">
                         <strong class="border-bottom-grey column-heading">SPELL LEVEL</strong>
-                        <div class="column-body" *ngIf="spell.spell_level"> {{ (spell.spell_level) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.spell_level"> Placeholder </div>
+                        <div class="column-body" *ngIf="cardData.spell_level"> {{ (cardData.spell_level) }} </div>
+                        <div class="column-body placeholder" *ngIf="!cardData.spell_level"> Placeholder </div>
                     </div>
+
                     <!-- Casting Time -->
                     <div class="col-md-3 col-6 d-flex flex-column spell">
                         <strong class="border-bottom-grey column-heading">CASTING TIME</strong>
-                        <div class="column-body" *ngIf="spell.casting_time"> {{ (spell.casting_time) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.casting_time"> Placeholder </div>
+                        <div class="column-body" *ngIf="cardData.casting_time"> {{ (cardData.casting_time) }} </div>
+                        <div class="column-body placeholder" *ngIf="!cardData.casting_time"> Placeholder </div>
                     </div>
+
                     <!-- Range/Area -->
                     <div class="col-md-3 col-6 d-flex flex-column spell">
                         <strong class="border-bottom-grey column-heading">RANGE/AREA</strong>
-                        <div class="column-body" *ngIf="spell.range"> {{ (spell.range) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.range"> Placeholder </div>
+                        <div class="column-body" *ngIf="cardData.range"> {{ (cardData.range) }} </div>
+                        <div class="column-body placeholder" *ngIf="!cardData.range"> Placeholder </div>
                     </div>
+
                     <!-- Components -->
                     <div class="col-md-3 col-6 d-flex flex-column spell">
                         <strong class="border-bottom-grey column-heading">COMPONENTS</strong>
-                        <div class="column-body" *ngIf="spell.components"> {{ (spell.components) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.components"> Placeholder </div>
+                        <div class="column-body" *ngIf="cardData.components"> {{ (cardData.components) }} </div>
+                        <div class="column-body placeholder" *ngIf="!cardData.components"> Placeholder </div>
                     </div>
+
                     <!-- Duration -->
                     <div class="col-md-3 col-6 d-flex flex-column spell">
                         <strong class="border-bottom-grey column-heading">DURATION</strong>
-                        <div class="column-body" *ngIf="spell.duration"> {{ (spell.duration) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.duration"> Placeholder </div>
+                        <div class="column-body" *ngIf="cardData.duration"> {{ (cardData.duration) }} </div>
+                        <div class="column-body placeholder" *ngIf="!cardData.duration"> Placeholder </div>
                     </div>
+
                     <!-- School -->
                     <div class="col-md-3 col-6 d-flex flex-column spell">
                         <strong class="border-bottom-grey column-heading">SCHOOL</strong>
-                        <div class="column-body" *ngIf="spell.school"> {{ (spell.school) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.school"> Placeholder </div>
+                        <div class="column-body" *ngIf="cardData.school"> {{ (cardData.school) }} </div>
+                        <div class="column-body placeholder" *ngIf="!cardData.school"> Placeholder </div>
                     </div>
+
                     <!-- Attack/Save -->
                     <div class="col-md-3 col-6 d-flex flex-column spell">
                         <strong class="border-bottom-grey column-heading">ATTACK/SAVE</strong>
-                        <div class="column-body" *ngIf="spell.saving_throw"> {{ (spell.saving_throw) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.saving_throw"> Placeholder </div>
+                        <div class="column-body" *ngIf="cardData.saving_throw"> {{ (cardData.saving_throw) }} </div>
+                        <div class="column-body placeholder" *ngIf="!cardData.saving_throw"> Placeholder </div>
                     </div>
+
                     <!-- Damage/Effect -->
                     <div class="col-md-3 col-6 d-flex flex-column spell">
                         <strong class="border-bottom-grey column-heading">EFFECT</strong>
-                        <div class="column-body" *ngIf="spell.damage"> {{ (spell.damage) }} </div>
-                        <div class="column-body placeholder" *ngIf="!spell.damage"> Placeholder </div>
+                        <div class="column-body" *ngIf="cardData.damage"> {{ (cardData.damage) }} </div>
+                        <div class="column-body placeholder" *ngIf="!cardData.damage"> Placeholder </div>
                     </div>
+
                     <!-- Description -->
                     <div class="col-12 d-flex flex-column spell">
                         <strong class="border-bottom-grey column-heading">DESCRIPTION</strong>
-                        <div class="column-body" [innerHTML]="spell.description"></div>
+                        <div class="column-body" [innerHTML]="cardData.description"></div>
                     </div>
                     
                 </div>
             </div>
+
+            <app-formly-formcontainer 
+            *ngIf="isInCreateState() || isInUpdateState()"
+            [model]="userModel" 
+            [fields]="formlyFields" 
+            (formlySubmit)="onSubmit()" 
+            (formlyCancel)="onCancel()"
+            ></app-formly-formcontainer>
+    
+            <app-compare-form-container
+            class="d-flex justify-content-center"
+            *ngIf="isInOutdatedUpdateState()"
+            [formlyFields]="formlyFields"
+            [modelFromUser]="userModel"
+            [modelFromServer]="serverModel"
+            [displayVertically]="true"
+            (updateSubmit)="onSubmit()"
+            (cancel)="onCancel()"
+            ></app-compare-form-container>
         
             <!-- Delete Toggler -->
             <app-delete-toggle
             [deleteMessage] = "'Delete this Spell ?'"
-            (deleteEvent) = "onDelete()"
+            (deleteEvent) = "articleDelete(cardData)"
             ></app-delete-toggle>
         </div>
-
-
     </div>
 </div>
 
 <ng-template #formField>
     <div id="edit-section">
-        <!-- Form -->
-        <app-formly-formcontainer 
-        [model]="spell" 
-        [fields]="fields" 
-        (formlySubmit)="onSubmit()" 
-        (formlyCancel)="onCancel()"
-        ></app-formly-formcontainer>
+
     </div>
 </ng-template>
 

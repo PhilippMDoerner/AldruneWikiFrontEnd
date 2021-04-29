@@ -16,8 +16,8 @@
         <div *ngFor="let spell of spells; let i = index">
             <app-spell
             [index] = "i"
-            [spell] = "spell"
-            (deleteSpell) = "onSpellDelete(i)"
+            [cardData] = "spell"
+            (cardDelete) = "onSpellDelete(i)"
             (classSelect) = "selectClass($event)"
             *ngIf="hasSelectedClasses(spell)"
             ></app-spell>
