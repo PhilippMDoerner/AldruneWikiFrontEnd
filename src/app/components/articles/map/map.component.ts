@@ -10,41 +10,50 @@ import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
+import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
   styleUrls: ['./map.component.scss']
 })
-export class MapComponent implements OnInit, OnDestroy {
+export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
+  //ArticleMixin Variables
+  articleData: ExtendedMap;
+  deleteRoute = {routeName: "character-overview", params: {}}
+
+  //Custom Variables
   maps: OverviewItemObject[];
-  currentMap: ExtendedMap;
-  constants: any = Constants;
 
   isInitialAnimationFinished: boolean = false;
   //Must be ViewChildren instead of ViewChild. Otherwise the Element is not loaded in ngAfterViewInit.
   //That is because the ngIf on <article> leads to the element not being loaded in time, see the following link
   // https://stackoverflow.com/questions/34947154/angular-2-viewchild-annotation-returns-undefined
   @ViewChildren('mapChoice') mapChoice: QueryList<any>;
-
   @ViewChild('mapMainCard') mapMainCard: ElementRef;
 
-  parameter_subscription: Subscription;
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
-    private mapService: MapService,
+    public route: ActivatedRoute,
+    mapService: MapService,
     private overviewService: OverviewService,
-    private warnings: WarningsService,  
+    public warnings: WarningsService,  
     public routingService: RoutingService,
-  ) { }
+  ) { 
+    super(
+      mapService,
+      route,
+      routingService,
+      warnings
+    )
+  }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const mapName = params['name'];
-      this.mapService.readByParam(mapName).pipe(first()).subscribe( 
-        (map: MapObject) => this.currentMap = map,
+      this.articleService.readByParam(mapName).pipe(first()).subscribe( 
+        (map: MapObject) => this.articleData = map,
         error => this.routingService.routeToErrorPage(error)
       );
 
@@ -96,14 +105,10 @@ export class MapComponent implements OnInit, OnDestroy {
   }
 
   deleteMap(){
-    this.mapService.delete(this.currentMap.pk).pipe(first()).subscribe(
+    this.articleService.delete(this.articleData.pk).pipe(first()).subscribe(
       response => this.routeToMap(Constants.defaultMapName),
       error => this.warnings.showWarning(error)
     );
-  }
-
-  ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 
 }

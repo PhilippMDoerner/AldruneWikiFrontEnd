@@ -1,5 +1,5 @@
 <div class="main" #mapMainCard>
-    <article *ngIf="maps && currentMap; else loading" class="container">
+    <article *ngIf="maps && articleData; else loading" class="container">
         <!-- Heading -->
         <app-edit-toggle></app-edit-toggle>
         
@@ -24,7 +24,7 @@
         <div class="row">
             <div class="mb-5 col">
                 <app-leaflet-map 
-                [map]="currentMap"
+                [map]="articleData"
                 ></app-leaflet-map>
             </div>
         </div>
@@ -36,7 +36,7 @@
         (delete)="deleteMap()"
         [link]="routingService.getRoutePath('home1')"
         [label]="'Back to Frontpage'"
-        [deleteMessage]="'Delete Map of '+currentMap.name+'?'"
+        [deleteMessage]="'Delete Map of '+articleData.name+'?'"
         ></app-article-footer>
         
     </article>
