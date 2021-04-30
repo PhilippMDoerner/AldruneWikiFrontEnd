@@ -1,3 +1,4 @@
-<a class="btn btn-secondary float-right" routerLink="{{link}}" [ngClass]="{'d-none': !userHasUpdatePermission()}">
+<a class="btn btn-secondary float-right" routerLink="{{link}}" 
+*ngIf="userHasUpdatePermission()">
     <i [ngClass]="{'fa': true, 'fa-pencil': !isInUpdateState, 'fa-times': isInUpdateState}" id="edit-article"></i>
 </a>
