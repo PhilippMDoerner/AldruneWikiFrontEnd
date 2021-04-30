@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="item; else loading" class="container">
+    <article *ngIf="articleData; else loading" class="container">
         <!-- TODO: If the first word of a heaidng is too long it overlaps, see how to avoid this -->
         <app-edit-toggle 
         [isInUpdateState]=false 
@@ -8,13 +8,13 @@
 
         <!-- Heading -->
         <div class="row">
-            <h1 class="text-center col"> {{ item.name }} </h1>
+            <h1 class="text-center col"> {{ articleData.name }} </h1>
         </div>
         <div class="row">
-            <p *ngIf="item.owner_details" class="text-center col mb-5"> 
+            <p *ngIf="articleData.owner_details" class="text-center col mb-5"> 
                 Owned by: 
-                <a routerLink="{{ routingService.getRoutePath('character', {name: item.owner_details.name}) }}">
-                    {{ item.owner_details.name }}
+                <a routerLink="{{ routingService.getRoutePath('character', {name: articleData.owner_details.name}) }}">
+                    {{ articleData.owner_details.name }}
                 </a>
             </p>
         </div>
@@ -22,15 +22,15 @@
 
         <!-- Image Gallery -->
         <app-image-gallery
-        [article_type]="this.articleType"
-        [article_pk]="this.item.pk"
-        [images]="this.item.images"
+        [article_type]="'items'"
+        [article_pk]="this.articleData.pk"
+        [images]="this.articleData.images"
         ></app-image-gallery>
 
         <!-- Description -->
         <div class="mb-5">
             <app-textfield 
-            [initialText]="item.description"
+            [initialText]="articleData.description"
             [heading]="'Description'"
             (updateText)="onDescriptionUpdate($event)"
             ></app-textfield>
@@ -41,7 +41,7 @@
         (delete)="deleteArticle()"
         [link]="routingService.getRoutePath('item-overview')"
         [label]="'Back to Items'"
-        [deleteMessage]="'Delete '+item.name+'?'"
+        [deleteMessage]="'Delete '+articleData.name+'?'"
         ></app-article-footer>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
