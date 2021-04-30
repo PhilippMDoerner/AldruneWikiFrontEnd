@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="creature; else loading" class="container">
+    <article *ngIf="articleData; else loading" class="container">
         <app-edit-toggle 
         [isInUpdateState]=false 
         [link]="'update'"
@@ -7,20 +7,20 @@
 
         <!-- Heading -->
         <div class="row">
-            <h1 class="text-center col"> {{ creature.name }} </h1>
+            <h1 class="text-center col"> {{ articleData.name }} </h1>
         </div>
 
         <!-- Image Gallery -->
         <app-image-gallery
-        [article_type]="this.articleType"
-        [article_pk]="this.creature.pk"
-        [images]="this.creature.images"
+        [article_type]="'creature'"
+        [article_pk]="this.articleData.pk"
+        [images]="this.articleData.images"
         ></app-image-gallery>
 
         <!-- Description -->
         <div class="mb-5">
             <app-textfield 
-            [initialText]="creature.description"
+            [initialText]="articleData.description"
             [heading]="'Description'"
             (updateText)="onDescriptionUpdate($event)"
             ></app-textfield>
@@ -31,7 +31,7 @@
         (delete)="deleteArticle()"
         [link]="routingService.getRoutePath('creature-overview')"
         [label]="'Back to Creatures'"
-        [deleteMessage]="'Delete '+creature.name+'?'"
+        [deleteMessage]="'Delete '+articleData.name+'?'"
         ></app-article-footer>
         
     </article>

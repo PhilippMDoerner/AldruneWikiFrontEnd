@@ -7,58 +7,30 @@ import { Creature, CreatureObject } from 'src/app/models/creature';
 import { CreatureService } from 'src/app/services/creature/creature.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
 @Component({
   selector: 'app-creature-article',
   templateUrl: './creature-article.component.html',
   styleUrls: ['./creature-article.component.scss']
 })
-export class CreatureArticleComponent implements OnInit {
-  constants: any = Constants;
-  articleType: string = "creature";
-  creature: CreatureObject;
-
-  parameter_subscription: Subscription;
+export class CreatureArticleComponent extends ArticleMixin implements OnInit {
+  //ArticleMixin Variables
+  articleData: CreatureObject;
+  deleteRoute = {routeName: "creature-overview", params: {}};
+  queryParameterName = "name";
 
   constructor(
-    private creatureService: CreatureService,
-    private route: ActivatedRoute,
-    private warnings: WarningsService,  
+    creatureService: CreatureService,
+    route: ActivatedRoute,
+    public warnings: WarningsService,  
     public routingService: RoutingService,
-  ) { }
-
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const creatureName: string = params.name;
-
-      this.creatureService.readByParam(creatureName).pipe(first()).subscribe(
-        (creature: CreatureObject) => this.creature = creature,
-        error => this.routingService.routeToErrorPage(error)
-      );
-    });
-  }
-
-  onDescriptionUpdate(updatedDescription){
-    const oldDescription = this.creature.description;
-    this.creature.description = updatedDescription;
-
-    this.creatureService.update(this.creature.pk, this.creature).pipe(first()).subscribe(
-      (creature: CreatureObject) => {}, 
-      error => {
-        this.creature.description = oldDescription;
-        this.warnings.showWarning(error);
-      }
-    );
-  }
-
-  deleteArticle(){
-    this.creatureService.delete(this.creature.pk).pipe(first()).subscribe(
-      response => this.routingService.routeToPath('creature-overview'), 
-      error => this.warnings.showWarning(error)
-    );
-  }
-
-  ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
+  ) { 
+    super(
+      creatureService,
+      route,
+      routingService,
+      warnings
+    )
   }
 }
