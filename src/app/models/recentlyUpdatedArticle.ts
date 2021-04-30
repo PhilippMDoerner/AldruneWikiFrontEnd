@@ -10,7 +10,7 @@ export interface Article extends ApiObject{
     pk?: number,
 }
 
-export class ArticleObject{
+export class OverviewArticleObject{
     name: string;
     name_full: string;
     description: string;

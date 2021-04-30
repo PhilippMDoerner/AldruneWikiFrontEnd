@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
-import { ArticleObject } from 'src/app/models/recentlyUpdatedArticle';
+import { OverviewArticleObject } from 'src/app/models/recentlyUpdatedArticle';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
 import { RoutingService } from 'src/app/services/routing.service';
 
@@ -12,7 +12,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 })
 export class RecentlyUpdatedArticleComponent implements OnInit {
   article_subscription: Subscription;
-  articles: ArticleObject[];
+  articles: OverviewArticleObject[];
   constants: any = Constants;
 
   constructor(
@@ -22,7 +22,7 @@ export class RecentlyUpdatedArticleComponent implements OnInit {
 
   ngOnInit(): void {
     this.article_subscription = this.recentlyUpdatedArticleService.getRecentlyUpdatedArticle().subscribe(
-      (articles: ArticleObject[]) => {
+      (articles: OverviewArticleObject[]) => {
         this.articles = articles;
         this.articles.sort(this.sortByDate);
       },
@@ -30,7 +30,7 @@ export class RecentlyUpdatedArticleComponent implements OnInit {
     );
   }
 
-  sortByDate(article1: ArticleObject, article2: ArticleObject){
+  sortByDate(article1: OverviewArticleObject, article2: OverviewArticleObject){
     const date1 = new Date(article1.update_date);
     const date2 = new Date(article2.update_date);
     

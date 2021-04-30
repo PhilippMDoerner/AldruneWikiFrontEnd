@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { Article, ArticleObject } from 'src/app/models/recentlyUpdatedArticle';
+import { Article, OverviewArticleObject } from 'src/app/models/recentlyUpdatedArticle';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
 import { RoutingService } from 'src/app/services/routing.service';
 
@@ -30,7 +30,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const searchString: string = params['searchString'];
       this.articleService.getSearchedArticles(searchString).pipe(first()).subscribe(
-        (articles: ArticleObject[]) => this.articles = articles,
+        (articles: OverviewArticleObject[]) => this.articles = articles,
         error => this.routingService.routeToErrorPage(error)
       )
     });
