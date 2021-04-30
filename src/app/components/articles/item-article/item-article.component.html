@@ -1,7 +1,8 @@
 <div class="main">
     <article *ngIf="articleData; else loading" class="container">
         <!-- TODO: If the first word of a heaidng is too long it overlaps, see how to avoid this -->
-        <app-edit-toggle 
+        <app-edit-toggle
+        *ngIf="userHasUpdatePermission()" 
         [isInUpdateState]=false 
         [link]="'update'"
         ></app-edit-toggle>
