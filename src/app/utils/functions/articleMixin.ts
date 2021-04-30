@@ -1,4 +1,4 @@
-import { Directive } from "@angular/core";
+import { Directive, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import { first } from "rxjs/operators";
@@ -12,7 +12,7 @@ import { WarningsService } from "src/app/services/warnings.service";
 import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 
 @Directive()
-export class ArticleMixin extends PermissionUtilityFunctionMixin{
+export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy{
     constants = Constants;
     parameter_subscription: Subscription;
 
