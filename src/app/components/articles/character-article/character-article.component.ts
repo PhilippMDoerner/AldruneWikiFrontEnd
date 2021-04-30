@@ -1,11 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CharacterObject } from "src/app/models/character";
 import { CharacterService } from "src/app/services/character/character.service";
-import { Subject, Subscription } from "rxjs";
 import { ActivatedRoute } from "@angular/router";
-import { Constants } from "src/app/app.constants";
-import { first } from 'rxjs/operators';
-import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { QuoteObject } from 'src/app/models/quote';
