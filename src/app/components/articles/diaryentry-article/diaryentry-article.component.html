@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="diaryEntry; else loading" class="container">
+    <article *ngIf="articleData; else loading" class="container">
         <app-edit-toggle 
         [isInUpdateState]=false 
         [link]="'update'"
@@ -8,25 +8,25 @@
         <!-- Heading -->
         <div class="row">
             <h1 class="text-center col">
-                Diary Entry # {{ diaryEntry.session_details.session_number }} <br>
-                {{ diaryEntry.title }}
+                Diary Entry # {{ articleData.session_details.session_number }} <br>
+                {{ articleData.title }}
             </h1>
         </div>
         <div class="row">
             <p class="text-center mb-5 col"> 
-                Written by: {{ diaryEntry.author_details.name }} <br>
+                Written by: {{ articleData.author_details.name }} <br>
                 <span *ngIf="coAuthors"> Together with: {{ coAuthors }} </span> 
             </p>
         </div>
 
         <!-- DiaryEntry Text In Encounters -->
         <app-diary-entry-encounter-list
-        [diaryEntry]="diaryEntry"
+        [diaryEntry]="articleData"
         ></app-diary-entry-encounter-list>
 
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
-        (delete)="deleteDiaryEntry()"
+        (delete)="deleteArticle()"
         [link]="routingService.getRoutePath('diaryentry-overview')"
         [label]="'Back to Diaryentries'"
         [deleteMessage]="'Delete this Diaryentry?'"

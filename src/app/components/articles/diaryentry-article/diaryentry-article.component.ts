@@ -7,27 +7,34 @@ import { DiaryEntry } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
 @Component({
   selector: 'app-diaryentry-article',
   templateUrl: './diaryentry-article.component.html',
   styleUrls: ['./diaryentry-article.component.scss']
 })
-export class DiaryentryArticleComponent implements OnInit {
-  constants: any = Constants;
-  diaryEntry: DiaryEntry;
-  articleType: string = 'diaryEntry';
+export class DiaryentryArticleComponent extends ArticleMixin {
+  //ArticleMixin Variables
+  articleData: DiaryEntry;
+  deleteRoute: {routeName: 'diaryentry-overview', params: {}};
 
+  //Custom Variables
   coAuthors: string;
 
-  private parameter_subscription: Subscription;
-
   constructor(
-    private diaryEntryService: DiaryentryService,
-    private route: ActivatedRoute,
-    private warning: WarningsService,  
+    diaryEntryService: DiaryentryService,
+    public route: ActivatedRoute,
+    public warning: WarningsService,  
     public routingService: RoutingService,
-  ) { }
+  ) { 
+    super(
+      diaryEntryService,
+      route,
+      routingService,
+      warning
+    )
+  }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
@@ -35,9 +42,9 @@ export class DiaryentryArticleComponent implements OnInit {
       const sessionNumber: number = parseInt(params.sessionNumber);
       const authorName: string = params.authorName;
   
-      this.diaryEntryService.readByParam({isMainSession, sessionNumber, authorName}).pipe(first()).subscribe(
+      this.articleService.readByParam({isMainSession, sessionNumber, authorName}).pipe(first()).subscribe(
         diaryEntry => {
-          this.diaryEntry = diaryEntry;
+          this.articleData = diaryEntry;
           this.coAuthors = this.getCoAuthorString();
         },
         error => this.routingService.routeToErrorPage(error)
@@ -47,12 +54,12 @@ export class DiaryentryArticleComponent implements OnInit {
 
   getCoAuthorString(): string{
     let authorString: string = "";
-    for(const encounter of this.diaryEntry.encounters){
+    for(const encounter of this.articleData.encounters){
       const isEncounterInCreateState = encounter.pk == null;
       if (isEncounterInCreateState) continue;
       
       const authorName = encounter.author_details.name;
-      if(!authorString.includes(authorName) && !this.diaryEntry.author_details.name.includes(authorName) ){
+      if(!authorString.includes(authorName) && !this.articleData.author_details.name.includes(authorName) ){
         authorString += ` ${authorName},`;
       }
     }
@@ -60,14 +67,7 @@ export class DiaryentryArticleComponent implements OnInit {
     return authorString;
   }
 
-  deleteDiaryEntry(): void{
-    this.diaryEntryService.delete(this.diaryEntry.pk).pipe(first()).subscribe(
-      (response) => this.routingService.routeToPath('diaryentry-overview'),
-      error => this.warning.showWarning(error)
-    );
-  }
-
-  ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
+  onDescriptionUpdate(){
+    throw "InvalidFunctionUseException. This functionality does not exist on diaryentry-article"
   }
 }
