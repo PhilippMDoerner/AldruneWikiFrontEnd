@@ -1,8 +1,8 @@
 <div class="main">
-    <article *ngIf="marker; else loading" class="container">
+    <article *ngIf="articleData; else loading" class="container">
         <app-edit-toggle></app-edit-toggle>
         <div class="row">
-            <h1 class="text-center col">Marker on {{marker.map_details.name}}</h1>
+            <h1 class="text-center col">Marker on {{articleData.map_details.name}}</h1>
         </div>
         
         <!-- Data Heading-->
@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-4"></div>
             <span class="bold col-3">Longitude: </span> 
-            <span class="col-3">{{marker.longitude}}</span>
+            <span class="col-3">{{articleData.longitude}}</span>
             <div class="col-2"></div>
         </div>
 
@@ -22,7 +22,7 @@
         <div class="row">
             <div class="col-4"></div>
             <span class="bold col-3">Latitude: </span> 
-            <span class="col-3">{{marker.latitude}}</span>
+            <span class="col-3">{{articleData.latitude}}</span>
             <div class="col-2"></div>
         </div>
 
@@ -30,7 +30,7 @@
         <div class="row">
             <div class="col-4"></div>
             <span class="bold col-3">Icon: </span>
-            {{marker.icon}}
+            {{articleData.icon}}
             <div class="col-2"></div>
         </div>
 
@@ -38,7 +38,7 @@
         <div class="row">
             <div class="col-4"></div>
             <span class="bold col-3">Color: </span> 
-            <span class="col-3"> {{marker.color}} </span>
+            <span class="col-3"> {{articleData.color}} </span>
             <div class="col-2"></div>
         </div>
 
@@ -47,13 +47,13 @@
         
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
-        (delete)="deleteMarker()"
+        (delete)="deleteArticle()"
         [link]="routingService.getRoutePath('location', {
-                parent_name: marker.location_details.parent_location_name, 
-                name: marker.location_details.name
+                parent_name: articleData.location_details.parent_location_name, 
+                name: articleData.location_details.name
             }
         )"
-        [label]="'Back to '+marker.location_details.name"
+        [label]="'Back to '+articleData.location_details.name"
         [deleteMessage]="'Delete Marker?'"
         ></app-article-footer>
 
