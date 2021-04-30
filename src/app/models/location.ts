@@ -52,6 +52,9 @@ export class LocationObject implements Location{
     pk?: number;
     characters?: LocationCharacter[];
     sublocations?: Location[];
+    parent_location_list?: string[];
+    marker_details?: [{map: string, map_icon: string}];
+    images?: Image[];
 
     constructor(object?: Location){
         if (object) Object.assign(this, object)
