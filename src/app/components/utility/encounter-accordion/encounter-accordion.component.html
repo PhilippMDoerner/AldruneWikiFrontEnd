@@ -107,7 +107,7 @@
         <form [formGroup]="form" *ngIf="isEncounterUpdateState" (submit)="updateEncounter(model)">
             <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
             <div class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</div>
-            <button type="submit" class="btn btn-secondary">Submit</button>
+            <button type="submit" class="btn btn-primary">Submit</button>
         </form>    
     </div>
 </ng-template>
