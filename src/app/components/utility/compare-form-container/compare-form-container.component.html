@@ -1,14 +1,14 @@
-<div #compareFormContainer class="container row p-0">
+<div #compareFormContainer class="container p-0 mw-100">
     <div class="alert alert-info">
         <span class="fa fa-info-circle"></span>
         While you were updating this article, somebody else went ahead and updated it as well. Please include their changes in your update before submitting.
     </div>
 
-    <div [ngClass]="{'flex-row card': !displayVertically, 'row': displayVertically}">
-        <div class="col-12" [ngClass]="{'col-lg-6': !displayVertically}">
+    <div [ngClass]="{'row': !displayVertically, 'card': displayVertically}">
+        <div class="col-12" [ngClass]="{'col-sm-6': !displayVertically}">
             <!-- This has this ngclass because the spacing of the p-3 is necessary when putting forms side by side, 
                 when put verticall it just wastes space -->
-            <div [ngClass]="{'p-3': !displayVertically}">
+            <div>
                 <h3> Server Version </h3>
                 <app-display-form-container
                 [model]="modelFromServer" 
@@ -19,11 +19,11 @@
 
         <hr class="white-separator" *ngIf="displayVertically">
     
-        <div class="col-12" [ngClass]="{'col-lg-6': !displayVertically}">
+        <div class="col-12" [ngClass]="{'col-sm-6': !displayVertically}">
             <!-- This has this ngclass because the spacing of the p-3 is necessary when putting forms side by side, 
                 when put verticall it just wastes space -->
-            <div [ngClass]="{'p-3': !displayVertically}">
-                <h3> User Version </h3>
+            <div>
+                <h3> Your Version </h3>
                 <app-formly-formcontainer
                 [model]="modelFromUser" 
                 [fields]="formlyFields" 
