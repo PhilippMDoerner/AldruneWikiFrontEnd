@@ -62,6 +62,8 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
 
             //Change the formstate of the textfield which now has the server article version and its own
             this.textfieldFormStateSubject.next(Constants.outdatedUpdateState);
+        } else {
+            this.warnings.showWarning(errorResponse);
         }
     }
 
