@@ -25,6 +25,7 @@
                 <app-textfield 
                 [initialText]="location.description"
                 [heading]="location.name"
+                [formStateSubject]="sublocationDescriptionFormStates[i]"
                 (updateText)="onSublocationUpdate($event, i)"
                 ></app-textfield>
             </div>

@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { LocationObject } from 'src/app/models/location';
+import { Location, LocationObject } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -15,6 +16,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 export class LocationAccordionComponent extends PermissionUtilityFunctionMixin implements OnInit {
   constants: any = Constants;
   @Input() sublocations: LocationObject[];
+  sublocationDescriptionFormStates: BehaviorSubject<string>[] = [];
   isOpen: object;
 
   constructor(
@@ -29,6 +31,9 @@ export class LocationAccordionComponent extends PermissionUtilityFunctionMixin i
     this.sublocations.forEach((location, index) => {
       const accordionPanelId = `static-${index}`;
       this.isOpen[accordionPanelId] = false;
+
+      const formStateSubject: BehaviorSubject<string> = new BehaviorSubject(Constants.displayState);
+      this.sublocationDescriptionFormStates.push(formStateSubject);
     });
   }
 
@@ -39,7 +44,7 @@ export class LocationAccordionComponent extends PermissionUtilityFunctionMixin i
 
     this.locationService.update(sublocationToUpdate.pk, sublocationToUpdate).pipe(first()).subscribe(
       (updatedSublocation: LocationObject) => {},
-      error => this.warnings.showWarning(error)
+      error => this.onDescriptionUpdateError(error, sublocationIndex)
     );
   }
 
@@ -52,5 +57,26 @@ export class LocationAccordionComponent extends PermissionUtilityFunctionMixin i
 
   panelIsOpen(index: number){
     return this.isOpen[`static-${index}`];
+  }
+
+  /**
+   * @description Ensures that the "OutdatedUpdateForm" is displayed if the error is HTTP 409. 
+   * Else it just displays the error message
+   * @param {any} errorResponse - The error response
+   * @param {number} index - The index on sublocations
+   */
+  onDescriptionUpdateError(errorResponse: any, index: number){
+    const isOutdatedUpdateError = errorResponse?.status === 409;
+    if(isOutdatedUpdateError){ 
+        //Update the description in your local data with that from the server
+        const serverLocation: Location = errorResponse.error;
+        const serverLocationObject = new LocationObject(serverLocation);
+        this.sublocations[index] = serverLocationObject;
+
+        //Change the formstate of the textfield which now has the server article version and its own
+        this.sublocationDescriptionFormStates[index].next(Constants.outdatedUpdateState);
+    } else {
+      this.warnings.showWarning(errorResponse);
+    }
   }
 }
