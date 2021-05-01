@@ -2,4 +2,11 @@
     color: var(--white);
     background-color: transparent;
     border-color: var(--white);
+    background: repeating-linear-gradient(
+        45deg, 
+        hsl(210, 23%, 20%), 
+        hsl(210, 23%, 20%) 10px, 
+        hsl(210, 23%, 25%) 10px, 
+        hsl(210, 23%, 25%) 20px,
+    );
 }
