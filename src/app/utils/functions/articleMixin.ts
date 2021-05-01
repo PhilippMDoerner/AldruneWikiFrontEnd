@@ -1,6 +1,6 @@
 import { Directive, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
+import { BehaviorSubject, Subscription } from "rxjs";
 import { first } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
 import { ApiObject } from "src/app/models/base-models";
@@ -18,6 +18,8 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
 
     queryParameterName: string; //Only use if the column for that parameter has the unique constraint, aka the parameter is unique
     articleData: ArticleObject;
+
+    textfieldFormStateSubject: BehaviorSubject<string> = new BehaviorSubject(Constants.displayState);
 
     deleteRoute: { routeName: string, params: any }; //Data to generate route to go to to if deletion of article succeeds
 
@@ -46,9 +48,21 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
         this.articleService.patch(this.articleData.pk, descriptionPatch).pipe(first()).subscribe(
           (article: ArticleObject) => {this.articleData = article},
           error =>{
-            this.warnings.showWarning(error);
+            this.onDescriptionUpdateError(error)
           }
         );
+    }
+
+    onDescriptionUpdateError(errorResponse: any){
+        const isOutdatedUpdateError = errorResponse?.status === 409;
+        if(isOutdatedUpdateError){ 
+            //Update the description in your local data with that from the server
+            const serverArticleVersion: ArticleObject = errorResponse.error;
+            this.articleData = serverArticleVersion;
+
+            //Change the formstate of the textfield which now has the server article version and its own
+            this.textfieldFormStateSubject.next(Constants.outdatedUpdateState);
+        }
     }
 
     deleteArticle(){
