@@ -3,7 +3,7 @@
     <h4 class="col"> Encounters </h4>
 </div>
 
-<div class="encounter-list mb-5 mt-3" *ngIf="!isEncounterUpdateState; else EncounterForm">
+<div class="encounter-list mb-5 mt-3" *ngIf="isInDisplayState(); else EncounterForm">
     <ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)">
         <ngb-panel id="static-{{i}}" *ngFor="let encounter of encounters; let i = index">
 
@@ -82,17 +82,11 @@
                 </div>
 
                 <!-- Encounter Footer/Delete Toggle -->
-                <div class="float-right mb-3" [ngClass]="{'d-none': !userHasDeletePermission()}">
-                    <div *ngIf="!isEncounterDeleteState" class="btn btn-outline-danger" (click)="toggleEncounterDeleteState()">
-                        <i class="fa fa-trash"></i>
-                    </div>
-
-                    <div *ngIf="isEncounterDeleteState" class="delete-request mt-3" id="encounter-delete">
-                        <span class="mr-3"> <strong>Delete this encounter?</strong> </span>  
-                        <div class="btn btn-danger float-right mr-2" (click)="deleteEncounter(encounter, i)"> Yes </div>
-                        <div class="btn btn-secondary float-right" (click)="toggleEncounterDeleteState()"> No </div>
-                    </div>
-                </div>
+                <app-delete-toggle
+                [deleteMessage]="'Delete this encounter?'"
+                (deleteEvent)="deleteEncounter()"
+                class="col-md-9 float-right px-0"
+                ></app-delete-toggle>
 
             </ng-template>
 
@@ -102,12 +96,25 @@
 
 <!-- Form to Update Encounters -->
 <ng-template #EncounterForm>
-    <div class="my-3 py-3 px-4 card">        
-        <!-- Update Encounter Form -->
-        <form [formGroup]="form" *ngIf="isEncounterUpdateState" (submit)="updateEncounter(model)">
-            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <div class="btn btn-secondary mr-3" (click)="toggleEncounterUpdateState()">Cancel</div>
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>    
+    <div class="my-3 py-3 px-3 card">
+        <h4 [innerHTML]="userModel.title"></h4>
+
+        <app-formly-formcontainer
+        *ngIf="isInUpdateState()"
+        [model]="userModel" 
+        [fields]="formlyFields" 
+        (formlySubmit)="updateEncounter(userModel)" 
+        (formlyCancel)="formState=constants.displayState"
+        ></app-formly-formcontainer>
+        
+        <app-compare-form-container
+        *ngIf="isInOutdatedUpdateState()"
+        [formlyFields]="formlyFields"
+        [modelFromUser]="userModel"
+        [modelFromServer]="serverModel"
+        [displayVertically]="true"
+        (updateSubmit)="updateEncounter(userModel)"
+        (cancel)="formState=constants.displayState"
+        ></app-compare-form-container>  
     </div>
 </ng-template>

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Character } from 'src/app/models/character';
@@ -24,27 +25,21 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
   constants: any = Constants;
   @Input() encounters: EncounterObject[];
   @Input() articleCharacter: Character;
+  formState: string = Constants.displayState;
   characters : OverviewItem[];
   isOpen: object;
 
   inEncounterConnectionCreationState: boolean = false;
   baseEncounterConnection: EncounterConnectionObject = new EncounterConnectionObject();
 
-  isEncounterDeleteState: boolean = false;
-  isEncounterUpdateState: boolean = false;
-
-  form = new FormGroup({});
-  model: EncounterObject;
-  fields: FormlyFieldConfig[] = [
+  userModel: EncounterObject;
+  serverModel: Encounter;
+  formlyFields: FormlyFieldConfig[] = [
+    this.formlyService.genericInput({key: "title"}),
+    this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
     this.formlyService.genericSelect({key: "session_number", label: "Session", optionsType: "session"}),
     this.formlyService.genericSelect({key: "location", label: "Encounter Location", optionsType: "location"}),
-    {
-      key: "description",
-      type: "tinymce",
-      templateOptions:{
-        label: "Description",
-      }
-    }
+    this.formlyService.genericTextField({key: "description", required: true}),
   ];
 
   constructor(
@@ -65,6 +60,26 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
     });
   }
 
+  isInCreateState(): boolean{
+    return this.formState === Constants.createState;
+  }
+
+  isInUpdateState(): boolean{
+      return this.formState === Constants.updateState;
+  }
+
+  isInOutdatedUpdateState(): boolean{
+      return this.formState === Constants.outdatedUpdateState;
+  }
+
+  isInDeleteState(): boolean{
+      return this.formState === Constants.deleteState;
+  }
+
+  isInDisplayState(): boolean{
+    return this.formState === Constants.displayState;
+  }
+
   //### Handling Encounters ###
   onEncounterUpdate(updateText: string, encounterIndex: number){
     const encounter: Encounter = this.encounters[encounterIndex];
@@ -75,41 +90,45 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
     );
   }
 
-  toggleEncounterUpdateState(){
-    this.isEncounterUpdateState = !this.isEncounterUpdateState;
-  }
-
   fullEditEncounter(encounter: EncounterObject){
-    this.model = encounter;
-    this.isEncounterUpdateState = true;
+    this.userModel = JSON.parse(JSON.stringify(encounter));
+    this.formState = Constants.updateState;
   }
 
   updateEncounter(model: Encounter, encounterIndex: number){
     this.encounterService.update(model.pk, model).pipe(first()).subscribe(
       (updatedEncounter: EncounterObject) => {
         this.encounters[encounterIndex] = updatedEncounter;
-        this.isEncounterUpdateState = false;
+        this.formState = Constants.displayState;
       },
-      error => this.warnings.showWarning(error)
+      error => this.onEncounterUpdateError(error)
     );
   }
 
-  toggleEncounterDeleteState(){
-    this.isEncounterDeleteState = !this.isEncounterDeleteState;
+
+   onEncounterUpdateError(errorResponse: any){
+    const isOutdatedUpdateError = errorResponse?.status === 409;
+    if(isOutdatedUpdateError){ 
+        const serverEncounter: Encounter = errorResponse.error;
+        this.serverModel = serverEncounter;
+
+        this.formState = Constants.outdatedUpdateState;
+    } else {
+      this.warnings.showWarning(errorResponse);
+    }
   }
 
   deleteEncounter(encounter: Encounter, encounterIndex: number){
     this.encounterService.delete(encounter.pk).pipe(first()).subscribe(
       response => {
         this.encounters.splice(encounterIndex, 1);
-        this.toggleEncounterDeleteState();
       },
       error => this.warnings.showWarning(error)
     );
   }
 
   resetEncounterForm(){
-    this.model = new EncounterObject();
+    this.userModel = new EncounterObject();
   }
 
 
