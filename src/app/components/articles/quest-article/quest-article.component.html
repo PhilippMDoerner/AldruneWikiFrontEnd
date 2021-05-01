@@ -47,6 +47,7 @@
             <app-textfield 
             [initialText]="articleData.description"
             [heading]="'Description'"
+            [formStateSubject]="textfieldFormStateSubject"
             (updateText)="onDescriptionUpdate($event)"
             ></app-textfield>
         </div>

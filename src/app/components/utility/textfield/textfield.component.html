@@ -1,25 +1,27 @@
 <!-- Heading -->
 <div *ngIf="heading">
     <h4 [innerHTML]="heading" class="d-inline"></h4>
-    <h4 [ngClass]="{'d-none': !userHasUpdatePermission(), 'd-inline': userHasUpdatePermission()}">
-        <i *ngIf="!isEditState && allowEdit" (click)="enableEdit()" class="fa icon fa-pencil ml-2"></i>
-        <i *ngIf="isEditState" (click)="cancelEdit()" class="fa icon fa-times ml-2"></i>
-        <i *ngIf="isEditState" (click)="finishEdit()" class="fa icon fa-check ml-2"></i>
+    <h4 class="d-inline" *ngIf="userHasUpdatePermission()">
+        <i *ngIf="isInDisplayState() && allowEdit" (click)="enableEdit()" class="fa icon fa-pencil ml-2"></i>
+        <i *ngIf="isInUpdateState()" (click)="cancelEdit()" class="fa icon fa-times ml-2"></i>
+        <i *ngIf="isInUpdateState()" (click)="finishEdit()" class="fa icon fa-check ml-2"></i>
     </h4>
 </div>
 
 <!-- Text Body -->
 <form class="mt-2">
-    <div class="textfield">
-        <div *ngIf="isEditState">
+    <div>
+        <div *ngIf="isInUpdateState() && userHasUpdatePermission()">
             <form (submit)="finishEdit()">
                 <editor 
                 [init]="constants.tinyMCESettings"
                 name="textEditField"
-                [(ngModel)]="updatedText"
+                [(ngModel)]="textModel"
                 class="mb-2"
                 ></editor>
 
+
+                <!-- Form Buttons -->
                 <div class="btn btn-secondary mx-2" (click)="cancelEdit()">
                     <span class="fa icon fa-times"></span>
                     Cancel
@@ -32,6 +34,51 @@
 
         </div>
 
-        <div *ngIf="!isEditState" [innerHTML]="updatedText | safeHtml"></div>
+        <div *ngIf="isInOutdatedUpdateState() && userHasUpdatePermission()">
+            <!-- Informating heading -->
+            <div class="alert alert-info">
+                <span class="fa fa-info-circle"></span>
+                While you were updating this article, somebody else went ahead and updated it as well. Please include their changes in your update before submitting.
+            </div>
+
+            <!-- Textfield-Form -->
+            <div class="flex-column card p-4">
+                <!-- Comparison text -->
+                <div>
+                    <h3> Server Version </h3>
+                    <div [innerHTML]="initialText | safeHtml"></div>
+                </div>
+
+
+                <hr class="white-separator">
+
+
+                <!-- Actual edit form -->
+                <form (submit)="finishEdit()">
+                    <h3> Your Version </h3>
+
+                    <editor 
+                    [init]="constants.tinyMCESettings"
+                    name="textEditField"
+                    [(ngModel)]="textModel"
+                    class="mb-2"
+                    ></editor>
+    
+    
+                    <!-- Form Buttons -->
+                    <div class="btn btn-dark mx-2" (click)="cancelEdit()">
+                        <span class="fa icon fa-times"></span>
+                        Cancel
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="fa fa-check"></span>
+                        Submit
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+        <div *ngIf="isInDisplayState() || !userHasUpdatePermission()" [innerHTML]="textModel | safeHtml"></div>
     </div>
 </form>

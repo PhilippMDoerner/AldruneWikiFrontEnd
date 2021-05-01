@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -7,41 +8,50 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   templateUrl: './textfield.component.html',
   styleUrls: ['./textfield.component.scss']
 })
-export class TextfieldComponent extends PermissionUtilityFunctionMixin implements OnInit, OnChanges {
+export class TextfieldComponent extends PermissionUtilityFunctionMixin implements OnInit {
   @Input() initialText: string;
   @Input() heading: string;
   @Input() allowEdit: boolean = true;
-  @Input() isEditState : boolean = false;
+  @Input() formStateSubject : BehaviorSubject<string> = new BehaviorSubject(Constants.displayState);
   @Output() updateText: EventEmitter<string> = new EventEmitter();
-  updatedText: string;
   constants = Constants;
+
+  textModel: string;
 
   constructor() { super() }
 
   ngOnInit(): void {
-    this.updatedText = this.initialText;
+    this.textModel = this.initialText;
   }
 
-  ngOnChanges(): void{
-    this.updatedText = this.initialText;
+  isInUpdateState(): boolean{
+      return this.formStateSubject.value === Constants.updateState;
+  }
+
+  isInOutdatedUpdateState(): boolean{
+      return this.formStateSubject.value === Constants.outdatedUpdateState;
+  }
+
+  isInDisplayState(): boolean{
+      return this.formStateSubject.value === Constants.displayState;
   }
 
   enableEdit(){
     if(!this.allowEdit) return;
-    this.isEditState = true;
+    this.formStateSubject.next(Constants.updateState);
   }
 
   finishEdit(){
     if(!this.allowEdit) return;
 
-    this.isEditState = false;
-    this.updateText.emit(this.updatedText);
+    this.formStateSubject.next(Constants.displayState);
+    this.updateText.emit(this.textModel);
   }
 
   cancelEdit(){
     if(!this.allowEdit) return;
 
-    this.isEditState = false;
-    this.updatedText = this.initialText;
+    this.formStateSubject.next(Constants.displayState);
+    this.textModel = this.initialText;
   }
 }
