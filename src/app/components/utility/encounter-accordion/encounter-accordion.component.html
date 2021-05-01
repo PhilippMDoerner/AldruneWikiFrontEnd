@@ -35,7 +35,8 @@
                 <div class="mb-1">
                     <app-textfield 
                     [initialText]="encounter.description"
-                    [heading]="encounter.name"
+                    [heading]="encounter.title"
+                    [allowEdit]="false"
                     (updateText)="onEncounterUpdate($event, i)"
                     ></app-textfield>
                 </div>
