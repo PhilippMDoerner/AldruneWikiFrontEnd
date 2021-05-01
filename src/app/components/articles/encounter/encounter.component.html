@@ -1,7 +1,7 @@
 <div class="main">
-    <article *ngIf="encounter; else loading" class="container">
+    <article *ngIf="articleData; else loading" class="container">
         <div class="row">
-            <h1 class="text-center col">{{encounter.name}}</h1>
+            <h1 class="text-center col" [innerHTML]="articleData.name"></h1>
         </div>
 
         <div class="mb-3">
@@ -9,7 +9,7 @@
             <!-- Encounter Session -->
             <div class="row">
                 <span class="col-md-3 col-6 bold"> Session: </span>
-                <span class="col-md-3 col-6">{{encounter.session_number_details.name_full}}</span>
+                <span class="col-md-3 col-6">{{articleData.session_number_details.name_full}}</span>
             </div>
 
             <!-- Encounter Location -->
@@ -18,12 +18,12 @@
                 <span class="col-md-3 col-6">
                     <a 
                     routerLink="{{routingService.getRoutePath('location', {
-                            parent_name: encounter.location_details.parent_location_name, 
-                            name: encounter.location_details.name
+                            parent_name: articleData.location_details.parent_location_name, 
+                            name: articleData.location_details.name
                         })
                     }}"
                     >
-                        {{encounter.location_details.name}}
+                        {{articleData.location_details.name}}
                     </a>
                 </span>
             </div>
@@ -68,7 +68,7 @@
                 </form>
 
                 <!-- EncounterConnection List -->
-                <div *ngFor="let character of encounter.encounterConnections; let i = index" class="icon-container">
+                <div *ngFor="let character of articleData.encounterConnections; let i = index" class="icon-container">
                     <a routerLink="{{routingService.getRoutePath('character', {name: character.character_details.name}) }}">
                         {{character.character_details.name}}
                     </a>
@@ -81,14 +81,15 @@
         <!-- Encounter Text -->
         <div class="mb-1">
             <app-textfield 
-            [initialText]="encounter.description"
+            [initialText]="articleData.description"
             [heading]="'Description'"
-            (updateText)="onEncounterUpdate($event)"
+            [formStateSubject]="textfieldFormStateSubject"
+            (updateText)="onDescriptionUpdate($event)"
             ></app-textfield>
         </div>
 
         <app-article-footer
-        (delete)="deleteEncounter()"
+        (delete)="deleteArticle()"
         [link]="routingService.getRoutePath('home1')"
         [label]="'Back to Frontpage'"
         [deleteMessage]="'Delete this Encounter?'"

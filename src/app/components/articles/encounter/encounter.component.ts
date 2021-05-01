@@ -12,16 +12,20 @@ import { EncounterServiceService } from 'src/app/services/encounter/encounter-se
 import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
 @Component({
   selector: 'app-encounter',
   templateUrl: './encounter.component.html',
   styleUrls: ['./encounter.component.scss']
 })
-export class EncounterComponent implements OnInit {
-  constants: any = Constants;
-  encounter: Encounter;
+export class EncounterComponent extends ArticleMixin implements OnInit {
+  //ArticleMixin Variables
+  articleData: Encounter;
+  queryParameterName = "pk";
+  deleteRoute = {routeName: "home1", params: {}};
 
+  //Custom Variables
   addEncounterConnectionState: boolean = false;
   isEncounterDeleteState: boolean = false;
 
@@ -29,30 +33,29 @@ export class EncounterComponent implements OnInit {
   baseEncounterConnection: EncounterConnectionObject = new EncounterConnectionObject();
 
   constructor(
-    private encounterService: EncounterServiceService,
+    encounterService: EncounterServiceService,
     private encounterConnectionService: EncounterConnectionService,
     private overviewService: OverviewService,
-    private route: ActivatedRoute,  
+    public route: ActivatedRoute,  
     public routingService: RoutingService,
-    private warningsService: WarningsService,
-  ) { }
+    warningsService: WarningsService,
+  ) { 
+    super(
+      encounterService,
+      route,
+      routingService,
+      warningsService
+    )
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe( params => {
       const pk: number = params['pk'];
-      this.encounterService.read(pk).pipe(first()).subscribe(
-        (encounter: EncounterObject) => this.encounter = encounter,
+      this.articleService.read(pk).pipe(first()).subscribe(
+        (encounter: EncounterObject) => this.articleData = encounter,
         error => this.routingService.routeToErrorPage(error)
       );
     })
-  }
-
-  onEncounterUpdate(updateText: string){
-    this.encounter.description = updateText;
-    this.encounterService.update(this.encounter.pk, this.encounter).pipe(first()).subscribe(
-      (encounter: EncounterObject) => this.encounter = encounter,
-      error => this.warningsService.showWarning(error)
-    );
   }
 
   toggleAddEncounterConnectionState(){
@@ -60,33 +63,33 @@ export class EncounterComponent implements OnInit {
     if (!this.characters){
       this.overviewService.getOverviewItems('character').pipe(first()).subscribe(
         (characters: OverviewItem[]) => this.characters = characters,
-        error => this.warningsService.showWarning(error)
+        error => this.warnings.showWarning(error)
       );
     }
   }
 
   createEncounterConnection(){
-    this.baseEncounterConnection.encounter = this.encounter.pk;
+    this.baseEncounterConnection.encounter = this.articleData.pk;
     this.encounterConnectionService.create(this.baseEncounterConnection).pipe(first()).subscribe(
       (encounterConnection: EncounterConnectionObject) => {
-        this.encounter.encounterConnections.push(encounterConnection);
+        this.articleData.encounterConnections.push(encounterConnection);
         this.resetBaseEncounterConnection();
         this.addEncounterConnectionState = false;
       },
-      error => this.warningsService.showWarning(error)
+      error => this.warnings.showWarning(error)
     );
   }
 
   deleteEncounterConnection(connection: EncounterConnectionObject){
     this.encounterConnectionService.delete(connection.pk).pipe(first()).subscribe(
       response => {
-        const connectionIndex: number = this.encounter.encounterConnections.indexOf(connection);
+        const connectionIndex: number = this.articleData.encounterConnections.indexOf(connection);
         const hasConnection: boolean = connectionIndex > -1;
         if (hasConnection){
-          this.encounter.encounterConnections.splice(connectionIndex, 1);
+          this.articleData.encounterConnections.splice(connectionIndex, 1);
         }
       },
-      error => this.warningsService.showWarning(error)
+      error => this.warnings.showWarning(error)
     );
   }
 
@@ -96,12 +99,5 @@ export class EncounterComponent implements OnInit {
 
   toggleEncounterDeleteState(){
     this.isEncounterDeleteState = !this.isEncounterDeleteState;
-  }
-
-  deleteEncounter(){
-    this.encounterService.delete(this.encounter.pk).pipe(first()).subscribe(
-      response => this.routingService.routeToPath('home1'),
-      error => this.warningsService.showWarning(error)
-    );
   }
 }
