@@ -29,7 +29,6 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
 
   constructor(
     private warning: WarningsService,
-    private encounterService: EncounterServiceService,
     private routingService: RoutingService,
     private route: ActivatedRoute,
     private tokenService: TokenService,
@@ -134,11 +133,22 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     newConnection.encounter = createdEncounter.pk;  //Needed to create the connection
 
     this.diaryEntryEncounterConnectionService.create(newConnection).pipe(first()).subscribe(
-      (newCreatedConnection: DiaryEntryEncounterConnectionObject) => createdEncounter.connection = newCreatedConnection,
+      (newCreatedConnection: DiaryEntryEncounterConnectionObject) => {
+        const newConnectionObject = new DiaryEntryEncounterConnectionObject(newCreatedConnection); //TODO: This is a hotfix, see more at error1
+        this.encounters[createdEncounterIndex].connection = newConnectionObject;
+      },
       error => this.warning.showWarning(error)
     );
 
   }
+
+  /**
+   * error1: What should be happening in line 142 is that the "newCreatedConnection" should, as annotated, be of type
+   *    DiaryEntryEncounterConnectionObject. It is unclear how, but what diaryEntryEncounterConnectionService.create is 
+   *    returning is the newConnection wrapped in an EncounterObject class, for some obscure reason. 
+   *    I checked the service itself, it has the correct class. I checked the GenericObjectService, it receives the correct
+   *    class in the constructor. Other methods on the service appear unaffected. I do not comprehend what is wrong here.
+   */
 
   /**
    * Updates each encounter within the range to the orderIndex of its following encounter.
