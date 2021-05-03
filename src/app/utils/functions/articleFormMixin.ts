@@ -145,7 +145,6 @@ export class ArticleFormMixin{
 
         if (context.isInUpdateState() || context.isInOutdatedUpdateState()){
             const {routeName, params} = context.updateCancelRoute;
-            console.log("Routing to update cancel route: " + routeName)
             context.routingService.routeToPath(routeName, params);
         } else {
             const {routeName, params} = context.creationCancelRoute;
