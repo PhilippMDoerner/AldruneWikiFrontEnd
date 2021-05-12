@@ -15,7 +15,7 @@ let DefaultIcon = L.icon({
   iconAnchor: [12,36]
 });
 
-L.Marker.prototype.options.icon = DefaultIcon;
+//L.Marker.prototype.options.icon = DefaultIcon;
 
 
 @Component({
@@ -118,7 +118,7 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
       const layer = (layers.hasOwnProperty(layerName)) ? layers[layerName] : L.layerGroup();  
       layers[layerName] = layer;  
 
-      const marker = (mapMarker.type_details.is_text_marker) ? this.createTextMarker(mapMarker) : this.createDefaultMarker(mapMarker);
+      const marker = (mapMarker.type_details.is_text_marker) ? this.createTextMarker(mapMarker) : this.createAwesomeMarker(mapMarker);
       marker.addTo(layer);
     }
 
@@ -156,12 +156,6 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
     } else {
       return "grey";
     }
-  }
-
-  createDefaultMarker(mapMarker: MapMarker): Marker{
-    return L.marker([mapMarker.latitude, mapMarker.longitude], {})
-      .bindPopup(this.getPopupText(mapMarker))
-      .bindTooltip(mapMarker.location_details.name);
   }
 
   getPopupText(marker: MapMarker){
@@ -204,15 +198,30 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
     return "";
   }
 
-  //TODO: Find a way to get Awesome Markers to work
-  // fontAwesomeIcon(iconFontawesomeCSSClass: string, color){
-  //   if (!iconFontawesomeCSSClass) iconFontawesomeCSSClass = "diamond";
-  //   if (!color) color = "blue";
+  createAwesomeMarker(mapMarker: MapMarker): Marker{
+    return L.marker([mapMarker.latitude, mapMarker.longitude], {icon: this.divIcon(mapMarker)})
+      .bindPopup(this.getPopupText(mapMarker))
+      .bindTooltip(mapMarker.location_details.name);
+  }
 
-  //   return L.AwesomeMarkers.icon({
-  //     icon: 'diamond',
-  //     markerColor: 'blue'
-  //   })
-  // }
+  divIcon(mapMarker: MapMarker){
+    const typeIcon = mapMarker.type_details.icon;
+    const typeColor = mapMarker.type_details.color;
+    const customIcon = mapMarker.icon;
+    const customColor = mapMarker.color;
+
+    const icon = customIcon? customIcon : typeIcon; 
+    const color = customColor? customColor: typeColor;
+
+    const markerIcon = L.divIcon({
+      className: 'custom-div-icon',
+      html: `<div style='background-color:${color};' class='marker-pin'></div><i class='fa fa-${icon} awesome'>`,
+      iconSize: [30, 42],
+      iconAnchor: [15, 42],
+      color: color
+    });
+
+    return markerIcon;
+  }
 
 }
