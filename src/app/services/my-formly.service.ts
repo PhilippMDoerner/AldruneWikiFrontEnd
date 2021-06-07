@@ -152,6 +152,9 @@ export class MyFormlyService {
         required: true,
         placeholder: "Your password",
         disabled: config.disabled,
+        attributes: {
+          autocomplete: "on"
+        }
       },
       validators:{
         validation: validatorList
