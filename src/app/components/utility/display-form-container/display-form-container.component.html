@@ -4,7 +4,7 @@
         *ngIf="field.type==='checkbox'"
         type="checkbox" 
         disabled 
-        class="custom-control mr-2"
+        class="custom-control mr-2 {{ field.className }}"
         [checked]="modelCopy[field.key]"
         >
 
@@ -14,13 +14,13 @@
         </label>
     </div>
 
-    <div class="form-control" *ngIf="field.type !== 'checkbox' && field.type !== 'tinymce'">
+    <div class="form-control {{ field.className }}" *ngIf="field.type !== 'checkbox' && field.type !== 'tinymce'">
         {{ modelCopy[field.key] }}    
     </div>
 
     <div
     *ngIf="field.type==='tinymce'"
-    class="custom-control mr-2"
+    class="custom-control mr-2 {{ field.className }}"
     [innerHTML]="modelCopy[field.key]"
     ></div>
 

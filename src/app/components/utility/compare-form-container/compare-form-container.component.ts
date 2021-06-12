@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { FormlyFieldSelect } from '@ngx-formly/bootstrap';
 import { FormlyField, FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { GenericObjectService } from 'src/app/services/generic-object.service';
@@ -23,18 +24,27 @@ export class CompareFormContainerComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    console.log("FormlyFieldConfig: ");
+    console.log(this.formlyFields);
+    this.markFieldMismatches();
   }
 
   markFieldMismatches(){ //Purpose is to have the user-assigned fields that don't match the server side marked so they can see differences.
-    const fieldNames: string[] = Object.keys(this.modelFromUser);
+    const fieldNames: string[] = this.formlyFields.map((field: FormlyFieldConfig) => field.key.toString());
     for(let fieldName of fieldNames){
       const userModelValue: any = this.modelFromUser[fieldName];
       const serverModelValue: any = this.modelFromServer[fieldName];
+      console.log(`Fieldname: ${fieldName}: \nServer: ${serverModelValue} \nUser: ${userModelValue}`)
       if(userModelValue != serverModelValue){
+        console.log("Added 'updated' class");
+        const formlyField = this.formlyFields.find((field: FormlyFieldConfig) => field.key === fieldName);
+        formlyField.className = "updated";
         //Mark user field somehow
       }
     }
+    console.log(this.formlyFields);
   }
+
 
   onCancel(){
     this.cancel.emit(null);

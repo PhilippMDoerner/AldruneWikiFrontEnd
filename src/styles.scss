@@ -461,6 +461,18 @@ formly-validation-message{
 	color: var(--lightest-red);
 }
 
+
+//Custom "updated" class for formly
+.updated{
+    background: repeating-linear-gradient(
+        45deg, 
+        hsl(210, 23%, 20%), 
+        hsl(210, 23%, 20%) 10px, 
+        hsl(210, 23%, 25%) 10px, 
+        hsl(210, 23%, 25%) 20px,
+    );
+}
+
 //Overwrite Formly's form-group margin when it isn't desired
 formly-field.mb-0 .form-group{
 	margin-bottom: 0;
