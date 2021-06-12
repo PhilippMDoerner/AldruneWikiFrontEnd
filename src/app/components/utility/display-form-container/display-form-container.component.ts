@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
 
 @Component({
@@ -28,7 +27,6 @@ export class DisplayFormContainerComponent implements OnInit {
         this.modelCopy[key] = await this.getSelectedOptionValue(field, this.modelCopy);
       } 
     })
-    console.log(this.formlyFields)
   }
 
   async getSelectedOptionValue(field: FormlyFieldConfig, data: any): Promise<string> {
