@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1620836911348,
+  "timestamp": 1623487970813,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -14,12 +14,12 @@
         "/4.d5c837075df5a8484b9c.js",
         "/favicon.ico",
         "/index.html",
-        "/main.891dcdc7422d571cc08f.js",
+        "/main.09f3d6d31299a29380ab.js",
         "/manifest.webmanifest",
         "/polyfills.00e02af16340fdc82052.js",
         "/runtime.6076814ef49a1a1583c0.js",
         "/scripts.bf128fa19cb1f1099bb9.js",
-        "/styles.3f4f7fe5051f1d7a4aeb.css"
+        "/styles.953479ea0f04702a4e37.css"
       ],
       "patterns": [
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic01\\.jpg",
@@ -158,17 +158,17 @@
     "/fontawesome-webfont.8b43027f47b20503057d.eot": "d980c2ce873dc43af460d4d572d441304499f400",
     "/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/fontawesome-webfont.f691f37e57f04c152e23.woff": "28b782240b3e76db824e12c02754a9731a167527",
-    "/index.html": "7fca07ae7d8f316f8a8b789e487e7b7425154fb6",
+    "/index.html": "c173a4af60dcaf0a1fb92ba0ca2235d405e99dbc",
     "/layers-2x.8f2c4d11474275fbc161.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/layers.416d91365b44e4b4f477.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/main.891dcdc7422d571cc08f.js": "388fb4808e3c663faa41292af8288cfc3b69b805",
+    "/main.09f3d6d31299a29380ab.js": "934f25bde506e93850efdcddb3ca86b3c101481b",
     "/manifest.webmanifest": "116c35892aa2a2a2ae967202ecd0a917f9fe39db",
     "/marker-icon.2b3e1faf89f94a483539.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/overlay.eb1c6ead73ba2c71d71a.png": "428cb1e28c236e7a48194c7469347fe5a5e0caef",
     "/polyfills.00e02af16340fdc82052.js": "dbc502f030c7bb83c7caa1feee7aff990831f7d9",
     "/runtime.6076814ef49a1a1583c0.js": "60542d45ef1f7bfeb255f45ea6a167ec92d2cc96",
     "/scripts.bf128fa19cb1f1099bb9.js": "6d59ec80d1b35c739545d443be90856459d0f015",
-    "/styles.3f4f7fe5051f1d7a4aeb.css": "4e24b21b8fd5bfa296188dc6bd5feacf9460919a"
+    "/styles.953479ea0f04702a4e37.css": "3e2172ce4fb4215c238c1ffe250eb99567f5e4d7"
   },
   "navigationUrls": [
     {
