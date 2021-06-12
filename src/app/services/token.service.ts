@@ -128,7 +128,7 @@ export class TokenService {
     const expiryTimestamp = payload.exp;
     const currentTimestamp = Math.floor((new Date).getTime()/1000);
     if (currentTimestamp >= expiryTimestamp){
-      console.log(`Token is expired. request timestamp: ${new Date(currentTimestamp*1000).toString()}. Token expiry timestamp: ${new Date(expiryTimestamp*1000).toString()}`)
+      console.log(`${payload.token_type} Token is expired. Request timestamp: ${new Date(currentTimestamp*1000).toString()}. Token expiry timestamp: ${new Date(expiryTimestamp*1000).toString()}`)
     }
     return currentTimestamp >= expiryTimestamp;
   }
