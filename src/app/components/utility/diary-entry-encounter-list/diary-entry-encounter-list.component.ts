@@ -5,12 +5,10 @@ import { diaryEntryEncounterConnection, DiaryEntryEncounterConnectionObject } fr
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
 import { DiaryentryEncounterConnectionService } from 'src/app/services/diaryentry-encounter-connection.service';
-import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
-import { tryCatch } from 'src/app/utils/functions/utilityDecorators'
 
 @Component({
   selector: 'app-diary-entry-encounter-list',
@@ -113,9 +111,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
    * Is triggered when a new encounter shall be created. Together with an encounter, you must create an
    * encounterConnection to this diaryentry.
    * @param createdEncounterIndex : The index in this.encounters of the new created Encounter
-   */
-   
-  @tryCatch
+   */   
   async onEncounterCreate(createdEncounter: EncounterObject, createdEncounterIndex: number): Promise<void>{
     //Replace the newly createdEncounter with the Dataset currently being a placeholder for it at the given index
     const placeholderEncounter = this.encounters[createdEncounterIndex];
