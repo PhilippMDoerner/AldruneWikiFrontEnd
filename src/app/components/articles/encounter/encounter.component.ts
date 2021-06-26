@@ -1,11 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
-import { CharacterObject } from 'src/app/models/character';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
-import { EncounterConnectionObject, EncounterConnection } from 'src/app/models/encounterconnection';
+import { EncounterConnectionObject } from 'src/app/models/encounterconnection';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { EncounterConnectionService } from 'src/app/services/encounter-connection.service';
 import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
