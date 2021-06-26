@@ -12,7 +12,9 @@ export class RoutingService {
   constructor(
     private router: Router,
     private warning: WarningsService,
-  ) { }
+  ) {
+    this.router .routeReuseStrategy.shouldReuseRoute = () => false;
+   }
 
   public routeToApiObject(object: ApiObject): void{
     //The replaces here are required due to router.navigateByUrl mucking up if presented with such a url.
