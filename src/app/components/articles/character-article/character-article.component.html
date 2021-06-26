@@ -11,6 +11,7 @@
             <h1 class="text-center subheading col">
                 <span *ngIf="articleData.title">{{ articleData.title }} - </span>
                 {{ articleData.name }}
+                <span *ngIf="articleData.alive"> (†) </span>
             </h1>
         </div>
 
