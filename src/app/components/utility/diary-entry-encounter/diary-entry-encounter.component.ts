@@ -35,7 +35,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
     this.formlyService.genericInput({key: "title"}),
     this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
     this.formlyService.genericSelect({key: "session_number", label: "Session", optionsType: "session"}),
-    this.formlyService.genericSelect({key: "location", label: "Encounter Location", optionsType: "location"}),
+    this.formlyService.genericSelect({key: "location", label: "Encounter Location", optionsType: "location", required: false}),
     this.formlyService.genericTextField({key: "description", required: true}),
   ];
   //TODO: Implement for the compare form container to display only the fields that differ
