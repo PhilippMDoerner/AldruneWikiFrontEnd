@@ -42,7 +42,8 @@ export class Constants{
         'organization' : 'black',
         'diaryentry' : 'gray',
         'quest' : 'white',
-        'encounter' : 'lightpink'
+        'encounter' : 'lightpink',
+        'sessionaudio': 'green',
     }}
 
     // JWT Token Constants - Also used by PermissionGuardService/AdminGuardService
