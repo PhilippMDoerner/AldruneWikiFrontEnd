@@ -17,7 +17,7 @@
             <a 
             routerLink="{{ article.getAbsoluteRouterUrl() }}" 
             *ngFor="let article of articleGroup.value"
-            [ngClass]="'card flex-row align-items-center py-2 row sidebar-border ' + sidebarColor(article.article_type)"
+            [ngClass]="'card flex-row align-items-center py-2 mh-60px row sidebar-border ' + sidebarColor(article.article_type)"
             >
 
                 <!-- Article Name-->
