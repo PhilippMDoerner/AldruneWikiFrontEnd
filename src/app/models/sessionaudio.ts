@@ -28,6 +28,6 @@ export class SessionAudioObject implements SessionAudio{
 
     getAbsoluteRouterUrl(): string{
         if (!this.session_details) throw "Can't generate URL for SessionAudio object without session_details";
-        return `${Constants.wikiUrlFrontendPrefix}/sessionaudio/${this.session_details.session_number}/${this.session_details.session_number}`;
+        return `${Constants.wikiUrlFrontendPrefix}/sessionaudio/${this.session_details.is_main_session_int}/${this.session_details.session_number}`;
     }
 }
