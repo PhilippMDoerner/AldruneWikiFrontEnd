@@ -1,8 +1,7 @@
 import { Constants } from '../app.constants';
-import { ObjectListComponent } from '../components/utility/object-list/object-list.component';
-import { ApiObject, ArticleObject } from './base-models';
+import { ArticleObject } from './base-models';
 import { Image } from "./image";
-import { CharacterPlayerClassConnection, PlayerClass } from './playerclass';
+import { CharacterPlayerClassConnection } from './playerclass';
 
 export interface Character extends ArticleObject{
     player_character: boolean,
