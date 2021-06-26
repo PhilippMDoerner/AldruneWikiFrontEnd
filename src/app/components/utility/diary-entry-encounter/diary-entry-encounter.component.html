@@ -27,7 +27,7 @@ class="container"
             <i class="row" *ngIf="!isInCreateState()">
                 <span class="col-2">Location:</span>
                 <span class="col-10">
-                    <a routerLink="{{ cardData.getAbsoluteLocationRouterUrl() }}">
+                    <a *ngIf="cardData.location_details" routerLink="{{ cardData.getAbsoluteLocationRouterUrl() }}">
                         {{ cardData.location_details.name }}
                     </a>
                 </span>

@@ -75,7 +75,6 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
   ngOnInit(): void {
     const isEncounterCreateState: boolean = this.cardData.pk == null;
     this.formState = isEncounterCreateState ? Constants.createState : Constants.displayState;
-
     if (isEncounterCreateState){
       this.userModel = new EncounterObject();
       this.userModel.author = this.tokenService.getCurrentUserPk();
