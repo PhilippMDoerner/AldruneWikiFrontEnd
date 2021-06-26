@@ -1,7 +1,7 @@
 import { Session } from "src/app/models/session";
 import { Constants } from '../app.constants';
-import { ApiObject, ArticleObject } from './base-models';
-import { diaryEntryEncounterConnection, DiaryEntryEncounterConnectionObject } from "./diaryencounterconnection";
+import { ApiObject } from './base-models';
+import { DiaryEntryEncounterConnectionObject } from "./diaryencounterconnection";
 import { Encounter } from "./encounter";
 
 export interface DiaryEntry extends ApiObject{
