@@ -12,10 +12,11 @@
                 {{ articleData.title }}
             </h1>
         </div>
-        <div class="row">
-            <p class="text-center mb-5 col"> 
+        <div class="row mb-5">
+            <p class="text-center col-12"> 
                 Written by: {{ articleData.author_details.name }} <br>
                 <span *ngIf="coAuthors"> Together with: {{ coAuthors }} </span> 
+                on {{articleData.session_details.session_date | date: "longDate"}}
             </p>
         </div>
 
