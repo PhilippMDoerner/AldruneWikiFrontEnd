@@ -562,4 +562,16 @@ button{
 		right: 5%;
 		width: 90%;
 	}
+
+	//In general make the article container un-padded to give the user more space to see
+	article.container{
+		padding-left: 0px;
+		padding-right: 0px;
+	}
+
+	//In general make drop-down cards (e.g. rules, spells) un-padded to reduce space waste
+	.card.row.px-4{
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+	}
 }
