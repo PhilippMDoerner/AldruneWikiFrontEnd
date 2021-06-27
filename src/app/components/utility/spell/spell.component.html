@@ -38,11 +38,11 @@
             <hr class="white-separator mb-2">
 
             <!-- Spell Heading -->
-            <div class="w-100 mb-4">
-                <h4 class="d-inline"> {{ cardData.name }}</h4>
+            <div class="w-100 mb-4 d-flex justify-content-between">
+                <h4> {{ cardData.name }}</h4>
 
                 <!-- Edit Toggler -->
-                <div class="btn btn-secondary float-right" (click)="toggleFormState()">
+                <div class="btn btn-secondary max-content" (click)="toggleFormState()">
                     <i class="fa" [ngClass]= "{'fa-pencil': isInDisplayState(), 'fa-times': !isInDisplayState()}"></i>
                 </div>
             </div>
