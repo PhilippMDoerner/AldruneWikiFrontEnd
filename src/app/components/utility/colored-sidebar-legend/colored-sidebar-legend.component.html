@@ -1,64 +1,10 @@
             <div class="row">
 
-                <div class="col-lg-2 col-sm-3 col-4 mb-3">
-                    <div class="sidebar-border" [ngClass]="coloredSidebar('character')">
-                        <span class="mx-1"> Character </span>
+                <div *ngFor="let option of articleOptions" class="col-lg-2 col-sm-3 col-4 mb-3">
+                    <div class="sidebar-border" [ngClass]="coloredSidebar(option.toLowerCase())">
+                        <span class="mx-1"> {{option}} </span>
                     </div>
                 </div>
-
-                <div class="col-lg-2 col-sm-3 col-4 mb-3">
-                    <div class="sidebar-border" [ngClass]="coloredSidebar('creature')">
-                        <span class="mx-1"> Creature </span>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-sm-3 col-4 mb-3">
-                    <div class="sidebar-border" [ngClass]="coloredSidebar('diaryentry')">
-                        <span class="mx-1"> DiaryEntry </span>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-sm-3 col-4 mb-3">
-                    <div class="sidebar-border" [ngClass]="coloredSidebar('encounter')">
-                        <span class="mx-1"> Encounter </span>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-sm-3 col-4 mb-3">
-                    <div class="sidebar-border" [ngClass]="coloredSidebar('item')">
-                        <span class="mx-1"> Item </span>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-sm-3 col-4 mb-3">
-                    <div class="sidebar-border" [ngClass]="coloredSidebar('location')">
-                        <span class="mx-1"> Location </span>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-sm-3 col-4 mb-3">
-                    <div class="sidebar-border" [ngClass]="coloredSidebar('map')">
-                        <span class="mx-1"> Map </span>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-sm-3 col-4 mb-3">
-                    <div class="sidebar-border" [ngClass]="coloredSidebar('organization')">
-                        <span class="mx-1"> Organization </span>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-sm-3 col-4 mb-3">
-                    <div class="sidebar-border" [ngClass]="coloredSidebar('quest')">
-                        <span class="mx-1"> Quest </span>
-                    </div>
-                </div>
-
-                <div class="col-lg-2 col-sm-3 col-4 mb-3">
-                    <div class="sidebar-border" [ngClass]="coloredSidebar('sessionaudio')">
-                        <span class="mx-1"> Recordings </span>
-                    </div>
-                </div>
-
+                
             </div>
     

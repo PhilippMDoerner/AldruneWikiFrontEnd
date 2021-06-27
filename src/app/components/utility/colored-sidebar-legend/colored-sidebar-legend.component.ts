@@ -7,6 +7,18 @@ import { Constants } from 'src/app/app.constants';
   styleUrls: ['./colored-sidebar-legend.component.scss']
 })
 export class ColoredSidebarLegendComponent implements OnInit {
+  articleOptions = [
+    "Character",
+    "Creature",
+    "Diaryentry",
+    "Encounter",
+    "Item",
+    "Location",
+    "Organization",
+    "Quest",
+    "Recording",
+    "Map"
+  ]
 
   constructor() { }
 

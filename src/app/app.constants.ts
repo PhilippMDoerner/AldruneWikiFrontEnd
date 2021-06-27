@@ -43,7 +43,7 @@ export class Constants{
         'diaryentry' : 'gray',
         'quest' : 'white',
         'encounter' : 'lightpink',
-        'sessionaudio': 'green',
+        'recordings': 'green',
         'map': 'orange'
     }}
 
