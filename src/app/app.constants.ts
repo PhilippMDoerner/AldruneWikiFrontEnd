@@ -43,7 +43,8 @@ export class Constants{
         'diaryentry' : 'gray',
         'quest' : 'white',
         'encounter' : 'lightpink',
-        'recordings': 'green',
+        'recordings': 'green', //Used in the sidebar-legend in recent updated/search
+        'sessionaudio': 'green', //Used in entries of recent updated/search
         'map': 'orange'
     }}
 
