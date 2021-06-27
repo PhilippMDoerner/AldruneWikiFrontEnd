@@ -80,9 +80,8 @@ export class SpellComponent extends CardFormMixin implements OnInit {
 
   toggleSpellCard(event: any){
     const isClickOnClassBadge = event.target.classList.contains("badge");
-    const isClickOnIcon = event.target.classList.contains("icon");
     const isClickOnForm = event.target.tagName === "FORM" || event.target.parentElement?.tagName === "FORM" || event.target.parentElement?.parentElement?.tagName === "FORM";
-    if(isClickOnClassBadge || isClickOnIcon || isClickOnForm) return;
+    if(isClickOnClassBadge || isClickOnForm) return;
 
     this.toggleCard();
   }
