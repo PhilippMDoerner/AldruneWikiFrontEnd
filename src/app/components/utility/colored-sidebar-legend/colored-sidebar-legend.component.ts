@@ -32,6 +32,8 @@ export class ColoredSidebarLegendComponent implements OnInit {
   }
 
   selectArticleOption(clickedOption: string): void{
+    if (!this.interactable) return // You should not be able to select entries when this thing has been set to not be interactable
+
     this.articleOptions[clickedOption] = !this.articleOptions[clickedOption];
   }
 
