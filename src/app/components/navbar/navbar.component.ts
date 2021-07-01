@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit, OnDestroy{
   }
 
   search(): void{
-    const cleaned_search = this.searchString.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,' ').trim();
+    const cleaned_search = this.searchString.replace(/[&\/\\#,+()$~%.'":*?<>!§{}]/g,' ').trim();
     this.routingService.routeToPath('search', {searchString: cleaned_search});
   }
 
