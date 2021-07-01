@@ -35,8 +35,10 @@ export class NavbarComponent implements OnInit, OnDestroy{
   }
 
   search(): void{
-    const cleaned_search = this.searchString.replace(/[&\/\\#,+()$~%.'":*?<>!§{}]/g,' ').trim();
-    this.routingService.routeToPath('search', {searchString: cleaned_search});
+    const cleaned_search = this.searchString.replace(/[^a-zA-Z0-9]/g,' ').trim();
+    const cleaned_trimmed_search = cleaned_search.replace(/\s\s+/g, ' '); //Removes scenarios with more than 1 consecutive whitespace
+
+    this.routingService.routeToPath('search', {searchString: cleaned_trimmed_search});
   }
 
   toggleCollapse(event: Event): void{
