@@ -14,6 +14,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 })
 export class SearchComponent implements OnInit, OnDestroy {
   articles: Article[];
+  filterOptions: string[] = [];
 
   constants: any = Constants;
 
@@ -30,7 +31,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const searchString: string = params['searchString'];
       this.articleService.getSearchedArticles(searchString).pipe(first()).subscribe(
-        (articles: OverviewArticleObject[]) => this.articles = articles,
+        (articles: OverviewArticleObject[]) => {this.articles = articles; console.log(articles)},
         error => this.routingService.routeToErrorPage(error)
       )
     });
@@ -38,6 +39,11 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   sidebarColor(articleType: string): string{
     return Constants.articleTypeSidebarColorMapping[articleType];
+  }
+
+  filterSearchResults(filterOptions: string[]): void{
+    this.filterOptions = filterOptions;
+    console.log(this.articles);
   }
 
   ngOnDestroy(){

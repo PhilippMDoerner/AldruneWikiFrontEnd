@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
 
 @Component({
@@ -8,19 +8,20 @@ import { Constants } from 'src/app/app.constants';
 })
 export class ColoredSidebarLegendComponent implements OnInit {
   articleOptions = {
-    Character: false,
-    Creature: false,
-    Diaryentry: false,
-    Encounter: false,
-    Item: false,
-    Location: false,
-    Organization: false,
-    Map: false,
-    Quest: false,
-    Recording: false,
+    character: false,
+    creature: false,
+    diaryentry: false,
+    encounter: false,
+    item: false,
+    location: false,
+    organization: false,
+    map: false,
+    quest: false,
+    recording: false,
   }
 
   @Input() interactable: boolean = false;
+  @Output() onFilterOptionSelect: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   constructor() { }
 
@@ -35,6 +36,10 @@ export class ColoredSidebarLegendComponent implements OnInit {
     if (!this.interactable) return // You should not be able to select entries when this thing has been set to not be interactable
 
     this.articleOptions[clickedOption] = !this.articleOptions[clickedOption];
+
+    const articleOptionNames = this.getArticleOptionNames();
+    const selectedOptionNames = articleOptionNames.filter((option: string) => this.articleOptions[option]);
+    this.onFilterOptionSelect.emit(selectedOptionNames);
   }
 
   coloredSidebar(articleType: string): string{

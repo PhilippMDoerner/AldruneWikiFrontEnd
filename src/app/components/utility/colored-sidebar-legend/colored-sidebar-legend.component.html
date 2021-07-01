@@ -8,7 +8,7 @@
                 >
                     <i class="fa fa-times mr-2" *ngIf="articleOptions[option]"></i>
                     <div class="sidebar-border" [ngClass]="coloredSidebar(option.toLowerCase())">
-                        <span class="mx-1"> {{option}} </span>
+                        <span class="mx-1"> {{option | titlecase}} </span>
                     </div>
                 </div>
                 
