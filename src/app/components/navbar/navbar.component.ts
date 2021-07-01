@@ -35,7 +35,8 @@ export class NavbarComponent implements OnInit, OnDestroy{
   }
 
   search(): void{
-    this.routingService.routeToPath('search', {searchString: this.searchString});
+    const cleaned_search = this.searchString.replace(/[&\/\\#,+()$~%.'":*?<>{}]/g,' ').trim();
+    this.routingService.routeToPath('search', {searchString: cleaned_search});
   }
 
   toggleCollapse(event: Event): void{
