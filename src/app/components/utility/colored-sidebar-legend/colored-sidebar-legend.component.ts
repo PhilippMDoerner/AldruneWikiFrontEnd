@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
 
 @Component({
@@ -7,22 +7,32 @@ import { Constants } from 'src/app/app.constants';
   styleUrls: ['./colored-sidebar-legend.component.scss']
 })
 export class ColoredSidebarLegendComponent implements OnInit {
-  articleOptions = [
-    "Character",
-    "Creature",
-    "Diaryentry",
-    "Encounter",
-    "Item",
-    "Location",
-    "Organization",
-    "Quest",
-    "Recording",
-    "Map"
-  ]
+  articleOptions = {
+    Character: false,
+    Creature: false,
+    Diaryentry: false,
+    Encounter: false,
+    Item: false,
+    Location: false,
+    Organization: false,
+    Map: false,
+    Quest: false,
+    Recording: false,
+  }
+
+  @Input() interactable: boolean = false;
 
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  getArticleOptionNames(): string[]{
+    return Object.keys(this.articleOptions);
+  }
+
+  selectArticleOption(clickedOption: string): void{
+    this.articleOptions[clickedOption] = !this.articleOptions[clickedOption];
   }
 
   coloredSidebar(articleType: string): string{

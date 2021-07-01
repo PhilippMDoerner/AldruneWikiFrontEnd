@@ -1,6 +1,12 @@
             <div class="row">
 
-                <div *ngFor="let option of articleOptions" class="col-lg-2 col-sm-3 col-4 mb-3">
+                <div 
+                *ngFor="let option of getArticleOptionNames()" 
+                class="col-lg-2 col-sm-3 col-6 py-2 d-flex align-items-center" 
+                [ngClass]="{'hover-highlight pointer': interactable, 'highlight': articleOptions[option]}"
+                (click)="selectArticleOption(option)"
+                >
+                    <i class="fa fa-times mr-2" *ngIf="articleOptions[option]"></i>
                     <div class="sidebar-border" [ngClass]="coloredSidebar(option.toLowerCase())">
                         <span class="mx-1"> {{option}} </span>
                     </div>
