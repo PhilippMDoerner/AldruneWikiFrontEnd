@@ -23,8 +23,6 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
     recording: false,
   }
 
-  //TODO: Store preferences in services and work with that
-
   @Input() interactable: boolean = false;
   @Output() onFilterOptionSelect: EventEmitter<string[]> = new EventEmitter<string[]>();
 
