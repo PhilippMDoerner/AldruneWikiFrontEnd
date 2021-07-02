@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
 import { Router } from '@angular/router';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
@@ -8,7 +8,6 @@ import { Constants } from 'src/app/app.constants';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { RoutingService } from 'src/app/services/routing.service';
 import { first } from 'rxjs/operators';
-import { Character, CharacterObject } from 'src/app/models/character';
 import { CharacterService } from 'src/app/services/character/character.service';
 
 @Component({
@@ -22,6 +21,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   isInitialAnimationFinished: boolean = false;
 
   @ViewChild('overviewMainCard') overviewMainCard: ElementRef;
+  @ViewChildren("filter") filterField: QueryList<ElementRef>;
 
   constants: any = Constants;
   overviewImages = {
@@ -68,10 +68,14 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
 
   ngAfterViewInit(): void{
     animateElement(this.overviewMainCard.nativeElement, 'zoomIn');
+    this.autofocusFilterField();
   }
 
-  capitalizeString(s : string){
-    return s.charAt(0).toUpperCase() + s.slice(1);
+  autofocusFilterField(){
+    this.filterField.changes.pipe(first()).subscribe((fieldFieldList: QueryList<HTMLElement>) =>{
+      const filterFieldElement: HTMLElement = this.filterField.first.nativeElement;
+      filterFieldElement.focus();
+    })
   }
 
   filterListItems(){
