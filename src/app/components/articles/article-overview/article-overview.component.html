@@ -2,7 +2,7 @@
     <article *ngIf="listItems; else loading" class="pr-4 pl-4 container">
         <!-- Heading -->
         <div class="row">
-            <h1 class="major col mb-4 pb-1 border-bottom">{{ capitalizeString(overviewType) }}s</h1>
+            <h1 class="major col mb-4 pb-1 border-bottom">{{ overviewType | titlecase }}s</h1>
         </div>
 
         <!-- Image -->
@@ -35,7 +35,7 @@
         <!-- Adding Item button -->
         <div class="mb-3 row" *ngIf="userHasCreatePermission()">
             <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
-                Add {{ capitalizeString(overviewType) }}
+                Add {{ overviewType | titlecase }}
             </a>
         </div>
 
