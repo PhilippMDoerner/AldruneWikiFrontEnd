@@ -40,7 +40,7 @@
         </div>
 
         <!-- Filter Bar -->
-        <form autocomplete="off" class="row">
+        <form autocomplete="off" class="row" (submit)="openFirstArticle(filter.value)">
             <input
             type="text"
             id="filter_input"

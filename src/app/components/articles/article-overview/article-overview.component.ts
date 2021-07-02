@@ -78,6 +78,17 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     //This function exists only so that it triggers the NgClass of the listItems in the template
   }
 
+  openFirstArticle(filterValue: string){
+    const filterValueLower:string = filterValue.toLowerCase();
+  
+    const filteredListItems: OverviewItemObject[] = this.listItems.filter(
+      (item: OverviewItemObject) => item.name.toLowerCase().includes(filterValueLower)
+    );
+
+    const firstFilteredListItem = filteredListItems[0];
+    this.routingService.routeToApiObject(firstFilteredListItem);
+  }
+
   buildDiaryEntryNameForList(diaryEntry: OverviewItemObject): string{
     const startWithSessionNumber: string = `Diary entry #${diaryEntry.session_details.session_number}`;
 
