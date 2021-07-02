@@ -8,7 +8,7 @@ import { PreferencesService } from 'src/app/services/preferences/preferences.ser
   styleUrls: ['./colored-sidebar-legend.component.scss']
 })
 export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
-  articleOptions: any;
+  filterSettings: any;
   
   defaultSearchPreferences = {
     character: false,
@@ -34,24 +34,25 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const storedPreferences = this.preferenceService.getStoredSearchPreferences();
-    this.articleOptions = (storedPreferences == null) ? this.defaultSearchPreferences : storedPreferences
+    this.filterSettings = (storedPreferences == null) ? this.defaultSearchPreferences : storedPreferences;
+    this.emitCurrentActiveFilters();
   }
 
   getArticleOptionNames(): string[]{
-    return Object.keys(this.articleOptions);
+    return Object.keys(this.filterSettings);
   }
 
   selectArticleOption(clickedOption: string): void{
     if (!this.interactable) return // You should not be able to select entries when this thing has been set to not be interactable
 
-    this.articleOptions[clickedOption] = !this.articleOptions[clickedOption];
+    this.filterSettings[clickedOption] = !this.filterSettings[clickedOption];
 
-    this.emitSelectEvent();
+    this.emitCurrentActiveFilters();
   }
 
-  emitSelectEvent(){
+  emitCurrentActiveFilters(){
     const articleOptionNames = this.getArticleOptionNames();
-    const selectedOptionNames = articleOptionNames.filter((option: string) => this.articleOptions[option]);
+    const selectedOptionNames = articleOptionNames.filter((option: string) => this.filterSettings[option]);
     this.onFilterOptionSelect.emit(selectedOptionNames);
   }
 
@@ -61,6 +62,6 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.preferenceService.storeSearchPreferences(this.articleOptions);
+    this.preferenceService.storeSearchPreferences(this.filterSettings);
   }
 }
