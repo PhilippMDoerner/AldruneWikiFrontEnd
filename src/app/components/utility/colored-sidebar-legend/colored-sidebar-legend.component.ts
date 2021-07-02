@@ -17,8 +17,8 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
     encounter: false,
     item: false,
     location: false,
-    organization: false,
     map: false,
+    organization: false,
     quest: false,
     recording: false,
   }
@@ -33,9 +33,14 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    const storedPreferences = this.preferenceService.getStoredSearchPreferences();
-    this.filterSettings = (storedPreferences == null) ? this.defaultSearchPreferences : storedPreferences;
-    this.emitCurrentActiveFilters();
+    if(this.interactable){
+      const storedPreferences = this.preferenceService.getStoredSearchPreferences();
+      this.filterSettings = (storedPreferences == null) ? this.defaultSearchPreferences : storedPreferences;
+      this.emitCurrentActiveFilters();
+
+    } else {
+      this.filterSettings = this.defaultSearchPreferences;
+    }
   }
 
   getArticleOptionNames(): string[]{
@@ -62,6 +67,8 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(){
-    this.preferenceService.storeSearchPreferences(this.filterSettings);
+    if(this.interactable){
+      this.preferenceService.storeSearchPreferences(this.filterSettings);
+    }
   }
 }
