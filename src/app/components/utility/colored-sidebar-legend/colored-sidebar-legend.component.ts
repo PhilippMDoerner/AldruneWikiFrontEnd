@@ -21,6 +21,8 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
     organization: false,
     quest: false,
     recording: false,
+    rule: false,
+    spell: false
   }
 
   @Input() interactable: boolean = false;

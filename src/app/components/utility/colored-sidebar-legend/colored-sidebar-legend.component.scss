@@ -1,5 +1,5 @@
 .sidebar-border{
-    border-left: solid 5px;
+    border-left: solid 10px;
 }
 
 .yellow{
@@ -40,4 +40,12 @@
 
 .orange{
     border-left-color: orange;
+}
+
+.violet{
+    border-left-color: violet;
+}
+
+.beige{
+    border-left-color: var(--beige);
 }

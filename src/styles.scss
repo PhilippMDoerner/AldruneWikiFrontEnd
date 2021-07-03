@@ -91,9 +91,11 @@ body {
 	line-height: 1.65;
 	overflow-x: hidden;
 	--dark-red:     hsl(358, 50%, 25%);
-	--light-red:     hsl(358, 50%, 60%);
+	--light-red:    hsl(358, 50%, 60%);
 	--lightest-red: hsl(358, 100%, 80%);
-	--link-blue: hsl(228, 100%, 76%);
+	--link-blue: 	hsl(228, 100%, 76%);
+	--beige:		#b9b987;
+
 }
 
 //headings
@@ -295,6 +297,60 @@ h2{
 .mh-60px{
 	min-height: 60px;
 }
+
+//For Recently updated + Search + Sidebar
+.sidebar-border{
+    border-left: solid 7px;
+}
+
+.yellow{
+    border-left-color: #e8b41b;
+}
+
+.darkpink{
+    border-left-color: #ca0263;
+}
+
+.lightpink{
+    border-left-color: #f293a4;
+}
+
+.brown{
+    border-left-color: brown;
+}
+
+.blue{
+    border-left-color: blue;
+}
+
+.black{
+    border-left-color: black;
+}
+
+.gray{
+    border-left-color: gray;
+}
+
+.white{
+    border-left-color: white;
+}
+
+.green{
+    border-left-color: darkgreen;
+}
+
+.orange{
+    border-left-color: orange;
+}
+
+.violet{
+    border-left-color: violet;
+}
+
+.beige{
+    border-left-color: var(--beige);
+}
+
 
 // For Article Pages
 .delete-request{
