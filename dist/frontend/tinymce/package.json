@@ -1,31 +1,27 @@
 {
-  "_args": [
-    [
-      "tinymce@5.6.2",
-      "/home/isofruit/dev/aldrunewiki/frontend"
-    ]
-  ],
-  "_from": "tinymce@5.6.2",
-  "_id": "tinymce@5.6.2",
+  "_from": "tinymce@5.8.2",
+  "_id": "tinymce@5.8.2",
   "_inBundle": false,
-  "_integrity": "sha512-z7zvM5seOPiW86/vqf08kStwW5Zs5U9oQfuqh2rTj4jEcT2QzxT0v72i2zw3W6rbTLldkAej6edFZphj5ee5zg==",
+  "_integrity": "sha512-qfWThBrSzbj4DoUk+lgGeDoP2GzLDSWrfvVUxf40HZhTzsG15X2nZ4N49IFqwaVgRl5AyFDtuWiEH/lCmiAcRA==",
   "_location": "/tinymce",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "tinymce@5.6.2",
+    "raw": "tinymce@5.8.2",
     "name": "tinymce",
     "escapedName": "tinymce",
-    "rawSpec": "5.6.2",
+    "rawSpec": "5.8.2",
     "saveSpec": null,
-    "fetchSpec": "5.6.2"
+    "fetchSpec": "5.8.2"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/tinymce/-/tinymce-5.6.2.tgz",
-  "_spec": "5.6.2",
+  "_resolved": "https://registry.npmjs.org/tinymce/-/tinymce-5.8.2.tgz",
+  "_shasum": "54eb8160b697796c3b52282e648d9d12b1a7399a",
+  "_spec": "tinymce@5.8.2",
   "_where": "/home/isofruit/dev/aldrunewiki/frontend",
   "author": {
     "name": "Tiny Technologies, Inc"
@@ -33,6 +29,8 @@
   "bugs": {
     "url": "https://github.com/tinymce/tinymce/issues"
   },
+  "bundleDependencies": false,
+  "deprecated": false,
   "description": "Web based JavaScript HTML WYSIWYG editor control.",
   "homepage": "https://github.com/tinymce/tinymce-dist#readme",
   "keywords": [
@@ -51,5 +49,5 @@
     "url": "git+https://github.com/tinymce/tinymce-dist.git"
   },
   "types": "tinymce.d.ts",
-  "version": "5.6.2"
+  "version": "5.8.2"
 }
