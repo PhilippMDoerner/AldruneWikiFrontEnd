@@ -46,6 +46,8 @@ export class NavbarComponent implements OnInit, OnDestroy{
     if (isInvalidSearchString) return; //TODO: Make this route to some kind of help page instead
 
     this.routingService.routeToPath('search', {searchString: this.searchString});
+    
+    this.collapsed = true;
   }
 
   toggleCollapse(event: Event): void{
