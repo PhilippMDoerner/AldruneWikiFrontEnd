@@ -31,7 +31,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const searchString: string = params['searchString'];
       this.articleService.getSearchedArticles(searchString).pipe(first()).subscribe(
-        (articles: OverviewArticleObject[]) => {this.articles = articles; console.log(articles)},
+        (articles: OverviewArticleObject[]) => this.articles = articles,
         error => this.routingService.routeToErrorPage(error)
       )
     });
