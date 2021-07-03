@@ -17,7 +17,8 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class DiaryentryArticleComponent extends ArticleMixin {
   //ArticleMixin Variables
   articleData: DiaryEntry;
-  deleteRoute: {routeName: 'diaryentry-overview', params: {}};
+  deleteRoute = {routeName: 'diaryentry-overview', params: {}};
+
 
   //Custom Variables
   coAuthors: string;
