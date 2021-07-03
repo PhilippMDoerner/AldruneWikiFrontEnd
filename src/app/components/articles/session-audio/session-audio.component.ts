@@ -1,4 +1,4 @@
-import { Component, ContentChild, ContentChildren, ElementRef, HostListener, OnDestroy, OnInit, ViewChild, ViewChildren, ViewContainerRef } from '@angular/core';
+import { Component, ContentChild, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
