@@ -16,7 +16,7 @@
             routerLink="{{ article.getAbsoluteRouterUrl() }}" 
             *ngFor="let article of articles"
             class="card flex-row align-items-center sidebar-border py-2 row mh-60px {{sidebarColor(article.article_type)}}"
-            [ngClass]="{'d-none': filterOptions.length > 0 && !filterOptions.includes(article.article_type)}"
+            [ngClass]="{'d-none': hasActiveFilter() && !filterOptions.includes(article.article_type)}"
             >
                
                 <!-- Article Name -->

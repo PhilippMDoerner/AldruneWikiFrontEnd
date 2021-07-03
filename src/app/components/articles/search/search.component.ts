@@ -43,7 +43,10 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   filterSearchResults(filterOptions: string[]): void{
     this.filterOptions = filterOptions;
-    console.log(this.articles);
+  }
+
+  hasActiveFilter(): boolean{
+    return this.filterOptions.length > 0;
   }
 
   ngOnDestroy(){
