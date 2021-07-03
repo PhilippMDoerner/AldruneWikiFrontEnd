@@ -58,7 +58,8 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
   emitCurrentActiveFilters(){
     const articleOptionNames = this.getArticleOptionNames();
     const selectedOptionNames = articleOptionNames.filter((option: string) => this.filterSettings[option]);
-    this.onFilterOptionSelect.emit(selectedOptionNames);
+    const modifiedOptionNames = selectedOptionNames.map((option: string) => option === "recording" ? "sessionaudio" : option);
+    this.onFilterOptionSelect.emit(modifiedOptionNames);
   }
 
   coloredSidebar(articleType: string): string{
