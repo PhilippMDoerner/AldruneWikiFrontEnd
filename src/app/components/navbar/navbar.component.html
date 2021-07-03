@@ -21,7 +21,7 @@
         <!-- Search Bar -->
         <form class="my-2 flex-1" (submit)="search()">
             <div class="searchbar form-control">
-                <i class="fa fa-2x fa-search mr-2"></i>
+                <i (click)="search()" class="fa fa-2x fa-search mr-2 pointer"></i>
                 <input 
                 class="search-input" 
                 type="search" 
