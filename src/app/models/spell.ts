@@ -46,6 +46,6 @@ export class SpellObject implements Spell{
     }
 
     getAbsoluteRouterUrl(): string{
-        return `${Constants.wikiUrlFrontendPrefix}/spell/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/spells/${this.name}`;
     }
 }

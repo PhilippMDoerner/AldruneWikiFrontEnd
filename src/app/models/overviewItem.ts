@@ -13,6 +13,8 @@ import { MapObject } from './map';
 import { TimestampObject } from './timestamp';
 import { MapMarkerObject } from './mapmarker';
 import { Image } from './image';
+import { SpellObject } from './spell';
+import { RuleObject } from './rule';
 
 export interface OverviewItem{
     article_type: string,
@@ -91,5 +93,6 @@ export const ArticleTypeToObjectClassMapping = {
     map: MapObject,
     timestamp: TimestampObject,
     mapmarker: MapMarkerObject,
-    
+    spell: SpellObject,
+    rules: RuleObject
 }

@@ -435,9 +435,21 @@ const routes: Routes = [
 		canActivate: [PermissionGuardService]
 	},
 	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules/:name`,
+		component: RulesComponent,
+		data:{ name: "rule", requiredPermissions: [Constants.apiViewPermission]},
+		canActivate: [PermissionGuardService]
+	},
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells`,
 		component: SpellsComponent,
 		data:{ name: "spells", requiredPermissions: [Constants.apiViewPermission]},
+		canActivate: [PermissionGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:name`,
+		component: SpellsComponent,
+		data:{ name: "spell", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
@@ -495,7 +507,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
