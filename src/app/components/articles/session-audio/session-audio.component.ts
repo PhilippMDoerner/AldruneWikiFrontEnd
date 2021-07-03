@@ -106,8 +106,11 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
   }
 
   keyAffectsPlayer(keyPressEvent): boolean{
-    const isKeyPressForPlayer: boolean = !this.isInTimestampCreateState;
+    const isKeyPressForSearchbar: boolean = document.activeElement.id === "search";
+    const isKeyPressForPlayer: boolean = !this.isInTimestampCreateState && !isKeyPressForSearchbar;
+
     const keyHasControlMapping: boolean = this.sessionAudioKeyControlMapping.hasOwnProperty(keyPressEvent.code);
+    
     return isKeyPressForPlayer && keyHasControlMapping;
   }
 
