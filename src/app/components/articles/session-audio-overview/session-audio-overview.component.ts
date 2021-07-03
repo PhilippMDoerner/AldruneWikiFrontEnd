@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { OverviewItem } from 'src/app/models/overviewItem';
