@@ -36,16 +36,18 @@ export class Constants{
     //Mapping of article types to colors
     public static get articleTypeSidebarColorMapping(): object { return { 
         'item' : 'yellow',
-        'character': 'darkpink',
-        'creature': 'brown',
-        'location': 'blue',
-        'organization' : 'black',
-        'diaryentry' : 'gray',
+        'character': 'blue',
+        'creature': 'red',
+        'location': 'brown',
+        'organization' : 'purple',
+        'diaryentry' : 'darkgreen',
         'quest' : 'white',
-        'encounter' : 'lightpink',
+        'encounter' : 'lightgreen',
         'recording': 'green', //Used in the sidebar-legend in recent updated/search
         'sessionaudio': 'green', //Used in entries of recent updated/search
-        'map': 'orange'
+        'map': 'beige',
+        'rule': 'orange',
+        'spell': 'violet',
     }}
 
     // JWT Token Constants - Also used by PermissionGuardService/AdminGuardService
