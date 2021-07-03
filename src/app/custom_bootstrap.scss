@@ -221,7 +221,7 @@ option{
     font-size: 18px;
 }
 
-.custom-control.custom-checkbox input{
-    zoom: 3;
-
+.custom-control.custom-checkbox{
+    transform:scale(1.2);
+    transform-origin: 0;
 }
