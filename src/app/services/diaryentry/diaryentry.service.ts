@@ -14,13 +14,13 @@ import { TransformArrayObservable, TransformObservable } from 'src/app/utils/fun
 })
 
 export class DiaryentryService extends GenericObjectService {
-  diaryEntryUrl: string = `${Constants.wikiApiUrl}/diaryentry`;
+  baseUrl: string = `${Constants.wikiApiUrl}/diaryentry`;
 
   constructor(public http : HttpClient) { super(http, DiaryEntryObject)}
 
   @TransformArrayObservable(DiaryEntryObject)
   list(): Observable<DiaryEntry[]>{
-    const diaryEntryObservable =  this.http.get<DiaryEntry[]>(this.diaryEntryUrl);
+    const diaryEntryObservable =  this.http.get<DiaryEntry[]>(this.baseUrl);
     return diaryEntryObservable.pipe(map((diaryEntries: DiaryEntry[]) => {
       diaryEntries.forEach(this.transformDiaryEntryEncounterConnections);
       return diaryEntries;
@@ -29,28 +29,28 @@ export class DiaryentryService extends GenericObjectService {
 
   @TransformObservable(DiaryEntryObject)
   read(diaryEntryPk: number): Observable<DiaryEntry>{
-    const url = `${this.diaryEntryUrl}/pk/${diaryEntryPk}/`;
+    const url = `${this.baseUrl}/pk/${diaryEntryPk}/`;
     const diaryEntryObservable = this.http.get<DiaryEntry>(url);
     return diaryEntryObservable.pipe(map(this.transformDiaryEntryEncounterConnections));
   }
 
   @TransformObservable(DiaryEntryObject)
   readByParam(params : {isMainSession: number | string, sessionNumber: number | string, authorName: string}): Observable<DiaryEntry>{
-    const url = `${this.diaryEntryUrl}/${params.sessionNumber}/${params.isMainSession}/${params.authorName}`;
+    const url = `${this.baseUrl}/${params.sessionNumber}/${params.isMainSession}/${params.authorName}`;
     const diaryEntryObservable = this.http.get<DiaryEntry>(url);
     return diaryEntryObservable.pipe(map(this.transformDiaryEntryEncounterConnections));
   }
 
   @TransformObservable(DiaryEntryObject)
   update(pk: number, model: DiaryEntry): Observable<DiaryEntry>{
-    const url = `${this.diaryEntryUrl}/pk/${pk}/`;
+    const url = `${this.baseUrl}/pk/${pk}/`;
     const diaryEntryObservable = this.http.put<DiaryEntry>(url, model);
     return diaryEntryObservable.pipe(map(this.transformDiaryEntryEncounterConnections));
   }
 
   @TransformObservable(DiaryEntryObject)
   create(diaryEntry: DiaryEntry): Observable<DiaryEntry>{
-    const diaryEntryObservable = this.http.post<DiaryEntry>(`${this.diaryEntryUrl}/`, diaryEntry);
+    const diaryEntryObservable = this.http.post<DiaryEntry>(`${this.baseUrl}/`, diaryEntry);
     return diaryEntryObservable.pipe(map(this.transformDiaryEntryEncounterConnections));
   }
 
