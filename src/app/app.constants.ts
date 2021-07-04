@@ -46,7 +46,7 @@ export class Constants{
         'recording': 'green', //Used in the sidebar-legend in recent updated/search
         'sessionaudio': 'green', //Used in entries of recent updated/search
         'map': 'beige',
-        'rule': 'orange',
+        'rules': 'orange',
         'spell': 'violet',
     }}
 

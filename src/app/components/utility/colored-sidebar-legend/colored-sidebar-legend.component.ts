@@ -21,7 +21,7 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
     organization: false,
     quest: false,
     recording: false,
-    rule: false,
+    rules: false,
     spell: false
   }
 
@@ -59,6 +59,7 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
     const articleOptionNames = this.getArticleOptionNames();
     const selectedOptionNames = articleOptionNames.filter((option: string) => this.filterSettings[option]);
     const modifiedOptionNames = selectedOptionNames.map((option: string) => option === "recording" ? "sessionaudio" : option);
+    console.log(modifiedOptionNames);
     this.onFilterOptionSelect.emit(modifiedOptionNames);
   }
 
