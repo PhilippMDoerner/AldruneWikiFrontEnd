@@ -28,6 +28,11 @@
                 <!-- Vime-UI -->
                 <vime-default-ui></vime-default-ui>
             </vime-player>
+
+            <audio controls class="w-100">
+                <source [src]="sessionAudio.audio_file" type="audio/mp3" crossorigin="anonymous" #audioSource/>
+                Your browser does not support the audio element.
+            </audio>
         </div>
 
         <!-- Next Buttons -->
