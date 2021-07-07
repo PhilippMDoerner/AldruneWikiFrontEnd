@@ -71,6 +71,9 @@ export class OverviewItemObject implements OverviewItem{
     //For Map-Type OverviewItems
     icon?: string;
 
+    //For Session-Type OverviewItems (Solely for diaryentry-create and update select statements)
+    author_ids?: number[];
+
     getAbsoluteRouterUrl(): string{
         if (!this.article_type) throw "Can not generate URL for undefined article_type";
         const ArticleClass = ArticleTypeToObjectClassMapping[this.article_type]

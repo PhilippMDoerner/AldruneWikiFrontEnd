@@ -23,6 +23,11 @@ export interface FormlyOverviewSelectConfig extends FormlyInterface{
     optionsType: string
 }
 
+export interface FormlyOverviewDisabledSelectConfig extends FormlyOverviewSelectConfig{
+    disabledExpression: Function,
+    tooltipMessage: string,
+}
+
 export interface FormlyGenericInputConfig extends FormlyInterface{
     isNumberInput?: boolean,
     placeholder?: string,

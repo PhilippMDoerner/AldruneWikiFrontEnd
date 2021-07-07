@@ -1,0 +1,44 @@
+<div class="form-group">
+
+    <label for="formly_disable_select_{{to.label}}">
+        <strong
+        placement="top"
+        [ngbTooltip]="tooltipContent"
+        > 
+            {{to.label}} 
+            <span class="fa fa-info-circle mx-1"></span>
+            <span *ngIf="to.required">*</span>
+        </strong>
+
+    </label>
+    
+    <select 
+    id="formly_disable_select_{{to.label}}" 
+    required="{{to.required}}"
+    class="form-control"
+    [formControl]="formControl" 
+    [formlyAttributes]="field"
+    >
+        <option 
+        [ngValue]="selectOption[to.valueProp]"
+        *ngFor="let selectOption of allSelectOptions; let optionIndex = index"
+        [disabled]="this.isOptionDisabledArray[optionIndex]"
+        >
+            {{selectOption[to.labelProp]}}
+        </option>
+    </select>
+    <div class="mywarningmessage" *ngIf="hasInvalidOptionSelected()">
+        The option you selected is not valid with the rest of your selected values.
+    </div>
+</div>
+
+<ng-template #tooltipContent>
+    <div class="alert alert-info m-0 p-0">
+        {{ to.tooltipMessage }}
+    </div>
+</ng-template>
+    
+<!-- This is solely written here because doing this is to trigger determineDisabledStateOfOptions
+is simpler than figuring out how to get ngOnChanges to trigger whenever the model is updated...
+Which would likely mean replacing the model -->
+{{ ngOnChanges() }}

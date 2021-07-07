@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormlyCheckboxConfig, FormlyCustomSelectConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewSelectConfig, FormlyPasswordInterface } from "src/app/models/formly";
+import { FormlyCheckboxConfig, FormlyCustomSelectConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewDisabledSelectConfig, FormlyOverviewSelectConfig, FormlyPasswordInterface } from "src/app/models/formly";
 import { FormlyField, FormlyFieldConfig } from "@ngx-formly/core";
 import { OverviewService } from './overview.service';
 
@@ -45,6 +45,33 @@ export class MyFormlyService {
     };
   }
 
+
+  genericDisableSelect(config: FormlyOverviewDisabledSelectConfig): FormlyFieldConfig{
+    config = this.setDefaultValues(config);
+
+    const validatorList = (config.validators) ? config.validators : [];
+    if (config.required === true ) validatorList.push('required');
+
+    return {
+      key: config.key,
+      type: "formly-select-disable",
+      className: config.className,
+      wrappers: config.wrappers,
+      hideExpression: (config.hide) ? config.hide : false,
+      templateOptions:{
+        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+        labelProp: (config.labelProp) ? config.labelProp : "name_full",
+        valueProp: (config.valueProp) ? config.valueProp : "pk",
+        options: this.selectOptionService.getOverviewItems(config.optionsType),
+        required: (typeof config.required === "boolean") ? config.required : true,
+        disabledExpression: config.disabledExpression,
+        tooltipMessage: config.tooltipMessage
+      },
+      validators: {
+        validation: validatorList
+      }
+    };
+  }
   customSelect(config: FormlyCustomSelectConfig): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 

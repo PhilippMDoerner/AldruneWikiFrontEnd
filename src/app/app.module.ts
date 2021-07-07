@@ -90,6 +90,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ConfigTablesComponent } from './components/articles/config-tables/config-tables.component';
 import { CompareFormContainerComponent } from './components/utility/compare-form-container/compare-form-container.component';
 import { DisplayFormContainerComponent } from './components/utility/display-form-container/display-form-container.component';
+import { FormlySelectDisableComponent } from './components/utility/formly-select-disable/formly-select-disable.component';
 
 @NgModule({
   declarations: [
@@ -167,6 +168,7 @@ import { DisplayFormContainerComponent } from './components/utility/display-form
     ConfigTablesComponent,
     CompareFormContainerComponent,
     DisplayFormContainerComponent,
+    FormlySelectDisableComponent,
   ],
   imports: [
     BrowserModule,
@@ -181,7 +183,8 @@ import { DisplayFormContainerComponent } from './components/utility/display-form
           { name: "file", component: FormlyFieldFile, wrappers: ['form-field'] },
           { name: "tinymce", component: FormlyComponent},
           { name: "datepicker", component: FormlyDatepickerComponent},
-          { name: "session-create-edit", component: SessionUpdateModalComponent}
+          { name: "session-create-edit", component: SessionUpdateModalComponent},
+          { name: "formly-select-disable", component: FormlySelectDisableComponent},
         ],
         wrappers: [
           { name: "session-update-wrapper", component: SessionUpdateWrapperComponent },
