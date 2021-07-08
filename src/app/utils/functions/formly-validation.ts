@@ -1,4 +1,17 @@
 import { AbstractControl, FormControl, ValidationErrors } from "@angular/forms";
+import { Observable } from "rxjs";
+import { first } from "rxjs/operators";
+/***
+ * This is how Validators work:
+ * 1) You have a validation function. That takes in a control:Formcontrol and returns ValidationErrors (when sync)
+ *      When async... well don't expect a message to come out. ValidationErrors are just objects
+ *      Containing the name of an error message and whether it is to be shown (true) or not (false).
+ * 2) You have a validatorObject, where you associate the NAME of a validator with its VALIDATION function
+ * 3) You have a name, where you associate a possible error message with a name
+ * 
+ * Validators must all return true for a submit button to show.
+ */
+
 
 // Validation Messages
 export const invalidTimeMessage = { name: "time", message: "Time must have 'hh:mm:ss' pattern" };
@@ -9,6 +22,7 @@ export const faPrefixMessage = { name: 'faPrefix', message: "Icons are stored wi
 export const notIntegerMessage = { name: 'notInteger', message: "Your input is not an integer. This field requires an integer number. No amount of revolution can overcome this." };
 export const hasSpecialCharactersMessage = { name: 'hasSpecialCharacters', message: 'Your input includes one of the following invalid special characters: [ ] { } ? | \\ " % ~ # < > \'. If you need to rebel, please dont against this.' };
 export const fieldsDontMatchMessage = { name: 'fieldMatch', message: 'Password Not Matching'};
+export const sessionAlreadyHasAuthor = { name: 'isInvalidSessionAuthorPair', message: "The author you selected already has a diaryentry in the session you selected. You can't have 2 diaryentries from the same author in the same session."}
 
 // Validation Functions
 function timeValidation(control: FormControl): ValidationErrors{
@@ -84,3 +98,23 @@ function passwordMatchValidation(control: AbstractControl): ValidationErrors {
     return { passwordMatch: { message: "The passwords aren't matching" } };
   }
 export const fieldMatchValidator = {name: "fieldMatch", validation: passwordMatchValidation};
+
+
+async function isSessionAuthorPairUniqueValidator(control: any){
+    const { session: selectedSessionId, author: selectedAuthorId } = control.value;
+
+    const selectFieldOptionsObservable: Observable<any> = control.controls.session._fields[0].templateOptions.options;
+    const selectFieldOptions: any = await selectFieldOptionsObservable.toPromise();
+    const selectedOption = selectFieldOptions.find(option => option.pk === selectedSessionId)
+
+    if (selectedOption == null) throw "WeirdError. You selected a session, its id got into the model and somehow that field is no longer among the options (?)";
+
+    const authorIdsWithDiaryentriesOnSession: number[] = selectedOption.author_ids;
+    const selectedAuthorAlreadyHasDiaryentryOnSession: boolean = authorIdsWithDiaryentriesOnSession.includes(selectedAuthorId);
+    if (selectedAuthorAlreadyHasDiaryentryOnSession){
+        return { "isInvalidSessionAuthorPair": true};
+    }
+    
+    return null;
+}
+export const sessionAuthorUniqueValidator = {name: "sessionAuthorPairUnique", validation: isSessionAuthorPairUniqueValidator}

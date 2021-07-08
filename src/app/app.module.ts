@@ -77,7 +77,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
-import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerValidator, invalidTimeMessage, notIntegerMessage, requiredIconMessage, requiredIconValidator, requiredMessage, requiredValidator, timeValidator, specialCharacterValidator, hasSpecialCharactersMessage, fieldMatchValidator, fieldsDontMatchMessage } from './utils/functions/formly-validation';
+import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerValidator, invalidTimeMessage, notIntegerMessage, requiredIconMessage, requiredIconValidator, requiredMessage, requiredValidator, timeValidator, specialCharacterValidator, hasSpecialCharactersMessage, fieldMatchValidator, fieldsDontMatchMessage, sessionAuthorUniqueValidator, sessionAlreadyHasAuthor } from './utils/functions/formly-validation';
 import { DiaryEntryEncounterComponent } from './components/utility/diary-entry-encounter/diary-entry-encounter.component';
 import { DiaryEntryEncounterListComponent } from './components/utility/diary-entry-encounter-list/diary-entry-encounter-list.component';
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
@@ -198,6 +198,7 @@ import { FormlySelectDisableComponent } from './components/utility/formly-select
           notIntegerMessage,
           hasSpecialCharactersMessage,
           fieldsDontMatchMessage,
+          sessionAlreadyHasAuthor,
         ],
         validators:[
           timeValidator,
@@ -208,6 +209,7 @@ import { FormlySelectDisableComponent } from './components/utility/formly-select
           integerValidator,
           specialCharacterValidator,
           fieldMatchValidator,
+          sessionAuthorUniqueValidator,
         ]
       }), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,
