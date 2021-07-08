@@ -12,15 +12,36 @@ export class WarningsService {
     0: "This can't be done without an internet connection",
     200: "Potential Syntaxerror",
     404: "The target URL for the requested action does not seem to exist",
+    500: "An error occurred on the server, unrelated to your input. Please copy the full error message and send it to the developer",
     504: "This can't be done without an internet connection",
   }
 
-  defaultWarning: string = "The requested action was not carried out. An unknown error occurred";
+  headings: object = {
+    400: "Invalid Input",
+  }
+
+  defaultWarning: string = "The requested action was not carried out. An error occurred";
 
   constructor() { }
 
   showWarning(error: number | any){
     console.log(error);
+
+    const errorStatus: number = (typeof error !== "number") ? error.status : error;
+    const notificationHeading: string = this.getHeading(errorStatus);
+
+    const notificationBody: string = this.getBody(error);
+
+    this.showErrorNotification(notificationHeading, notificationBody, error);
+  }
+
+  getBody(error): string{
+    const errorStatus: number = (typeof error !== "number") ? error.status : error;
+
+    var preliminaryErrorBody = this.warnings[errorStatus];
+    preliminaryErrorBody = (preliminaryErrorBody == null) ? this.defaultWarning : preliminaryErrorBody;
+    if (errorStatus === 500) return preliminaryErrorBody;
+
     if (typeof error !== "number" && (!error.hasOwnProperty("status") || !error.hasOwnProperty("error"))) throw "Invalid error input to show warning";
     const hasSingleError: boolean = typeof error.error === "string";
     const isGenericHTTPError: boolean = typeof error === "number";
@@ -28,47 +49,45 @@ export class WarningsService {
     // Get individual errors
     let httpErrorMessage: string;
     if(hasSingleError){
-      httpErrorMessage = "The error was caused by: \n    " + error.error;
+      httpErrorMessage = "The error was caused by: <br>    " + error.error;
     } else if (isGenericHTTPError){
       httpErrorMessage = "";
     } else {
       httpErrorMessage = this.getHttpErrorMessages(error)
     }
-    
-    const errorStatus: number = (typeof error !== "number") ? error.status : error;
-    if (errorStatus === 500){
-      const notificationHeading = "Impossibility Error";
-      const notificationBody = "What you are trying to do is impossible for various reasons. Please copy the full error message and send it to the developer"
-      this.showErrorNotification(notificationHeading, notificationBody, error);
-    } else {
-      const warningMessage = (this.warnings[errorStatus]) ? this.warnings[errorStatus] : this.defaultWarning;
 
-      const notificationBody = warningMessage + "\n\n" + httpErrorMessage;
-      const notificationHeading = `Error ${errorStatus}`;
-      this.showErrorNotification(notificationHeading, notificationBody, error);
-    }
+    const notificationBody = preliminaryErrorBody + "<br>" + httpErrorMessage;
+    return notificationBody;
+  }
+
+  getHeading(errorStatus: number): string{
+    const defaultHeading: string = `Error ${errorStatus}`;
+
+    const refinedHeading: string = this.headings[errorStatus];
+
+    return (refinedHeading == null) ? defaultHeading : refinedHeading;
   }
 
   getHttpErrorMessages(httpErrorObject: any): string{
-    let httpErrorMessages: string = "The errors you received were because of:\n";
+    let httpErrorMessagesHTML: string = "The errors you received were because of:<br>";
 
     for(let formField in httpErrorObject.error){
-      httpErrorMessages += `  ${formField}\n`;
+      httpErrorMessagesHTML += `${formField}<br>`;
       const isErrorMessageArray = Array.isArray(httpErrorObject.error[formField]);
 
       if(isErrorMessageArray){
         const formFieldErrors: string[] = httpErrorObject.error[formField];
         formFieldErrors.forEach(errorMessage => {
-          httpErrorMessages += `    - ${errorMessage} \n`;
+          httpErrorMessagesHTML += `<strong class='ml-5'>- ${errorMessage}</strong> <br>`;
         });
       } else {
         const errorMessage = httpErrorObject.error[formField];
-        httpErrorMessages += `    - ${errorMessage} \n`;
+        httpErrorMessagesHTML += `<strong class='ml-5'>- ${errorMessage}</strong> <br>`;
       }
 
     }
 
-    return httpErrorMessages;
+    return httpErrorMessagesHTML;
   }
 
   showAlert(text: string){
@@ -81,7 +100,7 @@ export class WarningsService {
     <div class="card notification animate__animated animate__fadeInDown">
         <div class="card-body">
           <i class="fa fa-times fa-1-5x icon float-right" id="closeIcon"></i>
-          <div class="card-title">${heading}</div>
+          <h3 class="card-title mb-0">${heading}</h3>
           <hr class="white-separator">
           <div class="card-subtitle"></div>
           <div class="card-text">${body}</div>
