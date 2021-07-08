@@ -4,6 +4,27 @@ input[type="submit"], button {
     font-family: Source Sans Pro,sans-serif !important;
 }
 
+.fa{
+	font-style: normal;
+	font-family: FontAwesome !important;
+	font-variant-caps: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-size: 14px;
+	line-height: 1;
+	font-size-adjust: none;
+	font-kerning: auto;
+	font-optical-sizing: auto;
+	font-variant-alternates: normal;
+	font-variant-east-asian: normal;
+	font-variant-ligatures: normal;
+	font-variant-numeric: normal;
+	font-variant-position: normal;
+	font-language-override: normal;
+	font-feature-settings: normal;
+	font-variation-settings: normal;
+}
+
 //Animations
 @import '~animate.css/animate.min';
 
