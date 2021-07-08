@@ -27,6 +27,9 @@ import { WarningsService } from 'src/app/services/warnings.service';
  * - FURTHER that function is called to check whether an invalid option is selected at any given point
  *    If it is, the pre-given warning message is displayed
  * - The given info-text is shown as a tooltip for this field.
+ * 
+ * To get the validator to block the submit button for you, you will likely ALSO have to define a
+ * validator that does something very similar/identical to what your given expression does. 
  */
 @Component({
   selector: 'app-formly-select-disable',

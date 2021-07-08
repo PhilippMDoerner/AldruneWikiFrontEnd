@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Subscription } from 'rxjs';
+import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
+import { Observable, Subscription } from 'rxjs';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
+import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -22,11 +24,41 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
     sessionNumber: null, isMainSession: null, authorName: null
   }};
   creationCancelRoute = {routeName: "diaryentry-overview", params: {}};
+
+  sessionAlreadyHasAuthorWarning: string = `The author you selected already has a diaryentry in the session you selected. You 
+  can't have 2 diaryentries from the same author in the same session. Consider writing 
+  your diaryentry as an encounter instead into the diaryentry at the spot you just considered.`
   
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title", isNameInput: true}),
-    this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
-    this.formlyService.genericSelect({key: 'session', optionsType: 'session', wrappers: ["session-update-wrapper"]}),
+    /**
+     * This is overly complicated. The async validator out here is ONLY there to enable/disable the
+     * submit button if these two fields don't conform to a specific thing. Dis/Enabling individual
+     * options is done by the "disabledExpression" function. This is also true for the showing/hiding
+     * of the error message.
+     */
+    {
+      asyncValidators:{
+        validation: [
+          { name: "sessionAuthorPairUnique", options: {errorPath: "session"}},
+        ]
+      },
+      fieldGroup: [
+        //Author
+        this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
+        //Session
+        this.formlyService.genericDisableSelect({
+          key: 'session', 
+          optionsType: 'session', 
+          disabledExpression: this.hasDiaryentryForAuthor, 
+          tooltipMessage: "Sessions may be impossible to select if the selected author already has a diaryentry for that session.",
+          warningMessage: this.sessionAlreadyHasAuthorWarning
+        }),
+      ]
+    },
+    
+    //this.formlyService.genericSelect({key: 'session', optionsType: 'session', wrappers: ["session-update-wrapper"]}),
+
   ];
 
   //Custom Properties
@@ -70,6 +102,40 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
         this.userModel = new DiaryEntryObject();
       }
     });
+  }
+
+  /**
+   * Callback for the session select field. Enables/Disables a select option based on if the
+   * currently selected author already has a diaryentry for this session or not.
+   */
+  hasDiaryentryForAuthor(
+    selectOption: OverviewItemObject, 
+    templateOptions: FormlyTemplateOptions,
+    model: any,
+    formControl: AbstractControl
+  ): boolean{
+
+    const diaryentryAuthorPksForSession: number[] = selectOption.author_ids;
+    const currentlySelectedAuthor: number = model.author;
+    return diaryentryAuthorPksForSession.includes(currentlySelectedAuthor);
+  }
+
+  async isValidSessionField(control: any){
+    console.log("Is valid session field control");
+    console.log(control);
+    return null;
+    const { author: selectedAuthorId, session: selectedSessionId} = control.value;
+    const selectFieldOptionsObservable: Observable<any> = control.controls.session._fields[1].templateOptions.options;
+    const selectFieldOptions: any = await selectFieldOptionsObservable.toPromise();
+
+    const selectedOption = selectFieldOptions.find(option => option.pk === selectedSessionId)
+
+    if (selectedOption == null) throw "WeirdError. You selected a session, its id got into the model and somehow that field is no longer among the options (?)";
+
+    const authorIdsWithDiaryentriesOnSession: number[] = selectedOption.author_ids;
+    const selectedAuthorAlreadyHasDiaryentryOnSession: boolean = authorIdsWithDiaryentriesOnSession.includes(selectedAuthorId);
+    const isRespectingUniqueness = !selectedAuthorAlreadyHasDiaryentryOnSession
+    return isRespectingUniqueness;
   }
 
   /**
