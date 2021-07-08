@@ -28,7 +28,7 @@
         </option>
     </select>
     <div class="mywarningmessage" *ngIf="hasInvalidOptionSelected()">
-        The option you selected is not valid with the rest of your selected values.
+        {{ to.warningMessage }}
     </div>
 </div>
 
