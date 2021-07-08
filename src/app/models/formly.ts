@@ -26,6 +26,7 @@ export interface FormlyOverviewSelectConfig extends FormlyInterface{
 export interface FormlyOverviewDisabledSelectConfig extends FormlyOverviewSelectConfig{
     disabledExpression: Function,
     tooltipMessage: string,
+    warningMessage: string,
 }
 
 export interface FormlyGenericInputConfig extends FormlyInterface{

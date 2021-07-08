@@ -65,7 +65,8 @@ export class MyFormlyService {
         options: this.selectOptionService.getOverviewItems(config.optionsType),
         required: (typeof config.required === "boolean") ? config.required : true,
         disabledExpression: config.disabledExpression,
-        tooltipMessage: config.tooltipMessage
+        tooltipMessage: config.tooltipMessage,
+        warningMessage: config.warningMessage
       },
       validators: {
         validation: validatorList
