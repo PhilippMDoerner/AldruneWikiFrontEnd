@@ -20,6 +20,13 @@ import { WarningsService } from 'src/app/services/warnings.service';
  * 3) model: any (It's your model, thus your type)
  * 4) formControl: AbstractControl
  * You must return a boolean that decides whether to enable or disable the control
+ * 
+ * How this fucker works:
+ * - define a callback function under "disabledExpression" as described above
+ * - that function is called on every option in the select to check whether the given option is valid
+ * - FURTHER that function is called to check whether an invalid option is selected at any given point
+ *    If it is, the pre-given warning message is displayed
+ * - The given info-text is shown as a tooltip for this field.
  */
 @Component({
   selector: 'app-formly-select-disable',
@@ -36,7 +43,6 @@ export class FormlySelectDisableComponent extends FieldType implements OnInit, O
   isOptionDisabledArray: boolean[] = [];
 
 
-  //TODO: Figure out a way to show the warning via a validator, so that it can affect the submit butotn as well
   ngOnInit(): void {
     const selectOptionsObservable = this.to.options as Observable<any[]>;
     const hasObservableOptions: boolean = (selectOptionsObservable instanceof Observable);
