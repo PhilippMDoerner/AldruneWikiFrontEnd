@@ -29,7 +29,7 @@
     "@ngx-formly/core": "^5.10.21",
     "@ngx-formly/schematics": "^5.10.21",
     "@tinymce/tinymce-angular": "^4.2.4",
-    "@vime/angular": "^4.7.3",
+    "@vime/angular": "^4.3.3",
     "animate.css": "^4.1.1",
     "bootstrap": "^4.6.0",
     "font-awesome": "^4.7.0",
