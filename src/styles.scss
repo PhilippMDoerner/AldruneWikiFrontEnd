@@ -8,7 +8,6 @@ input[type="submit"], button {
 	font-style: normal;
 	font-family: FontAwesome !important;
 	font-variant-caps: normal;
-	font-weight: normal;
 	font-stretch: normal;
 	font-size: 14px;
 	line-height: 1;
@@ -23,6 +22,10 @@ input[type="submit"], button {
 	font-language-override: normal;
 	font-feature-settings: normal;
 	font-variation-settings: normal;
+}
+
+.fas, .fa{
+	font-weight: unset;
 }
 
 //Animations
