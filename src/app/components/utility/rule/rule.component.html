@@ -16,7 +16,7 @@
                 <h4 class="d-inline"> {{ cardData.name }}</h4>
         
                 <!-- Edit Toggler -->
-                <div class="btn btn-secondary float-right" (click)="toggleFormState()">
+                <div *ngIf="userHasUpdatePermission()" class="btn btn-secondary float-right" (click)="toggleFormState()">
                     <i class="fa fa-pencil" *ngIf="isInDisplayState()"></i>
                     <i class="fa fa-times" *ngIf="!isInDisplayState()"></i>
                 </div>
