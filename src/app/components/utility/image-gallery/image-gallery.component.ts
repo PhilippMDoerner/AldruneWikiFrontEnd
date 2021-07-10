@@ -101,7 +101,11 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   }
 
   hasImages(): boolean{
-    return this.images.length >= 1;
+    const hasActualImages: boolean = this.images.length >= 1;
+    if (!hasActualImages) return false;
+
+    const isUsingOnlyDefaultImage: boolean = (this.images.length === 1) && (this.images[0].image === "/media/resources/dndicon.png");
+    return !isUsingOnlyDefaultImage;
   }
 
   onSubmit(): void{
