@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, OnInit, ViewChild } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { Subject } from 'rxjs';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
@@ -51,6 +51,11 @@ export class AppComponent implements OnInit{
     this.outsideClickSubject.next(event);
   }
 
+  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+    this.routingService.routeToPath("home1");
+
+    this.outsideClickSubject.next();
+  }
 
 
 }
