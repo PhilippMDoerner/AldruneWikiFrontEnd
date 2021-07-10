@@ -51,11 +51,4 @@ export class AppComponent implements OnInit{
     this.outsideClickSubject.next(event);
   }
 
-  @HostListener('document:keydown.escape', ['$event']) onKeydownHandler(event: KeyboardEvent) {
-    this.routingService.routeToPath("home1");
-
-    this.outsideClickSubject.next();
-  }
-
-
 }
