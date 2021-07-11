@@ -69,8 +69,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 5rem;
+    width: 5.4rem;
     border-bottom: none;
+}
+
+#header .logo a:hover{
+    background-color: var(--secondary);
+    
 }
 
 #header .logo a:hover{
@@ -140,7 +145,7 @@
 
 #header nav ul li a {
     display: block;
-    min-width: 7.5rem;
+    min-width: 6.5rem;
     height: 2.75rem;
     line-height: 2.75rem;
     padding: 0 1.25rem 0 1.45rem;
@@ -151,11 +156,11 @@
 }
 
 #header nav ul li a:hover {
-    background-color: rgba(255, 255, 255, 0.075);
+    background-color: rgba(57, 62, 65, 0.75);
 }
 
 #header nav ul li a:active {
-    background-color: rgba(255, 255, 255, 0.175);
+    background-color: rgba(57, 62, 65, 0.75);
 }
 
 #header nav.use-middle:after {
