@@ -71,17 +71,13 @@
     align-items: center;
     width: 5.4rem;
     border-bottom: none;
-}
-
-#header .logo a:hover{
-    background-color: var(--secondary);
-    
+    border-radius: 4em;
 }
 
 #header .logo a:hover{
     text-decoration: none;
-    color: gray;
     border-bottom: none;
+    background-color: rgba(128, 128, 128, 0.75);
 }
 
 
@@ -156,7 +152,7 @@
 }
 
 #header nav ul li a:hover {
-    background-color: rgba(57, 62, 65, 0.75);
+    background-color: rgba(128, 128, 128, 0.75);
 }
 
 #header nav ul li a:active {
