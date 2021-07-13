@@ -16,7 +16,7 @@
     display: flex;
 }
 
-.navbar a.nav-link:hover{
+.navbar a.nav-link:hover, .navbar a.nav-link:focus{
     background-color: grey;
 }
 
