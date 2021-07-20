@@ -11,7 +11,7 @@
          ></app-colored-sidebar-legend>
          
         <!-- Article List -->
-        <div class="my-3">
+        <div class="my-3" *ngIf="articles.length > 0 else noSearchResults">
             <a 
             routerLink="{{ article.getAbsoluteRouterUrl() }}" 
             *ngFor="let article of articles"
@@ -43,3 +43,10 @@
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
+
+<ng-template #noSearchResults>
+    <div class="my-5 d-flex align-items-center flex-column">
+        <h2 class="mb-0">We couldn't find any hits for '{{ searchString }}'</h2>
+        <i> {{ getRandomSubtitle() }}</i>
+    </div>
+</ng-template>
