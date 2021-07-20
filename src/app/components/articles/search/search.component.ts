@@ -15,6 +15,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 export class SearchComponent implements OnInit, OnDestroy {
   articles: Article[];
   searchString: string;
+  emptySearchSubtitle: string;
   filterOptions: string[] = [];
 
   constants: any = Constants;
@@ -27,7 +28,8 @@ export class SearchComponent implements OnInit, OnDestroy {
     private router: Router,  
     public routingService: RoutingService,
   ) { }
-
+  
+  //TODO: Turn this into a table in the backend
   nothingFoundSubtitles: string[] = [
     "This page is about as empty as Illfae's heart.",
     "Were you looking for Barbatos conscience?",
@@ -39,7 +41,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     "Yeah, that's about as much as Murtagh leaves of his enemies if he's pissed off.",
   ]
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
     this.parameter_subscription = this.route.params.subscribe(params => {
       this.searchString = params['searchString'];
       this.articleService.getSearchedArticles(this.searchString).pipe(first()).subscribe(
@@ -47,6 +49,8 @@ export class SearchComponent implements OnInit, OnDestroy {
         error => this.routingService.routeToErrorPage(error)
       )
     });
+
+    this.emptySearchSubtitle = this.getRandomSubtitle();
   }
 
   sidebarColor(articleType: string): string{
