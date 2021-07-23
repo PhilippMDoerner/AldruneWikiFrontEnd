@@ -35,6 +35,7 @@
         <!-- Adding Item button -->
         <div class="mb-3 row" *ngIf="userHasCreatePermission()">
             <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
+                <i class="fa fa-plus"></i>
                 Add {{ overviewType | titlecase }}
             </a>
         </div>
