@@ -10,7 +10,14 @@ export interface DiaryEntry extends ApiObject{
     author_details?: diaryEntryUser
     session: number
     session_details?: Session,
-    encounters: diaryEntryEncounter[]
+    encounters: diaryEntryEncounter[],
+    next_diaryentry: diaryEntryStump,
+    prior_diaryentry: diaryEntryStump
+}
+
+interface diaryEntryStump{
+    author_details: diaryEntryUser,
+    session_details: Session
 }
 
 interface diaryEntryUser{
@@ -29,7 +36,9 @@ export class DiaryEntryObject implements DiaryEntry{
     session_details?: Session;
     author: number;
     author_details?: diaryEntryUser;
-    encounters: diaryEntryEncounter[]
+    encounters: diaryEntryEncounter[];
+    next_diaryentry: diaryEntryStump;
+    prior_diaryentry: diaryEntryStump;
 
     constructor(object?: DiaryEntry){
         if(object) Object.assign(this, object);

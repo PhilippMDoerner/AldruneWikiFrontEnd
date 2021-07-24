@@ -20,10 +20,66 @@
             </p>
         </div>
 
+        <!-- Next/Prior Diaryentry Buttons -->
+        <div class="mb-3 d-flex align-items-center justify-content-between">
+            <!-- Next Diaryentry -->
+            <div class="col-lg-2 col-md-4 col-5 px-0">
+                <a  
+                *ngIf="articleData.next_diaryentry"
+                routerLink="{{nextDiaryentryUrl}}"
+                class="btn btn-secondary w-100"
+                > 
+                    <i class="fa fa-arrow-left mr-1"></i>
+                    Next
+                </a>
+            </div>
+
+
+            <!-- Prior Diaryentry -->
+            <div class="col-lg-2 col-md-4 col-5 px-0">
+                <a  
+                *ngIf="articleData.prior_diaryentry"
+                routerLink="{{priorDiaryentryUrl}}"
+                class="btn btn-secondary w-100"
+                > 
+                    Prior
+                    <i class="fa fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
+
         <!-- DiaryEntry Text In Encounters -->
         <app-diary-entry-encounter-list
         [diaryEntry]="articleData"
         ></app-diary-entry-encounter-list>
+
+        <!-- Next/Prior Diaryentry Buttons -->
+        <div class="mb-3 d-flex align-items-center justify-content-between">
+            <!-- Next Diaryentry -->
+            <div class="col-lg-2 col-md-4 col-5 px-0">
+                <a  
+                *ngIf="articleData.next_diaryentry"
+                routerLink="{{nextDiaryentryUrl}}"
+                class="btn btn-secondary w-100"
+                > 
+                    <i class="fa fa-arrow-left mr-1"></i>
+                    Next
+                </a>
+            </div>
+
+
+            <!-- Prior Diaryentry -->
+            <div class="col-lg-2 col-md-4 col-5 px-0">
+                <a  
+                *ngIf="articleData.prior_diaryentry"
+                routerLink="{{priorDiaryentryUrl}}"
+                class="btn btn-secondary w-100"
+                > 
+                    Prior
+                    <i class="fa fa-arrow-right ml-1"></i>
+                </a>
+            </div>
+        </div>
 
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer

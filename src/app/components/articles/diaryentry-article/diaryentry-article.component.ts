@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
 import { DiaryEntry } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -17,6 +15,8 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class DiaryentryArticleComponent extends ArticleMixin {
   //ArticleMixin Variables
   articleData: DiaryEntry;
+  nextDiaryentryUrl: string;
+  priorDiaryentryUrl: string;
   deleteRoute = {routeName: 'diaryentry-overview', params: {}};
 
 
@@ -47,6 +47,8 @@ export class DiaryentryArticleComponent extends ArticleMixin {
         diaryEntry => {
           this.articleData = diaryEntry;
           this.coAuthors = this.getCoAuthorString();
+          this.nextDiaryentryUrl = this.createDiaryentryURL(this.articleData.next_diaryentry);
+          this.priorDiaryentryUrl = this.createDiaryentryURL(this.articleData.prior_diaryentry);
         },
         error => this.routingService.routeToErrorPage(error)
       );
@@ -70,5 +72,19 @@ export class DiaryentryArticleComponent extends ArticleMixin {
 
   onDescriptionUpdate(){
     throw "InvalidFunctionUseException. This functionality does not exist on diaryentry-article"
+  }
+
+  createDiaryentryURL(diaryentry_data:any): string{
+    if (diaryentry_data == null) return "";
+
+    const sessionNumber: number = diaryentry_data.session_details.session_number;
+    const authorName: string = diaryentry_data.author_details.name;
+    const isMainSession: number = diaryentry_data.session_details.is_main_session_int;
+    
+    return this.routingService.getRoutePath('diaryentry', {
+      sessionNumber: sessionNumber,
+      isMainSession: isMainSession,
+      authorName: authorName
+    });
   }
 }
