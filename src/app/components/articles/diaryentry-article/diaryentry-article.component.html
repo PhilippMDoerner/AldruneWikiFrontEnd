@@ -25,7 +25,7 @@
             <!-- Next Diaryentry -->
             <div class="col-lg-2 col-md-4 col-5 px-0">
                 <a  
-                *ngIf="articleData.next_diaryentry"
+                *ngIf="articleData.adjacent_diaryentries.next_diaryentry"
                 routerLink="{{nextDiaryentryUrl}}"
                 class="btn btn-secondary w-100"
                 > 
@@ -38,7 +38,7 @@
             <!-- Prior Diaryentry -->
             <div class="col-lg-2 col-md-4 col-5 px-0">
                 <a  
-                *ngIf="articleData.prior_diaryentry"
+                *ngIf="articleData.adjacent_diaryentries.prior_diaryentry"
                 routerLink="{{priorDiaryentryUrl}}"
                 class="btn btn-secondary w-100"
                 > 
@@ -58,7 +58,7 @@
             <!-- Next Diaryentry -->
             <div class="col-lg-2 col-md-4 col-5 px-0">
                 <a  
-                *ngIf="articleData.next_diaryentry"
+                *ngIf="articleData.adjacent_diaryentries.next_diaryentry"
                 routerLink="{{nextDiaryentryUrl}}"
                 class="btn btn-secondary w-100"
                 > 
@@ -71,7 +71,7 @@
             <!-- Prior Diaryentry -->
             <div class="col-lg-2 col-md-4 col-5 px-0">
                 <a  
-                *ngIf="articleData.prior_diaryentry"
+                *ngIf="articleData.adjacent_diaryentries.prior_diaryentry"
                 routerLink="{{priorDiaryentryUrl}}"
                 class="btn btn-secondary w-100"
                 > 

@@ -47,8 +47,12 @@ export class DiaryentryArticleComponent extends ArticleMixin {
         diaryEntry => {
           this.articleData = diaryEntry;
           this.coAuthors = this.getCoAuthorString();
-          this.nextDiaryentryUrl = this.createDiaryentryURL(this.articleData.next_diaryentry);
-          this.priorDiaryentryUrl = this.createDiaryentryURL(this.articleData.prior_diaryentry);
+
+          const priorDiaryentryStub = this.articleData.adjacent_diaryentries.prior_diaryentry;
+          this.priorDiaryentryUrl = this.createDiaryentryURL(priorDiaryentryStub);
+          
+          const nextDiaryentryStub = this.articleData.adjacent_diaryentries.next_diaryentry;
+          this.nextDiaryentryUrl = this.createDiaryentryURL(nextDiaryentryStub);
         },
         error => this.routingService.routeToErrorPage(error)
       );
@@ -80,7 +84,7 @@ export class DiaryentryArticleComponent extends ArticleMixin {
     const sessionNumber: number = diaryentry_data.session_details.session_number;
     const authorName: string = diaryentry_data.author_details.name;
     const isMainSession: number = diaryentry_data.session_details.is_main_session_int;
-    
+
     return this.routingService.getRoutePath('diaryentry', {
       sessionNumber: sessionNumber,
       isMainSession: isMainSession,
