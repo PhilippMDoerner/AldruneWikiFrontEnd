@@ -12,10 +12,10 @@
 
 <ng-template #passwordResetView>
     <h1> Password Reset </h1>
-    <p> Forgot your account’s password? Enter your account name and we’ll send you a recovery link to your email address.</p>
+    <p> Forgot your account’s password? Enter your account name and we’ll send you a randomized new password to your email address.</p>
     <form class="d-flex flex-column" (submit)="requestPasswordReset()">
         <formly-form [model]="recoveryModel" [fields]="recoveryFields" [form]="recoveryForm"></formly-form>
         <div class="btn btn-secondary mb-3" (click)="togglePasswordResetView()">I do have a password !</div>
-        <button class="btn btn-primary" type="submit">Send recovery email</button>
+        <button class="btn btn-primary" type="submit">Reset Password </button>
     </form>
 </ng-template>
