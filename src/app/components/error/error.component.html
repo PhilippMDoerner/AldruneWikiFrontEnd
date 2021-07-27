@@ -1,0 +1,14 @@
+<div class="main d-flex flex-column">
+    <h1 class="text-center mb-5"> {{errorContents[errorStatus].title}} </h1>
+    <img src="{{errorContents[errorStatus].image}}" alt="" class="center mb-3"/>
+
+    <p class="text-center" [innerHTML]="errorContents[errorStatus].htmlBody | safeHtml"> 
+
+    </p>
+    
+    <div>
+        <a class="btn btn-secondary" routerLink="{{ routingService.getRoutePath('home1') }}"> 
+            Back To Frontpage
+        </a>
+    </div>
+</div>
