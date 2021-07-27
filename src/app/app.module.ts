@@ -91,6 +91,7 @@ import { ConfigTablesComponent } from './components/articles/config-tables/confi
 import { CompareFormContainerComponent } from './components/utility/compare-form-container/compare-form-container.component';
 import { DisplayFormContainerComponent } from './components/utility/display-form-container/display-form-container.component';
 import { FormlySelectDisableComponent } from './components/utility/formly-select-disable/formly-select-disable.component';
+import { ErrorComponent } from './components/error/error.component';
 
 @NgModule({
   declarations: [
@@ -169,6 +170,7 @@ import { FormlySelectDisableComponent } from './components/utility/formly-select
     CompareFormContainerComponent,
     DisplayFormContainerComponent,
     FormlySelectDisableComponent,
+    ErrorComponent,
   ],
   imports: [
     BrowserModule,
