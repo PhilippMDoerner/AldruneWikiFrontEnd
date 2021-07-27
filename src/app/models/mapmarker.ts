@@ -1,5 +1,3 @@
-import { Map } from "./map";
-import { Location } from "./location";
 import { MapMarkerType } from "./mapmarkertype";
 import { ApiObject } from './base-models';
 import { Constants } from '../app.constants';

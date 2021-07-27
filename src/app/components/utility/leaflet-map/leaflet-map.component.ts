@@ -206,16 +206,15 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
 
   divIcon(mapMarker: MapMarker){
     const typeIcon = mapMarker.type_details.icon;
+    const fontawesome_type: string = mapMarker.type_details.fontawesome_type;
+    
     const typeColor = mapMarker.type_details.color;
-    const customIcon = mapMarker.icon;
     const customColor = mapMarker.color;
-
-    const icon = customIcon? customIcon : typeIcon; 
     const color = customColor? customColor: typeColor;
 
     const markerIcon = L.divIcon({
       className: 'custom-div-icon',
-      html: `<div style='background-color:${color};' class='marker-pin'></div><i class='fa fa-${icon} awesome'>`,
+      html: `<div style='background-color:${color};' class='marker-pin'></div><i class='${fontawesome_type} fa-${typeIcon} awesome'>`,
       iconSize: [30, 42],
       iconAnchor: [15, 42],
       color: color
