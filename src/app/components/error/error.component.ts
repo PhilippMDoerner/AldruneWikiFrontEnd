@@ -34,9 +34,12 @@ export class ErrorComponent implements OnInit {
       title: "504 Gateway Timeout",
       image: Constants.timeoutImageUrl
     },
+    0: {
+      htmlBody: "Your connection seems to be taking a short rest. <br>  Sadly, we need internet to show you a page you haven't recently visited and thus cached. <br> Please connect to the internet and try again.",
+      title: "504 Gateway Timeout",
+      image: Constants.timeoutImageUrl
+    },
   }
-
-
 
   constructor(
     public routingService: RoutingService,
