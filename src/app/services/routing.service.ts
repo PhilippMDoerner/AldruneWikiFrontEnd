@@ -17,18 +17,19 @@ export class RoutingService {
    }
 
   public routeToApiObject(object: ApiObject): void{
-    //The replaces here are required due to router.navigateByUrl mucking up if presented with such a url.
     const objectUrl: string = object.getAbsoluteRouterUrl()
     const cleanedObjectUrl: string = this.replaceSpecialUnicodeCharacters(objectUrl);
 
     this.router.navigateByUrl(cleanedObjectUrl);
   }
 
+
   public routeToPath(routeName: string, params = {}): void{
     const routePath: string = this.getRoutePath(routeName, params)
     const cleanedObjectUrl: string = this.replaceSpecialUnicodeCharacters(routePath);
     this.router.navigateByUrl(cleanedObjectUrl);
   }
+
 
   public getRoutePath(routeName: string, params = {}): string{
     let variableRoutePath = this.getVariableRoutePathByName(routeName);
@@ -44,6 +45,7 @@ export class RoutingService {
 
     return `/${variableRoutePath}`;
   }
+
 
   public routeToErrorPage(error: number| any): void{
     if (typeof error !== "number" && !error.hasOwnProperty("status")){
@@ -62,11 +64,18 @@ export class RoutingService {
     this.routeToPath('error');
   }
 
+
   public routeNameMatches(route: ActivatedRoute, routeName: string): boolean{
     const routeData = route.snapshot.data;
     return routeData.name === routeName;
   }
 
+
+  /**
+   * Replaces special characters with their % Equivalent, as otherwise they cause problems in router.navigatebyUrl
+   * @param {string} routePath - A route, such as /home
+   * @returns {string} The same routePath as was given, but with special characters replaced
+   */
   private replaceSpecialUnicodeCharacters(routePath: string){
     return routePath
       .replace("(", "%28")
@@ -75,6 +84,7 @@ export class RoutingService {
       .replace("†", "%E2%80%A0");
   }
 
+  
   private getVariableRouteByName(routeName: string): Route{
     const routes: Route[] = this.router.config;
     const routesWithRouteName = routes.filter(pathObject => pathObject.data.name === routeName);
@@ -86,21 +96,25 @@ export class RoutingService {
     return targetRouteObject;
   }
 
+  
   private getVariableRoutePathByName(routeName: string): string{
     const targetRouteObject: Route = this.getVariableRouteByName(routeName);
     return targetRouteObject.path;
   }
 
+  
   private hasPathVariables(routePath: string): boolean{
     return routePath.includes('/:');
   }
 
+  
   public hasRoutePath(routeName: string): boolean{
     const routes = this.router.config;
     const routesWithRouteName = routes.filter(pathObject => pathObject.data.name === routeName);
     return routesWithRouteName.length > 0;
   }
 
+  
   private getPathVariableNames(routePath: string): string[]{
     const routeSegments: string[] = routePath.split("/");
     const pathVariables: string[] = routeSegments.filter((segment: string) => segment.startsWith(":"));
