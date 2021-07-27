@@ -5,6 +5,7 @@
     {
       "name": "app",
       "installMode": "prefetch",
+      "updateMode": "prefetch",
       "resources": {
         "files": [
           "/favicon.ico",
@@ -22,7 +23,9 @@
           "https://www.aldrune.com/static/frontpage/images/pic07.jpg",
           "https://www.aldrune.com/static/wiki/images/404.png",
           "https://www.aldrune.com/static/wiki/images/504.jpeg",
-          "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600"
+          "https://www.aldrune.com/static/fileserver/images/audio_pic.png",
+          "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600",
+          "https://cdn.jsdelivr.net/npm/@vime/core@latest/icons/sprite.svg"
         ]
       }
     },
@@ -50,11 +53,11 @@
         "https://www.aldrune.com/wiki1/api/overview/creature",
         "https://www.aldrune.com/wiki1/api/overview/quest",
         "https://www.aldrune.com/wiki1/api/overview/sessionaudio",
+        "https://www.aldrune.com/wiki1/api/spell",
         "https://www.aldrune.com/wiki1/api/rule/"
-
       ],
       "cacheConfig": {
-        "maxSize": 10,
+        "maxSize": 15,
         "maxAge": "4d",
         "timeout": "5s",
         "strategy": "freshness"
@@ -71,21 +74,14 @@
         "https://www.aldrune.com/wiki1/api/creature/**",
         "https://www.aldrune.com/wiki1/api/map/**",
         "https://www.aldrune.com/wiki1/api/randomquote/**",
-        "https://www.aldrune.com/wiki1/api/recentupdates"
+        "https://www.aldrune.com/wiki1/api/recentupdates",
+        "https://www.aldrune.com/wiki1/api/sessionaudio/**",
+        "https://www.aldrune.com/wiki1/api/timestamplist/**"
       ],
       "cacheConfig": {
         "maxSize": 500,
-        "maxAge": "30d",
-        "timeout": "10s",
-        "strategy": "freshness"
-      }
-    },
-    {
-      "name": "IgnoreURLS",
-      "urls": ["https://www.aldrune.com/wiki1/api/sessionaudio/"],
-      "cacheConfig": {
-        "maxSize": 0,
-        "maxAge": "0u",
+        "maxAge": "90d",
+        "timeout": "5s",
         "strategy": "freshness"
       }
     }
