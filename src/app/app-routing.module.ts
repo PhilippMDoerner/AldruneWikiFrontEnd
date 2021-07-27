@@ -11,7 +11,6 @@ import { OrganizationArticleComponent } from "src/app/components/articles/organi
 import { ItemArticleComponent } from "src/app/components/articles/item-article/item-article.component";
 import { RulesComponent } from "src/app/components/articles/rules/rules.component";
 import { CharacterArticleUpdateComponent } from "src/app/components/articles/character-article-update/character-article-update.component";
-import { NotFoundComponent } from "src/app/components/not-found/not-found.component";
 import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
 import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
@@ -37,12 +36,12 @@ import { LoginComponent } from './components/login/login.component';
 import { Constants } from './app.constants';
 import { AdminGuardService, LoginGuardService,
 		PermissionGuardService } from './services/permission.service';
-import { GatewayTimeoutComponent } from './components/gateway-timeout/gateway-timeout.component';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
 import { AdminComponent } from './components/articles/admin/admin.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ConfigTablesComponent } from './components/articles/config-tables/config-tables.component';
+import { ErrorComponent } from './components/error/error.component';
 
 
 
@@ -480,28 +479,13 @@ const routes: Routes = [
 
 	// Error Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/error`,
-		component: NotFoundComponent,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/error/:errorStatus`,
+		component: ErrorComponent,
 		data:{ name: "error"},
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/504`,
-		component: GatewayTimeoutComponent,
-		data:{ name: "504"},
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/503`,
-		component: GatewayTimeoutComponent,
-		data:{ name: "503"},
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/0`,
-		component: GatewayTimeoutComponent,
-		data:{ name: "0"},
-	},
-	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/**`,
-		component: NotFoundComponent,
+		component: ErrorComponent,
 		data:{ name: "404"},
 	},
 ];

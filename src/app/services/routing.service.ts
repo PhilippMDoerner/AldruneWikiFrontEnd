@@ -55,13 +55,8 @@ export class RoutingService {
     
     if (typeof error !== "number" && error.hasOwnProperty("status")) error = error.status;
   
-    const errorStatus: string = `${error}`;
-    if (this.hasRoutePath(errorStatus)){
-        this.routeToPath(errorStatus);
-        return;
-    }
-  
-    this.routeToPath('error');
+    const errorStatusParam: string = `${error}`;
+    this.routeToPath("error", {errorStatus: errorStatusParam});
   }
 
 
