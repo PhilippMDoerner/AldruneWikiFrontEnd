@@ -33,6 +33,9 @@ export class Constants{
     public static get updateSignal(): string { return "update";}
     public static get cancelSignal(): string { return "cancel";}
 
+    //Minimum Amount of Movement necessary for a gesture to count as swipe
+    public static get minimumSwipeDistance(): number { return 200; }
+
     //Mapping of article types to colors
     public static get articleTypeSidebarColorMapping(): object { return { 
         'item' : 'yellow',

@@ -1,0 +1,22 @@
+<nav id="sidebar"
+(click)="test = !test"
+[ngClass]="{'slide-in-left-on-small-devices': showSidebar.getValue(), 'slide-out-left-on-small-devices': !showSidebar.getValue()}"
+>
+    <!-- Brand -->
+    <a routerLink="{{ routingService.getRoutePath('home1') }}">
+        <h3 class="d-flex align-items-center justify-content-center my-2" id="brand"> 
+            <i class="aldrune-icon" crossorigin="anonymous"></i>
+            <span class="on-hover-show">Aldrune Wiki</span>
+        </h3>
+    </a>
+
+    <!-- Sidebar Items -->
+    <ul>
+        <li *ngFor="let entry of sidebarEntries">
+            <a routerLink="{{entry.route}}" class="d-flex align-items-center entry">
+                <i class="{{ entry.iconClass}}"></i>
+                <span class="on-hover-show">{{entry.title}}</span>
+            </a>
+        </li>
+    </ul>
+</nav>

@@ -90,6 +90,8 @@ import { CompareFormContainerComponent } from './components/utility/compare-form
 import { DisplayFormContainerComponent } from './components/utility/display-form-container/display-form-container.component';
 import { FormlySelectDisableComponent } from './components/utility/formly-select-disable/formly-select-disable.component';
 import { ErrorComponent } from './components/error/error.component';
+import { Home2Component } from './components/home2/home2.component';
+import { SidebarComponent } from './components/utility/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [
@@ -167,6 +169,8 @@ import { ErrorComponent } from './components/error/error.component';
     DisplayFormContainerComponent,
     FormlySelectDisableComponent,
     ErrorComponent,
+    Home2Component,
+    SidebarComponent,
   ],
   imports: [
     BrowserModule,
@@ -219,7 +223,7 @@ import { ErrorComponent } from './components/error/error.component';
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
     httpInterceptorProviders,
     PermissionGuardService,
-    LoginGuardService
+    LoginGuardService,
   ],
   bootstrap: [
     AppComponent
