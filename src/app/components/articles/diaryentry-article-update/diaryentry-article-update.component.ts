@@ -120,24 +120,6 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
     return diaryentryAuthorPksForSession.includes(currentlySelectedAuthor);
   }
 
-  async isValidSessionField(control: any){
-    console.log("Is valid session field control");
-    console.log(control);
-    return null;
-    const { author: selectedAuthorId, session: selectedSessionId} = control.value;
-    const selectFieldOptionsObservable: Observable<any> = control.controls.session._fields[1].templateOptions.options;
-    const selectFieldOptions: any = await selectFieldOptionsObservable.toPromise();
-
-    const selectedOption = selectFieldOptions.find(option => option.pk === selectedSessionId)
-
-    if (selectedOption == null) throw "WeirdError. You selected a session, its id got into the model and somehow that field is no longer among the options (?)";
-
-    const authorIdsWithDiaryentriesOnSession: number[] = selectedOption.author_ids;
-    const selectedAuthorAlreadyHasDiaryentryOnSession: boolean = authorIdsWithDiaryentriesOnSession.includes(selectedAuthorId);
-    const isRespectingUniqueness = !selectedAuthorAlreadyHasDiaryentryOnSession
-    return isRespectingUniqueness;
-  }
-
   /**
    * @description Overwrites onCreationSuccess on ArticleFormMixin. Routes the user after creation to the diaryentry-article
    * in display-state "encounter", so that they can immediately create encounters
