@@ -4,8 +4,8 @@
     transition: width 0.2s ease-in-out;
     position: fixed;
     background-color: var(--dark);
-    z-index: 5;
-    overflow-y: scroll;
+    z-index: 1005; //Necessary because map uses z-indexes going up to 1000
+    overflow-y: auto;
 
     border-right-color: white;
     border-right-width: 1px;
@@ -30,7 +30,6 @@ li a{
     height: 100%;
     display: flex;
     align-items: center;
-    justify-content: center;
     border-bottom: none;
 }
 
@@ -239,4 +238,9 @@ li:hover{
     #sidebar:hover{
         width: 90vw;    
     }
+
+    #sidebar.slide-in-left-on-small-devices .on-hover-show{
+        display: unset;
+    }
+
 }

@@ -70,6 +70,8 @@ export class AppComponent implements OnInit{
     const secondTouchData = this.extractTouchData(this.secondTouchData);
 
     if (firstTouchData == null || secondTouchData == null){
+      const originalClickTarget: any = this.firstTouchData.target;
+      originalClickTarget.click();
       this.showSidebarSubject.next(false);
       return;
     }

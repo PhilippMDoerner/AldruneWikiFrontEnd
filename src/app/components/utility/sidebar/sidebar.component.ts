@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
 import { RoutingService } from 'src/app/services/routing.service';
-import 'hammerjs';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -9,7 +8,6 @@ import { BehaviorSubject } from 'rxjs';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.scss'],
 })
-
 export class SidebarComponent implements OnInit {
   constants = Constants;
 
@@ -30,7 +28,7 @@ export class SidebarComponent implements OnInit {
     {
       title: "DiaryEntries", 
       iconClass: "fas fa-book-open", 
-      route: this.routingService.getRoutePath("creature-overview")
+      route: this.routingService.getRoutePath("diaryentry-overview")
     },
     {
       title: "Items", 
