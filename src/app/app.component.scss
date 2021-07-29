@@ -1,6 +1,29 @@
+.sidebar-wrapper{
+        width: 4rem;
+        height: 100vh;
+}
+
 @media(max-width: 992px){
         #background-div{
                 padding-left: 2rem;
                 padding-right: 2rem;
+        }
+}
+
+@media(max-width: 576px){
+        .sidebar-wrapper{
+                width: 0rem;
+                display: none;
+        }
+
+
+        .sidebar-wrapper.swiped-left{
+                width: 0rem;
+                display: none;
+        }
+
+        .sidebar-wrapper.swiped-right{
+             width: 0.01rem;
+             display: block;   
         }
 }

@@ -12,6 +12,34 @@
     border-right-style: inset;
 }
 
+#sidebar:hover{
+    width: 20rem;
+}
+
+/* For slide in/out left animations on swiping left/right on Touch devices */
+#sidebar.swiped-right{
+    display: block;
+    width: 20rem;
+
+    -webkit-animation: slideInLeft 0.2s ease-out;
+    -moz-animation: slideInLeft 0.2s ease-out;
+    -o-animation: slideInLeft 0.2s ease-out;
+    animation: slideInLeft 0.2s ease-out; 
+}
+
+.swiped-left{
+    display: unset;
+    width: 4rem;
+
+    -webkit-animation: slideInLeft 0.2s ease-out;
+    -moz-animation: slideInLeft 0.2s ease-out;
+    -o-animation: slideInLeft 0.2s ease-out;
+    animation: slideInLeft 0.2s ease-out; 
+
+    animation-direction: reverse;
+}
+
+/* General styling for list entries*/
 ul{
     list-style-type: none;
     margin: 0;
@@ -21,7 +49,7 @@ ul{
 
 
 li{
-    height: 3.5rem;
+    height: 3rem;
     font-weight: bold;
     font-size: large;
 }
@@ -38,6 +66,7 @@ li a i{ //entry icon
     width: 3rem;
 }
 
+/* Styling list elements so their background color changes on hover but they still remain some distance away from the left edge */
 li:hover{
     background-color: var(--secondary);
 }
@@ -47,9 +76,7 @@ li:hover{
     margin-left: 1rem;
 }
 
-#sidebar:hover{
-    width: 20rem;
-}
+
 
 #brand{
     height: 3rem;
@@ -61,7 +88,8 @@ li:hover{
     display: none;
 }
 
-#sidebar:hover .on-hover-show{
+#sidebar:hover .on-hover-show, 
+#sidebar.swiped-right .on-hover-show{
     display: block;
 
     -webkit-animation: fadeInFromNone 0.6s ease-out;
@@ -70,6 +98,44 @@ li:hover{
     animation: fadeInFromNone 0.6s ease-out;
 }
 
+
+@media(max-width: 576px){
+    #sidebar{
+        display: none;
+        width: 0vw;
+    }
+
+    #sidebar.swiped-right{
+        display: block;
+        width: 75vw;
+    
+        -webkit-animation: slideInLeft-mobile 0.2s ease-out;
+        -moz-animation: slideInLeft-mobile 0.2s ease-out;
+        -o-animation: slideInLeft-mobile 0.2s ease-out;
+        animation: slideInLeft-mobile 0.2s ease-out; 
+    }
+
+
+    #sidebar.swiped-left{
+        display: none;
+        width: 0vw;
+    
+        -webkit-animation: slideInLeft-mobile 0.2s ease-out;
+        -moz-animation: slideInLeft-mobile 0.2s ease-out;
+        -o-animation: slideInLeft-mobile 0.2s ease-out;
+        animation: slideInLeft-mobile 0.2s ease-out; 
+    
+        animation-direction: reverse;
+    }
+}
+
+
+
+/**************/
+/* ANIMATIONS */
+/**************/
+
+/* FADE IN FROM NONE FOR ALL DEVICES*/
 @-webkit-keyframes fadeInFromNone {
     0% {
         display: none;
@@ -138,7 +204,76 @@ li:hover{
     }
 }
 
+/* SLIDE IN LEFT ON MOBILE*/
+@-webkit-keyframes slideInLeft-mobile {
+    0% {
+        display: none;
+        width: 0rem;
+    }
 
+    1% {
+        display: block;
+        width: 0rem;
+    }
+
+    100% {
+        display: block;
+        width: 75vw;
+    }
+}
+
+@-moz-keyframes slideInLeft-mobile {
+    0% {
+        display: none;
+        width: 0rem;
+    }
+
+    1% {
+        display: block;
+        width: 0rem;
+    }
+
+    100% {
+        display: block;
+        width: 75vw;
+    }
+}
+
+@-o-keyframes slideInLeft-mobile {
+    0% {
+        display: none;
+        width: 0rem;
+    }
+
+    1% {
+        display: block;
+        width: 0rem;
+    }
+
+    100% {
+        display: block;
+        width: 75vw;
+    }
+}
+
+@keyframes slideInLeft-mobile{
+    0% {
+        display: none;
+        width: 0rem;
+    }
+
+    1% {
+        display: block;
+        width: 0rem;
+    }
+
+    100% {
+        display: block;
+        width: 75vw;
+    }
+}
+
+/* SLIDE IN LEFT ON GENERAL DEVICE*/
 @-webkit-keyframes slideInLeft {
     0% {
         display: none;
@@ -152,7 +287,7 @@ li:hover{
 
     100% {
         display: block;
-        width: 90vw;
+        width: 75vw;
     }
 }
 
@@ -169,7 +304,7 @@ li:hover{
 
     100% {
         display: block;
-        width: 90vw;
+        width: 75vw;
     }
 }
 
@@ -186,7 +321,7 @@ li:hover{
 
     100% {
         display: block;
-        width: 90vw;
+        width: 75vw;
     }
 }
 
@@ -203,44 +338,7 @@ li:hover{
 
     100% {
         display: block;
-        width: 90vw;
+        width: 20rem;
     }
 }
 
-@media(max-width: 576px){
-    #sidebar{
-        display: none;
-        width: 0rem;
-    }
-
-    #sidebar.slide-in-left-on-small-devices{
-        display: block;
-        width: 90vw;
-
-        -webkit-animation: slideInLeft 0.2s ease-out;
-        -moz-animation: slideInLeft 0.2s ease-out;
-        -o-animation: slideInLeft 0.2s ease-out;
-        animation: slideInLeft 0.2s ease-out; 
-    }
-
-    #sidebar.slide-out-left-on-small-devices{
-        display: none;
-        width: 0vw;
-
-        -webkit-animation: slideInLeft 0.2s ease-out;
-        -moz-animation: slideInLeft 0.2s ease-out;
-        -o-animation: slideInLeft 0.2s ease-out;
-        animation: slideInLeft 0.2s ease-out; 
-
-        animation-direction: reverse;
-    }
-
-    #sidebar:hover{
-        width: 90vw;    
-    }
-
-    #sidebar.slide-in-left-on-small-devices .on-hover-show{
-        display: unset;
-    }
-
-}

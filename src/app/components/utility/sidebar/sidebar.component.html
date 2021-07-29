@@ -1,6 +1,5 @@
 <nav id="sidebar"
-(click)="test = !test"
-[ngClass]="{'slide-in-left-on-small-devices': showSidebar.getValue(), 'slide-out-left-on-small-devices': !showSidebar.getValue()}"
+[ngClass]="{'swiped-right': showSidebar.getValue(), 'swiped-left': !showSidebar.getValue()}"
 >
     <!-- Brand -->
     <a routerLink="{{ routingService.getRoutePath('home1') }}">

@@ -3,17 +3,20 @@
 (touchstart)="trackSwipeStart($event)"
 (touchmove)="trackSwipeEnd($event)"
 (touchend)="checkForSwipeGesture()"
+class="d-flex"
 >
-    <app-sidebar
-    [showSidebar]="showSidebarSubject"
-    #sidebar
-    ></app-sidebar>
+    <div class="sidebar-wrapper" [ngClass]="{'swiped-right': showSidebarSubject.getValue(), 'swiped-left': !showSidebarSubject.getValue()}">
+        <app-sidebar
+        [showSidebar]="showSidebarSubject"
+        #sidebar
+        ></app-sidebar>
+    </div>
+
     <div 
     id="background-div"
-    class="d-flex justify-content-center align-items-center pt-4 pb-4"
-    (click)="routeToHome($event); closeNavbarMenu($event)"
+    class="d-flex justify-content-center align-items-center pt-4 pb-4 w-100"
     >
-        <router-outlet #routerOutlet (click)="closeNavbarMenu($event)"></router-outlet>
+        <router-outlet #routerOutlet></router-outlet>
     </div>    
 </div>
 

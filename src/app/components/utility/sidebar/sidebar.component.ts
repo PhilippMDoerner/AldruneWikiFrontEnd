@@ -11,13 +11,17 @@ import { BehaviorSubject } from 'rxjs';
 export class SidebarComponent implements OnInit {
   constants = Constants;
 
-  test: boolean = false; 
   @Input() showSidebar: BehaviorSubject<boolean>;
 
   sidebarEntries: any = [
     {
+      title: "Search",
+      iconClass: "fa fa-search",
+      route: this.routingService.getRoutePath("startSearch")
+    },
+    {
       title: "Creatures", 
-      iconClass: "fas fa-paw", 
+      iconClass: "fas fa-dragon", 
       route: this.routingService.getRoutePath("creature-overview")
     },
     {
@@ -32,7 +36,7 @@ export class SidebarComponent implements OnInit {
     },
     {
       title: "Items", 
-      iconClass: "fa fa-diamond", 
+      iconClass: "fa fa-magic", 
       route: this.routingService.getRoutePath("item-overview")
     },
     {
@@ -57,7 +61,7 @@ export class SidebarComponent implements OnInit {
     },
     {
       title: "Spells", 
-      iconClass: "fas fa-magic", 
+      iconClass: "fas fa-hand-sparkles", 
       route: this.routingService.getRoutePath("spells")
     },
     {
@@ -73,6 +77,7 @@ export class SidebarComponent implements OnInit {
 
   ]
 
+  //TODO: customizeable sidebar order of menu items
   constructor(
     public routingService: RoutingService
   ) { }

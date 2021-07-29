@@ -17,7 +17,7 @@ export class AppComponent implements OnInit{
   showSidebarSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   firstTouchData: TouchEvent;
-  secondTouchData: TouchEvent;
+  lastTouchData: TouchEvent;
 
   @ViewChild('routerOutlet') routerOutlet: ElementRef;
   @ViewChild('sidebar') sidebarRef: ElementRef;
@@ -37,37 +37,20 @@ export class AppComponent implements OnInit{
     )
   }
 
-  routeToHome(event: any){
-    if (event.target.attributes.id){
-      const clickTargetId = event.target.attributes.id.nodeValue;
-      const isClickOnBackground: boolean = clickTargetId === "background-div";
-      const mainCard: HTMLElement = document.querySelector('.main');
-      const hasMainCard: boolean = !(mainCard == null);
-      if (isClickOnBackground && hasMainCard){
-        animateElement(mainCard, 'fadeOut')
-          .then(() => this.routingService.routeToPath('home2'));
-      } else if (isClickOnBackground){
-        this.routingService.routeToPath('home2')
-      }
-    }
-  }
-
-
-  closeNavbarMenu(event: Event): void{
-    this.outsideClickSubject.next(event);
-  }
 
   trackSwipeStart(event: TouchEvent): void{
+    console.log("Track swipe start");
     this.firstTouchData = event;
   }
 
   trackSwipeEnd(event: TouchEvent): void{
-    this.secondTouchData = event;
+    console.log("Track swipe end");
+    this.lastTouchData = event;
   }
 
   checkForSwipeGesture(): void{
     const firstTouchData = this.extractTouchData(this.firstTouchData);
-    const secondTouchData = this.extractTouchData(this.secondTouchData);
+    const secondTouchData = this.extractTouchData(this.lastTouchData);
 
     if (firstTouchData == null || secondTouchData == null){
       const originalClickTarget: any = this.firstTouchData.target;
@@ -92,7 +75,7 @@ export class AppComponent implements OnInit{
 
   resetTouchData(){
     this.firstTouchData = null;
-    this.secondTouchData = null;
+    this.lastTouchData = null;
   }
 
   getSwipe(touchData1, touchData2){
