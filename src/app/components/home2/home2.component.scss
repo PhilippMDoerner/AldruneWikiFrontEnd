@@ -1,0 +1,165 @@
+header{
+    text-align: center;
+}
+
+.main{
+    max-width: 40rem;
+}
+
+.h-10{
+    height: 10%;
+}
+
+.h-40{
+    height: 40%;
+}
+
+.h-50{
+    height:50%;
+    background-color: green;
+}
+
+.mycolpadding{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.card{
+    line-height: 1.25;
+    height: 20rem;
+    border: solid;
+}
+
+.card-img-top{
+    max-height: 10rem;
+    object-fit: contain;
+}
+
+.card-subtitle{
+    text-transform: capitalize;
+}
+
+.card .card-text{
+    display:none
+}
+
+.card:hover .card-text{
+    display: block;
+}
+
+.card:hover .card-img-top,
+.card:hover .card-title,
+.card:hover .card-subtitle{
+    display: none;
+}
+
+
+.aldrune-icon.large{
+    background: url("https://www.aldrune.com/static/aldrune_icon/favicon-128x128.png");
+    width: 128px;
+    height: 128px;
+}
+
+
+/* SEARCHBAR CSS */
+.search-input{
+    background-color: #1f1e1f;
+    border: none;
+    outline: none;
+    color: white;
+    width: 100%;
+}
+
+// Remove "blue x" from chrome searchbar styling
+input[type="search"]::-webkit-search-decoration,
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-results-button,
+input[type="search"]::-webkit-search-results-decoration { display: none; }
+
+
+.searchbar{
+    background-color: #1f1e1f;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    padding-left: 0.4rem;
+    border-color: #717171;
+    border: solid 1px white;
+}
+
+
+.yellow{
+    border-color: yellow;
+}
+
+.lightgreen{
+    border-color: lightgreen;
+}
+
+.lightpink{
+    border-color: #ee8600;
+}
+
+.brown{
+    border-color:#b7410e;
+}
+
+.blue{
+    border-color: #4169e1;
+}
+
+.black{
+    border-color: black;
+}
+
+.gray{
+    border-color: gray;
+}
+
+.white{
+    border-color: white;
+}
+
+.green{
+    border-color: darkgreen;
+}
+
+.darkgreen{
+    border-color: #2f4a36;
+}
+
+.orange{
+    border-color: orange;
+}
+
+.violet{
+    border-color: #9871D2;
+}
+
+.purple{
+    border-color: #5d3754;
+}
+
+.beige{
+    border-color: var(--beige);
+}
+
+.teal{
+	border-color: #1cd2c0;
+}
+
+.darkpink{
+    border-color: #b03060
+}
+
+.red{
+    border-color: #bc0f0f;
+}
+
+.darkred{
+    border-color: #92000A;
+}
+
+.darkyellow{
+	border-color: #e6ae25;
+}

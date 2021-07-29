@@ -1,0 +1,55 @@
+<div class="main m-auto">
+    <header>
+        <div class="d-flex flex-column">
+            <i class="aldrune-icon large align-self-center"></i>
+            <h1>Aldrune </h1>
+            <strong>
+                A campaign made by Samuel Day and recorded by Philipp Dörner <br>
+                Through the eyes of Relentless.
+            </strong>
+        </div>
+    </header>
+
+    <div>
+        <!-- Search Bar -->
+        <form class="mt-5 flex-1" (submit)="search()">
+            <div class="d-flex searchbar">
+                <input 
+                class="search-input p-2" 
+                type="search" 
+                name="search" 
+                title="search"
+                id="search"
+                [(ngModel)]="searchString" 
+                placeholder="Search For Articles..." 
+                aria-label="Search">
+                <div class="btn btn-primary" (click)="search()">
+                    <i class="fa fa-search p-2"></i>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>
+
+<div class="container mt-5" id="news">
+    <div class="row">
+        <div class="mycolpadding col-6 col-md-4 col-lg-3 mb-4" *ngFor="let article of recentlyUpdatedArticles">
+            <a 
+            routerLink="{{ article.getAbsoluteRouterUrl() }}" 
+            class="card {{sidebarColor(article.article_type)}}"
+            >
+                <img src="{{ getOverviewImage(article) }}" alt="article image" class="card-img-top">
+                <div class="card-body">
+                    <div class="card-title">
+                        <strong> {{article.name_full}} </strong>
+                    </div>
+                    <div class="card-subtitle text-muted mb-2"> {{ article.article_type}} </div>
+                    <div class="card-text">
+                        {{article.description}}
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

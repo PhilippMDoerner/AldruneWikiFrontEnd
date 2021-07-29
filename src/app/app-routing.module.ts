@@ -42,6 +42,7 @@ import { AdminComponent } from './components/articles/admin/admin.component';
 import { ProfileComponent } from './components/profile/profile.component';
 import { ConfigTablesComponent } from './components/articles/config-tables/config-tables.component';
 import { ErrorComponent } from './components/error/error.component';
+import { Home2Component } from './components/home2/home2.component';
 
 
 
@@ -62,6 +63,11 @@ const routes: Routes = [
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}`, 
 		component: HomeComponent, data:{ name: "home2"}, 
+		canActivate: [LoginGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/new`, 
+		component: Home2Component, data:{ name: "home"}, 
 		canActivate: [LoginGuardService]
 	},
 
@@ -455,6 +461,12 @@ const routes: Routes = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/recent-updates`,
 		component: RecentlyUpdatedArticleComponent,
 		data:{ name: "recent-updates", requiredPermissions: [Constants.apiViewPermission]},
+		canActivate: [PermissionGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search`,
+		component: SearchComponent,
+		data:{ name: "startSearch", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{

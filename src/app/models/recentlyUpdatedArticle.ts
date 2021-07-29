@@ -8,6 +8,7 @@ export interface Article extends ApiObject{
     article_type: string,
     update_date: string,
     pk?: number,
+    image_url: string,
 }
 
 export class OverviewArticleObject{
@@ -17,6 +18,7 @@ export class OverviewArticleObject{
     article_type: string;
     update_date: string;
     pk: number;
+    image_url: string;
 
     constructor(object?: Article){
         if (object) Object.assign(this, object)
