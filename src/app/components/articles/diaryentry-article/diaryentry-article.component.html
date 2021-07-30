@@ -1,6 +1,6 @@
 <div class="main">
     <article *ngIf="articleData; else loading" class="container">
-        <div class="row">
+        <div class="row m-0">
             <div class="col-12 d-flex justify-content-end">
                 <app-edit-toggle 
                 [isInUpdateState]=false 
@@ -11,13 +11,13 @@
 
 
         <!-- Heading -->
-        <div class="row">
+        <div class="row m-0">
             <h1 class="text-center col">
                 Diary Entry # {{ articleData.session_details.session_number }} <br>
                 {{ articleData.title }}
             </h1>
         </div>
-        <div class="row mb-5" id="authors">
+        <div class="row mx-0 mb-5" id="authors">
             <p class="text-center col-12"> 
                 Written by: {{ articleData.author_details.name }} <br>
                 <span *ngIf="coAuthors"> Together with: {{ coAuthors }} </span> 
