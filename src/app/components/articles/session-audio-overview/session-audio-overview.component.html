@@ -1,8 +1,8 @@
 <div class="main">
-    <article *ngIf="sessionAudioFiles; else loading" class="container">
+    <article *ngIf="sessionAudioFiles; else loading">
         <h1 class="text-center">Session Audio Files</h1>
-
-        <div class="row">
+        <!-- Requires m-0 because on mobile it else goes into overflow -->
+        <div class="row m-0">
             <!-- Normal Session Audio Cards -->
             <div class="col-md-4 col-sm-6" *ngFor="let sessionAudio of sessionAudioFiles">
                 <div class="card my-3">

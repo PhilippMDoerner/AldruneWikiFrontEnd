@@ -1,9 +1,13 @@
 <div class="main">
     <article *ngIf="articleData; else loading" class="container">
-        <app-edit-toggle 
-        [isInUpdateState]=false
-        [link]="'update'"
-        ></app-edit-toggle>
+        <div class="row" *ngIf="userHasUpdatePermission()">
+            <div class="col-12">
+                <app-edit-toggle 
+                [isInUpdateState]=false 
+                [link]="'update'"
+                ></app-edit-toggle>
+            </div>
+        </div>
 
         <!-- Heading -->
         <div class="row mb-3">
