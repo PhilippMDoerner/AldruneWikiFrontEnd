@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Article, OverviewArticleObject } from 'src/app/models/recentlyUpdatedArticle';
@@ -12,7 +12,8 @@ import { WarningsService } from 'src/app/services/warnings.service';
   styleUrls: ['./home2.component.scss'],
 })
 export class Home2Component implements OnInit {
-  @HostBinding('flex-column') someField: boolean = true;
+  @ViewChild("search") searchField: ElementRef;
+
   searchString: string;
   constants = Constants;
 
@@ -35,7 +36,8 @@ export class Home2Component implements OnInit {
     return Constants.articleTypeSidebarColorMapping[articleType];
   }
 
-  search(): void{
+  startSearch(): void{
+    console.log("DA SEARCH")
     if (this.searchString != null){
       const cleaned_search = this.searchString.replace(/[^a-zA-Z0-9]/g,' ').trim();
       const cleaned_trimmed_search = cleaned_search.replace(/\s\s+/g, ' '); //Removes scenarios with more than 1 consecutive whitespace
@@ -56,5 +58,10 @@ export class Home2Component implements OnInit {
 
     const articleImageUrl = `${Constants.wikiUrl}/${articleImageUrlStub}`;
     return articleImageUrl;
+  }
+
+  focusSearchField(){
+    this.searchField.nativeElement.click();
+    this.searchField.nativeElement.focus();
   }
 }

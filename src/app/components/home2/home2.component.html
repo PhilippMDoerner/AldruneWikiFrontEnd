@@ -13,8 +13,8 @@
     </header>
     
     <!-- Search Bar -->
-    <div class="mb-4" id="search-area">
-        <form class="flex-1 p-1" (submit)="search()">
+    <div class="mb-4" id="search-area" (touchend)="focusSearchField()">
+        <form class="flex-1 p-1" (submit)="startSearch()">
             <div class="d-flex searchbar">
                 <input 
                 class="search-input p-2" 
@@ -22,6 +22,7 @@
                 name="search" 
                 title="search"
                 id="search"
+                #search
                 [(ngModel)]="searchString" 
                 placeholder="Search For Articles..." 
                 aria-label="Search">
