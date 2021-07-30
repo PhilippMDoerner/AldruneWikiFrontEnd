@@ -239,7 +239,7 @@ a:hover{
 	width: 100%;
     background-color:rgba(27, 31, 34, 0.85);
     border-radius: 6px;
-    padding-bottom: 2.5rem;
+    padding: 2.5rem 2.5rem 2.5rem 2.5rem;
     color: white;
 	font-size: 18px;
 }
@@ -642,7 +642,7 @@ button{
 	}
 
 	.main{
-		padding: 2.5rem 1rem 2.5rem 1rem;
+		padding: 1rem 1rem 2.5rem 1rem;
 	}
 	
 	.icon{
@@ -687,5 +687,9 @@ button{
 	.card.px-4{
 		padding-left: 0 !important;
 		padding-right: 0 !important;
+	}
+
+	h1{
+		letter-spacing: 0.25rem;
 	}
 }
