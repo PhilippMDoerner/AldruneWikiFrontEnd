@@ -44,9 +44,15 @@
             <div class="mycolpadding col-6 col-md-4 col-lg-3 col-xl-2 mb-4" *ngFor="let article of recentlyUpdatedArticles">
                 <a 
                 routerLink="{{ article.getAbsoluteRouterUrl() }}" 
-                class="card {{sidebarColor(article.article_type)}}"
+                class="card"
+                [title]="article.article_type | titlecase"
                 >
-                    <img src="{{ getOverviewImage(article) }}" alt="article image" class="card-img-top">
+                    <header class="mt-2 card-img-top d-flex align-items-center justify-content-center">
+                        <img *ngIf="article.image_url else defaultIcon"  src="{{constants.wikiUrl}}/{{ article.image_url }}" alt="article image" class="">
+                        <ng-template #defaultIcon>
+                            <i class="fa-5x {{ getArticleTypeMetaData(article.article_type).iconClass }}"></i>
+                        </ng-template>    
+                    </header>
                     <div class="card-body">
                         <div class="card-title">
                             <strong> {{article.name_full}} </strong>

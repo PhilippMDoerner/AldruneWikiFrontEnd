@@ -14,12 +14,15 @@ header{
 .card{
     line-height: 1.25;
     height: 20rem;
-    border: solid;
+}
+.card-img-top{
+    height: 7rem;
 }
 
-.card-img-top{
-    max-height: 7rem;
+.card-img-top img{
+    height: 100%;
     object-fit: contain;
+
 }
 
 .card-body{

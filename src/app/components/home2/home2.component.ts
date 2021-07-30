@@ -37,7 +37,6 @@ export class Home2Component implements OnInit {
   }
 
   startSearch(): void{
-    console.log("DA SEARCH")
     if (this.searchString != null){
       const cleaned_search = this.searchString.replace(/[^a-zA-Z0-9]/g,' ').trim();
       const cleaned_trimmed_search = cleaned_search.replace(/\s\s+/g, ' '); //Removes scenarios with more than 1 consecutive whitespace
@@ -51,13 +50,17 @@ export class Home2Component implements OnInit {
     this.routingService.routeToPath('search', {searchString: this.searchString});
   }
 
-  getOverviewImage(article: Article): string{
-    const articleImageUrlStub = article.image_url;
+  getArticleTypeMetaData(article_type: string){
+    const allMetaData: any = this.constants.articleTypeMetaData;
+    const metaData = allMetaData.filter(
+      metaDataEntry => metaDataEntry.article_types?.includes(article_type)
+    );
 
-    if (articleImageUrlStub == null) return this.constants.defaultImageUrl;
+    const hasArticleTypeCollision = metaData.length > 1;
+    if (hasArticleTypeCollision) throw `ArticleTypeCollisionException. The article type ${article_type}
+    is being used multiple times. Please fix this`;
 
-    const articleImageUrl = `${Constants.wikiUrl}/${articleImageUrlStub}`;
-    return articleImageUrl;
+    return metaData[0];
   }
 
   focusSearchField(){

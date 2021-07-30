@@ -56,6 +56,115 @@ export class Constants{
         'spell': 'violet',
     }}
 
+    public static get articleTypeMetaData(): object { 
+      return [
+        {
+          title: "Home",
+          iconClass: "fa fa-home",
+          route: "home2",
+          color: null,
+          article_types: null,
+          showInSidebar: true,
+        },
+        {
+          title: "Creatures", 
+          iconClass: "fas fa-dragon", 
+          route: "creature-overview",
+          color: "red",
+          article_types: ["creature"],
+          showInSidebar: true,
+        },
+        {
+          title: "Characters", 
+          iconClass: "fas fa-male", 
+          route: "character-overview",
+          color: "blue",
+          article_types: ["character"],
+          showInSidebar: true,
+        },
+        {
+          title: "DiaryEntries", 
+          iconClass: "fas fa-book-open", 
+          route: "diaryentry-overview",
+          color: "darkgreen",
+          article_types: ["diaryentry"],
+          showInSidebar: true,
+        },
+        {
+          title: "Items", 
+          iconClass: "fa fa-magic", 
+          route: "item-overview",
+          color: "yellow",
+          article_types: ["item"],
+          showInSidebar: true,
+        },
+        {
+          title: "Locations", 
+          iconClass: "fas fa-compass", 
+          route: "location-overview",
+          color: "brown",
+          article_types: ["location"],
+          showInSidebar: true,
+        },
+        {
+          title: "Organizations", 
+          iconClass: "fas fa-sitemap", 
+          route: "organization-overview",
+          color: "purple",
+          article_types: ["organization"],
+          showInSidebar: true,
+        },
+        {
+          title: "Maps", 
+          iconClass: "fa fa-map", 
+          route: 'map',
+          color: "beige",
+          article_types: ["map"],
+          showInSidebar: true,
+        },
+        {
+          title: "Quests", 
+          iconClass: "fas fa-question-circle", 
+          route: "quest-overview",
+          color: "white",
+          article_types: ["quest"],
+          showInSidebar: true,
+        },
+        {
+          title: "Spells", 
+          iconClass: "fas fa-hand-sparkles", 
+          route: "spells",
+          color: "violet",
+          article_types: ["spell", "spells"],
+          showInSidebar: true,
+        },
+        {
+          title: "Rules", 
+          iconClass: "fa fa-book", 
+          route: "rules",
+          color: "orange",
+          article_types: ["rule", "rules"],
+          showInSidebar: true,
+        },
+        {
+          title: "Recordings", 
+          iconClass: "fa fa-file-audio-o", 
+          route: "sessionaudio-overview",
+          color: "green",
+          article_types: ["sessionaudio", "recording"],
+          showInSidebar: true,
+        },
+        {
+          title: "Encounters",
+          iconClass: "fa fa-sun",
+          route: null,
+          color: "lightgreen",
+          article_types: ["encounter"],
+          showInSidebar: false,
+        }
+      ]
+    } 
+
     // JWT Token Constants - Also used by PermissionGuardService/AdminGuardService
     public static get accessTokenType(): string { return "access";}
     public static get refreshTokenType(): string { return "refresh";}
