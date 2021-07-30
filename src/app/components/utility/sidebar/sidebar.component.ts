@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnChanges, OnInit, ViewChild } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
 import { RoutingService } from 'src/app/services/routing.service';
 import { BehaviorSubject } from 'rxjs';
@@ -15,9 +15,9 @@ export class SidebarComponent implements OnInit {
 
   sidebarEntries: any = [
     {
-      title: "Search",
-      iconClass: "fa fa-search",
-      route: this.routingService.getRoutePath("startSearch")
+      title: "Home",
+      iconClass: "fa fa-home",
+      route: this.routingService.getRoutePath("home")
     },
     {
       title: "Creatures", 
