@@ -2,7 +2,7 @@
 <div 
 (touchstart)="trackSwipeStart($event)"
 (touchmove)="trackSwipeEnd($event)"
-(touchend)="checkForSwipeGesture()"
+(touchend)="checkForSwipeGesture($event)"
 class="d-flex"
 >
     <div class="sidebar-wrapper" [ngClass]="{'swiped-right': showSidebarSubject.getValue(), 'swiped-left': !showSidebarSubject.getValue()}">
