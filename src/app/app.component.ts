@@ -84,10 +84,13 @@ export class AppComponent implements OnInit{
   getSwipe(touchData1, touchData2){
     const xDelta = touchData2.x - touchData1.x;
     const absoluteXDelta = Math.abs(xDelta);
+    const hasMinimumSwipeLength = absoluteXDelta > Constants.minimumSwipeDistance;
+    if(!hasMinimumSwipeLength) return null;
 
-    console.log(xDelta);
-    const isSwipeGesture = absoluteXDelta > Constants.minimumSwipeDistance;
-    if (!isSwipeGesture) return null;
+    const timeDelta = touchData2.timestamp - touchData1.timestamp;
+    const hasSwipeTime: boolean = timeDelta < Constants.maximumSwipeTime;
+    console.log(`Gesture took ${timeDelta} ms compared to ${Constants.maximumSwipeTime}`);
+    if(!hasSwipeTime) return null;
 
     const isSwipeRight: boolean = xDelta > 0;
     return isSwipeRight ? "right" : "left";
