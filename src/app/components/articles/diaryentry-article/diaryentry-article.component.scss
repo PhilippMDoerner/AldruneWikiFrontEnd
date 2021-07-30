@@ -6,3 +6,9 @@
 .encounter:hover{
     padding: 0.5rem 3rem;
 }
+
+@media(max-width: 576px){
+    #authors.mb-5{
+        margin-bottom: 0.5rem !important;
+    }
+}

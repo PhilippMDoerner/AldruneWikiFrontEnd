@@ -1,9 +1,14 @@
 <div class="main">
     <article *ngIf="articleData; else loading" class="container">
-        <app-edit-toggle 
-        [isInUpdateState]=false 
-        [link]="'update'"
-        ></app-edit-toggle>
+        <div class="row">
+            <div class="col-12 d-flex justify-content-end">
+                <app-edit-toggle 
+                [isInUpdateState]=false 
+                [link]="'update'"
+                ></app-edit-toggle>
+            </div>
+        </div>
+
 
         <!-- Heading -->
         <div class="row">
@@ -12,7 +17,7 @@
                 {{ articleData.title }}
             </h1>
         </div>
-        <div class="row mb-5">
+        <div class="row mb-5" id="authors">
             <p class="text-center col-12"> 
                 Written by: {{ articleData.author_details.name }} <br>
                 <span *ngIf="coAuthors"> Together with: {{ coAuthors }} </span> 
