@@ -544,11 +544,11 @@ strong{
 .hover-highlight{
 	transition: 0.2s background-color;
 }
-
-.hover-highlight:hover{
-	background-color: rgba(61, 70, 77, 0.85);
+@media (hover: hover) and (pointer: fine) {
+	.hover-highlight:hover{
+		background-color: rgba(61, 70, 77, 0.85);
+	}
 }
-
 
 // Overwriting styling of ngx-bootstrap Datepicker
 
