@@ -1,11 +1,17 @@
 <div class="main">
     <article *ngIf="sessionAudio; else loading" class="container">
+        <div class="row" *ngIf="userHasUpdatePermission()">
+            <div class="col-12">
+                <app-edit-toggle 
+                [isInUpdateState]=false 
+                [link]="'update'"
+                ></app-edit-toggle>
+            </div>
+        </div>
+        
         <div class="row">
-            <div class="col-lg-11"></div>
-            <app-edit-toggle class="col-lg-1"></app-edit-toggle>
-
             <!-- Heading -->
-            <h1 class="text-center col-lg-11">
+            <h1 class="text-center col-lg-12">
                 {{ sessionAudio.session_details.name}}
                 <i class="fa fa-volume-up"></i>
             </h1>
