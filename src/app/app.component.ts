@@ -40,13 +40,13 @@ export class AppComponent implements OnInit{
 
   trackSwipeStart(event: TouchEvent): void{
     console.log("Track swipe start");
-    event.preventDefault(); //Else this might count as click
+    //event.preventDefault(); //Else this might count as click
     this.firstTouchData = event;
   }
 
   trackSwipeEnd(event: TouchEvent): void{
     console.log("Track swipe end");
-    event.preventDefault(); //Else this might count as click
+    //event.preventDefault(); //Else this might count as click
     this.lastTouchData = event;
   }
 
