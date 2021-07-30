@@ -33,6 +33,7 @@ export class Constants{
     public static get updateSignal(): string { return "update";}
     public static get cancelSignal(): string { return "cancel";}
 
+    public static get maximumTapDistance(): number { return 20; }
     //Minimum Amount of Movement necessary for a gesture to count as swipe. Measured in pixels.
     public static get minimumSwipeDistance(): number { return 200; }
     //Maximum Amount of time that can pass for a gesture to count as swipe. Measured in ms.

@@ -62,15 +62,17 @@ export class AppComponent implements OnInit{
       return;
     }
 
-    const swipeType = this.getSwipe(firstTouchData, secondTouchData);
-    console.log(`SwipteType: ${swipeType}`);
+    const gestureType = this.getSwipe(firstTouchData, secondTouchData);
 
-    const shouldSidebarBeOpen: boolean = swipeType === "right";
+    const isSwipeRight = gestureType === "right";
+    const isSwipeLeft = gestureType === "left";
+    const isTap = gestureType === "tap";
     const isSidebarOpen: boolean = this.showSidebarSubject.getValue();
-    const sidebarNeedsUpdate: boolean = isSidebarOpen !== shouldSidebarBeOpen;
 
-    if(sidebarNeedsUpdate){
-      this.showSidebarSubject.next(shouldSidebarBeOpen);
+    if(!isSidebarOpen && isSwipeRight){
+      this.showSidebarSubject.next(true);
+    } else if (isSidebarOpen && (isSwipeLeft || isTap)){
+      this.showSidebarSubject.next(false);
     }
 
     this.resetTouchData();
@@ -85,11 +87,11 @@ export class AppComponent implements OnInit{
     const xDelta = touchData2.x - touchData1.x;
     const absoluteXDelta = Math.abs(xDelta);
     const hasMinimumSwipeLength = absoluteXDelta > Constants.minimumSwipeDistance;
-    if(!hasMinimumSwipeLength) return null;
+    const isTap = absoluteXDelta < Constants.maximumTapDistance;
+    if(!hasMinimumSwipeLength) return isTap ? "tap" : null;
 
     const timeDelta = touchData2.timestamp - touchData1.timestamp;
     const hasSwipeTime: boolean = timeDelta < Constants.maximumSwipeTime;
-    console.log(`Gesture took ${timeDelta} ms compared to ${Constants.maximumSwipeTime}`);
     if(!hasSwipeTime) return null;
 
     const isSwipeRight: boolean = xDelta > 0;
