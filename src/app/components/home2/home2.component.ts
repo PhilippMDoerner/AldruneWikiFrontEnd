@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Article, OverviewArticleObject } from 'src/app/models/recentlyUpdatedArticle';
@@ -9,9 +9,10 @@ import { WarningsService } from 'src/app/services/warnings.service';
 @Component({
   selector: 'app-home2',
   templateUrl: './home2.component.html',
-  styleUrls: ['./home2.component.scss']
+  styleUrls: ['./home2.component.scss'],
 })
 export class Home2Component implements OnInit {
+  @HostBinding('flex-column') someField: boolean = true;
   searchString: string;
   constants = Constants;
 
