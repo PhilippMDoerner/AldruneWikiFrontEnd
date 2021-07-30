@@ -47,11 +47,13 @@ export class TextfieldComponent extends PermissionUtilityFunctionMixin implement
     this.formStateSubject.next(Constants.displayState);
     this.updateText.emit(this.textModel);
   }
-
+  //TODO: on cancel edit on mobile this does not properly work. initialText has the correct value,
+  //but for some arbitrary reason does not lead to a re-render of the components contents with that text
   cancelEdit(){
     if(!this.allowEdit) return;
 
     this.formStateSubject.next(Constants.displayState);
     this.textModel = this.initialText;
+    console.log(this.textModel);
   }
 }
