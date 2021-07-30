@@ -48,10 +48,10 @@ header{
     display: block;
 }
 
-.card:hover .card-img-top,
+.card:hover header,
 .card:hover .card-title,
 .card:hover .card-subtitle{
-    display: none;
+    display: none !important;
 }
 
 
