@@ -58,16 +58,11 @@ const routes: Routes = [
 	//Home Routes
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, 
-		component: HomeComponent, data:{ name: "home1"}, 
+		component: Home2Component, data:{ name: "home1"}, 
 		canActivate: [LoginGuardService]},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}`, 
-		component: HomeComponent, data:{ name: "home2"}, 
-		canActivate: [LoginGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/new`, 
-		component: Home2Component, data:{ name: "home"}, 
+		component: Home2Component, data:{ name: "home2"}, 
 		canActivate: [LoginGuardService]
 	},
 

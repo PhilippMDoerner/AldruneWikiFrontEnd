@@ -17,7 +17,7 @@ export class SidebarComponent implements OnInit {
     {
       title: "Home",
       iconClass: "fa fa-home",
-      route: this.routingService.getRoutePath("home")
+      route: this.routingService.getRoutePath("home2")
     },
     {
       title: "Creatures", 
