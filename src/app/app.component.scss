@@ -4,6 +4,12 @@
         height: 100vh;
 }
 
+router-outlet + ::ng-deep * {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+}
+
 @media(max-width: 576px){
         .sidebar-wrapper{
                 width: 0rem;
