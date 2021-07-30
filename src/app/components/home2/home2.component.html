@@ -1,9 +1,9 @@
-<div class="main m-auto">
-    <header>
+<div class="main mx-auto mb-2">
+    <header class="mb-1">
         <div class="d-flex flex-column">
             <i class="aldrune-icon large align-self-center"></i>
-            <h1>Aldrune </h1>
-            <strong>
+            <h1 class="mb-1"> Aldrune </h1>
+            <strong class="hide-on-mobile">
                 A campaign made by Samuel Day and recorded by Philipp Dörner <br>
                 Through the eyes of Relentless.
             </strong>
@@ -12,7 +12,7 @@
 
     <div>
         <!-- Search Bar -->
-        <form class="mt-5 flex-1" (submit)="search()">
+        <form class="flex-1" (submit)="search()">
             <div class="d-flex searchbar">
                 <input 
                 class="search-input p-2" 
@@ -32,9 +32,9 @@
     </div>
 </div>
 
-<div class="container mt-5" id="news">
+<div class="container" id="news">
     <div class="row">
-        <div class="mycolpadding col-6 col-md-4 col-lg-3 mb-4" *ngFor="let article of recentlyUpdatedArticles">
+        <div class="mycolpadding col-6 col-md-4 col-lg-3 col-xl-2 mb-4" *ngFor="let article of recentlyUpdatedArticles">
             <a 
             routerLink="{{ article.getAbsoluteRouterUrl() }}" 
             class="card {{sidebarColor(article.article_type)}}"
@@ -44,7 +44,10 @@
                     <div class="card-title">
                         <strong> {{article.name_full}} </strong>
                     </div>
-                    <div class="card-subtitle text-muted mb-2"> {{ article.article_type}} </div>
+                    <div class="card-subtitle mb-2"> 
+                        {{ article.update_date | date }} 
+                        <div class="text-muted"> {{ article.article_type}} </div>
+                    </div>
                     <div class="card-text">
                         {{article.description}}
                     </div>
