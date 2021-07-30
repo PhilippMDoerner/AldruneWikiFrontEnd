@@ -3,21 +3,7 @@ header{
 }
 
 .main{
-    max-width: 40rem;
     padding-bottom: 2.5rem;
-    max-height: 50vh;
-}
-
-.h-10{
-    height: 10%;
-}
-
-.h-40{
-    height: 40%;
-}
-
-.h-50{
-    height:50%;
 }
 
 .mycolpadding{
@@ -42,7 +28,7 @@ header{
 }
 
 .card-title{
-    height: 3.75rem; /* Must be a multiple of line-height*/
+    height: 4rem; /* Must be a multiple of line-height*/
     overflow: hidden;
     text-overflow: ellipsis;
 }
