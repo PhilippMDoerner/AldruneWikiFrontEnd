@@ -156,7 +156,7 @@ export class Constants{
         },
         {
           title: "Encounters",
-          iconClass: "fa fa-sun",
+          iconClass: "fa fa-comments",
           route: null,
           color: "lightgreen",
           article_types: ["encounter"],
