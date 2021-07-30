@@ -1,18 +1,13 @@
 .sidebar-wrapper{
         width: 4rem;
+        min-width: 4rem;
         height: 100vh;
-}
-
-@media(max-width: 992px){
-        #background-div{
-                padding-left: 2rem;
-                padding-right: 2rem;
-        }
 }
 
 @media(max-width: 576px){
         .sidebar-wrapper{
                 width: 0rem;
+                min-width: 0rem;
                 display: none;
         }
 
