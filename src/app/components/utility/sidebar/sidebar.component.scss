@@ -12,8 +12,30 @@
     border-right-style: inset;
 }
 
-#sidebar:hover{
-    width: 20rem;
+@media (hover: hover) and (pointer: fine) {
+    #sidebar:hover { 
+        width: 20rem; 
+    }
+
+    /* Styling list elements so their background color changes on hover but they still remain some distance away from the left edge */
+    li:hover{
+        background-color: var(--secondary);
+    }
+
+    #sidebar:hover li a{
+        justify-content: unset;
+        margin-left: 1rem;
+    }
+
+    #sidebar:hover .on-hover-show{
+        display: block;
+
+        -webkit-animation: fadeInFromNone 0.6s ease-out;
+        -moz-animation: fadeInFromNone 0.6s ease-out;
+        -o-animation: fadeInFromNone 0.6s ease-out;
+        animation: fadeInFromNone 0.6s ease-out; 
+    }
+
 }
 
 /* For slide in/out left animations on swiping left/right on Touch devices */
@@ -66,16 +88,6 @@ li a i{ //entry icon
     width: 3rem;
 }
 
-/* Styling list elements so their background color changes on hover but they still remain some distance away from the left edge */
-li:hover{
-    background-color: var(--secondary);
-}
-
-#sidebar:hover li a{
-    justify-content: unset;
-    margin-left: 1rem;
-}
-
 
 
 #brand{
@@ -88,7 +100,6 @@ li:hover{
     display: none;
 }
 
-#sidebar:hover .on-hover-show, 
 #sidebar.swiped-right .on-hover-show{
     display: block;
 
