@@ -414,6 +414,12 @@ const routes: Routes = [
 		canActivate: [PermissionGuardService]
 	},
 	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map`,
+		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/${Constants.defaultMapName}`,
+		data:{ name: "default-map", requiredPermissions: [Constants.apiViewPermission]},
+		canActivate: [PermissionGuardService]
+	},
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:name`,
 		component: MapComponent,
 		data:{ name: "map", requiredPermissions: [Constants.apiViewPermission]},

@@ -117,7 +117,7 @@ export class Constants{
         {
           title: "Maps", 
           iconClass: "fa fa-map", 
-          route: 'map',
+          route: 'default-map',
           color: "beige",
           article_types: ["map"],
           showInSidebar: true,
