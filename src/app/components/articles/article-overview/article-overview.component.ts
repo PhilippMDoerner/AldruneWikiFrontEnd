@@ -94,23 +94,22 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   }
 
   buildDiaryEntryNameForList(diaryEntry: OverviewItemObject): string{
-    const startWithSessionNumber: string = `Diary entry #${diaryEntry.session_details.session_number}`;
+    const startWithSessionNumber: string = `#${diaryEntry.session_details.session_number}`;
+    let title: string = (diaryEntry.name != null) ? `- ${diaryEntry.name}` : "";
+
+    if (Constants.isSmallScreen) return `${startWithSessionNumber} ${title}`
 
     let daysCoveredByEntry: string = "";
-    if(diaryEntry.session_details.start_day && diaryEntry.session_details.end_day){
+    if(diaryEntry.session_details.start_day != null && diaryEntry.session_details.end_day != null){
       const padLength: number = 3;
       const startDay: string = this.padNumber(diaryEntry.session_details.start_day, padLength, "");
       const endDay: string = this.padNumber(diaryEntry.session_details.end_day, padLength, "");
       daysCoveredByEntry = `- Days ${startDay}-${endDay}`;
     }
-
-    let title: string = "";
-    if (diaryEntry.name){
-      title = `- ${diaryEntry.name}`;
-    }
     
     return `${startWithSessionNumber} ${daysCoveredByEntry} ${title}`;
   }
+
 
   padNumber(num: number, padCount: number, paddingCharacter="0"): string{
     const overlengthString: string = paddingCharacter.repeat(padCount) + num;
