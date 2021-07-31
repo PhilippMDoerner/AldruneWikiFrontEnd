@@ -197,7 +197,7 @@ h2{
 	font-weight: bold !important;
 }
 
-/* Custom scrollbar */
+/* Force Chromium's scrollbar to look like firefox's */
 /* width */
 ::-webkit-scrollbar {
 	width: 5px;
