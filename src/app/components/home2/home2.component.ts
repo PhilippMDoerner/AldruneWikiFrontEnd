@@ -65,7 +65,10 @@ export class Home2Component implements OnInit {
   }
 
   getArticleName(article: OverviewItem){
-    return this.isDiaryEntry(article) ? `#${article.session_details.session_number} - ${article.name}` : article.name_full;
+    if(this.isDiaryEntry(article)) return `#${article.session_details.session_number} - ${article.name}`;
+    if(article.article_type === "location") return article.name;
+    
+    return article.name_full;
   }
 
   isDiaryEntry(article: OverviewItem){
