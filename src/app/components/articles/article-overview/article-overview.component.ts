@@ -68,14 +68,6 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
 
   ngAfterViewInit(): void{
     animateElement(this.overviewMainCard.nativeElement, 'zoomIn');
-    this.autofocusFilterField();
-  }
-
-  autofocusFilterField(){
-    this.filterField.changes.pipe(first()).subscribe((fieldFieldList: QueryList<HTMLElement>) =>{
-      const filterFieldElement: HTMLElement = this.filterField.first.nativeElement;
-      filterFieldElement.focus();
-    })
   }
 
   filterListItems(){
