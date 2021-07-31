@@ -55,11 +55,14 @@
                     </header>
                     <div class="card-body">
                         <div class="card-title">
-                            <strong> {{article.name_full}} </strong>
+                            <strong> {{ getArticleName(article)}} </strong>
                         </div>
                         <div class="card-subtitle mb-2"> 
                             {{ article.update_date | date }} 
-                            <div class="text-muted"> {{ article.article_type}} </div>
+                            <div class="text-muted"> 
+                                <span *ngIf="isDiaryEntry(article)"> {{article.author_details?.name}}'s </span>
+                                {{ article.article_type}}
+                            </div>
                         </div>
                         <div class="card-text">
                             {{article.description}}

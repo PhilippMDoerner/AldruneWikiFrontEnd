@@ -1,6 +1,7 @@
 import { Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
+import { OverviewItem } from 'src/app/models/overviewItem';
 import { Article, OverviewArticleObject } from 'src/app/models/recentlyUpdatedArticle';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -17,7 +18,7 @@ export class Home2Component implements OnInit {
   searchString: string;
   constants = Constants;
 
-  recentlyUpdatedArticles: Article[];
+  recentlyUpdatedArticles: OverviewItem[];
 
   constructor(
     private recentUpdatesServices: RecentlyUpdatedService,
@@ -27,7 +28,7 @@ export class Home2Component implements OnInit {
 
   ngOnInit(): void {
     this.recentUpdatesServices.getRecentlyUpdatedArticle().pipe(first()).subscribe(
-      (articles: Article[]) => this.recentlyUpdatedArticles = articles,
+      (articles: OverviewItem[]) => this.recentlyUpdatedArticles = articles,
       error => this.routingService.routeToErrorPage(error)
     );
   }
@@ -63,6 +64,15 @@ export class Home2Component implements OnInit {
     return metaData[0];
   }
 
+  getArticleName(article: OverviewItem){
+    return this.isDiaryEntry(article) ? `#${article.session_details.session_number} - ${article.name}` : article.name_full;
+  }
+
+  isDiaryEntry(article: OverviewItem){
+    return article.article_type === "diaryentry";
+  }
+
+  /** Necessary to still allow selecting the search field on this page. Else the "preventDefault" bit on the touch events blocks that */
   focusSearchField(){
     this.searchField.nativeElement.click();
     this.searchField.nativeElement.focus();
