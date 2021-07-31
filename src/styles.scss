@@ -193,26 +193,33 @@ h2{
 	z-index: -2;
 }
 
-body.is-article-visible #bg:after {
-	-moz-transform: scale(1.0825);
-	-webkit-transform: scale(1.0825);
-	-ms-transform: scale(1.0825);
-	transform: scale(1.0825);
-	-moz-filter: blur(0.2rem);
-	-webkit-filter: blur(0.2rem);
-	-ms-filter: blur(0.2rem);
-	filter: blur(0.2rem);
-}
-
-body.is-preload #bg:before {
-	background-color: #000000;
-}
-
 .btn{
 	font-weight: bold !important;
 }
 
+/* Custom scrollbar */
+/* width */
+::-webkit-scrollbar {
+	width: 5px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+	background: black;
+}
 
+/* Handle */
+::-webkit-scrollbar-thumb {
+	background: #888;
+	border-radius: 0.25rem;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+	background: #555;
+}
+
+/* Convenience Classes */
 .icon{
 	color: white;
 	transition: color 0.2s;
