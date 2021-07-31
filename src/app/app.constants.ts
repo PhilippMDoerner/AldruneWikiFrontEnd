@@ -11,7 +11,6 @@ export class Constants{
     // public static get wikiApiUrl(): string { return `${this.wikiUrl}/api`;} //dev backend
     public static get wikiSPAUrl(): string{ return `${this.wikiUrl}/${this.spaPrefix}`;}
 
-
     public static get wikiStaticUrl(): string { return `${this.wikiUrl}/static`;}
     public static get wikiMediaUrl(): string { return `${this.wikiUrl}/media`;}
     public static get wikiTokenUrl(): string { return `${this.wikiApiUrl}/token`;}
@@ -20,6 +19,7 @@ export class Constants{
     public static get wikiUrlFrontendPrefixNoSlash(): string { return 'wiki2';};
 
     public static get NONE_STRING(): string { return "None";} //This value must be identical to the NONE_STRING setting in the backend
+    public static get isSmallScreen(): boolean { return window.screen.availWidth < 576; } //Determines for various JS functions whether something is a small screen or not
 
     //strings representing states
     public static get createState(): string { return "create";}
