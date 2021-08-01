@@ -27,7 +27,7 @@
 
     #sidebar:hover li a{
         justify-content: unset;
-        margin-left: 1rem;
+        padding-left: 1rem;
     }
 
     #sidebar:hover .on-hover-show{
@@ -79,7 +79,7 @@ li{
 }
 
 #user-section #user-links{
-    margin-left: 1.5rem;
+    padding-left: 1.5rem;
     display: none;
 }
 
