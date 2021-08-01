@@ -6,6 +6,7 @@
     background-color: var(--dark);
     z-index: 1005; //Necessary because map uses z-indexes going up to 1000
     overflow-y: auto;
+    overflow-x: hidden; //Necessary because when sidebar folds out, x scrollbar appears
 
     border-right-color: white;
     border-right-width: 1px;
