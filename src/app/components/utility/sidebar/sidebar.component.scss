@@ -18,8 +18,11 @@
     }
 
     /* Styling list elements so their background color changes on hover but they still remain some distance away from the left edge */
-    li:hover{
+    li:hover,
+    li:focus a,
+    li a:focus{
         background-color: var(--secondary);
+        color: var(--link-blue);
     }
 
     #sidebar:hover li a{
