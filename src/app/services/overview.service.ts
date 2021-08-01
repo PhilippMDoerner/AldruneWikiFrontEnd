@@ -17,7 +17,7 @@ export class OverviewService {
 
   @TransformArrayObservable(OverviewItemObject)
   getOverviewItems(overviewType: string): Observable<OverviewItem[]>{
-    const url = `${this.overviewUrl}/${overviewType}`;
+    const url = `${this.overviewUrl}/${overviewType}/fast`;
     return this.http.get<OverviewItem[]>(url,);
   }
 }
