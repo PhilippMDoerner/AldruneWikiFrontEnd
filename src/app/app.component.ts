@@ -61,13 +61,14 @@ export class AppComponent implements OnInit{
    * @param event: A TouchEvent
    */
   checkForSwipeGesture(event: TouchEvent): void{
-    event.preventDefault(); //Else this might count as click
+    event.preventDefault(); //Else this might count as click. Prevents the normal clicking and focus this might do to prevent double clicks
     const firstTouchData = this.extractTouchData(this.firstTouchData);
     const secondTouchData = this.extractTouchData(this.lastTouchData);
 
     if (firstTouchData == null || secondTouchData == null){
       const originalClickTarget: any = this.firstTouchData.target; //Necessary because in Typescript event.target is not HTMLElement
       originalClickTarget.click();
+      originalClickTarget.focus(); //This allows input fields on smartphone to be focussed and written in
 
       /**Clicks on sidebar menu-containers shall not close the sidebar! They are identified by having the .container-title class */
       const isClickOnMenuContainer = originalClickTarget.closest(".container-title") != null;
