@@ -67,7 +67,7 @@ export class AppComponent implements OnInit{
 
     if (firstTouchData == null || secondTouchData == null){
       const originalClickTarget: any = this.firstTouchData.target; //Necessary because in Typescript event.target is not HTMLElement
-      originalClickTarget.click();
+      originalClickTarget.click(); //This allows input fields on smartphone to be clicked on, as preventDefault blocks that
       originalClickTarget.focus(); //This allows input fields on smartphone to be focussed and written in
 
       /**Clicks on sidebar menu-containers shall not close the sidebar! They are identified by having the .container-title class */
