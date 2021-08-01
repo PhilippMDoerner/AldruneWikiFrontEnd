@@ -9,8 +9,59 @@
         </h3>
     </a>
 
-    <!-- Sidebar Items -->
+        <!-- Sidebar Items -->
     <ul>
+        <!-- User Section. This is a menu-container, it's title identified by "container-title" class, which is relevant for swipe gesture behaviour, see app.component.ts -->
+        <li id="user-section" [ngClass]="{'active': showUserSection}">
+            <a class="pointer" (click)="showUserSection = !showUserSection">
+                <i class="fa fa-user"></i>
+                <span class="on-hover-show container-title">
+                    User
+                    <span *ngIf="tokenService.isAdmin()"> & Admin</span>
+                    <i class="fa" [ngClass]="{'fa-chevron-down': !showUserSection, 'fa-chevron-up': showUserSection}"></i>
+                </span>
+            </a>
+            <ul id="user-links" class="on-hover-show" >
+                <!-- Profile -->
+                <li>
+                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('profile', {username: tokenService.getCurrentUserName()})}}">
+                        <i class="fa fa-user"></i>
+                        <span> Profile </span>
+                    </a>
+                </li>
+
+                <!-- Logout -->
+                <li>
+                    <a class="on-hover-show pointer" (click)="logout()"> 
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span> Logout</span> 
+                    </a>
+                </li>
+
+                <!-- Admin Section -->
+                <li *ngIf="tokenService.isAdmin()">
+                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('admin') }}" >
+                        <i class="fa fa-lock"></i>
+                        <span> Admin </span>
+                    </a>
+                </li>
+
+                <!-- Config Tables -->
+                <li *ngIf="tokenService.isAdmin()">
+                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('config-tables') }}">
+                        <i class="fa fa-table"></i>
+                        <span> Config Tables </span>
+                    </a>
+                </li>
+
+            </ul>
+        </li>
+        
+        <!-- Admin Section -->
+
+
+
+        <!-- Sidebar Entries -->
         <li *ngFor="let entry of sidebarEntries">
             <a routerLink="{{entry.route}}" class="d-flex align-items-center entry">
                 <i class="{{ entry.iconClass}}"></i>

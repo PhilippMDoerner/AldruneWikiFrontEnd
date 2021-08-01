@@ -50,15 +50,29 @@ export class AppComponent implements OnInit{
     this.lastTouchData = event;
   }
 
+  /**
+   * @description Only relevant for touch devices. 
+   * When the user touches the screen und untouches it, this function checks based on the movement if the sidebar
+   * should be open or closed. The sidebar should be open, if that was a swipe to the right, the sidebar shall be shown.
+   * If that was a swipe left, the sidebar shall be closed.
+   * If that was a tap on a menu-container in the sidebar, do nothing.
+   * If that was a tap on anything else on the screen, close the sidebar. 
+   * This function solely performs a side effect on the "showSidebarSubject"
+   * @param event: A TouchEvent
+   */
   checkForSwipeGesture(event: TouchEvent): void{
     event.preventDefault(); //Else this might count as click
     const firstTouchData = this.extractTouchData(this.firstTouchData);
     const secondTouchData = this.extractTouchData(this.lastTouchData);
 
     if (firstTouchData == null || secondTouchData == null){
-      const originalClickTarget: any = this.firstTouchData.target;
+      const originalClickTarget: any = this.firstTouchData.target; //Necessary because in Typescript event.target is not HTMLElement
       originalClickTarget.click();
-      this.showSidebarSubject.next(false);
+
+      /**Clicks on sidebar menu-containers shall not close the sidebar! They are identified by having the .container-title class */
+      const isClickOnMenuContainer = originalClickTarget.closest(".container-title") != null;
+      if(!isClickOnMenuContainer) this.showSidebarSubject.next(false);
+
       return;
     }
 

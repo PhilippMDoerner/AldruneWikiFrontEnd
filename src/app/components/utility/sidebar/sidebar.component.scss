@@ -72,12 +72,31 @@ ul{
 }
 
 
-
 li{
     height: 3rem;
     font-weight: bold;
     font-size: large;
 }
+
+#user-section #user-links{
+    margin-left: 1.5rem;
+    display: none;
+}
+
+#sidebar.swiped-right #user-section.active,
+#sidebar:hover #user-section.active{
+    height: auto;
+}
+
+/* Required for the original container to not lose their height when the application of the .active class changes height to auto*/
+#user-section.active a{
+    height: 3rem;
+}
+
+#user-section.active #user-links{
+    display: block;
+}
+
 
 li a{
     height: 100%;
