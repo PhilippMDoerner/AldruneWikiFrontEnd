@@ -9,6 +9,7 @@
         <!-- Rules -->
         <div *ngFor="let rule of rules; let i = index">
             <app-rule
+            #ruleElements
             [cardData] = "rule"
             [index] = "i"
             (cardDelete) = "onRuleDelete(i)"

@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -31,6 +32,8 @@ export class RuleComponent extends CardFormMixin implements OnInit {
     ruleService: RuleService,
     private formlyService: MyFormlyService,
     public warnings: WarningsService,  
+    public element: ElementRef,
+    private route: ActivatedRoute
   ) { 
     super(
       warnings,
@@ -41,7 +44,9 @@ export class RuleComponent extends CardFormMixin implements OnInit {
   ngOnInit(): void {
     const isCreateState: boolean = this.cardData.name === "New Rule";
     this.formState = isCreateState ? Constants.createState : Constants.displayState;
-    this.isOpen = isCreateState;
+
+    const isRequestedByUser: boolean = this.route.snapshot.params["name"] === this.cardData.name;
+    this.isOpen = isCreateState || isRequestedByUser;
 
     if(isCreateState){
       this.userModel = new RuleObject();
