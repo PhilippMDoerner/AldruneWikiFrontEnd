@@ -30,6 +30,11 @@ header{
     padding: 1rem;
 }
 
+/* Necessary because bootstrap link-cards are colored white, even when you use them as an anchor */
+a:hover .card-body{
+    color: var(--link-blue) !important;
+}
+
 .card-title{
     height: 4rem; /* Must be a multiple of line-height*/
     overflow: hidden;
