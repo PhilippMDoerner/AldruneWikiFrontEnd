@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
@@ -61,6 +62,7 @@ export class SpellComponent extends CardFormMixin implements OnInit {
     private spellConnectionService: SpellPlayerClassConnectionService,
     private playerClassService: PlayerClassService,
     public tokenService: TokenService,
+    public element: ElementRef //Allows calling this from the outside for scroll into view
   ) { 
     super(
       warnings,

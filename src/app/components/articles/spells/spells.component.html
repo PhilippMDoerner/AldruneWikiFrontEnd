@@ -15,6 +15,8 @@
         <!-- Spells -->
         <div *ngFor="let spell of spells; let i = index">
             <app-spell
+            #spellElements
+            [id]="spell.name.replaceAll(' ', '-').replaceAll('\'', '')"
             [index] = "i"
             [cardData] = "spell"
             (cardDelete) = "onSpellDelete(i)"
