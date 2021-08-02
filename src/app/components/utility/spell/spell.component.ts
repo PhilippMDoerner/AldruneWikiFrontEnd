@@ -62,7 +62,8 @@ export class SpellComponent extends CardFormMixin implements OnInit {
     private spellConnectionService: SpellPlayerClassConnectionService,
     private playerClassService: PlayerClassService,
     public tokenService: TokenService,
-    public element: ElementRef //Allows calling this from the outside for scroll into view
+    public element: ElementRef, //Allows calling this from the outside for scroll into view
+    private route: ActivatedRoute
   ) { 
     super(
       warnings,
@@ -73,7 +74,9 @@ export class SpellComponent extends CardFormMixin implements OnInit {
   ngOnInit(): void {
     const isInitializedToCreate: boolean = this.cardData.name === "New Spell";
     this.formState = isInitializedToCreate ? Constants.createState : Constants.displayState;
-    this.isOpen = isInitializedToCreate;
+
+    const isRequestedByUser: boolean = this.route.snapshot.params["name"] === this.cardData.name;
+    this.isOpen = isInitializedToCreate || isRequestedByUser;
 
     if (isInitializedToCreate){
       this.userModel = new SpellObject();
