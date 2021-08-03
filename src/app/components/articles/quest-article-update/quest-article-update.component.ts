@@ -36,7 +36,7 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
       }
     },
     this.formlyService.genericSelect({key: "giver", label: "Quest Giver", optionsType: "character"}),
-    { //TODO: Replace this select with a typeahead or something that allows the select drop down as an OPTION to pre-select, but also to type in whatever you want
+    { 
       key: "taker",
       type: "select",
       templateOptions:{
