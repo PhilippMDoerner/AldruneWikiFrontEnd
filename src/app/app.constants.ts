@@ -91,6 +91,14 @@ export class Constants{
           showInSidebar: true,
         },
         {
+          title: "Encounters",
+          iconClass: "fa fa-comments",
+          route: null,
+          color: "lightgreen",
+          article_types: ["encounter"],
+          showInSidebar: false,
+        },
+        {
           title: "Items", 
           iconClass: "fa fa-magic", 
           route: "item-overview",
@@ -139,14 +147,6 @@ export class Constants{
           showInSidebar: true,
         },
         {
-          title: "Rules", 
-          iconClass: "fa fa-book", 
-          route: "rules",
-          color: "orange",
-          article_types: ["rule", "rules"],
-          showInSidebar: true,
-        },
-        {
           title: "Recordings", 
           iconClass: "fa fa-file-audio-o", 
           route: "sessionaudio-overview",
@@ -155,13 +155,13 @@ export class Constants{
           showInSidebar: true,
         },
         {
-          title: "Encounters",
-          iconClass: "fa fa-comments",
-          route: null,
-          color: "lightgreen",
-          article_types: ["encounter"],
-          showInSidebar: false,
-        }
+          title: "Rules", 
+          iconClass: "fa fa-book", 
+          route: "rules",
+          color: "orange",
+          article_types: ["rule", "rules"],
+          showInSidebar: true,
+        },
       ]
     } 
 
