@@ -46,7 +46,7 @@ import { Home2Component } from './components/home2/home2.component';
 
 
 
-const routes: Routes = [
+export const routes: Routes = [
 	//Redirect Routes
 	{
 		path: "",
@@ -59,7 +59,8 @@ const routes: Routes = [
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, 
 		component: Home2Component, data:{ name: "home1"}, 
-		canActivate: [LoginGuardService]},
+		canActivate: [LoginGuardService]
+	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}`, 
 		component: Home2Component, data:{ name: "home2"}, 
