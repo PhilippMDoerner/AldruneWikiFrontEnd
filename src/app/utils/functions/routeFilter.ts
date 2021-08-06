@@ -1,16 +1,15 @@
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Constants } from 'src/app/app.constants';
 import { ApiObject } from 'src/app/models/base-models';
+import { routes } from 'src/app/app-routing.module';
 
-export function getComponentRoutes(router: Router, componentName : string): string[]{
-    const routes: {path?: string, component?}[] = router.config;
+export function getComponentRoutes(componentName : string): string[]{
     const componentRoutes = routes.filter(pathObject => pathObject.component.name === componentName);
     const componentRouteStrings = componentRoutes.map(pathObject => pathObject.path);
     return componentRouteStrings;
 }
 
-export function getVariableRouteByName(router: Router, routeName: string): Route{
-    const routes: Route[] = router.config;
+export function getVariableRouteByName(routeName: string): Route{
     const routesWithRouteName = routes.filter(pathObject => pathObject.data.name === routeName);
 
     if (routesWithRouteName.length > 1) throw `There is more than 1 route with the name ${routeName}. Please contact the Developer to ensure all routes have unique names.`;
@@ -20,13 +19,13 @@ export function getVariableRouteByName(router: Router, routeName: string): Route
     return targetRouteObject;
 }
 
-export function getVariableRoutePathByName(router: Router, routeName: string): string{
-    const targetRouteObject: Route = getVariableRouteByName(router, routeName);
+export function getVariableRoutePathByName(routeName: string): string{
+    const targetRouteObject: Route = getVariableRouteByName(routeName);
     return targetRouteObject.path;
 }
 
-export function getRoutePath(router: Router, routeName: string, params = {}): string{
-    let variableRoutePath = getVariableRoutePathByName(router, routeName);
+export function getRoutePath(routeName: string, params = {}): string{
+    let variableRoutePath = getVariableRoutePathByName(routeName);
 
     if (hasPathVariables(variableRoutePath)){
         const variableNames: string[] = getPathVariableNames(variableRoutePath);
@@ -44,8 +43,7 @@ function hasPathVariables(routePath: string): boolean{
     return routePath.includes('/:');
 }
 
-export function hasRoutePath(router: Router, routeName: string): boolean{
-    const routes = router.config;
+export function hasRoutePath(routeName: string): boolean{
     const routesWithRouteName = routes.filter(pathObject => pathObject.data.name === routeName);
     return routesWithRouteName.length > 0;
 }
@@ -55,30 +53,4 @@ function getPathVariableNames(routePath: string): string[]{
     const pathVariables: string[] = routeSegments.filter((segment: string) => segment.startsWith(":"));
     const variableNameStartIndex = 1;
     return pathVariables.map(segment => segment.slice(variableNameStartIndex));
-}
-
-export function routeNameMatches(route: ActivatedRoute, routeName: string): boolean{
-    const routeData = route.snapshot.data;
-    return routeData.name === routeName;
-}
-
-export function routeToPath(router: Router, routeName: string, params = {}): void{
-    const routePath: string = getRoutePath(router, routeName, params);
-    router.navigateByUrl(routePath);
-}
-
-export function routeToApiObject(router: Router, object: ApiObject): void{
-    const objectUrl: string = object.getAbsoluteRouterUrl();
-    router.navigateByUrl(objectUrl);
-}
-
-export function routeToErrorPage(router: Router, error: number| any): void{
-    if (typeof error !== "number" && !error.hasOwnProperty("status")) throw "Incorrect error input. The input does not contain an error status or an object with the error status. Can not route to error page without error status.";
-    if (typeof error !== "number" && error.hasOwnProperty("status")) error = error.status;
-    const errorStatus: string = `${error}`;
-    if (hasRoutePath(router, errorStatus)){
-        routeToPath(router, errorStatus);
-        return;
-    }
-    routeToPath(router, 'error');
 }
