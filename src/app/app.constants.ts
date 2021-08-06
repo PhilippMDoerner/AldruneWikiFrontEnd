@@ -1,5 +1,3 @@
-import { getRoutePath, routeToApiObject, routeToPath, hasRoutePath, routeToErrorPage } from 'src/app/utils/functions/routeFilter';
-
 export class Constants{
     public static get apiPrefix(): string { return "wiki1";}
     public static get spaPrefix(): string { return "wiki2";}
