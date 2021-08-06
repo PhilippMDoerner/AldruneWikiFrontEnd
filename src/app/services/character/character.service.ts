@@ -1,11 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Constants } from "src/app/app.constants";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
-import { Character, CharacterObject } from "src/app/models/character";
+import { CharacterObject } from "src/app/models/character";
 import { Observable } from "rxjs";
 import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
-import { map } from 'rxjs/operators';
-import { TransformObservable, TransformArrayObservable } from "src/app/utils/functions/transform"
+import { TransformArrayObservable } from "src/app/utils/functions/transform"
 import { GenericObjectService } from '../generic-object.service';
 
 const httpOptions = {
@@ -19,7 +18,9 @@ export class CharacterService extends GenericObjectService{
   baseUrl: string =  `${Constants.wikiApiUrl}/character`;
   
   constructor(http: HttpClient) { 
-    super(http, CharacterObject) //Second param indicates which class the data of this service is turned into
+    super(http, CharacterObject); //Second param indicates which class the data of this service is turned into
+    console.log("Instantiating character service");
+    console.log(this.objectClass);
   }
 
   @TransformArrayObservable(OverviewItemObject)
