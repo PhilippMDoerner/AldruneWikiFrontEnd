@@ -8,6 +8,7 @@ import { QuoteObject } from 'src/app/models/quote';
 import { CharacterPlayerClassConnection } from 'src/app/models/playerclass';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
+
 @Component({
   selector: 'app-character-article',
   templateUrl: './character-article.component.html',
@@ -35,7 +36,7 @@ export class CharacterArticleComponent extends ArticleMixin implements OnInit, O
         route,
         routingService,
         warnings
-      ) 
+      );
     }
 
   createPlayerClassString(){
