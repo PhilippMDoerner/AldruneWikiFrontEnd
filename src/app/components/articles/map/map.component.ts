@@ -29,8 +29,6 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   //That is because the ngIf on <article> leads to the element not being loaded in time, see the following link
   // https://stackoverflow.com/questions/34947154/angular-2-viewchild-annotation-returns-undefined
   @ViewChildren('mapChoice') mapChoice: QueryList<any>;
-  @ViewChild('mapMainCard') mapMainCard: ElementRef;
-
 
   constructor(
     private router: Router,
@@ -67,8 +65,6 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
     this.mapChoice.changes.pipe(first()).subscribe((components: QueryList<any>) =>{
       this.setInitialMapChoiceValue();
     })
-
-    animateElement(this.mapMainCard.nativeElement, 'zoomIn');
   }
 
   setInitialMapChoiceValue(): void{

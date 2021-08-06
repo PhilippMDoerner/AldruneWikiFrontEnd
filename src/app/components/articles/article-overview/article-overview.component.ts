@@ -15,12 +15,11 @@ import { CharacterService } from 'src/app/services/character/character.service';
   templateUrl: './article-overview.component.html',
   styleUrls: ['./article-overview.component.scss'],
 })
-export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, AfterViewInit {
+export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
   listItems: OverviewItemObject[];
   playerCharacters: OverviewItemObject[];
   isInitialAnimationFinished: boolean = false;
 
-  @ViewChild('overviewMainCard') overviewMainCard: ElementRef;
   @ViewChildren("filter") filterField: QueryList<ElementRef>;
 
   constants: any = Constants;
@@ -64,10 +63,6 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
         error => this.routingService.routeToErrorPage(error)
       )
     }
-  }
-
-  ngAfterViewInit(): void{
-    animateElement(this.overviewMainCard.nativeElement, 'zoomIn');
   }
 
   filterListItems(){

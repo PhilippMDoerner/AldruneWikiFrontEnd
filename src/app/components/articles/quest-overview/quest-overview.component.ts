@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { animateElement } from 'src/app/utils/functions/animationDecorator';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
@@ -13,12 +12,11 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   templateUrl: './quest-overview.component.html',
   styleUrls: ['./quest-overview.component.scss']
 })
-export class QuestOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, AfterViewInit {
+export class QuestOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
   quests: Array<{key:string, value:QuestObject[]}>;
   filterStateTypes: string[];
   filterStates: object;
   constants: any = Constants;
-  @ViewChild('questMainCard') questMainCard: ElementRef;
 
   private quest_subscription: Subscription;
 
@@ -46,10 +44,6 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
       }, 
       error => this.routingService.routeToErrorPage(error)
     );
-  }
-
-  ngAfterViewInit(){
-    animateElement(this.questMainCard.nativeElement, 'zoomIn');
   }
 
   groupQuestsByTaker(itemArray: QuestObject[]): Array<{key:string, value:QuestObject[]}>{
