@@ -17,7 +17,7 @@ export class RoutingService {
    }
 
   public routeToApiObject(object: ApiObject): void{
-    const objectUrl: string = object.getAbsoluteRouterUrl()
+    const objectUrl: string = object.getAbsoluteRouterUrl();
     const cleanedObjectUrl: string = this.replaceSpecialUnicodeCharacters(objectUrl);
 
     this.router.navigateByUrl(cleanedObjectUrl);
