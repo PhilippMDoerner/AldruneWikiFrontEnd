@@ -12,26 +12,29 @@ export abstract class GenericObjectService{
   constructor(
     public http: HttpClient,
     public objectClass: any,
-  ) { }
+  ) { 
+    console.log("Instantiating GOS with object class");
+    console.log(this.objectClass);
+  }
 
-  @TransformArrayObservable("objectClass")
   list(): Observable<any[]>{
-    return this.http.get<any[]>(this.baseUrl);
+    const dataObs: Observable<any[]> = this.http.get<any[]>(this.baseUrl);
+    return transformObservableArrayContent(dataObs, this.objectClass);
   }
 
-  @TransformObservable("objectClass")
   create(data: any): Observable<any>{
-    return this.http.post(`${this.baseUrl}/`, data);
+    const dataObs: Observable<any> = this.http.post(`${this.baseUrl}/`, data);
+    return transformObservableContent(dataObs, this.objectClass);
   }
 
-  @TransformObservable("objectClass")
   update(pk: number, data: any): Observable<any>{
-    return this.http.put(`${this.baseUrl}/pk/${pk}/`, data);
+    const dataObs: Observable<any> = this.http.put(`${this.baseUrl}/pk/${pk}/`, data);
+    return transformObservableContent(dataObs, this.objectClass);
   }
 
-  @TransformObservable("objectClass")
   read(pk: number): Observable<any>{
-    return this.http.get(`${this.baseUrl}/pk/${pk}`);
+    const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/pk/${pk}`);
+    return transformObservableContent(dataObs, this.objectClass);
   }
 
   /**
@@ -51,7 +54,8 @@ export abstract class GenericObjectService{
       GenericObjectService and implement the function yourself`;
     } 
 
-    return this.http.get(`${this.baseUrl}/${params}`);
+    const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/${params}`);
+    return transformObservableContent(dataObs, this.objectClass);
   }
 
   delete(pk: number): Observable<any>{
@@ -61,5 +65,4 @@ export abstract class GenericObjectService{
   patch(pk: number, data: any): Observable<any>{
     return this.http.patch(`${this.baseUrl}/pk/${pk}/`, data);
   }
-
 }
