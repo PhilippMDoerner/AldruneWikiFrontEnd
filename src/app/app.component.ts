@@ -1,7 +1,6 @@
-import { Component, ElementRef, EventEmitter, HostListener, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { Constants } from './app.constants';
 import { RoutingService } from './services/routing.service';
 import { WarningsService } from './services/warnings.service';
@@ -34,7 +33,7 @@ export class AppComponent implements OnInit{
         this.warnings.showAlert("There's an update to this webpage! Reloading cache...");
         location.reload();
       }
-    )
+    );
   }
 
 
