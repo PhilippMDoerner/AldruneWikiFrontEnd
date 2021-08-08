@@ -71,13 +71,13 @@ export function AddPermissionUtilityFunctions(): Function {
 }
 
 @Directive()
-export class PermissionUtilityFunctionMixin implements OnInit{
+export class PermissionUtilityFunctionMixin{
     hasUpdatePermission: boolean;
     hasViewPermission: boolean;
     hasDeletePermission: boolean;
     hasCreatePermission: boolean;
 
-    ngOnInit(){
+    constructor(){
         this.hasCreatePermission = this.userHasCreatePermission();
         this.hasViewPermission = this.userHasViewPermission();
         this.hasDeletePermission = this.userHasDeletePermission();
