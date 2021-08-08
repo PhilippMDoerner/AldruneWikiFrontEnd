@@ -39,14 +39,10 @@ export class AppComponent implements OnInit{
 
 
   trackSwipeStart(event: TouchEvent): void{
-    console.log("Track swipe start");
-    //event.preventDefault(); //Else this might count as click
     this.firstTouchData = event;
   }
 
   trackSwipeEnd(event: TouchEvent): void{
-    console.log("Track swipe end");
-    //event.preventDefault(); //Else this might count as click
     this.lastTouchData = event;
   }
 
@@ -61,14 +57,15 @@ export class AppComponent implements OnInit{
    * @param event: A TouchEvent
    */
   checkForSwipeGesture(event: TouchEvent): void{
-    event.preventDefault(); //Else this might count as click. Prevents the normal clicking and focus this might do to prevent double clicks
     const firstTouchData = this.extractTouchData(this.firstTouchData);
     const secondTouchData = this.extractTouchData(this.lastTouchData);
 
     if (firstTouchData == null || secondTouchData == null){
       const originalClickTarget: any = this.firstTouchData.target; //Necessary because in Typescript event.target is not HTMLElement
-      originalClickTarget.click(); //This allows input fields on smartphone to be clicked on, as preventDefault blocks that
-      originalClickTarget.focus(); //This allows input fields on smartphone to be focussed and written in
+
+      /**Click on sidebar somehow aren't registered. This fixes the problem, while keeping tap behaviour normal on the rest of the site */
+      const isClickOnSidebar = originalClickTarget.closest("#sidebar") != null;
+      if(isClickOnSidebar) originalClickTarget.click();
 
       /**Clicks on sidebar menu-containers shall not close the sidebar! They are identified by having the .container-title class */
       const isClickOnMenuContainer = originalClickTarget.closest(".container-title") != null;
@@ -98,7 +95,7 @@ export class AppComponent implements OnInit{
     this.lastTouchData = null;
   }
 
-  getSwipe(touchData1, touchData2){
+  getSwipe(touchData1: {x: number, timestamp: number}, touchData2: {x: number, timestamp: number}){
     const xDelta = touchData2.x - touchData1.x;
     const absoluteXDelta = Math.abs(xDelta);
     const hasMinimumSwipeLength = absoluteXDelta > Constants.minimumSwipeDistance;
