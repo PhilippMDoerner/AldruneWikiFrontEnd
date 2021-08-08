@@ -1,25 +1,16 @@
 import { EncounterConnection } from "src/app/models/encounterconnection";
 import { Constants } from '../app.constants';
 import { ArticleObject } from './base-models';
-import { diaryEntryEncounterConnection, DiaryEntryEncounterConnectionObject } from "./diaryencounterconnection";
-
-interface diaryEntryUser{
-    pk: number,
-    name: string
-}
 
 export interface Encounter extends ArticleObject{
     pk?: number,
     description: string,
-    session_number: number,
-    session_number_details?: {name: string, pk: number, name_full: string},
     encounterConnections?: EncounterConnection[],
-    connection?: DiaryEntryEncounterConnectionObject,
     location: number,
     location_details?: {name: string, pk: number, name_full: string, parent_location_name: string},
-    author: number,
-    author_details?: diaryEntryUser,
     title: string,
+    diaryentry: number,
+    order_index: number;
 }
 
 /**
@@ -36,21 +27,54 @@ export interface Encounter extends ArticleObject{
 //TODO: Remove DiaryEntryEncounterConnectionObject from the database. Instead, Encounters should have FKs and an "order_index" field
 //of their own
 export class EncounterObject implements Encounter {
+    orderIndexIncrement: number = 10;
+
     name?: string;
     pk?: number;
     description: string;
-    session_number: number;
     encounterConnections?: EncounterConnection[];
-    connection?: DiaryEntryEncounterConnectionObject
     location: number;
     location_details?: {name: string, pk: number, name_full: string, parent_location_name: string};
-    author: number;
-    author_details?: diaryEntryUser;
     title: string;
+    diaryentry: number;
+    order_index: number;
 
 
     constructor(object?: Encounter){
         if (object) Object.assign(this, object);
+    }
+
+
+    hasShiftedOrderIndex(): boolean{
+        return this.order_index % this.orderIndexIncrement > 0;
+    }
+
+    getShiftedOrderIndex(): number{
+        return (this.hasShiftedOrderIndex()) ? this.order_index : this.order_index + 1;
+    }
+
+    getUnshiftedOrderIndex(): number{
+        return Math.floor(this.order_index / this.orderIndexIncrement) * this.orderIndexIncrement;
+    }
+
+    unshiftOrderIndex(): void{
+        this.order_index = this.getUnshiftedOrderIndex();
+    }
+
+    swapOrderIndexState(): void{
+        this.hasShiftedOrderIndex() ? this.unshiftOrderIndex() : this.shiftOrderIndex();
+    }
+
+    shiftOrderIndex(): void{
+        this.order_index++;
+    }
+
+    nextOrderIndex(){
+        return this.getUnshiftedOrderIndex() + this.orderIndexIncrement;
+    }
+
+    priorOrderIndex(){
+        return this.getUnshiftedOrderIndex() - this.orderIndexIncrement;
     }
 
     //TODO: Get rid of hard-coded URL patterns in objects

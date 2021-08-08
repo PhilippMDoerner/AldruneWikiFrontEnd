@@ -19,10 +19,6 @@ export class DiaryentryArticleComponent extends ArticleMixin {
   priorDiaryentryUrl: string;
   deleteRoute = {routeName: 'diaryentry-overview', params: {}};
 
-
-  //Custom Variables
-  coAuthors: string;
-
   constructor(
     diaryEntryService: DiaryentryService,
     public route: ActivatedRoute,
@@ -46,7 +42,6 @@ export class DiaryentryArticleComponent extends ArticleMixin {
       this.articleService.readByParam({isMainSession, sessionNumber, authorName}).pipe(first()).subscribe(
         diaryEntry => {
           this.articleData = diaryEntry;
-          this.coAuthors = this.getCoAuthorString();
 
           const priorDiaryentryStub = this.articleData.adjacent_diaryentries.prior_diaryentry;
           this.priorDiaryentryUrl = this.createDiaryentryURL(priorDiaryentryStub);
@@ -57,21 +52,6 @@ export class DiaryentryArticleComponent extends ArticleMixin {
         error => this.routingService.routeToErrorPage(error)
       );
     });
-  }
-
-  getCoAuthorString(): string{
-    let authorString: string = "";
-    for(const encounter of this.articleData.encounters){
-      const isEncounterInCreateState = encounter.pk == null;
-      if (isEncounterInCreateState) continue;
-      
-      const authorName = encounter.author_details.name;
-      if(!authorString.includes(authorName) && !this.articleData.author_details.name.includes(authorName) ){
-        authorString += ` ${authorName},`;
-      }
-    }
-    authorString = authorString.slice(0, authorString.length - 1);
-    return authorString;
   }
 
   onDescriptionUpdate(){

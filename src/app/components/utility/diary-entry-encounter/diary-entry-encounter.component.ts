@@ -77,22 +77,12 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
     this.formState = isEncounterCreateState ? Constants.createState : Constants.displayState;
     if (isEncounterCreateState){
       this.userModel = new EncounterObject();
-      this.userModel.author = this.tokenService.getCurrentUserPk();
     }
   }
 
   //Code About Encounter
-  onUpdateSuccess(updatedArticle: EncounterObject, parentClass: CardFormMixin){
-    //You need to tranfer the connection object as the returning encounter won't carry a connection object - 
-    //its API endpoint isn't diaryentries, where they are added, but the encounter-api, where you wouldn't 
-    //know which connection you'd want with this encounter
-    updatedArticle.connection = parentClass.cardData.connection;
-
-    super.onUpdateSuccess(updatedArticle, parentClass);
-  }
 
   onCreationSuccess(createdArticle: EncounterObject, parentClass: CardFormMixin){
-    createdArticle.connection = this.cardData.connection;
     super.onCreationSuccess(createdArticle, parentClass);
     this.cardCreate.emit(createdArticle);
   }
