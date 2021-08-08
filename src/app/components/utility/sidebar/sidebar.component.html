@@ -17,7 +17,7 @@
                 <i class="fa fa-user-circle"></i>
                 <span class="on-hover-show container-title">
                     User
-                    <span *ngIf="tokenService.isAdmin()"> & Admin</span>
+                    <span *ngIf="showAdminSection"> & Admin</span>
                     <i class="fa" [ngClass]="{'fa-chevron-down': !showUserSection, 'fa-chevron-up': showUserSection}"></i>
                 </span>
             </a>
@@ -39,7 +39,7 @@
                 </li>
 
                 <!-- Admin Section -->
-                <li *ngIf="tokenService.isAdmin()">
+                <li *ngIf="showAdminSection">
                     <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('admin') }}" >
                         <i class="fa fa-lock"></i>
                         <span> Admin </span>
@@ -47,7 +47,7 @@
                 </li>
 
                 <!-- Config Tables -->
-                <li *ngIf="tokenService.isAdmin()">
+                <li *ngIf="showAdminSection">
                     <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('config-tables') }}">
                         <i class="fa fa-table"></i>
                         <span> Config Tables </span>

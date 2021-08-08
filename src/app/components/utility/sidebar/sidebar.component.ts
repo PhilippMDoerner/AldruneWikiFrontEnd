@@ -35,6 +35,7 @@ export class SidebarComponent implements OnInit {
     });
     
     this.sidebarEntries = processedEntries;
+    this.showAdminSection = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
   }
 
   logout(): void{
