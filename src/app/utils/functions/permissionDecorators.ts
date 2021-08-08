@@ -1,7 +1,7 @@
 import { DecodedTokenPayload } from 'src/app/models/jwttoken';
 import { TokenService } from 'src/app/services/token.service';
 import { Constants } from 'src/app/app.constants';
-import { Router } from '@angular/router';
+import { Directive, OnInit } from '@angular/core';
 
 /** This small library's purpose is solely to allow adding quick checks on whether a user has a specific permission or not
  * This is solely intended for usage inside of components that apply the Decorator/Mixin Below
@@ -70,7 +70,20 @@ export function AddPermissionUtilityFunctions(): Function {
     }
 }
 
-export class PermissionUtilityFunctionMixin{
+@Directive()
+export class PermissionUtilityFunctionMixin implements OnInit{
+    hasUpdatePermission: boolean;
+    hasViewPermission: boolean;
+    hasDeletePermission: boolean;
+    hasCreatePermission: boolean;
+
+    ngOnInit(){
+        this.hasCreatePermission = this.userHasCreatePermission();
+        this.hasViewPermission = this.userHasViewPermission();
+        this.hasDeletePermission = this.userHasDeletePermission();
+        this.hasUpdatePermission = this.userHasUpdatePermission();
+    }
+
     userHasUpdatePermission = () => {
         return hasPermissions([Constants.apiUpdatePermission]);
     }
