@@ -35,7 +35,7 @@
                 <!-- Create Image Button -->
                 <i 
                 class="fa fa-plus-square-o fa-2x icon" 
-                [ngClass]="{'d-none': !userHasCreatePermission()}"  
+                [ngClass]="{'d-none': !hasCreatePermission}"  
                 aria-hidden="true" 
                 (click)="enableCreateState()"
                 ></i>
@@ -43,7 +43,7 @@
                 <!-- Update Image button -->
                 <i 
                 class="fa fa-pencil fa-2x icon" 
-                [ngClass]="{'d-none': !hasImages() || !userHasUpdatePermission()}" 
+                [ngClass]="{'d-none': !hasImages() || !hasUpdatePermission}" 
                 aria-hidden="true" 
                 (click)="enableUpdateState()"
                 ></i>
@@ -51,7 +51,7 @@
                 <!-- Delete Image Button -->
                 <i 
                 class="fa fa-trash fa-2x icon"
-                [ngClass]="{'d-none': isLastImage() || !userHasDeletePermission()}" 
+                [ngClass]="{'d-none': isLastImage() || !hasDeletePermission}" 
                 aria-hidden="true" 
                 (click)="enableDeleteState()"
                 ></i>

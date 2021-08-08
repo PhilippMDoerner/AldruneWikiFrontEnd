@@ -1,6 +1,6 @@
 <div class="main">
     <article *ngIf="articleData; else loading" class="container">
-        <div class="row" *ngIf="userHasUpdatePermission()">
+        <div class="row" *ngIf="hasUpdatePermission">
             <div class="col-12">
                 <app-edit-toggle 
                 [isInUpdateState]=false 
@@ -30,7 +30,7 @@
                 <i 
                 class="fa fa-plus icon ml-3"
                 title="Add Marker"
-                [ngClass]="{'d-none': !userHasCreatePermission()}"
+                [ngClass]="{'d-none': !hasCreatePermission}"
                 routerLink="{{routingService.getRoutePath('marker-create', {
                         parent_location_name: articleData.parent_location_details.name,
                         location_name: articleData.name

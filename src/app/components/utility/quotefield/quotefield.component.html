@@ -26,7 +26,7 @@
                         <i 
                         class="fa fa-trash icon vanish-icon ml-2" 
                         (click)="deleteQuoteConnection(connection)" 
-                        [ngClass]="{'d-none': !userHasDeletePermission()}"
+                        [ngClass]="{'d-none': !hasDeletePermission}"
                         ></i>
                     </span>
 
@@ -56,7 +56,7 @@
                     <i 
                     class="fa icon fa-plus mx-2 fa-1-5x" 
                     (click)="toggleQuoteConnectionCreateState()"
-                    *ngIf="userHasCreatePermission() && !inQuoteConnectionCreateState"
+                    *ngIf="hasCreatePermission && !inQuoteConnectionCreateState"
                     ></i>
                 </span>
             </div>
@@ -74,21 +74,21 @@
             <!-- Edit Quote -->
             <i 
             class="fa fa-pencil fa-1-5x icon mx-3" 
-            [ngClass]="{'d-none': !userHasUpdatePermission()}" 
+            [ngClass]="{'d-none': !hasUpdatePermission}" 
             (click)="toggleEditState()"
             title="Edit Quote"
             ></i>
             <!-- Create Quote -->
             <i 
             class="fa fa-plus fa-1-5x icon mx-3" 
-            [ngClass]="{'d-none': !userHasCreatePermission() || !enableCreatingQuotes}" 
+            [ngClass]="{'d-none': !hasCreatePermission || !enableCreatingQuotes}" 
             (click)="toggleCreateState()"
             title="Create Quote"
             ></i>
             <!-- Delete Quote -->
             <i 
             class="fa fa-trash fa-1-5x icon mx-3" 
-            [ngClass]="{'d-none': !userHasDeletePermission()}" 
+            [ngClass]="{'d-none': !hasDeletePermission}"
             (click)="inDeleteState=true"
             title="Delete Quote"
             ></i>

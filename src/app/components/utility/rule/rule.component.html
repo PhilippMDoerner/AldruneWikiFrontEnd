@@ -20,7 +20,7 @@
         
                 <!-- Edit Toggler -->
                 <div 
-                *ngIf="userHasUpdatePermission()" 
+                *ngIf="hasUpdatePermission"
                 class="btn btn-secondary float-right" 
                 (click)="toggleFormState()"
                 >

@@ -1,7 +1,7 @@
 <!-- Heading -->
 <div *ngIf="heading">
     <h4 [innerHTML]="heading" class="d-inline"></h4>
-    <h4 class="d-inline" *ngIf="userHasUpdatePermission()">
+    <h4 class="d-inline" *ngIf="hasUpdatePermission">
         <i *ngIf="isInDisplayState() && allowEdit" (click)="enableEdit()" class="fa icon fa-pencil ml-2"></i>
         <i *ngIf="isInUpdateState()" (click)="cancelEdit()" class="fa icon fa-times ml-2"></i>
         <i *ngIf="isInUpdateState()" (click)="finishEdit()" class="fa icon fa-check ml-2"></i>
@@ -11,7 +11,7 @@
 <!-- Text Body -->
 <form class="mt-2">
     <div>
-        <div *ngIf="isInUpdateState() && userHasUpdatePermission()">
+        <div *ngIf="isInUpdateState() && hasUpdatePermission">
             <form (submit)="finishEdit()">
                 <editor 
                 [init]="constants.tinyMCESettings"
@@ -34,7 +34,7 @@
 
         </div>
 
-        <div *ngIf="isInOutdatedUpdateState() && userHasUpdatePermission()">
+        <div *ngIf="isInOutdatedUpdateState() && hasUpdatePermission">
             <!-- Informating heading -->
             <div class="alert alert-info">
                 <span class="fa fa-info-circle"></span>
@@ -79,6 +79,6 @@
 
         </div>
 
-        <div *ngIf="isInDisplayState() || !userHasUpdatePermission()" [innerHTML]="textModel | safeHtml"></div>
+        <div *ngIf="isInDisplayState() || !userHasUpdatePermission" [innerHTML]="textModel | safeHtml"></div>
     </div>
 </form>

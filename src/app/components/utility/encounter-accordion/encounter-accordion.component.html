@@ -26,7 +26,7 @@
                 <div 
                 class="btn btn-secondary float-right" 
                 (click)="fullEditEncounter(encounter)" 
-                [ngClass]="{'d-none': !userHasUpdatePermission()}"
+                [ngClass]="{'d-none': !hasUpdatePermission}"
                 >
                     <i class="fa fa-pencil"></i>
                 </div>
@@ -54,12 +54,12 @@
                             <i 
                             class="fa fa-trash icon ml-1" 
                             (click)="deleteEncounterConnection(encounter, connection)" 
-                            *ngIf="userHasDeletePermission()"
+                            *ngIf="hasDeletePermission"
                             ></i>
                         </span>
 
                         <!-- Connection Create Form -->
-                        <form class="d-flex align-items-center" *ngIf="inEncounterConnectionCreationState && userHasCreatePermission()" (submit)="createEncounterConnection(encounter)">
+                        <form class="d-flex align-items-center" *ngIf="inEncounterConnectionCreationState && hasCreatePermission" (submit)="createEncounterConnection(encounter)">
                             <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
                                 <option *ngFor="let character of characters" value="{{character.pk}}">{{character.name}}</option>
                             </select>
@@ -75,7 +75,7 @@
 
                         <i 
                         class="fa icon mx-2 fa-plus fa-1-5x" 
-                        *ngIf="!inEncounterConnectionCreationState && userHasCreatePermission()"
+                        *ngIf="!inEncounterConnectionCreationState && hasCreatePermission"
                         (click)="toggleEncounterConnectionCreationState()"
                         ></i>
                     </div>

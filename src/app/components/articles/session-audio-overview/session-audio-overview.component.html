@@ -32,7 +32,7 @@
             </div>
 
             <!-- Add Session Audio card -->
-            <div class="col-md-4 col-sm-6" [ngClass]="{'d-none': !userHasCreatePermission()}">
+            <div class="col-md-4 col-sm-6" [ngClass]="{'d-none': !hasCreatePermission}">
                 <div class="card my-3 pointer add-icon-card h-82" routerLink="create">
                     <!-- Card Title -->
                     <div class="card-body d-flex justify-content-center align-items-center">

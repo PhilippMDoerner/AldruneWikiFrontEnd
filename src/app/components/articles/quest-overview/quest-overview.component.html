@@ -10,7 +10,7 @@
                 <!-- Outer Table Heading -->
                 <h4 class="col-md-6 px-0 my-auto">
                     {{questTaker.key}}'s Quests
-                    <i *ngIf="userHasCreatePermission()" class="fa fa-plus icon ml-2" routerLink="create"></i>
+                    <i *ngIf="hasCreatePermission" class="fa fa-plus icon ml-2" routerLink="create"></i>
                 </h4>
 
                 <div class="col-3"></div>

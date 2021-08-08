@@ -42,7 +42,7 @@
                 <h4> {{ cardData.name }}</h4>
 
                 <!-- Edit Toggler -->
-                <div class="btn btn-secondary max-content" *ngIf="userHasUpdatePermission()" (click)="toggleFormState()">
+                <div class="btn btn-secondary max-content" *ngIf="hasUpdatePermission" (click)="toggleFormState()">
                     <i class="fa" [ngClass]= "{'fa-pencil': isInDisplayState(), 'fa-times': !isInDisplayState()}"></i>
                 </div>
             </div>

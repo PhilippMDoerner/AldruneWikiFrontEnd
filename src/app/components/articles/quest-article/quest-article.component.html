@@ -1,6 +1,6 @@
 <div class="main">
     <article *ngIf="articleData; else loading" class="container">
-        <div class="row" *ngIf="userHasUpdatePermission()">
+        <div class="row" *ngIf="hasUpdatePermission">
             <div class="col-12">
                 <app-edit-toggle 
                 [isInUpdateState]=false 

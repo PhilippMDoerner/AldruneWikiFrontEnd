@@ -1,7 +1,7 @@
 <div class="main">
     <article *ngIf="maps && articleData; else loading" class="container">
         <!-- Heading -->
-        <div class="row" *ngIf="userHasUpdatePermission()">
+        <div class="row" *ngIf="hasUpdatePermission">
             <div class="col-12">
                 <app-edit-toggle 
                 [isInUpdateState]=false 

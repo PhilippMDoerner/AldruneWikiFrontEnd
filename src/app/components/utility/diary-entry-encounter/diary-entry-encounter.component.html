@@ -9,7 +9,7 @@ class="container"
             {{ cardData.title }}
             
             <!-- Edit Toggler + Cut Toggler-->
-            <div class="float-right flex-row" [ngClass]="{'d-none': !userHasUpdatePermission() || diaryEntryView, 'd-flex': userHasUpdatePermission() && !diaryEntryView}">
+            <div class="float-right flex-row" [ngClass]="{'d-none': hasUpdatePermission || diaryEntryView, 'd-flex': hasUpdatePermission && !diaryEntryView}">
                 <!-- Cut Toggler -->
                 <div class="btn btn-secondary encounter-hidden mr-2" (click)="toggleCutState()" title="Cut Encounter">
                     <i class="fas fa-cut"></i>
@@ -85,7 +85,7 @@ class="container"
                         <i 
                         class="fa fa-trash icon ml-1" 
                         (click)="deleteEncounterConnection(cardData, connection)"
-                        *ngIf="userHasDeletePermission()"
+                        *ngIf="hasDeletePermission"
                         ></i>
                     </span>
         
@@ -110,7 +110,7 @@ class="container"
                     
                     <!-- Connection Create Icon-Buttons -->
                     <i
-                    *ngIf="userHasCreatePermission() && !inEncounterConnectionCreationState"
+                    *ngIf="hasCreatePermission && !inEncounterConnectionCreationState"
                     class="fa icon mx-2 fa-plus fa-1-5x"
                     (click)="toggleEncounterConnectionCreationState()"
                     ></i> 
