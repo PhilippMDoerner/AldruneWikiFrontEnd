@@ -12,10 +12,7 @@ export abstract class GenericObjectService{
   constructor(
     public http: HttpClient,
     public objectClass: any,
-  ) { 
-    console.log("Instantiating GOS with object class");
-    console.log(this.objectClass);
-  }
+  ) {  }
 
   list(): Observable<any[]>{
     const dataObs: Observable<any[]> = this.http.get<any[]>(this.baseUrl);

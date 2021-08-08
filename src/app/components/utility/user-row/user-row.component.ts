@@ -80,8 +80,6 @@ export class UserRowComponent implements OnInit {
   }
 
   updateUserGroups(){
-    console.log("Updating user groups ");
-    console.log(this.user)
     this.userService.updateUserGroups(this.user).pipe(first()).subscribe(
       (updatedUser: UserObject) => {
         this.user = updatedUser;

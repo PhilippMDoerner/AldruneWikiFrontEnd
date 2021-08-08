@@ -51,9 +51,6 @@ export class FormlySelectDisableComponent extends FieldType implements OnInit, O
     const hasObservableOptions: boolean = (selectOptionsObservable instanceof Observable);
     if(!hasObservableOptions) throw "InvalidSelectOptionsException. You tried to create a FormlySelectDisableComponent - field, but provided an option that wasn't an Observable!"
 
-    console.log(this.to);
-    console.log(this.options);
-    console.log(this.formControl);
     selectOptionsObservable.pipe(first()).subscribe(
       (observableOptions: OverviewItemObject[]) => {
         this.allSelectOptions = observableOptions;

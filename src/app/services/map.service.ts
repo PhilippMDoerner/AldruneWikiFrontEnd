@@ -31,7 +31,7 @@ export class MapService extends GenericObjectService{
       delete map.image;
       formData = map;
     }
-    console.log(formData);
+
     return this.http.patch<ExtendedMap>(`${this.baseUrl}/pk/${mapPk}/`, formData);
   }
 }

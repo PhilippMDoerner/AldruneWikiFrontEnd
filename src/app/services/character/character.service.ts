@@ -19,8 +19,6 @@ export class CharacterService extends GenericObjectService{
   
   constructor(http: HttpClient) { 
     super(http, CharacterObject); //Second param indicates which class the data of this service is turned into
-    console.log("Instantiating character service");
-    console.log(this.objectClass);
   }
 
   @TransformArrayObservable(OverviewItemObject)

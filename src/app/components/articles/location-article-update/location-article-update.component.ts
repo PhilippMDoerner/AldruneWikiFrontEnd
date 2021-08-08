@@ -96,7 +96,6 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin implements 
    * should route you back to the original location for which you were creating this. This is the logic that happens here.
    */
   onCancel(){
-    console.log(this);
     if(this.isForAssociatedObjectCreation()){
       this.routingService.routeToPath('location', {
         name: this.userModel.parent_location_details.name, 
@@ -104,7 +103,6 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin implements 
       });
 
     } else {
-      console.log("Calling form mixin cancel")
       const executionContext = this;
       ArticleFormMixin.prototype.onCancel(executionContext);
     }

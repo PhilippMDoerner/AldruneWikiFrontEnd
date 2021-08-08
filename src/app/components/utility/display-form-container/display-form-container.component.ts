@@ -31,7 +31,7 @@ export class DisplayFormContainerComponent implements OnInit {
 
   async getSelectedOptionValue(field: FormlyFieldConfig, data: any): Promise<string> {
     if(field.type !== "select") return;
-    console.log("triggered with " + field.templateOptions.label)
+
     const key: string = `${field.key}`;
     const pk: number = data[key];
 

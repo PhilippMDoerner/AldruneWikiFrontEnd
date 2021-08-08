@@ -64,7 +64,6 @@ export class RulesComponent implements OnInit, AfterViewInit {
   }
 
   onRuleDelete(index: number){
-    console.log("onRuleDelete")
     this.rules.splice(index, 1);
   }
 }

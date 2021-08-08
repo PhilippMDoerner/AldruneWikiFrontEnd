@@ -54,6 +54,5 @@ export class TextfieldComponent extends PermissionUtilityFunctionMixin implement
 
     this.formStateSubject.next(Constants.displayState);
     this.textModel = this.initialText;
-    console.log(this.textModel);
   }
 }
