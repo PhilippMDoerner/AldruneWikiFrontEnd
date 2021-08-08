@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
 import { Router } from '@angular/router';
-import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { Observable } from 'rxjs';
 import { OverviewService } from 'src/app/services/overview.service';
 import { Constants } from 'src/app/app.constants';
@@ -63,6 +62,8 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
         error => this.routingService.routeToErrorPage(error)
       )
     }
+
+    
   }
 
   filterListItems(){
