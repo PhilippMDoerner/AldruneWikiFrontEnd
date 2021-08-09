@@ -23,7 +23,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 })
 export class DiaryEntryEncounterComponent extends CardFormMixin implements OnInit {
   //CardFormMixin variables
-  cardData: EncounterObject;
+  cardData: EncounterObject; //If the Encounter is being newly created, this is an old encounter, else its the current encounter
   userModel: EncounterObject;
   serverModel: Encounter;
 
@@ -33,8 +33,6 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title"}),
-    this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
-    this.formlyService.genericSelect({key: "session_number", label: "Session", optionsType: "session"}),
     this.formlyService.genericSelect({key: "location", label: "Encounter Location", optionsType: "location", required: false}),
     this.formlyService.genericTextField({key: "description", required: true}),
   ];
@@ -64,7 +62,6 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
     private characterService: CharacterService,
     private encounterConnectionService: EncounterConnectionService,
     private formlyService: MyFormlyService,
-    private tokenService: TokenService,
   ) { 
     super(
       warning,
@@ -77,11 +74,12 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
     this.formState = isEncounterCreateState ? Constants.createState : Constants.displayState;
     if (isEncounterCreateState){
       this.userModel = new EncounterObject();
+      this.userModel.diaryentry = this.cardData.diaryentry;
+      this.userModel.order_index = this.cardData.nextOrderIndex(); //CardData is the prior encounter if this encounter is being newly created. Thus you want the nextOrderIndex from there
     }
   }
 
   //Code About Encounter
-
   onCreationSuccess(createdArticle: EncounterObject, parentClass: CardFormMixin){
     super.onCreationSuccess(createdArticle, parentClass);
     this.cardCreate.emit(createdArticle);
