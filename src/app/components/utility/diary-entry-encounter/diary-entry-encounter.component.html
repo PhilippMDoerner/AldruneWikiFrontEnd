@@ -6,7 +6,7 @@ class="container"
     <!-- Encounter Heading -->
     <div class="row">
         <h4 class="heading col-12">
-            {{ cardData.title }} - {{cardData.order_index}}
+            {{ cardData.title }}
             
             <!-- Edit Toggler + Cut Toggler-->
             <div class="float-right flex-row" [ngClass]="{'d-none': hasUpdatePermission || diaryEntryView, 'd-flex': hasUpdatePermission && !diaryEntryView}">
