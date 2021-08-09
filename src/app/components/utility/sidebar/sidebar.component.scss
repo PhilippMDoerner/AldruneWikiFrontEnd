@@ -98,11 +98,11 @@ li{
     display: block;
 }
 
-#sidebar #user-list .on-hover-show{
-    -webkit-animation: fadeInFromNone 0.2s ease-out;
-    -moz-animation: fadeInFromNone 0.2s ease-out;
-    -o-animation: fadeInFromNone 0.2s ease-out;
-    animation: fadeInFromNone 0.2s ease-out;
+#sidebar:hover #user-links .on-hover-show{
+    -webkit-animation: fadeInFromNone 0.1s ease-in;
+    -moz-animation: fadeInFromNone 0.1s ease-in;
+    -o-animation: fadeInFromNone 0.1s ease-in;
+    animation: fadeInFromNone 0.1s ease-in;
 }
 
 
