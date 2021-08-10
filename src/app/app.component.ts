@@ -18,7 +18,6 @@ export class AppComponent implements OnInit{
   firstTouchData: TouchEvent;
   lastTouchData: TouchEvent;
 
-  @ViewChild('routerOutlet') routerOutlet: ElementRef;
   @ViewChild('sidebar') sidebarRef: ElementRef;
 
   constructor(
@@ -68,6 +67,7 @@ export class AppComponent implements OnInit{
 
       /**Clicks on sidebar menu-containers shall not close the sidebar! They are identified by having the .container-title class */
       const isClickOnMenuContainer = originalClickTarget.closest(".container-title") != null;
+      console.log("Closing sidebar: " + isClickOnMenuContainer);
       if(!isClickOnMenuContainer) this.showSidebarSubject.next(false);
 
       return;
@@ -83,6 +83,7 @@ export class AppComponent implements OnInit{
     if(!isSidebarOpen && isSwipeRight){
       this.showSidebarSubject.next(true);
     } else if (isSidebarOpen && (isSwipeLeft || isTap)){
+      console.log(`Closing sidebar because isSwipeLeft: ${isSidebarOpen} - isTap: ${isTap}`);
       this.showSidebarSubject.next(false);
     }
 
@@ -94,11 +95,15 @@ export class AppComponent implements OnInit{
     this.lastTouchData = null;
   }
 
-  getSwipe(touchData1: {x: number, timestamp: number}, touchData2: {x: number, timestamp: number}){
+  getSwipe(touchData1: {x: number, y:number,  timestamp: number}, touchData2: {x: number, y:number, timestamp: number}){
     const xDelta = touchData2.x - touchData1.x;
     const absoluteXDelta = Math.abs(xDelta);
     const hasMinimumSwipeLength = absoluteXDelta > Constants.minimumSwipeDistance;
-    const isTap = absoluteXDelta < Constants.maximumTapDistance;
+
+    const yDelta: number = touchData2.y - touchData1.y;
+    const absoluteYDelta: number = Math.abs(yDelta);
+    console.log("Tap Distance: X " + absoluteXDelta + " | Y: " + absoluteYDelta);
+    const isTap = absoluteXDelta < Constants.maximumTapDistance && absoluteYDelta < Constants.maximumTapDistance;
     if(!hasMinimumSwipeLength) return isTap ? "tap" : null;
 
     const timeDelta = touchData2.timestamp - touchData1.timestamp;
@@ -109,11 +114,12 @@ export class AppComponent implements OnInit{
     return isSwipeRight ? "right" : "left";
   }
 
-  extractTouchData(event: TouchEvent){
+  extractTouchData(event: TouchEvent): {y: number, x: number, timestamp: number}{
     if (event == null) return null;
 
     const touchX: number = event.touches[0].clientX;
+    const touchY: number = event.touches[0].clientY;
     const timestamp: number = event.timeStamp;
-    return {x: touchX, timestamp: timestamp};
+    return {x: touchX, y: touchY, timestamp: timestamp};
   }
 }
