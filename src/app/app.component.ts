@@ -67,7 +67,7 @@ export class AppComponent implements OnInit{
 
       /**Clicks on sidebar menu-containers shall not close the sidebar! They are identified by having the .container-title class */
       const isClickOnMenuContainer = originalClickTarget.closest(".container-title") != null;
-      console.log("Closing sidebar: " + isClickOnMenuContainer);
+
       if(!isClickOnMenuContainer) this.showSidebarSubject.next(false);
 
       return;
@@ -83,7 +83,7 @@ export class AppComponent implements OnInit{
     if(!isSidebarOpen && isSwipeRight){
       this.showSidebarSubject.next(true);
     } else if (isSidebarOpen && (isSwipeLeft || isTap)){
-      console.log(`Closing sidebar because isSwipeLeft: ${isSidebarOpen} - isTap: ${isTap}`);
+
       this.showSidebarSubject.next(false);
     }
 
@@ -102,7 +102,7 @@ export class AppComponent implements OnInit{
 
     const yDelta: number = touchData2.y - touchData1.y;
     const absoluteYDelta: number = Math.abs(yDelta);
-    console.log("Tap Distance: X " + absoluteXDelta + " | Y: " + absoluteYDelta);
+
     const isTap = absoluteXDelta < Constants.maximumTapDistance && absoluteYDelta < Constants.maximumTapDistance;
     if(!hasMinimumSwipeLength) return isTap ? "tap" : null;
 
