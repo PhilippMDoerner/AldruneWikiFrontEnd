@@ -71,11 +71,11 @@ export class AppComponent implements OnInit{
 
       /**Click on sidebar somehow aren't registered. This fixes the problem, while keeping tap behaviour normal on the rest of the site */
       const isClickOnSidebar = originalClickTarget.closest("#sidebar") != null;
-      if(isClickOnSidebar) originalClickTarget.click();
-
-      /**Clicks on sidebar menu-containers shall not close the sidebar! They are identified by having the .container-title class */
       const isClickOnMenuContainer = originalClickTarget.closest(".container-title") != null;
 
+      if(isClickOnSidebar && !isClickOnMenuContainer) originalClickTarget.click();
+
+      /**Clicks on sidebar menu-containers shall not close the sidebar! They are identified by having the .container-title class */
       if(!isClickOnMenuContainer) this.showSidebarSubject.next(false);
 
       return;
