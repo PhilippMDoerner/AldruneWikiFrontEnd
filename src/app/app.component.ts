@@ -18,6 +18,8 @@ export class AppComponent implements OnInit{
   firstTouchData: TouchEvent;
   lastTouchData: TouchEvent;
 
+  showSafariWarning: boolean; //Necessary to display warning
+
   @ViewChild('sidebar') sidebarRef: ElementRef;
 
   constructor(
@@ -33,8 +35,14 @@ export class AppComponent implements OnInit{
         location.reload();
       }
     );
+
+    this.showSafariWarning = this.isUserWithSafariBrowser();
   }
 
+  isUserWithSafariBrowser(): boolean{
+    const userAgent = navigator.userAgent.toLowerCase();
+    return userAgent.indexOf("safari") > -1;
+  }
 
   trackSwipeStart(event: TouchEvent): void{
     this.firstTouchData = event;
