@@ -1,14 +1,14 @@
 <!-- <app-navbar [outsideClickSubject]="outsideClickSubject"></app-navbar> -->
 <!-- Warning Displaying that Safari is not supported -->
-<div class="alert alert-warning alert-dismissable fade show mb-0 d-flex align-items-center" role="alert" *ngIf="!showSafariWarning">
+<div class="alert alert-warning alert-dismissable fade show mb-0 d-flex align-items-center" role="alert" *ngIf="showSafariWarning">
     <strong class="flex-1">
         This project does not support Safari or any browser on iOS for that matter. 
         Given the pain that it is to develop for Apple hardware without owning apple devices, and given that I neither am
         rich enough to own said devices nor see myself paying for emulation services to be able to get it to run, 
         I ask for your understanding. <br>
-        - Philipp Doerner aka the Developer
+        - Philipp Dörner aka the Developer
     </strong>
-    <i class="fa fa-2x fa-times pointer text-color-black" (click)="showSafariWarning=!showSafariWarning"></i>
+    <i class="fa fa-2x fa-times pointer text-color-black" (click)="showSafariWarning=false"></i>
 </div>
 
 <div 
