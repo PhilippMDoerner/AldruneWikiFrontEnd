@@ -98,11 +98,12 @@ li{
     display: block;
 }
 
-#sidebar:hover #user-links .on-hover-show{
-    -webkit-animation: fadeInFromNone 0.1s ease-in;
-    -moz-animation: fadeInFromNone 0.1s ease-in;
-    -o-animation: fadeInFromNone 0.1s ease-in;
-    animation: fadeInFromNone 0.1s ease-in;
+#sidebar:hover #user-links .on-hover-show, 
+#sidebar:hover #user-links.on-hover-show{
+    -webkit-animation: fadeInFromNone 0.2s ease-in;
+    -moz-animation: fadeInFromNone 0.2s ease-in;
+    -o-animation: fadeInFromNone 0.2s ease-in;
+    animation: fadeInFromNone 0.2s ease-in;
 }
 
 
