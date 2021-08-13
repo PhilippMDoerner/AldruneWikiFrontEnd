@@ -31,7 +31,7 @@ export class AppComponent implements OnInit{
   ngOnInit(){
     this.serviceWorkerUpdate.available.subscribe(
       event => {
-        this.warnings.showAlert("There's an update to this webpage! Reloading cache...");
+        this.warnings.showAlert("There's an update to this webpage, that you've just downloaded in the background! We now need to reload the page to move it into cache...");
         location.reload();
       }
     );
