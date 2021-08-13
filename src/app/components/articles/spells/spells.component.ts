@@ -31,7 +31,8 @@ export class SpellsComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.spellService.list().pipe(first()).subscribe(
       (spells: SpellObject[]) => {
-        this.spells = spells;
+        this.spells = spells.sort((spell1, spell2) => spell1.name < spell2.name ? -1 : 1);
+        
         this.panelIsOpenArray = [];
         for (let spell of spells){
           this.panelIsOpenArray.push(true);

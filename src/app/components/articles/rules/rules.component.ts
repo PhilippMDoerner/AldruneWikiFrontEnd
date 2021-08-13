@@ -29,7 +29,7 @@ export class RulesComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.ruleService.list().pipe(first()).subscribe( 
       (rules: RuleObject[]) => {
-        this.rules = rules;
+        this.rules = rules.sort((rule1, rule2) => rule1.name < rule2.name ? -1 : 1);
 
         this.panelIsOpenArray = [];
         for (let rule of rules){
