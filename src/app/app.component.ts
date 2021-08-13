@@ -18,7 +18,7 @@ export class AppComponent implements OnInit{
   firstTouchData: TouchEvent;
   lastTouchData: TouchEvent;
 
-  showSafariWarning: boolean; //Necessary to display warning
+  showSafariWarning: boolean; //Necessary to display warning about how this site is broken on iOS Safari
 
   @ViewChild('sidebar') sidebarRef: ElementRef;
 
@@ -36,12 +36,43 @@ export class AppComponent implements OnInit{
       }
     );
 
-    this.showSafariWarning = this.isUserWithSafariBrowser();
+    this.showSafariWarning = this.isUserWithSafariBrowser() || this.isIOSUser();
   }
 
   isUserWithSafariBrowser(): boolean{
     const userAgent = navigator.userAgent.toLowerCase();
-    return userAgent.indexOf("safari") > -1;
+    const isPotentiallySafari = userAgent.indexOf("safari") > -1;
+    const isChrome = userAgent.indexOf("chrome") > -1;
+    const isFirefox = userAgent.indexOf("firefox") > -1;
+    const isOpera = userAgent.indexOf("opera") > -1;
+    return isPotentiallySafari && !isChrome && !isFirefox && !isOpera;
+  }
+
+  isIOSUser(): boolean{
+    return this.getOS() === "iOS";
+  }
+
+  getOS(): string {
+    var userAgent = window.navigator.userAgent,
+        platform = window.navigator.platform,
+        macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'],
+        windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'],
+        iosPlatforms = ['iPhone', 'iPad', 'iPod'],
+        os = null;
+  
+    if (macosPlatforms.indexOf(platform) !== -1) {
+      os = 'Mac OS';
+    } else if (iosPlatforms.indexOf(platform) !== -1) {
+      os = 'iOS';
+    } else if (windowsPlatforms.indexOf(platform) !== -1) {
+      os = 'Windows';
+    } else if (/Android/.test(userAgent)) {
+      os = 'Android';
+    } else if (!os && /Linux/.test(platform)) {
+      os = 'Linux';
+    }
+  
+    return os;
   }
 
   trackSwipeStart(event: TouchEvent): void{
