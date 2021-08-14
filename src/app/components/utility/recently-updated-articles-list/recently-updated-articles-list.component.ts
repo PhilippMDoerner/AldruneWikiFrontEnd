@@ -4,6 +4,7 @@ import { Constants } from 'src/app/app.constants';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-recently-updated-articles-list',
@@ -14,14 +15,17 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
   articles: OverviewItemObject[];
 
   constants: Constants = Constants;
+  pageNumber: number = 0;
+  isLoadingNextPage: boolean = false;
 
   constructor(
     private recentUpdatesServices: RecentlyUpdatedService,
-    private routingService: RoutingService
+    private routingService: RoutingService,
+    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
-    this.recentUpdatesServices.getRecentlyUpdatedArticle().pipe(first()).subscribe(
+    this.recentUpdatesServices.getRecentlyUpdatedArticle(this.pageNumber).pipe(first()).subscribe(
       (articles: OverviewItemObject[]) => this.articles = articles,
       error => this.routingService.routeToErrorPage(error)
     );
@@ -70,7 +74,18 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
   }
 
   loadNextPage(): void{ //TODO: Let the pagination load more here
-    //console.log("Yo man, add more recently updated stuff!");  
+    if(this.isLoadingNextPage) return;
+
+    this.pageNumber += 1;
+    this.isLoadingNextPage = true;
+
+    this.recentUpdatesServices.getRecentlyUpdatedArticle(this.pageNumber).pipe(first()).subscribe(
+      (articles: OverviewItemObject[]) => {
+        this.articles = this.articles.concat(articles);
+        this.isLoadingNextPage = false;
+      },
+      error => this.warnings.showWarning(error)
+    );
   }
 
 }
