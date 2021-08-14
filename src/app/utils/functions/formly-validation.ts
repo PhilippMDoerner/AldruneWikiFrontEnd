@@ -99,11 +99,14 @@ function passwordMatchValidation(control: AbstractControl): ValidationErrors {
   }
 export const fieldMatchValidator = {name: "fieldMatch", validation: passwordMatchValidation};
 
-
+/**
+ * If you wish to manipulate this, you also have to manipulate in diaryentry-article-update "hasDiaryentryForAuthor"
+ */
 async function isSessionAuthorPairUniqueValidator(control: any){
     const { session: selectedSessionId, author: selectedAuthorId } = control.value;
+    const sessionFieldConfig = control.controls.session._fields[0];
 
-    const selectFieldOptionsObservable: Observable<any> = control.controls.session._fields[0].templateOptions.options;
+    const selectFieldOptionsObservable: Observable<any> = sessionFieldConfig.templateOptions.options;
     const selectFieldOptions: any = await selectFieldOptionsObservable.toPromise();
     const selectedOption = selectFieldOptions.find(option => option.pk === selectedSessionId)
 
@@ -111,10 +114,13 @@ async function isSessionAuthorPairUniqueValidator(control: any){
 
     const authorIdsWithDiaryentriesOnSession: number[] = selectedOption.author_ids;
     const selectedAuthorAlreadyHasDiaryentryOnSession: boolean = authorIdsWithDiaryentriesOnSession.includes(selectedAuthorId);
-    if (selectedAuthorAlreadyHasDiaryentryOnSession){
-        return { "isInvalidSessionAuthorPair": true};
+    const isInitialValue: boolean = control.pristine; //True if this is an initial value, never changed by the user
+
+    console.log(`selectedAuthorAlreadyHasDiaryentryOnSession: ${selectedAuthorAlreadyHasDiaryentryOnSession}\n isInitialValue: ${isInitialValue}`)
+    if (selectedAuthorAlreadyHasDiaryentryOnSession && !isInitialValue){
+        return null//{ "isInvalidSessionAuthorPair": true};
     }
-    
+
     return null;
 }
 export const sessionAuthorUniqueValidator = {name: "sessionAuthorPairUnique", validation: isSessionAuthorPairUniqueValidator}

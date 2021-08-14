@@ -105,8 +105,17 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
   }
 
   /**
-   * Callback for the session select field. Enables/Disables a select option based on if the
-   * currently selected author already has a diaryentry for this session or not.
+   * @description Checks whether a given select option should be disabled for selecting or not. Disables select options
+   * dependant on the previously selected author. If the database already contains a diaryentry for that author for that session,
+   * the session option is disabled. 
+   * Allows an option if it is an initial value, aka the value from the database AND when the session value hasn't been changed yet.
+   * This runs once for every author-session combination
+   * 
+   * BUG: If you edit Diaryentry for session 48, select a different session, you can no longer "re-select" session 48. 
+   * This is something that needs to be fixed in the way you check with "hasDiaryentryForAuthor"
+   * 
+   * If you wish to manipulate this validation, you also have to manipulate in diaryentry-article-update "hasDiaryentryForAuthor".
+   * This function only handles enabling/disabling select options. Enabling/Disabling the submit button is done via validator
    */
   hasDiaryentryForAuthor(
     selectOption: OverviewItemObject, 
@@ -114,10 +123,16 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
     model: any,
     formControl: AbstractControl
   ): boolean{
-
     const diaryentryAuthorPksForSession: number[] = selectOption.author_ids;
     const currentlySelectedAuthor: number = model.author;
-    return diaryentryAuthorPksForSession.includes(currentlySelectedAuthor);
+
+    const valueHasntChanged = formControl.pristine;
+    const selectOptionIsCurrentlySelectedValue: boolean = model.session === selectOption.pk;
+    const isInitialValue: boolean = valueHasntChanged && selectOptionIsCurrentlySelectedValue;
+
+    const userSelectedInvalidAuthorSessionCombo: boolean = !isInitialValue && diaryentryAuthorPksForSession.includes(currentlySelectedAuthor) 
+    
+    return userSelectedInvalidAuthorSessionCombo;
   }
 
   /**
