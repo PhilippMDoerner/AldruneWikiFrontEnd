@@ -16,8 +16,10 @@ export class RecentlyUpdatedService {
   constructor(private http: HttpClient) { }
 
   @TransformArrayObservable(OverviewArticleObject)
-  getRecentlyUpdatedArticle(): Observable<OverviewItem[]>{
-    return this.http.get<OverviewItem[]>(this.recentlyUpdatedUrl)
+  getRecentlyUpdatedArticle(pageNumber: number): Observable<OverviewItem[]>{
+    if(pageNumber == null) pageNumber = 0;
+
+    return this.http.get<OverviewItem[]>(`${this.recentlyUpdatedUrl}/${pageNumber}`);
   }
 
   @TransformArrayObservable(OverviewArticleObject)
