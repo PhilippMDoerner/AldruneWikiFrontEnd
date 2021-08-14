@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
@@ -10,6 +10,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
+import { sessionAlreadyHasAuthor } from 'src/app/utils/functions/formly-validation'
 
 @Component({
   selector: 'app-diaryentry-article-update',
@@ -24,10 +25,6 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
     sessionNumber: null, isMainSession: null, authorName: null
   }};
   creationCancelRoute = {routeName: "diaryentry-overview", params: {}};
-
-  sessionAlreadyHasAuthorWarning: string = `The author you selected already has a diaryentry in the session you selected. You 
-  can't have 2 diaryentries from the same author in the same session. Consider writing 
-  your diaryentry as an encounter instead into the diaryentry at the spot you just considered.`
   
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title", isNameInput: true}),
@@ -52,7 +49,7 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
           optionsType: 'session', 
           disabledExpression: this.hasDiaryentryForAuthor, 
           tooltipMessage: "Sessions may be impossible to select if the selected author already has a diaryentry for that session.",
-          warningMessage: this.sessionAlreadyHasAuthorWarning
+          warningMessage: sessionAlreadyHasAuthor.message
         }),
       ]
     },

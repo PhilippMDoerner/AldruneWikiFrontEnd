@@ -22,7 +22,11 @@ export const faPrefixMessage = { name: 'faPrefix', message: "Icons are stored wi
 export const notIntegerMessage = { name: 'notInteger', message: "Your input is not an integer. This field requires an integer number. No amount of revolution can overcome this." };
 export const hasSpecialCharactersMessage = { name: 'hasSpecialCharacters', message: 'Your input includes one of the following invalid special characters: [ ] { } ? | \\ " % ~ # < > \'. If you need to rebel, please dont against this.' };
 export const fieldsDontMatchMessage = { name: 'fieldMatch', message: 'Password Not Matching'};
-export const sessionAlreadyHasAuthor = { name: 'isInvalidSessionAuthorPair', message: "The author you selected already has a diaryentry in the session you selected. You can't have 2 diaryentries from the same author in the same session."}
+export const sessionAlreadyHasAuthor = { name: 'isInvalidSessionAuthorPair', message: `
+    The author you selected already has a diaryentry in the session you selected. You 
+    can't have 2 diaryentries from the same author in the same session. Consider writing 
+    your diaryentry as an encounter instead into the diaryentry at the spot you just considered.`
+}
 
 // Validation Functions
 function timeValidation(control: FormControl): ValidationErrors{
