@@ -1,0 +1,67 @@
+
+.card{
+    line-height: 1.25;
+    height: 20rem;
+}
+.card-img-top{
+    height: 7rem;
+}
+
+.card-img-top img{
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
+}
+
+.card-body{
+    overflow: auto;
+    padding: 1rem;
+}
+
+/* Necessary because bootstrap link-cards are colored white, even when you use them as an anchor */
+a:hover .card-body{
+    color: var(--link-blue) !important;
+}
+
+.card-title{
+    height: 4rem; /* Must be a multiple of line-height*/
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-subtitle{
+    text-transform: capitalize;
+}
+
+.card .card-text{
+    display:none
+}
+
+.card:hover .card-text{
+    display: block;
+}
+
+.card:hover header,
+.card:hover .card-title,
+.card:hover .card-subtitle{
+    display: none !important;
+}
+
+.mycolpadding{
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+header{
+    text-align: center;
+}
+
+@media(max-width: 576px){
+    .card-img-top{
+        max-height: 5rem;
+    }
+
+    .card-title{
+        height: 6rem;
+    }
+}

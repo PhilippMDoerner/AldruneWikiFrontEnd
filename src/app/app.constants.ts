@@ -194,6 +194,10 @@ export class Constants{
         'no-token': 'You are not logged in. Please enter your credentials',
     }}
 
+    //Number of pixels distance to the bottom needed to trigger loading the next set of entries on paginated pages
+    //This is for endless scrollers on the start page and search results
+    public static get maxDistanceToPageBottomForPaginationLoad(): number { return 400};
+
     //Default Image for Image Gallery
     public static get defaultImageUrl(): string { return `${this.wikiMediaUrl}/resources/dndicon.png`;}
 

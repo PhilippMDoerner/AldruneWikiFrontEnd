@@ -21,16 +21,10 @@ export class Home2Component implements OnInit {
   recentlyUpdatedArticles: OverviewItem[];
 
   constructor(
-    private recentUpdatesServices: RecentlyUpdatedService,
     private routingService: RoutingService,
-    private warnings: WarningsService
   ) { }
 
   ngOnInit(): void {
-    this.recentUpdatesServices.getRecentlyUpdatedArticle().pipe(first()).subscribe(
-      (articles: OverviewItem[]) => this.recentlyUpdatedArticles = articles,
-      error => this.routingService.routeToErrorPage(error)
-    );
   }
 
   sidebarColor(articleType: string): string{
@@ -49,30 +43,6 @@ export class Home2Component implements OnInit {
     if (isInvalidSearchString) return; //TODO: Make this route to some kind of help page instead
 
     this.routingService.routeToPath('search', {searchString: this.searchString});
-  }
-
-  getArticleTypeMetaData(article_type: string){
-    const allMetaData: any = this.constants.articleTypeMetaData;
-    const metaData = allMetaData.filter(
-      metaDataEntry => metaDataEntry.article_types?.includes(article_type)
-    );
-
-    const hasArticleTypeCollision = metaData.length > 1;
-    if (hasArticleTypeCollision) throw `ArticleTypeCollisionException. The article type ${article_type}
-    is being used multiple times. Please fix this`;
-
-    return metaData[0];
-  }
-
-  getArticleName(article: OverviewItem){
-    if(this.isDiaryEntry(article)) return `#${article.session_details.session_number} - ${article.name}`;
-    if(article.article_type === "location") return article.name;
-    
-    return article.name_full;
-  }
-
-  isDiaryEntry(article: OverviewItem){
-    return article.article_type === "diaryentry";
   }
 
   /** Necessary to still allow selecting the search field on this page. Else the "preventDefault" bit on the touch events blocks that */

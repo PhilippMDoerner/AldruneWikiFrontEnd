@@ -92,6 +92,7 @@ import { FormlySelectDisableComponent } from './components/utility/formly-select
 import { ErrorComponent } from './components/error/error.component';
 import { Home2Component } from './components/home2/home2.component';
 import { SidebarComponent } from './components/utility/sidebar/sidebar.component';
+import { RecentlyUpdatedArticlesListComponent } from './components/utility/recently-updated-articles-list/recently-updated-articles-list.component';
 
 @NgModule({
   declarations: [
@@ -171,6 +172,7 @@ import { SidebarComponent } from './components/utility/sidebar/sidebar.component
     ErrorComponent,
     Home2Component,
     SidebarComponent,
+    RecentlyUpdatedArticlesListComponent,
   ],
   imports: [
     BrowserModule,

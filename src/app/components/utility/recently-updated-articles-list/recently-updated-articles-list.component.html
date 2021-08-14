@@ -1,0 +1,44 @@
+<div class="container" id="news">
+    <!-- List Heading -->
+    <h3 class="row justify-content-center align-items-center">
+        <span class="">Recent Updates</span>
+        <i class="ml-3 spinner-border" *ngIf="!articles"></i>
+    </h3>
+
+    <div class="row">
+        <div class="mycolpadding col-6 col-md-4 col-lg-3 col-xl-2 mb-4" *ngFor="let article of articles">
+            <a 
+            routerLink="{{ article.getAbsoluteRouterUrl() }}" 
+            class="card"
+            [title]="article.article_type | titlecase"
+            >
+                <!-- Heading -->
+                <header class="mt-2 card-img-top d-flex align-items-center justify-content-center">
+                    <img *ngIf="article.image_url else defaultIcon"  src="{{constants.wikiUrl}}/{{ article.image_url }}" alt="article image" class="">
+                    <ng-template #defaultIcon>
+                        <i class="fa-5x {{ getArticleTypeMetaData(article.article_type).iconClass }}"></i>
+                    </ng-template>    
+                </header>
+
+                <!-- Body -->
+                <div class="card-body">
+                    <div class="card-title">
+                        <strong> {{ getArticleName(article)}} </strong>
+                    </div>
+
+                    <div class="card-subtitle mb-2"> 
+                        {{ article.update_date | date }} 
+                        <div class="text-muted"> 
+                            <span *ngIf="isDiaryEntry(article)"> {{article.author_details?.name}}'s </span>
+                            {{ article.article_type}}
+                        </div>
+                    </div>
+                    
+                    <div class="card-text">
+                        {{article.description}}
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
