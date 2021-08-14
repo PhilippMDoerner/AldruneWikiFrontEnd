@@ -38,7 +38,8 @@ export class AppComponent implements OnInit{
 
     this.showSafariWarning = this.isUserWithSafariBrowser() || this.isIOSUser();
   }
-
+  
+  // CHECK AGAINST SAFARI AND IOS
   isUserWithSafariBrowser(): boolean{
     const userAgent = navigator.userAgent.toLowerCase();
     const isPotentiallySafari = userAgent.indexOf("safari") > -1;
@@ -75,6 +76,9 @@ export class AppComponent implements OnInit{
     return os;
   }
 
+
+
+  // SWIPE GESTURES
   trackSwipeStart(event: TouchEvent): void{
     this.firstTouchData = event;
   }
