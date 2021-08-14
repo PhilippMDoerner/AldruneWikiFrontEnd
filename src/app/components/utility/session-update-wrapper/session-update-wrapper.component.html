@@ -1,5 +1,5 @@
 <!-- Heading --> 
-<label for="datepicker">
+<label *ngIf="to.additionalProperties.showWrapperLabel">
     <strong>
         {{to.label}}
         <span *ngIf="to.required">*</span>
@@ -11,16 +11,13 @@
     <div class="flex-1">
         <ng-container #fieldComponent></ng-container>
     </div>
-    <!-- Create Modal -->
-    <div class="ml-2">
+
+    <div class="ml-2 align-self-end d-flex">
+        <!-- Create Modal -->
         <app-session-update-modal [session_pk_subject]="null" [icon]="'fa-plus'"></app-session-update-modal>
-    </div>
-    <!-- Update Modal -->
-    <div class="ml-2">
+        <!-- Update Modal -->
         <app-session-update-modal [session_pk_subject]="formControl.valueChanges"></app-session-update-modal>
-    </div>
-    <!-- Delete Modal -->
-    <div class="ml-2">
+        <!-- Delete Modal -->
         <app-session-delete-modal [session_pk_subject]="formControl.valueChanges"></app-session-delete-modal>
     </div>
 </div>

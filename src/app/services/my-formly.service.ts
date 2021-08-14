@@ -51,6 +51,7 @@ export class MyFormlyService {
 
     const validatorList = (config.validators) ? config.validators : [];
     if (config.required === true ) validatorList.push('required');
+    if (config.showWrapperLabel == null) config.showWrapperLabel = true;
 
     return {
       key: config.key,
@@ -66,11 +67,14 @@ export class MyFormlyService {
         required: (typeof config.required === "boolean") ? config.required : true,
         disabledExpression: config.disabledExpression,
         tooltipMessage: config.tooltipMessage,
-        warningMessage: config.warningMessage
+        warningMessage: config.warningMessage,
+        additionalProperties: {
+          showWrapperLabel: config.showWrapperLabel
+        }
       },
       validators: {
         validation: validatorList
-      }
+      },
     };
   }
   customSelect(config: FormlyCustomSelectConfig): FormlyFieldConfig{

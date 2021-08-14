@@ -49,7 +49,9 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
           optionsType: 'session', 
           disabledExpression: this.hasDiaryentryForAuthor, 
           tooltipMessage: "Sessions may be impossible to select if the selected author already has a diaryentry for that session.",
-          warningMessage: sessionAlreadyHasAuthor.message
+          warningMessage: sessionAlreadyHasAuthor.message,
+          wrappers: ["session-update-wrapper"],
+          showWrapperLabel: false
         }),
       ]
     },

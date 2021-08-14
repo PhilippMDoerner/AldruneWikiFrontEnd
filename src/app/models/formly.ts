@@ -15,6 +15,7 @@ export interface FormlyInterface{
     fieldGroupClassName?: string,
     validators?: string[],
     disabled?: boolean,
+    showWrapperLabel?: boolean,
 }
 
 export interface FormlyOverviewSelectConfig extends FormlyInterface{
