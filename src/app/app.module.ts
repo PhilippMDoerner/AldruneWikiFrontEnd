@@ -43,7 +43,6 @@ import { QuestArticleComponent } from './components/articles/quest-article/quest
 import { QuestArticleUpdateComponent } from './components/articles/quest-article-update/quest-article-update.component';
 import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
 import { SpellsComponent } from './components/articles/spells/spells.component';
-import { RecentlyUpdatedArticleComponent } from './components/articles/recently-updated-article/recently-updated-article.component';
 import { DeleteToggleComponent } from './components/utility/delete-toggle/delete-toggle.component';
 import { EditToggleComponent } from './components/utility/edit-toggle/edit-toggle.component';
 import { ColoredSidebarLegendComponent } from './components/utility/colored-sidebar-legend/colored-sidebar-legend.component';
@@ -127,7 +126,6 @@ import { RecentlyUpdatedArticlesListComponent } from './components/utility/recen
     QuestArticleUpdateComponent,
     QuestOverviewComponent,
     SpellsComponent,
-    RecentlyUpdatedArticleComponent,
     DeleteToggleComponent,
     EditToggleComponent,
     ColoredSidebarLegendComponent,

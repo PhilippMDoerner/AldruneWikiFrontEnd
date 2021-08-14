@@ -20,7 +20,6 @@ import { QuestArticleComponent } from './components/articles/quest-article/quest
 import { QuestArticleUpdateComponent } from './components/articles/quest-article-update/quest-article-update.component';
 import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
 import { SpellsComponent } from './components/articles/spells/spells.component';
-import { RecentlyUpdatedArticleComponent } from './components/articles/recently-updated-article/recently-updated-article.component';
 import { SearchComponent } from './components/articles/search/search.component';
 import { SessionAudioComponent } from './components/articles/session-audio/session-audio.component';
 import { SessionAudioOverviewComponent } from './components/articles/session-audio-overview/session-audio-overview.component';
@@ -457,12 +456,6 @@ export const routes: Routes = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:name`,
 		component: SpellsComponent,
 		data:{ name: "spell", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/recent-updates`,
-		component: RecentlyUpdatedArticleComponent,
-		data:{ name: "recent-updates", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
