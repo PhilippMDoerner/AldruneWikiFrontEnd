@@ -15,8 +15,6 @@ import { GenericObjectService } from './generic-object.service';
 })
 export class UserService extends GenericObjectService{
   baseUrl: string = `${Constants.wikiApiUrl}/user`;
-  jwtTokenUrl: string = Constants.wikiTokenUrl;
-  refreshTokenUrl: string = Constants.wikiTokenRefreshUrl;
 
   constructor(
     http : HttpClient, 
