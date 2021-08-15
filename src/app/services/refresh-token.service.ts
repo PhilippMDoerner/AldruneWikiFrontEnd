@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, first, map, tap } from 'rxjs/operators';
+import { filter, first, map, shareReplay, tap } from 'rxjs/operators';
 import { EncodedJWTToken } from '../models/jwttoken';
 import { TokenService } from './token.service';
 
@@ -13,12 +13,14 @@ export class RefreshTokenService {
 
   constructor(private tokenService: TokenService) { }
 
+  /** 
+   * Sends out HTTP request for new Access Token. Returns Observable with only that AccessToken.
+   * As a side-effect (in tap) it also sets updates the value for refreshAcessTokenSubject for 
+   * other waiting requests 
+   */
   public refreshAccessToken(): Observable<string>{
-    /** 
-     * Sends out HTTP request for new Access Token. Returns Observable with only that AccessToken.
-     * As a side-effect (in tap) it also sets updates the value for refreshAcessTokenSubject for 
-     * other waiting requests 
-     * */
+    this.startWaitForRefreshState();
+
     return this.tokenService.refreshToken().pipe(
       tap((jwtToken: EncodedJWTToken) => {
         this.tokenService.setRefreshToken(jwtToken.refresh);
@@ -28,10 +30,19 @@ export class RefreshTokenService {
       }),
       tap((accessToken: string) => {
         this.tokenService.setAccessToken(accessToken);
-        this.tokenRefreshInProgress = false;
-        this.refreshAccessTokenSubject.next(accessToken);
-      })
+        this.endWaitForRefreshState(accessToken);
+      }),
     )
+  }
+
+  private startWaitForRefreshState(): void{
+    this.tokenRefreshInProgress = true;
+    this.refreshAccessTokenSubject.next(null);
+  }
+
+  private endWaitForRefreshState(newAccessToken: string): void{
+    this.tokenRefreshInProgress = false;
+    this.refreshAccessTokenSubject.next(newAccessToken);
   }
 
   /** 
