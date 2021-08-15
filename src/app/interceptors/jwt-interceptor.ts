@@ -52,6 +52,7 @@ export class JWTInterceptor implements HttpInterceptor{
             catchError(error =>{
                 if (error.status === 401){
                     console.log("Error while refreshing access token");
+                    console.log(error)
                     this.routingService.routeToPath('login-state', {state: 'token-expired'});
                     return EMPTY;
                 } 
@@ -71,11 +72,13 @@ export class JWTInterceptor implements HttpInterceptor{
             catchError(error =>{
                 if(error.status===401){
                     console.log("Error while waiting for access token refresh");
+                    console.log(error);
                     this.routingService.routeToPath('login-state', {state: '???'});
                     return EMPTY;
                 }
 
                 console.log("Error during token refresh. Uncertain what error, but status "+error.status);
+                console.log(error)
                 this.routingService.routeToErrorPage(error.status);
                 return EMPTY;
             })
