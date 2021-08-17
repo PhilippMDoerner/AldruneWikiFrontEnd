@@ -30,14 +30,6 @@
                     </a>
                 </li>
 
-                <!-- Logout -->
-                <li>
-                    <a class="on-hover-show pointer" (click)="logout()"> 
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span> Logout</span> 
-                    </a>
-                </li>
-
                 <!-- Admin Section -->
                 <li *ngIf="showAdminSection">
                     <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('admin') }}" >
@@ -51,6 +43,14 @@
                     <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('config-tables') }}">
                         <i class="fa fa-table"></i>
                         <span> Config Tables </span>
+                    </a>
+                </li>
+
+                <!-- Logout -->
+                <li>
+                    <a class="on-hover-show pointer" (click)="logout()"> 
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span> Logout</span> 
                     </a>
                 </li>
 
