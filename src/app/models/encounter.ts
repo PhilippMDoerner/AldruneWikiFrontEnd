@@ -24,8 +24,8 @@ export interface Encounter extends ArticleObject{
  * of the encounters table would block you. If you didn't do this, you'd need to first update one encounter 
  * to have an order_index of null, so that the second encounter can have the first encounter's order_index. 
  */
-//TODO: Remove DiaryEntryEncounterConnectionObject from the database. Instead, Encounters should have FKs and an "order_index" field
-//of their own
+
+
 export class EncounterObject implements Encounter {
     orderIndexIncrement: number = 10;
 
