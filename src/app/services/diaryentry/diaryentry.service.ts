@@ -31,7 +31,7 @@ export class DiaryentryService extends GenericObjectService {
 
   @TransformObservable(DiaryEntryObject)
   readByParam(params : {isMainSession: number | string, sessionNumber: number | string, authorName: string}): Observable<DiaryEntry>{
-    const url = `${this.baseUrl}/${params.sessionNumber}/${params.isMainSession}/${params.authorName}`;
+    const url = `${this.baseUrl}/${params.sessionNumber}/${params.isMainSession}/${params.authorName}/`;
     return this.http.get<DiaryEntry>(url);
   }
 
