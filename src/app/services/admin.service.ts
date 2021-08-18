@@ -21,6 +21,6 @@ export class AdminService {
   }
 
   getStatistics(): Observable<any>{
-    return this.http.get(`${this.adminUrl}/statistics/`);
+    return this.http.get(`${this.adminUrl}/statistics`);
   }
 }
