@@ -29,6 +29,8 @@ router-outlet + ::ng-deep * {
         }
 }
 
+/*Counters HammerJS disabling of these CSS events to allow useres to select text (user-select) and to scroll (touch-action)*/
 .base-page{
         touch-action: pan-y !important;
+        user-select: unset !important;
 }
