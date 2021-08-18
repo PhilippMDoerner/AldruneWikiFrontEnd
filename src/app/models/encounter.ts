@@ -10,8 +10,14 @@ export interface Encounter extends ArticleObject{
     location_details?: {name: string, pk: number, name_full: string, parent_location_name: string},
     title: string,
     diaryentry: number,
+    diaryentry_details?: {
+        author_name: string,
+        is_main_session: [0,1],
+        session_number: number
+    },
     order_index: number;
 }
+
 
 /**
  * SPECIAL REMARK: The value of order_index should always be divisible by 10. If it isn't, that means the
@@ -37,6 +43,11 @@ export class EncounterObject implements Encounter {
     location_details?: {name: string, pk: number, name_full: string, parent_location_name: string};
     title: string;
     diaryentry: number;
+    diaryentry_details?: {
+        author_name: string,
+        is_main_session: [0,1],
+        session_number: number,
+    };
     order_index: number;
 
 
@@ -79,8 +90,10 @@ export class EncounterObject implements Encounter {
 
     //TODO: Get rid of hard-coded URL patterns in objects
     getAbsoluteRouterUrl(): string{
-        if (!this.pk) throw "Can't generate URL for Encounter object without pk";
-        return `${Constants.wikiUrlFrontendPrefix}/encounter/${this.pk}`;
+        if (!this.diaryentry_details.session_number || !this.diaryentry_details.author_name || !this.diaryentry_details.is_main_session) {
+            throw `Can't generate URL for Encounter object without all necessary information! I only have this: ${this.diaryentry_details}`;
+        }
+        return `${Constants.wikiUrlFrontendPrefix}/diaryentry/${this.diaryentry_details.session_number}/${this.diaryentry_details.is_main_session}/${this.diaryentry_details.author_name}/${this.title}`;
     }
 
     getAbsoluteLocationRouterUrl(): string{
