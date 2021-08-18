@@ -4,7 +4,7 @@
 </div>
 
 <div class="encounter-list mb-5 mt-3" *ngIf="isInDisplayState(); else EncounterForm">
-    <ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)">
+    <ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)" [animation]="true">
         <ngb-panel id="static-{{i}}" *ngFor="let encounter of encounters; let i = index">
 
             <!-- Panel Title -->
