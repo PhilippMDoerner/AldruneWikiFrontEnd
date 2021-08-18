@@ -53,7 +53,6 @@ import { SessionAudioComponent } from './components/articles/session-audio/sessi
 import { SessionAudioOverviewComponent } from './components/articles/session-audio-overview/session-audio-overview.component';
 import { SessionAudioUpdateComponent } from './components/articles/session-audio-update/session-audio-update.component';
 import { MarkerComponent } from './components/articles/marker/marker.component';
-import { EncounterComponent } from './components/articles/encounter/encounter.component';
 import { MarkerUpdateComponent } from './components/articles/marker-update/marker-update.component';
 import { MapComponent } from './components/articles/map/map.component';
 import { MapUpdateComponent } from './components/articles/map-update/map-update.component';
@@ -136,7 +135,6 @@ import { RecentlyUpdatedArticlesListComponent } from './components/utility/recen
     SessionAudioOverviewComponent,
     SessionAudioUpdateComponent,
     MarkerComponent,
-    EncounterComponent,
     MarkerUpdateComponent,
     MapComponent,
     MapUpdateComponent,
