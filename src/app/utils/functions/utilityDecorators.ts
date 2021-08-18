@@ -1,3 +1,5 @@
+import { Constants } from "src/app/app.constants";
+
 /**
  * Decorator to apply try-catch. Automatically display a notification if it does not work out. 
  * Currently only used in diary-entry-encounter-list 
@@ -60,3 +62,13 @@ function readonly(target, name, descriptor) {
     return descriptor;
   }
   
+export function onlyOnMobile(target: any, propertyKey: string, descriptor: PropertyDescriptor){
+  const originalMethod = descriptor.value;
+  descriptor.value = function(){
+      if (!Constants.isSmallScreen) return;
+
+      return originalMethod.apply(this, arguments);
+  }
+
+  return descriptor;
+}
