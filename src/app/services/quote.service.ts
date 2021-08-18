@@ -22,6 +22,6 @@ export class QuoteService extends GenericService{
   }
 
   getAllCharacterQuotes(character_name: string): Observable<Quote[]>{
-    return this.http.get<Quote[]>(`${Constants.wikiApiUrl}/allquotes/${character_name}/`);
+    return this.http.get<Quote[]>(`${Constants.wikiApiUrl}/allquotes/${character_name}`);
   }
 }
