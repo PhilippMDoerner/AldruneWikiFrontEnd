@@ -18,7 +18,7 @@ export class QuoteService extends GenericService{
   }
 
   getRandomQuote(character_name: string): Observable<Quote>{
-    return this.http.get<Quote>(`${Constants.wikiApiUrl}/randomquote/${character_name}/`);
+    return this.http.get<Quote>(`${Constants.wikiApiUrl}/randomquote/${character_name}`);
   }
 
   getAllCharacterQuotes(character_name: string): Observable<Quote[]>{
