@@ -14,14 +14,14 @@ export class QuoteService extends GenericService{
   constructor(http: HttpClient) { super(http)}
 
   getQuotes(character_name: string): Observable<Quote[]>{
-    return this.http.get<Quote[]>(`${this.baseUrl}/${character_name}`);
+    return this.http.get<Quote[]>(`${this.baseUrl}/${character_name}/`);
   }
 
   getRandomQuote(character_name: string): Observable<Quote>{
-    return this.http.get<Quote>(`${Constants.wikiApiUrl}/randomquote/${character_name}`);
+    return this.http.get<Quote>(`${Constants.wikiApiUrl}/randomquote/${character_name}/`);
   }
 
   getAllCharacterQuotes(character_name: string): Observable<Quote[]>{
-    return this.http.get<Quote[]>(`${Constants.wikiApiUrl}/allquotes/${character_name}`);
+    return this.http.get<Quote[]>(`${Constants.wikiApiUrl}/allquotes/${character_name}/`);
   }
 }
