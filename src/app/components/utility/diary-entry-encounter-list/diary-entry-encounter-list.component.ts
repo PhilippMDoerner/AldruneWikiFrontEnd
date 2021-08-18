@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
@@ -12,9 +12,10 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   templateUrl: './diary-entry-encounter-list.component.html',
   styleUrls: ['./diary-entry-encounter-list.component.scss']
 })
-export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionMixin implements OnInit{
+export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionMixin implements OnInit, AfterViewInit{
 
   @Input() diaryEntry: DiaryEntryObject;
+  @ViewChildren("encounters") encounterElements: QueryList<any>;
   encounters: EncounterObject[] = [];
   isEncounterUpdating: boolean[] = [];
   isUpdating: boolean = false;
@@ -29,7 +30,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     private encounterService: EncounterServiceService,
   ) { super() }
 
-  ngOnInit(){
+  ngOnInit(): void{
     const hasDisplayModeParam = !(this.route.snapshot.params['displayMode'] == null);
     this.diaryEntryView = (hasDisplayModeParam) ? this.route.snapshot.params['displayMode'] === "diaryEntry" : true;
 
@@ -40,6 +41,23 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     }
 
     this.sortEncounters();
+  }
+
+  ngAfterViewInit(): void{
+    const urlEncounterTitle: string = this.route.snapshot.params["encounterTitle"];
+    this.scrollToEncounterInQueryList(this.encounterElements, urlEncounterTitle);
+  }
+
+  scrollToEncounterInQueryList(queryList: QueryList<any>, encounterTitle: string){
+    if (encounterTitle == null) return;
+    encounterTitle = encounterTitle.toLowerCase();
+
+    const targetEncounter = queryList.find( encounter => encounter.cardData.title.toLowerCase() == encounterTitle);
+    const hasTargetEncounter = targetEncounter != null;
+
+    if(hasTargetEncounter){
+      targetEncounter.card.nativeElement.scrollIntoView();
+    }
   }
 
   toggleDiaryEntryView(){

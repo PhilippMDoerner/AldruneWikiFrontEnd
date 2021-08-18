@@ -191,6 +191,12 @@ export const routes: Routes = [
 		canActivate: [PermissionGuardService]
 	},
 	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:sessionNumber/:isMainSession/:authorName/:encounterTitle`,
+		component: DiaryentryArticleComponent,
+		data:{ name: "diaryentry-encounter", requiredPermissions: [Constants.apiViewPermission]},
+		canActivate: [PermissionGuardService]
+	},
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:sessionNumber/:isMainSession/:authorName/update`,
 		component: DiaryentryArticleUpdateComponent,
 		data:{ name: "diaryentry-update", requiredPermissions: [Constants.apiUpdatePermission]},

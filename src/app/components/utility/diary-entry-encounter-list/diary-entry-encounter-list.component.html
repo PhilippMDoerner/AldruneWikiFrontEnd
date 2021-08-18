@@ -27,6 +27,7 @@
         <div *ngFor="let encounter of encounters; let encounterIndex = index" class="w-100">
             <!-- Encounters -->
             <app-diary-entry-encounter
+            #encounters
             *ngIf="!isEncounterUpdating[encounterIndex] else waiting;"
             class="col-12 px-0"
             [cardData]="encounter"
