@@ -15,7 +15,7 @@ export abstract class GenericObjectService{
   ) {  }
 
   list(): Observable<any[]>{
-    const dataObs: Observable<any[]> = this.http.get<any[]>(this.baseUrl);
+    const dataObs: Observable<any[]> = this.http.get<any[]>(`${this.baseUrl}/`);
     return transformObservableArrayContent(dataObs, this.objectClass);
   }
 
@@ -30,7 +30,7 @@ export abstract class GenericObjectService{
   }
 
   read(pk: number): Observable<any>{
-    const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/pk/${pk}`);
+    const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/pk/${pk}/`);
     return transformObservableContent(dataObs, this.objectClass);
   }
 
@@ -51,12 +51,12 @@ export abstract class GenericObjectService{
       GenericObjectService and implement the function yourself`;
     } 
 
-    const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/${params}`);
+    const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/${params}/`);
     return transformObservableContent(dataObs, this.objectClass);
   }
 
   delete(pk: number): Observable<any>{
-    return this.http.delete(`${this.baseUrl}/pk/${pk}`);
+    return this.http.delete(`${this.baseUrl}/pk/${pk}/`);
   }
 
   patch(pk: number, data: any): Observable<any>{

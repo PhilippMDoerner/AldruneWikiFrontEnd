@@ -22,11 +22,11 @@ export abstract class GenericService {
   }
 
   update(pk: number, data: any): Observable<any>{
-    return this.http.put(`${this.baseUrl}/pk/${pk}`, data);
+    return this.http.put(`${this.baseUrl}/pk/${pk}/`, data);
   }
 
   read(pk: number): Observable<any>{
-    return this.http.get(`${this.baseUrl}/pk/${pk}`);
+    return this.http.get(`${this.baseUrl}/pk/${pk}/`);
   }
 
   /**
@@ -45,11 +45,11 @@ export abstract class GenericService {
       GenericService and implement the function yourself`;
     }
 
-    return this.http.get(`${this.baseUrl}/${params}`);
+    return this.http.get(`${this.baseUrl}/${params}/`);
   }
 
   delete(pk: number): Observable<any>{
-    return this.http.delete(`${this.baseUrl}/pk/${pk}`);
+    return this.http.delete(`${this.baseUrl}/pk/${pk}/`);
   }
 
   patch(pk: number, data: any): Observable<any>{
