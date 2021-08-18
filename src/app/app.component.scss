@@ -28,3 +28,7 @@ router-outlet + ::ng-deep * {
              display: block;   
         }
 }
+
+.base-page{
+        touch-action: pan-y !important;
+}

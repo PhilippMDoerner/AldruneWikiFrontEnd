@@ -13,10 +13,10 @@
 </div>
 
 <div 
-(touchstart)="trackSwipeStart($event)"
-(touchmove)="trackSwipeEnd($event)"
-(touchend)="checkForSwipeGesture($event)"
-class="d-flex"
+class="d-flex base-page"
+(swipeleft)="onSwipeLeft($event)"
+(swiperight)="onSwipeRight($event)"
+(tap)="onTap($event)"
 >
     <div class="sidebar-wrapper" [ngClass]="{'swiped-right': showSidebarSubject.getValue(), 'swiped-left': !showSidebarSubject.getValue()}">
         <app-sidebar

@@ -4,6 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { Constants } from './app.constants';
 import { RoutingService } from './services/routing.service';
 import { WarningsService } from './services/warnings.service';
+import { onlyOnMobile } from './utils/functions/utilityDecorators';
 
 @Component({
   selector: 'app-root',
@@ -77,92 +78,31 @@ export class AppComponent implements OnInit{
   }
 
 
-
-  // SWIPE GESTURES
-  trackSwipeStart(event: TouchEvent): void{
-    this.firstTouchData = event;
+  @onlyOnMobile
+  onSwipeLeft(event: any): void{
+    console.log("On swipe left");
+    console.log(event);
+    this.showSidebarSubject.next(false);
   }
 
-  trackSwipeEnd(event: TouchEvent): void{
-    this.lastTouchData = event;
+  @onlyOnMobile
+  onSwipeRight(event: any): void{
+    console.log("On swipe right");
+    console.log(event);
+    this.showSidebarSubject.next(true);
   }
 
-  /**
-   * @description Only relevant for touch devices. 
-   * When the user touches the screen und untouches it, this function checks based on the movement if the sidebar
-   * should be open or closed. The sidebar should be open, if that was a swipe to the right, the sidebar shall be shown.
-   * If that was a swipe left, the sidebar shall be closed.
-   * If that was a tap on a menu-container in the sidebar, do nothing.
-   * If that was a tap on anything else on the screen, close the sidebar. 
-   * This function solely performs a side effect on the "showSidebarSubject"
-   * @param event: A TouchEvent
-   */
-  checkForSwipeGesture(event: TouchEvent): void{
-    const firstTouchData = this.extractTouchData(this.firstTouchData);
-    const secondTouchData = this.extractTouchData(this.lastTouchData);
+  @onlyOnMobile
+  onTap(event: any){
+    const sidebarIsVisible = this.showSidebarSubject.value === true;
 
-    if (firstTouchData == null || secondTouchData == null){
-      const originalClickTarget: any = this.firstTouchData.target; //Necessary because in Typescript event.target is not HTMLElement
+    const clickTarget: HTMLElement = event.target;
+    //const isClickOnSidebar = clickTarget.closest("#sidebar") != null;
+    const isClickOnMenuContainer = clickTarget.closest(".container-title") != null;
 
-      /**Click on sidebar somehow aren't registered. This fixes the problem, while keeping tap behaviour normal on the rest of the site */
-      const isClickOnSidebar = originalClickTarget.closest("#sidebar") != null;
-      const isClickOnMenuContainer = originalClickTarget.closest(".container-title") != null;
-
-      if(isClickOnSidebar && !isClickOnMenuContainer) originalClickTarget.click();
-
-      /**Clicks on sidebar menu-containers shall not close the sidebar! They are identified by having the .container-title class */
-      if(!isClickOnMenuContainer) this.showSidebarSubject.next(false);
-
-      return;
-    }
-
-    const gestureType = this.getSwipe(firstTouchData, secondTouchData);
-
-    const isSwipeRight = gestureType === "right";
-    const isSwipeLeft = gestureType === "left";
-    const isTap = gestureType === "tap";
-    const isSidebarOpen: boolean = this.showSidebarSubject.getValue();
-
-    if(!isSidebarOpen && isSwipeRight){
-      this.showSidebarSubject.next(true);
-    } else if (isSidebarOpen && (isSwipeLeft || isTap)){
-
+    if (sidebarIsVisible && !isClickOnMenuContainer){
       this.showSidebarSubject.next(false);
-    }
-
-    this.resetTouchData();
-  }
-
-  resetTouchData(){
-    this.firstTouchData = null;
-    this.lastTouchData = null;
-  }
-
-  getSwipe(touchData1: {x: number, y:number,  timestamp: number}, touchData2: {x: number, y:number, timestamp: number}){
-    const xDelta = touchData2.x - touchData1.x;
-    const absoluteXDelta = Math.abs(xDelta);
-    const hasMinimumSwipeLength = absoluteXDelta > Constants.minimumSwipeDistance;
-
-    const yDelta: number = touchData2.y - touchData1.y;
-    const absoluteYDelta: number = Math.abs(yDelta);
-
-    const isTap = absoluteXDelta < Constants.maximumTapDistance && absoluteYDelta < Constants.maximumTapDistance;
-    if(!hasMinimumSwipeLength) return isTap ? "tap" : null;
-
-    const timeDelta = touchData2.timestamp - touchData1.timestamp;
-    const hasSwipeTime: boolean = timeDelta < Constants.maximumSwipeTime;
-    if(!hasSwipeTime) return null;
-
-    const isSwipeRight: boolean = xDelta > 0;
-    return isSwipeRight ? "right" : "left";
-  }
-
-  extractTouchData(event: TouchEvent): {y: number, x: number, timestamp: number}{
-    if (event == null) return null;
-
-    const touchX: number = event.touches[0].clientX;
-    const touchY: number = event.touches[0].clientY;
-    const timestamp: number = event.timeStamp;
-    return {x: touchX, y: touchY, timestamp: timestamp};
+      clickTarget.click();
+    } 
   }
 }
