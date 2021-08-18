@@ -24,7 +24,7 @@
     "@angular/router": "^10.2.5",
     "@angular/service-worker": "^10.2.5",
     "@fortawesome/fontawesome-free": "^5.15.3",
-    "@ng-bootstrap/ng-bootstrap": "7.0.0",
+    "@ng-bootstrap/ng-bootstrap": "8.0.0",
     "@ngx-formly/bootstrap": "^5.10.21",
     "@ngx-formly/core": "^5.10.21",
     "@ngx-formly/schematics": "^5.10.21",
