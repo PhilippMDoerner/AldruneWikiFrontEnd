@@ -17,10 +17,10 @@ export class AdminService {
   }
 
   downloadDatabase(): Observable<any>{
-    return this.http.get(`${this.adminUrl}/dbdownload`, {responseType: 'blob'});
+    return this.http.get(`${this.adminUrl}/dbdownload/`, {responseType: 'blob'});
   }
 
   getStatistics(): Observable<any>{
-    return this.http.get(`${this.adminUrl}/statistics`);
+    return this.http.get(`${this.adminUrl}/statistics/`);
   }
 }
