@@ -48,19 +48,22 @@
                 <div class="row">
                     <h4 class="col-3 d-flex flex-column">
                         <div>
-                            <span class="fa fa-user"></span>
+                            <span class="fa fa-user-circle" placement="top" [ngbTooltip]="'Username'"></span>
                             Username
                         </div>
                     </h4>
-                    <h4 class="col-2">
-                        Admin SU
+                    <h4 class="col-1">
+                        <span class="fas fa-crown" placement="top" [ngbTooltip]="'Admins'"></span>
+                    </h4>                    
+                    <h4 class="col-1">
+                        <span class="fas fa-gamepad" placement="top" [ngbTooltip]="'SuperUsers aka Admins of Admins'"></span>
                     </h4>
                     <h4 class="col-3">
-                        <span class="fa fa-group"></span>
+                        <span class="fa fa-group" placement="top" [ngbTooltip]="'Access-right groups'"></span>
                         Groups
                     </h4>
                     <h4 class="col-3">
-                        <span class="fa fa-envelope-o"></span>
+                        <span class="fa fa-envelope-o" placement="top" [ngbTooltip]="'Email-Address'"></span>
                         Email
                     </h4>
                 </div>
