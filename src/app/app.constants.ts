@@ -18,6 +18,11 @@ export class Constants{
 
     public static get NONE_STRING(): string { return "None";} //This value must be identical to the NONE_STRING setting in the backend
     public static get isSmallScreen(): boolean { return window.screen.availWidth < 576; } //Determines for various JS functions whether something is a small screen or not
+    public static get isTouchDevice(): boolean { 
+      return ( 'ontouchstart' in window ) || 
+             ( navigator.maxTouchPoints > 0 ) || 
+             ( navigator.msMaxTouchPoints > 0 );
+    };
 
     //strings representing states
     public static get createState(): string { return "create";}

@@ -62,13 +62,14 @@ function readonly(target, name, descriptor) {
     return descriptor;
   }
   
-export function onlyOnMobile(target: any, propertyKey: string, descriptor: PropertyDescriptor){
+export function onlyOnTouch(target: any, propertyKey: string, descriptor: PropertyDescriptor){
   const originalMethod = descriptor.value;
   descriptor.value = function(){
-      if (!Constants.isSmallScreen) return;
+      if (!Constants.isTouchDevice) return;
 
       return originalMethod.apply(this, arguments);
   }
 
   return descriptor;
 }
+

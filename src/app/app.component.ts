@@ -4,7 +4,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { Constants } from './app.constants';
 import { RoutingService } from './services/routing.service';
 import { WarningsService } from './services/warnings.service';
-import { onlyOnMobile } from './utils/functions/utilityDecorators';
+import { onlyOnTouch } from './utils/functions/utilityDecorators';
 
 @Component({
   selector: 'app-root',
@@ -15,9 +15,6 @@ export class AppComponent implements OnInit{
   title = 'AldruneWiki';
   outsideClickSubject: Subject<any> = new Subject();
   showSidebarSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
-
-  firstTouchData: TouchEvent;
-  lastTouchData: TouchEvent;
 
   showSafariWarning: boolean; //Necessary to display warning about how this site is broken on iOS Safari
 
@@ -78,21 +75,21 @@ export class AppComponent implements OnInit{
   }
 
 
-  @onlyOnMobile
+  @onlyOnTouch
   onSwipeLeft(event: any): void{
     console.log("On swipe left");
     console.log(event);
     this.showSidebarSubject.next(false);
   }
 
-  @onlyOnMobile
+  @onlyOnTouch
   onSwipeRight(event: any): void{
     console.log("On swipe right");
     console.log(event);
     this.showSidebarSubject.next(true);
   }
 
-  @onlyOnMobile
+  @onlyOnTouch
   onTap(event: any){
     const sidebarIsVisible = this.showSidebarSubject.value === true;
 
