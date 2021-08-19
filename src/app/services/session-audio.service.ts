@@ -18,7 +18,7 @@ export class SessionAudioService extends GenericObjectService {
 
   @TransformObservable(SessionAudioObject)
   readByParam(params: {isMainSession: number, sessionNumber: number}): Observable<SessionAudio>{
-    const url = `${this.baseUrl}/${params.isMainSession}/${params.sessionNumber}/`;
+    const url = `${this.baseUrl}/${params.isMainSession}/${params.sessionNumber}`;
     return this.http.get<SessionAudio>(url);
   }
 
