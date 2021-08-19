@@ -16,6 +16,8 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
+
+//TODO: ADD Pagination to the encounter. not as in server loading, but as in only showing X entries at a time.
 @Component({
   selector: 'app-encounter-accordion',
   templateUrl: './encounter-accordion.component.html',
