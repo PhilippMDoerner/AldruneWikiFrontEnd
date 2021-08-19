@@ -1,13 +1,13 @@
 <div class="main" #overviewMainCard>
     <article *ngIf="listItems; else loading" class="pr-4 pl-4 container">
         <!-- Heading -->
-        <div class="row">
-            <h1 class="major col mb-4 pb-1 border-bottom">{{ overviewType | titlecase }}s</h1>
+        <div class="row" *ngIf="overviewType">
+            <h1 class="major col mb-4 pb-1 border-bottom">{{ overviewTypeMetaData[overviewType].heading }}</h1>
         </div>
 
         <!-- Image -->
         <div class="row" *ngIf="overviewType!==characterOverview">
-            <img class="col px-0 mb-4" src="{{overviewImages[overviewType]}}" alt=""/>
+            <img class="col px-0 mb-4" src="{{overviewTypeMetaData[overviewType].image}}" alt="Image indicating the overview type"/>
         </div>
 
         <!-- Character OverView Snippet | PC List-->

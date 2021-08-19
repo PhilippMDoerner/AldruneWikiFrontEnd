@@ -8,7 +8,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 import { RoutingService } from 'src/app/services/routing.service';
 import { first } from 'rxjs/operators';
 import { CharacterService } from 'src/app/services/character/character.service';
-import { SSL_OP_NO_TLSv1_1 } from 'constants';
+import { I18nPluralPipe } from '@angular/common';
 
 @Component({
   selector: 'app-article-overview',
@@ -23,14 +23,39 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   @ViewChildren("filter") filterField: QueryList<ElementRef>;
 
   constants: any = Constants;
-  overviewImages = {
-    character: `${Constants.wikiStaticUrl}/frontpage/images/pic01.jpg`,
-    item: `${Constants.wikiStaticUrl}/frontpage/images/pic07.jpg`,
-    creature: `${Constants.wikiStaticUrl}/frontpage/images/pic06.jpg`,
-    location: `${Constants.wikiStaticUrl}/frontpage/images/pic02.jpg`,
-    organization: `${Constants.wikiStaticUrl}/frontpage/images/pic03.jpg`,
-    diaryentry: `${Constants.wikiStaticUrl}/frontpage/images/pic04.png`,
-  };
+  overviewTypeMetaData: any = {
+    character: {
+      image: `${Constants.wikiStaticUrl}/frontpage/images/pic01.jpg`,
+      heading: "Characters",
+      processing: null,
+    },
+    creature: {
+      image: `${Constants.wikiStaticUrl}/frontpage/images/pic06.jpg`,
+      heading: "Creatures",
+      processing: null,
+    },
+    diaryentry: {
+      image: `${Constants.wikiStaticUrl}/frontpage/images/pic04.jpg`,
+      heading: "Diaryentries",
+      processing: this.processDiaryentryOverviewItems,
+    },
+    item: {
+      image: `${Constants.wikiStaticUrl}/frontpage/images/pic07.jpg`,
+      heading: "Items",
+      processing: null,
+    },
+    location: {
+      image: `${Constants.wikiStaticUrl}/frontpage/images/pic02.jpg`,
+      heading: "Locations",
+      processing: this.processLocationOverviewItems,
+    },
+    organization: {
+      image: `${Constants.wikiStaticUrl}/frontpage/images/pic03.jpg`,
+      heading: "Organizations",
+      processing: null,
+    },
+  }
+
   overviewType: string;
 
   characterOverview: string = "character";
@@ -39,15 +64,6 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   locationOverview: string = "location";
   organizationOverview: string = "organization";
   diaryentryOverview: string = "diaryentry";
-
-  processOverviewFunctions = {
-    character: null,
-    item: null,
-    creature: null,
-    organization: null,
-    diaryentry: this.processDiaryentryOverviewItems,
-    location: this.processLocationOverviewItems,
-  }
 
   constructor(
     private overviewService: OverviewService,
@@ -59,13 +75,14 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   ngOnInit(): void {
     const urlSplit: string[] = this.router.url.split('/');
     this.overviewType = urlSplit[urlSplit.length - 1];
+    const configs: any = this.overviewTypeMetaData[this.overviewType];
 
     const listItemObs: Observable<OverviewItem[]> = this.overviewService.getOverviewItems(this.overviewType);
     listItemObs.pipe(first()).subscribe(
       (listItems: OverviewItemObject[]) => {
         this.listItems = listItems;
 
-        const processingFunction = this.processOverviewFunctions[this.overviewType];
+        const processingFunction = configs.processing;
         if(processingFunction != null) processingFunction(this);
       }, 
       error => this.routingService.routeToErrorPage(error)
