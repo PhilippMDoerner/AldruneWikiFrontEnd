@@ -90,8 +90,9 @@ export class EncounterObject implements Encounter {
 
     //TODO: Get rid of hard-coded URL patterns in objects
     getAbsoluteRouterUrl(): string{
-        if (!this.diaryentry_details.session_number || !this.diaryentry_details.author_name || !this.diaryentry_details.is_main_session) {
-            throw `Can't generate URL for Encounter object without all necessary information! I only have this: ${this.diaryentry_details}`;
+        if (!this.diaryentry_details.session_number || !this.diaryentry_details.author_name || this.diaryentry_details.is_main_session == null) {
+            console.log(this.diaryentry_details);
+            throw `Can't generate URL for Encounter object without all necessary information! I only have this:`;
         }
         return `${Constants.wikiUrlFrontendPrefix}/diaryentry/${this.diaryentry_details.session_number}/${this.diaryentry_details.is_main_session}/${this.diaryentry_details.author_name}/${this.title}`;
     }
