@@ -60,7 +60,7 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
       router,
       routingService, 
       warnings, 
-      characterService //articleService
+      characterService, //articleService
     ) 
   }
 
@@ -68,12 +68,13 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
     this.parameter_subscription = this.route.params.subscribe(params => {
       if (this.isInUpdateState()){
         const character_name: string = params.name;
+        this.campaign = params.campaign;
 
         //Update Cancel Route Params
         this.updateCancelRoute.params.name = character_name;
 
         //Get character
-        this.articleService.readByParam(character_name).pipe(first()).subscribe(
+        this.articleService.readByParam(this.campaign, character_name).pipe(first()).subscribe(
           (character: CharacterObject) => this.userModel = character, 
           error => this.routingService.routeToErrorPage(error)
         );

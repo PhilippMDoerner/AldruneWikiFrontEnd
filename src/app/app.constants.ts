@@ -1,12 +1,13 @@
+//TODO: Outsource some of these settings into a "default" service and store these settings in the database
 export class Constants{
     public static get apiPrefix(): string { return "wiki1";}
     public static get spaPrefix(): string { return "wiki2";}
 
     // API Urls
-    public static get wikiUrl(): string { return "https://www.aldrune.com";} //prod backend
-    public static get wikiApiUrl(): string { return `${this.wikiUrl}/${this.apiPrefix}/api`;} //prod backend
-    // public static get wikiUrl(): string { return "http://localhost:8000";} //dev backend
-    // public static get wikiApiUrl(): string { return `${this.wikiUrl}/api`;} //dev backend
+    // public static get wikiUrl(): string { return "https://www.aldrune.com";} //prod backend
+    // public static get wikiApiUrl(): string { return `${this.wikiUrl}/${this.apiPrefix}/api`;} //prod backend
+    public static get wikiUrl(): string { return "http://localhost:8000";} //dev backend
+    public static get wikiApiUrl(): string { return `${this.wikiUrl}/api`;} //dev backend
     public static get wikiSPAUrl(): string{ return `${this.wikiUrl}/${this.spaPrefix}`;}
 
     public static get wikiStaticUrl(): string { return `${this.wikiUrl}/static`;}
@@ -208,6 +209,8 @@ export class Constants{
 
     //Default Map to display
     public static get defaultMapName(): string {return `Aldrune`};
+
+    public static get defaultCampaign(): string {return `Aldrune`};
 
     //TinyMCE Settings
     public static get tinyMCESettings(): object{ return {

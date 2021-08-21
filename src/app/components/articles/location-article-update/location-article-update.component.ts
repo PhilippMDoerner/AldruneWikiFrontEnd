@@ -52,14 +52,15 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin implements 
     this.parameter_subscription = this.route.params.subscribe(params => {
       const locationName: string = params.name;
       const parentLocationName: string = params.parent_name;
-      
+      const campaign: string = params.campaign;
+
       //Update Cancel Route Params
       this.updateCancelRoute.params.name = locationName;
       this.updateCancelRoute.params.parent_name = parentLocationName;
 
       //Get Location
       if (this.isInUpdateState()){
-          this.articleService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
+          this.articleService.readByParam(campaign, {parentLocationName, locationName}).pipe(first()).subscribe(
             (location: LocationObject) => this.userModel = location,
             error => this.routingService.routeToErrorPage(error)
           );
@@ -71,7 +72,7 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin implements 
 
         //Aditional info to user model if this is a sublocation
         if(this.isForAssociatedObjectCreation()){
-          this.articleService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
+          this.articleService.readByParam(campaign, {parentLocationName, locationName}).pipe(first()).subscribe(
             (location: LocationObject) => {
               this.userModel = new LocationObject();
               this.userModel.parent_location = location.pk;

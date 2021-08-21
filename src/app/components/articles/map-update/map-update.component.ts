@@ -52,13 +52,14 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const mapName: string = params['name'];
+      const campaign: string = params.campaign;
 
       //Update Cancel Route Params
       this.updateCancelRoute.params.name = mapName;
 
       //Get Map
       if (this.isInUpdateState()){
-        this.articleService.readByParam(mapName).pipe(first()).subscribe(
+        this.articleService.readByParam(campaign, mapName).pipe(first()).subscribe(
           (map: MapObject) => this.userModel = map,
           error => this.routingService.routeToErrorPage(error)
         );

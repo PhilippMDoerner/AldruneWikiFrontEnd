@@ -55,13 +55,14 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
       if (this.isInUpdateState()){
         const isMainSessionInt: number = params['isMainSession'];
         const sessionNumber: number = params['sessionNumber'];
+        const campaign: string = params.campaign;
 
         //Update Cancel Route Params
         this.updateCancelRoute.params.isMainSession = isMainSessionInt;
         this.updateCancelRoute.params.sessionNumber = sessionNumber;
 
         //Get SessionAudioObject
-        this.articleService.readByParam({isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
+        this.articleService.readByParam(campaign, {isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
           (sessionAudio: SessionAudioObject) => this.userModel = sessionAudio,
           error => this.routingService.routeToErrorPage(error)
         );

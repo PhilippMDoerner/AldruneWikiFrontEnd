@@ -51,13 +51,14 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnIn
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const itemName: string = params.name;
+      const campaign: string = params.campaign;
       
       //Update Cancel Route Params
       this.updateCancelRoute.params.name = itemName;
 
       //Get Item
       if (this.isInUpdateState()){
-        this.articleService.readByParam(itemName).pipe(first()).subscribe(
+        this.articleService.readByParam(campaign, itemName).pipe(first()).subscribe(
           (item: ItemObject) =>  this.userModel = item,
           error => this.routingService.routeToErrorPage(error)
         );
@@ -68,7 +69,7 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnIn
         if(this.isForAssociatedObjectCreation()){
           const itemOwnerName: string = params.character_name;
 
-          this.characterService.readByParam(itemOwnerName).pipe(first()).subscribe(
+          this.characterService.readByParam(campaign, itemOwnerName).pipe(first()).subscribe(
             (itemOwner: CharacterObject) => this.userModel.owner = itemOwner.pk,
             error => this.routingService.routeToErrorPage(error)
           );

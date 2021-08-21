@@ -57,8 +57,9 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
     this.parameter_subscription = this.route.params.subscribe(params => {
       const isMainSessionInt: number = params.isMainSession;
       const sessionNumber: number = params.sessionNumber;
+      const campaign: string = params.campaign;
 
-      this.sessionAudioService.readByParam({isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
+      this.sessionAudioService.readByParam(campaign, {isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
         (sessionAudio: SessionAudioObject) => {
           this.sessionAudio = sessionAudio;
           this.priorSessionAudio = sessionAudio.sessionAudioNeighbours.priorSessionAudio;

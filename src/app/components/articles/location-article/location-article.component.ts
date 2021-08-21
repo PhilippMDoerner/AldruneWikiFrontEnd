@@ -38,8 +38,9 @@ export class LocationArticleComponent extends ArticleMixin implements OnInit {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const locationName: string = params['name'];
       const parentLocationName: string = params['parent_name'] ? params['parent_name'] : "None";
+      const campaign: string = params.campaign;
 
-      this.articleService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
+      this.articleService.readByParam(campaign, {parentLocationName, locationName}).pipe(first()).subscribe(
         (location: LocationObject) => this.articleData = location,
         error => this.routingService.routeToErrorPage(error)
       );

@@ -49,7 +49,9 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const mapName = params['name'];
-      this.articleService.readByParam(mapName).pipe(first()).subscribe( 
+      const campaign: string = params.campaign;
+
+      this.articleService.readByParam(campaign, mapName).pipe(first()).subscribe( 
         (map: MapObject) => this.articleData = map,
         error => this.routingService.routeToErrorPage(error)
       );

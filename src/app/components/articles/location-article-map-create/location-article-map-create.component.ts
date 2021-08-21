@@ -57,8 +57,9 @@ export class LocationArticleMapCreateComponent implements OnInit {
       const longitude: number = params['longitude'];
       const latitude: number = params['latitude'];
       this.mapName = params['map_name'];
-      
-      this.mapService.readByParam(this.mapName).pipe(first()).subscribe(
+      const campaign: string = params.campaign;
+
+      this.mapService.readByParam(campaign, this.mapName).pipe(first()).subscribe(
         (map: ExtendedMap) =>{
           this.markerModel = new MapMarkerObject();
           this.markerModel.map = map.pk;

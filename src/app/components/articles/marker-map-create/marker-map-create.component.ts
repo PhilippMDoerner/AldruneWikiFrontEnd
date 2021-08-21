@@ -49,8 +49,9 @@ export class MarkerMapCreateComponent implements OnInit {
       const longitude: number = parseInt(params['longitude']);
       const latitude: number = parseInt(params['latitude']);
       this.mapName = params['map_name'];
+      const campaign: string = params.campaign;
 
-      this.mapService.readByParam(this.mapName).pipe(first()).subscribe(
+      this.mapService.readByParam(campaign, this.mapName).pipe(first()).subscribe(
         (map: MapObject) =>{
           this.model = new MapMarkerObject();
           this.model.map = map.pk;

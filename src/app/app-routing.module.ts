@@ -45,22 +45,14 @@ import { Home2Component } from './components/home2/home2.component';
 
 
 export const routes: Routes = [
-	//Redirect Routes
-	{
-		path: "",
-		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/`,
-		pathMatch: 'full',
-		data: {name: 'start'}
-	},
-
 	//Home Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/`, 
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/:campaign/`, 
 		component: Home2Component, data:{ name: "home1"}, 
 		canActivate: [LoginGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}`, 
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/:campaign`, 
 		component: Home2Component, data:{ name: "home2"}, 
 		canActivate: [LoginGuardService]
 	},
@@ -101,25 +93,25 @@ export const routes: Routes = [
 
 	//Character Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character`, 
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign`, 
 		component: ArticleOverviewComponent, 
 		data:{ name: "character-overview", requiredPermissions: [Constants.apiViewPermission]}, 
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/create`,
 		component: CharacterArticleUpdateComponent, 
 		data:{ name: "character-create", requiredPermissions: [Constants.apiCreatePermission]}, 
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:name`, 
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/:name`, 
 		component: CharacterArticleComponent, 
 		data:{ name: "character", requiredPermissions: [Constants.apiViewPermission]}, 
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:name/update`, 
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/:name/update`, 
 		component: CharacterArticleUpdateComponent, 
 		data:{ name: "character-update", requiredPermissions: [Constants.apiUpdatePermission]}, 
 		canActivate: [PermissionGuardService]
@@ -127,80 +119,80 @@ export const routes: Routes = [
 
 	//Location Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign`,
 		component: ArticleOverviewComponent,
 		data:{ name: "location-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/create`,
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:parent_name/:name`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name`,
 		component: LocationArticleComponent,
 		data:{ name: "location", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:parent_name/:name/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name/create`,
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-parentlocation-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:latitude/:longitude/:map_name/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:latitude/:longitude/:map_name/create`,
 		component: LocationArticleMapCreateComponent,
 		data:{ name: "location-map-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:parent_name/:name/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name/update`,
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	//DiaryEntry Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign`,
 		component: ArticleOverviewComponent,
 		data:{ name: "diaryentry-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/create`,
 		component: DiaryentryArticleUpdateComponent,
 		data:{ name: "diaryentry-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:sessionNumber/:isMainSession/:authorName`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName`,
 		component: DiaryentryArticleComponent,
 		data:{ name: "diaryentry", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:sessionNumber/:isMainSession/:authorName/:encounterTitle`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/:encounterTitle`,
 		component: DiaryentryArticleComponent,
 		data:{ name: "diaryentry-encounter", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:sessionNumber/:isMainSession/:authorName/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/update`,
 		component: DiaryentryArticleUpdateComponent,
 		data:{ name: "diaryentry-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:sessionNumber/:isMainSession/:authorName/:displayMode`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/:displayMode`,
 		component: DiaryentryArticleComponent,
 		data:{ name: "diaryentry2", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:sessionNumber/:isMainSession/:authorName/:displayMode/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/:displayMode/update`,
 		component: DiaryentryArticleUpdateComponent,
 		data:{ name: "diaryentry2-update", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
@@ -208,25 +200,25 @@ export const routes: Routes = [
 
 	//Creature Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign`,
 		component: ArticleOverviewComponent,
 		data:{ name: "creature-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/create`,
 		component: CreatureArticleUpdateComponent,
 		data:{ name: "creature-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:name`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/:name`,
 		component: CreatureArticleComponent,
 		data:{ name: "creature", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:name/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/:name/update`,
 		component: CreatureArticleUpdateComponent,
 		data:{ name: "creature-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
@@ -234,25 +226,25 @@ export const routes: Routes = [
 
 	// Organization Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign`,
 		component: ArticleOverviewComponent,
 		data:{ name: "organization-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/create`,
 		component: OrganizationArticleUpdateComponent,
 		data:{ name: "organization-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:name`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/:name`,
 		component: OrganizationArticleComponent,
 		data:{ name: "organization", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:name/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/:name/update`,
 		component: OrganizationArticleUpdateComponent,
 		data:{ name: "organization-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
@@ -260,31 +252,31 @@ export const routes: Routes = [
 
 	// Item Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign`,
 		component: ArticleOverviewComponent,
 		data:{ name: "item-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/create`,
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:character_name/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:character_name/create`,
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-character-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:name`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:name`,
 		component: ItemArticleComponent,
 		data:{ name: "item", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:name/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:name/update`,
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
@@ -292,32 +284,32 @@ export const routes: Routes = [
 
 	// Quest Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign`,
 		component: QuestOverviewComponent,
 		data:{ name: "quest-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/create`,
 		component: QuestArticleUpdateComponent,
 		data:{ name: "quest-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:name`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/:name`,
 		component: QuestArticleComponent,
 		data:{ name: "quest", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:name/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/:name/update`,
 		component: QuestArticleUpdateComponent,
 		data:{ name: "quest-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	//Quote Route
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quotes/:name`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quotes/:campaign/:name`,
 		component: QuoteOverviewComponent,
 		data: { name: "quote-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
@@ -325,25 +317,25 @@ export const routes: Routes = [
 
 	// Session Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:campaign`,
 		component: HomeComponent,
 		data:{name: "session-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:campaign/create`,
 		component: HomeComponent,
 		data:{name: "session-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:sessionNumber/:isMainSession`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:campaign/:sessionNumber/:isMainSession`,
 		component: HomeComponent,
 		data:{name: "session", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:sessionNumber/:isMainSession/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:campaign/:sessionNumber/:isMainSession/update`,
 		component: HomeComponent,
 		data:{name: "session-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
@@ -351,26 +343,26 @@ export const routes: Routes = [
 
 	// SessionAudio Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign`,
 		component: SessionAudioOverviewComponent,
 		data:{ name: "sessionaudio-overview", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/create`,
 		component: SessionAudioUpdateComponent,
 		data:{ name: "sessionaudio-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 			
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:isMainSession/:sessionNumber`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/:isMainSession/:sessionNumber`,
 		component: SessionAudioComponent,
 		data:{ name: "sessionaudio", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:isMainSession/:sessionNumber/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/:isMainSession/:sessionNumber/update`,
 		component: SessionAudioUpdateComponent,
 		data:{ name: "sessionaudio-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
@@ -378,25 +370,25 @@ export const routes: Routes = [
 
 	// Marker Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:parent_location_name/:location_name/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/create`,
 		component: MarkerUpdateComponent,
 		data:{ name: "marker-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:latitude/:longitude/:map_name/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:latitude/:longitude/:map_name/create`,
 		component: MarkerMapCreateComponent,
 		data:{ name: "marker-map-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:parent_location_name/:location_name/:map_name`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/:map_name`,
 		component: MarkerComponent,
 		data:{ name: "marker", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:parent_location_name/:location_name/:map_name/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/:map_name/update`,
 		component: MarkerUpdateComponent,
 		data:{ name: "marker-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
@@ -405,25 +397,25 @@ export const routes: Routes = [
 
 	// Map Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/create`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/create`,
 		component: MapUpdateComponent,
 		data:{ name: "map-create", requiredPermissions: [Constants.apiCreatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map`,
-		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/${Constants.defaultMapName}`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign`,
+		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/${Constants.defaultMapName}`,
 		data:{ name: "default-map", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:name`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/:name`,
 		component: MapComponent,
 		data:{ name: "map", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:name/update`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/:name/update`,
 		component: MapUpdateComponent,
 		data:{ name: "map-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
@@ -432,25 +424,25 @@ export const routes: Routes = [
 
 	// Core Route
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules/:campaign`,
 		component: RulesComponent,
 		data:{ name: "rules", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules/:name`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules/:campaign/:name`,
 		component: RulesComponent,
 		data:{ name: "rule", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:campaign`,
 		component: SpellsComponent,
 		data:{ name: "spells", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:name`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:campaign/:name`,
 		component: SpellsComponent,
 		data:{ name: "spell", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
@@ -462,9 +454,21 @@ export const routes: Routes = [
 		canActivate: [PermissionGuardService]
 	},
 	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/:campaign/search`,
+		component: SearchComponent,
+		data:{ name: "startCampaignSearch", requiredPermissions: [Constants.apiViewPermission]},
+		canActivate: [PermissionGuardService]
+	},
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:searchString`,
 		component: SearchComponent,
 		data:{ name: "search", requiredPermissions: [Constants.apiViewPermission]},
+		canActivate: [PermissionGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:campaign/:searchString`,
+		component: SearchComponent,
+		data:{ name: "campaignSearch", requiredPermissions: [Constants.apiViewPermission]},
 		canActivate: [PermissionGuardService]
 	},
 

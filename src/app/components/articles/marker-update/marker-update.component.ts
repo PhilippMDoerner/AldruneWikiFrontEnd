@@ -59,6 +59,7 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
       const parentLocationName = params['parent_location_name'];
       const locationName = params['location_name'];
       const mapName: string = params['map_name'];
+      const campaign: string = params.campaign;
 
       //Update Cancel Route Params
       this.updateCancelRoute.params.location_name = locationName;
@@ -69,13 +70,13 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
       
       //Get Marker
       if (this.isInUpdateState()){
-        this.articleService.readByParam({parentLocationName, locationName, mapName}).pipe(first()).subscribe(
+        this.articleService.readByParam(campaign, {parentLocationName, locationName, mapName}).pipe(first()).subscribe(
           (marker: MapMarkerObject) => this.userModel = marker,
           error => this.routingService.routeToErrorPage(error)
         );
 
       } else if (this.isInCreateState()){
-        this.locationService.readByParam({parentLocationName, locationName}).pipe(first()).subscribe(
+        this.locationService.readByParam(campaign, {parentLocationName, locationName}).pipe(first()).subscribe(
           (location: LocationObject) => {
             this.userModel = new MapMarkerObject();
             this.userModel.location = location.pk;

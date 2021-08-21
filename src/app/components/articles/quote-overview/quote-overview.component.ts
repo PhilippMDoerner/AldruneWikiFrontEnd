@@ -55,8 +55,10 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
     this.parameter_subscription = this.route.params.subscribe(
       params => {
         const characterName = params.name;
+        const campaign: string = params.campaign;
+
         // Get Character
-        this.characterService.readByParam(characterName).pipe(first()).subscribe(
+        this.characterService.readByParam(campaign, characterName).pipe(first()).subscribe(
           (character: CharacterObject) => this.character = character,
           error => this.routingService.routeToErrorPage(error)
         );
