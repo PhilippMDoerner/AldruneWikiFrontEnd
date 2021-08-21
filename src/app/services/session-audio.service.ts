@@ -17,8 +17,8 @@ export class SessionAudioService extends GenericObjectService {
   constructor(public http: HttpClient) { super(http, SessionAudioObject)}
 
   @TransformObservable(SessionAudioObject)
-  readByParam(params: {isMainSession: number, sessionNumber: number}): Observable<SessionAudio>{
-    const url = `${this.baseUrl}/${params.isMainSession}/${params.sessionNumber}`;
+  readByParam(campaign: string, params: {isMainSession: number, sessionNumber: number}): Observable<SessionAudio>{
+    const url = `${this.baseUrl}/${campaign}/${params.isMainSession}/${params.sessionNumber}`;
     return this.http.get<SessionAudio>(url);
   }
 

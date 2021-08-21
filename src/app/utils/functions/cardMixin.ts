@@ -16,6 +16,7 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
 
     userModel: any;
     serverModel: any; //A model of article-data from the server if there are update conflicts with the userModel
+    campaign: string;
 
     @Input() cardData: any; //The general data of the card
     @Input() index: number;

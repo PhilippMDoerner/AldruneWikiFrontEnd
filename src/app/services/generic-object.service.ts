@@ -19,6 +19,11 @@ export abstract class GenericObjectService{
     return transformObservableArrayContent(dataObs, this.objectClass);
   }
 
+  campaignList(campaign: string): Observable<any[]>{
+    const dataObs: Observable<any[]> = this.http.get<any[]>(`${this.baseUrl}/${campaign}`);
+    return transformObservableArrayContent(dataObs, this.objectClass);
+  }
+
   create(data: any): Observable<any>{
     const dataObs: Observable<any> = this.http.post(`${this.baseUrl}/`, data);
     return transformObservableContent(dataObs, this.objectClass);
@@ -41,7 +46,7 @@ export abstract class GenericObjectService{
    * @returns The data from that endpoint transformed into an object specified by the service
    */
   @TransformObservable("objectClass")
-  readByParam(params: any): Observable<any>{
+  readByParam(campaign: string, params: any): Observable<any>{
     if (typeof params !== "string" && typeof params !== "number"){
       console.error("The params you used")
       console.log(params)
@@ -49,7 +54,11 @@ export abstract class GenericObjectService{
       of type ${typeof params}, which is neither a string nor a number. This indicates your call is more complex than 
       this base implementation is useful for. Overwrite readByParam in the service that inherits from  
       GenericObjectService and implement the function yourself`;
-    } 
+    }
+
+    if(campaign == null){
+      throw "You tried to use readByParam without specifying which param you're querying for";
+    }
 
     const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/${params}/`);
     return transformObservableContent(dataObs, this.objectClass);

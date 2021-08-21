@@ -1,5 +1,7 @@
-import { Router } from "@angular/router";
+import { Directive, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
+import { Subscription } from "rxjs";
 import { first } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
 import { ApiObject } from "src/app/models/base-models";
@@ -8,6 +10,7 @@ import { GenericService } from "src/app/services/generic.service";
 import { RoutingService } from "src/app/services/routing.service";
 import { WarningsService } from "src/app/services/warnings.service";
 
+//TODO: Move all this ngoninit and ngondestroy logic from all the update pages to this page
 export class ArticleFormMixin{
     constants = Constants;
     formState: string;
@@ -15,6 +18,7 @@ export class ArticleFormMixin{
     userModel: ApiObject; //A model of article-data for the user to edit
     serverModel: any; //A model of article-data from the server if there are update conflicts with the userModel
     formlyFields: FormlyFieldConfig[];
+    campaign: string;
 
     updateCancelRoute: { routeName: string, params: any }; //Data to generate route to go to to if update of article is cancelled
     creationCancelRoute: { routeName: string, params: any }; //Data to generate route to go to if creation of article is cancelled
@@ -23,7 +27,7 @@ export class ArticleFormMixin{
         public router: Router,
         public routingService: RoutingService,
         public warnings: WarningsService,
-        public articleService: GenericService | GenericObjectService
+        public articleService: GenericService | GenericObjectService,
     ){
         const isUpdateRoute : boolean = this.router.url.includes("update");
         this.formState = isUpdateRoute ? Constants.updateState : Constants.createState;

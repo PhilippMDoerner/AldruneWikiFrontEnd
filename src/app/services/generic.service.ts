@@ -17,6 +17,10 @@ export abstract class GenericService {
     return this.http.get<any[]>(this.baseUrl);
   }
 
+  campaignList(campaign: string): Observable<any[]>{
+    return this.http.get<any[]>(`${this.baseUrl}/${campaign}`);
+  }
+
   create(data: any): Observable<any>{
     return this.http.post(`${this.baseUrl}/`, data);
   }
@@ -35,7 +39,7 @@ export abstract class GenericService {
    * @param param 
    * @returns The data from that endpoint by the service
    */
-  readByParam(params: any): Observable<any>{
+  readByParam(campaign: string, params: any): Observable<any>{
     if (typeof params !== "string" && typeof params !== "number"){
       console.error("The params you used")
       console.log(params)
@@ -45,7 +49,7 @@ export abstract class GenericService {
       GenericService and implement the function yourself`;
     }
 
-    return this.http.get(`${this.baseUrl}/${params}/`);
+    return this.http.get(`${this.baseUrl}/${campaign}/${params}/`);
   }
 
   delete(pk: number): Observable<any>{

@@ -3,7 +3,6 @@ import { ActivatedRoute } from "@angular/router";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { first } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
-import { ApiObject } from "src/app/models/base-models";
 import { ArticleObject } from "src/app/models/base-models";
 import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
@@ -17,7 +16,9 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
     parameter_subscription: Subscription;
 
     queryParameterName: string; //Only use if the column for that parameter has the unique constraint, aka the parameter is unique
+    campaignParameterName: string;
     articleData: ArticleObject;
+    campaign: string;
 
     textfieldFormStateSubject: BehaviorSubject<string> = new BehaviorSubject(Constants.displayState);
 
@@ -34,8 +35,10 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
 
     ngOnInit(): void{
         this.parameter_subscription = this.route.params.subscribe( params => {
-            const queryParameter: any = params[this.queryParameterName];
-            this.articleService.readByParam(queryParameter).pipe(first()).subscribe(
+            const queryParameter: string | number = params[this.queryParameterName];
+            this.campaign = params[this.campaignParameterName];
+
+            this.articleService.readByParam(this.campaign, queryParameter).pipe(first()).subscribe(
                 (article: ArticleObject) => this.articleData = article, 
                 error => this.routingService.routeToErrorPage(error)
             );

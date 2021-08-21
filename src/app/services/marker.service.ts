@@ -15,8 +15,8 @@ export class MarkerService extends GenericObjectService{
   constructor(http: HttpClient) { super(http, MapMarkerObject) }
 
   @TransformObservable(MapMarkerObject)
-  readByParam(param: {parentLocationName: string, locationName: string, mapName: string}): Observable<MapMarker>{
-    const url: string = `${this.baseUrl}/${param.parentLocationName}/${param.locationName}/${param.mapName}`;
+  readByParam(campaign: string, param: {parentLocationName: string, locationName: string, mapName: string}): Observable<MapMarker>{
+    const url: string = `${this.baseUrl}/${campaign}/${param.parentLocationName}/${param.locationName}/${param.mapName}`;
     return this.http.get<MapMarker>(url);
   }
 }
