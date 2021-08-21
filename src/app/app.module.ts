@@ -11,7 +11,6 @@ import { VimeModule } from "@vime/angular/dist";
 
 import { AppComponent } from './app.component';
 import { NavbarComponent } from "src/app/components/navbar/navbar.component";
-import { HomeComponent } from './components/home/home.component';
 import { CharacterArticleComponent } from './components/articles/character-article/character-article.component';
 import { LocationArticleComponent } from './components/articles/location-article/location-article.component';
 import { OrganizationArticleComponent } from './components/articles/organization-article/organization-article.component';
@@ -97,7 +96,6 @@ import { RecentlyUpdatedArticlesListComponent } from './components/utility/recen
   declarations: [
     AppComponent,
     NavbarComponent,
-    HomeComponent,
     CharacterArticleComponent,
     LocationArticleComponent,
     OrganizationArticleComponent,

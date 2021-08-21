@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes,
 		RouterModule } from '@angular/router';
-import { HomeComponent } from "src/app/components/home/home.component";
 import { ArticleOverviewComponent } from "src/app/components/articles/article-overview/article-overview.component";
 import { CharacterArticleComponent } from "src/app/components/articles/character-article/character-article.component";
 import { LocationArticleComponent } from "src/app/components/articles/location-article/location-article.component";
@@ -319,32 +318,6 @@ export const routes: Routes = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quotes/:campaign/:name`,
 		component: QuoteOverviewComponent,
 		data: { name: "quote-overview", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-
-	// Session Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:campaign`,
-		component: HomeComponent,
-		data:{name: "session-overview", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:campaign/create`,
-		component: HomeComponent,
-		data:{name: "session-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:campaign/:sessionNumber/:isMainSession`,
-		component: HomeComponent,
-		data:{name: "session", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/session/:campaign/:sessionNumber/:isMainSession/update`,
-		component: HomeComponent,
-		data:{name: "session-update", requiredPermissions: [Constants.apiUpdatePermission]},
 		canActivate: [PermissionGuardService]
 	},
 
