@@ -38,9 +38,9 @@ export class DiaryentryArticleComponent extends ArticleMixin {
       const isMainSession: number = parseInt(params.isMainSession);
       const sessionNumber: number = parseInt(params.sessionNumber);
       const authorName: string = params.authorName;
-      const campaign: string = params.campaign;
+      this.campaign = params.campaign;
   
-      this.articleService.readByParam(campaign, {isMainSession, sessionNumber, authorName}).pipe(first()).subscribe(
+      this.articleService.readByParam(this.campaign, {isMainSession, sessionNumber, authorName}).pipe(first()).subscribe(
         diaryEntry => {
           this.articleData = diaryEntry;
 

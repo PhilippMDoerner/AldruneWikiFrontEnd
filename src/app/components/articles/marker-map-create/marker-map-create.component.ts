@@ -21,6 +21,7 @@ export class MarkerMapCreateComponent implements OnInit {
   private parameter_subscription: Subscription;
 
   mapName: string;
+  campaign: string;
   constants: any = Constants;
 
   form = new FormGroup({});
@@ -49,9 +50,9 @@ export class MarkerMapCreateComponent implements OnInit {
       const longitude: number = parseInt(params['longitude']);
       const latitude: number = parseInt(params['latitude']);
       this.mapName = params['map_name'];
-      const campaign: string = params.campaign;
+      this.campaign = params.campaign;
 
-      this.mapService.readByParam(campaign, this.mapName).pipe(first()).subscribe(
+      this.mapService.readByParam(this.campaign, this.mapName).pipe(first()).subscribe(
         (map: MapObject) =>{
           this.model = new MapMarkerObject();
           this.model.map = map.pk;

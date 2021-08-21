@@ -52,9 +52,9 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
     this.paramter_subscription = this.route.params.subscribe(params => {
       if (this.isInUpdateState()){
         const organizationName: string = params.name;
-        const campaign: string = params.campaign;
+        this.campaign = params.campaign;
 
-        this.articleService.readByParam(campaign, organizationName).pipe(first()).subscribe(
+        this.articleService.readByParam(this.campaign, organizationName).pipe(first()).subscribe(
           (organization: OrganizationObject) => this.userModel = organization,
           error => this.routingService.routeToErrorPage(error)
         );

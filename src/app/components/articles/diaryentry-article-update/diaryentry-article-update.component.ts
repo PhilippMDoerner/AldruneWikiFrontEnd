@@ -85,7 +85,7 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
         const isMainSession: string = params.isMainSession;
         const sessionNumber: string = params.sessionNumber;
         const authorName: string = params.authorName;
-        const campaign: string = params.campaign;
+        this.campaign = params.campaign;
 
         //Update Cancel Route Params
         this.updateCancelRoute.params.authorName = authorName;
@@ -93,7 +93,7 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
         this.updateCancelRoute.params.isMainSession = isMainSession;
   
         //Get DiaryEntry
-        this.articleService.readByParam(campaign, {isMainSession, sessionNumber, authorName}).subscribe(
+        this.articleService.readByParam(this.campaign, {isMainSession, sessionNumber, authorName}).subscribe(
           (diaryEntry: DiaryEntryObject) => this.userModel = diaryEntry, 
           error => this.routingService.routeToErrorPage(error)
         );

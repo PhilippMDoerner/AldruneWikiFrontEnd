@@ -45,13 +45,13 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
     this.parameter_subscription = this.route.params.subscribe(params => {
       if (this.isInUpdateState()){
         const creatureName: string = params.name;
-        const campaign: string = params.campaign;
+        this.campaign = params.campaign;
 
         //Update Cancel Route Params
         this.updateCancelRoute.params.name = creatureName;
 
         //Get Creature 
-        this.articleService.readByParam(campaign, creatureName).pipe(first()).subscribe(
+        this.articleService.readByParam(this.campaign, creatureName).pipe(first()).subscribe(
           (creature: CreatureObject) =>  this.userModel = creature, 
           error => this.routingService.routeToErrorPage(error)
         );

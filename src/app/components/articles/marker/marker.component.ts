@@ -38,7 +38,7 @@ export class MarkerComponent extends ArticleMixin implements OnInit {
       const parentLocationName: string = params['parent_location_name'];
       const locationName: string = params['location_name'];
       const mapName: string = params['map_name'];
-      const campaign: string = params.campaign;
+      this.campaign = params.campaign;
 
       //Set params for delete route
       //Set Parameters for delete route
@@ -46,7 +46,7 @@ export class MarkerComponent extends ArticleMixin implements OnInit {
       this.deleteRoute.params.parent_name = parentLocationName;
 
       //Get marker
-      this.articleService.readByParam(campaign, {parentLocationName, locationName, mapName}).pipe(first()).subscribe(
+      this.articleService.readByParam(this.campaign, {parentLocationName, locationName, mapName}).pipe(first()).subscribe(
         (marker: MapMarkerObject) => this.articleData = marker,
         error => this.routingService.routeToErrorPage(error)
       ); 

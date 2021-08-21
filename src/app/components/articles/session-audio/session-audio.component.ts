@@ -21,6 +21,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 export class SessionAudioComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
   constants: any = Constants;
 
+  campaign: string;
   sessionAudio: SessionAudio;
   priorSessionAudio: {isMainSessionInt: number, sessionNumber: number};
   nextSessionAudio: {isMainSessionInt: number, sessionNumber: number};
@@ -57,9 +58,9 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
     this.parameter_subscription = this.route.params.subscribe(params => {
       const isMainSessionInt: number = params.isMainSession;
       const sessionNumber: number = params.sessionNumber;
-      const campaign: string = params.campaign;
+      this.campaign = params.campaign;
 
-      this.sessionAudioService.readByParam(campaign, {isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
+      this.sessionAudioService.readByParam(this.campaign, {isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
         (sessionAudio: SessionAudioObject) => {
           this.sessionAudio = sessionAudio;
           this.priorSessionAudio = sessionAudio.sessionAudioNeighbours.priorSessionAudio;

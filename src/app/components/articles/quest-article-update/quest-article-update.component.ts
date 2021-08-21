@@ -73,14 +73,14 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const questName: string = params.name;
-      const campaign: string = params.campaign;
+      this.campaign = params.campaign;
 
       //Update Cancel Route Param
       this.updateCancelRoute.params.name = questName;
 
       //Get Quest
       if (this.isInUpdateState()){
-        this.articleService.readByParam(campaign, questName).pipe(first()).subscribe(
+        this.articleService.readByParam(this.campaign, questName).pipe(first()).subscribe(
           (quest: QuestObject) => this.userModel = quest,
           error => this.routingService.routeToErrorPage(error)
         );

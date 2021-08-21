@@ -23,6 +23,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
   quotes: Quote[];
   character: CharacterObject;
+  campaign: string;
 
   baseQuoteConnection: QuoteConnection = new QuoteConnectionObject();
   inQuoteCreateState: boolean = false;
@@ -55,10 +56,10 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
     this.parameter_subscription = this.route.params.subscribe(
       params => {
         const characterName = params.name;
-        const campaign: string = params.campaign;
+        this.campaign = params.campaign;
 
         // Get Character
-        this.characterService.readByParam(campaign, characterName).pipe(first()).subscribe(
+        this.characterService.readByParam(this.campaign, characterName).pipe(first()).subscribe(
           (character: CharacterObject) => this.character = character,
           error => this.routingService.routeToErrorPage(error)
         );
