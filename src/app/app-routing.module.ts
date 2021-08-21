@@ -45,6 +45,13 @@ import { Home2Component } from './components/home2/home2.component';
 
 
 export const routes: Routes = [
+	//Redirect Routes
+	{
+		path: "",
+		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/${Constants.defaultCampaign}`,
+		pathMatch: 'full',
+		data: {name: 'start'}
+	},
 	//Home Routes
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/:campaign/`, 
