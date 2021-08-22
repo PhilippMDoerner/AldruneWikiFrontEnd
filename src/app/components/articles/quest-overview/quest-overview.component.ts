@@ -110,5 +110,6 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
 
   ngOnDestroy(): void{
     if (this.quest_subscription) this.quest_subscription.unsubscribe();
+    if (this.parameterSubscription) this.parameterSubscription.unsubscribe();
   }
 }

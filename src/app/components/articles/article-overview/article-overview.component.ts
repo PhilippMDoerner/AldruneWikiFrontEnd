@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
@@ -15,7 +15,7 @@ import { I18nPluralPipe } from '@angular/common';
   templateUrl: './article-overview.component.html',
   styleUrls: ['./article-overview.component.scss'],
 })
-export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
+export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
   listItems: OverviewItemObject[];
   playerCharacters: OverviewItemObject[];
   isInitialAnimationFinished: boolean = false;
@@ -192,5 +192,9 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   padNumber(num: number, padCount: number, paddingCharacter="0"): string{
     const overlengthString: string = paddingCharacter.repeat(padCount) + num;
     return overlengthString.slice(padCount*-1);
+  }
+
+  ngOnDestroy(): void{
+    if (this.paramSubscription) this.paramSubscription.unsubscribe();
   }
 }
