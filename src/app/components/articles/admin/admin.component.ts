@@ -1,5 +1,7 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { PermissionGroup } from 'src/app/models/group';
 import { User, UserObject } from 'src/app/models/user';
@@ -17,8 +19,10 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.scss']
 })
-export class AdminComponent implements OnInit, AfterViewInit {
+export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('adminCard') adminCard: ElementRef;
+  parameterSubscription: Subscription;
+  campaign: string;
 
   // USER VARIABLES
   users: UserObject[];
@@ -47,15 +51,21 @@ export class AdminComponent implements OnInit, AfterViewInit {
     public routingService: RoutingService,
     private groupService: GroupService,
     public tokenService: TokenService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    this.parameterSubscription = this.route.params.subscribe(
+      params => this.campaign = params.campaign,
+      error => this.warnings.showWarning(error)
+    );
+
     this.userService.list().pipe(first()).subscribe(
       (users: UserObject[]) => {
         this.users = users.sort((user1 :UserObject, user2: UserObject) => {
           const username1: string = user1.username.toLocaleLowerCase();
           const username2: string = user2.username.toLocaleLowerCase();
-          return (username1 < username2) ? -1 : 1
+          return (username1 < username2) ? -1 : 1;
         });
       },
       error => this.warnings.showWarning(error)
@@ -137,9 +147,13 @@ export class AdminComponent implements OnInit, AfterViewInit {
 
   clearDatabase(): void{
     this.adminService.clearDatabase().pipe(first()).subscribe(
-      (response) => this.routingService.routeToPath('home1'),
+      (response) => this.routingService.routeToPath('home1', {campaign: this.campaign}),
       error => this.warnings.showWarning(error)
     )
+  }
+
+  ngOnDestroy(): void{
+    if (this.parameterSubscription) this.parameterSubscription.unsubscribe();
   }
 
 }
