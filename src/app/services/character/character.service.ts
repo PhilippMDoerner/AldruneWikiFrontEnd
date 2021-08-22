@@ -22,8 +22,8 @@ export class CharacterService extends GenericObjectService{
   }
 
   @TransformArrayObservable(OverviewItemObject)
-  getPlayerCharacters(): Observable<OverviewItem[]>{
-    const url = `${Constants.wikiApiUrl}/playercharacters`;
+  getPlayerCharacters(campaign: string): Observable<OverviewItem[]>{
+    const url = `${Constants.wikiApiUrl}/playercharacters/${campaign}`;
     return this.http.get<OverviewItem[]>(url);
   }
 
