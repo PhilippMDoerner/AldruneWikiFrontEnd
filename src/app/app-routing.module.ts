@@ -47,7 +47,7 @@ export const routes: Routes = [
 	//Redirect Routes
 	{
 		path: "",
-		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/${Constants.defaultCampaign}`,
+		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/${Constants.defaultCampaign}`,
 		pathMatch: 'full',
 		data: {name: 'start'}
 	},
