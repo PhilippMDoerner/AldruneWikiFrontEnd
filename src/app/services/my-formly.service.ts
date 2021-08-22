@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { FormlyCheckboxConfig, FormlyCustomSelectConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewDisabledSelectConfig, FormlyOverviewSelectConfig, FormlyPasswordInterface } from "src/app/models/formly";
 import { FormlyField, FormlyFieldConfig } from "@ngx-formly/core";
 import { OverviewService } from './overview.service';
+import { OverviewType } from '../app.constants';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,7 @@ export class MyFormlyService {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         labelProp: (config.labelProp) ? config.labelProp : "name_full",
         valueProp: (config.valueProp) ? config.valueProp : "pk",
-        options: this.selectOptionService.getOverviewItems(config.optionsType),
+        options: this.selectOptionService.getOverviewItems(config.campaign, config.overviewType),
         required: (typeof config.required === "boolean") ? config.required : true,
         disabled: config.disabled,
       },
@@ -63,7 +64,7 @@ export class MyFormlyService {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         labelProp: (config.labelProp) ? config.labelProp : "name_full",
         valueProp: (config.valueProp) ? config.valueProp : "pk",
-        options: this.selectOptionService.getOverviewItems(config.optionsType),
+        options: this.selectOptionService.getOverviewItems(config.campaign, config.overviewType),
         required: (typeof config.required === "boolean") ? config.required : true,
         disabledExpression: config.disabledExpression,
         tooltipMessage: config.tooltipMessage,
@@ -329,78 +330,78 @@ export class MyFormlyService {
     return s.charAt(0).toUpperCase() + s.slice(1);
   }
 
-  getFieldConfigForMarker(): FormlyFieldConfig[]{
-    return [
-      {
-        key: "latitude",
-        type: "input",
-        templateOptions:{
-          label: "Latitude",
-          type: "number",
-          required: true,
-        }
-      },
-      {
-        key: "longitude",
-        type: "input",
-        templateOptions:{
-          label: "Longitude",
-          type: "number",
-          required: true,
-        }
-      },
-      {
-        key: "location",
-        type: "select",
-        templateOptions:{
-          label: "Location",
-          labelProp: "name_full",
-          valueProp: "pk",
-          required: true,
-          options: this.selectOptionService.getOverviewItems('location'),
-        }
-      },
-      {
-        key: "map",
-        type: "select",
-        templateOptions:{
-          label: "Map",
-          labelProp: "name_full",
-          valueProp: "pk",
-          required: true,
-          options: this.selectOptionService.getOverviewItems('map'),
-        }
-      },
-      {
-        key: "type",
-        type: "select",
-        templateOptions:{
-          label: "Marker Type",
-          labelProp: "name_full",
-          valueProp: "pk",
-          options: this.selectOptionService.getOverviewItems('marker_type'),
-        }
-      },
-      {
-        key: "color",
-        type: "input",
-        templateOptions:{
-          label: "Custom Color",
-          type: "string"
-        }
-      },
-      {
-        key: "icon",
-        type: "input",
-        templateOptions:{
-          label: "Custom Icon",
-          type: "string"
-        }
-      }
-    ];
-  }
+  // getFieldConfigForMarker(): FormlyFieldConfig[]{
+  //   return [
+  //     {
+  //       key: "latitude",
+  //       type: "input",
+  //       templateOptions:{
+  //         label: "Latitude",
+  //         type: "number",
+  //         required: true,
+  //       }
+  //     },
+  //     {
+  //       key: "longitude",
+  //       type: "input",
+  //       templateOptions:{
+  //         label: "Longitude",
+  //         type: "number",
+  //         required: true,
+  //       }
+  //     },
+  //     {
+  //       key: "location",
+  //       type: "select",
+  //       templateOptions:{
+  //         label: "Location",
+  //         labelProp: "name_full",
+  //         valueProp: "pk",
+  //         required: true,
+  //         options: this.selectOptionService.getOverviewItems(config.campaign, OverviewType.Location),
+  //       }
+  //     },
+  //     {
+  //       key: "map",
+  //       type: "select",
+  //       templateOptions:{
+  //         label: "Map",
+  //         labelProp: "name_full",
+  //         valueProp: "pk",
+  //         required: true,
+  //         options: this.selectOptionService.getOverviewItems('map'),
+  //       }
+  //     },
+  //     {
+  //       key: "type",
+  //       type: "select",
+  //       templateOptions:{
+  //         label: "Marker Type",
+  //         labelProp: "name_full",
+  //         valueProp: "pk",
+  //         options: this.selectOptionService.getOverviewItems('marker_type'),
+  //       }
+  //     },
+  //     {
+  //       key: "color",
+  //       type: "input",
+  //       templateOptions:{
+  //         label: "Custom Color",
+  //         type: "string"
+  //       }
+  //     },
+  //     {
+  //       key: "icon",
+  //       type: "input",
+  //       templateOptions:{
+  //         label: "Custom Icon",
+  //         type: "string"
+  //       }
+  //     }
+  //   ];
+  // }
 
-  getFieldConfigForLocation(): FormlyFieldConfig[]{
+  getFieldConfigForLocation(campaign: string): FormlyFieldConfig[]{
     return [
       {
         key: "name",
@@ -420,7 +421,7 @@ export class MyFormlyService {
           label: "Parent Location",
           labelProp: "name_full",
           valueProp: "pk",
-          options: this.selectOptionService.getOverviewItems('location'),
+          options: this.selectOptionService.getOverviewItems(campaign, OverviewType.Location),
         }
       },
     ];

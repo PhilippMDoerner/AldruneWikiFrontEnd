@@ -1,3 +1,6 @@
+import { Type } from "@angular/core";
+import { OverviewType } from "../app.constants";
+
 export interface FormlyPasswordInterface{
     label?: string,
     className?: string,
@@ -21,7 +24,8 @@ export interface FormlyInterface{
 export interface FormlyOverviewSelectConfig extends FormlyInterface{
     labelProp?: string,
     valueProp?: string,
-    optionsType: string
+    overviewType: OverviewType,
+    campaign: string,
 }
 
 export interface FormlyOverviewDisabledSelectConfig extends FormlyOverviewSelectConfig{
