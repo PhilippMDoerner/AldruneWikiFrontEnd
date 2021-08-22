@@ -1,10 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Quest, QuestObject } from 'src/app/models/quest';
 import { QuestService } from 'src/app/services/quest.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
@@ -17,15 +19,24 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
   filterStateTypes: string[];
   filterStates: object;
   constants: any = Constants;
+  campaign: string;
+  parameterSubscription: Subscription;
 
   private quest_subscription: Subscription;
 
   constructor(
     private questService: QuestService,
     public routingService: RoutingService,
+    private route: ActivatedRoute,
+    private warning: WarningsService
   ) { super() }
 
   ngOnInit(): void {
+    this.parameterSubscription = this.route.params.subscribe(
+      params => this.campaign = params.campaign,
+      error => this.warning.showWarning(error)
+    );
+
     this.questService.list().pipe(first()).subscribe(
       (quests: QuestObject[]) => {
         this.quests = this.groupQuestsByTaker(quests);
