@@ -42,7 +42,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { Home2Component } from './components/home2/home2.component';
 
 
-
+//TODO: Swap all the overview URLs for every type to ones from the viewsets
 export const routes: Routes = [
 	//Redirect Routes
 	{
@@ -53,16 +53,15 @@ export const routes: Routes = [
 	},
 	//Home Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/:campaign/`, 
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/:campaign`, 
 		component: Home2Component, data:{ name: "home1"}, 
 		canActivate: [LoginGuardService]
 	},
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/:campaign`, 
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/:campaign`, 
 		component: Home2Component, data:{ name: "home2"}, 
 		canActivate: [LoginGuardService]
 	},
-
 	//Admin Routes
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/admin`,
