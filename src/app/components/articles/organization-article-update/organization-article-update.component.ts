@@ -20,8 +20,8 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
   //Defining ArticleFormMixin
   userModel: OrganizationObject;
   serverModel: Organization;
-  updateCancelRoute = {routeName: 'organization', params: {name: null }};
-  creationCancelRoute = {routeName: 'organization-overview', params: {}};
+  updateCancelRoute = {routeName: 'organization', params: {name: null, campaign: this.campaign }};
+  creationCancelRoute = {routeName: 'organization-overview', params: {campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),

@@ -20,8 +20,8 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
   //Defining ArticleFormMixin Properties
   userModel: MapObject;
   serverModel: Map;
-  updateCancelRoute = {routeName: 'map', params: {name: null}};
-  creationCancelRoute = {routeName: 'map', params: {name: Constants.defaultMapName}};
+  updateCancelRoute = {routeName: 'map', params: {name: null, campaign: this.campaign}};
+  creationCancelRoute = {routeName: 'map', params: {name: Constants.defaultMapName, campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true, required: true}),

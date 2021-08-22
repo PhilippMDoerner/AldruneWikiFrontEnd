@@ -21,8 +21,8 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
   //Defining ArticleFormMixin Properties
   userModel: SessionAudioObject;
   serverModel: SessionAudio;
-  updateCancelRoute = {routeName: "sessionaudio", params: {isMainSession: null, sessionNumber: null}};
-  creationCancelRoute = {routeName: "sessionaudio-overview", params: {}};
+  updateCancelRoute = {routeName: "sessionaudio", params: {isMainSession: null, sessionNumber: null, campaign: this.campaign}};
+  creationCancelRoute = {routeName: "sessionaudio-overview", params: {campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericSelect({key: "session", overviewType: OverviewType.Session, campaign: this.campaign, wrappers: ["session-update-wrapper"]}),

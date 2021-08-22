@@ -5,6 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Creature, CreatureObject } from 'src/app/models/creature';
+import { CampaignService } from 'src/app/services/campaign.service';
 import { CreatureService } from 'src/app/services/creature/creature.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -20,8 +21,8 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
   //Defining ArticleFormMixin Properties
   serverModel: CreatureObject;
   userModel: Creature;
-  updateCancelRoute = {routeName: "creature", params: {name: null}};
-  creationCancelRoute = {routeName: "creature-overview", params: {}};
+  updateCancelRoute = {routeName: "creature", params: {name: null, campaign: this.campaign}};
+  creationCancelRoute = {routeName: "creature-overview", params: {campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
@@ -36,6 +37,7 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
     route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    public campaignService: CampaignService,
   ) {
     super(
       router, 
@@ -45,27 +47,38 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
       route
     );
   }
-
+  //TODO: move ngoninit into articleformmixin
   ngOnInit(): void {
-
     this.parameter_subscription = this.route.params.subscribe(params => {
       if (this.isInUpdateState()){
         const creatureName: string = params.name;
-
         //Update Cancel Route Params
         this.updateCancelRoute.params.name = creatureName;
 
-        //Get Creature 
-        this.articleService.readByParam(this.campaign, creatureName).pipe(first()).subscribe(
-          (creature: CreatureObject) =>  this.userModel = creature, 
-          error => this.routingService.routeToErrorPage(error)
-        );
+        this.fetchUserModel(creatureName);
 
       } else if (this.isInCreateState()) {
-        this.userModel = new CreatureObject();
+        this.createUserModel();
       }
     })
 
+  }
+
+  fetchUserModel(creatureName: string): void{
+    this.articleService.readByParam(this.campaign, creatureName).pipe(first()).subscribe(
+      (creature: CreatureObject) =>  this.userModel = creature, 
+      error => this.routingService.routeToErrorPage(error)
+    );
+  }
+
+  createUserModel(): void{
+    this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
+      (campaignData: {name: String, pk: number}) => {
+        this.userModel = new CreatureObject();
+        this.userModel.campaign = campaignData.pk;
+      },
+      error => this.warnings.showWarning(error)
+    )
   }
 
   ngOnDestroy(){

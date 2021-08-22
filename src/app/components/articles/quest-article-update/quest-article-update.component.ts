@@ -20,8 +20,8 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
   //Defining ArticleFormMixin Properties
   userModel: QuestObject;
   serverModel: Quest;
-  updateCancelRoute = {routeName: "quest", params: {name: null}};
-  creationCancelRoute = {routeName: "quest-overview", params: {}};
+  updateCancelRoute = {routeName: "quest", params: {name: null, campaign: this.campaign}};
+  creationCancelRoute = {routeName: "quest-overview", params: {campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", placeholder: "Quest Name", isNameInput: true}),

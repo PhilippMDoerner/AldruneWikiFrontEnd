@@ -21,8 +21,8 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin implements 
   //Defining ArticleFormMixin Properties
   serverModel: Location;
   userModel: LocationObject;
-  updateCancelRoute = {routeName: "location", params: {name: null, parent_name: null}};
-  creationCancelRoute = {routeName: "location-overview", params: {}};//Only used when creating normally, not when creating item for a specific character
+  updateCancelRoute = {routeName: "location", params: {name: null, parent_name: null, campaign: this.campaign}};
+  creationCancelRoute = {routeName: "location-overview", params: {campaign: this.campaign}};//Only used when creating normally, not when creating item for a specific character
   
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),

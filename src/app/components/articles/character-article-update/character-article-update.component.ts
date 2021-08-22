@@ -15,6 +15,7 @@ import { CharacterPlayerClassConnection, PlayerClass } from 'src/app/models/play
 import { PlayerClassService } from 'src/app/services/player-class.service';
 import { CharacterPlayerClassConnectionService } from 'src/app/services/character-player-class-connection.service';
 import { OverviewType } from 'src/app/app.constants';
+import { CampaignService } from 'src/app/services/campaign.service';
 
 @Component({
   selector: 'app-character-article-update',
@@ -26,8 +27,8 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
   //Defining ArticleFormMixin Properties
   serverModel: CharacterObject;
   userModel: CharacterObject;
-  updateCancelRoute = {routeName: "character", params: {name: null}};
-  creationCancelRoute = {routeName: "character-overview", params: {}};
+  updateCancelRoute = {routeName: "character", params: {name: null, campaign: this.campaign}};
+  creationCancelRoute = {routeName: "character-overview", params: {campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericCheckbox({key: "player_character", label: "Player Character", defaultValue: false}),
@@ -56,6 +57,7 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
     public routingService: RoutingService,
     private playerClassService: PlayerClassService,
     private characterConnectionService: CharacterPlayerClassConnectionService,
+    private campaignService: CampaignService,
   ) { 
     super(
       router,
@@ -74,17 +76,29 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
 
         //Update Cancel Route Params
         this.updateCancelRoute.params.name = character_name;
-
-        //Get character
-        this.articleService.readByParam(this.campaign, character_name).pipe(first()).subscribe(
-          (character: CharacterObject) => this.userModel = character, 
-          error => this.routingService.routeToErrorPage(error)
-        );
+        
+        this.fetchUserModel(character_name)
       } else if (this.isInCreateState()) {
-        this.userModel = new CharacterObject();
+        this.createUserModel();
       }
     });
+  }
 
+  fetchUserModel(character_name: string): void{
+    this.articleService.readByParam(this.campaign, character_name).pipe(first()).subscribe(
+      (character: CharacterObject) => this.userModel = character, 
+      error => this.routingService.routeToErrorPage(error)
+    );
+  }
+
+  createUserModel(): void{
+    this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
+      (campaignData: {name: String, pk: number}) => {
+        this.userModel = new CharacterObject();
+        this.userModel.campaign = campaignData.pk;
+      },
+      error => this.warnings.showWarning(error)
+    )
   }
 
   toggleConnectionCreateState(){

@@ -23,9 +23,9 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
   serverModel: DiaryEntryObject;
   userModel: DiaryEntryObject;
   updateCancelRoute = {routeName: "diaryentry", params: {
-    sessionNumber: null, isMainSession: null, authorName: null
+    sessionNumber: null, isMainSession: null, authorName: null, campaign: this.campaign
   }};
-  creationCancelRoute = {routeName: "diaryentry-overview", params: {}};
+  creationCancelRoute = {routeName: "diaryentry-overview", params: {campaign: this.campaign}};
   
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title", isNameInput: true}),

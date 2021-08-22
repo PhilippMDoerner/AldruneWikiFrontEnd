@@ -23,8 +23,8 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnIn
   //Defining ArticleFormMixin Properties
   serverModel: Item;
   userModel: ItemObject;
-  updateCancelRoute = {routeName: "item", params: {name: null }};
-  creationCancelRoute = {routeName: "item-overview", params: {}};//Only used when creating normally, not when creating item for a specific character
+  updateCancelRoute = {routeName: "item", params: {name: null, campaign: this.campaign }};
+  creationCancelRoute = {routeName: "item-overview", params: {campaign: this.campaign}};//Only used when creating normally, not when creating item for a specific character
   
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
