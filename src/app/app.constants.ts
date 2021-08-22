@@ -60,7 +60,7 @@ export class Constants{
         'spell': 'violet',
     }}
 
-    public static get articleTypeMetaData(): object { 
+    public static get articleTypeMetaData(): object[] { 
       return [
         {
           title: "Home",
@@ -334,4 +334,24 @@ export class Constants{
         { value: 'Transmutation', label: 'Transmutation'}
       ]
     }
+}
+
+
+export enum OverviewType{
+  Character,
+  Creature,
+  Diaryentry,
+  Encounter,
+  Item,
+  Location,
+  Map,
+  MarkerType,
+  Organization,
+  Quest,
+  Quote,
+  Rule,
+  Session,
+  Sessionaudio,
+  Spell,
+  User
 }
