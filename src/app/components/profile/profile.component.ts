@@ -1,6 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
+import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { UserObject } from 'src/app/models/user';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -14,9 +16,11 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('profileCard') profileCard: ElementRef;
   user: UserObject;
+  parameterSubscription: Subscription;
+  campaign: string;
 
   profileEditState: boolean = false;
   passwordEditState: boolean = false;
@@ -38,6 +42,7 @@ export class ProfileComponent implements OnInit {
     public routingService: RoutingService,
     private formlyService: MyFormlyService,
     private warnings : WarningsService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
@@ -45,6 +50,11 @@ export class ProfileComponent implements OnInit {
       (user: UserObject) => this.user = user,
       error => this.routingService.routeToPath(error)
     );
+
+    this.parameterSubscription = this.route.params.subscribe(
+      params => this.campaign = params.campaign,
+      error => this.warnings.showWarning(error)
+    )
   }
 
   ngAfterViewInit(): void{
@@ -94,6 +104,10 @@ export class ProfileComponent implements OnInit {
 
   deleteThisUser(): void{
 
+  }
+
+  ngOnDestroy(): void{
+    if(this.parameterSubscription) this.parameterSubscription.unsubscribe();
   }
 
 }

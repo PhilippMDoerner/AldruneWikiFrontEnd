@@ -45,7 +45,7 @@
         <div class="mt-5">
             <app-article-footer
             (delete)="deleteThisUser()"
-            [link]="routingService.getRoutePath('home1')"
+            [link]="routingService.getRoutePath('home1', {campaign: campaign})"
             [label]="'Home'"
             [deleteMessage]="'Delete your account?'"
             ></app-article-footer>
