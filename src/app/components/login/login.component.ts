@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   extraMessage: string;
   parameter_subscription: Subscription;
   hasConfirmedLogin: boolean = false;
+  campaign: string;
 
   isRequestingPasswordReset: boolean = false;
   reset_subscription: Subscription;
@@ -55,6 +56,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe( params => {
+      this.campaign = Constants.defaultCampaign;
       this.state = params['state'];
       this.extraMessage = Constants.loginMessageForState[this.state];
     })
@@ -73,7 +75,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     this.tokenService.getJWTToken(this.model).pipe(first()).subscribe( jwtTokens => {
       this.tokenService.setTokens(jwtTokens);
       animateElement(this.loginMainCard.nativeElement, 'zoomOutDown')
-        .then(() => this.routingService.routeToPath('home1'));
+        .then(() => this.routingService.routeToPath('home1', {campaign: Constants.defaultCampaign})); //TODO: Change the route to one of a campaign overview, which likely needs to be newly created
     }, error => {
       if(error.status === 401){
         this.routingService.routeToPath('login-state', {state: 'invalid-login'}); 
