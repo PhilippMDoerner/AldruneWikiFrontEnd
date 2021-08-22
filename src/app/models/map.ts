@@ -16,12 +16,14 @@ export class MapObject implements ExtendedMap{
     icon: string;
     image: string;
     pk?: number;
+    campaign_details: {pk: number, name: string};
 
     constructor(object?: Map){
         if(object) Object.assign(this, object);
     }
 
     getAbsoluteRouterUrl(): string{
-        return `${Constants.wikiUrlFrontendPrefix}/map/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/map/${this.campaign_details.name}/${this.name}`;
+        //return this.routingService.getRoutePath("map", {campaign: this.campaign_details.name, name: this.name});
     }
 }

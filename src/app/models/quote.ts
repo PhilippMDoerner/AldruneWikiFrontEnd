@@ -1,4 +1,3 @@
-import { QuoteConnectionService } from "../services/quote-connection.service";
 import { Session } from "./session";
 
 export interface Quote{

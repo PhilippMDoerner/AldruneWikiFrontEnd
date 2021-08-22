@@ -40,12 +40,14 @@ export class SpellObject implements Spell{
     player_class_connections: SpellPlayerClassConnection[]
     name?: string;
     pk?: number;
+    campaign_details: {pk: number, name: string};
 
     constructor(object?: Spell){
         if (object) Object.assign(this, object)
     }
 
     getAbsoluteRouterUrl(): string{
-        return `${Constants.wikiUrlFrontendPrefix}/spells/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/spells/${this.campaign_details.name}/${this.name}`;
+        // return this.routingService.getRoutePath("spell", {campaign: this.campaign_details.name, name: this.name});
     }
 }

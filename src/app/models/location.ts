@@ -55,6 +55,7 @@ export class LocationObject implements Location{
     parent_location_list?: string[];
     marker_details?: [{map: string, map_icon: string}];
     images?: Image[];
+    campaign_details: {pk: number, name: string};
 
     constructor(object?: Location){
         if (object) Object.assign(this, object)
@@ -62,12 +63,24 @@ export class LocationObject implements Location{
 
     getAbsoluteRouterUrl(): string{
         if (!this.parent_location_details) throw "Can't generate URL for Location object without parent_location_details";
-        return `${Constants.wikiUrlFrontendPrefix}/location/${this.parent_location_details.name}/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/location/${this.campaign_details.name}/${this.parent_location_details.name}/${this.name}`;
+
+        // return this.routingService.getRoutePath("location", {
+        //     name: this.name,
+        //     parent_name: this.parent_location_details.name,
+        //     campaign: this.campaign_details.name
+        // });
     }
 
     getAbsoluteRouterUrlForParentLocation(): string{
         if (!this.parent_location_details) throw "Can't generate URL for Parent-Location of Location object without parent_location_details";
-        return `${Constants.wikiUrlFrontendPrefix}/location/${this.parent_location_details.parent_location}/${this.parent_location_details.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/location/${this.campaign_details.name}/${this.parent_location_details.parent_location}/${this.parent_location_details.name}`;
+
+        // return this.routingService.getRoutePath("location", {
+        //     name: this.parent_location_details.name,
+        //     parent_name: this.parent_location_details.parent_location,
+        //     campaign: this.campaign_details.name
+        // });    
     }
 }
 

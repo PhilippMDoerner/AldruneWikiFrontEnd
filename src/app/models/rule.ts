@@ -15,12 +15,14 @@ export class RuleObject implements Rule{
     creation_datetime?: string;
     update_datetime?: string;
     description: string;
+    campaign_details: {pk: number, name: string};
 
     constructor(object?: Rule){
         if (object) Object.assign(this, object)
     }
 
     getAbsoluteRouterUrl(): string{
-        return `${Constants.wikiUrlFrontendPrefix}/rules/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/rules/${this.campaign_details.name}/${this.name}`;
+        // return this.routingService.getRoutePath("rule", {campaign: this.campaign_details.name, name: this.name});
     }
 }

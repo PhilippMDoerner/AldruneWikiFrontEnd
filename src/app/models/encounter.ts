@@ -1,5 +1,5 @@
 import { EncounterConnection } from "src/app/models/encounterconnection";
-import { Constants } from '../app.constants';
+import { Constants } from "../app.constants";
 import { ArticleObject } from './base-models';
 
 export interface Encounter extends ArticleObject{
@@ -49,6 +49,7 @@ export class EncounterObject implements Encounter {
         session_number: number,
     };
     order_index: number;
+    campaign_details: {pk: number, name: string};
 
 
     constructor(object?: Encounter){
@@ -94,11 +95,23 @@ export class EncounterObject implements Encounter {
             console.log(this.diaryentry_details);
             throw `Can't generate URL for Encounter object without all necessary information! I only have this:`;
         }
-        return `${Constants.wikiUrlFrontendPrefix}/diaryentry/${this.diaryentry_details.session_number}/${this.diaryentry_details.is_main_session}/${this.diaryentry_details.author_name}/${this.title}`;
+        return `${Constants.wikiUrlFrontendPrefix}/diaryentry/${this.campaign_details.name}/${this.diaryentry_details.session_number}/${this.diaryentry_details.is_main_session}/${this.diaryentry_details.author_name}/${this.title}`;
+
+        // return this.routingService.getRoutePath("diaryentry-encounter", {
+        //     campaign: this.campaign_details.name, 
+        //     sessionNumber: this.diaryentry_details.session_number,
+        //     isMainSession: this.diaryentry_details.is_main_session,
+        //     authorName: this.diaryentry_details.author_name,
+        //     encounterTitle: this.title
+        // });
     }
 
-    getAbsoluteLocationRouterUrl(): string{
-        if (!this.location_details) throw "Can't generate URL for Location of Encounter object without locatoin_details !";
-        return `${Constants.wikiUrlFrontendPrefix}/location/${this.location_details.parent_location_name}/${this.location_details.name}`;
-    }
+    // getAbsoluteLocationRouterUrl(): string{
+    //     if (!this.location_details) throw "Can't generate URL for Location of Encounter object without locatoin_details !";
+    //     return this.routingService.getRoutePath("location", {
+    //         name: this.location_details.name,
+    //         parent_name: this.location_details.parent_location_name,
+    //         campaign: this.campaign_details.name
+    //     });
+    // }
 }

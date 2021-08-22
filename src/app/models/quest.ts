@@ -1,5 +1,5 @@
 import { Session } from "src/app/models/session";
-import { Constants } from '../app.constants';
+import { Constants } from "../app.constants";
 import { ArticleObject } from './base-models';
 
 export interface Quest extends ArticleObject{
@@ -30,12 +30,15 @@ export class QuestObject implements Quest{
     end_session: number;
     end_session_details?: Session;
     pk?: number;
+    campaign_details: {pk: number, name: string};
 
     constructor(object?: Quest){
         if (object) Object.assign(this, object)
     }
 
     getAbsoluteRouterUrl(): string{
-        return `${Constants.wikiUrlFrontendPrefix}/quest/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/quest/${this.campaign_details.name}/${this.name}`;
+
+        // return this.routingService.getRoutePath("quest", {campaign: this.campaign_details.name, name: this.name});
     }
 }

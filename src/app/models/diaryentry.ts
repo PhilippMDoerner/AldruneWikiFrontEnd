@@ -43,6 +43,7 @@ export class DiaryEntryObject implements DiaryEntry{
         next_diaryentry: diaryEntryStump;
         prior_diaryentry: diaryEntryStump;
     };
+    campaign_details: {pk: number, name: string};
 
 
     constructor(object?: DiaryEntry){
@@ -52,6 +53,13 @@ export class DiaryEntryObject implements DiaryEntry{
     getAbsoluteRouterUrl(): string{
         if (!this.session_details) throw "Can't generate URL for diaryEntry object without Session Details";
         if (!this.session_details) throw "Can't generate URL for diaryEntry object without author_Details";
-        return `${Constants.wikiUrlFrontendPrefix}/diaryentry/${this.session_details.session_number}/${this.session_details.is_main_session_int}/${this.author_details.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/diaryentry/${this.campaign_details.name}/${this.session_details.session_number}/${this.session_details.is_main_session_int}/${this.author_details.name}`;
+
+        // return this.routingService.getRoutePath("diaryentry", {
+        //     campaign: this.campaign_details.name, 
+        //     sessionNumber: this.session_details.session_number,
+        //     isMainSession: this.session_details.is_main_session_int,
+        //     authorName: this.author_details.name
+        // })
     }
 }

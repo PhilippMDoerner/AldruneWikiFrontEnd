@@ -74,8 +74,10 @@ export class CharacterObject implements Character{
     encounters?: characterEncounter[];
     images?: Image[];
     player_class_connections?: CharacterPlayerClassConnection[];
+    campaign_details: {pk: number, name: string}
 
     getAbsoluteRouterUrl(): string{
-        return `${Constants.wikiUrlFrontendPrefix}/character/${this.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/character/${this.campaign_details.name}/${this.name}`;
+        //return this.routingService.getRoutePath("character", {campaign: this.campaign_details.name, name: this.name})
     }
 }
