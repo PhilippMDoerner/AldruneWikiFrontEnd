@@ -1,7 +1,7 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import { OverviewService } from 'src/app/services/overview.service';
 import { Constants } from 'src/app/app.constants';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
@@ -19,6 +19,8 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   listItems: OverviewItemObject[];
   playerCharacters: OverviewItemObject[];
   isInitialAnimationFinished: boolean = false;
+  campaign: string;
+  paramSubscription: Subscription;
 
   @ViewChildren("filter") filterField: QueryList<ElementRef>;
 
@@ -70,14 +72,19 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     private router: Router,  
     public routingService: RoutingService,
     private characterService: CharacterService,
+    private route: ActivatedRoute
   ) { super() }
 
   ngOnInit(): void {
+    this.paramSubscription = this.route.params.subscribe(params => {
+      this.campaign = params.campaign;
+    });
+
     const urlSplit: string[] = this.router.url.split('/');
-    this.overviewType = urlSplit[urlSplit.length - 1];
+    this.overviewType = urlSplit[urlSplit.length - 2];
     const configs: any = this.overviewTypeMetaData[this.overviewType];
 
-    const listItemObs: Observable<OverviewItem[]> = this.overviewService.getOverviewItems(this.overviewType);
+    const listItemObs: Observable<OverviewItem[]> = this.overviewService.getOverviewItems(this.campaign, this.overviewType);
     listItemObs.pipe(first()).subscribe(
       (listItems: OverviewItemObject[]) => {
         this.listItems = listItems;

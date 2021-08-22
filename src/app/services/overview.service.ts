@@ -9,15 +9,19 @@ import { TransformArrayObservable } from '../utils/functions/transform';
   providedIn: 'root'
 })
 export class OverviewService {
-  overviewUrl: string = `${Constants.wikiApiUrl}/overview`;
+  overviewUrl: string = `${Constants.wikiApiUrl}`;
 
   constructor(
     private http : HttpClient,
   ) { }
 
   @TransformArrayObservable(OverviewItemObject)
-  getOverviewItems(overviewType: string): Observable<OverviewItem[]>{
-    const url = `${this.overviewUrl}/${overviewType}/fast`;
+  getOverviewItems(campaign: string, overviewType: string): Observable<OverviewItem[]>{
+    const url = this.createOverviewUrl(campaign, overviewType);
     return this.http.get<OverviewItem[]>(url,);
+  }
+
+  private createOverviewUrl(campaign: string, overviewType: string): string{
+    return `${this.overviewUrl}/${overviewType}/${campaign}/overview/`;
   }
 }
