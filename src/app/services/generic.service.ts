@@ -18,7 +18,7 @@ export abstract class GenericService {
   }
 
   campaignList(campaign: string): Observable<any[]>{
-    return this.http.get<any[]>(`${this.baseUrl}/${campaign}`);
+    return this.http.get<any[]>(`${this.baseUrl}/${campaign}/overview`);
   }
 
   create(data: any): Observable<any>{
