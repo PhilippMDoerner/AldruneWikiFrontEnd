@@ -1,17 +1,17 @@
 <div class="main" #overviewMainCard>
     <article *ngIf="listItems; else loading" class="pr-4 pl-4 container">
         <!-- Heading -->
-        <div class="row" *ngIf="overviewType">
-            <h1 class="major col mb-4 pb-1 border-bottom">{{ overviewTypeMetaData[overviewType].heading }}</h1>
+        <div class="row" *ngIf="overviewTypeName">
+            <h1 class="major col mb-4 pb-1 border-bottom">{{ overviewTypeMetaData[overviewTypeName].heading }}</h1>
         </div>
 
         <!-- Image -->
-        <div class="row" *ngIf="overviewType!==characterOverview">
-            <img class="col px-0 mb-4" src="{{overviewTypeMetaData[overviewType].image}}" alt="Image indicating the overview type"/>
+        <div class="row" *ngIf="overviewTypeName!==characterOverview">
+            <img class="col px-0 mb-4" src="{{overviewTypeMetaData[overviewTypeName].image}}" alt="Image indicating the overview type"/>
         </div>
 
         <!-- Character OverView Snippet | PC List-->
-        <div *ngIf="overviewType===characterOverview" id="player-characters">
+        <div *ngIf="overviewTypeName===characterOverview" id="player-characters">
             <!-- PC List Heaidng -->
             <div class="row">
                 <h3 class="col mb-0"> Player Characters </h3>
@@ -36,7 +36,7 @@
         <div class="mb-3 row" *ngIf="hasCreatePermission">
             <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
                 <i class="fa fa-plus"></i>
-                Add {{ overviewType | titlecase }}
+                Add {{ overviewTypeName | titlecase }}
             </a>
         </div>
 
@@ -45,7 +45,7 @@
             <input
             type="text"
             id="filter_input"
-            placeholder="Search for {{ overviewType }}..."
+            placeholder="Search for {{ overviewTypeName }}..."
             class="filter-bar mt-2 mb-4 w-100 col"
             #filter
             (keyup)="filterListItems()"
@@ -53,7 +53,7 @@
         </form>
 
         <!-- Character Overview Snippet | NPC List -->
-        <div *ngIf="overviewType===characterOverview">
+        <div *ngIf="overviewTypeName===characterOverview">
             <!-- NPC List Heading -->
             <div class="row">
                 <h3 class="mb-3 col"> Non-Player Characters </h3>
@@ -88,7 +88,7 @@
         </div>
 
         <!-- DiaryEntry Overview -->
-        <div *ngIf="overviewType===diaryentryOverview">
+        <div *ngIf="overviewTypeName===diaryentryOverview">
             <div *ngFor="let authorDiaryEntries of listItems | groupBy: 'author_details.name'">
                 <!-- Author Heading -->
                 <div class="row">
@@ -112,7 +112,7 @@
         </div>
         
         <!-- Item/Creature/Organization/Location Overview -->
-        <div class="row" *ngIf="overviewType===itemOverview || overviewType===creatureOverview || overviewType===organizationOverview || overviewType===locationOverview">
+        <div class="row" *ngIf="overviewTypeName===itemOverview || overviewTypeName===creatureOverview || overviewTypeName===organizationOverview || overviewTypeName===locationOverview">
             <div 
             *ngFor="let itemLetterEntries of listItems | groupByFirstLetter: 'name_full'"
             [ngClass]="{'py-4 col-md-6 border-bottom': !filter.value, 'col-12': filter.value}"
