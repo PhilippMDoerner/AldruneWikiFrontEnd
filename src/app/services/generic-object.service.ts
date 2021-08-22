@@ -20,7 +20,7 @@ export abstract class GenericObjectService{
   }
 
   campaignList(campaign: string): Observable<any[]>{
-    const dataObs: Observable<any[]> = this.http.get<any[]>(`${this.baseUrl}/${campaign}`);
+    const dataObs: Observable<any[]> = this.http.get<any[]>(`${this.baseUrl}/${campaign}/`);
     return transformObservableArrayContent(dataObs, this.objectClass);
   }
 
@@ -60,7 +60,7 @@ export abstract class GenericObjectService{
       throw "You tried to use readByParam without specifying which param you're querying for";
     }
 
-    const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/${params}/`);
+    const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/${campaign}/${params}/`);
     return transformObservableContent(dataObs, this.objectClass);
   }
 
