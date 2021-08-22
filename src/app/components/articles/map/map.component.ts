@@ -56,7 +56,7 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
         error => this.routingService.routeToErrorPage(error)
       );
 
-      this.overviewService.getOverviewItems('map').pipe(first()).subscribe(
+      this.articleService.campaignList(this.campaign).pipe(first()).subscribe(
         (overviewItems: OverviewItemObject[]) => this.maps = overviewItems,
         error => this.routingService.routeToErrorPage(error)
       );

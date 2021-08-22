@@ -15,8 +15,6 @@ let DefaultIcon = L.icon({
   iconAnchor: [12,36]
 });
 
-//L.Marker.prototype.options.icon = DefaultIcon;
-
 
 @Component({
   selector: 'app-leaflet-map',
@@ -25,6 +23,8 @@ let DefaultIcon = L.icon({
 })
 export class LeafletMapComponent implements OnInit, AfterContentInit {
   @Input() map: ExtendedMap;
+  @Input() campaign: string;
+
   private leafletMap;
   constructor(
     private router: Router,  
@@ -36,6 +36,7 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
   hideCoordinatesState: boolean = true;
 
   ngOnInit(): void {
+    console.log(this.map)
   }
 
   ngAfterContentInit(){
@@ -77,13 +78,15 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
     const markerMapCreateUrl: string = this.routingService.getRoutePath('marker-map-create', {
       latitude: latitude,
       longitude: longitude,
-      map_name: this.map.name
+      map_name: this.map.name,
+      campaign: this.campaign,
     });
 
     const locationMapCreateUrl: string = this.routingService.getRoutePath('location-map-create', {
       latitude: latitude, 
       longitude: longitude, 
-      map_name: this.map.name
+      map_name: this.map.name,
+      campaign: this.campaign
     });
 
     const popupContentHTML: string = `
@@ -168,7 +171,11 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
   }
 
   makeLocationHeading(marker: MapMarkerObject): string{
-    const location_url = `${Constants.wikiUrlFrontendPrefix}/location/${marker.location_details.parent_location_name}/${marker.location_details.name}`;
+    const location_url = this.routingService.getRoutePath("location", {
+      campaign: this.campaign, 
+      parent_name: marker.location_details.parent_location_name,
+      name: marker.location_details.name
+    });
     const heading: string = `<a href="${location_url}"> <b>${marker.location_details.name}</b> </a>`
     return heading;
   }
@@ -187,7 +194,8 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
       for(let sublocationName of marker.location_details.sublocations){
         const sublocationUrl = this.routingService.getRoutePath('location', {
           parent_name: marker.location_details.name,
-          name: sublocationName
+          name: sublocationName,
+          campaign: this.campaign,
         });
         sublocationList += `<li><a href="${sublocationUrl}"> ${sublocationName}</a></li>`
       }
