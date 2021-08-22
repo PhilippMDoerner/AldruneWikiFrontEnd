@@ -96,7 +96,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     );
 
     if(this.overviewType === this.characterOverview){
-      this.characterService.getPlayerCharacters().pipe(first()).subscribe(
+      this.characterService.getPlayerCharacters(this.campaign).pipe(first()).subscribe(
         (playerCharacters: OverviewItemObject[]) => this.playerCharacters = playerCharacters,
         error => this.routingService.routeToErrorPage(error)
       )
