@@ -57,7 +57,7 @@ export abstract class GenericObjectService{
     }
 
     if(campaign == null){
-      throw "You tried to use readByParam without specifying which param you're querying for";
+      throw "You tried to use readByParam without specifying which campaign you're querying for";
     }
 
     const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/${campaign}/${params}/`);
