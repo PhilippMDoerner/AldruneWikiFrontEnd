@@ -1,11 +1,9 @@
 import { Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
-import { first } from 'rxjs/operators';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { OverviewItem } from 'src/app/models/overviewItem';
-import { Article, OverviewArticleObject } from 'src/app/models/recentlyUpdatedArticle';
-import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
 import { RoutingService } from 'src/app/services/routing.service';
-import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-home2',
@@ -17,14 +15,21 @@ export class Home2Component implements OnInit {
 
   searchString: string;
   constants = Constants;
+  campaign: string;
+  parameterSubscription: Subscription;
 
   recentlyUpdatedArticles: OverviewItem[];
 
   constructor(
     private routingService: RoutingService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    this.parameterSubscription = this.route.params.subscribe(
+      params => this.campaign = params.campaign,
+      error => this.routingService.routeToErrorPage(error)
+    )
   }
 
   sidebarColor(articleType: string): string{
@@ -42,7 +47,7 @@ export class Home2Component implements OnInit {
     const isInvalidSearchString = this.searchString == null || this.searchString === ""
     if (isInvalidSearchString) return; //TODO: Make this route to some kind of help page instead
 
-    this.routingService.routeToPath('search', {searchString: this.searchString});
+    this.routingService.routeToPath('search', {campaign: this.campaign, searchString: this.searchString});
   }
 
   /** Necessary to still allow selecting the search field on this page. Else the "preventDefault" bit on the touch events blocks that */

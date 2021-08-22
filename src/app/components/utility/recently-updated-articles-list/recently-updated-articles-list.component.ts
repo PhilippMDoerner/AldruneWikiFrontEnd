@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
@@ -13,6 +14,8 @@ import { WarningsService } from 'src/app/services/warnings.service';
 })
 export class RecentlyUpdatedArticlesListComponent implements OnInit {
   articles: OverviewItemObject[];
+  @Input() campaign: string;
+
 
   constants: Constants = Constants;
   pageNumber: number = 0;
@@ -25,7 +28,7 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.recentUpdatesServices.getRecentlyUpdatedArticle(this.pageNumber).pipe(first()).subscribe(
+    this.recentUpdatesServices.getRecentlyUpdatedArticle(this.campaign, this.pageNumber).pipe(first()).subscribe(
       (articles: OverviewItemObject[]) => this.articles = articles,
       error => this.routingService.routeToErrorPage(error)
     );
@@ -79,7 +82,7 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
     this.pageNumber += 1;
     this.isLoadingNextPage = true;
 
-    this.recentUpdatesServices.getRecentlyUpdatedArticle(this.pageNumber).pipe(first()).subscribe(
+    this.recentUpdatesServices.getRecentlyUpdatedArticle(this.campaign, this.pageNumber).pipe(first()).subscribe(
       (articles: OverviewItemObject[]) => {
         this.articles = this.articles.concat(articles);
         this.isLoadingNextPage = false;
