@@ -2,11 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Constants } from '../app.constants';
 import { User, UserObject } from "src/app/models/user";
-import { first } from 'rxjs/operators';
 import { Observable, of } from 'rxjs';
-import { Router } from '@angular/router';
 import { TokenService } from './token.service';
-import { TransformArrayObservable, TransformObservable } from '../utils/functions/transform';
+import { TransformObservable } from '../utils/functions/transform';
 import { GenericObjectService } from './generic-object.service';
 
 
