@@ -1,21 +1,25 @@
-import { AfterContentInit, AfterViewInit, Component, ElementRef, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { SpellObject, SpellPlayerClassConnection } from 'src/app/models/spell';
 import { RoutingService } from 'src/app/services/routing.service';
 import { SpellService } from 'src/app/services/spell.service';
 import { TokenService } from 'src/app/services/token.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-spells',
   templateUrl: './spells.component.html',
   styleUrls: ['./spells.component.scss']
 })
-export class SpellsComponent implements OnInit, AfterViewInit {
+export class SpellsComponent implements OnInit, AfterViewInit, OnDestroy {
   panelIsOpenArray: boolean[];
   spells: SpellObject[];
   constants: any = Constants;
+  campaign: string;
+  paramSubscription: Subscription;
 
   selectedClasses: String[] = []; 
 
@@ -25,20 +29,28 @@ export class SpellsComponent implements OnInit, AfterViewInit {
     private spellService: SpellService,
     public routingService: RoutingService,
     public tokenService: TokenService,
-    private route: ActivatedRoute  
+    private route: ActivatedRoute,
+    private warning: WarningsService
   ) { }
 
   ngOnInit(): void {
-    this.spellService.list().pipe(first()).subscribe(
-      (spells: SpellObject[]) => {
-        this.spells = spells.sort((spell1, spell2) => spell1.name < spell2.name ? -1 : 1);
-        
-        this.panelIsOpenArray = [];
-        for (let spell of spells){
-          this.panelIsOpenArray.push(true);
-        };
+    this.paramSubscription = this.route.params.subscribe(
+      params => {
+        this.campaign = params.campaign;
+
+        this.spellService.campaignList(this.campaign).pipe(first()).subscribe(
+          (spells: SpellObject[]) => {
+            this.spells = spells.sort((spell1, spell2) => spell1.name < spell2.name ? -1 : 1);
+            
+            this.panelIsOpenArray = [];
+            for (let spell of spells){
+              this.panelIsOpenArray.push(true);
+            };
+          },
+          error => this.routingService.routeToErrorPage(error)
+        );
       },
-      error => this.routingService.routeToErrorPage(error)
+      error => this.warning.showWarning(error) 
     );
   }
 
@@ -82,5 +94,9 @@ export class SpellsComponent implements OnInit, AfterViewInit {
 
   onSpellDelete(index: number){
     this.spells.splice(index, 1);
+  }
+
+  ngOnDestroy(): void{
+    if(this.paramSubscription) this.paramSubscription.unsubscribe();
   }
 }
