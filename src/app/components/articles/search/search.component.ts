@@ -17,6 +17,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   searchString: string;
   emptySearchSubtitle: string;
   filterOptions: string[] = [];
+  campaign: string;
 
   constants: any = Constants;
 
@@ -44,7 +45,9 @@ export class SearchComponent implements OnInit, OnDestroy {
   ngOnInit(): void {    
     this.parameter_subscription = this.route.params.subscribe(params => {
       this.searchString = params['searchString'];
-      this.articleService.getSearchedArticles(this.searchString).pipe(first()).subscribe(
+      this.campaign = params.campaign;
+
+      this.articleService.getSearchedArticles(this.campaign, this.searchString).pipe(first()).subscribe(
         (articles: OverviewArticleObject[]) => this.articles = articles,
         error => this.routingService.routeToErrorPage(error)
       )

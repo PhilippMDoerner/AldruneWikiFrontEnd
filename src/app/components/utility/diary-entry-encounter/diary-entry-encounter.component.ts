@@ -1,8 +1,9 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
+import { Constants, OverviewType } from 'src/app/app.constants';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
 import { EncounterConnection, EncounterConnectionObject } from 'src/app/models/encounterconnection';
 import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
@@ -33,7 +34,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title"}),
-    this.formlyService.genericSelect({key: "location", label: "Encounter Location", optionsType: "location", required: false}),
+    this.formlyService.genericSelect({key: "location", label: "Encounter Location", overviewType: OverviewType.Location, required: false, campaign: this.campaign}),
     this.formlyService.genericTextField({key: "description", required: true}),
   ];
   //TODO: Implement for the compare form container to display only the fields that differ
@@ -62,6 +63,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
     private characterService: CharacterService,
     private encounterConnectionService: EncounterConnectionService,
     private formlyService: MyFormlyService,
+    private route: ActivatedRoute
   ) { 
     super(
       warning,
@@ -70,6 +72,8 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
   }
 
   ngOnInit(): void {
+    this.campaign = this.route.snapshot.params.campaign;
+
     const isEncounterCreateState: boolean = this.cardData.pk == null;
     this.formState = isEncounterCreateState ? Constants.createState : Constants.displayState;
     if (isEncounterCreateState){

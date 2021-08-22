@@ -25,8 +25,8 @@ export class QuestService extends GenericObjectService{
   }
 
   @TransformArrayObservable(OverviewItemObject)
-  getQuestTakers(): Observable<OverviewItem[]>{
-    const playerCharacterObservable: Observable<OverviewItem[]> = this.characterService.getPlayerCharacters();
+  getQuestTakers(campaign: string): Observable<OverviewItem[]>{
+    const playerCharacterObservable: Observable<OverviewItem[]> = this.characterService.getPlayerCharacters(campaign);
     return playerCharacterObservable.pipe(map( characters => {
       const groupAsQuestTaker: OverviewItem = {'name': 'Group', 'name_full': 'Group', 'pk': null, 'article_type': 'quest'}
       characters.unshift(groupAsQuestTaker);

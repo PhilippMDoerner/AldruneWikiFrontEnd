@@ -10,6 +10,7 @@ import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { HttpEvent, HttpEventType, HttpUploadProgressEvent } from '@angular/common/http';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
+import { OverviewType } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-session-audio-update',
@@ -24,7 +25,7 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
   creationCancelRoute = {routeName: "sessionaudio-overview", params: {}};
 
   formlyFields: FormlyFieldConfig[] = [
-    this.formlyService.genericSelect({key: "session", optionsType: "session", wrappers: ["session-update-wrapper"]}),
+    this.formlyService.genericSelect({key: "session", overviewType: OverviewType.Session, campaign: this.campaign, wrappers: ["session-update-wrapper"]}),
     this.formlyService.singleFileField({key: "audio_file", label: "Audio File", required: this.isInCreateState()}),
   ];
 
@@ -38,7 +39,7 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
     private formlyService: MyFormlyService,
     audioService: SessionAudioService,
     router: Router,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
   ) { 
@@ -46,7 +47,8 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
       router,
       routingService,
       warnings,
-      audioService
+      audioService,
+      route
     )
   }
 

@@ -33,11 +33,17 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
     creatureService: CreatureService,
     router: Router,
     private formlyService: MyFormlyService,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
   ) {
-    super(router, routingService, warnings, creatureService)
+    super(
+      router, 
+      routingService, 
+      warnings, 
+      creatureService, 
+      route
+    );
   }
 
   ngOnInit(): void {
@@ -45,7 +51,6 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
     this.parameter_subscription = this.route.params.subscribe(params => {
       if (this.isInUpdateState()){
         const creatureName: string = params.name;
-        this.campaign = params.campaign;
 
         //Update Cancel Route Params
         this.updateCancelRoute.params.name = creatureName;

@@ -9,6 +9,7 @@ import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
+import { OverviewType } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-quest-article-update',
@@ -35,7 +36,7 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
         required: true,
       }
     },
-    this.formlyService.genericSelect({key: "giver", label: "Quest Giver", optionsType: "character"}),
+    this.formlyService.genericSelect({key: "giver", label: "Quest Giver", overviewType: OverviewType.Character, campaign: this.campaign}),
     { 
       key: "taker",
       type: "select",
@@ -43,11 +44,11 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
         label: "Quest Taker",
         labelProp: "name",
         valueProp: "pk",
-        options: this.questService.getQuestTakers(),
+        options: this.questService.getQuestTakers(this.campaign),
       }
     },
-    this.formlyService.genericSelect({key: "start_session", label: "Start Session", optionsType: "session"}),
-    this.formlyService.genericSelect({key: "end_session", label: "End Session", optionsType: "session", required: false}),
+    this.formlyService.genericSelect({key: "start_session", label: "Start Session", overviewType: OverviewType.Session, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "end_session", label: "End Session", overviewType: OverviewType.Session, campaign: this.campaign, required: false}),
     this.formlyService.genericInput({key: "abstract", placeholder: "Quest Summary...", required: false, maxLength: 65})
   ];
 
@@ -57,7 +58,7 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
   constructor(
     private questService: QuestService,
     router: Router,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     private formlyService: MyFormlyService,
     public warnings: WarningsService,  
     public routingService: RoutingService,
@@ -66,7 +67,8 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
       router,
       routingService,
       warnings,
-      questService
+      questService,
+      route
     )
   }
 

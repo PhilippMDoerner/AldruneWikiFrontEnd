@@ -14,6 +14,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { CharacterPlayerClassConnection, PlayerClass } from 'src/app/models/playerclass';
 import { PlayerClassService } from 'src/app/services/player-class.service';
 import { CharacterPlayerClassConnectionService } from 'src/app/services/character-player-class-connection.service';
+import { OverviewType } from 'src/app/app.constants';
 
 @Component({
   selector: 'app-character-article-update',
@@ -35,8 +36,8 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
     this.formlyService.genericInput({key: "title", required: false}),
     this.formlyService.customStringSelect({key:"gender", label: "Sex", options: ["Other", "Female", "Male"]}),
     this.formlyService.genericInput({key: "race"}),
-    this.formlyService.genericSelect({key: "organization", optionsType: "organization", required: false}),
-    this.formlyService.genericSelect({key: "current_location", label: "Location", optionsType: "location", required: false}),
+    this.formlyService.genericSelect({key: "organization", overviewType: OverviewType.Organization, campaign: this.campaign, required: false}),
+    this.formlyService.genericSelect({key: "current_location", label: "Location", overviewType: OverviewType.Location, campaign: this.campaign, required: false}),
   ];
 
   //Custom Properties
@@ -50,7 +51,7 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
     characterService: CharacterService,
     router: Router,
     private formlyService: MyFormlyService,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
     private playerClassService: PlayerClassService,
@@ -61,6 +62,7 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
       routingService, 
       warnings, 
       characterService, //articleService
+      route,
     ) 
   }
 

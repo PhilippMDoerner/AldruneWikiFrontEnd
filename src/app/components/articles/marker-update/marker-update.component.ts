@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { OverviewType } from 'src/app/app.constants';
 import { LocationObject } from 'src/app/models/location';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
 import { LocationService } from 'src/app/services/location/location.service';
@@ -27,9 +28,9 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
     this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
-    this.formlyService.genericSelect({key: "location", optionsType: 'location'}),
-    this.formlyService.genericSelect({key: "map", optionsType: "map"}),
-    this.formlyService.genericSelect({key: 'type', label: "Marker Type", optionsType: "marker_type"}),
+    this.formlyService.genericSelect({key: "location", overviewType: OverviewType.Location, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "map", overviewType: OverviewType.Map, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: 'type', label: "Marker Type", overviewType: OverviewType.MarkerType, campaign: this.campaign}),
     this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
     this.formlyService.genericInput({key: "icon", label: "Custom Icon", required: false}),
   ];
@@ -41,7 +42,7 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
     markerService: MarkerService,
     private locationService: LocationService,
     router: Router,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     private formlyService: MyFormlyService,
     public warnings: WarningsService,  
     public routingService: RoutingService,
@@ -50,7 +51,8 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
       router,
       routingService,
       warnings,
-      markerService
+      markerService,
+      route
     )
   }
 

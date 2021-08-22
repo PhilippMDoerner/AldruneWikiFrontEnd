@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { OverviewType } from 'src/app/app.constants';
 import { CharacterObject } from 'src/app/models/character';
 import { Item, ItemObject } from 'src/app/models/item';
 import { CharacterService } from 'src/app/services/character/character.service';
@@ -27,7 +28,7 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnIn
   
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
-    this.formlyService.genericSelect({key: 'owner', optionsType: 'character', required: false})
+    this.formlyService.genericSelect({key: 'owner', overviewType: OverviewType.Character, campaign: this.campaign, required: false})
   ];
 
   //Custom Properties
@@ -37,7 +38,7 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnIn
     itemService: ItemService,
     private characterService: CharacterService,
     router: Router,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     private formlyService: MyFormlyService,
     warnings: WarningsService,  
     routingService: RoutingService,
@@ -45,7 +46,8 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnIn
     router, 
     routingService, 
     warnings, 
-    itemService
+    itemService,
+    route
   ) }
 
   ngOnInit(): void {

@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { OverviewType } from 'src/app/app.constants';
 import { CharacterObject } from 'src/app/models/character';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { Quote, QuoteConnection, QuoteConnectionObject, QuoteObject } from 'src/app/models/quote';
@@ -23,7 +24,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
   quotes: Quote[];
   character: CharacterObject;
-  campaign: string;
+  campaign: string = this.route.snapshot.params.campaign;
 
   baseQuoteConnection: QuoteConnection = new QuoteConnectionObject();
   inQuoteCreateState: boolean = false;
@@ -35,8 +36,8 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
   quoteFields: FormlyFieldConfig[] = [
     this.formlyService.genericTextField({key: "quote", required: true}),
     this.formlyService.genericInput({key: "description", required: true}),
-    this.formlyService.genericSelect({key: "session", optionsType: "session", required: true}),
-    this.formlyService.genericSelect({key: "encounter", optionsType: "encounter", required: false})
+    this.formlyService.genericSelect({key: "session", overviewType: OverviewType.Session, required: true, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "encounter", overviewType: OverviewType.Encounter, required: false, campaign: this.campaign})
   ]
 
   parameter_subscription: Subscription;
@@ -56,7 +57,6 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
     this.parameter_subscription = this.route.params.subscribe(
       params => {
         const characterName = params.name;
-        this.campaign = params.campaign;
 
         // Get Character
         this.characterService.readByParam(this.campaign, characterName).pipe(first()).subscribe(

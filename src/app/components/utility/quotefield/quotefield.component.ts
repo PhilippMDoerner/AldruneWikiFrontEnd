@@ -1,12 +1,14 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
+import { Constants, OverviewType } from 'src/app/app.constants';
 import { Character } from 'src/app/models/character';
 import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
 import { Quote, QuoteConnection, QuoteConnectionObject, QuoteObject } from 'src/app/models/quote';
+import { CharacterService } from 'src/app/services/character/character.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { QuoteConnectionService } from 'src/app/services/quote-connection.service';
@@ -30,6 +32,8 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   @Input() enableLinkToOverview: boolean = false;
   @Input() enableCreatingQuotes: boolean = false;
   @Input() inCreateState: boolean = false;
+  
+  campaign: string = this.route.snapshot.params.campaign;
 
   @Output() delete: EventEmitter<Quote> = new EventEmitter<Quote>();
 
@@ -48,8 +52,8 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericTextField({key: "quote", required: true}),
     this.formlyService.genericInput({key: "description", required: true}),
-    this.formlyService.genericSelect({key: "session", optionsType: "session", required: true}),
-    this.formlyService.genericSelect({key: "encounter", optionsType: "encounter", required: false})
+    this.formlyService.genericSelect({key: "session", overviewType: OverviewType.Session, required: true, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "encounter", overviewType: OverviewType.Encounter, required: false, campaign: this.campaign})
   ]
 
   constructor(
@@ -57,8 +61,10 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
     private formlyService: MyFormlyService,
     private quoteConnectionservice: QuoteConnectionService,
     private overviewService: OverviewService,
+    private characterService: CharacterService,
     private warningsService: WarningsService,
     public routingService: RoutingService,
+    private route: ActivatedRoute,
   ) { super() }
 
   ngOnInit(){
@@ -131,7 +137,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
     this.inQuoteConnectionCreateState = !this.inQuoteConnectionCreateState;
 
     if (!this.characters){
-      this.overviewService.getOverviewItems('character').pipe(first()).subscribe(
+      this.overviewService.getOverviewItems(this.campaign, OverviewType.Character).pipe(first()).subscribe(
         (characters: OverviewItemObject[]) => this.characters = characters,
         error => this.warningsService.showWarning(error)
       );

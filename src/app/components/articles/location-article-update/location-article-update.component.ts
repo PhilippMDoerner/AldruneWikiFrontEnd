@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
+import { Constants, OverviewType } from 'src/app/app.constants';
 import { LocationObject, Location } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -26,7 +26,7 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin implements 
   
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
-    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", optionsType: "location", required: false}),
+    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", overviewType: OverviewType.Location, campaign: this.campaign, required: false}),
   ];
 
   //Custom properties
@@ -36,7 +36,7 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin implements 
     private formlyService: MyFormlyService,
     locationService: LocationService,
     router: Router,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     warnings: WarningsService,  
     routingService: RoutingService,
   ) { 
@@ -44,7 +44,8 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin implements 
       router,
       routingService,
       warnings,
-      locationService
+      locationService,
+      route
     )
   }
 

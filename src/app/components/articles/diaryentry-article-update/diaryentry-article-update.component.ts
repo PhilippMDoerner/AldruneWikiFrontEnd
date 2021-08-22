@@ -3,6 +3,7 @@ import { AbstractControl, FormControl } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
+import { OverviewType } from 'src/app/app.constants';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
@@ -42,11 +43,12 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
       },
       fieldGroup: [
         //Author
-        this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
+        this.formlyService.genericSelect({key: "author", labelProp: "name", overviewType: OverviewType.User, campaign: this.campaign}),
         //Session
         this.formlyService.genericDisableSelect({
           key: 'session', 
-          optionsType: 'session', 
+          overviewType: OverviewType.Session,
+          campaign: this.campaign, 
           disabledExpression: this.hasDiaryentryForAuthor, 
           tooltipMessage: "Sessions may be impossible to select if the selected author already has a diaryentry for that session.",
           warningMessage: sessionAlreadyHasAuthor.message,
@@ -67,7 +69,7 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
     private formlyService: MyFormlyService,
     diaryEntryService: DiaryentryService,
     router: Router,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     warnings: WarningsService,  
     public routingService: RoutingService
   ) { 
@@ -75,7 +77,8 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
       router,
       routingService,
       warnings,
-      diaryEntryService
+      diaryEntryService,
+      route
     )
   }
 

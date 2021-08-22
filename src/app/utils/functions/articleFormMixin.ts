@@ -18,7 +18,7 @@ export class ArticleFormMixin{
     userModel: ApiObject; //A model of article-data for the user to edit
     serverModel: any; //A model of article-data from the server if there are update conflicts with the userModel
     formlyFields: FormlyFieldConfig[];
-    campaign: string;
+    campaign: string = this.route.snapshot.params.campaign;
 
     updateCancelRoute: { routeName: string, params: any }; //Data to generate route to go to to if update of article is cancelled
     creationCancelRoute: { routeName: string, params: any }; //Data to generate route to go to if creation of article is cancelled
@@ -28,6 +28,7 @@ export class ArticleFormMixin{
         public routingService: RoutingService,
         public warnings: WarningsService,
         public articleService: GenericService | GenericObjectService,
+        public route: ActivatedRoute,
     ){
         const isUpdateRoute : boolean = this.router.url.includes("update");
         this.formState = isUpdateRoute ? Constants.updateState : Constants.createState;

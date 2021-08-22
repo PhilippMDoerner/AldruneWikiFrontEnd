@@ -37,7 +37,7 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
     private formlyService: MyFormlyService,
     mapService: MapService,
     router: Router,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
   ) { 
@@ -45,7 +45,8 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
       router, 
       routingService, 
       warnings, 
-      mapService
+      mapService,
+      route
     ) 
   }
 

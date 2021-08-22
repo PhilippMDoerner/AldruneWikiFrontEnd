@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
+import { Constants, OverviewType } from 'src/app/app.constants';
 import { Character } from 'src/app/models/character';
 import { EncounterObject, Encounter } from "src/app/models/encounter";
 import { EncounterConnectionObject, EncounterConnection } from 'src/app/models/encounterconnection';
@@ -27,20 +28,22 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
   constants: any = Constants;
   @Input() encounters: EncounterObject[];
   @Input() articleCharacter: Character;
+  campaign: string = this.route.snapshot.params.campaign;
+
   formState: string = Constants.displayState;
   characters : OverviewItem[];
   isOpen: object;
 
   inEncounterConnectionCreationState: boolean = false;
   baseEncounterConnection: EncounterConnectionObject = new EncounterConnectionObject();
-
+  //TODO: Create access-permissions for every individual campaign. The campaign name here is used to identify the required rights. If the user has the necessary rights, they can be author. This is a change needed on the formly service and the backend
   userModel: EncounterObject;
   serverModel: Encounter;
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title"}),
-    this.formlyService.genericSelect({key: "author", labelProp: "name", optionsType: "users"}),
-    this.formlyService.genericSelect({key: "session_number", label: "Session", optionsType: "session"}),
-    this.formlyService.genericSelect({key: "location", label: "Encounter Location", optionsType: "location"}),
+    this.formlyService.genericSelect({key: "author", labelProp: "name", overviewType: OverviewType.User, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "session_number", label: "Session", overviewType: OverviewType.Session, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "location", label: "Encounter Location", overviewType: OverviewType.Location, campaign: this.campaign}),
     this.formlyService.genericTextField({key: "description", required: true}),
   ];
 
@@ -51,6 +54,7 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
     private formlyService: MyFormlyService,
     private warnings: WarningsService,  
     public routingService: RoutingService,
+    private route: ActivatedRoute,
   ) { super(); }
 
   ngOnInit(): void {
@@ -150,7 +154,7 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
   toggleEncounterConnectionCreationState(){
     this.inEncounterConnectionCreationState = !this.inEncounterConnectionCreationState;
     if (!this.characters){
-      this.overviewService.getOverviewItems('character').pipe(first()).subscribe(
+      this.overviewService.getOverviewItems(this.campaign, OverviewType.Character).pipe(first()).subscribe(
         (characters: OverviewItemObject[]) => this.characters = characters,
         error => this.warnings.showWarning(error)
       );

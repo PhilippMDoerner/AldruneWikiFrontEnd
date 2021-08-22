@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { Constants } from 'src/app/app.constants';
+import { Constants, OverviewType } from 'src/app/app.constants';
 import { OrganizationObject, Organization } from 'src/app/models/organization';
 import { OrganizationService } from 'src/app/services/organization/organization.service';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -25,8 +25,8 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
-    this.formlyService.genericSelect({key: "leader", valueProp: "name", optionsType: "character", required: false}),
-    this.formlyService.genericSelect({key: "headquarter", optionsType: "location", required: false}),
+    this.formlyService.genericSelect({key: "leader", valueProp: "name", overviewType: OverviewType.Character, campaign: this.campaign, required: false}),
+    this.formlyService.genericSelect({key: "headquarter", overviewType: OverviewType.Location, campaign: this.campaign, required: false}),
   ];
 
   //Custom Properties
@@ -35,7 +35,7 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
   constructor(
     organizationService: OrganizationService,
     router: Router,
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     private formlyService: MyFormlyService,
     public warnings: WarningsService,  
     public routingService: RoutingService,
@@ -44,7 +44,8 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
       router,
       routingService,
       warnings,
-      organizationService
+      organizationService,
+      route
     )
   }
 
