@@ -106,12 +106,14 @@ export class EncounterObject implements Encounter {
         // });
     }
 
-    // getAbsoluteLocationRouterUrl(): string{
-    //     if (!this.location_details) throw "Can't generate URL for Location of Encounter object without locatoin_details !";
+    getAbsoluteLocationRouterUrl(): string{
+        if (!this.location_details) throw "Can't generate URL for Location of Encounter object without locatoin_details !";
+        return `${Constants.wikiUrlFrontendPrefix}/location/${this.campaign_details.name}/${this.location_details.parent_location_name}/${this.location_details.name}`;
+
     //     return this.routingService.getRoutePath("location", {
     //         name: this.location_details.name,
     //         parent_name: this.location_details.parent_location_name,
     //         campaign: this.campaign_details.name
     //     });
-    // }
+    }
 }
