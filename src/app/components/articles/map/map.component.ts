@@ -91,7 +91,7 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   }
 
   routeToMap(newMap: string){
-    const mapUrl: string = this.routingService.getRoutePath('map', {name: newMap});
+    const mapUrl: string = this.routingService.getRoutePath('map', {name: newMap, campaign: this.campaign});
     this.router.navigateByUrl(mapUrl);
     this.router.routeReuseStrategy.shouldReuseRoute = function () {return false;};
   }

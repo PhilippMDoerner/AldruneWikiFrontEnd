@@ -5,7 +5,7 @@
     <p class="text-center" [innerHTML]="errorContents[errorStatus].htmlBody | safeHtml"> </p>
     
     <div>
-        <a class="btn btn-secondary" routerLink="{{ routingService.getRoutePath('home1') }}"> 
+        <a class="btn btn-secondary" routerLink="{{ routingService.getRoutePath('home1', {campaign: constants.defaultCampaign}) }}"> 
             Back To Frontpage
         </a>
     </div>

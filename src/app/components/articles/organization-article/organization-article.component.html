@@ -21,7 +21,7 @@
                 <a 
                 *ngIf="articleData.leader; else Unknown" 
                 class="ml-1" 
-                routerLink="{{ routingService.getRoutePath('character', {name: articleData.leader}) }}"
+                routerLink="{{ routingService.getRoutePath('character', {name: articleData.leader, campaign: campaign}) }}"
                 >
                     {{ articleData.leader }}
                 </a>
@@ -36,7 +36,8 @@
                 class="ml-1" 
                 routerLink="{{ routingService.getRoutePath('location', {
                         name: articleData.headquarter_details.name, 
-                        parent_name: articleData.headquarter_details.parent_name
+                        parent_name: articleData.headquarter_details.parent_name,
+                        campaign: campaign
                     })
                 }}"
                 >
@@ -68,7 +69,7 @@
             <app-object-list    
             [heading]="'Members'"
             [items]="articleData.members"
-            [createLink]="routingService.getRoutePath('character-create')"
+            [createLink]="routingService.getRoutePath('character-create', {campaign: campaign})"
             [articleType]="'character'"
             ></app-object-list>
         </div>
@@ -76,7 +77,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('organization-overview')"
+        [link]="routingService.getRoutePath('organization-overview', {campaign: campaign})"
         [label]="'Back to Organizations'"
         [deleteMessage]="'Delete '+articleData.name+'?'"
         ></app-article-footer>

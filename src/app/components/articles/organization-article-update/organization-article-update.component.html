@@ -13,7 +13,7 @@
         <ng-template #createState>
             <app-edit-toggle 
             [isInUpdateState]=true 
-            [link]="routingService.getRoutePath('organization-overview')"
+            [link]="routingService.getRoutePath('organization-overview', {campaign: campaign})"
             ></app-edit-toggle>
 
             <h2 class="text-center"> Creating a new Organization </h2>

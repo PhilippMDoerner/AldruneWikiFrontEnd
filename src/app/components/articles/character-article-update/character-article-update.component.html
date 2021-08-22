@@ -4,7 +4,7 @@
         <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
             <app-edit-toggle 
             [isInUpdateState]=true 
-            [link]="routingService.getRoutePath('character', {name: userModel.name})"
+            [link]="routingService.getRoutePath('character', {name: userModel.name, campaign: campaign})"
             ></app-edit-toggle>
 
             <h2 class="text-center">
@@ -57,7 +57,7 @@
 <ng-template #createState>
     <app-edit-toggle 
     [isInUpdateState]=true 
-    [link]="routingService.getRoutePath('character-overview')"
+    [link]="routingService.getRoutePath('character-overview', {campaign: campaign})"
     ></app-edit-toggle>
 
     <h2 class="text-center">

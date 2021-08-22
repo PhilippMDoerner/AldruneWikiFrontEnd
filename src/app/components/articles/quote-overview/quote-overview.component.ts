@@ -65,7 +65,7 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
         );
         
         // Get Character Quotes
-        this.quoteService.getAllCharacterQuotes(characterName).pipe(first()).subscribe(
+        this.quoteService.getAllCharacterQuotes(this.campaign, characterName).pipe(first()).subscribe(
           (quotes: Quote[]) => {
             this.quotes = quotes;
             this.quotes.sort(this.sortQuotesBySession);

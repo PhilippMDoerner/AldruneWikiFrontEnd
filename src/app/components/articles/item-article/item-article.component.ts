@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
-import { Item, ItemObject } from 'src/app/models/item';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Item } from 'src/app/models/item';
 import { ItemService } from 'src/app/services/item/item.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -18,7 +15,7 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class ItemArticleComponent extends ArticleMixin {
   //ArticleMixin Variables
   articleData: Item;
-  deleteRoute = {routeName: "item-overview", params: {}}
+  deleteRoute = {routeName: "item-overview", params: {campaign: this.campaign}}
   queryParameterName = "name";
 
   constructor(

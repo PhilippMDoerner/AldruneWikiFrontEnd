@@ -8,7 +8,6 @@ import { Constants, OverviewType } from 'src/app/app.constants';
 import { Character } from 'src/app/models/character';
 import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
 import { Quote, QuoteConnection, QuoteConnectionObject, QuoteObject } from 'src/app/models/quote';
-import { CharacterService } from 'src/app/services/character/character.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { QuoteConnectionService } from 'src/app/services/quote-connection.service';
@@ -61,7 +60,6 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
     private formlyService: MyFormlyService,
     private quoteConnectionservice: QuoteConnectionService,
     private overviewService: OverviewService,
-    private characterService: CharacterService,
     private warningsService: WarningsService,
     public routingService: RoutingService,
     private route: ActivatedRoute,
@@ -81,7 +79,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
 
   getNextRandomQuote(){
     this.isLoadingNextQuote = true;
-    this.quoteService.getRandomQuote(this.character.name).pipe(first()).subscribe(
+    this.quoteService.getRandomQuote(this.campaign, this.character.name).pipe(first()).subscribe(
       (quote: QuoteObject) => {
         if (quote.quote){
           this.quote = quote;

@@ -3,7 +3,7 @@
         <h3 class="text-center"> Quote Overview </h3>
         <h5 class="text-center"> 
             Quotes of: 
-            <a routerLink="{{routingService.getRoutePath('character', {name: character.name}) }}">
+            <a routerLink="{{routingService.getRoutePath('character', {name: character.name, campaign: campaign}) }}">
                 {{ character.name }}
             </a>
         </h5>

@@ -21,7 +21,8 @@
                 routerLink="{{routingService.getRoutePath('marker', {
                         parent_location_name: articleData.parent_location_details.name, 
                         location_name: articleData.name, 
-                        map_name: marker.map
+                        map_name: marker.map,
+                        campaign: campaign
                     })
                 }}"
                 ></i>
@@ -33,7 +34,8 @@
                 [ngClass]="{'d-none': !hasCreatePermission}"
                 routerLink="{{routingService.getRoutePath('marker-create', {
                         parent_location_name: articleData.parent_location_details.name,
-                        location_name: articleData.name
+                        location_name: articleData.name,
+                        campaign: campaign
                     })
                 }}"
                 ></i>
@@ -75,7 +77,7 @@
             [heading]="'Characters of Interest'" 
             [items]="articleData.characters" 
             [articleType]="'character'" 
-            [createLink]="routingService.getRoutePath('character-create')"
+            [createLink]="routingService.getRoutePath('character-create', {campaign: campaign})"
             ></app-object-list>
         </div>
 
@@ -89,7 +91,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('location-overview')"
+        [link]="routingService.getRoutePath('location-overview', {campaign: campaign})"
         [label]="'Back to Locations'"
         [deleteMessage]="'Delete '+articleData.name+'?'"
         ></app-article-footer>

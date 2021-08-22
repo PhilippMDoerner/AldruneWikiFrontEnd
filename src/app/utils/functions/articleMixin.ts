@@ -18,7 +18,7 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
     queryParameterName: string; //Only use if the column for that parameter has the unique constraint, aka the parameter is unique
     campaignParameterName: string;
     articleData: ArticleObject;
-    campaign: string;
+    campaign: string = this.route.snapshot.params.campaign;
 
     textfieldFormStateSubject: BehaviorSubject<string> = new BehaviorSubject(Constants.displayState);
 
@@ -36,7 +36,6 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
     ngOnInit(): void{
         this.parameter_subscription = this.route.params.subscribe( params => {
             const queryParameter: string | number = params[this.queryParameterName];
-            this.campaign = params[this.campaignParameterName];
 
             this.articleService.readByParam(this.campaign, queryParameter).pipe(first()).subscribe(
                 (article: ArticleObject) => this.articleData = article, 

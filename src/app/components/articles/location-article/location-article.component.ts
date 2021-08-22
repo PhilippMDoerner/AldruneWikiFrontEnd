@@ -56,7 +56,8 @@ export class LocationArticleComponent extends ArticleMixin implements OnInit {
 
     const locationUrl: string = this.routingService.getRoutePath('location', {
       parent_name: parentLocationName, 
-      name: locationName
+      name: locationName,
+      campaign: this.campaign,
     });
     return locationUrl;
   }

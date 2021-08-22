@@ -2,14 +2,14 @@
     <article class="mb-5">
         <!-- Heading -->
         <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
-            <app-edit-toggle [isInUpdateState]=true [link]="routingService.getRoutePath('creature', {name: userModel.name})"></app-edit-toggle>
+            <app-edit-toggle [isInUpdateState]=true [link]="routingService.getRoutePath('creature', {name: userModel.name, campaign: campaign})"></app-edit-toggle>
 
             <h2 class="text-center">
                 Updating Creature {{ userModel.name }}
             </h2>
         </div>
         <ng-template #createState>
-            <app-edit-toggle [isInUpdateState]=true [link]="routingService.getRoutePath('creature-overview')"></app-edit-toggle>
+            <app-edit-toggle [isInUpdateState]=true [link]="routingService.getRoutePath('creature-overview', {campaign: campaign})"></app-edit-toggle>
 
             <h2 class="text-center">
                 Adding a new Creature

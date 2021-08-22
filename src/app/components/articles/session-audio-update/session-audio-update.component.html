@@ -30,7 +30,7 @@
 <ng-template #createState>
     <app-edit-toggle 
     [isInUpdateState]=true 
-    [link]="routingService.getRoutePath('sessionaudio-overview')"
+    [link]="routingService.getRoutePath('sessionaudio-overview', {campaign: campaign})"
     ></app-edit-toggle>
 
     <h2 class="text-center">

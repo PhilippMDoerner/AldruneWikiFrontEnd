@@ -10,7 +10,7 @@
         </div>
         
         <ng-template #createState>
-            <app-edit-toggle [isInUpdateState]=true [link]="routingService.getRoutePath('item-overview')"></app-edit-toggle>
+            <app-edit-toggle [isInUpdateState]=true [link]="routingService.getRoutePath('item-overview', {campaign: campaign})"></app-edit-toggle>
 
             <h2 class="text-center">
                 Creating a new Item

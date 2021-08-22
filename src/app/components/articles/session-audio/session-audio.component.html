@@ -89,7 +89,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('sessionaudio-overview')"
+        [link]="routingService.getRoutePath('sessionaudio-overview', {campaign: campaign})"
         [label]="'Back to SessionAudio Overview'"
         [deleteMessage]="'Delete recording?'"
         ></app-article-footer>

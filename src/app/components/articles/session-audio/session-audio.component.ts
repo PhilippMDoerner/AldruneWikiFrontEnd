@@ -84,7 +84,8 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
     //Only needed because the vime player doesn't properly trigger events for src changes
     const sessionAudioUrl: string = this.routingService.getRoutePath('sessionaudio', {
         isMainSession: isMainSessionInt, 
-        sessionNumber: sessionNumber
+        sessionNumber: sessionNumber,
+        campaign: this.campaign
       }
     );
     this.router.navigateByUrl(sessionAudioUrl);

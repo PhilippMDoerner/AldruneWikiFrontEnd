@@ -34,7 +34,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('creature-overview')"
+        [link]="routingService.getRoutePath('creature-overview', {campaign: campaign})"
         [label]="'Back to Creatures'"
         [deleteMessage]="'Delete '+articleData.name+'?'"
         ></app-article-footer>

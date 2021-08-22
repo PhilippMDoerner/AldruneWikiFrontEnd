@@ -18,7 +18,7 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class CharacterArticleComponent extends ArticleMixin implements OnInit, OnDestroy {
   //ArticleMixin Variables
   articleData: CharacterObject;
-  deleteRoute = {routeName: "character-overview", params: {}}
+  deleteRoute = {routeName: "character-overview", params: {campaign: this.campaign}}
   queryParameterName = "name";
 
   //Custom Variables

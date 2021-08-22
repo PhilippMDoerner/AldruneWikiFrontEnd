@@ -69,7 +69,8 @@ export class DiaryentryArticleComponent extends ArticleMixin {
     return this.routingService.getRoutePath('diaryentry', {
       sessionNumber: sessionNumber,
       isMainSession: isMainSession,
-      authorName: authorName
+      authorName: authorName,
+      campaign: this.campaign
     });
   }
 }
