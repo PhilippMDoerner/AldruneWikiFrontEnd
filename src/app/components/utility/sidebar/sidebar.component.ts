@@ -15,6 +15,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constants = Constants;
 
   @Input() showSidebar: BehaviorSubject<boolean>;
+  campaign: string;
 
   sidebarEntries: any;
   showUserSection: boolean = false;
@@ -30,16 +31,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    const allMetaData: any = this.constants.articleTypeMetaData;
-    const sidebarEntries = allMetaData.filter(metaDataEntry => metaDataEntry.showInSidebar)
-    const processedEntries = sidebarEntries.map(metaDataEntry => {
-        const routeName: string = metaDataEntry.route
-        const routeUrl: string = this.routingService.getRoutePath(routeName);
-        metaDataEntry.route = routeUrl;
-        return metaDataEntry;
-    });
-    
-    this.sidebarEntries = processedEntries;
 
     //Updates whether admin section should be shown in the sidebar or not with every update of the route
     this.routingSubscription = this.router.events.pipe(
@@ -50,9 +41,28 @@ export class SidebarComponent implements OnInit, OnDestroy {
         return isRouterEvent && isSingleRouterEvent
       })
     ).subscribe(
-      _ => {
+      params => {
+        const hasUrlCampaignParam = params.campaign != null;
+        this.campaign = (hasUrlCampaignParam) ? params.campaign : Constants.defaultCampaign;
+        
+        const metaData = this.constants.articleTypeMetaData;
+        this.sidebarEntries = this.processMetaData(this.campaign, metaData);
+        
         this.showAdminSection = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
     });
+  }
+
+  processMetaData(campaign: string, metaData: any){
+    const allMetaData: any = this.constants.articleTypeMetaData;
+    const sidebarEntries = allMetaData.filter(metaDataEntry => metaDataEntry.showInSidebar)
+    const processedEntries = sidebarEntries.map(metaDataEntry => {
+        const routeName: string = metaDataEntry.route
+        const routeUrl: string = this.routingService.getRoutePath(routeName, {campaign: campaign});
+        metaDataEntry.route = routeUrl;
+        return metaDataEntry;
+    });
+  
+    return processedEntries;
   }
 
   logout(): void{

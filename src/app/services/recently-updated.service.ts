@@ -16,14 +16,14 @@ export class RecentlyUpdatedService {
   constructor(private http: HttpClient) { }
 
   @TransformArrayObservable(OverviewArticleObject)
-  getRecentlyUpdatedArticle(pageNumber: number): Observable<OverviewItem[]>{
+  getRecentlyUpdatedArticle(campaign: string, pageNumber: number): Observable<OverviewItem[]>{
     if(pageNumber == null) pageNumber = 0;
 
-    return this.http.get<OverviewItem[]>(`${this.recentlyUpdatedUrl}/${pageNumber}`);
+    return this.http.get<OverviewItem[]>(`${this.recentlyUpdatedUrl}/${campaign}/${pageNumber}`);
   }
 
   @TransformArrayObservable(OverviewArticleObject)
-  getSearchedArticles(searchString: string): Observable<OverviewItem[]>{
-    return this.http.get<OverviewItem[]>(`${this.searchUrl}/${searchString}`);
+  getSearchedArticles(campaign: string, searchString: string): Observable<OverviewItem[]>{
+    return this.http.get<OverviewItem[]>(`${this.searchUrl}/${campaign}/${searchString}`);
   }
 }
