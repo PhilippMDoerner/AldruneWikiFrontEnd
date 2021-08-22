@@ -22,7 +22,7 @@
                     
                     -->
                     <div class="card-body d-flex justify-content-center flex-column">
-                        <a routerLink="{{routingService.getRoutePath('sessionaudio', {isMainSession: sessionAudio.session_details.is_main_session_int, sessionNumber: sessionAudio.session_details.session_number})}}"
+                        <a routerLink="{{routingService.getRoutePath('sessionaudio', {campaign: campaign, isMainSession: sessionAudio.session_details.is_main_session_int, sessionNumber: sessionAudio.session_details.session_number})}}"
                             class="text-center btn btn-primary"> 
                             <span class="fa fa-desktop"></span>
                             <strong> Stream </strong>
@@ -45,7 +45,7 @@
 
         <!-- Button To Frontpage -->
         <div class="row mx-0">
-            <div class="col-md-3 mt-5 btn btn-secondary" routerLink="{{routingService.getRoutePath('home1')}}">
+            <div class="col-md-3 mt-5 btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign})}}">
                 Back To Frontpage
             </div>
         </div>

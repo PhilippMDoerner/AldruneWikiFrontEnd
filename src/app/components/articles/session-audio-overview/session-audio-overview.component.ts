@@ -15,8 +15,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 })
 export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
   constants: any = Constants;
-  parameterSubscription: Subscription;
-  campaign: string;
+  campaign: string = this.route.snapshot.params.campaign;
 
   sessionAudioFiles: OverviewItem[];
 
@@ -27,19 +26,9 @@ export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixi
   ) { super() }
 
   ngOnInit(): void {
-    this.parameterSubscription = this.route.params.subscribe(
-      params => {
-        this.campaign = params.campaign;
-
-        this.overviewService.getOverviewItems(this.campaign, OverviewType.Sessionaudio).pipe(first()).subscribe(
-          (sessionAudioFiles: OverviewItem[]) => this.sessionAudioFiles = sessionAudioFiles,
-          error => this.routingService.routeToErrorPage(error)
-        );
-      }
-    )
-  }
-
-  ngOnDestroy(): void{
-    if(this.parameterSubscription) this.parameterSubscription.unsubscribe();
+    this.overviewService.getOverviewItems(this.campaign, OverviewType.Sessionaudio).pipe(first()).subscribe(
+      (sessionAudioFiles: OverviewItem[]) => this.sessionAudioFiles = sessionAudioFiles,
+      error => this.routingService.routeToErrorPage(error)
+    );
   }
 }
