@@ -22,8 +22,8 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
   //Defining ArticleFormMixin Properties
   userModel: MapMarkerObject;
   serverModel: MapMarker;
-  updateCancelRoute = {routeName: 'marker', params: {location_name: null, parent_location_name: null, map_name: null}};
-  creationCancelRoute = {routeName: 'location', params: {name: null, parent_name: null}};
+  updateCancelRoute = {routeName: 'marker', params: {location_name: null, parent_location_name: null, map_name: null, campaign: this.campaign}};
+  creationCancelRoute = {routeName: 'location', params: {name: null, parent_name: null, campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),

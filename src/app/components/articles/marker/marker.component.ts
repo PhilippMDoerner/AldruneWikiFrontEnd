@@ -17,7 +17,7 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class MarkerComponent extends ArticleMixin implements OnInit {
   //ArticleMixin Variables
   articleData: MapMarkerObject;
-  deleteRoute = {routeName: "location", params: {name: null, parent_name: null}}
+  deleteRoute = {routeName: "location", params: {name: null, parent_name: null, campaign: this.campaign}}
 
   constructor(
     public route: ActivatedRoute,

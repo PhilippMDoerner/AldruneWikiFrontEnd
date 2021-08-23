@@ -15,7 +15,7 @@ export class QuestArticleComponent extends ArticleMixin implements OnInit {
   //ArticleMixin Variables
   articleData: QuestObject;
   queryParameterName = "name";
-  deleteRoute = {routeName: "quest-overview", params: {}};
+  deleteRoute = {routeName: "quest-overview", params: {campaign: this.campaign}};
 
   constructor(
     questService: QuestService,

@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
-import { Location, LocationObject } from 'src/app/models/location';
+import { LocationObject } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
-import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
+
 @Component({
   selector: 'app-location-article',
   templateUrl: './location-article.component.html',
@@ -17,7 +15,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 export class LocationArticleComponent extends ArticleMixin implements OnInit {
   //ArticleMixin Variables
   articleData: LocationObject;
-  deleteRoute = {routeName: "location-overview", params: {}}
+  deleteRoute = {routeName: "location-overview", params: {campaign: this.campaign}}
 
 
   constructor(

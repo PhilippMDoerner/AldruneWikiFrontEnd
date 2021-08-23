@@ -17,7 +17,7 @@ export class DiaryentryArticleComponent extends ArticleMixin {
   articleData: DiaryEntry;
   nextDiaryentryUrl: string;
   priorDiaryentryUrl: string;
-  deleteRoute = {routeName: 'diaryentry-overview', params: {}};
+  deleteRoute = {routeName: 'diaryentry-overview', params: {campaign: this.campaign}};
 
   constructor(
     diaryEntryService: DiaryentryService,

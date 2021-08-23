@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
-import { Creature, CreatureObject } from 'src/app/models/creature';
+import { CreatureObject } from 'src/app/models/creature';
 import { CreatureService } from 'src/app/services/creature/creature.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -17,7 +14,7 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class CreatureArticleComponent extends ArticleMixin implements OnInit {
   //ArticleMixin Variables
   articleData: CreatureObject;
-  deleteRoute = {routeName: "creature-overview", params: {}};
+  deleteRoute = {routeName: "creature-overview", params: {campaign: this.campaign}};
   queryParameterName = "name";
 
   constructor(

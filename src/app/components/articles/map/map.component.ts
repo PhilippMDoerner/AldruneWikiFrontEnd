@@ -19,7 +19,7 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   //ArticleMixin Variables
   articleData: ExtendedMap;
-  deleteRoute = {routeName: "character-overview", params: {}}
+  deleteRoute = {routeName: "character-overview", params: {campaign: this.campaign}}
 
   //Custom Variables
   maps: OverviewItemObject[];

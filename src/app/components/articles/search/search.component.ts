@@ -40,6 +40,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     "... I'm surprised, I did expect to find more supporting Fen's conspiracy theories.",
     "If you were looking for Bathilde's age, it's ancient and nobody knows for sure.",
     "Yeah, that's about as much as Murtagh leaves of his enemies if he's pissed off.",
+    "Here is where Sam would put his dead Caitriona, IF HE COULD REACH HER!"
   ]
 
   ngOnInit(): void {    

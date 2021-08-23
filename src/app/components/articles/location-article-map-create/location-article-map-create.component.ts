@@ -88,7 +88,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
   }
 
   onCancel(){
-    this.routingService.routeToPath('map', {name: this.mapName});
+    this.routingService.routeToPath('map', {name: this.mapName, campaign: this.campaign});
   }
 
   ngOnDestroy(){

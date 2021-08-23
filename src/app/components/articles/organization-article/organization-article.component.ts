@@ -17,7 +17,7 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class OrganizationArticleComponent extends ArticleMixin implements OnInit {
   //ArticleMixinVariables
   articleData: Organization;
-  deleteRoute = {routeName: "organization-overview", params: {}};
+  deleteRoute = {routeName: "organization-overview", params: {campaign: this.campaign}};
   queryParameterName: string = 'name';
 
 
