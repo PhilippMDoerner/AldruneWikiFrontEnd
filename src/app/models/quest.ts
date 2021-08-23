@@ -30,7 +30,8 @@ export class QuestObject implements Quest{
     end_session: number;
     end_session_details?: Session;
     pk?: number;
-    campaign_details: {pk: number, name: string};
+    campaign_details?: {pk: number, name: string};
+    campaign: number;
 
     constructor(object?: Quest){
         if (object) Object.assign(this, object)

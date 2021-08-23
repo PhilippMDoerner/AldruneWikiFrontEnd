@@ -19,7 +19,8 @@ export class OrganizationObject implements Organization{
     headquarter_details?: {name: string, parent_name: string, pk: number, name_full: string};
     pk?: number;
     images?: Image[];
-    campaign_details: {pk: number, name: string}
+    campaign_details?: {pk: number, name: string}
+    campaign: number;
 
     constructor(object?: Organization){
         if (object) Object.assign(this, object)

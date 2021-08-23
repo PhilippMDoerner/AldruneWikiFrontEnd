@@ -54,6 +54,7 @@ export class OverviewItemObject implements OverviewItem{
     description: string;
     update_date?: string;
     images?: Image[];
+    campaign_details?: {pk: number, name: string};
 
     //For Character-Type OverviewItems
     player_character?: boolean;
@@ -64,7 +65,7 @@ export class OverviewItemObject implements OverviewItem{
     //For Diaryentry-Type OverviewItems
     session_details?: Session;
     author_details?: {pk: number, name: string};
-
+    
     //For Session Audio-Type OverviewItems
     audio_url?: string;
 

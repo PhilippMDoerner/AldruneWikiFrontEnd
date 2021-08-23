@@ -16,7 +16,8 @@ export class ItemObject implements Item{
     owner_details?: {name: string, pk: number};
     images?: Image[];
     pk?: number;
-    campaign_details: {pk: number, name: string};
+    campaign_details?: {pk: number, name: string};
+    campaign: number;
 
     constructor(object?: Item){
         if (object) Object.assign(this, object)

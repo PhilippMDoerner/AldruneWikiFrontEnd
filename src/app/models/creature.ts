@@ -5,6 +5,7 @@ import { Constants } from '../app.constants';
 export interface Creature extends ArticleObject{
     images?: Image,
     description: string,
+    campaign: number;
 }
 
 export class CreatureObject implements Creature{
@@ -12,7 +13,8 @@ export class CreatureObject implements Creature{
     images?: Image;
     name?: string;
     description: string;
-    campaign_details: {pk: number, name: string}
+    campaign_details: {pk: number, name: string};
+    campaign: number;
 
     constructor(object?: Creature){
         if (object) Object.assign(this, object);

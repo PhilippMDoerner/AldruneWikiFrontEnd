@@ -43,8 +43,8 @@ export class DiaryEntryObject implements DiaryEntry{
         next_diaryentry: diaryEntryStump;
         prior_diaryentry: diaryEntryStump;
     };
-    campaign_details: {pk: number, name: string};
-
+    campaign_details?: {pk: number, name: string};
+    campaign: number;
 
     constructor(object?: DiaryEntry){
         if(object) Object.assign(this, object);

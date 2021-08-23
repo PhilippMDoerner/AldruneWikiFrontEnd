@@ -49,7 +49,8 @@ export class EncounterObject implements Encounter {
         session_number: number,
     };
     order_index: number;
-    campaign_details: {pk: number, name: string};
+    campaign_details?: {pk: number, name: string};
+    campaign: number;
 
 
     constructor(object?: Encounter){

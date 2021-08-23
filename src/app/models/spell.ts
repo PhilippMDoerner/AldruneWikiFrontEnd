@@ -40,7 +40,8 @@ export class SpellObject implements Spell{
     player_class_connections: SpellPlayerClassConnection[]
     name?: string;
     pk?: number;
-    campaign_details: {pk: number, name: string};
+    campaign_details?: {pk: number, name: string};
+    campaign: number;
 
     constructor(object?: Spell){
         if (object) Object.assign(this, object)

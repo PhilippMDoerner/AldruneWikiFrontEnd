@@ -15,8 +15,9 @@ export class RuleObject implements Rule{
     creation_datetime?: string;
     update_datetime?: string;
     description: string;
-    campaign_details: {pk: number, name: string};
-
+    campaign_details?: {pk: number, name: string};
+    campaign: number;
+    
     constructor(object?: Rule){
         if (object) Object.assign(this, object)
     }

@@ -12,5 +12,6 @@ export interface ArticleObject extends ApiObject{
     creation_datetime?: string,
     update_datetime?: string,
     description?: string,
+    campaign?: number,
     campaign_details?: {pk: number, name: string}
 }

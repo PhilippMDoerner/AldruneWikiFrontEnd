@@ -20,6 +20,8 @@ export class SessionObject implements Session{
     end_day?: number;
     name?: string;
     title: string;
+    campaign_details?: {name: string, pk: number};
+    campaign: number;
 
     constructor(object?: Session){
         if (object) Object.assign(this, object)

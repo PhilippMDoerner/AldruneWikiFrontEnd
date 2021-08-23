@@ -16,7 +16,8 @@ export class MapObject implements ExtendedMap{
     icon: string;
     image: string;
     pk?: number;
-    campaign_details: {pk: number, name: string};
+    campaign_details?: {pk: number, name: string};
+    campaign: number;
 
     constructor(object?: Map){
         if(object) Object.assign(this, object);

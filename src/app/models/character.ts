@@ -17,7 +17,8 @@ export interface Character extends ArticleObject{
     items?: characterItem[],
     encounters?: characterEncounter[],
     images?: Image[],
-    player_class_connections?: CharacterPlayerClassConnection[],
+    player_class_connections?: CharacterPlayerClassConnection[];
+    campaign?: number;
 }
 
 
@@ -74,7 +75,8 @@ export class CharacterObject implements Character{
     encounters?: characterEncounter[];
     images?: Image[];
     player_class_connections?: CharacterPlayerClassConnection[];
-    campaign_details: {pk: number, name: string}
+    campaign_details?: {pk: number, name: string};
+    campaign?: number;
 
     getAbsoluteRouterUrl(): string{
         return `${Constants.wikiUrlFrontendPrefix}/character/${this.campaign_details.name}/${this.name}`;
