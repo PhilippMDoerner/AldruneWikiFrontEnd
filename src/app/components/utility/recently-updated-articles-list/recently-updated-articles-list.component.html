@@ -13,10 +13,10 @@
             [title]="article.article_type | titlecase"
             >
                 <!-- Heading -->
-                <header class="mt-2 card-img-top d-flex align-items-center justify-content-center">
+                <header class="card-img-top d-flex align-items-center justify-content-center">
                     <img *ngIf="article.image_url else defaultIcon"  src="{{constants.wikiUrl}}/{{ article.image_url }}" alt="article image" class="">
                     <ng-template #defaultIcon>
-                        <i class="fa-5x {{ getArticleTypeMetaData(article.article_type).iconClass }}"></i>
+                        <i class="fa-4x {{ getArticleTypeMetaData(article.article_type).iconClass }}"></i>
                     </ng-template>    
                 </header>
 
