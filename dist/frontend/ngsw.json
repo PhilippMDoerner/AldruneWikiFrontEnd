@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1629405004306,
+  "timestamp": 1629911513601,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -14,12 +14,12 @@
         "/4.d5c837075df5a8484b9c.js",
         "/favicon.ico",
         "/index.html",
-        "/main.b399acf1af60e5e39762.js",
+        "/main.0143209ec763af7ef954.js",
         "/manifest.webmanifest",
         "/polyfills.a6cee9d4b9da9e6c7e50.js",
         "/runtime.6076814ef49a1a1583c0.js",
         "/scripts.7003bce63d47e1b5a54b.js",
-        "/styles.e7c6293590a3126d0957.css"
+        "/styles.215e2535872c320834c7.css"
       ],
       "patterns": [
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic01\\.jpg",
@@ -56,7 +56,6 @@
         "/assets/marker-icon-2x.png",
         "/assets/marker-icon.png",
         "/assets/marker-shadow.png",
-        "/bg.0188b3f1e34cf2e8058f.jpg",
         "/fa-brands-400.216edb96b562c79adc09.svg",
         "/fa-brands-400.329a95a9172fdb2cccb4.woff",
         "/fa-brands-400.89a52ae1d02b86d61439.eot",
@@ -79,8 +78,7 @@
         "/fontawesome-webfont.f691f37e57f04c152e23.woff",
         "/layers-2x.8f2c4d11474275fbc161.png",
         "/layers.416d91365b44e4b4f477.png",
-        "/marker-icon.2b3e1faf89f94a483539.png",
-        "/overlay.eb1c6ead73ba2c71d71a.png"
+        "/marker-icon.2b3e1faf89f94a483539.png"
       ],
       "patterns": []
     }
@@ -149,7 +147,6 @@
     "/assets/marker-icon-2x.png": "cf3a536596b1f58e0ac805404183c8e6d6bdacb5",
     "/assets/marker-icon.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/assets/marker-shadow.png": "7b6a8df63930381e96604e705168d0527d6b82bc",
-    "/bg.0188b3f1e34cf2e8058f.jpg": "a4a953ba392cf723f616e16b06ec74e500b18f05",
     "/fa-brands-400.216edb96b562c79adc09.svg": "24aff44d36f6c4a6a08230474b546b29641c75d6",
     "/fa-brands-400.329a95a9172fdb2cccb4.woff": "5f8cab91347c553c1eb87f9b527f6bee8a28e40d",
     "/fa-brands-400.89a52ae1d02b86d61439.eot": "a400bc89d3cb4d45a3b90791800587a1e4ebafa6",
@@ -171,17 +168,16 @@
     "/fontawesome-webfont.8b43027f47b20503057d.eot": "d980c2ce873dc43af460d4d572d441304499f400",
     "/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/fontawesome-webfont.f691f37e57f04c152e23.woff": "28b782240b3e76db824e12c02754a9731a167527",
-    "/index.html": "dd9638f80e4a4bb00b87089b033f421a0f7e065e",
+    "/index.html": "e9e56e17506151aa84a6d4eaf1c50d0b95a5bc0c",
     "/layers-2x.8f2c4d11474275fbc161.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/layers.416d91365b44e4b4f477.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/main.b399acf1af60e5e39762.js": "1915bad1e66db51da95ed85f44db66341f7f8958",
+    "/main.0143209ec763af7ef954.js": "b36d8bc6803ae64de1a2da523881d014e9c20f83",
     "/manifest.webmanifest": "116c35892aa2a2a2ae967202ecd0a917f9fe39db",
     "/marker-icon.2b3e1faf89f94a483539.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
-    "/overlay.eb1c6ead73ba2c71d71a.png": "428cb1e28c236e7a48194c7469347fe5a5e0caef",
     "/polyfills.a6cee9d4b9da9e6c7e50.js": "dbc502f030c7bb83c7caa1feee7aff990831f7d9",
     "/runtime.6076814ef49a1a1583c0.js": "60542d45ef1f7bfeb255f45ea6a167ec92d2cc96",
     "/scripts.7003bce63d47e1b5a54b.js": "aa300fb1b006c382abc70d8bef08ea089dad59fc",
-    "/styles.e7c6293590a3126d0957.css": "68599c7c8bbfb38fddaf15673c4e91476e6ed700"
+    "/styles.215e2535872c320834c7.css": "919fc117eb2f78f455d11940468512cb5783732a"
   },
   "navigationUrls": [
     {
