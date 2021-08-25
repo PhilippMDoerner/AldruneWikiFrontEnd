@@ -170,7 +170,7 @@ h2{
 }
 
 #bg:before {
-	background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("../../aldrunewiki/static/frontpage/images/overlay.png");
+	background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("https://www.aldrune.com/static/frontpage/images/overlay.png");
 	background-size: auto, 256px 256px;
 	background-position: center, center;
 	background-repeat: no-repeat, repeat;
@@ -186,7 +186,7 @@ h2{
 	-webkit-transition: -webkit-transform 0.325s ease-in-out, -webkit-filter 0.325s ease-in-out;
 	-ms-transition: -ms-transform 0.325s ease-in-out, -ms-filter 0.325s ease-in-out;
 	transition: transform 0.325s ease-in-out, filter 0.325s ease-in-out;
-	background-image: url("../../aldrunewiki/static/frontpage/images/bg.jpg");
+	background-image: url("https://www.aldrune.com/static/frontpage/images/bg.jpg");
 	background-position: center;
 	background-size: cover;
 	background-repeat: no-repeat;
