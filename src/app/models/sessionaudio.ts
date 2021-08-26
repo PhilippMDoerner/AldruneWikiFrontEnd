@@ -10,6 +10,7 @@ export interface SessionAudio extends ApiObject{
         nextSessionAudio: {isMainSessionInt: number, sessionNumber: number}, 
         priorSessionAudio: {isMainSessionInt: number, sessionNumber: number}
     }
+    has_recording?: boolean;
 }
 
 export class SessionAudioObject implements SessionAudio{
@@ -21,6 +22,7 @@ export class SessionAudioObject implements SessionAudio{
         nextSessionAudio: {isMainSessionInt: number, sessionNumber: number}, 
         priorSessionAudio: {isMainSessionInt: number, sessionNumber: number}
     }
+    has_recording?: boolean;
 
     constructor(object?: SessionAudio){
         if (object) Object.assign(this, object)
