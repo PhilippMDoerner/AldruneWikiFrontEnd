@@ -68,7 +68,7 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
         error => this.routingService.routeToErrorPage(error)
       );
 
-      this.timestampService.getTimestamps(isMainSessionInt, sessionNumber).pipe(first()).subscribe(
+      this.timestampService.getTimestamps(this.campaign, isMainSessionInt, sessionNumber).pipe(first()).subscribe(
         (timestamps: TimestampObject[]) => this.timestamps = timestamps,
         error => this.routingService.routeToErrorPage(error)
       )
