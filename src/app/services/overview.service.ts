@@ -21,6 +21,7 @@ import { GenericService } from './generic.service';
 import { OrganizationService } from './organization/organization.service';
 import { UserService } from './user.service';
 import { MarkerService } from './marker.service';
+import { MarkerTypeService } from './marker-type.service';
 
 
 @Injectable({
@@ -40,6 +41,7 @@ export class OverviewService {
     [OverviewType.Location] : this.locationService,
     [OverviewType.Map] : this.mapService,
     [OverviewType.MarkerType] : this.markerService,
+    [OverviewType.MarkerTypeType] : this.markerTypeService,    
     [OverviewType.Organization]: this.organizationService,
     [OverviewType.Quest] : this.questService,
     [OverviewType.Quote] : this.quoteService,
@@ -59,6 +61,7 @@ export class OverviewService {
     private locationService: LocationService,
     private mapService: MapService,
     private markerService: MarkerService,
+    private markerTypeService: MarkerTypeService,
     private organizationService: OrganizationService,
     private questService: QuestService,
     private ruleService: RuleService,

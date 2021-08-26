@@ -346,6 +346,7 @@ export enum OverviewType{
   Location,
   Map,
   MarkerType,
+  MarkerTypeType,
   Organization,
   Quest,
   Quote,
