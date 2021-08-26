@@ -12,34 +12,46 @@
 
         <!-- Longitude -->
         <div class="row">
-            <div class="col-4"></div>
+            <div class="col-md-4 col-0"></div>
             <span class="bold col-3">Longitude: </span> 
-            <span class="col-3">{{articleData.longitude}}</span>
-            <div class="col-2"></div>
+            <span class="col-md-5 col-9">{{articleData.longitude}}</span>
         </div>
 
         <!-- Latitude -->
         <div class="row">
-            <div class="col-4"></div>
+            <div class="col-md-4 col-0"></div>
             <span class="bold col-3">Latitude: </span> 
-            <span class="col-3">{{articleData.latitude}}</span>
-            <div class="col-2"></div>
+            <span class="col-md-5 col-9">{{articleData.latitude}}</span>
         </div>
 
         <!-- Icon -->
         <div class="row">
-            <div class="col-4"></div>
+            <div class="col-md-4 col-0"></div>
             <span class="bold col-3">Icon: </span>
-            {{articleData.icon}}
-            <div class="col-2"></div>
+
+            <span class="col-md-5 col-9"> 
+                <span *ngIf="articleData.icon">{{articleData.icon}}</span> 
+                <span *ngIf="!articleData.icon">
+                    {{articleData.type_details.icon}}
+                    <span class="text-muted ml-3"> (from marker type) </span> 
+                </span>     
+            </span>
+
         </div>
 
         <!-- Color -->
         <div class="row">
-            <div class="col-4"></div>
+            <div class="col-md-4 col-0"></div>
             <span class="bold col-3">Color: </span> 
-            <span class="col-3"> {{articleData.color}} </span>
-            <div class="col-2"></div>
+
+            <span class="col-md-5 col-9"> 
+                <span *ngIf="articleData.color">{{articleData.color}}</span> 
+                <span *ngIf="!articleData.color">
+                    {{articleData.type_details.color}}                    
+                    <span class="text-muted ml-3"> (from marker type) </span> 
+                </span> 
+            </span>
+
         </div>
 
         <!-- Spacer -->
