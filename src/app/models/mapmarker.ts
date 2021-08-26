@@ -24,7 +24,9 @@ export class MapMarkerObject implements MapMarker{
     map_details?: {name: string};
     location: number;
     location_details?: {name: string, parent_location_name: string, description: string, sublocations: string[]};
+    campaign_details?: {name: string, pk: number};
     type: number;
+    type_details?: MapMarkerType;
     pk?: number;
 
     constructor(object?: MapMarker){
@@ -34,6 +36,6 @@ export class MapMarkerObject implements MapMarker{
     getAbsoluteRouterUrl(): string{
         if (!this.map_details) throw "Can't generate URL for MapMarker object without map_details";
         if (!this.location_details) throw "Can't generate URL for Encounter object without location_details";
-        return `${Constants.wikiUrlFrontendPrefix}/marker/${this.location_details.parent_location_name}/${this.location_details.name}/${this.map_details.name}`;
+        return `${Constants.wikiUrlFrontendPrefix}/marker/${this.campaign_details.name}/${this.location_details.parent_location_name}/${this.location_details.name}/${this.map_details.name}`;
     }
 }
