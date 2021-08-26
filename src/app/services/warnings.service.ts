@@ -42,7 +42,10 @@ export class WarningsService {
     preliminaryErrorBody = (preliminaryErrorBody == null) ? this.defaultWarning : preliminaryErrorBody;
     if (errorStatus === 500) return preliminaryErrorBody;
 
-    if (typeof error !== "number" && (!error.hasOwnProperty("status") || !error.hasOwnProperty("error"))) throw "Invalid error input to show warning";
+    if (typeof error !== "number" && (!error.hasOwnProperty("status") || !error.hasOwnProperty("error"))){
+      console.error(error);
+      throw "Error while trying to display the error above";
+    } 
     const hasSingleError: boolean = typeof error.error === "string";
     const isGenericHTTPError: boolean = typeof error === "number";
 
