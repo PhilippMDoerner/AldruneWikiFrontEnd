@@ -11,6 +11,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { HttpEvent, HttpEventType, HttpUploadProgressEvent } from '@angular/common/http';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 import { OverviewType } from 'src/app/app.constants';
+import { CampaignService } from 'src/app/services/campaign.service';
 
 @Component({
   selector: 'app-session-audio-update',
@@ -42,6 +43,7 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
     route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    private campaignService: CampaignService,
   ) { 
     super(
       router,
@@ -54,26 +56,34 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
+      const isMainSessionInt: number = params['isMainSession'];
+      const sessionNumber: number = params['sessionNumber'];
+      this.campaign = params.campaign;
+
+      //Update Cancel Route Params
+      this.updateCancelRoute.params.isMainSession = isMainSessionInt;
+      this.updateCancelRoute.params.sessionNumber = sessionNumber;
+
       if (this.isInUpdateState()){
-        const isMainSessionInt: number = params['isMainSession'];
-        const sessionNumber: number = params['sessionNumber'];
-        this.campaign = params.campaign;
-
-        //Update Cancel Route Params
-        this.updateCancelRoute.params.isMainSession = isMainSessionInt;
-        this.updateCancelRoute.params.sessionNumber = sessionNumber;
-
-        //Get SessionAudioObject
-        this.articleService.readByParam(this.campaign, {isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
-          (sessionAudio: SessionAudioObject) => this.userModel = sessionAudio,
-          error => this.routingService.routeToErrorPage(error)
-        );
+        this.fetchUserModel(isMainSessionInt, sessionNumber);
 
       } else if (this.isInCreateState()) {
-        this.userModel = new SessionAudioObject();
-      } 
-    })
+        this.createUserModel();
 
+      } 
+    });
+
+  }
+
+  fetchUserModel(isMainSessionInt: number, sessionNumber: number){
+    this.articleService.readByParam(this.campaign, {isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
+      (sessionAudio: SessionAudioObject) => this.userModel = sessionAudio,
+      error => this.routingService.routeToErrorPage(error)
+    );
+  }
+
+  createUserModel(){
+    this.userModel = new SessionAudioObject();
   }
 
   onSubmit(){ //Allow for put requests
