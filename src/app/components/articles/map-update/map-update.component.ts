@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { MapObject, Map } from 'src/app/models/map';
+import { CampaignService } from 'src/app/services/campaign.service';
 import { MapService } from 'src/app/services/map.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -20,6 +21,8 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
   //Defining ArticleFormMixin Properties
   userModel: MapObject;
   serverModel: Map;
+  userModelClass = MapObject;
+
   updateCancelRoute = {routeName: 'map', params: {name: null, campaign: this.campaign}};
   creationCancelRoute = {routeName: 'map', params: {name: Constants.defaultMapName, campaign: this.campaign}};
 
@@ -30,7 +33,6 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
   ];
 
   //Custom Properties
-  private parameter_subscription: Subscription;
 
 
   constructor(
@@ -40,37 +42,15 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
     route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    campaignService: CampaignService
   ) { 
     super(
       router, 
       routingService, 
       warnings, 
       mapService,
-      route
+      route,
+      campaignService,
     ) 
-  }
-
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const mapName: string = params['name'];
-      this.campaign = params.campaign;
-
-      //Update Cancel Route Params
-      this.updateCancelRoute.params.name = mapName;
-
-      //Get Map
-      if (this.isInUpdateState()){
-        this.articleService.readByParam(this.campaign, mapName).pipe(first()).subscribe(
-          (map: MapObject) => this.userModel = map,
-          error => this.routingService.routeToErrorPage(error)
-        );
-      }  else if (this.isInCreateState()){
-        this.userModel = new MapObject();
-      }
-    })
-  }
-
-  ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

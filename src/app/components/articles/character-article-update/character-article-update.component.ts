@@ -23,10 +23,12 @@ import { CampaignService } from 'src/app/services/campaign.service';
   styleUrls: ['./character-article-update.component.scss']
 })
 
-export class CharacterArticleUpdateComponent extends ArticleFormMixin implements OnInit, OnDestroy {
+export class CharacterArticleUpdateComponent extends ArticleFormMixin {
   //Defining ArticleFormMixin Properties
   serverModel: CharacterObject;
   userModel: CharacterObject;
+  userModelClass = CharacterObject;
+
   updateCancelRoute = {routeName: "character", params: {name: null, campaign: this.campaign}};
   creationCancelRoute = {routeName: "character-overview", params: {campaign: this.campaign}};
 
@@ -46,8 +48,6 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
   isCharacterConnectionCreationState: boolean = false;
   connectionModel: CharacterPlayerClassConnection;
 
-  private parameter_subscription: Subscription;
-
   constructor(
     characterService: CharacterService,
     router: Router,
@@ -57,7 +57,7 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
     public routingService: RoutingService,
     private playerClassService: PlayerClassService,
     private characterConnectionService: CharacterPlayerClassConnectionService,
-    private campaignService: CampaignService,
+    campaignService: CampaignService,
   ) { 
     super(
       router,
@@ -65,40 +65,8 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
       warnings, 
       characterService, //articleService
       route,
+      campaignService
     ) 
-  }
-
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      if (this.isInUpdateState()){
-        const character_name: string = params.name;
-        this.campaign = params.campaign;
-
-        //Update Cancel Route Params
-        this.updateCancelRoute.params.name = character_name;
-        
-        this.fetchUserModel(character_name)
-      } else if (this.isInCreateState()) {
-        this.createUserModel();
-      }
-    });
-  }
-
-  fetchUserModel(character_name: string): void{
-    this.articleService.readByParam(this.campaign, character_name).pipe(first()).subscribe(
-      (character: CharacterObject) => this.userModel = character, 
-      error => this.routingService.routeToErrorPage(error)
-    );
-  }
-
-  createUserModel(): void{
-    this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
-      (campaignData: {name: String, pk: number}) => {
-        this.userModel = new CharacterObject();
-        this.userModel.campaign = campaignData.pk;
-      },
-      error => this.warnings.showWarning(error)
-    )
   }
 
   toggleConnectionCreateState(){
@@ -140,10 +108,5 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin implements
 
   hasConnection(playerClass: PlayerClass){
     return this.userModel.player_class_connections.some((connection: CharacterPlayerClassConnection) => connection.player_class === playerClass.pk);
-  }
-
-
-  ngOnDestroy(): void{
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

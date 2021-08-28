@@ -10,6 +10,7 @@ import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
+import { CampaignService } from 'src/app/services/campaign.service';
 
 @Component({
   selector: 'app-organization-article-update',
@@ -20,6 +21,8 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
   //Defining ArticleFormMixin
   userModel: OrganizationObject;
   serverModel: Organization;
+  userModelClass = OrganizationObject;
+
   updateCancelRoute = {routeName: 'organization', params: {name: null, campaign: this.campaign }};
   creationCancelRoute = {routeName: 'organization-overview', params: {campaign: this.campaign}};
 
@@ -30,7 +33,6 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
   ];
 
   //Custom Properties
-  private paramter_subscription: Subscription;
 
   constructor(
     organizationService: OrganizationService,
@@ -39,35 +41,15 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
     private formlyService: MyFormlyService,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    campaignService: CampaignService,
   ) { 
     super(
       router,
       routingService,
       warnings,
       organizationService,
-      route
+      route,
+      campaignService
     )
-  }
-
-  ngOnInit(): void {
-    this.paramter_subscription = this.route.params.subscribe(params => {
-      if (this.isInUpdateState()){
-        const organizationName: string = params.name;
-        this.campaign = params.campaign;
-
-        this.articleService.readByParam(this.campaign, organizationName).pipe(first()).subscribe(
-          (organization: OrganizationObject) => this.userModel = organization,
-          error => this.routingService.routeToErrorPage(error)
-        );
-        
-      } else if (this.isInCreateState()) {
-        this.userModel = new OrganizationObject();
-      }
-    })
-
-  }
-
-  ngOnDestroy(){
-    if (this.paramter_subscription) this.paramter_subscription.unsubscribe();
   }
 }

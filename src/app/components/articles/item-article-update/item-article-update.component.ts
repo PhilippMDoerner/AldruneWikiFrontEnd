@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 import { OverviewType } from 'src/app/app.constants';
 import { CharacterObject } from 'src/app/models/character';
 import { Item, ItemObject } from 'src/app/models/item';
+import { CampaignService } from 'src/app/services/campaign.service';
 import { CharacterService } from 'src/app/services/character/character.service';
 import { ItemService } from 'src/app/services/item/item.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -18,21 +19,22 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   templateUrl: './item-article-update.component.html',
   styleUrls: ['./item-article-update.component.scss']
 })
-export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnInit {
+export class ItemArticleUpdateComponent extends ArticleFormMixin {
 
   //Defining ArticleFormMixin Properties
   serverModel: Item;
   userModel: ItemObject;
+  userModelClass = ItemObject;
+
   updateCancelRoute = {routeName: "item", params: {name: null, campaign: this.campaign }};
   creationCancelRoute = {routeName: "item-overview", params: {campaign: this.campaign}};//Only used when creating normally, not when creating item for a specific character
   
-  formlyFields: FormlyFieldConfig[] = [
+  formlyFields: FormlyFieldConfig[] = [ //TODO: Get auto pre select to work when you create item for a character. You get the options correctly and the usermodel also has the value correctly, it's just not displayed in the dropdown
     this.formlyService.genericInput({key: "name", isNameInput: true}),
     this.formlyService.genericSelect({key: 'owner', overviewType: OverviewType.Character, campaign: this.campaign, required: false})
   ];
 
   //Custom Properties
-  private parameter_subscription: Subscription;
 
   constructor(
     itemService: ItemService,
@@ -42,42 +44,38 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnIn
     private formlyService: MyFormlyService,
     warnings: WarningsService,  
     routingService: RoutingService,
+    public campaignService: CampaignService
   ) { super(
     router, 
     routingService, 
     warnings, 
     itemService,
-    route
+    route,
+    campaignService
   ) }
 
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const itemName: string = params.name;
-      this.campaign = params.campaign;
-      
-      //Update Cancel Route Params
-      this.updateCancelRoute.params.name = itemName;
+  createUserModel(queryParameters): void{
+    this.userModel = new this.userModelClass();
 
-      //Get Item
-      if (this.isInUpdateState()){
-        this.articleService.readByParam(this.campaign, itemName).pipe(first()).subscribe(
-          (item: ItemObject) =>  this.userModel = item,
-          error => this.routingService.routeToErrorPage(error)
-        );
+    this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
+      (campaignData: {name: String, pk: number}) => {
+          this.userModel.campaign = campaignData.pk;
+      },
+      error => this.warnings.showWarning(error)
+    );
 
-      } else if (this.isInCreateState()) {
-        this.userModel = new ItemObject();
+    console.log("Associated: " + this.isForAssociatedObjectCreation());
+    if(this.isForAssociatedObjectCreation()){
+      const itemOwnerName: string = this.route.snapshot.params.character_name;
+    
+      this.characterService.readByParam(this.campaign, itemOwnerName).pipe(first()).subscribe(
+        (itemOwner: CharacterObject) => {this.userModel.owner = itemOwner.pk; console.log(this.userModel)},
+        error => this.routingService.routeToErrorPage(error)
+      );
+    }
 
-        if(this.isForAssociatedObjectCreation()){
-          const itemOwnerName: string = params.character_name;
-
-          this.characterService.readByParam(this.campaign, itemOwnerName).pipe(first()).subscribe(
-            (itemOwner: CharacterObject) => this.userModel.owner = itemOwner.pk,
-            error => this.routingService.routeToErrorPage(error)
-          );
-        }
-      } 
-    })
+    console.log(this.formlyFields);
+    console.log(this);
   }
 
   /**
@@ -88,7 +86,7 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnIn
   onCancel(){
     if (this.isForAssociatedObjectCreation()){
       const characterName: string = this.route.snapshot.params['character_name'];
-      this.routingService.routeToPath('character', {name: characterName});
+      this.routingService.routeToPath('character', {name: characterName, campaign: this.campaign});
 
     } else { //Is "normal" article creation and thus "normal" cancel
       const executionContext = this;
@@ -103,9 +101,5 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin implements OnIn
    */
   private isForAssociatedObjectCreation(): boolean{
     return this.routingService.routeNameMatches(this.route, "item-character-create");
-  }
-
-  ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

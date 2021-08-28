@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
@@ -22,17 +22,30 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
   //Defining ArticleFormMixin Properties
   userModel: SessionAudioObject;
   serverModel: SessionAudio;
+  userModelClass = SessionAudioObject;
+
   updateCancelRoute = {routeName: "sessionaudio", params: {isMainSession: null, sessionNumber: null, campaign: this.campaign}};
   creationCancelRoute = {routeName: "sessionaudio-overview", params: {campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
-    this.formlyService.genericSelect({key: "session", overviewType: OverviewType.Session, campaign: this.campaign, wrappers: ["session-update-wrapper"]}),
+    this.formlyService.genericDisableSelect({
+      key: "session", 
+      overviewType: OverviewType.Session, 
+      campaign: this.campaign, 
+      wrappers: ["session-update-wrapper"],
+      disabledExpression: (selectOption: SessionAudio) => {
+        const isCurrentlySelectedOption =  selectOption.pk === this.userModel.session_details?.pk;
+        return selectOption.has_recording && !isCurrentlySelectedOption;
+      },
+      tooltipMessage: "All sessions that already have a recording are disabled.",
+      warningMessage: "The session you selected already has a recording attached to it! Uploading this file will not work!",
+      showWrapperLabel: false
+    }),
     this.formlyService.singleFileField({key: "audio_file", label: "Audio File", required: this.isInCreateState()}),
   ];
 
   //Custom Properties
   isWaitingForResponse: boolean = false;
-  private parameter_subscription: Subscription;
   private file_subscription: Subscription;
   fileUploadProgress: number;
 
@@ -43,48 +56,41 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
     route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
-    private campaignService: CampaignService,
+    campaignService: CampaignService,
   ) { 
     super(
       router,
       routingService,
       warnings,
       audioService,
-      route
+      route,
+      campaignService
     )
   }
 
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const isMainSessionInt: number = params['isMainSession'];
-      const sessionNumber: number = params['sessionNumber'];
-      this.campaign = params.campaign;
-
-      //Update Cancel Route Params
-      this.updateCancelRoute.params.isMainSession = isMainSessionInt;
-      this.updateCancelRoute.params.sessionNumber = sessionNumber;
-
-      if (this.isInUpdateState()){
-        this.fetchUserModel(isMainSessionInt, sessionNumber);
-
-      } else if (this.isInCreateState()) {
-        this.createUserModel();
-
-      } 
-    });
-
-  }
-
-  fetchUserModel(isMainSessionInt: number, sessionNumber: number){
-    this.articleService.readByParam(this.campaign, {isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
-      (sessionAudio: SessionAudioObject) => this.userModel = sessionAudio,
+  fetchUserModel(queryParameters): void{
+    this.articleService.readByParam(this.campaign, queryParameters).pipe(first()).subscribe(
+      (sessionaudio: SessionAudioObject) => this.userModel = sessionaudio,
       error => this.routingService.routeToErrorPage(error)
     );
   }
 
-  createUserModel(){
-    this.userModel = new SessionAudioObject();
+  getQueryParameters(params: Params): object{
+    const isMainSessionInt: number = params['isMainSession'];
+    const sessionNumber: number = params['sessionNumber'];
+
+    return {isMainSession: isMainSessionInt, sessionNumber};
   }
+
+  updateCancelDeleteRoutes(params: Params): void{
+    const isMainSessionInt: number = params['isMainSession'];
+    const sessionNumber: number = params['sessionNumber'];
+
+    //Update Cancel Route Params
+    this.updateCancelRoute.params.isMainSession = isMainSessionInt;
+    this.updateCancelRoute.params.sessionNumber = sessionNumber;
+  }
+
 
   onSubmit(){ //Allow for put requests
     //If you're not uploading a file, just send a patch request
@@ -139,7 +145,8 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
   }
 
   ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
+    ArticleFormMixin.prototype.ngOnDestroy();
+
     if (this.file_subscription) this.file_subscription.unsubscribe();
   }
 }

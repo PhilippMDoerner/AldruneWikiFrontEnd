@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
-import { Subscription } from 'rxjs';
 import { OverviewType } from 'src/app/app.constants';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
+import { CampaignService } from 'src/app/services/campaign.service';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -22,6 +22,8 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
   //Defining ArticleFormMixin Properties
   serverModel: DiaryEntryObject;
   userModel: DiaryEntryObject;
+  userModelClass = DiaryEntryObject;
+
   updateCancelRoute = {routeName: "diaryentry", params: {
     sessionNumber: null, isMainSession: null, authorName: null, campaign: this.campaign
   }};
@@ -43,7 +45,7 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
       },
       fieldGroup: [
         //Author
-        this.formlyService.genericSelect({key: "author", labelProp: "name", overviewType: OverviewType.User, campaign: this.campaign}),
+        this.formlyService.genericSelect({key: "author", labelProp: "username", overviewType: OverviewType.User, campaign: this.campaign}),
         //Session
         this.formlyService.genericDisableSelect({
           key: 'session', 
@@ -57,13 +59,9 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
         }),
       ]
     },
-    
-    //this.formlyService.genericSelect({key: 'session', optionsType: 'session', wrappers: ["session-update-wrapper"]}),
-
   ];
 
   //Custom Properties
-  private parameter_subscription: Subscription;
 
   constructor(
     private formlyService: MyFormlyService,
@@ -71,40 +69,32 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
     router: Router,
     route: ActivatedRoute,
     warnings: WarningsService,  
-    public routingService: RoutingService
+    public routingService: RoutingService,
+    campaignService: CampaignService
   ) { 
     super(
       router,
       routingService,
       warnings,
       diaryEntryService,
-      route
+      route,
+      campaignService
     )
   }
 
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      if (this.isInUpdateState() || this.isInOutdatedUpdateState()){
-        const isMainSession: string = params.isMainSession;
-        const sessionNumber: string = params.sessionNumber;
-        const authorName: string = params.authorName;
-        this.campaign = params.campaign;
+  getQueryParameters(params: Params): object{
+    const isMainSession: string = params.isMainSession;
+    const authorName: string = params.authorName;
+    const sessionNumber: string = params.sessionNumber;
 
-        //Update Cancel Route Params
-        this.updateCancelRoute.params.authorName = authorName;
-        this.updateCancelRoute.params.sessionNumber = sessionNumber;
-        this.updateCancelRoute.params.isMainSession = isMainSession;
-  
-        //Get DiaryEntry
-        this.articleService.readByParam(this.campaign, {isMainSession, sessionNumber, authorName}).subscribe(
-          (diaryEntry: DiaryEntryObject) => this.userModel = diaryEntry, 
-          error => this.routingService.routeToErrorPage(error)
-        );
+    return {isMainSession, authorName, sessionNumber}
+  }
 
-      } else if (this.isInCreateState()) {
-        this.userModel = new DiaryEntryObject();
-      }
-    });
+  fetchUserModel(queryParameters: any): void{
+    this.articleService.readByParam(this.campaign, queryParameters).subscribe(
+      (diaryEntry: DiaryEntryObject) => this.userModel = diaryEntry, 
+      error => this.routingService.routeToErrorPage(error)
+    );
   }
 
   /**
@@ -138,6 +128,7 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
     return userSelectedInvalidAuthorSessionCombo;
   }
 
+
   /**
    * @description Overwrites onCreationSuccess on ArticleFormMixin. Routes the user after creation to the diaryentry-article
    * in display-state "encounter", so that they can immediately create encounters
@@ -148,11 +139,8 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
       sessionNumber: diaryEntry.session_details.session_number,
       isMainSession: diaryEntry.session_details.is_main_session_int,
       authorName: diaryEntry.author_details.name,
+      campaign: this.campaign,
       displayMode: "encounter"
     });
-  }
-
-  ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

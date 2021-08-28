@@ -1,27 +1,34 @@
 import { Directive, OnDestroy, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { Subscription } from "rxjs";
 import { first } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
-import { ApiObject } from "src/app/models/base-models";
+import { ApiObject, ArticleObject } from "src/app/models/base-models";
+import { CampaignService } from "src/app/services/campaign.service";
 import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
 import { RoutingService } from "src/app/services/routing.service";
 import { WarningsService } from "src/app/services/warnings.service";
+import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 
 //TODO: Move all this ngoninit and ngondestroy logic from all the update pages to this page
-export class ArticleFormMixin{
+@Directive()
+export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy{
     constants = Constants;
     formState: string;
 
-    userModel: ApiObject; //A model of article-data for the user to edit
-    serverModel: any; //A model of article-data from the server if there are update conflicts with the userModel
-    formlyFields: FormlyFieldConfig[];
     campaign: string = this.route.snapshot.params.campaign;
 
-    updateCancelRoute: { routeName: string, params: any }; //Data to generate route to go to to if update of article is cancelled
-    creationCancelRoute: { routeName: string, params: any }; //Data to generate route to go to if creation of article is cancelled
+    userModelClass: any;
+    userModel: ArticleObject; //A model of article-data for the user to edit
+    serverModel: any; //A model of article-data from the server if there are update conflicts with the userModel
+
+    formlyFields: FormlyFieldConfig[];
+    parameterSubscription: Subscription;
+
+    updateCancelRoute: { routeName: string, params: any } = {routeName: "", params: {}}; //Data to generate route to go to to if update of article is cancelled
+    creationCancelRoute: { routeName: string, params: any } = {routeName: "", params: {}}; //Data to generate route to go to if creation of article is cancelled
 
     constructor(
         public router: Router,
@@ -29,11 +36,66 @@ export class ArticleFormMixin{
         public warnings: WarningsService,
         public articleService: GenericService | GenericObjectService,
         public route: ActivatedRoute,
+        public campaignService: CampaignService
     ){
+        super();
         const isUpdateRoute : boolean = this.router.url.includes("update");
         this.formState = isUpdateRoute ? Constants.updateState : Constants.createState;
     }
 
+    ngOnInit(): void{
+        this.parameterSubscription = this.route.params.subscribe(params => {
+            const queryParameters: object = this.getQueryParameters(params);        
+
+            if (this.isInUpdateState()){
+                this.updateCancelDeleteRoutes(params);
+
+                this.fetchUserModel(queryParameters);
+        
+            } else if (this.isInCreateState()) {
+                this.createUserModel(queryParameters);
+            }
+        })
+    }
+
+    getQueryParameters(params: Params): object{
+        return {name: params.name};
+    }
+
+    updateCancelDeleteRoutes(params: Params): void{
+        //TODO: Throw an error if updatecancelroute / creationcancelroute are not properly created by the child class
+        this.updateCancelRoute.params.name = params.name;
+    }
+
+    fetchUserModel(queryParameters: any): void{
+        if (queryParameters.name == null) throw `Invalid query Parameters exception. You're trying to fetch the user model
+        of an article model without using the default query parameter "name", instead resorting to ${queryParameters}. 
+        Please use "name" or overwrite "fetchUserModel"`;
+
+        this.articleService.readByParam(this.campaign, queryParameters.name).pipe(first()).subscribe(
+            (article: ArticleObject) =>  this.userModel = article, 
+            error => this.routingService.routeToErrorPage(error)
+        );
+    }
+    
+    createUserModel(queryParameters: any): void{
+        //if (this.userModelClass == null) throw (`Undefined user model class property. ArticleFormMixin needs a defined 
+        //class that this data belongs to to create a user model. This hasn't been defined on this component!`);
+        this.userModel = new this.userModelClass();
+        
+        this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
+            (campaignData: {name: String, pk: number}) => {
+                this.userModel.campaign = campaignData.pk;
+            },
+            error => this.warnings.showWarning(error)
+        );
+    }
+
+    forceFieldRefresh(): void{
+        this.userModel = {...this.userModel};
+    }
+
+    //TODO: Get rid of these functions due to permissionutility mixin
     isInCreateState(): boolean{
         return this.formState === Constants.createState;
     }
@@ -50,6 +112,7 @@ export class ArticleFormMixin{
      * @description Determines which action is to be taken upon submission: create or update an article
      */
     onSubmit(){
+        console.log(this.userModel);
         if(this.isInUpdateState() || this.isInOutdatedUpdateState()){
             this.articleUpdate(this.userModel);
         } else if(this.isInCreateState()){
@@ -147,6 +210,9 @@ export class ArticleFormMixin{
     onCancel(context?: any){
         const isCalledFromOverwritingFunction = this.routingService == null;
         context = isCalledFromOverwritingFunction ? context : this;
+        console.log("On cancel with params: ")
+        console.log(this.updateCancelRoute);
+        console.log(this.creationCancelRoute);
 
         if (context.isInUpdateState() || context.isInOutdatedUpdateState()){
             const {routeName, params} = context.updateCancelRoute;
@@ -155,5 +221,9 @@ export class ArticleFormMixin{
             const {routeName, params} = context.creationCancelRoute;
             context.routingService.routeToPath(routeName, params);
         } 
+    }
+
+    ngOnDestroy(): void{
+        if(this.parameterSubscription) this.parameterSubscription.unsubscribe();
     }
 }

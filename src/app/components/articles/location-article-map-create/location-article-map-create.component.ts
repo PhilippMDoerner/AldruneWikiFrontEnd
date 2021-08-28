@@ -14,6 +14,7 @@ import { first } from 'rxjs/operators';
 import { ExtendedMap } from 'src/app/models/map';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { CampaignService } from 'src/app/services/campaign.service';
 
 @Component({
   selector: 'app-location-article-map-create',
@@ -41,6 +42,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
     private formlyService: MyFormlyService,
     private warnings: WarningsService,  
     public routingService: RoutingService,
+    private campaignService: CampaignService,
   ) { }
 
   location_fields: FormlyFieldConfig[] = this.formlyService.getFieldConfigForLocation(this.campaign);
@@ -52,25 +54,43 @@ export class LocationArticleMapCreateComponent implements OnInit {
     this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
     this.formlyService.genericInput({key: "icon", label: "Custom Icon", required: false})
   ]
-
+  //TODO: Make this make use of ArticleFormMixin
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(params => {
       const longitude: number = params['longitude'];
       const latitude: number = params['latitude'];
       this.mapName = params['map_name'];
 
-      this.mapService.readByParam(this.campaign, this.mapName).pipe(first()).subscribe(
-        (map: ExtendedMap) =>{
-          this.markerModel = new MapMarkerObject();
-          this.markerModel.map = map.pk;
-          this.markerModel.latitude = latitude;
-          this.markerModel.longitude = longitude;
-        },
-        error => this.routingService.routeToErrorPage(error)
-      );
-  
-      this.locationModel = new LocationObject();
+      this.createUserModel(latitude, longitude);
     });
+  }
+
+
+  createUserModel(latitude: number, longitude: number): void{
+    this.createMarkerModel(latitude, longitude);
+    this.createLocationModel();
+  }
+
+  createMarkerModel(latitude: number, longitude: number){
+    this.markerModel = new MapMarkerObject();
+
+    this.mapService.readByParam(this.campaign, this.mapName).pipe(first()).subscribe(
+      (map: ExtendedMap) =>{
+        this.markerModel.map = map.pk;
+        this.markerModel.latitude = latitude;
+        this.markerModel.longitude = longitude;
+      },
+      error => this.routingService.routeToErrorPage(error)
+    );
+  }
+
+  createLocationModel(){
+    this.locationModel = new LocationObject();
+
+    this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
+      (campaignData: {name: String, pk: number}) => this.locationModel.campaign = campaignData.pk,
+      error => this.warnings.showWarning(error)
+    );
   }
 
   onSubmit(){

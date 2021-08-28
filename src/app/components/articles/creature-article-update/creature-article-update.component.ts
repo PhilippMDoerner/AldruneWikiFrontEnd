@@ -21,6 +21,8 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
   //Defining ArticleFormMixin Properties
   serverModel: CreatureObject;
   userModel: Creature;
+  userModelClass = CreatureObject;
+  
   updateCancelRoute = {routeName: "creature", params: {name: null, campaign: this.campaign}};
   creationCancelRoute = {routeName: "creature-overview", params: {campaign: this.campaign}};
 
@@ -28,7 +30,6 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
     this.formlyService.genericInput({key: "name", isNameInput: true}),
   ]
 
-  private parameter_subscription: Subscription;
 
   constructor(
     creatureService: CreatureService,
@@ -44,45 +45,8 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
       routingService, 
       warnings, 
       creatureService, 
-      route
+      route,
+      campaignService
     );
   }
-  //TODO: move ngoninit into articleformmixin
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      if (this.isInUpdateState()){
-        const creatureName: string = params.name;
-        //Update Cancel Route Params
-        this.updateCancelRoute.params.name = creatureName;
-
-        this.fetchUserModel(creatureName);
-
-      } else if (this.isInCreateState()) {
-        this.createUserModel();
-      }
-    })
-
-  }
-
-  fetchUserModel(creatureName: string): void{
-    this.articleService.readByParam(this.campaign, creatureName).pipe(first()).subscribe(
-      (creature: CreatureObject) =>  this.userModel = creature, 
-      error => this.routingService.routeToErrorPage(error)
-    );
-  }
-
-  createUserModel(): void{
-    this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
-      (campaignData: {name: String, pk: number}) => {
-        this.userModel = new CreatureObject();
-        this.userModel.campaign = campaignData.pk;
-      },
-      error => this.warnings.showWarning(error)
-    )
-  }
-
-  ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
-  }
-
 }

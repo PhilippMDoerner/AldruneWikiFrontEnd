@@ -10,6 +10,7 @@ import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 import { OverviewType } from 'src/app/app.constants';
+import { CampaignService } from 'src/app/services/campaign.service';
 
 @Component({
   selector: 'app-quest-article-update',
@@ -20,6 +21,8 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
   //Defining ArticleFormMixin Properties
   userModel: QuestObject;
   serverModel: Quest;
+  userModelClass = QuestObject;
+
   updateCancelRoute = {routeName: "quest", params: {name: null, campaign: this.campaign}};
   creationCancelRoute = {routeName: "quest-overview", params: {campaign: this.campaign}};
 
@@ -53,7 +56,6 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
   ];
 
   //Custom Properties
-  private parameter_subscription: Subscription;
 
   constructor(
     private questService: QuestService,
@@ -62,38 +64,15 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
     private formlyService: MyFormlyService,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    campaignService: CampaignService,
   ) { 
     super(
       router,
       routingService,
       warnings,
       questService,
-      route
+      route,
+      campaignService
     )
-  }
-
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const questName: string = params.name;
-      this.campaign = params.campaign;
-
-      //Update Cancel Route Param
-      this.updateCancelRoute.params.name = questName;
-
-      //Get Quest
-      if (this.isInUpdateState()){
-        this.articleService.readByParam(this.campaign, questName).pipe(first()).subscribe(
-          (quest: QuestObject) => this.userModel = quest,
-          error => this.routingService.routeToErrorPage(error)
-        );
-        
-      } else if (this.isInCreateState()) {
-        this.userModel = new QuestObject();
-      } 
-    })
-  }
-
-  ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
   }
 }

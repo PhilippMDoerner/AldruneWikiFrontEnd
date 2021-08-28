@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { OverviewType } from 'src/app/app.constants';
 import { LocationObject } from 'src/app/models/location';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
+import { CampaignService } from 'src/app/services/campaign.service';
 import { LocationService } from 'src/app/services/location/location.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -22,6 +23,8 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
   //Defining ArticleFormMixin Properties
   userModel: MapMarkerObject;
   serverModel: MapMarker;
+  userModelClass = MapMarkerObject;
+
   updateCancelRoute = {routeName: 'marker', params: {location_name: null, parent_location_name: null, map_name: null, campaign: this.campaign}};
   creationCancelRoute = {routeName: 'location', params: {name: null, parent_name: null, campaign: this.campaign}};
 
@@ -30,13 +33,12 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
     this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
     this.formlyService.genericSelect({key: "location", overviewType: OverviewType.Location, campaign: this.campaign}),
     this.formlyService.genericSelect({key: "map", overviewType: OverviewType.Map, campaign: this.campaign}),
-    this.formlyService.genericSelect({key: 'type', label: "Marker Type", overviewType: OverviewType.MarkerType, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: 'type', label: "Marker Type", labelProp: "name", valueProp: "id", overviewType: OverviewType.MarkerTypeType, campaign: this.campaign}),
     this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
     this.formlyService.genericInput({key: "icon", label: "Custom Icon", required: false}),
   ];
 
   //Custom properties
-  private parameter_subscription: Subscription;
 
   constructor(
     markerService: MarkerService,
@@ -46,57 +48,61 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
     private formlyService: MyFormlyService,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    campaignService: CampaignService,
   ) { 
     super(
       router,
       routingService,
       warnings,
       markerService,
-      route
+      route,
+      campaignService
     )
   }
+  //TODO: Refactor this function into 2 separate functions and instead of predefining the object above
+  //TODO: Add description fields that if they're empty they should show an informative text on blue background that this is empty, why not add some text? With a button on it to do so
+  updateCancelDeleteRoutes(params: Params): void{
+    const parentLocationName: string = params['parent_location_name'];
+    const locationName: string = params['location_name'];
+    const mapName: string = params['map_name'];
 
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params =>{
-      const parentLocationName = params['parent_location_name'];
-      const locationName = params['location_name'];
-      const mapName: string = params['map_name'];
-      this.campaign = params.campaign;
+    //Update Cancel Route Params
+    this.updateCancelRoute.params.location_name = locationName;
+    this.updateCancelRoute.params.parent_location_name = parentLocationName;
+    this.updateCancelRoute.params.map_name = mapName; //Undefined if route of this component is 'marker-create'
 
-      //Update Cancel Route Params
-      this.updateCancelRoute.params.location_name = locationName;
-      this.updateCancelRoute.params.parent_location_name = parentLocationName;
-      this.updateCancelRoute.params.map_name = mapName; //Undefined if route of this component is 'marker-create'
-      this.creationCancelRoute.params.name = locationName;
-      this.creationCancelRoute.params.parent_name = parentLocationName;
-      
-      //Get Marker
-      if (this.isInUpdateState()){
-        this.articleService.readByParam(this.campaign, {parentLocationName, locationName, mapName}).pipe(first()).subscribe(
-          (marker: MapMarkerObject) => this.userModel = marker,
-          error => this.routingService.routeToErrorPage(error)
-        );
-
-      } else if (this.isInCreateState()){
-        this.locationService.readByParam(this.campaign, {parentLocationName, locationName}).pipe(first()).subscribe(
-          (location: LocationObject) => {
-            this.userModel = new MapMarkerObject();
-            this.userModel.location = location.pk;
-            this.userModel.location_details = {
-              parent_location_name: location.parent_location_details.name,
-              name: location.name,
-              description: location.description,
-              sublocations: null,
-            };
-          },
-          error => this.routingService.routeToErrorPage(error)
-        );
-      }
-
-    })
+    this.creationCancelRoute.params.name = locationName;
+    this.creationCancelRoute.params.parent_name = parentLocationName;
   }
 
-  ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
+  getQueryParameters(params: Params){
+    const parentLocationName = params['parent_location_name'];
+    const locationName = params['location_name'];
+    const mapName: string = params['map_name'];
+
+    return {parentLocationName, locationName, mapName};
+  }
+
+  fetchUserModel(queryParameters: any){
+    this.articleService.readByParam(this.campaign, queryParameters).pipe(first()).subscribe(
+      (marker: MapMarkerObject) => this.userModel = marker,
+      error => this.routingService.routeToErrorPage(error)
+    );
+  }
+
+  createUserModel(queryParameters){
+    this.locationService.readByParam(this.campaign, queryParameters).pipe(first()).subscribe(
+      (location: LocationObject) => {
+        this.userModel = new MapMarkerObject();
+        this.userModel.location = location.pk;
+        this.userModel.location_details = {
+          parent_location_name: location.parent_location_details.name,
+          name: location.name,
+          description: location.description,
+          sublocations: null,
+        };
+      },
+      error => this.routingService.routeToErrorPage(error)
+    );
   }
 }

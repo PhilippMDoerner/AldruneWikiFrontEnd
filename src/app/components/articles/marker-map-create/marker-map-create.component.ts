@@ -17,7 +17,7 @@ import { RoutingService } from 'src/app/services/routing.service';
   templateUrl: './marker-map-create.component.html',
   styleUrls: ['./marker-map-create.component.scss']
 })
-export class MarkerMapCreateComponent implements OnInit {
+export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into ArticleFormMixin
   private parameter_subscription: Subscription;
 
   mapName: string;
@@ -51,16 +51,20 @@ export class MarkerMapCreateComponent implements OnInit {
       const latitude: number = parseInt(params['latitude']);
       this.mapName = params['map_name'];
 
-      this.mapService.readByParam(this.campaign, this.mapName).pipe(first()).subscribe(
-        (map: MapObject) =>{
-          this.model = new MapMarkerObject();
-          this.model.map = map.pk;
-          this.model.latitude = latitude;
-          this.model.longitude = longitude;
-        },
-        error => this.routingService.routeToErrorPage(error)
-      )
+      this.createUserModel(latitude, longitude);
     });
+  }
+
+  createUserModel(latitude: number, longitude: number){
+    this.mapService.readByParam(this.campaign, this.mapName).pipe(first()).subscribe(
+      (map: MapObject) =>{
+        this.model = new MapMarkerObject();
+        this.model.map = map.pk;
+        this.model.latitude = latitude;
+        this.model.longitude = longitude;
+      },
+      error => this.routingService.routeToErrorPage(error)
+    )
   }
 
   onSubmit(){
