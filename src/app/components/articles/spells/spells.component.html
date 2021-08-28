@@ -19,6 +19,7 @@
             [id]="spell.name.replaceAll(' ', '-').replaceAll('\'', '')"
             [index] = "i"
             [cardData] = "spell"
+            [campaign_details] = "campaign_details"
             (cardDelete) = "onSpellDelete(i)"
             (classSelect) = "selectClass($event)"
             *ngIf="hasSelectedClasses(spell)"

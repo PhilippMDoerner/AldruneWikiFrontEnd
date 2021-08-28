@@ -1,7 +1,9 @@
 import { AfterViewInit, Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Constants } from 'src/app/app.constants';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
+import { CampaignService } from 'src/app/services/campaign.service';
 import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -13,6 +15,8 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   styleUrls: ['./diary-entry-encounter-list.component.scss']
 })
 export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionMixin implements OnInit, AfterViewInit{
+  constants = Constants;
+  //TODO: Create a mixin for lists
 
   @Input() diaryEntry: DiaryEntryObject;
   @ViewChildren("encounters") encounterElements: QueryList<any>;
@@ -28,6 +32,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     private routingService: RoutingService,
     private route: ActivatedRoute,
     private encounterService: EncounterServiceService,
+    private campaignService: CampaignService,
   ) { super() }
 
   ngOnInit(): void{

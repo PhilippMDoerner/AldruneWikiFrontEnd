@@ -4,7 +4,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { RuleObject } from 'src/app/models/rule';
+import { Rule, RuleObject } from 'src/app/models/rule';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { RuleService } from 'src/app/services/rule.service';
@@ -17,10 +17,15 @@ import { CardFormMixin } from 'src/app/utils/functions/cardMixin';
   templateUrl: './rule.component.html',
   styleUrls: ['./rule.component.scss']
 })
-//TODO: Write a mixin for card-like entities such as encounters, rules and spells
+
 export class RuleComponent extends CardFormMixin implements OnInit {
-  @Input() cardData: RuleObject;
   @ViewChild('card') card: ElementRef;
+
+  @Input() cardData: RuleObject;
+  userModel: RuleObject;
+  userModelClass = RuleObject;
+  serverModel: Rule;
+
   cardDelete = new EventEmitter<number>()
 
   formlyFields: FormlyFieldConfig[] = [
@@ -33,23 +38,12 @@ export class RuleComponent extends CardFormMixin implements OnInit {
     private formlyService: MyFormlyService,
     public warnings: WarningsService,  
     public element: ElementRef,
-    private route: ActivatedRoute
+    route: ActivatedRoute
   ) { 
     super(
       warnings,
-      ruleService
+      ruleService,
+      route
     )
-  }
-
-  ngOnInit(): void {
-    const isCreateState: boolean = this.cardData.name === "New Rule";
-    this.formState = isCreateState ? Constants.createState : Constants.displayState;
-
-    const isRequestedByUser: boolean = this.route.snapshot.params["name"] === this.cardData.name;
-    this.isOpen = isCreateState || isRequestedByUser;
-
-    if(isCreateState){
-      this.userModel = new RuleObject();
-    }
   }
 }

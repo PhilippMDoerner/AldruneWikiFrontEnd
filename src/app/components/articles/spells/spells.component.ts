@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { SpellObject, SpellPlayerClassConnection } from 'src/app/models/spell';
+import { CampaignService } from 'src/app/services/campaign.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { SpellService } from 'src/app/services/spell.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -18,7 +19,7 @@ export class SpellsComponent implements OnInit, AfterViewInit, OnDestroy {
   panelIsOpenArray: boolean[];
   spells: SpellObject[];
   constants: any = Constants;
-  campaign: string;
+  campaign_details: {name: string, pk: number} = {name: this.route.snapshot.params.campaign, pk: null};
   paramSubscription: Subscription;
 
   selectedClasses: String[] = []; 
@@ -30,15 +31,14 @@ export class SpellsComponent implements OnInit, AfterViewInit, OnDestroy {
     public routingService: RoutingService,
     public tokenService: TokenService,
     private route: ActivatedRoute,
-    private warning: WarningsService
+    private warning: WarningsService,
+    private campaignService: CampaignService
   ) { }
 
   ngOnInit(): void {
     this.paramSubscription = this.route.params.subscribe(
       params => {
-        this.campaign = params.campaign;
-
-        this.spellService.campaignList(this.campaign).pipe(first()).subscribe(
+        this.spellService.campaignList(this.campaign_details.name).pipe(first()).subscribe(
           (spells: SpellObject[]) => {
             this.spells = spells.sort((spell1, spell2) => spell1.name < spell2.name ? -1 : 1);
             
@@ -48,6 +48,12 @@ export class SpellsComponent implements OnInit, AfterViewInit, OnDestroy {
             };
           },
           error => this.routingService.routeToErrorPage(error)
+        );
+
+
+        this.campaignService.readByParam(this.campaign_details.name).pipe(first()).subscribe(
+          (campaign_details: {name: string, pk:number}) => this.campaign_details = campaign_details,
+          error => this.warning.showWarning(error)
         );
       },
       error => this.warning.showWarning(error) 

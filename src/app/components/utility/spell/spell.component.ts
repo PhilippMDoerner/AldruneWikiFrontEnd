@@ -21,8 +21,10 @@ import { CardFormMixin } from 'src/app/utils/functions/cardMixin';
 })
 export class SpellComponent extends CardFormMixin implements OnInit {
   //CardFormMixin variables
-  cardData: SpellObject;
+  @Input() cardData: SpellObject;
+
   userModel: SpellObject;
+  userModelClass = SpellObject;
   serverModel: Spell;
 
   @Output() classSelect: EventEmitter<String> = new EventEmitter();
@@ -63,24 +65,13 @@ export class SpellComponent extends CardFormMixin implements OnInit {
     private playerClassService: PlayerClassService,
     public tokenService: TokenService,
     public element: ElementRef, //Allows calling this from the outside for scroll into view
-    private route: ActivatedRoute
+    route: ActivatedRoute
   ) { 
     super(
       warnings,
-      spellService
+      spellService,
+      route
     ) 
-  }
-
-  ngOnInit(): void {
-    const isInitializedToCreate: boolean = this.cardData.name === "New Spell";
-    this.formState = isInitializedToCreate ? Constants.createState : Constants.displayState;
-
-    const isRequestedByUser: boolean = this.route.snapshot.params["name"] === this.cardData.name;
-    this.isOpen = isInitializedToCreate || isRequestedByUser;
-
-    if (isInitializedToCreate){
-      this.userModel = new SpellObject();
-    }
   }
 
   toggleSpellCard(event: any){

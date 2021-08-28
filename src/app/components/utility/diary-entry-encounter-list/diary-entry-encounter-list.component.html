@@ -34,6 +34,7 @@
             [index]="encounterIndex"
             [cutEncounterIndex]="cutEncounterIndex"
             [diaryEntryView]="diaryEntryView"
+            [campaign_details]="diaryEntry.campaign_details"
             (cardDelete)="deleteEncounter(encounterIndex)"
             (cardCreate)="onEncounterCreate($event, encounterIndex)"
             (encounterOrderIncrease)="onEncounterOrderIncrease(encounterIndex)"

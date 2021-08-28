@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Rule, RuleObject } from "src/app/models/rule";
+import { CampaignService } from 'src/app/services/campaign.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { RuleService } from 'src/app/services/rule.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -18,7 +19,7 @@ export class RulesComponent implements OnInit, AfterViewInit {
   panelIsOpenArray: boolean[];
   constants: any = Constants;
   parameterSubscription: Subscription;
-  campaign: string;
+  campaign_details: {name: string, pk: number} = {name: this.route.snapshot.params.campaign, pk: null};
 
   @ViewChildren("ruleElements") ruleComponents: QueryList<any>;
 
@@ -27,15 +28,14 @@ export class RulesComponent implements OnInit, AfterViewInit {
     public routingService: RoutingService,
     public tokenService: TokenService,
     private route: ActivatedRoute,
-    private warning: WarningsService
+    private warning: WarningsService,
+    private campaignService: CampaignService,
   ) { }
 
   ngOnInit(): void {
     this.parameterSubscription = this.route.params.subscribe(
       params => {
-        this.campaign = params.campaign;
-
-        this.ruleService.campaignList(this.campaign).pipe(first()).subscribe( 
+        this.ruleService.campaignList(this.campaign_details.name).pipe(first()).subscribe( 
           (rules: RuleObject[]) => {
             this.rules = rules.sort((rule1, rule2) => rule1.name < rule2.name ? -1 : 1);
     
@@ -45,6 +45,11 @@ export class RulesComponent implements OnInit, AfterViewInit {
             }
           },
           error => this.routingService.routeToErrorPage(error)
+        );
+
+        this.campaignService.readByParam(this.campaign_details.name).pipe(first()).subscribe(
+          (campaign_details: {name: string, pk:number}) => this.campaign_details = campaign_details,
+          error => this.warning.showWarning(error)
         );
       }
     )

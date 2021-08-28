@@ -1,7 +1,9 @@
 import { Directive, ElementRef, EventEmitter, Input, Output } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { first } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
+import { ArticleObject } from "src/app/models/base-models";
 import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
 import { WarningsService } from "src/app/services/warnings.service";
@@ -10,16 +12,18 @@ import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 
 @Directive()
 export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
-    constants = Constants;
+    public constants = Constants;
+
+    userModel: ArticleObject;
+    serverModel: ArticleObject; //A model of article-data from the server if there are update conflicts with the userModel
+    userModelClass: any;
+
     formState: string;
-    isOpen: boolean;
-
-    userModel: any;
-    serverModel: any; //A model of article-data from the server if there are update conflicts with the userModel
-    campaign: string;
-
+    
+    @Input() isOpen: boolean = false;
     @Input() cardData: any; //The general data of the card
     @Input() index: number;
+    @Input() campaign_details: {name: string, pk: number} = {name: this.route.snapshot.params.campaign, pk: null};
 
     card: ElementRef;
 
@@ -38,7 +42,30 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
     constructor(
         public warnings: WarningsService,
         public articleService: GenericService | GenericObjectService,
+        public route: ActivatedRoute
     ){ super() }
+
+    ngOnInit(): void {
+        this.determineCardStateOnInit();
+
+        if (this.isInCreateState()){
+            this.isOpen = true;
+            this.createUserModel();
+        }
+    }
+
+    determineCardStateOnInit(): void{
+        const isForCreation: boolean = this.cardData.pk == null;
+        this.formState = isForCreation ? this.constants.createState : this.constants.displayState;
+    }
+
+    createUserModel(): void{
+        console.log("cardmixin createusermodel");
+        //if (this.userModelClass == null) throw (`Undefined user model class property. ArticleFormMixin needs a defined 
+        //class that this data belongs to to create a user model. This hasn't been defined on this component!`);
+        this.userModel = new this.userModelClass();
+        this.userModel.campaign = this.campaign_details.pk;
+    }
 
     isInCreateState(): boolean{
         return this.formState === Constants.createState;

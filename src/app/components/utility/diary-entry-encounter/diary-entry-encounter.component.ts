@@ -1,5 +1,4 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
@@ -12,21 +11,21 @@ import { EncounterConnectionService } from 'src/app/services/encounter-connectio
 import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
-import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { CardFormMixin } from 'src/app/utils/functions/cardMixin';
-import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-diary-entry-encounter',
   templateUrl: './diary-entry-encounter.component.html',
   styleUrls: ['./diary-entry-encounter.component.scss']
 })
-export class DiaryEntryEncounterComponent extends CardFormMixin implements OnInit {
+export class DiaryEntryEncounterComponent extends CardFormMixin {
   //CardFormMixin variables
   cardData: EncounterObject; //If the Encounter is being newly created, this is an old encounter, else its the current encounter
+
   userModel: EncounterObject;
   serverModel: Encounter;
+  userModelClass = EncounterObject;
 
   cardDelete = new EventEmitter();
 
@@ -34,7 +33,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title"}),
-    this.formlyService.genericSelect({key: "location", label: "Encounter Location", overviewType: OverviewType.Location, required: false, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "location", label: "Encounter Location", overviewType: OverviewType.Location, required: false, campaign: this.campaign_details.name}),
     this.formlyService.genericTextField({key: "description", required: true}),
   ];
   //TODO: Implement for the compare form container to display only the fields that differ
@@ -63,24 +62,24 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
     private characterService: CharacterService,
     private encounterConnectionService: EncounterConnectionService,
     private formlyService: MyFormlyService,
-    private route: ActivatedRoute
+    route: ActivatedRoute,
   ) { 
     super(
       warning,
       encounterService,
+      route
     ); 
   }
 
-  ngOnInit(): void {
-    this.campaign = this.route.snapshot.params.campaign;
 
-    const isEncounterCreateState: boolean = this.cardData.pk == null;
-    this.formState = isEncounterCreateState ? Constants.createState : Constants.displayState;
-    if (isEncounterCreateState){
-      this.userModel = new EncounterObject();
-      this.userModel.diaryentry = this.cardData.diaryentry;
-      this.userModel.order_index = this.cardData.nextOrderIndex(); //CardData is the prior encounter if this encounter is being newly created. Thus you want the nextOrderIndex from there
-    }
+  //TODO: Overhaul when specific data is loaded, ideally put some stuff like loading character choices or the like in an afterviewinit on the list component managing these cards
+  createUserModel(): void{
+    console.log("diaryentryencounter createusermodel");
+    console.log(this.campaign_details);
+    this.userModel = new EncounterObject();
+    this.userModel.campaign = this.campaign_details.pk;
+    this.userModel.diaryentry = this.cardData.diaryentry;
+    this.userModel.order_index = this.cardData.nextOrderIndex(); //CardData is the prior encounter if this encounter is being newly created. Thus you want the nextOrderIndex from there
   }
 
   //Code About Encounter
@@ -117,7 +116,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin implements OnIni
   toggleEncounterConnectionCreationState(){
     this.inEncounterConnectionCreationState = !this.inEncounterConnectionCreationState;
     if (!this.characterOptions){
-      this.characterService.getNonPlayerCharacters().pipe(first()).subscribe(
+      this.characterService.getNonPlayerCharacters(this.campaign_details.name).pipe(first()).subscribe(
         (characters: OverviewItemObject[]) => this.characterOptions = characters,
         error => this.warning.showWarning(error)
       );
