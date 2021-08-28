@@ -23,13 +23,13 @@ export class CharacterService extends GenericObjectService{
 
   @TransformArrayObservable(OverviewItemObject)
   getPlayerCharacters(campaign: string): Observable<OverviewItem[]>{
-    const url = `${Constants.wikiApiUrl}/playercharacters/${campaign}`;
+    const url = `${this.baseUrl}/${campaign}/playercharacters`;
     return this.http.get<OverviewItem[]>(url);
   }
 
   @TransformArrayObservable(OverviewItemObject)
-  getNonPlayerCharacters(): Observable<OverviewItem[]>{
-    const url = `${Constants.wikiApiUrl}/nonplayercharacters`;
+  getNonPlayerCharacters(campaign: string): Observable<OverviewItem[]>{
+    const url = `${this.baseUrl}/${campaign}/nonplayercharacters`;
     return this.http.get<OverviewItem[]>(url);  
   }
 }
