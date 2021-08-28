@@ -18,6 +18,9 @@ export class UserService extends GenericObjectService{
     http : HttpClient, 
     private tokenService: TokenService
   ) { super(http, UserObject)}
+  
+  //TODO: Turn this into a list that provides overviews of users per campaign
+
 
   @TransformObservable(UserObject)
   updateUserGroups(user: User): Observable<User>{
