@@ -109,7 +109,7 @@ export class WarningsService {
           <div class="card-text">${body}</div>
           <div class="mt-3">
               <div class="btn btn-secondary" id="closeBtn"> <i class="fa fa-times"></i> Close </div>
-              <div class="btn btn-secondary" id="copy"> <i class="fa fa-clipboard"></i> Copy Full Error</div>
+              <div class="btn btn-secondary" id="copy"> <i class="fas fa-clipboard"></i> Copy Full Error</div>
           </div>
         </div>
     </div>
