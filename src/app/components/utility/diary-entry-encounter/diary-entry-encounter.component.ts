@@ -45,7 +45,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
   
   @Output() encounterOrderIncrease: EventEmitter<number> = new EventEmitter();
   @Output() encounterOrderDecrease: EventEmitter<number> = new EventEmitter();
-  @Output() cardCreate: EventEmitter<EncounterObject> = new EventEmitter();
+  @Output() cardCreate: EventEmitter<EncounterObject[]> = new EventEmitter();
   @Output() excisionStart: EventEmitter<void> = new EventEmitter();
   @Output() excisionCancel: EventEmitter<void> = new EventEmitter();
 
@@ -56,7 +56,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
   baseEncounterConnection: EncounterConnectionObject = new EncounterConnectionObject();
 
   constructor(
-    encounterService: EncounterServiceService,
+    public encounterService: EncounterServiceService,
     public warning: WarningsService,
     public routingService: RoutingService,
     private characterService: CharacterService,
@@ -74,8 +74,6 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
 
   //TODO: Overhaul when specific data is loaded, ideally put some stuff like loading character choices or the like in an afterviewinit on the list component managing these cards
   createUserModel(): void{
-    console.log("diaryentryencounter createusermodel");
-    console.log(this.campaign_details);
     this.userModel = new EncounterObject();
     this.userModel.campaign = this.campaign_details.pk;
     this.userModel.diaryentry = this.cardData.diaryentry;
@@ -83,9 +81,9 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
   }
 
   //Code About Encounter
-  onCreationSuccess(createdArticle: EncounterObject, parentClass: CardFormMixin){
-    super.onCreationSuccess(createdArticle, parentClass);
-    this.cardCreate.emit(createdArticle);
+  onCreationSuccess(createdArticles: EncounterObject[], parentClass: CardFormMixin){
+    super.onCreationSuccess(createdArticles, parentClass);
+    this.cardCreate.emit(createdArticles);
   }
 
   onDeletionSuccess(deletionResponse: any, parentClass: CardFormMixin){
@@ -108,6 +106,19 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
 
   decreaseEncounterOrderIndex(){
     this.encounterOrderDecrease.emit(this.index);
+  }
+
+
+  articleCreate(userModel: any){
+    const executionContext = this;
+
+    console.log("article create on diaryentry encounter component")
+    console.log(executionContext);
+
+    this.encounterService.createForDiaryentry(this.campaign_details.name, userModel).subscribe(
+        (response: any) => this.onCreationSuccess(response, executionContext),
+        (errorResponse: any) => this.onCreationError(errorResponse, executionContext)
+    )
   }
 
 

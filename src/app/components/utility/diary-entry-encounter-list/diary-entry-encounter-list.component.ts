@@ -1,5 +1,6 @@
-import { AfterViewInit, Component, Input, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
@@ -36,6 +37,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
   ) { super() }
 
   ngOnInit(): void{
+    console.log(this);
     const hasDisplayModeParam = !(this.route.snapshot.params['displayMode'] == null);
     this.diaryEntryView = (hasDisplayModeParam) ? this.route.snapshot.params['displayMode'] === "diaryEntry" : true;
 
@@ -86,24 +88,11 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
    * @param {number} encounterIndex Index at which the new encounter shall be created
    */
   toggleEncounterCreateState(encounterIndex: number): void{
-    const isNewFirstEncounter: boolean = encounterIndex < 0;
-    const isEmptyDiaryEntry: boolean = this.encounters.length === 0;
     
-    let newOrderIndex: number;
-    if (isEmptyDiaryEntry){
-      newOrderIndex = 0;
+    const newOrderIndex: number = this.getOrderIndexForNewEncounter(encounterIndex);
 
-    } else if (!isEmptyDiaryEntry && isNewFirstEncounter){
-      const firstEncounter: EncounterObject = this.encounters[0];
-      newOrderIndex = firstEncounter.priorOrderIndex();
-
-    } else {
-      const priorEncounter: EncounterObject = this.encounters[encounterIndex];
-      newOrderIndex = priorEncounter.getShiftedOrderIndex();
-    }
-
-    //Create Encounter
-    const newEncounter: Encounter = {
+    //Create and add Encounter
+    const newEncounterData: Encounter = {
       description: null, 
       diaryentry: this.diaryEntry.pk,
       location: null,
@@ -111,11 +100,43 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
       getAbsoluteRouterUrl: null,
       order_index: newOrderIndex
     };
+    const newEncounter: EncounterObject = new EncounterObject(newEncounterData);
 
-    //Insert encounter
-    const entriesToDelete: number = 0;
+    const isNewFirstEncounter: boolean = encounterIndex < 0;
     const insertionIndex: number = (isNewFirstEncounter) ? 0 : encounterIndex + 1;
-    this.encounters.splice(insertionIndex, entriesToDelete, new EncounterObject(newEncounter));
+
+    this.insertEncounter(newEncounter, insertionIndex);
+  }
+
+  insertEncounter(encounter: EncounterObject, insertionIndex: number): void{
+    const entriesToDelete: number = 0;
+    this.encounters.splice(insertionIndex, entriesToDelete, encounter);
+  }
+
+  /**
+   * Determines the order index the encounter should have based on the place where it is supposed to be inserted into
+   * @param {number} encounterIndex - The index on this.encounters after which the new encounter shall be inserted.
+   * This will increment the index of the encounter currently there and all after it by one, though not in this function
+   */
+  getOrderIndexForNewEncounter(insertionIndex: number): number{
+    const isNewFirstEncounter: boolean = insertionIndex < 0;
+    const isNewFirstEncounterInEmptyDiaryentry: boolean = this.encounters.length === 0;
+    const isNewFirstEncounterInFullDiaryentry: boolean = isNewFirstEncounter && !isNewFirstEncounterInEmptyDiaryentry;
+
+    let newOrderIndex: number;
+    if (isNewFirstEncounterInEmptyDiaryentry){
+      newOrderIndex = 0;
+
+    } else if (isNewFirstEncounterInFullDiaryentry){
+      const firstEncounter: EncounterObject = this.encounters[0];
+      newOrderIndex = firstEncounter.priorOrderIndex();
+
+    } else { //is new encounter after some other encounter
+      const priorEncounter: EncounterObject = this.encounters[insertionIndex];
+      newOrderIndex = priorEncounter.getShiftedOrderIndex();
+    }
+
+    return newOrderIndex;
   }
 
   /**
@@ -123,24 +144,11 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
    * encounterConnection to this diaryentry.
    * @param createdEncounterIndex : The index in this.encounters of the new created Encounter
    */   
-  async onEncounterCreate(createdEncounter: EncounterObject, createdEncounterIndex: number): Promise<void>{
+  onEncounterCreate(newDiaryentryEncounters: EncounterObject[]): void{
     //Replace the newly createdEncounter with the Dataset currently being a placeholder for it at the given index
-    this.encounters[createdEncounterIndex] = createdEncounter;
-
-    //Increment Encounters up to last-encounter to order-index of next encounter
-    this.encounters[createdEncounterIndex] = createdEncounter;
-    const lastIndex = this.encounters.length - 1;
-    const firstEncounterAfterCreatedEncounter = createdEncounterIndex + 1;
-    await this.incrementOrderIndices(firstEncounterAfterCreatedEncounter, lastIndex);
+    this.encounters = newDiaryentryEncounters;
   }
 
-  /**
-   * error1: What should be happening in line 142 is that the "newCreatedConnection" should, as annotated, be of type
-   *    DiaryEntryEncounterConnectionObject. It is unclear how, but what diaryEntryEncounterConnectionService.create is 
-   *    returning is the newConnection wrapped in an EncounterObject class, for some obscure reason. 
-   *    I checked the service itself, it has the correct class. I checked the GenericObjectService, it receives the correct
-   *    class in the constructor. Other methods on the service appear unaffected. I do not comprehend what is wrong here.
-   */
 
   /**
    * Updates each encounter within the range to the orderIndex of its following encounter.
@@ -149,7 +157,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
    * index of encounters, as you can not increment the last encounter to a higher order-index, since there is no 
    * encounter after it.
    */
-  async incrementOrderIndices(rangeStartIndex: number, rangeEndIndex: number): Promise<EncounterObject[]>{
+  incrementOrderIndices(rangeStartIndex: number, rangeEndIndex: number): void{
     //Guard Clauses
     if(rangeEndIndex >= this.encounters.length) throw `IndexOutOfBoundsException. You can not increment 
     encounters at index ${rangeEndIndex}! You only have ${this.encounters.length} encounter(s)!`;
@@ -160,31 +168,13 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     const hasLastIndex: boolean = rangeEndIndex === this.encounters.length - 1;
     const adjustedEndIndex: number = (hasLastIndex) ? rangeEndIndex - 1 : rangeEndIndex;
 
-    const encounterUpdatePromises: Promise<EncounterObject>[] = [];
     for(let i=rangeStartIndex; i <= adjustedEndIndex; i++){
       const encounter: EncounterObject = this.encounters[i];
-      const nextEncounter: EncounterObject = this.encounters[i+1];
+      
+      encounter.order_index = encounter.nextOrderIndex();
 
-      encounter.order_index = nextEncounter.order_index;
-      encounter.swapOrderIndexState();
-
-      const updatePromise = this.encounterService.update(encounter.pk, encounter).toPromise();
-      encounterUpdatePromises.push(updatePromise);
+      this.encounters[i] = encounter;
     }
-
-    //Handle incrementing last encounter if necessary
-    if(hasLastIndex){
-      const lastEncounterIndex: number = this.encounters.length - 1;
-      const lastEncounter: EncounterObject = this.encounters[lastEncounterIndex];
-      lastEncounter.order_index = lastEncounter.nextOrderIndex();
-
-      const updatePromise =  this.encounterService.update(lastEncounter.pk, lastEncounter).toPromise();
-      encounterUpdatePromises.push(updatePromise);  
-    }
-
-    //Replace all the old encounters that were updated with the new ones
-    const updatedEncounters: EncounterObject[] = await Promise.all(encounterUpdatePromises);
-    updatedEncounters.forEach((newEncounter: EncounterObject) => this.replaceEncounterFromList(newEncounter, this.encounters));
   }
 
   /**
@@ -193,7 +183,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
    * decrement the first encounter to a smaller order-index, since there is no encounter prior to it.
    * @param rangeEndIndex - An index on the encounters array after rangeStartIndex.
    */
-  async decrementOrderIndices(rangeStartIndex: number, rangeEndIndex: number): Promise<Encounter[]>{
+  decrementOrderIndices(rangeStartIndex: number, rangeEndIndex: number): void{
     //Guard Clauses
     if(rangeStartIndex < 0) throw `IndexOutOfBoundsExceptions. You can not increment encounters at index 
     ${rangeStartIndex}, Indices must be positive!`;
@@ -204,30 +194,13 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     const hasFirstIndex: boolean = rangeStartIndex === 0;
     const adjustedStartIndex: number = (hasFirstIndex) ? 1 : rangeStartIndex;
 
-    const encounterUpdatePromises: Promise<EncounterObject>[] = [];
     for(let i=rangeEndIndex; i >= adjustedStartIndex; i--){
       const encounter: EncounterObject = this.encounters[i];
-      const priorEncounter: EncounterObject = this.encounters[i-1];
 
-      encounter.order_index = priorEncounter.order_index;
-      encounter.swapOrderIndexState();
+      encounter.order_index = encounter.priorOrderIndex();
 
-      const updatePromise = this.encounterService.update(encounter.pk, encounter).toPromise();
-      encounterUpdatePromises.push(updatePromise);
+      this.encounters[i] = encounter;
     }
-
-    //Handle decrementing first encounter if necessary
-    if(hasFirstIndex){
-      const firstEncounter: EncounterObject = this.encounters[0];
-      firstEncounter.order_index = firstEncounter.priorOrderIndex();
-      
-      const updatePromise =  this.encounterService.update(firstEncounter.pk, firstEncounter).toPromise();
-      encounterUpdatePromises.push(updatePromise);  
-    }
-
-    //Replace all the old encounters that were updated with the new ones
-    const updatedEncounters: EncounterObject[] = await Promise.all(encounterUpdatePromises);
-    updatedEncounters.forEach((newEncounter: EncounterObject) => this.replaceEncounterFromList(newEncounter, this.encounters));
   }
 
   /**
@@ -240,8 +213,6 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
       (oldEncounter: EncounterObject) => oldEncounter.pk === newEncounter.pk
     );
     
-    console.log("Updating encounter " + newEncounter.title);
-
     const encounterNotInList: boolean = encounterIndex === -1;
     if (encounterNotInList) throw `Wrong Encounter Error. You tried updating the list with the encounter ${newEncounter.title} with 
     pk ${newEncounter.pk}, but that encounter is not in the list of encounters for this diaryentry!`;
@@ -304,12 +275,8 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     const encounter1: EncounterObject = this.encounters[encounterIndex1];
     const encounter2: EncounterObject = this.encounters[encounterIndex2];
 
-    const temp = encounter1.order_index;
-    encounter1.order_index = encounter2.order_index;
-    encounter2.order_index = temp;
-
     try{
-      const swappedEncounters: EncounterObject[] = await this.updateSwappedEncountersToDb(encounter1, encounter2);
+      const swappedEncounters: EncounterObject[] = await this.swapEncountersInDb(encounter1.pk, encounter2.pk);
 
       //Update the encounters themselves
       const updatedEncounter1 = swappedEncounters.find((encounter: EncounterObject) => encounter.pk === encounter1.pk);
@@ -329,15 +296,12 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     this.sortEncounters();
   }
 
-  async updateSwappedEncountersToDb(encounter1: EncounterObject, encounter2: EncounterObject): Promise<EncounterObject[]>{
+  async swapEncountersInDb(encounter1_pk: number, encounter2_pk: number): Promise<EncounterObject[]>{
     //Ensure you don't trigger unique-together db-constraint by shifting/unshifting the encounter's order_index
-    encounter1.swapOrderIndexState();
-    encounter2.swapOrderIndexState();
+    const campaignName = this.diaryEntry.campaign_details.name;
+    const swappingEncountersPromise: Promise<EncounterObject[]> = this.encounterService.swapEncounterOrder(campaignName, encounter1_pk, encounter2_pk).toPromise();
 
-    const updatedEncounter1Promise = this.encounterService.update(encounter1.pk, encounter1).toPromise();
-    const updatedEncounter2Promise = this.encounterService.update(encounter2.pk, encounter2).toPromise();
-
-    return Promise.all([updatedEncounter1Promise, updatedEncounter2Promise]);  
+    return swappingEncountersPromise;
   }
 
 
@@ -356,48 +320,18 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
   async insertExcisedEncounter(insertionIndex: number){
     //Guard clauses
     if(this.cutEncounterIndex == null) return;
-    const isInsertingAfterItself: boolean = this.cutEncounterIndex + 1 === insertionIndex;
-    const isInsertingBeforeItself: boolean = this.cutEncounterIndex === insertionIndex;
-    if(isInsertingAfterItself || isInsertingBeforeItself){
-      this.cutEncounterIndex = null; //Reset the index;
-      return;
-    };
 
-    //Hide UI while updating
+    const encounter: EncounterObject = this.encounters[this.cutEncounterIndex];
+    const newOrderIndex: number = this.encounters[insertionIndex].order_index;
+
     this.isUpdating = true;
-
-    // Update encounter-orderIndices between the cut encounter and the place where it shall be inserted
-    let insertionOrderIndex: number; //Temp Store for future orderIndex of cut encounter
-    const isInsertingAfterCutIndex: boolean = insertionIndex > this.cutEncounterIndex;
-
-    if (isInsertingAfterCutIndex){
-      const rangeStart: number = this.cutEncounterIndex + 1; //You do not want to update the cut encounter
-      const rangeEnd: number = insertionIndex - 1; //Range ends before the place where cutEncounter is inserted
-
-      insertionOrderIndex = this.encounters[rangeEnd].order_index;
-
-      await this.decrementOrderIndices(rangeStart, rangeEnd);
-    } else {
-      const rangeStart: number = insertionIndex; //Range starts directly where character is inserted
-      const rangeEnd: number = this.cutEncounterIndex - 1; //You do not want to update the cut encounter
-
-      insertionOrderIndex = this.encounters[rangeStart].order_index;
-
-      await this.incrementOrderIndices(rangeStart, rangeEnd);
-    }
-
-    // Update cut encounter
-    const cutEncounter: EncounterObject = this.encounters[this.cutEncounterIndex];
-    cutEncounter.order_index = insertionOrderIndex;
-    cutEncounter.swapOrderIndexState();
-
-    const updatedCutEncounter: EncounterObject = await this.encounterService.update(cutEncounter.pk, cutEncounter).toPromise();
-    this.encounters[this.cutEncounterIndex] = updatedCutEncounter;
-
-    this.cutEncounterIndex = null; //Reset cut feature
-    this.sortEncounters();
-
-    // Show UI again
-    this.isUpdating = false;
+    this.encounterService.cutInsertEncounter(this.diaryEntry.campaign_details.name, encounter, newOrderIndex).pipe(first()).subscribe(
+      reorderedEncounters => {
+        this.encounters = reorderedEncounters;
+        this.isUpdating = false;
+        this.cutEncounterIndex = null;
+      },
+      error => this.warning.showWarning(error)
+    )
   }
 }
