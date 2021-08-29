@@ -17,7 +17,7 @@
                 <i
                 *ngFor="let marker of articleData.marker_details" 
                 title="Marker on Map of {{marker.map}}"
-                class="mx-1 no-underline pointer icon fa fa-{{marker.map_icon}}" 
+                class="mx-1 no-underline pointer icon fas fa-{{marker.map_icon}}" 
                 routerLink="{{routingService.getRoutePath('marker', {
                         parent_location_name: articleData.parent_location_details.name, 
                         location_name: articleData.name, 
