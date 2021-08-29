@@ -149,77 +149,6 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     this.encounters = newDiaryentryEncounters;
   }
 
-
-  /**
-   * Updates each encounter within the range to the orderIndex of its following encounter.
-   * @param rangeStartIndex - An index on the encounters array
-   * @param rangeEndIndex - An index on the encounters array after rangeStartIndex. Must be smaller than the last
-   * index of encounters, as you can not increment the last encounter to a higher order-index, since there is no 
-   * encounter after it.
-   */
-  incrementOrderIndices(rangeStartIndex: number, rangeEndIndex: number): void{
-    //Guard Clauses
-    if(rangeEndIndex >= this.encounters.length) throw `IndexOutOfBoundsException. You can not increment 
-    encounters at index ${rangeEndIndex}! You only have ${this.encounters.length} encounter(s)!`;
-    if(rangeStartIndex < 0) throw `IndexOutOfBoundsExceptions. You can not increment encounters at index 
-    ${rangeStartIndex}, Indices must be positive!`;
-    if(rangeStartIndex > rangeEndIndex) return;
-
-    const hasLastIndex: boolean = rangeEndIndex === this.encounters.length - 1;
-    const adjustedEndIndex: number = (hasLastIndex) ? rangeEndIndex - 1 : rangeEndIndex;
-
-    for(let i=rangeStartIndex; i <= adjustedEndIndex; i++){
-      const encounter: EncounterObject = this.encounters[i];
-      
-      encounter.order_index = encounter.nextOrderIndex();
-
-      this.encounters[i] = encounter;
-    }
-  }
-
-  /**
-   * Updates each encounter within the range to the orderIndex of its prior encounter.
-   * @param rangeStartIndex - An index on the encounters array. Must be larger than 0, as you can not
-   * decrement the first encounter to a smaller order-index, since there is no encounter prior to it.
-   * @param rangeEndIndex - An index on the encounters array after rangeStartIndex.
-   */
-  decrementOrderIndices(rangeStartIndex: number, rangeEndIndex: number): void{
-    //Guard Clauses
-    if(rangeStartIndex < 0) throw `IndexOutOfBoundsExceptions. You can not increment encounters at index 
-    ${rangeStartIndex}, Indices must be positive!`;
-    if(rangeEndIndex >= this.encounters.length) throw `IndexOutOfBoundsExceptions. You can not decrement encounter at index
-    ${rangeEndIndex}, you only have ${this.encounters.length} encounter(s)!`;
-    if(rangeStartIndex > rangeEndIndex) return;
-
-    const hasFirstIndex: boolean = rangeStartIndex === 0;
-    const adjustedStartIndex: number = (hasFirstIndex) ? 1 : rangeStartIndex;
-
-    for(let i=rangeEndIndex; i >= adjustedStartIndex; i--){
-      const encounter: EncounterObject = this.encounters[i];
-
-      encounter.order_index = encounter.priorOrderIndex();
-
-      this.encounters[i] = encounter;
-    }
-  }
-
-  /**
-   * @description Takes a given encounter and replaces an encounter with the same value in its primary key (pk) property in
-   * the list of encounters.
-   * Throws an error if the list of encounters for this diaryentry has no encounter with this pk.
-   */
-  replaceEncounterFromList(newEncounter: EncounterObject, encounterList: EncounterObject[]): void{
-    const encounterIndex: number = encounterList.findIndex(
-      (oldEncounter: EncounterObject) => oldEncounter.pk === newEncounter.pk
-    );
-    
-    const encounterNotInList: boolean = encounterIndex === -1;
-    if (encounterNotInList) throw `Wrong Encounter Error. You tried updating the list with the encounter ${newEncounter.title} with 
-    pk ${newEncounter.pk}, but that encounter is not in the list of encounters for this diaryentry!`;
-
-    encounterList[encounterIndex] = newEncounter;
-  }
-
   deleteEncounter(encounterIndex: number): void{
     const numberOfEncountersToDelete = 1;
     this.encounters.splice(encounterIndex, numberOfEncountersToDelete);
@@ -316,7 +245,6 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     }
   }
 
-  
   async insertExcisedEncounter(insertionIndex: number){
     //Guard clauses
     if(this.cutEncounterIndex == null) return;
@@ -325,6 +253,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     const newOrderIndex: number = this.encounters[insertionIndex].order_index;
 
     this.isUpdating = true;
+    
     this.encounterService.cutInsertEncounter(this.diaryEntry.campaign_details.name, encounter, newOrderIndex).pipe(first()).subscribe(
       reorderedEncounters => {
         this.encounters = reorderedEncounters;
