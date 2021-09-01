@@ -84,6 +84,12 @@
         </div>
 
 
+        <!-- Campaign Section -->
+        <div class="mb-3">
+            <app-campaign-list></app-campaign-list>
+        </div>
+
+
         <!-- Database Section -->
         <div class="mb-3">
             <!-- Section Heading -->
@@ -120,37 +126,6 @@
                     <div class="col-6 col-sm-3"> {{ statistic.value }}</div>
                 </div>
             </div>
-
-
-            <!-- Clear Database -->
-            <div>
-                <div  *ngIf="databaseDeleteConfirmationCount > 0" class="card warning p-3 mb-2">
-                    <span>
-                        This will delete the contents of the entire database, including any articles, images, recorded sessions, spells, rules.
-                        Are you sure you want to do this?
-                    </span>
-                    <span *ngIf="databaseDeleteConfirmationCount > 1">
-                        You are aware this will not be recoverable?
-                    </span>
-                    <span *ngIf="databaseDeleteConfirmationCount > 2">
-                        Seriously, only do this for a new game!
-                    </span>
-                    <span *ngIf="databaseDeleteConfirmationCount > 3">
-                        Alright, I did what I could to warn you.
-                    </span>
-                </div>
-
-                <button class="btn btn-secondary mr-4" *ngIf="databaseDeleteConfirmationCount > 0"  (click)="databaseDeleteConfirmationCount = 0">Cancel </button>
-                <div class="btn btn-danger" (click)="progressClearDatabaseState()" *ngIf="tokenService.isSuperUser()">
-                    <span class="fa fa-trash mr-1"></span>
-                    <span *ngIf="databaseDeleteConfirmationCount === 0">Clear Database For New Game?</span>
-                    <span *ngIf="databaseDeleteConfirmationCount === 1">You really want to clear the Database?</span>
-                    <span *ngIf="databaseDeleteConfirmationCount === 2">You are absolutely certain you want to clear the database?</span>
-                    <span *ngIf="databaseDeleteConfirmationCount === 3">You know what you're doing and want to clear the database?</span>
-                    <span *ngIf="databaseDeleteConfirmationCount === 4">Click one last time to finally clear the database</span>
-                </div>
-            </div>
-
         </div>
 
         <div class="btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign})}}">Back To Home</div>

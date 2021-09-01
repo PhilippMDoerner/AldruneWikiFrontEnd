@@ -1,0 +1,55 @@
+<div class="card row mx-1 mb-3 px-4 pt-3 pb-1" [ngClass] = "{'animate__animated animate__fadeInUp': isInCreateState()}" #card>
+    <!-- Rules Panel Heading -->
+    <h4
+    class="pointer col-12 justify-content-between d-flex align-items-center" 
+    (click)="toggleCard()"> 
+        <span>{{ cardData.name }}</span>
+        <i [ngClass]="{'fa icon': true, 'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}"></i>
+    </h4>
+
+    <!-- Rules Panel Content -->
+    <div class="mb-3 w-100" [ngbCollapse]="!isOpen">
+        <div class="col-12">
+            <!-- Separator -->
+            <hr class="white-separator mb-2">
+
+            <!-- Heading -->
+            <div class="mb-3" *ngIf="isInDisplayState()">
+                <h4 class="d-inline"> Members </h4>
+                <div class="btn btn-primary float-right">
+                    <span class="fa fa-plus"></span>
+                    Add Member
+                </div>
+            </div>
+
+
+            <!-- Body -->
+            <div *ngIf="isInDisplayState()" class="d-flex flex-column">
+                <div *ngFor="let user of cardData.members">
+                    {{user.name}}
+                </div>
+            </div>
+
+            <app-formly-formcontainer 
+            *ngIf="isInCreateState() || isInUpdateState()"
+            [model]="userModel" 
+            [fields]="formlyFields" 
+            (formlySubmit)="onSubmit()" 
+            (formlyCancel)="onCancel()"
+            ></app-formly-formcontainer>
+        </div>
+
+    </div>
+</div>
+
+<ng-template #formField>
+    <div id="edit-section">
+        <!-- Form -->
+        <app-formly-formcontainer 
+        [model]="userModel" 
+        [fields]="formlyFields" 
+        (formlySubmit)="onSubmit()" 
+        (formlyCancel)="onCancel()"
+        ></app-formly-formcontainer>
+    </div>
+</ng-template>

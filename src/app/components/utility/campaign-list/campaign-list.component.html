@@ -1,0 +1,27 @@
+<div class="d-flex justify-content-between">
+    <h3 class="mb-0"> 
+        <span class="fas fa-crown"></span>
+        Campaigns
+    </h3>
+
+    <!-- Heading Buttons -->
+    <div class="align-self-end position-relative top1">
+        <div class="btn btn-dark border-white" (click)="addCampaign()">
+            <span class="fas fa-plus"></span>
+            Add Campaign
+        </div>
+    </div>
+
+</div>
+
+<hr class="white-separator">
+
+<div class="row">
+    <div class="col-12 col-md-6" *ngFor="let campaign of campaigns; let i = index">
+        <app-campaign 
+        [cardData]="campaign"
+        [index] = "i"
+        ></app-campaign>
+    </div>
+</div>
+

@@ -91,6 +91,8 @@ import { ErrorComponent } from './components/error/error.component';
 import { Home2Component } from './components/home2/home2.component';
 import { SidebarComponent } from './components/utility/sidebar/sidebar.component';
 import { RecentlyUpdatedArticlesListComponent } from './components/utility/recently-updated-articles-list/recently-updated-articles-list.component';
+import { CampaignComponent } from './components/utility/campaign/campaign.component';
+import { CampaignListComponent } from './components/utility/campaign-list/campaign-list.component';
 
 @NgModule({
   declarations: [
@@ -168,6 +170,8 @@ import { RecentlyUpdatedArticlesListComponent } from './components/utility/recen
     Home2Component,
     SidebarComponent,
     RecentlyUpdatedArticlesListComponent,
+    CampaignComponent,
+    CampaignListComponent,
   ],
   imports: [
     BrowserModule,
