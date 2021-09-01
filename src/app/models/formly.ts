@@ -24,6 +24,7 @@ export interface FormlyInterface{
 export interface FormlyOverviewSelectConfig extends FormlyInterface{
     labelProp?: string,
     valueProp?: string,
+    sortProp?: string,
     overviewType: OverviewType,
     campaign: string,
 }

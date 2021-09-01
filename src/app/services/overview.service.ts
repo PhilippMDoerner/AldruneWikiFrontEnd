@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Constants, OverviewType } from '../app.constants';
 import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
 import { Observable } from 'rxjs';
-import { TransformArrayObservable } from '../utils/functions/transform';
+import { TransformArrayObservable, transformObservableArrayContent } from '../utils/functions/transform';
 import { CharacterService } from './character/character.service';
 import { CreatureService } from './creature/creature.service';
 import { DiaryentryService } from './diaryentry/diaryentry.service';
@@ -22,6 +22,7 @@ import { OrganizationService } from './organization/organization.service';
 import { UserService } from './user.service';
 import { MarkerService } from './marker.service';
 import { MarkerTypeService } from './marker-type.service';
+import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -72,9 +73,22 @@ export class OverviewService {
     private userService: UserService
   ) { }
 
-  @TransformArrayObservable(OverviewItemObject)
-  getOverviewItems(campaign: string, overviewType: OverviewType): Observable<OverviewItem[]>{
+  getOverviewItems(campaign: string, overviewType: OverviewType, sortProperty?: string): Observable<OverviewItemObject[]>{
     const targetService: GenericObjectService | GenericService = this.overviewServiceMapping[overviewType];
-    return targetService.campaignList(campaign);
+    let overviewItemObservable: Observable<OverviewItem[]> = targetService.campaignList(campaign);
+
+    if(sortProperty != null){      
+      overviewItemObservable = overviewItemObservable.pipe(
+        map( (items: OverviewItem[]) => {
+          return items.sort( 
+            (item1:OverviewItem, item2: OverviewItem) => item1[sortProperty] < item2[sortProperty] ? -1 : 1
+          );
+        })
+      );
+    }
+
+    return transformObservableArrayContent(overviewItemObservable, OverviewItemObject);
   }
+
+
 }

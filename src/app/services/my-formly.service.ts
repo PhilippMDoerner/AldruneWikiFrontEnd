@@ -16,6 +16,7 @@ export class MyFormlyService {
   setDefaultValues(config: any): any{
     if (config.required == null) config.required = true;
     if (config.disabled == null) config.disabled = false;
+    if (config.sortProp == null) config.sortProperty = null;
 
     return config
   }
@@ -36,7 +37,7 @@ export class MyFormlyService {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         labelProp: (config.labelProp) ? config.labelProp : "name_full",
         valueProp: (config.valueProp) ? config.valueProp : "pk",
-        options: this.selectOptionService.getOverviewItems(config.campaign, config.overviewType),
+        options: this.selectOptionService.getOverviewItems(config.campaign, config.overviewType, config.sortProp),
         required: (typeof config.required === "boolean") ? config.required : true,
         disabled: config.disabled,
       },
@@ -64,7 +65,7 @@ export class MyFormlyService {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         labelProp: (config.labelProp) ? config.labelProp : "name_full",
         valueProp: (config.valueProp) ? config.valueProp : "pk",
-        options: this.selectOptionService.getOverviewItems(config.campaign, config.overviewType),
+        options: this.selectOptionService.getOverviewItems(config.campaign, config.overviewType, config.sortProp),
         required: (typeof config.required === "boolean") ? config.required : true,
         disabledExpression: config.disabledExpression,
         tooltipMessage: config.tooltipMessage,
