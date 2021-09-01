@@ -45,7 +45,7 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
       },
       fieldGroup: [
         //Author
-        this.formlyService.genericSelect({key: "author", labelProp: "username", overviewType: OverviewType.User, campaign: this.campaign}),
+        this.formlyService.genericSelect({key: "author", labelProp: "username", sortProp: "username", overviewType: OverviewType.User, campaign: this.campaign}),
         //Session
         this.formlyService.genericDisableSelect({
           key: 'session', 
