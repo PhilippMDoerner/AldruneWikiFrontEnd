@@ -73,7 +73,7 @@ export class OverviewService {
     private userService: UserService
   ) { }
 
-  getOverviewItems(campaign: string, overviewType: OverviewType, sortProperty?: string): Observable<OverviewItemObject[]>{
+  getCampaignOverviewItems(campaign: string, overviewType: OverviewType, sortProperty?: string): Observable<OverviewItemObject[]>{
     const targetService: GenericObjectService | GenericService = this.overviewServiceMapping[overviewType];
     let overviewItemObservable: Observable<OverviewItem[]> = targetService.campaignList(campaign);
 
@@ -90,5 +90,21 @@ export class OverviewService {
     return transformObservableArrayContent(overviewItemObservable, OverviewItemObject);
   }
 
+  getAllOverviewItems(overviewType: OverviewType, sortProperty?: string): Observable<OverviewItemObject[]>{
+    const targetService: GenericObjectService | GenericService = this.overviewServiceMapping[overviewType];
+    let overviewItemObservable: Observable<OverviewItem[]> = targetService.list();
+
+    if(sortProperty != null){      
+      overviewItemObservable = overviewItemObservable.pipe(
+        map( (items: OverviewItem[]) => {
+          return items.sort( 
+            (item1:OverviewItem, item2: OverviewItem) => item1[sortProperty].toLowerCase() < item2[sortProperty].toLowerCase() ? -1 : 1
+          );
+        })
+      );
+    }
+    
+    return transformObservableArrayContent(overviewItemObservable, OverviewItemObject);
+  }
 
 }
