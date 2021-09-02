@@ -3,6 +3,7 @@ import { FormlyCheckboxConfig, FormlyCustomSelectConfig, FormlyCustomStringSelec
 import { FormlyField, FormlyFieldConfig } from "@ngx-formly/core";
 import { OverviewService } from './overview.service';
 import { OverviewType } from '../app.constants';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,14 @@ export class MyFormlyService {
     const validatorList = (config.validators) ? config.validators : [];
     if (config.required === true ) validatorList.push('required');
 
+    let optionsObservable: Observable<any>;
+    if (config.campaign == null){
+      optionsObservable = this.selectOptionService.getAllOverviewItems(config.overviewType, config.sortProp);
+    } else {
+      optionsObservable = this.selectOptionService.getCampaignOverviewItems(config.campaign, config.overviewType, config.sortProp);
+    }
+
+
     return {
       key: config.key,
       type: "select",
@@ -37,7 +46,7 @@ export class MyFormlyService {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         labelProp: (config.labelProp) ? config.labelProp : "name_full",
         valueProp: (config.valueProp) ? config.valueProp : "pk",
-        options: this.selectOptionService.getOverviewItems(config.campaign, config.overviewType, config.sortProp),
+        options: optionsObservable,
         required: (typeof config.required === "boolean") ? config.required : true,
         disabled: config.disabled,
       },
@@ -55,6 +64,13 @@ export class MyFormlyService {
     if (config.required === true ) validatorList.push('required');
     if (config.showWrapperLabel == null) config.showWrapperLabel = true;
 
+    let optionsObservable: Observable<any>;
+    if (config.campaign == null){
+      optionsObservable = this.selectOptionService.getAllOverviewItems(config.overviewType, config.sortProp);
+    } else {
+      optionsObservable = this.selectOptionService.getCampaignOverviewItems(config.campaign, config.overviewType, config.sortProp);
+    }
+
     return {
       key: config.key,
       type: "formly-select-disable",
@@ -65,7 +81,7 @@ export class MyFormlyService {
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         labelProp: (config.labelProp) ? config.labelProp : "name_full",
         valueProp: (config.valueProp) ? config.valueProp : "pk",
-        options: this.selectOptionService.getOverviewItems(config.campaign, config.overviewType, config.sortProp),
+        options: optionsObservable,
         required: (typeof config.required === "boolean") ? config.required : true,
         disabledExpression: config.disabledExpression,
         tooltipMessage: config.tooltipMessage,
@@ -422,7 +438,7 @@ export class MyFormlyService {
           label: "Parent Location",
           labelProp: "name_full",
           valueProp: "pk",
-          options: this.selectOptionService.getOverviewItems(campaign, OverviewType.Location),
+          options: this.selectOptionService.getCampaignOverviewItems(campaign, OverviewType.Location),
         }
       },
     ];
