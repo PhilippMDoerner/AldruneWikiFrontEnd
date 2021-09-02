@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
+import { User } from '../models/user';
 import { GenericService } from './generic.service';
 
 @Injectable({
@@ -28,5 +29,8 @@ export class CampaignService extends GenericService{
     return this.http.get(`${this.baseUrl}/${campaign}/`);
   }
 
+  addMember(campaign: string, user: User): Observable<User>{
+    return this.http.put<User>(`${this.baseUrl}/${campaign}/addMember/`, user);
+  }
 
 }
