@@ -26,7 +26,7 @@ export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixi
   ) { super() }
 
   ngOnInit(): void {
-    this.overviewService.getOverviewItems(this.campaign, OverviewType.Sessionaudio).pipe(first()).subscribe(
+    this.overviewService.getCampaignOverviewItems(this.campaign, OverviewType.Sessionaudio).pipe(first()).subscribe(
       (sessionAudioFiles: OverviewItem[]) => this.sessionAudioFiles = sessionAudioFiles,
       error => this.routingService.routeToErrorPage(error)
     );

@@ -135,7 +135,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
     this.inQuoteConnectionCreateState = !this.inQuoteConnectionCreateState;
 
     if (!this.characters){
-      this.overviewService.getOverviewItems(this.campaign, OverviewType.Character).pipe(first()).subscribe(
+      this.overviewService.getCampaignOverviewItems(this.campaign, OverviewType.Character).pipe(first()).subscribe(
         (characters: OverviewItemObject[]) => this.characters = characters,
         error => this.warningsService.showWarning(error)
       );

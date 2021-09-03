@@ -37,7 +37,7 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
       error => this.warning.showWarning(error)
     );
 
-    this.questService.list().pipe(first()).subscribe(
+    this.questService.campaignList(this.campaign).pipe(first()).subscribe(
       (quests: QuestObject[]) => {
         this.quests = this.groupQuestsByTaker(quests);
 

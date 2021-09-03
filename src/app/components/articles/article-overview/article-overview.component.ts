@@ -90,7 +90,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     this.overviewTypeName = urlSplit[urlSplit.length - 2];
     const configs: any = this.overviewTypeMetaData[this.overviewTypeName];
 
-    const listItemObs: Observable<OverviewItem[]> = this.overviewService.getOverviewItems(this.campaign, configs.overviewTypeEnum);
+    const listItemObs: Observable<OverviewItem[]> = this.overviewService.getCampaignOverviewItems(this.campaign, configs.overviewTypeEnum);
     listItemObs.pipe(first()).subscribe(
       (listItems: OverviewItemObject[]) => {
         this.listItems = listItems;
