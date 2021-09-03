@@ -20,7 +20,7 @@ export abstract class GenericObjectService{
   }
 
   campaignList(campaign: string): Observable<any[]>{
-    const dataObs: Observable<any[]> = this.http.get<any[]>(`${this.baseUrl}/${campaign}/overview`);
+    const dataObs: Observable<any[]> = this.http.get<any[]>(`${this.baseUrl}/${campaign}/overview/`);
     return transformObservableArrayContent(dataObs, this.objectClass);
   }
 
