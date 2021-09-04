@@ -3,11 +3,18 @@ import { Image } from './image';
 import { Constants } from '../app.constants';
 import { User } from './user';
 
-export interface Campaign extends ArticleObject{
+export interface Campaign extends CampaignOverview{
     name: string;
     pk?: number;
     members?: User[];
     admins?: User[];
+
+}
+
+export interface CampaignOverview extends ArticleObject{
+    name: string;
+    pk?: number;
+    background_image?: string;
     member_group_name?: string;
     admin_group_name?: string;
 }

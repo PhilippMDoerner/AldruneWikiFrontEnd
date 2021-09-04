@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
+import { CampaignOverview } from '../models/campaign';
 import { User } from '../models/user';
 import { GenericService } from './generic.service';
 
@@ -16,7 +17,7 @@ export class CampaignService extends GenericService{
   }
 
   campaignList(): Observable<any[]>{
-    return this.list();
+    return this.http.get<CampaignOverview[]>(`${this.baseUrl}/overview/`);
   }
 
   /**
