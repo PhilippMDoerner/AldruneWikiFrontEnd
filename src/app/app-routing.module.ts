@@ -40,6 +40,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ConfigTablesComponent } from './components/articles/config-tables/config-tables.component';
 import { ErrorComponent } from './components/error/error.component';
 import { Home2Component } from './components/home2/home2.component';
+import { CampaignComponent } from './components/utility/campaign/campaign.component';
 
 
 //TODO: Swap all the overview URLs for every type to ones from the viewsets
@@ -94,6 +95,13 @@ export const routes: Routes = [
 		component: ProfileComponent,
 		data: { name: "profile"},
 		canActivate: [LoginGuardService]
+	},
+
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign`, 
+		component: CampaignComponent, 
+		data:{ name: "campaign-admin", requiredPermissions: [Constants.apiViewPermission]}, 
+		canActivate: [AdminGuardService]
 	},
 
 	//Character Routes

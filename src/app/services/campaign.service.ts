@@ -29,8 +29,26 @@ export class CampaignService extends GenericService{
     return this.http.get(`${this.baseUrl}/${campaign}/`);
   }
 
-  addMember(campaign: string, user: User): Observable<User>{
-    return this.http.put<User>(`${this.baseUrl}/${campaign}/addMember/`, user);
+  addMember(campaign: string, user: User): Observable<User[]>{
+    const requestBody = {action: "add_member", user}
+    return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
+  }
+
+  addAdmin(campaign: string, user: User): Observable<User[]>{
+    const requestBody = {action: "add_admin", user}
+
+    return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
+  }
+
+  removeMember(campaign: string, user: User): Observable<User[]>{
+    const requestBody = {action: "remove_member", user}
+    return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
+  }
+
+
+  removeAdmin(campaign: string, user: User): Observable<User[]>{
+    const requestBody = {action: "remove_admin", user}
+    return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
   }
 
 }

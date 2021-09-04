@@ -26,7 +26,7 @@ export interface FormlyOverviewSelectConfig extends FormlyInterface{
     valueProp?: string,
     sortProp?: string,
     overviewType: OverviewType,
-    campaign: string,
+    campaign?: string,
 }
 
 export interface FormlyOverviewDisabledSelectConfig extends FormlyOverviewSelectConfig{

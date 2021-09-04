@@ -93,6 +93,7 @@ import { SidebarComponent } from './components/utility/sidebar/sidebar.component
 import { RecentlyUpdatedArticlesListComponent } from './components/utility/recently-updated-articles-list/recently-updated-articles-list.component';
 import { CampaignComponent } from './components/utility/campaign/campaign.component';
 import { CampaignListComponent } from './components/utility/campaign-list/campaign-list.component';
+import { CampaignOverviewComponent } from './components/articles/campaign-overview/campaign-overview.component';
 
 @NgModule({
   declarations: [
@@ -172,6 +173,7 @@ import { CampaignListComponent } from './components/utility/campaign-list/campai
     RecentlyUpdatedArticlesListComponent,
     CampaignComponent,
     CampaignListComponent,
+    CampaignOverviewComponent,
   ],
   imports: [
     BrowserModule,
