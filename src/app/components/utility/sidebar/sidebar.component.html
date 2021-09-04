@@ -33,8 +33,15 @@
                 <!-- Admin Section -->
                 <li *ngIf="showAdminSection">
                     <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('admin') }}" >
-                        <i class="fa fa-lock"></i>
-                        <span> Admin </span>
+                        <i class="fas fa-globe-europe"></i>
+                        <span> General Admin </span>
+                    </a>
+                </li>
+
+                <li *ngIf="showAdminSection">
+                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('campaign-admin', {campaign: campaign}) }}" >
+                        <i class="fas fa-dragon"></i>
+                        <span> Campaign Admin </span>
                     </a>
                 </li>
 

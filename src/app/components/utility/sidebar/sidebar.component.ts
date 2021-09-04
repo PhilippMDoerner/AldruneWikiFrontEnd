@@ -15,7 +15,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constants = Constants;
 
   @Input() showSidebar: BehaviorSubject<boolean>;
-  campaign: string;
+  campaign: string = Constants.defaultCampaign;
 
   sidebarEntries: any;
   showUserSection: boolean = false;
@@ -41,9 +41,10 @@ export class SidebarComponent implements OnInit, OnDestroy {
         return isRouterEvent && isSingleRouterEvent
       })
     ).subscribe(
-      params => {
-        const hasUrlCampaignParam = params.campaign != null;
-        this.campaign = (hasUrlCampaignParam) ? params.campaign : Constants.defaultCampaign;
+      params => {        
+        if(params.campaign != null) {
+          this.campaign = params.campaign;
+        }
         
         const metaData = this.constants.articleTypeMetaData;
         this.sidebarEntries = this.processMetaData(this.campaign, metaData);
