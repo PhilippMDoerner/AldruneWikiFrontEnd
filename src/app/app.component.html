@@ -17,7 +17,11 @@ class="d-flex base-page"
 (swiperight)="onSwipeRight($event)"
 (tap)="onTap($event)"
 >
-    <div class="sidebar-wrapper" [ngClass]="{'swiped-right': showSidebarSubject.getValue(), 'swiped-left': !showSidebarSubject.getValue()}">
+    <div 
+    class="sidebar-wrapper" 
+    [ngClass]="{'swiped-right': showSidebarSubject.getValue(), 'swiped-left': !showSidebarSubject.getValue()}"
+    *ngIf="isOnCampaignOverviewPage"
+    >
         <app-sidebar
         [showSidebar]="showSidebarSubject"
         #sidebar

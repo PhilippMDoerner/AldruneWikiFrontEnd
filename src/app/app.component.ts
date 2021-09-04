@@ -1,6 +1,8 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router, RouterEvent } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { filter } from 'rxjs/operators';
 import { Constants } from './app.constants';
 import { RoutingService } from './services/routing.service';
 import { WarningsService } from './services/warnings.service';
@@ -11,10 +13,13 @@ import { onlyOnTouch } from './utils/functions/utilityDecorators';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit, OnDestroy{
   title = 'AldruneWiki';
   outsideClickSubject: Subject<any> = new Subject();
   showSidebarSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+
+  routingSubscription: Subscription;
+  isOnCampaignOverviewPage: boolean = false;
 
   showSafariWarning: boolean; //Necessary to display warning about how this site is broken on iOS Safari
 
@@ -24,6 +29,7 @@ export class AppComponent implements OnInit{
     public routingService: RoutingService,
     private serviceWorkerUpdate: SwUpdate,
     private warnings: WarningsService,
+    private router: Router,
   ){}
 
   ngOnInit(){
@@ -34,7 +40,21 @@ export class AppComponent implements OnInit{
       }
     );
 
-    this.showSafariWarning = this.isUserWithSafariBrowser() || this.isIOSUser();
+    //Updates whether the sidebar should be shown at all (not the case for campaign overview) 
+    //or not with every update of the route
+    this.routingSubscription = this.router.events.pipe(
+      //Ensures you fire only one routingevent per routing
+      filter((e: any) => {
+        const isRouterEvent: boolean =  e instanceof RouterEvent;
+        const isSingleRouterEvent: boolean = e.navigationTrigger === "imperative";
+        return isRouterEvent && isSingleRouterEvent
+      })
+    ).subscribe(
+      () => {
+        this.isOnCampaignOverviewPage = this.router.url === this.routingService.getRoutePath('campaign-overview');
+      }
+    );
+
   }
   
   // CHECK AGAINST SAFARI AND IOS
@@ -101,5 +121,9 @@ export class AppComponent implements OnInit{
       this.showSidebarSubject.next(false);
       clickTarget.click();
     } 
+  }
+
+  ngOnDestroy(): void{
+    if(this.routingSubscription) this.routingSubscription.unsubscribe();
   }
 }
