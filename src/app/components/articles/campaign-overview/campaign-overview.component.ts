@@ -18,7 +18,7 @@ export class CampaignOverviewComponent implements OnInit {
   constructor(
     private campaignService: CampaignService,
     private warningService: WarningsService,
-    public routingService: RoutingService
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
