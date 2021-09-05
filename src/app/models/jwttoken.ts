@@ -12,4 +12,5 @@ export interface DecodedTokenPayload{
     permissions: string[],
     isAdmin: boolean,
     isSuperUser: boolean,
+    campaign_memberships: any //This is a dictionary like object, using campaign names as keys and roles (e.g. "member", "admin") as values
 }

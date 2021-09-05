@@ -13,7 +13,7 @@ export class TokenService {
   private jwtTokenUrl: string = Constants.wikiTokenUrl;
   private refreshTokenUrl: string = Constants.wikiTokenRefreshUrl;
 
-  constructor(private http: HttpClient, private router: Router) { }
+  constructor(private http: HttpClient, private router: Router) { console.log(this)}
 
   public getJWTToken(userModel: User): Observable<EncodedJWTToken>{
     const loginData: object = {username: userModel.username, password: userModel.password};
@@ -116,11 +116,29 @@ export class TokenService {
   }
 
   public getCurrentUserName(): string{
-    const currentUserAccessToken: string = this.getAccessToken();
-    if(currentUserAccessToken == null) return "";
+    const currentUserAccessTokenPayload: DecodedTokenPayload = this.getDecodedAccessTokenPayload();
+    return currentUserAccessTokenPayload?.user_name;  
+  }
 
-    const currentUserAccessTokenPayload: DecodedTokenPayload = this.decodeTokenPayload(currentUserAccessToken);
-    return currentUserAccessTokenPayload.user_name;  
+  public isCampaignMember(campaignName: string): boolean{
+    const role: CampaignRole = this.getCampaignRole(campaignName);
+    return role === CampaignRole.MEMBER || role === CampaignRole.ADMIN;
+  }
+
+  public isCampaignAdmin(campaignName: string): boolean{
+    return this.getCampaignRole(campaignName) === CampaignRole.ADMIN;
+  }
+
+  public getCampaignRole(campaignName: string): CampaignRole{
+    const memberships: any = this.getCampaignMemberships();
+    const role: string = memberships[campaignName];
+    return CampaignRole[role?.toUpperCase()]
+  }
+
+  /**Retrieves campaign memberships of a user from their token */
+  public getCampaignMemberships(): any{
+    const currentUserAccessTokenPayload: DecodedTokenPayload = this.getDecodedAccessTokenPayload();
+    return currentUserAccessTokenPayload?.campaign_memberships;
   }
 
   public isTokenExpired(token: string): boolean{
@@ -142,4 +160,17 @@ export class TokenService {
     const payload: DecodedTokenPayload = this.decodeTokenPayload(token);
     return payload.user_name === Constants.anonymousUserName;
   }
+
+  private getDecodedAccessTokenPayload(): DecodedTokenPayload{
+    const currentUserAccessToken: string = this.getAccessToken();
+    if(currentUserAccessToken == null) return null;
+
+    return this.decodeTokenPayload(currentUserAccessToken);
+  }
+}
+
+
+enum CampaignRole{
+  MEMBER = "member",
+  ADMIN = "admin"
 }
