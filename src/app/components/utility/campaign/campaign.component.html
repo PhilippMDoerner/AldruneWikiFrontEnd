@@ -7,12 +7,7 @@
 
         <div class="card my-3 p-3">
             <h3 class="text-center">Background</h3>
-            <!-- Image Gallery -->
-            <app-image-gallery
-            [article_type]="'campaign'"
-            [article_pk]="this.articleData.pk"
-            [images]="[]"
-            ></app-image-gallery>
+            <img title="None" class="gallery-image" [src]="articleData.background_image" alt="">
         </div>
 
 
