@@ -7,6 +7,7 @@ import { Constants } from 'src/app/app.constants';
 import { Creature, CreatureObject } from 'src/app/models/creature';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { CreatureService } from 'src/app/services/creature/creature.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -39,6 +40,7 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
     public warnings: WarningsService,  
     public routingService: RoutingService,
     public campaignService: CampaignService,
+    globalUrlParams: GlobalUrlParamsService,
   ) {
     super(
       router, 
@@ -46,7 +48,8 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
       warnings, 
       creatureService, 
       route,
-      campaignService
+      campaignService,
+      globalUrlParams
     );
   }
 }

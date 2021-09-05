@@ -5,6 +5,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
 import { Timestamp, TimestampObject } from 'src/app/models/timestamp';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
@@ -52,6 +53,7 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
     private timestampService: SessionAudioTimestampService,
     private warnings: WarningsService,  
     public routingService: RoutingService,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { super() }
 
   ngOnInit(): void {
@@ -59,20 +61,26 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
       const isMainSessionInt: number = params.isMainSession;
       const sessionNumber: number = params.sessionNumber;
 
-      this.sessionAudioService.readByParam(this.campaign, {isMainSession: isMainSessionInt, sessionNumber}).pipe(first()).subscribe(
-        (sessionAudio: SessionAudioObject) => {
-          this.sessionAudio = sessionAudio;
-          this.priorSessionAudio = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
-          this.nextSessionAudio = sessionAudio.sessionAudioNeighbours.nextSessionAudio;
-        }, 
-        error => this.routingService.routeToErrorPage(error)
-      );
+      this.sessionAudioService.readByParam(this.campaign, {isMainSession: isMainSessionInt, sessionNumber})
+        .pipe(first())
+        .subscribe(
+          (sessionAudio: SessionAudioObject) => {
+            this.sessionAudio = sessionAudio;
+            this.priorSessionAudio = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
+            this.nextSessionAudio = sessionAudio.sessionAudioNeighbours.nextSessionAudio;
+          }, 
+          error => this.routingService.routeToErrorPage(error)
+        );
 
-      this.timestampService.getTimestamps(this.campaign, isMainSessionInt, sessionNumber).pipe(first()).subscribe(
-        (timestamps: TimestampObject[]) => this.timestamps = timestamps,
-        error => this.routingService.routeToErrorPage(error)
-      )
-    })
+      this.timestampService.getTimestamps(this.campaign, isMainSessionInt, sessionNumber)
+        .pipe(first())
+        .subscribe(
+          (timestamps: TimestampObject[]) => this.timestamps = timestamps,
+          error => this.routingService.routeToErrorPage(error)
+        );
+      
+      this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
+    });
 
     this.create_timestamp_event_subscription = this.createTimestampEventSubject.subscribe(
       (timestampTime: number) => this.toggleTimestampCreateState()

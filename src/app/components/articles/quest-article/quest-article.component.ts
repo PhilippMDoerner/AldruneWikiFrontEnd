@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {  QuestObject } from 'src/app/models/quest';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { QuestService } from 'src/app/services/quest.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -22,12 +23,14 @@ export class QuestArticleComponent extends ArticleMixin implements OnInit {
     public route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    globalUrlParams: GlobalUrlParamsService,
   ) {
     super(
       questService,
       route,
       routingService,
-      warnings
+      warnings,
+      globalUrlParams
     )
    }
 }

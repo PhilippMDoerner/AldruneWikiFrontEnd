@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { LocationObject } from 'src/app/models/location';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { LocationService } from 'src/app/services/location/location.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -23,12 +24,14 @@ export class LocationArticleComponent extends ArticleMixin implements OnInit {
     public route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    globalUrlParams: GlobalUrlParamsService,
   ) { 
     super(
       locationService,
       route,
       routingService,
-      warnings
+      warnings,
+      globalUrlParams
     ) 
   }
 

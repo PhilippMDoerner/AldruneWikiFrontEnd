@@ -7,6 +7,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { QuoteObject } from 'src/app/models/quote';
 import { CharacterPlayerClassConnection } from 'src/app/models/playerclass';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 
 
 @Component({
@@ -30,12 +31,14 @@ export class CharacterArticleComponent extends ArticleMixin implements OnInit, O
     public route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    globalUrlParams: GlobalUrlParamsService,
     ) { 
       super(
         characterService,
         route,
         routingService,
-        warnings
+        warnings,
+        globalUrlParams
       );
     }
 

@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Organization, OrganizationObject } from 'src/app/models/organization';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { OrganizationService } from 'src/app/services/organization/organization.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -26,12 +27,14 @@ export class OrganizationArticleComponent extends ArticleMixin implements OnInit
     public route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    globalUrlParams: GlobalUrlParamsService,
   ) {
     super(
       organizationService,
       route,
       routingService,
-      warnings
+      warnings,
+      globalUrlParams
     )
    }
 }

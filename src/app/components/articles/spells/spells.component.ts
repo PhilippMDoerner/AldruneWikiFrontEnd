@@ -1,10 +1,11 @@
 import { AfterContentInit, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { SpellObject, SpellPlayerClassConnection } from 'src/app/models/spell';
 import { CampaignService } from 'src/app/services/campaign.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { SpellService } from 'src/app/services/spell.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -32,29 +33,30 @@ export class SpellsComponent implements OnInit, AfterViewInit, OnDestroy {
     public tokenService: TokenService,
     private route: ActivatedRoute,
     private warning: WarningsService,
-    private campaignService: CampaignService
+    private campaignService: CampaignService,
+    private globalUrlParams: GlobalUrlParamsService
   ) { }
 
   ngOnInit(): void {
     this.paramSubscription = this.route.params.subscribe(
       params => {
-        this.spellService.campaignList(this.campaign_details.name).pipe(first()).subscribe(
-          (spells: SpellObject[]) => {
-            this.spells = spells.sort((spell1, spell2) => spell1.name < spell2.name ? -1 : 1);
-            
-            this.panelIsOpenArray = [];
-            for (let spell of spells){
-              this.panelIsOpenArray.push(true);
-            };
-          },
-          error => this.routingService.routeToErrorPage(error)
-        );
+        this.spellService.campaignList(params.campaign)
+          .pipe(first())
+          .pipe(tap((spells: SpellObject[]) => this.panelIsOpenArray = spells.map(spell => true)))
+          .subscribe(
+            (spells: SpellObject[]) => this.spells = spells.sort((spell1, spell2) => spell1.name < spell2.name ? -1 : 1),
+            error => this.routingService.routeToErrorPage(error)
+          );
 
 
-        this.campaignService.readByParam(this.campaign_details.name).pipe(first()).subscribe(
-          (campaign_details: {name: string, pk:number}) => this.campaign_details = campaign_details,
-          error => this.warning.showWarning(error)
-        );
+        this.campaignService.readByParam(params.campaign)
+          .pipe(first())
+          .subscribe(
+            (campaign_details: {name: string, pk:number}) => this.campaign_details = campaign_details,
+            error => this.warning.showWarning(error)
+          );
+        
+        this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
       },
       error => this.warning.showWarning(error) 
     );

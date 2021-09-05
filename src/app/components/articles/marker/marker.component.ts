@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -24,12 +25,14 @@ export class MarkerComponent extends ArticleMixin implements OnInit {
     markerService: MarkerService,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    globalUrlParams: GlobalUrlParamsService,
   ) {
     super(
       markerService,
       route,
       routingService,
-      warnings
+      warnings,
+      globalUrlParams
     )
    }
 

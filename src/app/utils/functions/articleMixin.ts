@@ -6,6 +6,7 @@ import { Constants } from "src/app/app.constants";
 import { ArticleObject } from "src/app/models/base-models";
 import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
+import { GlobalUrlParamsService } from "src/app/services/global-url-params.service";
 import { RoutingService } from "src/app/services/routing.service";
 import { WarningsService } from "src/app/services/warnings.service";
 import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
@@ -28,7 +29,8 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
         public articleService: GenericObjectService | GenericService,
         public route: ActivatedRoute,
         public routingService: RoutingService,
-        public warnings: WarningsService
+        public warnings: WarningsService,
+        private globalUrlParams: GlobalUrlParamsService
     ){
         super();
     }
@@ -42,6 +44,7 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
                 error => this.routingService.routeToErrorPage(error)
             );
         
+            this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
         });
     }
 

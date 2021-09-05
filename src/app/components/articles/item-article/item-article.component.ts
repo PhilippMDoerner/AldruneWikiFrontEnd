@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Item } from 'src/app/models/item';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { ItemService } from 'src/app/services/item/item.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -23,12 +24,15 @@ export class ItemArticleComponent extends ArticleMixin {
     public route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    globalUrlParams: GlobalUrlParamsService,
+
   ) {
     super(
       itemService,
       route,
       routingService,
-      warnings
+      warnings,
+      globalUrlParams,
     )
    }
 }

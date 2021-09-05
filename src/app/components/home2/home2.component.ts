@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { OverviewItem } from 'src/app/models/overviewItem';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
@@ -22,12 +23,16 @@ export class Home2Component implements OnInit {
 
   constructor(
     private routingService: RoutingService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private globalUrlParams: GlobalUrlParamsService
   ) { }
 
   ngOnInit(): void {
     this.parameterSubscription = this.route.params.subscribe(
-      params => this.campaign = params.campaign,
+      params => {
+        this.campaign = params.campaign;
+        this.globalUrlParams.updateCampaignBackgroundImage(this.campaign);
+      },
       error => this.routingService.routeToErrorPage(error)
     )
   }

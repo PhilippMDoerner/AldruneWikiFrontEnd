@@ -13,11 +13,9 @@ import { WarningsService } from './warnings.service';
 })
 export class CampaignService extends GenericService{
   baseUrl: string = `${Constants.wikiApiUrl}/campaign`;
-  currentCampaignData: BehaviorSubject<Campaign> = new BehaviorSubject(null);
 
   constructor(
     http : HttpClient,
-    private warning: WarningsService
   ) { 
     super(http)  //Second param indicates which class the data of this service is turned into
   }
@@ -54,28 +52,8 @@ export class CampaignService extends GenericService{
     return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
   }
 
-
   removeAdmin(campaign: string, user: User): Observable<User[]>{
     const requestBody = {action: "remove_admin", user}
     return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
   }
-
-  getCampaignData(): BehaviorSubject<Campaign>{
-    return this.currentCampaignData;
-  }
-
-  updateCampaignData(campaignName: string): void{
-    console.log("Asking service to update the subject with " + campaignName);
-    if(campaignName == null) return //Contemplate putting in some default campaign data
-
-    const currentCampaign: Campaign = this.currentCampaignData.value;
-    const isCurrentCampaign: boolean = currentCampaign.name.toLowerCase() === campaignName.toLowerCase();
-    if (isCurrentCampaign) return;
-    
-    this.readByParam(campaignName).pipe(first()).subscribe(
-      (newCampaignData: Campaign) => this.currentCampaignData.next(newCampaignData),
-      error => this.warning.showWarning(error)
-    );
-  }
-
 }

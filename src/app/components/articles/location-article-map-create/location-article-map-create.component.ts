@@ -15,6 +15,7 @@ import { ExtendedMap } from 'src/app/models/map';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { CampaignService } from 'src/app/services/campaign.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 
 @Component({
   selector: 'app-location-article-map-create',
@@ -43,6 +44,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
     private warnings: WarningsService,  
     public routingService: RoutingService,
     private campaignService: CampaignService,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { }
 
   location_fields: FormlyFieldConfig[] = this.formlyService.getFieldConfigForLocation(this.campaign);
@@ -62,6 +64,8 @@ export class LocationArticleMapCreateComponent implements OnInit {
       this.mapName = params['map_name'];
 
       this.createUserModel(latitude, longitude);
+
+      this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
     });
   }
 

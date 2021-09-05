@@ -12,6 +12,7 @@ import { HttpEvent, HttpEventType, HttpUploadProgressEvent } from '@angular/comm
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 import { OverviewType } from 'src/app/app.constants';
 import { CampaignService } from 'src/app/services/campaign.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 
 @Component({
   selector: 'app-session-audio-update',
@@ -57,6 +58,7 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
     public warnings: WarningsService,  
     public routingService: RoutingService,
     campaignService: CampaignService,
+    globalUrlParams: GlobalUrlParamsService
   ) { 
     super(
       router,
@@ -64,7 +66,8 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
       warnings,
       audioService,
       route,
-      campaignService
+      campaignService,
+      globalUrlParams
     )
   }
 

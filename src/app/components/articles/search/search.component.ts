@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Article, OverviewArticleObject } from 'src/app/models/recentlyUpdatedArticle';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
 import { RoutingService } from 'src/app/services/routing.service';
 
@@ -28,6 +29,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,  
     public routingService: RoutingService,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { }
   
   //TODO: Turn this into a table in the backend
@@ -48,10 +50,14 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchString = params['searchString'];
       this.campaign = params.campaign;
 
-      this.articleService.getSearchedArticles(this.campaign, this.searchString).pipe(first()).subscribe(
-        (articles: OverviewArticleObject[]) => this.articles = articles,
-        error => this.routingService.routeToErrorPage(error)
-      )
+      this.articleService.getSearchedArticles(this.campaign, this.searchString)
+        .pipe(first())
+        .subscribe(
+          (articles: OverviewArticleObject[]) => this.articles = articles,
+          error => this.routingService.routeToErrorPage(error)
+        );
+      
+      this.globalUrlParams.updateCampaignBackgroundImage(this.campaign);
     });
 
     this.emptySearchSubtitle = this.getRandomSubtitle();

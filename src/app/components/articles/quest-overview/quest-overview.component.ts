@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Quest, QuestObject } from 'src/app/models/quest';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { QuestService } from 'src/app/services/quest.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -28,32 +29,35 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
     private questService: QuestService,
     public routingService: RoutingService,
     private route: ActivatedRoute,
-    private warning: WarningsService
+    private warning: WarningsService,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { super() }
 
   ngOnInit(): void {
-    this.parameterSubscription = this.route.params.subscribe(
-      params => this.campaign = params.campaign,
+    this.parameterSubscription = this.route.params.subscribe( params => {
+        this.campaign = params.campaign;
+        this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
+
+        this.questService.campaignList(this.campaign).pipe(first()).subscribe(
+          (quests: QuestObject[]) => {
+            this.quests = this.groupQuestsByTaker(quests);
+    
+            this.filterStateTypes = [];
+            this.filterStates = {};
+            for(let quest of quests){
+              if (!this.filterStates[quest.taker_details.name]){
+                this.filterStates[quest.taker_details.name] = 'Default';
+              }
+    
+              if (!this.filterStateTypes.includes(quest.status)){
+                this.filterStateTypes.push(quest.status);
+              }
+            };
+          }, 
+          error => this.routingService.routeToErrorPage(error)
+        );
+      },
       error => this.warning.showWarning(error)
-    );
-
-    this.questService.campaignList(this.campaign).pipe(first()).subscribe(
-      (quests: QuestObject[]) => {
-        this.quests = this.groupQuestsByTaker(quests);
-
-        this.filterStateTypes = [];
-        this.filterStates = {};
-        for(let quest of quests){
-          if (!this.filterStates[quest.taker_details.name]){
-            this.filterStates[quest.taker_details.name] = 'Default';
-          }
-
-          if (!this.filterStateTypes.includes(quest.status)){
-            this.filterStateTypes.push(quest.status);
-          }
-        };
-      }, 
-      error => this.routingService.routeToErrorPage(error)
     );
   }
 

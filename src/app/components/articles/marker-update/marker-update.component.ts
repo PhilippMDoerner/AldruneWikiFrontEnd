@@ -7,6 +7,7 @@ import { OverviewType } from 'src/app/app.constants';
 import { LocationObject } from 'src/app/models/location';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
 import { CampaignService } from 'src/app/services/campaign.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { LocationService } from 'src/app/services/location/location.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -49,6 +50,7 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
     public warnings: WarningsService,  
     public routingService: RoutingService,
     campaignService: CampaignService,
+    globalUrlParams: GlobalUrlParamsService,
   ) { 
     super(
       router,
@@ -56,7 +58,8 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
       warnings,
       markerService,
       route,
-      campaignService
+      campaignService,
+      globalUrlParams
     )
   }
   //TODO: Refactor this function into 2 separate functions and instead of predefining the object above

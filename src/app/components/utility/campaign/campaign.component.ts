@@ -7,6 +7,7 @@ import { OverviewType } from 'src/app/app.constants';
 import { CampaignObject } from 'src/app/models/campaign';
 import { User, UserObject } from 'src/app/models/user';
 import { CampaignService } from 'src/app/services/campaign.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -65,9 +66,16 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
     route: ActivatedRoute,
     routingService: RoutingService, 
     private formlyService: MyFormlyService, 
-    private campaignService: CampaignService
+    private campaignService: CampaignService,
+    globalUrlParams: GlobalUrlParamsService,
   ) { 
-    super(campaignService, route, routingService, warnings);
+    super(
+      campaignService, 
+      route, 
+      routingService, 
+      warnings,
+      globalUrlParams
+    );
   }
 
 

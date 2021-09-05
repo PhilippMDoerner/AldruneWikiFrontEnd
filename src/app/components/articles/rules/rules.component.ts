@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, tap } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Rule, RuleObject } from "src/app/models/rule";
 import { CampaignService } from 'src/app/services/campaign.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { RuleService } from 'src/app/services/rule.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -30,27 +31,28 @@ export class RulesComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private warning: WarningsService,
     private campaignService: CampaignService,
+    private globalUrlParams: GlobalUrlParamsService
   ) { }
 
   ngOnInit(): void {
     this.parameterSubscription = this.route.params.subscribe(
       params => {
-        this.ruleService.campaignList(this.campaign_details.name).pipe(first()).subscribe( 
-          (rules: RuleObject[]) => {
-            this.rules = rules.sort((rule1, rule2) => rule1.name < rule2.name ? -1 : 1);
-    
-            this.panelIsOpenArray = [];
-            for (let rule of rules){
-              this.panelIsOpenArray.push(true);
-            }
-          },
-          error => this.routingService.routeToErrorPage(error)
-        );
+        this.ruleService.campaignList(this.campaign_details.name)
+          .pipe(first())
+          .pipe(tap((rules: RuleObject[]) => this.panelIsOpenArray = rules.map(rule => true)))
+          .subscribe(
+            (rules: RuleObject[]) => this.rules = rules.sort((rule1, rule2) => rule1.name < rule2.name ? -1 : 1),
+            error => this.routingService.routeToErrorPage(error)
+          );
 
-        this.campaignService.readByParam(this.campaign_details.name).pipe(first()).subscribe(
-          (campaign_details: {name: string, pk:number}) => this.campaign_details = campaign_details,
-          error => this.warning.showWarning(error)
-        );
+        this.campaignService.readByParam(this.campaign_details.name)
+          .pipe(first())
+          .subscribe(
+            (campaign_details: {name: string, pk:number}) => this.campaign_details = campaign_details,
+            error => this.warning.showWarning(error)
+          );
+        
+        this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
       }
     )
   }

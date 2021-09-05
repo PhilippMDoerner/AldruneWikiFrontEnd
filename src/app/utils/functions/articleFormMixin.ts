@@ -8,6 +8,7 @@ import { ApiObject, ArticleObject } from "src/app/models/base-models";
 import { CampaignService } from "src/app/services/campaign.service";
 import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
+import { GlobalUrlParamsService } from "src/app/services/global-url-params.service";
 import { RoutingService } from "src/app/services/routing.service";
 import { WarningsService } from "src/app/services/warnings.service";
 import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
@@ -36,7 +37,8 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
         public warnings: WarningsService,
         public articleService: GenericService | GenericObjectService,
         public route: ActivatedRoute,
-        public campaignService: CampaignService
+        public campaignService: CampaignService,
+        private globalUrlParam: GlobalUrlParamsService
     ){
         super();
         const isUpdateRoute : boolean = this.router.url.includes("update");
@@ -55,6 +57,8 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
             } else if (this.isInCreateState()) {
                 this.createUserModel(queryParameters);
             }
+
+            this.globalUrlParam.updateCampaignBackgroundImage(params.campaign);
         })
     }
 

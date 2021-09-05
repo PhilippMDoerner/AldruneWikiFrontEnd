@@ -4,11 +4,11 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { ExtendedMap, MapObject } from 'src/app/models/map';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MapService } from 'src/app/services/map.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
-import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
 @Component({
@@ -37,12 +37,14 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
     private overviewService: OverviewService,
     public warnings: WarningsService,  
     public routingService: RoutingService,
+    globalUrlParams: GlobalUrlParamsService,
   ) { 
     super(
       mapService,
       route,
       routingService,
-      warnings
+      warnings,
+      globalUrlParams
     )
   }
 

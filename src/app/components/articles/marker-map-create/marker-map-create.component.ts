@@ -12,6 +12,7 @@ import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { MapObject } from 'src/app/models/map';
 import { RoutingService } from 'src/app/services/routing.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 @Component({
   selector: 'app-marker-map-create',
   templateUrl: './marker-map-create.component.html',
@@ -43,6 +44,7 @@ export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into 
     private formlyService: MyFormlyService,
     private warnings: WarningsService,  
     public routingService: RoutingService,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { }
 
   ngOnInit(): void {
@@ -52,6 +54,8 @@ export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into 
       this.mapName = params['map_name'];
 
       this.createUserModel(latitude, longitude);
+
+      this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
     });
   }
 

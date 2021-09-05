@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { LocationObject, Location } from 'src/app/models/location';
 import { CampaignService } from 'src/app/services/campaign.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { LocationService } from 'src/app/services/location/location.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -42,6 +43,7 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
     warnings: WarningsService,  
     routingService: RoutingService,
     campaignService: CampaignService,
+    globalUrlParams: GlobalUrlParamsService,
   ) { 
     super(
       router,
@@ -49,7 +51,8 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
       warnings,
       locationService,
       route,
-      campaignService
+      campaignService,
+      globalUrlParams
     )
   }
 

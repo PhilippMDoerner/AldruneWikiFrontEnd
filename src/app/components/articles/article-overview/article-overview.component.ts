@@ -8,7 +8,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 import { RoutingService } from 'src/app/services/routing.service';
 import { first } from 'rxjs/operators';
 import { CharacterService } from 'src/app/services/character/character.service';
-import { I18nPluralPipe } from '@angular/common';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 
 @Component({
   selector: 'app-article-overview',
@@ -78,12 +78,15 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     private router: Router,  
     public routingService: RoutingService,
     private characterService: CharacterService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { super() }
 
   ngOnInit(): void {
     this.paramSubscription = this.route.params.subscribe(params => {
       this.campaign = params.campaign;
+
+      this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
     });
 
     const urlSplit: string[] = this.router.url.split('/');

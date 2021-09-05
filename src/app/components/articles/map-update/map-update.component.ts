@@ -6,6 +6,7 @@ import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { MapObject, Map } from 'src/app/models/map';
 import { CampaignService } from 'src/app/services/campaign.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MapService } from 'src/app/services/map.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -42,7 +43,8 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
     route: ActivatedRoute,
     public warnings: WarningsService,  
     public routingService: RoutingService,
-    campaignService: CampaignService
+    campaignService: CampaignService,
+    globalUrlParams: GlobalUrlParamsService,
   ) { 
     super(
       router, 
@@ -51,6 +53,7 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
       mapService,
       route,
       campaignService,
+      globalUrlParams
     ) 
   }
 }

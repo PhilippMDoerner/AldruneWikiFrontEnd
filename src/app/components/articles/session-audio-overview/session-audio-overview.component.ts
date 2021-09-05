@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { OverviewItem } from 'src/app/models/overviewItem';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
@@ -22,13 +23,22 @@ export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixi
   constructor(
     private overviewService: OverviewService,
     public routingService: RoutingService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { super() }
 
   ngOnInit(): void {
-    this.overviewService.getCampaignOverviewItems(this.campaign, OverviewType.Sessionaudio).pipe(first()).subscribe(
-      (sessionAudioFiles: OverviewItem[]) => this.sessionAudioFiles = sessionAudioFiles,
-      error => this.routingService.routeToErrorPage(error)
-    );
+    this.route.params.subscribe(params => {
+      this.campaign = params.campaign;
+
+      this.overviewService.getCampaignOverviewItems(this.campaign, OverviewType.Sessionaudio)
+        .pipe(first())
+        .subscribe(
+          (sessionAudioFiles: OverviewItem[]) => this.sessionAudioFiles = sessionAudioFiles,
+          error => this.routingService.routeToErrorPage(error)
+        );
+      
+      this.globalUrlParams.updateCampaignBackgroundImage(this.campaign);
+    });
   }
 }

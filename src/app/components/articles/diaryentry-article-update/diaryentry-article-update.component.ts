@@ -7,6 +7,7 @@ import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -70,7 +71,8 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
     route: ActivatedRoute,
     warnings: WarningsService,  
     public routingService: RoutingService,
-    campaignService: CampaignService
+    campaignService: CampaignService,
+    globalUrlParams: GlobalUrlParamsService,
   ) { 
     super(
       router,
@@ -78,7 +80,8 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
       warnings,
       diaryEntryService,
       route,
-      campaignService
+      campaignService,
+      globalUrlParams
     )
   }
 

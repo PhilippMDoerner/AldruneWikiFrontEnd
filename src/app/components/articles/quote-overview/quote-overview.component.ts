@@ -9,6 +9,7 @@ import { CharacterObject } from 'src/app/models/character';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { Quote, QuoteConnection, QuoteConnectionObject, QuoteObject } from 'src/app/models/quote';
 import { CharacterService } from 'src/app/services/character/character.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { QuoteConnectionService } from 'src/app/services/quote-connection.service';
 import { QuoteService } from 'src/app/services/quote.service';
@@ -51,6 +52,7 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
     private route: ActivatedRoute,
     private warning: WarningsService,
     public routingService: RoutingService,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { super() }
 
   ngOnInit(): void {
@@ -73,6 +75,7 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
           error => this.routingService.routeToErrorPage(error)
         );
 
+          this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
       },
       error => this.warning.showWarning(error)
     );

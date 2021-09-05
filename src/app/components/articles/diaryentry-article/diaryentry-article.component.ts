@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { DiaryEntry } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
@@ -24,12 +25,14 @@ export class DiaryentryArticleComponent extends ArticleMixin {
     public route: ActivatedRoute,
     public warning: WarningsService,  
     public routingService: RoutingService,
+    globalUrlParams: GlobalUrlParamsService,
   ) { 
     super(
       diaryEntryService,
       route,
       routingService,
-      warning
+      warning,
+      globalUrlParams
     )
   }
 
