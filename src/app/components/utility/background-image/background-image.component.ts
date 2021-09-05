@@ -43,12 +43,9 @@ export class BackgroundImageComponent implements OnInit, OnDestroy {
   async updateCurrentCampaign(campaignName: string): Promise<void>{
     if (this.backgroundImage == null) return;
 
-    console.log("Updated with defined backgroundImage Element")
-
     await animateElement(this.backgroundImage.nativeElement, 'fadeOut');
     this.currentCampaign = this.findCampaignByName(campaignName);
     await animateElement(this.backgroundImage.nativeElement, 'fadeIn');
-
   }
 
   findCampaignByName(campaignName: string): CampaignOverview{

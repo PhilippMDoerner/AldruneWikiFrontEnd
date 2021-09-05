@@ -51,10 +51,6 @@ export class AppComponent implements OnInit, OnDestroy{
     this.routingSubscription = this.router.events
       .pipe(filter(this.isPageReroutingEndEvent))
       .subscribe((event) => this.onPageReroutingEnd(event));
-
-    this.parameterSubscription = this.route.params.subscribe(
-      parameters => {console.log("parameter subscription triggered"); console.log(parameters)}
-    )
   }
 
   /** Checks whether the given routing event is one that is fired at the end of routing, so when the new URL is reached */
@@ -63,7 +59,6 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
   onPageReroutingEnd(routingEvent: NavigationEnd){
-    console.log("Page rerouting event triggered");
     this.updateSidebarAllowanceBasedOnRoute();
   }
 
