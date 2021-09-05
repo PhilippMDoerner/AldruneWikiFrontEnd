@@ -75,6 +75,34 @@
                     ></app-formly-formcontainer>
                 </div>
             </div>
+
+            <div class="col-sm-6 col-12">
+                <div class="p-3 card">
+                    <h3 class="text-center">
+                        <span class="fas fa-users"></span>
+                        Guests
+                    </h3>
+
+                    <div *ngFor="let user of articleData.guests">
+                        {{user.username}}
+
+                        <app-delete-toggle
+                        [deleteMessage]="'Remove '+ user.username +' as guest?'"
+                        (deleteEvent)="onRemoveGuest(user)"
+                        class="float-right px-0"
+                        ></app-delete-toggle>
+                    </div>
+
+                    <!-- Form -->
+                    <app-formly-formcontainer 
+                    *ngIf="addGuestState; else addGuestButton"
+                    [model]="guestModel"
+                    [fields]="guestFormlyFields"
+                    (formlySubmit)="onAddGuestSubmit()" 
+                    (formlyCancel)="addGuestState=false"
+                    ></app-formly-formcontainer>
+                </div>
+            </div>
         </div>
 
         <!-- Footer (Move to other Article + Delete Article) -->
@@ -100,5 +128,12 @@
     <button class="btn btn-primary mt-3" (click)="toggleAdminAddState()">
         <span class="fas user-plus icon"> </span>
         Add Admin
+    </button>
+</ng-template>
+
+<ng-template #addGuestButton>
+    <button class="btn btn-primary mt-3" (click)="toggleGuestAddState()">
+        <span class="fas user-plus icon"> </span>
+        Add Guest
     </button>
 </ng-template>

@@ -28,6 +28,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   
   addMemberState: boolean = false;
   addAdminState: boolean = false;
+  addGuestState: boolean = false;
 
   memberModel: User;
   memberFormlyFields: FormlyFieldConfig[] = [
@@ -38,7 +39,9 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
       label: "User",
       overviewType: OverviewType.User,
       disabledExpression: (selectOption: User) => {
-        return this.isInGroup(selectOption, this.articleData.member_group_name)
+        const isAdmin = this.isInGroup(selectOption, this.articleData.admin_group_name);
+        const isMember = this.isInGroup(selectOption, this.articleData.member_group_name);
+        return isAdmin || isMember;
       },
       tooltipMessage: "",
       warningMessage: "The user you selected is already member of this campaign"
@@ -61,6 +64,26 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
     }),
   ];
 
+  guestModel: User;
+  guestFormlyFields: FormlyFieldConfig[] = [
+    this.formlyService.genericDisableSelect({
+      key: "pk", 
+      labelProp: "username", 
+      sortProp: "username", 
+      label: "User",
+      overviewType: OverviewType.User,
+      disabledExpression: (selectOption: User) => {
+        const isAdmin = this.isInGroup(selectOption, this.articleData.admin_group_name);
+        const isMember = this.isInGroup(selectOption, this.articleData.member_group_name);
+        const isGuest = this.isInGroup(selectOption, this.articleData.guest_group_name);
+        return isAdmin || isMember || isGuest;
+      },
+      tooltipMessage: "",
+      warningMessage: "The user you selected is already guest of this campaign"
+    }),
+  ];
+
+
   constructor(
     warnings: WarningsService,
     route: ActivatedRoute,
@@ -79,6 +102,14 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   }
 
 
+  toggleGuestAddState(): void{
+    this.addGuestState = !this.addGuestState;
+
+    if(this.addGuestState){
+      this.guestModel = new UserObject();
+    }
+  }
+  
   toggleMemberAddState(): void{
     this.addMemberState = !this.addMemberState;
 
@@ -105,6 +136,11 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
     this.updateAdmins(adminUpdateObs);
   }
 
+  onAddGuestSubmit(): void{
+    const guestUpdateObs: Observable<User[]> = this.campaignService.addGuest(this.articleData.name, this.guestModel);
+    this.updateGuests(guestUpdateObs);
+  }
+
   onRemoveAdmin(user: User): void{
     const adminUpdateObs: Observable<User[]> = this.campaignService.removeAdmin(this.articleData.name, user);
     this.updateAdmins(adminUpdateObs);
@@ -113,6 +149,11 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   onRemoveMember(user: User): void{
     const memberUpdateObs: Observable<User[]> = this.campaignService.removeMember(this.articleData.name, user);
     this.updateMembers(memberUpdateObs);
+  }
+
+  onRemoveGuest(user: User): void{
+    const guestUpdateObs: Observable<User[]> = this.campaignService.removeMember(this.articleData.name, user);
+    this.updateGuests(guestUpdateObs);
   }
 
   removeUserFromList(user:  User, list: User[]): void{
@@ -135,6 +176,16 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
       (admins: User[]) => {
         this.articleData.admins = admins;
         this.addAdminState = false;
+      },
+      error => this.warnings.showWarning(error)
+    );
+  }
+
+  updateGuests(updateGuestObs: Observable<User[]>): void{
+    updateGuestObs.pipe(first()).subscribe(
+      (guests: User[]) => {
+        this.articleData.guests = guests;
+        this.addGuestState = false;
       },
       error => this.warnings.showWarning(error)
     );

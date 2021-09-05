@@ -47,6 +47,11 @@ export class CampaignService extends GenericService{
     return this.http.get(`${this.baseUrl}/${campaign}/`);
   }
 
+  addGuest(campaign: string, user: User): Observable<User[]>{
+    const requestBody = {action: "add_guest", user}
+    return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
+  }
+
   addMember(campaign: string, user: User): Observable<User[]>{
     const requestBody = {action: "add_member", user}
     return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
@@ -55,6 +60,11 @@ export class CampaignService extends GenericService{
   addAdmin(campaign: string, user: User): Observable<User[]>{
     const requestBody = {action: "add_admin", user}
 
+    return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
+  }
+
+  removeGuest(campaign: string, user: User): Observable<User[]>{
+    const requestBody = {action: "remove_guest", user}
     return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
   }
 
