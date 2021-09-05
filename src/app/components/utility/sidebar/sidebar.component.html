@@ -46,7 +46,7 @@
                 </li>
 
                 <li *ngIf="showAdminSection">
-                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('campaign-admin', {campaign: campaign}) }}" >
+                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('campaign-admin', {campaign: currentCampaignName}) }}" >
                         <i class="fas fa-dragon"></i>
                         <span> Campaign Admin </span>
                     </a>
