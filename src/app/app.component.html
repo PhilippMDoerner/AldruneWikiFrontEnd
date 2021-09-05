@@ -20,7 +20,7 @@ class="d-flex base-page"
     <div 
     class="sidebar-wrapper" 
     [ngClass]="{'swiped-right': showSidebarSubject.getValue(), 'swiped-left': !showSidebarSubject.getValue()}"
-    *ngIf="isOnCampaignOverviewPage"
+    *ngIf="allowSidebar"
     >
         <app-sidebar
         [showSidebar]="showSidebarSubject"
@@ -33,8 +33,6 @@ class="d-flex base-page"
     class="d-flex justify-content-center w-100"
     >
         <router-outlet #routerOutlet></router-outlet>
-    </div>    
+    </div>
+    <app-background-image></app-background-image>
 </div>
-
-<!-- BG -->
-<div id="bg"></div>

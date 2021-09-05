@@ -1,9 +1,11 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Router, RouterEvent } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Constants } from './app.constants';
+import { Campaign } from './models/campaign';
+import { CampaignService } from './services/campaign.service';
 import { RoutingService } from './services/routing.service';
 import { WarningsService } from './services/warnings.service';
 import { onlyOnTouch } from './utils/functions/utilityDecorators';
@@ -16,10 +18,13 @@ import { onlyOnTouch } from './utils/functions/utilityDecorators';
 export class AppComponent implements OnInit, OnDestroy{
   title = 'AldruneWiki';
   outsideClickSubject: Subject<any> = new Subject();
+  allowSidebar: boolean = false;
   showSidebarSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  constants = Constants;
 
   routingSubscription: Subscription;
-  isOnCampaignOverviewPage: boolean = false;
+  serviceWorkerSubscription: Subscription;
+  parameterSubscription: Subscription;
 
   showSafariWarning: boolean; //Necessary to display warning about how this site is broken on iOS Safari
 
@@ -30,10 +35,11 @@ export class AppComponent implements OnInit, OnDestroy{
     private serviceWorkerUpdate: SwUpdate,
     private warnings: WarningsService,
     private router: Router,
+    private route: ActivatedRoute
   ){}
 
   ngOnInit(){
-    this.serviceWorkerUpdate.available.subscribe(
+    this.serviceWorkerSubscription = this.serviceWorkerUpdate.available.subscribe(
       event => {
         this.warnings.showAlert("There's an update to this webpage, that you've just downloaded in the background! We now need to reload the page to move it into cache...");
         location.reload();
@@ -42,19 +48,28 @@ export class AppComponent implements OnInit, OnDestroy{
 
     //Updates whether the sidebar should be shown at all (not the case for campaign overview) 
     //or not with every update of the route
-    this.routingSubscription = this.router.events.pipe(
-      //Ensures you fire only one routingevent per routing
-      filter((e: any) => {
-        const isRouterEvent: boolean =  e instanceof RouterEvent;
-        const isSingleRouterEvent: boolean = e.navigationTrigger === "imperative";
-        return isRouterEvent && isSingleRouterEvent
-      })
-    ).subscribe(
-      () => {
-        this.isOnCampaignOverviewPage = this.router.url === this.routingService.getRoutePath('campaign-overview');
-      }
-    );
+    this.routingSubscription = this.router.events
+      .pipe(filter(this.isPageReroutingEndEvent))
+      .subscribe((event) => this.onPageReroutingEnd(event));
 
+    this.parameterSubscription = this.route.params.subscribe(
+      parameters => {console.log("parameter subscription triggered"); console.log(parameters)}
+    )
+  }
+
+  /** Checks whether the given routing event is one that is fired at the end of routing, so when the new URL is reached */
+  isPageReroutingEndEvent(e: any): boolean{
+    return e instanceof NavigationEnd;
+  }
+
+  onPageReroutingEnd(routingEvent: NavigationEnd){
+    console.log("Page rerouting event triggered");
+    this.updateSidebarAllowanceBasedOnRoute();
+  }
+
+  updateSidebarAllowanceBasedOnRoute(): void{
+    const isCampaignOverviewPage: boolean = this.router.url === this.routingService.getRoutePath('campaign-overview');
+    this.allowSidebar = !isCampaignOverviewPage;
   }
   
   // CHECK AGAINST SAFARI AND IOS
@@ -95,17 +110,14 @@ export class AppComponent implements OnInit, OnDestroy{
   }
 
 
+  //TOUCH EVENT HANDLERS
   @onlyOnTouch
   onSwipeLeft(event: any): void{
-    console.log("On swipe left");
-    console.log(event);
     this.showSidebarSubject.next(false);
   }
 
   @onlyOnTouch
   onSwipeRight(event: any): void{
-    console.log("On swipe right");
-    console.log(event);
     this.showSidebarSubject.next(true);
   }
 
@@ -125,5 +137,7 @@ export class AppComponent implements OnInit, OnDestroy{
 
   ngOnDestroy(): void{
     if(this.routingSubscription) this.routingSubscription.unsubscribe();
+    if(this.serviceWorkerSubscription) this.serviceWorkerSubscription.unsubscribe();
+    if(this.parameterSubscription) this.parameterSubscription.unsubscribe();
   }
 }
