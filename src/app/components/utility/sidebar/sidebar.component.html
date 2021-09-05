@@ -30,6 +30,13 @@
                     </a>
                 </li>
 
+                <li>
+                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('campaign-overview')}}">
+                        <i class="fas fa-globe-europe"></i>
+                        <span> Campaign Overview </span>
+                    </a>
+                </li>
+
                 <!-- Admin Section -->
                 <li *ngIf="showAdminSection">
                     <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('admin') }}" >

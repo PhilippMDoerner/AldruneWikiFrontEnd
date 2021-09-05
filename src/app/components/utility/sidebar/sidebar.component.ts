@@ -12,7 +12,7 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./sidebar.component.scss'],
 })
 export class SidebarComponent implements OnInit, OnDestroy {
-  constants = Constants;
+  constants: any = Constants;
 
   @Input() showSidebar: BehaviorSubject<boolean>;
   campaign: string = Constants.defaultCampaign;
