@@ -4,14 +4,14 @@
         class="col-sm px-0 campaign" 
         *ngFor="let campaign of campaignData" 
         routerLink="{{routingService.getRoutePath('home1', {campaign: campaign.name})}}"
-        [ngClass]="{'events-disabled': !campaign.isMember}"
+        [ngClass]="{'events-disabled': !campaign.isMember && !campaign.isGuest}"
         >
             <div class="campaign-overlay overlay-heading text-center">
                 <h3> {{campaign.name}}</h3>
             </div>
 
             <div 
-            *ngIf="!campaign.isMember"
+            *ngIf="!campaign.isMember && !campaign.isGuest"
             class="campaign-overlay overlay-lock fas fa-lock fa-5x">
             </div>
 

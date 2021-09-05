@@ -30,6 +30,7 @@ export class CampaignService extends GenericService{
         campaigns.forEach(campaign => {
           campaign.isMember = this.tokenService.isCampaignMember(campaign.name.toLowerCase());
           campaign.isAdmin = this.tokenService.isCampaignAdmin(campaign.name.toLowerCase());
+          campaign.isGuest = this.tokenService.isCampaignGuest(campaign.name.toLowerCase());
         });
         return campaigns;
       }

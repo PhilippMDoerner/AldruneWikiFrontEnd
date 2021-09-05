@@ -13,7 +13,7 @@ export class TokenService {
   private jwtTokenUrl: string = Constants.wikiTokenUrl;
   private refreshTokenUrl: string = Constants.wikiTokenRefreshUrl;
 
-  constructor(private http: HttpClient, private router: Router) { console.log(this)}
+  constructor(private http: HttpClient) { }
 
   public getJWTToken(userModel: User): Observable<EncodedJWTToken>{
     const loginData: object = {username: userModel.username, password: userModel.password};
@@ -122,11 +122,15 @@ export class TokenService {
 
   public isCampaignMember(campaignName: string): boolean{
     const role: CampaignRole = this.getCampaignRole(campaignName);
-    return role === CampaignRole.MEMBER || role === CampaignRole.ADMIN;
+    return this.isSuperUser() || this.isAdmin() || role === CampaignRole.MEMBER || role === CampaignRole.ADMIN;
   }
 
   public isCampaignAdmin(campaignName: string): boolean{
-    return this.getCampaignRole(campaignName) === CampaignRole.ADMIN;
+    return this.isSuperUser() || this.isAdmin() || this.getCampaignRole(campaignName) === CampaignRole.ADMIN;
+  }
+
+  public isCampaignGuest(campaignName: string): boolean{
+    return this.isSuperUser() || this.isAdmin() || this.getCampaignRole(campaignName) === CampaignRole.GUEST;
   }
 
   public getCampaignRole(campaignName: string): CampaignRole{
@@ -172,5 +176,6 @@ export class TokenService {
 
 enum CampaignRole{
   MEMBER = "member",
-  ADMIN = "admin"
+  ADMIN = "admin",
+  GUEST = "guest"
 }
