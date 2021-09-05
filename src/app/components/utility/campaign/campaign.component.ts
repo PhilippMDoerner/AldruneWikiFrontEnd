@@ -152,7 +152,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   }
 
   onRemoveGuest(user: User): void{
-    const guestUpdateObs: Observable<User[]> = this.campaignService.removeMember(this.articleData.name, user);
+    const guestUpdateObs: Observable<User[]> = this.campaignService.removeGuest(this.articleData.name, user);
     this.updateGuests(guestUpdateObs);
   }
 
