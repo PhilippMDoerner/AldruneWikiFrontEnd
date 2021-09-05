@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { Constants } from '../app.constants';
-import { Campaign, CampaignOverview } from '../models/campaign';
+import {CampaignOverview } from '../models/campaign';
 import { User } from '../models/user';
 import { GenericService } from './generic.service';
-import { WarningsService } from './warnings.service';
+import { TokenService } from './token.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,7 @@ export class CampaignService extends GenericService{
 
   constructor(
     http : HttpClient,
+    private tokenService: TokenService
   ) { 
     super(http)  //Second param indicates which class the data of this service is turned into
   }
@@ -23,7 +24,16 @@ export class CampaignService extends GenericService{
 
 
   campaignList(): Observable<any[]>{
-    return this.http.get<CampaignOverview[]>(`${this.baseUrl}/overview/`);
+    const campaignObs: Observable<any[]> =  this.http.get<CampaignOverview[]>(`${this.baseUrl}/overview/`);
+    return campaignObs.pipe(map(
+      (campaigns: CampaignOverview[]) => {
+        campaigns.forEach(campaign => {
+          campaign.isMember = this.tokenService.isCampaignMember(campaign.name.toLowerCase());
+          campaign.isAdmin = this.tokenService.isCampaignAdmin(campaign.name.toLowerCase());
+        });
+        return campaigns;
+      }
+    ));
   }
 
   /**
