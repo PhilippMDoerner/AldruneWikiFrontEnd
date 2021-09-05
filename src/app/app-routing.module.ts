@@ -40,6 +40,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { ConfigTablesComponent } from './components/articles/config-tables/config-tables.component';
 import { ErrorComponent } from './components/error/error.component';
 import { Home2Component } from './components/home2/home2.component';
+import { CampaignOverviewComponent } from './components/articles/campaign-overview/campaign-overview.component';
 import { CampaignComponent } from './components/utility/campaign/campaign.component';
 
 
@@ -51,6 +52,12 @@ export const routes: Routes = [
 		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/${Constants.defaultCampaign}`,
 		pathMatch: 'full',
 		data: {name: 'start'}
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/home`,
+		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaigns`, 
+		pathMatch: "full",
+		data: {name: "no-campaigns"}
 	},
 	//Home Routes
 	{
@@ -97,6 +104,13 @@ export const routes: Routes = [
 		canActivate: [LoginGuardService]
 	},
 
+	//Campaign Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaigns`, 
+		component: CampaignOverviewComponent, 
+		data:{ name: "campaign-overview", requiredPermissions: [Constants.apiViewPermission]}, 
+		canActivate: [AdminGuardService]
+	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign`, 
 		component: CampaignComponent, 
