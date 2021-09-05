@@ -1,6 +1,6 @@
 <div *ngIf="campaignData; else loading" class="container" id="container-overview">
     <div class="row mx-0">
-        <a class="col px-0 campaign" *ngFor="let campaign of campaignData" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign.name})}}">
+        <a class="col-sm px-0 campaign" *ngFor="let campaign of campaignData" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign.name})}}">
             <div class="campaign-overlay text-center">
                 <h3> {{campaign.name}}</h3>
             </div>
