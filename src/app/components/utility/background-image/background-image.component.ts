@@ -31,13 +31,17 @@ export class BackgroundImageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.campaignService.campaignList().pipe(first()).subscribe(
-      (campaignOverviewData: CampaignOverview[]) => this.allCampaignData = campaignOverviewData,
+      (campaignOverviewData: CampaignOverview[]) => {
+        this.allCampaignData = campaignOverviewData;
+        
+        this.urlParamSubscription = this.globalURLParamService.getURLCampaignParameter()
+          .pipe(filter((campaignName: string) => this.currentCampaign?.name !== campaignName))
+          .subscribe((campaignName: string) => this.updateCurrentCampaign(campaignName));
+      },
       error => this.warningService.showWarning(error)
     );
 
-    this.urlParamSubscription = this.globalURLParamService.getURLCampaignParameter()
-      .pipe(filter((campaignName: string) => this.currentCampaign?.name !== campaignName))
-      .subscribe((campaignName: string) => this.updateCurrentCampaign(campaignName));
+
   }
 
   async updateCurrentCampaign(campaignName: string): Promise<void>{
