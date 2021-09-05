@@ -3,7 +3,7 @@ import { Constants } from 'src/app/app.constants';
 import { RoutingService } from 'src/app/services/routing.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { TokenService } from 'src/app/services/token.service';
-import { ActivatedRoute, Router, RouterEvent } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { filter } from 'rxjs/operators';
 
 @Component({
@@ -37,8 +37,8 @@ export class SidebarComponent implements OnInit, OnDestroy {
       //Ensures you fire only one routingevent per routing
       filter((e: any) => {
         const isRouterEvent: boolean =  e instanceof RouterEvent;
-        const isSingleRouterEvent: boolean = e.navigationTrigger === "imperative";
-        return isRouterEvent && isSingleRouterEvent
+        const isAtNavigationEnd: boolean = e instanceof NavigationEnd;
+        return isRouterEvent && isAtNavigationEnd;
       })
     ).subscribe(
       params => {        
