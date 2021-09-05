@@ -8,15 +8,16 @@ export interface Campaign extends CampaignOverview{
     pk?: number;
     members?: User[];
     admins?: User[];
-
+    member_group_name?: string;
+    admin_group_name?: string;
 }
 
 export interface CampaignOverview extends ArticleObject{
     name: string;
     pk?: number;
     background_image?: string;
-    member_group_name?: string;
-    admin_group_name?: string;
+    isMember: boolean;
+    isAdmin: boolean;
 }
 
 export class CampaignObject implements Campaign{
@@ -26,6 +27,8 @@ export class CampaignObject implements Campaign{
     admins?: User[];
     member_group_name?: string;
     admin_group_name?: string;
+    isMember: boolean;
+    isAdmin: boolean;
 
     constructor(object?: Campaign){
         if (object) Object.assign(this, object);
