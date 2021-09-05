@@ -1,10 +1,11 @@
-import { Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
 import { RoutingService } from 'src/app/services/routing.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { TokenService } from 'src/app/services/token.service';
 import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { filter } from 'rxjs/operators';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -15,42 +16,40 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constants: any = Constants;
 
   @Input() showSidebar: BehaviorSubject<boolean>;
-  campaign: string = Constants.defaultCampaign;
+  currentCampaignName: string = "";
+
+  parameterSubscription: Subscription;
 
   sidebarEntries: any;
   showUserSection: boolean = false;
   showAdminSection: boolean = false;
-
-  routingSubscription: Subscription;
 
   //TODO: customizeable sidebar order of menu items
   constructor(
     public routingService: RoutingService,
     public tokenService: TokenService,
     private router: Router,
-  ) { }
+    private globalUrlParams: GlobalUrlParamsService,
+    private route: ActivatedRoute,
+    private cdRef: ChangeDetectorRef,
+  ) { 
+
+  }
 
   ngOnInit(): void {
+    this.parameterSubscription = this.globalUrlParams.getURLCampaignParameter().subscribe(
+      (campaignName: string) => {
+        this.currentCampaignName = campaignName;
+        this.updateSidebarEntries(campaignName);
+        this.cdRef.detectChanges();
+      }
+    );
+  }
 
-    //Updates whether admin section should be shown in the sidebar or not with every update of the route
-    this.routingSubscription = this.router.events.pipe(
-      //Ensures you fire only one routingevent per routing
-      filter((e: any) => {
-        const isRouterEvent: boolean =  e instanceof RouterEvent;
-        const isAtNavigationEnd: boolean = e instanceof NavigationEnd;
-        return isRouterEvent && isAtNavigationEnd;
-      })
-    ).subscribe(
-      params => {        
-        if(params.campaign != null) {
-          this.campaign = params.campaign;
-        }
-        
-        const metaData = this.constants.articleTypeMetaData;
-        this.sidebarEntries = this.processMetaData(this.campaign, metaData);
-        
-        this.showAdminSection = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
-    });
+  updateSidebarEntries(campaignName: string): void{
+    const metaData = this.constants.articleTypeMetaData;
+    this.sidebarEntries = this.processMetaData(campaignName, metaData);
+    this.showAdminSection = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
   }
 
   processMetaData(campaign: string, metaData: any){
@@ -76,6 +75,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void{
-    if (this.routingSubscription) this.routingSubscription.unsubscribe();
+    if (this.parameterSubscription) this.parameterSubscription.unsubscribe();
   }
 }

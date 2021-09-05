@@ -2,7 +2,7 @@
 [ngClass]="{'swiped-right': showSidebar.getValue(), 'swiped-left': !showSidebar.getValue()}"
 >
     <!-- Brand -->
-    <a routerLink="{{ routingService.getRoutePath('home2', {campaign: campaign}) }}">
+    <a routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaignName}) }}">
         <h3 class="d-flex align-items-center justify-content-center my-2" id="brand"> 
             <i class="aldrune-icon" crossorigin="anonymous"></i>
             <span class="on-hover-show">Aldrune Wiki</span>
