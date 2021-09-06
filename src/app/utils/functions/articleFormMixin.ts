@@ -38,7 +38,7 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
         public articleService: GenericService | GenericObjectService,
         public route: ActivatedRoute,
         public campaignService: CampaignService,
-        private globalUrlParam: GlobalUrlParamsService
+        public globalUrlParam: GlobalUrlParamsService
     ){
         super();
         const isUpdateRoute : boolean = this.router.url.includes("update");
