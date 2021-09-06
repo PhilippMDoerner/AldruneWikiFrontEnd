@@ -1,0 +1,40 @@
+<div class="main">
+    <article class="mb-5">
+        <!-- Heading -->
+        <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
+            <h2 class="text-center">
+                Updating Campaign {{ userModel.name }}
+            </h2>
+        </div>
+        <ng-template #createState>
+            <app-edit-toggle [isInUpdateState]=true [link]="routingService.getRoutePath('campaign-overview', {})"></app-edit-toggle>
+
+            <h2 class="text-center">
+                Adding a new Campaign
+            </h2>
+        </ng-template>
+
+
+        <!-- Form -->
+        <app-formly-formcontainer
+        *ngIf="isInUpdateState() || isInCreateState()"
+        [model]="userModel" 
+        [fields]="formlyFields" 
+        (formlySubmit)="onSubmit()" 
+        (formlyCancel)="onCancel()"
+        ></app-formly-formcontainer>
+
+        <app-compare-form-container
+        *ngIf="isInOutdatedUpdateState()"
+        [formlyFields]="formlyFields"
+        [modelFromUser]="userModel"
+        [modelFromServer]="serverModel"
+        (updateSubmit)="onSubmit()"
+        (cancel)="onCancel()"
+        ></app-compare-form-container>
+
+    </article>
+    
+    <!-- Spinner while loading -->
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

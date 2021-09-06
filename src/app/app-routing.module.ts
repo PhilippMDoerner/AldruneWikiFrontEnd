@@ -42,6 +42,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { Home2Component } from './components/home2/home2.component';
 import { CampaignOverviewComponent } from './components/articles/campaign-overview/campaign-overview.component';
 import { CampaignComponent } from './components/utility/campaign/campaign.component';
+import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
 
 
 //TODO: Swap all the overview URLs for every type to ones from the viewsets
@@ -105,6 +106,7 @@ export const routes: Routes = [
 	},
 
 	//Campaign Routes
+	//TODO: Make a "CampaignAdminGuardService" that functions similarly to AdminGuardService, but also checks for Campaign Admin rights
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaigns`, 
 		component: CampaignOverviewComponent, 
@@ -112,9 +114,21 @@ export const routes: Routes = [
 		canActivate: [AdminGuardService]
 	},
 	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/create`, 
+		component: CampaignUpdateComponent, 
+		data:{ name: "campaign-create", requiredPermissions: [Constants.apiCreatePermission]}, 
+		canActivate: [AdminGuardService]
+	},
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign`, 
 		component: CampaignComponent, 
-		data:{ name: "campaign-admin", requiredPermissions: [Constants.apiViewPermission]}, 
+		data:{ name: "campaign-admin", requiredPermissions: [Constants.apiUpdatePermission]}, 
+		canActivate: [AdminGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign/update`, 
+		component: CampaignUpdateComponent, 
+		data:{ name: "campaign-update", requiredPermissions: [Constants.apiUpdatePermission]}, 
 		canActivate: [AdminGuardService]
 	},
 
