@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Constants } from '../app.constants';
-import {CampaignOverview } from '../models/campaign';
+import {Campaign, CampaignOverview } from '../models/campaign';
 import { User } from '../models/user';
+import { convertSingleFileModelToFormData } from '../utils/formDataConverter';
 import { GenericService } from './generic.service';
 import { TokenService } from './token.service';
 
@@ -16,25 +17,35 @@ export class CampaignService extends GenericService{
 
   constructor(
     http : HttpClient,
-    private tokenService: TokenService
+    private tokenService: TokenService,
   ) { 
     super(http)  //Second param indicates which class the data of this service is turned into
   }
 
 
 
-  campaignList(): Observable<any[]>{
-    const campaignObs: Observable<any[]> =  this.http.get<CampaignOverview[]>(`${this.baseUrl}/overview/`);
-    return campaignObs.pipe(map(
-      (campaigns: CampaignOverview[]) => {
+  campaignList(): Observable<CampaignOverview[]>{
+    const campaignObs: Observable<CampaignOverview[]> =  this.http.get<CampaignOverview[]>(`${this.baseUrl}/overview/`);
+    return campaignObs.pipe(
+      map((campaigns: CampaignOverview[]) => {
         campaigns.forEach(campaign => {
           campaign.isMember = this.tokenService.isCampaignMember(campaign.name.toLowerCase());
           campaign.isAdmin = this.tokenService.isCampaignAdmin(campaign.name.toLowerCase());
           campaign.isGuest = this.tokenService.isCampaignGuest(campaign.name.toLowerCase());
         });
         return campaigns;
-      }
-    ));
+      })
+    );
+  }
+
+  create(data: Campaign): Observable<Campaign>{
+    const formData: FormData = convertSingleFileModelToFormData(data, "background_image");
+    return super.create(formData);
+  }
+
+  update(pk: number, data: Campaign): Observable<Campaign>{
+    const formData: FormData = convertSingleFileModelToFormData(data, "background_image");
+    return super.update(pk, formData);
   }
 
   /**
