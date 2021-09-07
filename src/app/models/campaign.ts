@@ -5,6 +5,7 @@ import { User } from './user';
 
 export interface Campaign{
     name: string;
+    subtitle: string;
     pk?: number;
     background_image?: string;
 
@@ -19,6 +20,7 @@ export interface Campaign{
 
 export interface CampaignOverview extends ArticleObject{
     name: string;
+    subtitle: string;
     pk?: number;
     background_image?: string;
 
@@ -30,6 +32,7 @@ export interface CampaignOverview extends ArticleObject{
 export class CampaignObject implements Campaign{
     pk?: number;
     name: string;
+    subtitle: string;
 
     members?: User[];
     admins?: User[];
