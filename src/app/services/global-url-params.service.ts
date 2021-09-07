@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { CampaignOverview } from '../models/campaign';
 import { CampaignService } from './campaign.service';
+import { TokenService } from './token.service';
 import { WarningsService } from './warnings.service';
 
 @Injectable({
@@ -14,7 +15,8 @@ export class GlobalUrlParamsService {
 
   constructor(
     private campaignService: CampaignService,
-    private warnings: WarningsService
+    private warnings: WarningsService,
+    private tokenService: TokenService,
   ) { 
     this.autoUpdateCampaignSet();
   }
@@ -38,6 +40,8 @@ export class GlobalUrlParamsService {
   }
 
   autoUpdateCampaignSet(): void{
+    if(!this.tokenService.hasValidJWTToken()) return;
+
     this.campaignService.campaignList().pipe(first()).subscribe(
       (campaigns: CampaignOverview[]) => this.currentCampaignSet.next(campaigns),
       error => this.warnings.showWarning(error)
