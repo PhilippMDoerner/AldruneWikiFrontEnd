@@ -356,3 +356,11 @@ export enum OverviewType{
   Spell,
   User
 }
+
+export enum CampaignRole{
+  MEMBER = "member",
+  ADMIN = "admin",
+  GUEST = "guest",
+  GLOBALGUEST = "globalguest",
+  GLOBALMEMBER = "globalmember",
+}

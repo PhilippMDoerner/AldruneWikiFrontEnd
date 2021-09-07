@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { Constants } from '../app.constants';
+import { CampaignRole, Constants } from '../app.constants';
 import { DecodedTokenPayload, EncodedJWTToken } from '../models/jwttoken';
 import { User } from '../models/user';
 
@@ -171,11 +171,4 @@ export class TokenService {
 
     return this.decodeTokenPayload(currentUserAccessToken);
   }
-}
-
-
-enum CampaignRole{
-  MEMBER = "member",
-  ADMIN = "admin",
-  GUEST = "guest"
 }
