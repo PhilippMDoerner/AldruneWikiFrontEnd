@@ -23,7 +23,7 @@ export class CharacterService extends GenericObjectService{
 
   @TransformArrayObservable(OverviewItemObject)
   getPlayerCharacters(campaign: string): Observable<OverviewItem[]>{
-    const url = `${this.baseUrl}/${campaign}/playercharacters`;
+    const url = `${this.baseUrl}/${campaign}/playercharacters/`;
     return this.http.get<OverviewItem[]>(url);
   }
 
