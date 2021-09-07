@@ -67,7 +67,7 @@ import { SessionUpdateWrapperComponent } from './components/utility/session-upda
 import { TimestampListComponent } from './components/utility/timestamp-list/timestamp-list.component';
 import { TimestampComponent } from './components/utility/timestamp/timestamp.component';
 import { FormlyFormcontainerComponent } from './components/utility/formly-formcontainer/formly-formcontainer.component';
-import { LoginGuardService, PermissionGuardService } from './services/permission.service';
+import { AdminGuardService, CampaignGuardService, LoginGuardService } from './services/permission.service';
 import { SessionDeleteModalComponent } from './components/utility/session-delete-modal/session-delete-modal.component';
 import { ArticleFooterComponent } from './components/utility/article-footer/article-footer.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
@@ -230,7 +230,8 @@ import { CampaignUpdateComponent } from './components/articles/campaign-update/c
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
     httpInterceptorProviders,
-    PermissionGuardService,
+    CampaignGuardService,
+    AdminGuardService,
     LoginGuardService,
     {
       provide: HAMMER_GESTURE_CONFIG,

@@ -1,7 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
 import { AddPermissionUtilityFunctions, CurrentUserHasPermissions, hasPermissions, PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
-import { PermissionGuardService } from 'src/app/services/permission.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
 
 @Component({

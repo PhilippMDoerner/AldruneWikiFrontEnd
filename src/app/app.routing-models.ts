@@ -1,6 +1,6 @@
 import { Route } from "@angular/router";
 import { CampaignRole } from "./app.constants";
-import { AdminGuardService, CampaignGuardService, LoginGuardService, PermissionGuardService } from "./services/permission.service";
+import { AdminGuardService, CampaignGuardService, LoginGuardService } from "./services/permission.service";
 
 
 //Route Data Models
