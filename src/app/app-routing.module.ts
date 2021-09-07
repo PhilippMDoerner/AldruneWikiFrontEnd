@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
-import { Routes,
-		RouterModule } from '@angular/router';
+import { RouterModule, Route} from '@angular/router';
 import { ArticleOverviewComponent } from "src/app/components/articles/article-overview/article-overview.component";
 import { CharacterArticleComponent } from "src/app/components/articles/character-article/character-article.component";
 import { LocationArticleComponent } from "src/app/components/articles/location-article/location-article.component";
@@ -30,9 +29,8 @@ import { MapUpdateComponent } from './components/articles/map-update/map-update.
 import { MarkerMapCreateComponent } from './components/articles/marker-map-create/marker-map-create.component';
 import { LocationArticleMapCreateComponent } from './components/articles/location-article-map-create/location-article-map-create.component';
 import { LoginComponent } from './components/login/login.component';
-import { Constants } from './app.constants';
-import { AdminGuardService, LoginGuardService,
-		PermissionGuardService } from './services/permission.service';
+import { CampaignRole, Constants } from './app.constants';
+import { AdminGuardService, CampaignGuardService, LoginGuardService} from './services/permission.service';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
 import { AdminComponent } from './components/articles/admin/admin.component';
@@ -43,10 +41,10 @@ import { Home2Component } from './components/home2/home2.component';
 import { CampaignOverviewComponent } from './components/articles/campaign-overview/campaign-overview.component';
 import { CampaignComponent } from './components/utility/campaign/campaign.component';
 import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
+import { AdminRoute, CampaignRoute, GeneralRoute } from './app.routing-models';
 
 
-//TODO: Swap all the overview URLs for every type to ones from the viewsets
-export const routes: Routes = [
+const generalRoutes: GeneralRoute[] = [
 	//Redirect Routes
 	{
 		path: "",
@@ -60,32 +58,18 @@ export const routes: Routes = [
 		pathMatch: "full",
 		data: {name: "no-campaigns"}
 	},
-	//Home Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/:campaign`, 
-		component: Home2Component, data:{ name: "home1"}, 
-		canActivate: [LoginGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/:campaign`, 
-		component: Home2Component, data:{ name: "home2"}, 
-		canActivate: [LoginGuardService]
-	},
-	//Admin Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/admin`,
-		component: AdminComponent,
-		data: { name: "admin", requiredPermissions: [Constants.adminPermission]},
-		canActivate: [AdminGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/configtables`,
-		component: ConfigTablesComponent,
-		data: { name: "config-tables", requiredPermissions: [Constants.adminPermission]},
-		canActivate: [AdminGuardService]
-	},
 
 	//Login Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login/campaign/:campaign`,
+		component: LoginComponent,
+		data: { name: "campaign-login"},
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login/campaign/:campaign/:state`, 
+		component: LoginComponent, 
+		data:{ name: "campaign-login-state"}
+	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login`, 
 		component: LoginComponent, 
@@ -104,375 +88,13 @@ export const routes: Routes = [
 		data: { name: "profile"},
 		canActivate: [LoginGuardService]
 	},
-
+	
 	//Campaign Routes
-	//TODO: Make a "CampaignAdminGuardService" that functions similarly to AdminGuardService, but also checks for Campaign Admin rights
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaigns`, 
 		component: CampaignOverviewComponent, 
-		data:{ name: "campaign-overview", requiredPermissions: [Constants.apiViewPermission]}, 
-		canActivate: [AdminGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/create`, 
-		component: CampaignUpdateComponent, 
-		data:{ name: "campaign-create", requiredPermissions: [Constants.apiCreatePermission]}, 
-		canActivate: [AdminGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign`, 
-		component: CampaignComponent, 
-		data:{ name: "campaign-admin", requiredPermissions: [Constants.apiUpdatePermission]}, 
-		canActivate: [AdminGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign/update`, 
-		component: CampaignUpdateComponent, 
-		data:{ name: "campaign-update", requiredPermissions: [Constants.apiUpdatePermission]}, 
-		canActivate: [AdminGuardService]
-	},
-
-	//Character Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign`, 
-		component: ArticleOverviewComponent, 
-		data:{ name: "character-overview", requiredPermissions: [Constants.apiViewPermission]}, 
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/create`,
-		component: CharacterArticleUpdateComponent, 
-		data:{ name: "character-create", requiredPermissions: [Constants.apiCreatePermission]}, 
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/:name`, 
-		component: CharacterArticleComponent, 
-		data:{ name: "character", requiredPermissions: [Constants.apiViewPermission]}, 
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/:name/update`, 
-		component: CharacterArticleUpdateComponent, 
-		data:{ name: "character-update", requiredPermissions: [Constants.apiUpdatePermission]}, 
-		canActivate: [PermissionGuardService]
-	},
-
-	//Location Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign`,
-		component: ArticleOverviewComponent,
-		data:{ name: "location-overview", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/create`,
-		component: LocationArticleUpdateComponent,
-		data:{ name: "location-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name`,
-		component: LocationArticleComponent,
-		data:{ name: "location", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name/create`,
-		component: LocationArticleUpdateComponent,
-		data:{ name: "location-parentlocation-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:latitude/:longitude/:map_name/create`,
-		component: LocationArticleMapCreateComponent,
-		data:{ name: "location-map-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name/update`,
-		component: LocationArticleUpdateComponent,
-		data:{ name: "location-update", requiredPermissions: [Constants.apiUpdatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	//DiaryEntry Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign`,
-		component: ArticleOverviewComponent,
-		data:{ name: "diaryentry-overview", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/create`,
-		component: DiaryentryArticleUpdateComponent,
-		data:{ name: "diaryentry-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName`,
-		component: DiaryentryArticleComponent,
-		data:{ name: "diaryentry", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/update`,
-		component: DiaryentryArticleUpdateComponent,
-		data:{ name: "diaryentry-update", requiredPermissions: [Constants.apiUpdatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/:encounterTitle`,
-		component: DiaryentryArticleComponent,
-		data:{ name: "diaryentry-encounter", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-
-	//Creature Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign`,
-		component: ArticleOverviewComponent,
-		data:{ name: "creature-overview", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/create`,
-		component: CreatureArticleUpdateComponent,
-		data:{ name: "creature-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/:name`,
-		component: CreatureArticleComponent,
-		data:{ name: "creature", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/:name/update`,
-		component: CreatureArticleUpdateComponent,
-		data:{ name: "creature-update", requiredPermissions: [Constants.apiUpdatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-
-	// Organization Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign`,
-		component: ArticleOverviewComponent,
-		data:{ name: "organization-overview", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/create`,
-		component: OrganizationArticleUpdateComponent,
-		data:{ name: "organization-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/:name`,
-		component: OrganizationArticleComponent,
-		data:{ name: "organization", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/:name/update`,
-		component: OrganizationArticleUpdateComponent,
-		data:{ name: "organization-update", requiredPermissions: [Constants.apiUpdatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-
-	// Item Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign`,
-		component: ArticleOverviewComponent,
-		data:{ name: "item-overview", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/create`,
-		component: ItemArticleUpdateComponent,
-		data:{ name: "item-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:character_name/create`,
-		component: ItemArticleUpdateComponent,
-		data:{ name: "item-character-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:name`,
-		component: ItemArticleComponent,
-		data:{ name: "item", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:name/update`,
-		component: ItemArticleUpdateComponent,
-		data:{ name: "item-update", requiredPermissions: [Constants.apiUpdatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-
-	// Quest Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign`,
-		component: QuestOverviewComponent,
-		data:{ name: "quest-overview", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/create`,
-		component: QuestArticleUpdateComponent,
-		data:{ name: "quest-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/:name`,
-		component: QuestArticleComponent,
-		data:{ name: "quest", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/:name/update`,
-		component: QuestArticleUpdateComponent,
-		data:{ name: "quest-update", requiredPermissions: [Constants.apiUpdatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	//Quote Route
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quotes/:campaign/:name`,
-		component: QuoteOverviewComponent,
-		data: { name: "quote-overview", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-
-	// SessionAudio Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign`,
-		component: SessionAudioOverviewComponent,
-		data:{ name: "sessionaudio-overview", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/create`,
-		component: SessionAudioUpdateComponent,
-		data:{ name: "sessionaudio-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-			
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/:isMainSession/:sessionNumber`,
-		component: SessionAudioComponent,
-		data:{ name: "sessionaudio", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/:isMainSession/:sessionNumber/update`,
-		component: SessionAudioUpdateComponent,
-		data:{ name: "sessionaudio-update", requiredPermissions: [Constants.apiUpdatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-
-	// Marker Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/create`,
-		component: MarkerUpdateComponent,
-		data:{ name: "marker-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:latitude/:longitude/:map_name/create`,
-		component: MarkerMapCreateComponent,
-		data:{ name: "marker-map-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/:map_name`,
-		component: MarkerComponent,
-		data:{ name: "marker", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/:map_name/update`,
-		component: MarkerUpdateComponent,
-		data:{ name: "marker-update", requiredPermissions: [Constants.apiUpdatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-
-
-	// Map Routes
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/create`,
-		component: MapUpdateComponent,
-		data:{ name: "map-create", requiredPermissions: [Constants.apiCreatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign`,
-		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/${Constants.defaultMapName}`,
-		data:{ name: "default-map", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/:name`,
-		component: MapComponent,
-		data:{ name: "map", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/:name/update`,
-		component: MapUpdateComponent,
-		data:{ name: "map-update", requiredPermissions: [Constants.apiUpdatePermission]},
-		canActivate: [PermissionGuardService]
-	},
-
-
-	// Core Route
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules/:campaign`,
-		component: RulesComponent,
-		data:{ name: "rules", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules/:campaign/:name`,
-		component: RulesComponent,
-		data:{ name: "rule", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:campaign`,
-		component: SpellsComponent,
-		data:{ name: "spells", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:campaign/:name`,
-		component: SpellsComponent,
-		data:{ name: "spell", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search`,
-		component: SearchComponent,
-		data:{ name: "startSearch", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/:campaign/search`,
-		component: SearchComponent,
-		data:{ name: "startCampaignSearch", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:searchString`,
-		component: SearchComponent,
-		data:{ name: "search", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:campaign/:searchString`,
-		component: SearchComponent,
-		data:{ name: "campaignSearch", requiredPermissions: [Constants.apiViewPermission]},
-		canActivate: [PermissionGuardService]
+		data:{ name: "campaign-overview"}, 
+		canActivate: [LoginGuardService]
 	},
 
 	// Wiki1 Route. Required as Cache may redirect people to /wiki2 when they want to visit /wiki1
@@ -500,6 +122,411 @@ export const routes: Routes = [
 		data:{ name: "404"},
 	},
 ];
+
+
+const adminRoutes: AdminRoute[] = [
+	//General Admin Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/admin`,
+		component: AdminComponent,
+		data: { name: "admin"},
+		canActivate: [AdminGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/configtables`,
+		component: ConfigTablesComponent,
+		data: { name: "config-tables"},
+		canActivate: [AdminGuardService]
+	},
+
+	//Campaign specific admin Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/create`, 
+		component: CampaignUpdateComponent, 
+		data:{ name: "campaign-create"}, 
+		canActivate: [AdminGuardService]
+	},
+]
+
+
+const campaignRoutes: CampaignRoute[] = [
+	//Home Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/:campaign`, 
+		component: Home2Component, data:{ name: "home1", requiredRole: CampaignRole.GUEST}, 
+		canActivate: [CampaignGuardService]
+	},
+
+	//General Campaign Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/:campaign`, 
+		component: Home2Component, data:{ name: "home2", requiredRole: CampaignRole.GUEST}, 
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign`, 
+		component: CampaignComponent, 
+		data:{ name: "campaign-admin", requiredRole: CampaignRole.ADMIN}, 
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign/update`, 
+		component: CampaignUpdateComponent, 
+		data:{ name: "campaign-update", requiredRole: CampaignRole.ADMIN}, 
+		canActivate: [CampaignGuardService]
+	},
+
+	//Character Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign`, 
+		component: ArticleOverviewComponent, 
+		data:{ name: "character-overview", requiredRole: CampaignRole.GUEST}, 
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/create`,
+		component: CharacterArticleUpdateComponent, 
+		data:{ name: "character-create", requiredRole: CampaignRole.MEMBER}, 
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/:name`, 
+		component: CharacterArticleComponent, 
+		data:{ name: "character", requiredRole: CampaignRole.GUEST}, 
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/:name/update`, 
+		component: CharacterArticleUpdateComponent, 
+		data:{ name: "character-update", requiredRole: CampaignRole.MEMBER}, 
+		canActivate: [CampaignGuardService]
+	},
+
+	//Location Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign`,
+		component: ArticleOverviewComponent,
+		data:{ name: "location-overview", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/create`,
+		component: LocationArticleUpdateComponent,
+		data:{ name: "location-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name`,
+		component: LocationArticleComponent,
+		data:{ name: "location", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name/create`,
+		component: LocationArticleUpdateComponent,
+		data:{ name: "location-parentlocation-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:latitude/:longitude/:map_name/create`,
+		component: LocationArticleMapCreateComponent,
+		data:{ name: "location-map-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name/update`,
+		component: LocationArticleUpdateComponent,
+		data:{ name: "location-update", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+
+	//DiaryEntry Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign`,
+		component: ArticleOverviewComponent,
+		data:{ name: "diaryentry-overview", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/create`,
+		component: DiaryentryArticleUpdateComponent,
+		data:{ name: "diaryentry-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName`,
+		component: DiaryentryArticleComponent,
+		data:{ name: "diaryentry", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/update`,
+		component: DiaryentryArticleUpdateComponent,
+		data:{ name: "diaryentry-update", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/:encounterTitle`,
+		component: DiaryentryArticleComponent,
+		data:{ name: "diaryentry-encounter", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+
+	//Creature Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign`,
+		component: ArticleOverviewComponent,
+		data:{ name: "creature-overview", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/create`,
+		component: CreatureArticleUpdateComponent,
+		data:{ name: "creature-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/:name`,
+		component: CreatureArticleComponent,
+		data:{ name: "creature", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/:name/update`,
+		component: CreatureArticleUpdateComponent,
+		data:{ name: "creature-update", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+
+	// Organization Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign`,
+		component: ArticleOverviewComponent,
+		data:{ name: "organization-overview", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/create`,
+		component: OrganizationArticleUpdateComponent,
+		data:{ name: "organization-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/:name`,
+		component: OrganizationArticleComponent,
+		data:{ name: "organization", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/:name/update`,
+		component: OrganizationArticleUpdateComponent,
+		data:{ name: "organization-update", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+
+	// Item Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign`,
+		component: ArticleOverviewComponent,
+		data:{ name: "item-overview", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/create`,
+		component: ItemArticleUpdateComponent,
+		data:{ name: "item-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:character_name/create`,
+		component: ItemArticleUpdateComponent,
+		data:{ name: "item-character-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:name`,
+		component: ItemArticleComponent,
+		data:{ name: "item", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:name/update`,
+		component: ItemArticleUpdateComponent,
+		data:{ name: "item-update", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+
+	// Quest Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign`,
+		component: QuestOverviewComponent,
+		data:{ name: "quest-overview", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/create`,
+		component: QuestArticleUpdateComponent,
+		data:{ name: "quest-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/:name`,
+		component: QuestArticleComponent,
+		data:{ name: "quest", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/:name/update`,
+		component: QuestArticleUpdateComponent,
+		data:{ name: "quest-update", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+
+	//Quote Route
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quotes/:campaign/:name`,
+		component: QuoteOverviewComponent,
+		data: { name: "quote-overview", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+
+	// SessionAudio Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign`,
+		component: SessionAudioOverviewComponent,
+		data:{ name: "sessionaudio-overview", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/create`,
+		component: SessionAudioUpdateComponent,
+		data:{ name: "sessionaudio-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+			
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/:isMainSession/:sessionNumber`,
+		component: SessionAudioComponent,
+		data:{ name: "sessionaudio", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/:isMainSession/:sessionNumber/update`,
+		component: SessionAudioUpdateComponent,
+		data:{ name: "sessionaudio-update", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+
+	// Marker Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/create`,
+		component: MarkerUpdateComponent,
+		data:{ name: "marker-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:latitude/:longitude/:map_name/create`,
+		component: MarkerMapCreateComponent,
+		data:{ name: "marker-map-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/:map_name`,
+		component: MarkerComponent,
+		data:{ name: "marker", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/:map_name/update`,
+		component: MarkerUpdateComponent,
+		data:{ name: "marker-update", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+
+
+	// Map Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/create`,
+		component: MapUpdateComponent,
+		data:{ name: "map-create", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign`,
+		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/${Constants.defaultMapName}`,
+		data:{ name: "default-map", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/:name`,
+		component: MapComponent,
+		data:{ name: "map", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/:name/update`,
+		component: MapUpdateComponent,
+		data:{ name: "map-update", requiredRole: CampaignRole.MEMBER},
+		canActivate: [CampaignGuardService]
+	},
+
+
+	// Core Route
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules/:campaign`,
+		component: RulesComponent,
+		data:{ name: "rules", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules/:campaign/:name`,
+		component: RulesComponent,
+		data:{ name: "rule", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:campaign`,
+		component: SpellsComponent,
+		data:{ name: "spells", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:campaign/:name`,
+		component: SpellsComponent,
+		data:{ name: "spell", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+
+	//Search Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search`,
+		component: SearchComponent,
+		data:{ name: "startSearch", requiredRole: CampaignRole.GLOBALGUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:searchString`,
+		component: SearchComponent,
+		data:{ name: "search", requiredRole: CampaignRole.GLOBALGUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/:campaign/search`,
+		component: SearchComponent,
+		data:{ name: "startCampaignSearch", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:campaign/:searchString`,
+		component: SearchComponent,
+		data:{ name: "campaignSearch", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+];
+
+
+
+export const routes: Route[] = [].concat(generalRoutes, adminRoutes, campaignRoutes);
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],
