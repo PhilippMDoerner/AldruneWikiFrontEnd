@@ -61,16 +61,6 @@ const generalRoutes: GeneralRoute[] = [
 
 	//Login Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login/campaign/:campaign`,
-		component: LoginComponent,
-		data: { name: "campaign-login"},
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login/campaign/:campaign/:state`, 
-		component: LoginComponent, 
-		data:{ name: "campaign-login-state"}
-	},
-	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/login`, 
 		component: LoginComponent, 
 		data:{ name: "login"}
