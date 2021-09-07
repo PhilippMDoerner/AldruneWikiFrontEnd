@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { User } from 'src/app/models/user';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MailService } from 'src/app/services/mail.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -51,7 +52,8 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     private route: ActivatedRoute,
     private warnings: WarningsService,  
     public routingService: RoutingService,
-    private mailService: MailService
+    private mailService: MailService,
+    private globalUrlParams: GlobalUrlParamsService
     ) { }
 
   ngOnInit(): void {
@@ -74,6 +76,8 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   onSubmit(){
     this.tokenService.getJWTToken(this.model).pipe(first()).subscribe( jwtTokens => {
       this.tokenService.setTokens(jwtTokens);
+      this.globalUrlParams.autoUpdateCampaignSet();
+      
       animateElement(this.loginMainCard.nativeElement, 'zoomOutDown')
         .then(() => this.routingService.routeToPath('home1', {campaign: Constants.defaultCampaign})); //TODO: Change the route to one of a campaign overview, which likely needs to be newly created
     }, error => {
