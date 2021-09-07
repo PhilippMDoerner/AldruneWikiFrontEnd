@@ -13,13 +13,10 @@ export class GlobalUrlParamsService {
   currentCampaignSet: BehaviorSubject<CampaignOverview[]> = new BehaviorSubject(null); 
 
   constructor(
-    campaignService: CampaignService,
-    warnings: WarningsService
+    private campaignService: CampaignService,
+    private warnings: WarningsService
   ) { 
-    campaignService.campaignList().pipe(first()).subscribe(
-      (campaigns: CampaignOverview[]) => this.updateCampaignSet(campaigns),
-      error => warnings.showWarning(error)
-    );
+    this.autoUpdateCampaignSet();
   }
 
   getURLCampaignParameter(): BehaviorSubject<string>{
@@ -37,8 +34,13 @@ export class GlobalUrlParamsService {
   }
 
   updateCampaignSet(campaigns: CampaignOverview[]): void{
-    console.log("Updating campaigns");
-    console.log(campaigns);
     this.currentCampaignSet.next(campaigns);
+  }
+
+  autoUpdateCampaignSet(): void{
+    this.campaignService.campaignList().pipe(first()).subscribe(
+      (campaigns: CampaignOverview[]) => this.currentCampaignSet.next(campaigns),
+      error => this.warnings.showWarning(error)
+    );
   }
 }
