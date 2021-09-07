@@ -77,7 +77,7 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
   }
 
   loadNextPage(): void{ //TODO: Let the pagination load more here
-    if(this.isLoadingNextPage) return;
+    if(this.isLoadingNextPage || this.articles == null) return;
 
     this.pageNumber += 1;
     this.isLoadingNextPage = true;
