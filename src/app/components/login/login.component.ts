@@ -5,6 +5,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
+import { EncodedJWTToken } from 'src/app/models/jwttoken';
 import { User } from 'src/app/models/user';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MailService } from 'src/app/services/mail.service';
@@ -13,7 +14,6 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator'
-import { isThisTypeNode } from 'typescript';
 
 @Component({
   selector: 'app-login',
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe( params => {
-      this.campaign = Constants.defaultCampaign;
+      this.campaign = params.campaign;
       this.state = params['state'];
       this.extraMessage = Constants.loginMessageForState[this.state];
     })
@@ -69,27 +69,31 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     animateElement(this.loginMainCard.nativeElement, 'backInUp');
   }
 
-  submitOnEnterPress(keyDownEvent){
-    if (keyDownEvent.key === "Enter") this.onSubmit();
+  onSubmit(){
+    this.tokenService.getJWTToken(this.model)
+      .pipe(first())
+      .subscribe( 
+        (jwtTokens: EncodedJWTToken) => this.onLoginSuccess(jwtTokens), 
+        error => this.onLoginFailure(error)
+      );
   }
 
-  onSubmit(){
-    this.tokenService.getJWTToken(this.model).pipe(first()).subscribe( jwtTokens => {
-      this.tokenService.setTokens(jwtTokens);
-      this.globalUrlParams.autoUpdateCampaignSet();
-      
-      animateElement(this.loginMainCard.nativeElement, 'zoomOutDown')
-        .then(() => this.routingService.routeToPath('home1', {campaign: Constants.defaultCampaign})); //TODO: Change the route to one of a campaign overview, which likely needs to be newly created
-    }, error => {
-      if(error.status === 401){
-        this.routingService.routeToPath('login-state', {state: 'invalid-login'}); 
-      } else {
-        this.warnings.showWarning(error);
-      }
+  onLoginSuccess(jwtTokens: EncodedJWTToken): void{
+    this.tokenService.setTokens(jwtTokens);
+    this.globalUrlParams.autoUpdateCampaignSet();
 
-      this.resetModel();
-    });
+    animateElement(this.loginMainCard.nativeElement, 'zoomOutDown')
+      .then(() => this.routingService.routeToPath('campaign-overview'));
+  }
 
+  onLoginFailure(error): void{
+    if(error.status === 401){
+      this.routingService.routeToPath('login-state', {state: 'invalid-login'}); 
+    } else {
+      this.warnings.showWarning(error);
+    }
+
+    this.resetModel();
   }
 
   resetModel(){
