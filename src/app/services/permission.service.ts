@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
-import { Constants } from '../app.constants';
+import { CampaignRole, Constants } from '../app.constants';
+import { CampaignRoute } from '../app.routing-models';
 import { DecodedTokenPayload } from '../models/jwttoken';
 import { RoutingService } from './routing.service';
 import { TokenService } from './token.service';
@@ -93,7 +94,7 @@ export class PermissionGuardService implements CanActivate{
 export class AdminGuardService implements CanActivate{
   //Administrative Permissions are special in that their values are booleans. You either are, or aren't an admin.
   constructor(
-    private tokenService: TokenService,
+    public tokenService: TokenService,
     public routingService: RoutingService,
   ){}
 
@@ -102,46 +103,82 @@ export class AdminGuardService implements CanActivate{
       this.routingService.routeToPath('login');
       return false;
     }
-
-    const requiredAdminPermissions: string[] = this.getAdminPermissionsForRoute(route);
-    const hasRequiredPermissions: boolean = this.hasAdminPermissions(requiredAdminPermissions);
     
+    const hasRequiredPermissions: boolean = this.isGeneralAdmin();
     if(!hasRequiredPermissions){
-      this.routingService.routeToPath('home1');
+      this.routingService.routeToPath('campaign-overview');
     }
-
-    return hasRequiredPermissions;
+    return hasRequiredPermissions
   }
 
   isUserLoggedIn(): boolean{
     return this.tokenService.hasValidJWTToken();
   }
 
-  getAdminPermissionsForRoute(route: ActivatedRouteSnapshot): string[]{
-    const requiredAdministrativePermissions: string[] = [];
-    
-    if (route.routeConfig.data.hasOwnProperty("requiredPermissions")){
-      const allRequiredPermissions: string[] = route.routeConfig.data.requiredPermissions;
-      if (allRequiredPermissions.includes(Constants.adminPermission)) requiredAdministrativePermissions.push(Constants.adminPermission);
-      if (allRequiredPermissions.includes(Constants.superuserPermission)) requiredAdministrativePermissions.push(Constants.superuserPermission);
+  isGeneralAdmin(): boolean{
+    return this.tokenService.isSuperUser() || this.tokenService.isAdmin();
+  }
+}
+
+
+//TODO: Make a service, that checks if the user has guest permission on the given stuff
+@Injectable({
+  providedIn: 'root'
+})
+export class CampaignGuardService extends AdminGuardService{
+  //Administrative Permissions are special in that their values are booleans. You either are, or aren't an admin.
+  constructor(
+    tokenService: TokenService,
+    routingService: RoutingService,
+  ){super(tokenService, routingService)}
+
+  canActivate(route: ActivatedRouteSnapshot): boolean{
+    if (!this.isUserLoggedIn()) {
+      this.routingService.routeToPath('login');//TODO: Replace this to route to a campaign-based login instead that auto-routes to the desired campaign
+      return false;
     }
 
-    return requiredAdministrativePermissions
+    if(this.isGeneralAdmin()) return true;
+
+    const campaignNameOfRoute: string = route.params.campaign;
+    if (campaignNameOfRoute == null) throw "Invalid Route Exception. The campaign-route you're trying to access has no campaign name parameter";
+
+    const hasNoRoleInCampaign: boolean = this.tokenService.getCampaignRole(campaignNameOfRoute) == null;
+    console.log(`Your user ${this.tokenService.getCurrentUserName()} has this role ${this.tokenService.getCampaignRole(campaignNameOfRoute)} in campaign ${campaignNameOfRoute}`)
+    if (hasNoRoleInCampaign){
+      this.routingService.routeToPath('campaign-overview');
+      return false;
+    }
+
+    const requiredMiniumRole: CampaignRole = route.data.requiredRole; 
+    if (requiredMiniumRole == null) throw "Invalid Route Exception. The campaign-route you're trying to access has no defined minimum role needed to access it";
+
+    return this.hasNecessaryRole(campaignNameOfRoute, requiredMiniumRole);
   }
 
-  hasAdminPermissions(requiredAdminPermissions: string[]): boolean{
-    //For SuperUsers
-    const userIsSuperUser: boolean = this.tokenService.isSuperUser();
-    if(userIsSuperUser) return true
+  hasNecessaryRole(campaignName: string, requiredRole: CampaignRole): boolean{
+    if(this.isGlobalRole(requiredRole)){
+      return this.hasGlobalRoleOrBetter(requiredRole);
+    } else {
+      return this.hasRoleOrBetter(campaignName, requiredRole);
+    }
+  }
 
-    //For Admins (Section is only reached by users that are admins, but aren't superusers)
-    const userIsAdmin: boolean = this.tokenService.isAdmin();
-    const requiresAdminPermission = requiredAdminPermissions.includes(Constants.adminPermission);
-    const requiresSuperUserPermission = requiredAdminPermissions.includes(Constants.superuserPermission);
+  hasRoleOrBetter(campaignName: string, role: CampaignRole): boolean{
+    const isCampaignAdmin: boolean = this.tokenService.isCampaignAdmin(campaignName);
+    const isCampaignMember: boolean = this.tokenService.isCampaignMember(campaignName);
+    const isCampaignGuest: boolean = this.tokenService.isCampaignGuest(campaignName);
 
-    const hasRequiredAdminPermission = (requiresAdminPermission) ? userIsAdmin : true;
-    const hasRequiredSuperUserPermission = (requiresSuperUserPermission) ? false : true; //If it needs superuserpermission, admin's don't have it
+    if (role === CampaignRole.ADMIN) return isCampaignAdmin;
+    if (role === CampaignRole.MEMBER) return isCampaignAdmin || isCampaignMember;
+    if (role === CampaignRole.GUEST) return isCampaignAdmin || isCampaignMember || isCampaignGuest;
+  }
 
-    return hasRequiredAdminPermission && hasRequiredSuperUserPermission
+  hasGlobalRoleOrBetter(role: CampaignRole): boolean{
+    return true; //TODO: Implement this
+  }
+
+  isGlobalRole(role: CampaignRole): boolean{
+    return role === CampaignRole.GLOBALGUEST || role === CampaignRole.GLOBALMEMBER;
   }
 }
