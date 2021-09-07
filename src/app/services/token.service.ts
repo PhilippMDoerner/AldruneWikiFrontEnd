@@ -135,7 +135,7 @@ export class TokenService {
 
   public getCampaignRole(campaignName: string): CampaignRole{
     const memberships: any = this.getCampaignMemberships();
-    const role: string = memberships[campaignName];
+    const role: string = memberships[campaignName.toLowerCase()];
     return CampaignRole[role?.toUpperCase()]
   }
 
