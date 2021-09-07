@@ -70,7 +70,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       this.tokenService.invalidateJWTToken();
       this.tokenService.removeJWTTokenFromLocalStorage();
     }
-
+        
     this.routingService.routeToPath('login-state', {state: 'logged-out'});
   }
 
