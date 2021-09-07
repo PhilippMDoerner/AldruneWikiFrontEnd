@@ -1,9 +1,9 @@
-<div *ngIf="campaignData; else loading" class="container" id="container-overview">
+<div class="container" id="container-overview" #campaignOverviewContainer>
     <div class="row mx-0">
         <a 
         class="col-sm px-0 campaign" 
         *ngFor="let campaign of campaignData" 
-        routerLink="{{routingService.getRoutePath('home1', {campaign: campaign.name})}}"
+        (click)="routeToCampaign(campaign.name)"
         [ngClass]="{'events-disabled': !campaign.isMember && !campaign.isGuest}"
         >
             <div class="campaign-overlay overlay-heading text-center">
