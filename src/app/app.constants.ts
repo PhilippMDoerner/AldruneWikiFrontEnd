@@ -205,6 +205,7 @@ export class Constants{
     public static get maxDistanceToPageBottomForPaginationLoad(): number { return 400};
 
     //Default Image for Image Gallery
+    public static get defaultBackgroundImageUrl(): string { return `${this.wikiMediaUrl}/campaign_backgrounds/default.png`;}
     public static get defaultImageUrl(): string { return `${this.wikiMediaUrl}/resources/dndicon.png`;}
 
     //Default Map to display
