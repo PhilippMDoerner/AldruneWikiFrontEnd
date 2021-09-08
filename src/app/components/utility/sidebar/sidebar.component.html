@@ -5,16 +5,16 @@
     <ul class="brand-line d-flex" *ngIf="currentCampaign; else nonCampaignBrand">
         <li title="campaign-overview">
             <a routerLink="{{ routingService.getRoutePath('campaign-overview', {}) }}" class="on-hover-show flex overview-link">
-                <span class="fas fa-globe-americas fa-2x"></span>
+                <span class="fas fa-chevron-left fa-2x"></span>
             </a> 
         </li>
 
         <li class="flex-1" title="{{currentCampaign.name}}-Home">
             <a class="pl-0" routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaign.name}) }}">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
-                    <i class="aldrune-icon"
-                    [style.background-image]="'url('+ constants.wikiUrl + currentCampaign?.icon +'), url('+ constants.defaultCampaignIconUrl +')'"
-                    ></i>
+                    <img class="campaign-icon"
+                    [src]="constants.wikiUrl + currentCampaign?.icon" alt="..."
+                    />
                     <span class="ml-2 on-hover-show">{{currentCampaign.name}}</span>
                 </h3>
             </a>

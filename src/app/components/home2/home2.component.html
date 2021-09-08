@@ -3,9 +3,9 @@
     <!-- Heading -->
     <header class="mb-1">
         <div class="d-flex flex-column">
-            <i class="aldrune-icon large align-self-center"
-            [style.background-image]="'url('+ constants.wikiUrl + campaignData?.icon +'), url('+ constants.defaultCampaignIconUrl +')'"
-            ></i>
+            <img class="large align-self-center"
+            [src]="constants.wikiUrl + campaignData?.icon" [alt]="constants.defaultCampaignIconUrl"
+            />
             <h1 class="mb-1"> {{campaignData.name}} </h1>
             <strong class="hide-on-mobile" [innerHTML]="campaignData.subtitle"></strong>
         </div>

@@ -1,9 +1,8 @@
-import { AfterContentInit, AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
-import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -12,9 +11,20 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
 @Component({
   selector: 'app-campaign-overview',
   templateUrl: './campaign-overview.component.html',
-  styleUrls: ['./campaign-overview.component.scss']
+  styleUrls: ['./campaign-overview.component.scss'],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({transform: 'translateX(-100%)'}),
+        animate('500ms', style({transform: 'translateX(0%)'}))
+      ]),
+      transition(':leave', [
+        animate('500ms', style({transform: 'translateX(-100%)'}))
+      ])
+    ])
+  ]
 })
-export class CampaignOverviewComponent implements OnInit, AfterViewInit {
+export class CampaignOverviewComponent implements OnInit {
   campaignData: CampaignOverview[];
   constants: Constants = Constants;
 
@@ -30,16 +40,8 @@ export class CampaignOverviewComponent implements OnInit, AfterViewInit {
 
   async ngOnInit(): Promise<void> {
     this.globalUrlParamSubscription = this.globalUrlParams.getCampaigns().subscribe(
-      (campaignData: CampaignOverview[]) => {
-        console.log("Starting to load overview");
-        this.campaignData = campaignData;
-      }
+      (campaignData: CampaignOverview[]) => this.campaignData = campaignData
     );
-  }
-
-  ngAfterViewInit(): void{
-    this.campaignOverviewContainer.nativeElement.style.setProperty('--animate-duration', '0.5s');
-    animateElement(this.campaignOverviewContainer.nativeElement, 'slideInDown');
   }
 
   isGlobalAdmin(): boolean{
@@ -48,9 +50,9 @@ export class CampaignOverviewComponent implements OnInit, AfterViewInit {
 
   routeToCampaign(campaignName: string ): void{
     this.campaignOverviewContainer.nativeElement.style.setProperty('--animate-duration', '0.5s');
-    this.globalUrlParams.updateCurrentlySelectedCampaign(campaignName);
+    this.globalUrlParams.updateCurrentlySelectedCampaign(campaignName); //Allows the background to swap ahead of time while the other animation is running
 
-    animateElement(this.campaignOverviewContainer.nativeElement, 'slideOutUp')
+    animateElement(this.campaignOverviewContainer.nativeElement, 'slideOutLeft')
       .then(() => this.routingService.routeToPath("home2", {campaign: campaignName}));
   }
 

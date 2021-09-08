@@ -1,4 +1,10 @@
-<div class="container bg-color-black" id="container-overview" #campaignOverviewContainer>
+<div 
+class="container bg-color-black" 
+id="container-overview" 
+#campaignOverviewContainer 
+*ngIf="true" 
+[@slideInOut]
+>
     <div class="row mx-0" id="campaign-overview-heading" *ngIf="isGlobalAdmin()">
         <h3 class="flex-1 text-center">Choose your campaign</h3>
         <div>
@@ -15,7 +21,7 @@
     </div>
     <div class="row mx-0" id="campaign-row">
         <a 
-        class="col-sm px-0 campaign" 
+        class="col-sm px-0 campaign pointer" 
         *ngFor="let campaign of campaignData" 
         (click)="routeToCampaign(campaign.name)"
         [ngClass]="{'events-disabled': !campaign.isMember && !campaign.isGuest}"
