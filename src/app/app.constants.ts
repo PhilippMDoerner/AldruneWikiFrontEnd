@@ -207,6 +207,7 @@ export class Constants{
     //Default Image for Image Gallery
     public static get defaultBackgroundImageUrl(): string { return `${this.wikiMediaUrl}/campaign_backgrounds/default.png`;}
     public static get defaultImageUrl(): string { return `${this.wikiMediaUrl}/resources/dndicon.png`;}
+    public static get defaultCampaignIconUrl(): string { return `${this.wikiMediaUrl}/campaign_icons/default.png`;}
 
     //Default Map to display
     public static get defaultMapName(): string {return `Aldrune`};
