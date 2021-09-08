@@ -49,14 +49,12 @@ export class SpellsComponent implements OnInit, AfterViewInit, OnDestroy {
           );
 
 
-        this.campaignService.readByParam(params.campaign)
+        this.campaignService.readByParam(params.campaign) //TODO Replace with subscription to globalurlparams
           .pipe(first())
           .subscribe(
             (campaign_details: {name: string, pk:number}) => this.campaign_details = campaign_details,
             error => this.warning.showWarning(error)
-          );
-        
-        this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
+          );        
       },
       error => this.warning.showWarning(error) 
     );

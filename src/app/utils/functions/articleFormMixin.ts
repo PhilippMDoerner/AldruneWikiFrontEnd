@@ -57,9 +57,7 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
             } else if (this.isInCreateState()) {
                 this.createUserModel(queryParameters);
             }
-
-            this.globalUrlParam.updateCurrentlySelectedCampaign(params.campaign);
-        })
+        });
     }
 
     getQueryParameters(params: Params): object{

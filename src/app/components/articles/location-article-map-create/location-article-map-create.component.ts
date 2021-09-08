@@ -64,8 +64,6 @@ export class LocationArticleMapCreateComponent implements OnInit {
       this.mapName = params['map_name'];
 
       this.createUserModel(latitude, longitude);
-
-      this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
     });
   }
 

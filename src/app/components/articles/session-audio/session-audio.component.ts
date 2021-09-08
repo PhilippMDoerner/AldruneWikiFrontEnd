@@ -77,9 +77,7 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
         .subscribe(
           (timestamps: TimestampObject[]) => this.timestamps = timestamps,
           error => this.routingService.routeToErrorPage(error)
-        );
-      
-      this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
+        );      
     });
 
     this.create_timestamp_event_subscription = this.createTimestampEventSubject.subscribe(

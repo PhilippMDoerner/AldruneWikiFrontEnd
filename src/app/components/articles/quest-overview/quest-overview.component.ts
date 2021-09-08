@@ -35,8 +35,7 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
 
   ngOnInit(): void {
     this.parameterSubscription = this.route.params.subscribe( params => {
-        this.campaign = params.campaign;
-        this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
+        this.campaign = params.campaign; //TODO: replace this with a subscription to globalurlparams
 
         this.questService.campaignList(this.campaign).pipe(first()).subscribe(
           (quests: QuestObject[]) => {

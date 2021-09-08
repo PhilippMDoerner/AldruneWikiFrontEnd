@@ -54,8 +54,6 @@ export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into 
       this.mapName = params['map_name'];
 
       this.createUserModel(latitude, longitude);
-
-      this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
     });
   }
 

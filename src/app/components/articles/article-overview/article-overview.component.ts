@@ -84,9 +84,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
 
   ngOnInit(): void {
     this.paramSubscription = this.route.params.subscribe(params => {
-      this.campaign = params.campaign;
-
-      this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
+      this.campaign = params.campaign; //TODO: Replace this with a subscription to globalurlparams
     });
 
     const urlSplit: string[] = this.router.url.split('/');

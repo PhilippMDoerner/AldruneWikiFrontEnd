@@ -45,14 +45,12 @@ export class RulesComponent implements OnInit, AfterViewInit {
             error => this.routingService.routeToErrorPage(error)
           );
 
-        this.campaignService.readByParam(this.campaign_details.name)
+        this.campaignService.readByParam(this.campaign_details.name) //TODO Replace this with a subscription to globalurlparams
           .pipe(first())
           .subscribe(
             (campaign_details: {name: string, pk:number}) => this.campaign_details = campaign_details,
             error => this.warning.showWarning(error)
-          );
-        
-        this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
+          );        
       }
     )
   }

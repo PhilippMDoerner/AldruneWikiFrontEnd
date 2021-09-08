@@ -42,9 +42,7 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
             this.articleService.readByParam(this.campaign, queryParameter).pipe(first()).subscribe(
                 (article: ArticleObject) => this.articleData = article, 
                 error => this.routingService.routeToErrorPage(error)
-            );
-        
-            this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
+            );        
         });
     }
 
