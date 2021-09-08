@@ -13,11 +13,9 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
 })
 export class BackgroundImageComponent implements OnInit, OnDestroy {
   constants = Constants;
-  allCampaignData: CampaignOverview[];
   currentCampaign: CampaignOverview;
 
   urlParamSubscription: Subscription;
-  campaignSetSubscription: Subscription;
 
   @ViewChild('backgroundImage') backgroundImage: ElementRef;
 
@@ -51,16 +49,7 @@ export class BackgroundImageComponent implements OnInit, OnDestroy {
     return animateElement(this.backgroundImage.nativeElement, 'fadeIn');
   }
 
-
-  findCampaignByName(campaignName: string): CampaignOverview{
-    if (campaignName == null) return undefined;
-
-    campaignName = campaignName.toLowerCase();
-    return this.allCampaignData.find((campaign: CampaignOverview) => campaign.name.toLowerCase() === campaignName);
-  }
-
   ngOnDestroy(): void{
     if (this.urlParamSubscription) this.urlParamSubscription.unsubscribe();
-    if (this.campaignSetSubscription) this.campaignSetSubscription.unsubscribe();
   }
 }
