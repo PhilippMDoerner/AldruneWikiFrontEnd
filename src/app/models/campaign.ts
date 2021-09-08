@@ -3,12 +3,15 @@ import { Image } from './image';
 import { Constants } from '../app.constants';
 import { User } from './user';
 
-export interface Campaign{
+interface BaseCampaignData{
     name: string;
     subtitle: string;
     pk?: number;
     background_image?: string;
+    icon?: string;
+}
 
+export interface Campaign extends BaseCampaignData{
     members?: User[];
     admins?: User[];
     guests?: User[];
@@ -18,12 +21,7 @@ export interface Campaign{
     guest_group_name?: string;
 }
 
-export interface CampaignOverview extends ArticleObject{
-    name: string;
-    subtitle: string;
-    pk?: number;
-    background_image?: string;
-
+export interface CampaignOverview extends BaseCampaignData{
     isMember: boolean;
     isAdmin: boolean;
     isGuest: boolean;
@@ -33,6 +31,8 @@ export class CampaignObject implements Campaign{
     pk?: number;
     name: string;
     subtitle: string;
+    background_image: string;
+    icon: string;
 
     members?: User[];
     admins?: User[];
