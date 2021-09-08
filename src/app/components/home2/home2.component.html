@@ -1,14 +1,13 @@
 
-<div class="main">
+<div class="main" *ngIf="campaignData; else loading">
     <!-- Heading -->
     <header class="mb-1">
         <div class="d-flex flex-column">
-            <i class="aldrune-icon large align-self-center"></i>
-            <h1 class="mb-1"> Aldrune </h1>
-            <strong class="hide-on-mobile">
-                A campaign made by Samuel Day and recorded by Philipp Dörner <br>
-                Through the eyes of Relentless.
-            </strong>
+            <i class="aldrune-icon large align-self-center"
+            [style.background-image]="'url('+ constants.wikiUrl + campaignData?.icon +'), url('+ constants.defaultCampaignIconUrl +')'"
+            ></i>
+            <h1 class="mb-1"> {{campaignData.name}} </h1>
+            <strong class="hide-on-mobile" [innerHTML]="campaignData.subtitle"></strong>
         </div>
     </header>
     
@@ -35,10 +34,10 @@
     </div>
 
     <!-- News -->
+    <!-- TODO: swap this to be campaignData not just the name -->
     <app-recently-updated-articles-list
-    [campaign]="campaign"
+    [campaign]="campaignData.name"
     ></app-recently-updated-articles-list>
-    
-
-
 </div>
+
+<ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

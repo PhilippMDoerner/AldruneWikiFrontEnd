@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
@@ -12,14 +12,15 @@ import { RoutingService } from 'src/app/services/routing.service';
   templateUrl: './home2.component.html',
   styleUrls: ['./home2.component.scss'],
 })
-export class Home2Component implements OnInit {
+export class Home2Component implements OnInit, OnDestroy {
   @ViewChild("search") searchField: ElementRef;
 
   searchString: string;
   constants = Constants;
-  campaign: string;
   campaignData: CampaignOverview;
+
   parameterSubscription: Subscription;
+  campaignSubscription: Subscription;
 
   recentlyUpdatedArticles: OverviewItem[];
 
@@ -30,13 +31,9 @@ export class Home2Component implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.parameterSubscription = this.route.params.subscribe(
-      params => {
-        this.campaign = params.campaign;
-        this.globalUrlParams.updateCurrentlySelectedCampaign(this.campaign);
-      },
-      error => this.routingService.routeToErrorPage(error)
-    )
+    this.campaignSubscription = this.globalUrlParams.getCurrentCampaign().subscribe(
+      (campaign: CampaignOverview) => this.campaignData = campaign
+    );
   }
 
   sidebarColor(articleType: string): string{
@@ -54,12 +51,17 @@ export class Home2Component implements OnInit {
     const isInvalidSearchString = this.searchString == null || this.searchString === ""
     if (isInvalidSearchString) return; //TODO: Make this route to some kind of help page instead
 
-    this.routingService.routeToPath('campaignSearch', {campaign: this.campaign, searchString: this.searchString});
+    this.routingService.routeToPath('campaignSearch', {campaign: this.campaignData.name, searchString: this.searchString});
   }
 
   /** Necessary to still allow selecting the search field on this page. Else the "preventDefault" bit on the touch events blocks that */
   focusSearchField(){
     this.searchField.nativeElement.click();
     this.searchField.nativeElement.focus();
+  }
+
+  ngOnDestroy(): void{
+    if(this.campaignSubscription) this.campaignSubscription.unsubscribe();
+    if(this.parameterSubscription) this.parameterSubscription.unsubscribe();
   }
 }
