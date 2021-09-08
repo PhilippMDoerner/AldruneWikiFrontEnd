@@ -75,7 +75,7 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
           error => this.routingService.routeToErrorPage(error)
         );
 
-          this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
+          this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
       },
       error => this.warning.showWarning(error)
     );

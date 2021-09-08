@@ -58,7 +58,7 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
                 this.createUserModel(queryParameters);
             }
 
-            this.globalUrlParam.updateCampaignBackgroundImage(params.campaign);
+            this.globalUrlParam.updateCurrentlySelectedCampaign(params.campaign);
         })
     }
 

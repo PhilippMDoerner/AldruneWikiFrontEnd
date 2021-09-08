@@ -38,7 +38,7 @@ export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixi
           error => this.routingService.routeToErrorPage(error)
         );
       
-      this.globalUrlParams.updateCampaignBackgroundImage(this.campaign);
+      this.globalUrlParams.updateCurrentlySelectedCampaign(this.campaign);
     });
   }
 }

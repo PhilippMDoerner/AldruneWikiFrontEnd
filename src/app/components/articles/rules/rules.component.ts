@@ -52,7 +52,7 @@ export class RulesComponent implements OnInit, AfterViewInit {
             error => this.warning.showWarning(error)
           );
         
-        this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
+        this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
       }
     )
   }

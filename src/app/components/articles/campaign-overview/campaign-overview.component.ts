@@ -42,8 +42,9 @@ export class CampaignOverviewComponent implements OnInit, AfterViewInit {
 
   routeToCampaign(campaignName: string ): void{
     this.campaignOverviewContainer.nativeElement.style.setProperty('--animate-duration', '0.5s');
-    //This is necessary so that the swap of background-images can already happen while the slideOutUp animation is playing. Else you'd have to wait for that to finish and then on the oninit of the home component would it start swapping the image
-    this.globalUrlParams.updateCampaignBackgroundImage(campaignName); 
+    //This is necessary so that the swap of background-images can already happen while the slideOutUp animation is playing. 
+    //Else you'd have to wait for that to finish and then on the oninit of the home component would it start swapping the image
+    this.globalUrlParams.updateCurrentlySelectedCampaign(campaignName); 
 
     animateElement(this.campaignOverviewContainer.nativeElement, 'slideOutUp')
       .then(() => this.routingService.routeToPath("home2", {campaign: campaignName}));

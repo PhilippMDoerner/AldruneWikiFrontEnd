@@ -56,7 +56,7 @@ export class SpellsComponent implements OnInit, AfterViewInit, OnDestroy {
             error => this.warning.showWarning(error)
           );
         
-        this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
+        this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
       },
       error => this.warning.showWarning(error) 
     );

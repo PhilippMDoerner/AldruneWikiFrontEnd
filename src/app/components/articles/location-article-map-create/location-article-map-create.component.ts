@@ -65,7 +65,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
 
       this.createUserModel(latitude, longitude);
 
-      this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
+      this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
     });
   }
 

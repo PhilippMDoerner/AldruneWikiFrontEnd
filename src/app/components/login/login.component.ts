@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
     ) { }
 
   ngOnInit(): void {
-    this.globalUrlParams.updateCampaignBackgroundImage(null);
+    this.globalUrlParams.unsetCurrentlySelectedCampaign();
 
     this.parameter_subscription = this.route.params.subscribe( params => {
       this.campaign = params.campaign;

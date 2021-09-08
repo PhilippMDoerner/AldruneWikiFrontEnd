@@ -57,7 +57,7 @@ export class SearchComponent implements OnInit, OnDestroy {
           error => this.routingService.routeToErrorPage(error)
         );
       
-      this.globalUrlParams.updateCampaignBackgroundImage(this.campaign);
+      this.globalUrlParams.updateCurrentlySelectedCampaign(this.campaign);
     });
 
     this.emptySearchSubtitle = this.getRandomSubtitle();

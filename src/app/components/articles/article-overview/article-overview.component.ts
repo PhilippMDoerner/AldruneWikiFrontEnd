@@ -86,7 +86,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     this.paramSubscription = this.route.params.subscribe(params => {
       this.campaign = params.campaign;
 
-      this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
+      this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
     });
 
     const urlSplit: string[] = this.router.url.split('/');

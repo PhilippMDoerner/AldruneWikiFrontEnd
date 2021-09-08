@@ -79,7 +79,7 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
           error => this.routingService.routeToErrorPage(error)
         );
       
-      this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
+      this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
     });
 
     this.create_timestamp_event_subscription = this.createTimestampEventSubject.subscribe(
