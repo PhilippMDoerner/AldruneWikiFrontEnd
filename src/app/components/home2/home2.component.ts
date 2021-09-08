@@ -2,6 +2,7 @@ import { Component, ElementRef, HostBinding, OnInit, ViewChild } from '@angular/
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -17,6 +18,7 @@ export class Home2Component implements OnInit {
   searchString: string;
   constants = Constants;
   campaign: string;
+  campaignData: CampaignOverview;
   parameterSubscription: Subscription;
 
   recentlyUpdatedArticles: OverviewItem[];
@@ -31,7 +33,7 @@ export class Home2Component implements OnInit {
     this.parameterSubscription = this.route.params.subscribe(
       params => {
         this.campaign = params.campaign;
-        this.globalUrlParams.updateCampaignBackgroundImage(this.campaign);
+        this.globalUrlParams.updateCurrentlySelectedCampaign(this.campaign);
       },
       error => this.routingService.routeToErrorPage(error)
     )
