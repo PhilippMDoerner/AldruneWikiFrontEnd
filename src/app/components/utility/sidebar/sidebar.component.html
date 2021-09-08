@@ -9,8 +9,8 @@
             </a> 
         </li>
 
-        <li class="flex-1" title="campaign-overview">
-            <a class="pl-0" routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaignName}) }}">
+        <li class="flex-1" title="{{currentCampaign.name}}-Home">
+            <a class="pl-0" routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaign.name}) }}">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <i class="aldrune-icon"
                     [style.background-image]="'url('+ constants.wikiUrl + currentCampaign?.icon +'), url('+ constants.defaultCampaignIconUrl +')'"
