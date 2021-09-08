@@ -51,8 +51,10 @@
     opacity: 1;
 }
 
-.background-image-background{
-    background-color: black;
+#campaign-overview-heading{
+    background-color: var(--wiki-background-1);
+    align-items: center;
+    justify-content: center;
 }
 
 @media(max-width: 576px){

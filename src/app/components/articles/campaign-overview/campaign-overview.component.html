@@ -1,4 +1,11 @@
-<div class="container" id="container-overview" #campaignOverviewContainer>
+<div class="container bg-color-black" id="container-overview" #campaignOverviewContainer>
+    <div class="row mx-0" id="campaign-overview-heading" *ngIf="isGlobalAdmin()">
+        <h3 class="flex-1 text-center">Choose your campaign</h3>
+        <a routerLink="{{routingService.getRoutePath('admin')}}" class="float-right alert alert-info mb-0">
+            <span class="fas fa-user-cog"></span>
+            General administration
+        </a>
+    </div>
     <div class="row mx-0">
         <a 
         class="col-sm px-0 campaign" 
@@ -15,7 +22,7 @@
             class="campaign-overlay overlay-lock fas fa-lock fa-5x">
             </div>
 
-            <div class="background-image-background">
+            <div class="flex-1">
                 <img 
                 class="background-image" 
                 [src]="constants.wikiUrl + campaign.background_image" 

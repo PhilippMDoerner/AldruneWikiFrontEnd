@@ -6,6 +6,7 @@ import { CampaignOverview } from 'src/app/models/campaign';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
 
 @Component({
@@ -24,6 +25,7 @@ export class CampaignOverviewComponent implements OnInit, AfterViewInit {
   constructor(
     public routingService: RoutingService,
     private globalUrlParams: GlobalUrlParamsService,
+    private tokenService: TokenService,
   ) { }
 
   async ngOnInit(): Promise<void> {
@@ -38,6 +40,10 @@ export class CampaignOverviewComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void{
     this.campaignOverviewContainer.nativeElement.style.setProperty('--animate-duration', '0.5s');
     animateElement(this.campaignOverviewContainer.nativeElement, 'slideInDown');
+  }
+
+  isGlobalAdmin(): boolean{
+    return this.tokenService.isAdmin() || this.tokenService.isSuperUser();
   }
 
   routeToCampaign(campaignName: string ): void{
