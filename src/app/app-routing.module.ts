@@ -70,15 +70,13 @@ const generalRoutes: GeneralRoute[] = [
 		component: LoginComponent, 
 		data:{ name: "login-state"}
 	},
-
 	//User Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/profile/:username`,
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/profile/:campaign/:username`,
 		component: ProfileComponent,
 		data: { name: "profile"},
 		canActivate: [LoginGuardService]
 	},
-	
 	//Campaign Routes
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaigns`, 

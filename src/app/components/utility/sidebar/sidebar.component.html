@@ -37,7 +37,7 @@
             <ul id="user-links" class="on-hover-show" >
                 <!-- Profile -->
                 <li>
-                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('profile', {username: tokenService.getCurrentUserName()})}}">
+                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('profile', {campaign: currentCampaign.name, username: tokenService.getCurrentUserName()})}}">
                         <i class="fa fa-user"></i>
                         <span> Profile </span>
                     </a>

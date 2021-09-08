@@ -4,7 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { UserObject } from 'src/app/models/user';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { UserService } from 'src/app/services/user.service';
@@ -20,7 +22,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   @ViewChild('profileCard') profileCard: ElementRef;
   user: UserObject;
   parameterSubscription: Subscription;
-  campaign: string;
+  campaign: CampaignOverview;
 
   profileEditState: boolean = false;
   passwordEditState: boolean = false;
@@ -43,6 +45,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private formlyService: MyFormlyService,
     private warnings : WarningsService,
     private route: ActivatedRoute,
+    private globalUrlParams: GlobalUrlParamsService
   ) { }
 
   ngOnInit(): void {
@@ -51,10 +54,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
       error => this.routingService.routeToPath(error)
     );
 
-    this.parameterSubscription = this.route.params.subscribe(
-      params => this.campaign = params.campaign,
-      error => this.warnings.showWarning(error)
-    )
+    this.parameterSubscription = this.globalUrlParams.getCurrentCampaign().subscribe(
+      (campaign: CampaignOverview) => this.campaign = campaign
+    );
   }
 
   ngAfterViewInit(): void{

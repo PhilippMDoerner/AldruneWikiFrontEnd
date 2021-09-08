@@ -1,5 +1,14 @@
 <div class="main">
     <article class="mb-5">
+        <div class="row">
+            <div class="col-12">
+                <app-edit-toggle 
+                [isInUpdateState]=true 
+                [link]="routingService.getRoutePath('campaign-admin', {campaign: campaign})"
+                ></app-edit-toggle>
+            </div>
+        </div>
+        
         <!-- Heading -->
         <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
             <h2 class="text-center">

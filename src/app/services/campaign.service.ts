@@ -5,7 +5,7 @@ import { map, tap } from 'rxjs/operators';
 import { Constants } from '../app.constants';
 import {Campaign, CampaignOverview } from '../models/campaign';
 import { User } from '../models/user';
-import { convertSingleFileModelToFormData } from '../utils/formDataConverter';
+import { convertMultiFileModelToFormData, convertSingleFileModelToFormData } from '../utils/formDataConverter';
 import { GenericService } from './generic.service';
 import { TokenService } from './token.service';
 
@@ -40,11 +40,13 @@ export class CampaignService extends GenericService{
 
   create(data: Campaign): Observable<Campaign>{
     const formData: FormData = convertSingleFileModelToFormData(data, "background_image");
-    return super.create(formData);
+    const formData2: FormData = convertSingleFileModelToFormData(formData, "icon");
+
+    return super.create(formData2);
   }
 
   update(pk: number, data: Campaign): Observable<Campaign>{
-    const formData: FormData = convertSingleFileModelToFormData(data, "background_image");
+    const formData: any = convertMultiFileModelToFormData(data, ["background_image", "icon"]);    
     return super.update(pk, formData);
   }
 

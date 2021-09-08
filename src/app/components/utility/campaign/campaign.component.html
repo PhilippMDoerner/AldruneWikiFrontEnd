@@ -1,5 +1,14 @@
 <div class="main">
     <article *ngIf="articleData; else loading" class="container">
+        <div class="row">
+            <div class="col-12">
+                <app-edit-toggle 
+                [isInUpdateState]=false 
+                [link]="'update'"
+                ></app-edit-toggle>
+            </div>
+        </div>
+
         <!-- Heading -->
         <div class="row">
             <h1 class="text-center col"> {{ articleData.name }} </h1>
