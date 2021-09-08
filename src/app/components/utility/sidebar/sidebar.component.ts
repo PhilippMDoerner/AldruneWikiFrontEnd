@@ -1,11 +1,11 @@
-import { AfterContentInit, AfterViewInit, ChangeDetectorRef, Component, ElementRef, Input, OnChanges, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
 import { RoutingService } from 'src/app/services/routing.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { TokenService } from 'src/app/services/token.service';
-import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
+import { CampaignOverview } from 'src/app/models/campaign';
 
 @Component({
   selector: 'app-sidebar',
@@ -17,6 +17,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   @Input() showSidebar: BehaviorSubject<boolean>;
   currentCampaignName: string = "";
+  currentCampaign: CampaignOverview;
 
   parameterSubscription: Subscription;
 
@@ -28,22 +29,22 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constructor(
     public routingService: RoutingService,
     public tokenService: TokenService,
-    private router: Router,
     private globalUrlParams: GlobalUrlParamsService,
-    private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
   ) { 
 
   }
 
   ngOnInit(): void {
-    this.parameterSubscription = this.globalUrlParams.getURLCampaignParameter().subscribe(
-      (campaignName: string) => {
-        this.currentCampaignName = campaignName;
-        this.updateSidebarEntries(campaignName);
-        this.cdRef.detectChanges();
-      }
-    );
+    this.parameterSubscription = this.globalUrlParams.getCurrentCampaign()
+      .pipe(filter((campaign: CampaignOverview) => campaign != null))
+      .subscribe(
+        (campaign: CampaignOverview) => {
+          this.currentCampaign = campaign;
+          this.updateSidebarEntries(this.currentCampaign.name);
+          this.cdRef.detectChanges();
+        }
+      );
   }
 
   updateSidebarEntries(campaignName: string): void{
@@ -52,12 +53,11 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.showAdminSection = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
   }
 
-  processMetaData(campaign: string, metaData: any){
-    const allMetaData: any = this.constants.articleTypeMetaData;
+  processMetaData(campaignName: string, allMetaData: any){
     const sidebarEntries = allMetaData.filter(metaDataEntry => metaDataEntry.showInSidebar)
     const processedEntries = sidebarEntries.map(metaDataEntry => {
         const routeName: string = metaDataEntry.route
-        const routeUrl: string = this.routingService.getRoutePath(routeName, {campaign: campaign});
+        const routeUrl: string = this.routingService.getRoutePath(routeName, {campaign: campaignName});
         metaDataEntry.route = routeUrl;
         return metaDataEntry;
     });
