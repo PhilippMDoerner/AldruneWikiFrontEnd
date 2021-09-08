@@ -185,6 +185,10 @@ li a i{ //entry icon
 
 
 @media(max-width: 576px){
+    #brand{
+        padding-left: 0.5rem;
+    }
+    
     #sidebar{
         display: none;
         width: 0vw;

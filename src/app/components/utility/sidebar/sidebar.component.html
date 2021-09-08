@@ -2,20 +2,20 @@
 [ngClass]="{'swiped-right': showSidebar.getValue(), 'swiped-left': !showSidebar.getValue()}"
 >
     <!-- Brand -->
-    <ul class="brand-line d-flex">
-        <li>
+    <ul class="brand-line d-flex" *ngIf="currentCampaign; else nonCampaignBrand">
+        <li title="campaign-overview">
             <a routerLink="{{ routingService.getRoutePath('campaign-overview', {}) }}" class="on-hover-show flex overview-link">
-                <span class="fas fa-globe-americas fa-2x" title="campaign-overview"></span>
+                <span class="fas fa-globe-americas fa-2x"></span>
             </a> 
         </li>
 
-        <li class="flex-1">
+        <li class="flex-1" title="campaign-overview">
             <a class="pl-0" routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaignName}) }}">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <i class="aldrune-icon"
                     [style.background-image]="'url('+ constants.wikiUrl + currentCampaign?.icon +'), url('+ constants.defaultCampaignIconUrl +')'"
                     ></i>
-                    <span class="ml-2 on-hover-show">{{currentCampaign.name}} Wiki</span>
+                    <span class="ml-2 on-hover-show">{{currentCampaign.name}}</span>
                 </h3>
             </a>
         </li>
@@ -45,24 +45,9 @@
 
                 <!-- Admin Section -->
                 <li *ngIf="showAdminSection">
-                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('admin') }}" >
-                        <i class="fas fa-globe-europe"></i>
-                        <span> General Admin </span>
-                    </a>
-                </li>
-
-                <li *ngIf="showAdminSection">
                     <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('campaign-admin', {campaign: currentCampaignName}) }}" >
                         <i class="fas fa-dragon"></i>
                         <span> Campaign Admin </span>
-                    </a>
-                </li>
-
-                <!-- Config Tables -->
-                <li *ngIf="showAdminSection">
-                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('config-tables') }}">
-                        <i class="fa fa-table"></i>
-                        <span> Config Tables </span>
                     </a>
                 </li>
 
@@ -78,11 +63,30 @@
         </li>
 
         <!-- Sidebar Entries -->
-        <li *ngFor="let entry of sidebarEntries">
-            <a routerLink="{{entry.route}}" class="d-flex align-items-center entry">
-                <i class="{{ entry.iconClass}}"></i>
-                <span class="on-hover-show">{{entry.title}}</span>
+        <li>
+            <ul *ngIf="currentCampaign">
+                <li *ngFor="let entry of sidebarEntries">
+                    <a routerLink="{{entry.route}}" class="d-flex align-items-center entry">
+                        <i class="{{ entry.iconClass}}"></i>
+                        <span class="on-hover-show">{{entry.title}}</span>
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+    </ul>
+</nav>
+
+<ng-template #nonCampaignBrand>
+    <ul class="brand-line d-flex">
+        <li class="flex-1">
+            <a class="pl-0" routerLink="{{ routingService.getRoutePath('campaign-overview') }}">
+                <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
+                    <span class="fas fa-chevron-left"></span>
+                    <span class="fas fa-globe-americas"></span>
+                    <span class="ml-2 on-hover-show"> To campaigns</span>
+                </h3>
             </a>
         </li>
     </ul>
-</nav>
+</ng-template>
