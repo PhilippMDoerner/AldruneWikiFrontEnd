@@ -63,14 +63,6 @@ export class Constants{
     public static get articleTypeMetaData(): object[] { 
       return [
         {
-          title: "Home",
-          iconClass: "fa fa-home",
-          route: "home2",
-          color: null,
-          article_types: null,
-          showInSidebar: true,
-        },
-        {
           title: "Creatures", 
           iconClass: "fas fa-dragon", 
           route: "creature-overview",
