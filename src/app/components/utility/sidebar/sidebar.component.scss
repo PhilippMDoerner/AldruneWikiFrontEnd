@@ -40,6 +40,12 @@
         animation: fadeInFromNone 0.6s ease-out; 
     }
 
+    #sidebar:hover .on-hover-show.overview-link.flex{
+        display: flex ;
+        align-items: center;
+        justify-content: center;
+    }
+
 }
 
 /* For slide in/out left animations on swiping left/right on Touch devices */
@@ -123,6 +129,37 @@ li a i{ //entry icon
 
 #brand{
     height: 3rem;
+    font-size: 1.5rem;
+    margin: auto !important;
+}
+
+#sidebar:hover #brand{
+    margin-left: 0.5rem !important;
+}
+
+#brand .aldrune-icon{
+    height: 32px;
+    width: 32px;
+}
+
+#brand:hover{
+    color: var(--link-blue);
+}
+
+.brand-line a{
+    border-bottom: none !important;
+}
+
+.brand-line .overview-link{
+    margin-top: auto;
+    margin-bottom: auto;
+    padding-right: 1rem;
+    border-right: solid 2px white;
+}
+
+.brand-line .overview-link:hover{
+    background-color: transparent;
+    color: var(--link-blue);
 }
 
 
@@ -138,6 +175,12 @@ li a i{ //entry icon
     -moz-animation: fadeInFromNone 0.6s ease-out;
     -o-animation: fadeInFromNone 0.6s ease-out;
     animation: fadeInFromNone 0.6s ease-out;
+}
+
+#sidebar.swiped-right .on-hover-show.overview-link.flex{
+    display: flex ;
+    align-items: center;
+    justify-content: center;
 }
 
 

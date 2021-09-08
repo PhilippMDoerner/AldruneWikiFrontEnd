@@ -2,12 +2,25 @@
 [ngClass]="{'swiped-right': showSidebar.getValue(), 'swiped-left': !showSidebar.getValue()}"
 >
     <!-- Brand -->
-    <a routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaignName}) }}">
-        <h3 class="d-flex align-items-center justify-content-center my-2" id="brand"> 
-            <i class="aldrune-icon" crossorigin="anonymous"></i>
-            <span class="on-hover-show">Aldrune Wiki</span>
-        </h3>
-    </a>
+    <ul class="brand-line d-flex">
+        <li>
+            <a routerLink="{{ routingService.getRoutePath('campaign-overview', {}) }}" class="on-hover-show flex overview-link">
+                <span class="fas fa-globe-americas fa-2x" title="campaign-overview"></span>
+            </a> 
+        </li>
+
+        <li class="flex-1">
+            <a class="pl-0" routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaignName}) }}">
+                <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
+                    <i class="aldrune-icon"
+                    [style.background-image]="'url('+ constants.wikiUrl + currentCampaign?.icon +'), url('+ constants.defaultCampaignIconUrl +')'"
+                    ></i>
+                    <span class="ml-2 on-hover-show">{{currentCampaign.name}} Wiki</span>
+                </h3>
+            </a>
+        </li>
+    </ul>
+
 
     <!-- Sidebar Items -->
     <ul>
@@ -27,13 +40,6 @@
                     <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('profile', {username: tokenService.getCurrentUserName()})}}">
                         <i class="fa fa-user"></i>
                         <span> Profile </span>
-                    </a>
-                </li>
-
-                <li>
-                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('campaign-overview')}}">
-                        <i class="fas fa-globe-europe"></i>
-                        <span> Campaign Overview </span>
                     </a>
                 </li>
 
