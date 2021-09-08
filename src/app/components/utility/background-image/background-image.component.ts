@@ -26,30 +26,17 @@ export class BackgroundImageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.campaignSetSubscription = this.globalURLParamService.getCampaigns()
-      .subscribe((campaigns: CampaignOverview[]) =>  this.updateCurrentCampaignSet(campaigns));
-
-    this.urlParamSubscription = this.globalURLParamService.getURLCampaignParameter()
-      .pipe(filter((campaignName: string) => this.currentCampaign?.name !== campaignName))
-      .subscribe((campaignName: string) => this.updateCurrentCampaign(campaignName));
+    this.urlParamSubscription = this.globalURLParamService.getCurrentCampaign()
+      .pipe(filter((campaign: CampaignOverview) => this.currentCampaign?.name !== campaign?.name))
+      .subscribe((campaign: CampaignOverview) => this.updateCurrentCampaign(campaign));
   }
 
-  async updateCurrentCampaign(campaignName: string): Promise<void>{
+  async updateCurrentCampaign(campaign: CampaignOverview): Promise<void>{
     await this.fadeOutBackgroundImage();
 
-    if (this.backgroundImage == null || this.allCampaignData == null) return;
-    this.currentCampaign = this.findCampaignByName(campaignName);
+    this.currentCampaign = campaign;
 
     await this.fadeInBackgroundImage();
-  }
-
-  async updateCurrentCampaignSet(campaignSet: CampaignOverview[]){
-    this.allCampaignData = campaignSet;
-    const currentCampaignName: string = this.globalURLParamService.getURLCampaignParameter().value;
-
-    if(currentCampaignName != null){
-      await this.updateCurrentCampaign(currentCampaignName);  
-    }
   }
 
   async fadeOutBackgroundImage(): Promise<any>{
