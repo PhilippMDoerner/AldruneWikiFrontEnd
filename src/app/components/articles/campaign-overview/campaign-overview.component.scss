@@ -58,8 +58,25 @@
 }
 
 @media(max-width: 576px){
+    .campaign-row{
+        flex-direction: column;
+        flex: 1;
+    }
+
+    .campaign{
+        border-bottom: groove white 2px;
+        border-top: groove white 2px;
+    }
+
+
+    .background-image,
+    #container-overview{
+        height: unset;
+    }
+
     .background-image{
-        height: 33vh;
+        max-height: 33vh;
+        opacity: 1;
     }
 
     #campaign-overview-heading{
