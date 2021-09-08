@@ -142,7 +142,8 @@ li a i{ //entry icon
     width: 32px;
 }
 
-#brand:hover{
+.brand-entry:hover, 
+.brand-entry:hover h3#brand{
     color: var(--link-blue);
 }
 
