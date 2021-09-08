@@ -42,6 +42,7 @@ export class CampaignOverviewComponent implements OnInit, AfterViewInit {
 
   routeToCampaign(campaignName: string ): void{
     this.campaignOverviewContainer.nativeElement.style.setProperty('--animate-duration', '0.5s');
+    this.globalUrlParams.updateCurrentlySelectedCampaign(campaignName);
 
     animateElement(this.campaignOverviewContainer.nativeElement, 'slideOutUp')
       .then(() => this.routingService.routeToPath("home2", {campaign: campaignName}));

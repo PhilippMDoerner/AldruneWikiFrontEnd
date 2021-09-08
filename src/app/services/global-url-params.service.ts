@@ -38,7 +38,7 @@ export class GlobalUrlParamsService {
       .subscribe(() => this.updateCurrentlySelectedCampaignFromRoute());
   }
 
-  private updateCurrentlySelectedCampaign(newCampaignName: string): void{
+  updateCurrentlySelectedCampaign(newCampaignName: string): void{
     if(newCampaignName === this.currentCampaign.value?.name) return;
 
     const currentlySelectedCampaign: CampaignOverview = this.findCampaignByName(newCampaignName);
