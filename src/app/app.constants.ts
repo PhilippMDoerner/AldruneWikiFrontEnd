@@ -111,14 +111,6 @@ export class Constants{
           showInSidebar: true,
         },
         {
-          title: "Organizations", 
-          iconClass: "fas fa-sitemap", 
-          route: "organization-overview",
-          color: "purple",
-          article_types: ["organization"],
-          showInSidebar: true,
-        },
-        {
           title: "Maps", 
           iconClass: "fa fa-map", 
           route: 'default-map',
@@ -127,19 +119,19 @@ export class Constants{
           showInSidebar: true,
         },
         {
+          title: "Organizations", 
+          iconClass: "fas fa-sitemap", 
+          route: "organization-overview",
+          color: "purple",
+          article_types: ["organization"],
+          showInSidebar: true,
+        },
+        {
           title: "Quests", 
           iconClass: "fas fa-question-circle", 
           route: "quest-overview",
           color: "white",
           article_types: ["quest"],
-          showInSidebar: true,
-        },
-        {
-          title: "Spells", 
-          iconClass: "fas fa-hand-sparkles", 
-          route: "spells",
-          color: "violet",
-          article_types: ["spell", "spells"],
           showInSidebar: true,
         },
         {
@@ -156,6 +148,14 @@ export class Constants{
           route: "rules",
           color: "orange",
           article_types: ["rule", "rules"],
+          showInSidebar: true,
+        },
+        {
+          title: "Spells", 
+          iconClass: "fas fa-hand-sparkles", 
+          route: "spells",
+          color: "violet",
+          article_types: ["spell", "spells"],
           showInSidebar: true,
         },
       ]
