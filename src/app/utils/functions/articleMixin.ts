@@ -44,7 +44,7 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
                 error => this.routingService.routeToErrorPage(error)
             );
         
-            this.globalUrlParams.updateCampaignBackgroundImage(params.campaign);
+            this.globalUrlParams.updateCurrentlySelectedCampaign(params.campaign);
         });
     }
 
