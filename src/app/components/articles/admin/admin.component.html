@@ -1,4 +1,9 @@
 <div class="main" #adminCard>
+    <div class="btn btn-secondary mb-3" routerLink="{{routingService.getRoutePath('campaign-overview')}}">
+        <span class="fas fa-globe-americas"></span>
+        Back To campaign overview
+    </div>
+
     <!-- TODO: Make Design mobile useable -->
     <article *ngIf="users && groups && statistics; else loading">
         <!-- Users Section -->
@@ -121,7 +126,10 @@
             </div>
         </div>
 
-        <div class="btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign})}}">Back To Home</div>
+        <div class="btn btn-secondary mb-3" routerLink="{{routingService.getRoutePath('campaign-overview')}}">
+            <span class="fas fa-globe-americas"></span>
+            Back To campaign overview
+        </div>
 
     </article>
 

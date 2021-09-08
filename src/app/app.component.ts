@@ -64,8 +64,9 @@ export class AppComponent implements OnInit, OnDestroy{
 
   updateSidebarAllowanceBasedOnRoute(): void{
     const isCampaignOverviewPage: boolean = this.router.url === this.routingService.getRoutePath('campaign-overview');
-    const isLoginPage: boolean = this.router.url.includes("/wiki2/login")
-    this.allowSidebar = !isCampaignOverviewPage && !isLoginPage;
+    const isLoginPage: boolean = this.router.url.includes("/wiki2/login");
+    const isGeneralAdminPage: boolean = this.router.url === this.routingService.getRoutePath('admin');
+    this.allowSidebar = !isCampaignOverviewPage && !isLoginPage && !isGeneralAdminPage;
   }
   
   // CHECK AGAINST SAFARI AND IOS
