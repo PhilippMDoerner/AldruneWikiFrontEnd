@@ -177,11 +177,12 @@ export class Constants{
     public static get refreshTokenKey(): string { return "refresh_token";}
 
     // Static Image URLs
-    public static get audioImageUrl(): string { return `${this.wikiStaticUrl}/fileserver/images/audio_pic.png`; }
-    public static get timeoutImageUrl(): string { return `${this.wikiStaticUrl}/wiki/images/504.jpeg`; }
-    public static get badInputImageUrl(): string { return `${this.wikiStaticUrl}/wiki/images/400.png`; }
-    public static get pageNotFoundImageUrl(): string { return `${this.wikiStaticUrl}/wiki/images/404.png`; }
-    public static get serverErrorImageUrl(): string { return `${this.wikiStaticUrl}/wiki/images/beholder.jpeg`; }
+    public static get audioImageUrl(): string { return `/assets/default_images/audio_pic_default.png`; }
+    public static get timeoutImageUrl(): string { return `/assets/error_images/504.jpeg`; }
+    public static get badInputImageUrl(): string { return `/assets/error_images/400.png`; }
+    public static get pageNotFoundImageUrl(): string { return `/assets/error_images/404.png`; }
+    public static get serverErrorImageUrl(): string { return `/assets/error_images/500.jpeg`; }
+    public static get noscriptErrorImageUrl(): string { return "/assets/error_images/noscript.jpg"; }
 
     //Login Custom Message to URL Mapping
     public static get loginMessageForState(): object { return {
@@ -197,8 +198,8 @@ export class Constants{
     public static get maxDistanceToPageBottomForPaginationLoad(): number { return 400};
 
     //Default Image for Image Gallery
-    public static get defaultBackgroundImageUrl(): string { return `/assets/background_default.png`;}
-    public static get defaultImageUrl(): string { return `${this.wikiMediaUrl}/resources/dndicon.png`;}
+    public static get defaultBackgroundImageUrl(): string { return `/assets/default_images/background_default.png`;}
+    public static get defaultImageUrl(): string { return `assets/default_images/icon_default.png`;}
     public static get defaultCampaignIconUrl(): string { return `/assets/icons/icon-512x512.png`;}
 
     //Default Map to display
