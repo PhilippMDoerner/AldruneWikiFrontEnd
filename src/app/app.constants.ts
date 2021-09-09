@@ -197,9 +197,9 @@ export class Constants{
     public static get maxDistanceToPageBottomForPaginationLoad(): number { return 400};
 
     //Default Image for Image Gallery
-    public static get defaultBackgroundImageUrl(): string { return `${this.wikiMediaUrl}/campaign_backgrounds/default.png`;}
+    public static get defaultBackgroundImageUrl(): string { return `/assets/background_default.png`;}
     public static get defaultImageUrl(): string { return `${this.wikiMediaUrl}/resources/dndicon.png`;}
-    public static get defaultCampaignIconUrl(): string { return `${this.wikiMediaUrl}/campaign_icons/default.png`;}
+    public static get defaultCampaignIconUrl(): string { return `/assets/icons/icon-512x512.png`;}
 
     //Default Map to display
     public static get defaultMapName(): string {return `Aldrune`};
