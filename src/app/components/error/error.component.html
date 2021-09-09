@@ -4,19 +4,11 @@
 
     <p class="text-center" [innerHTML]="errorContents[errorStatus].htmlBody | safeHtml"> </p>
     
-    <div *ngIf="campaign; else refreshButton">
-        <a 
-        class="btn btn-secondary" 
-        routerLink="{{ routingService.getRoutePath('home1', {campaign: campaign.name}) }}"
-        > 
-            Back To Frontpage
+    <div class="d-flex justify-content-center">
+        <a (click)="globalUrlParams.refreshAndReturnToLastURL()" class="btn btn-primary">
+            <span *ngIf="campaign">Retry</span> 
+            <span *ngIf="!campaign">Reconnect!</span> 
+            <span class="fas fa-redo-alt"></span>
         </a>
     </div>
 </div>
-
-<ng-template #refreshButton>
-    <a (click)="globalUrlParams.refreshAndReturnToLastURL()" class="btn btn-primary mx-auto">
-        Reconnect!
-        <span class="fas fa-redo-alt"></span>
-    </a>
-</ng-template>
