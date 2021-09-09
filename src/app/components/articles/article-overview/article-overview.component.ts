@@ -27,37 +27,37 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   constants: any = Constants;
   overviewTypeMetaData: any = {
     character: {
-      image: `${Constants.wikiStaticUrl}/frontpage/images/pic01.jpg`,
+      image: `/assets/overview_images/characters.jpg`,
       heading: "Characters",
       processing: null,
       overviewTypeEnum: OverviewType.Character
     },
     creature: {
-      image: `${Constants.wikiStaticUrl}/frontpage/images/pic06.jpg`,
+      image: `/assets/overview_images/creatures.jpg`,
       heading: "Creatures",
       processing: null,
       overviewTypeEnum: OverviewType.Creature
     },
     diaryentry: {
-      image: `${Constants.wikiStaticUrl}/frontpage/images/pic04.jpg`,
+      image: `/assets/overview_images/diaryentries.jpg`,
       heading: "Diaryentries",
       processing: this.processDiaryentryOverviewItems,
       overviewTypeEnum: OverviewType.Diaryentry
     },
     item: {
-      image: `${Constants.wikiStaticUrl}/frontpage/images/pic07.jpg`,
+      image: `/assets/overview_images/items.jpg`,
       heading: "Items",
       processing: null,
       overviewTypeEnum: OverviewType.Item
     },
     location: {
-      image: `${Constants.wikiStaticUrl}/frontpage/images/pic02.jpg`,
+      image: `/assets/overview_images/locations.jpg`,
       heading: "Locations",
       processing: this.processLocationOverviewItems,
       overviewTypeEnum: OverviewType.Location
     },
     organization: {
-      image: `${Constants.wikiStaticUrl}/frontpage/images/pic03.jpg`,
+      image: `/assets/overview_images/organizations.jpg`,
       heading: "Organizations",
       processing: null,
       overviewTypeEnum: OverviewType.Organization

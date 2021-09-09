@@ -1,6 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
@@ -8,8 +11,13 @@ import { RoutingService } from 'src/app/services/routing.service';
   templateUrl: './error.component.html',
   styleUrls: ['./error.component.scss']
 })
-export class ErrorComponent implements OnInit {
+export class ErrorComponent implements OnInit, OnDestroy {
   constants: any = Constants;
+
+  campaign: CampaignOverview;
+
+  parameterSubscription: Subscription;
+  campaignSubscription: Subscription;
 
   errorStatus: number;
 
@@ -43,14 +51,24 @@ export class ErrorComponent implements OnInit {
 
   constructor(
     public routingService: RoutingService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    public globalUrlParams: GlobalUrlParamsService,
   ) { }
 
   ngOnInit():void {
-    this.route.params.subscribe( params => {
+    this.parameterSubscription = this.route.params.subscribe( params => {
       const errorStatusParam: number = params["errorStatus"];
       const isKnownErrorStatus = this.errorContents.hasOwnProperty(errorStatusParam);
       this.errorStatus = isKnownErrorStatus ? errorStatusParam : 404;
     });
+
+    this.campaignSubscription = this.globalUrlParams.getCurrentCampaign().subscribe(
+      (campaign: CampaignOverview) => this.campaign = campaign
+    );
+  }
+
+  ngOnDestroy(): void{
+    if(this.parameterSubscription) this.parameterSubscription.unsubscribe();
+    if(this.campaignSubscription) this.campaignSubscription.unsubscribe();
   }
 }
