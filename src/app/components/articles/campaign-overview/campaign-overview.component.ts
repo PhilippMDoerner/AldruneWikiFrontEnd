@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { skip, tap } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -41,9 +41,12 @@ export class CampaignOverviewComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.globalUrlParamSubscription = this.globalUrlParams.getCampaigns()
-      .pipe(tap((campaignData: CampaignOverview[]) => {
-        if(campaignData == null && this.campaignData == null) this.routingService.routeToPath('error', {errorStatus: 504});
-      }))
+      .pipe(
+        skip(1), //Necessary as the first value if you start on campaign-overview is null. That would jump you straight to 504 with the tap below
+        tap((campaignData: CampaignOverview[]) => {
+          if(campaignData == null && this.campaignData == null) this.routingService.routeToPath('error', {errorStatus: 504});
+        })
+      )
       .subscribe((campaignData: CampaignOverview[]) => this.campaignData = campaignData);
   }
 
