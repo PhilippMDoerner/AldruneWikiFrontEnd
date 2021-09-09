@@ -39,7 +39,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
       overviewTypeEnum: OverviewType.Creature
     },
     diaryentry: {
-      image: `/assets/overview_images/diaryentries.jpg`,
+      image: `/assets/overview_images/diaryentries.png`,
       heading: "Diaryentries",
       processing: this.processDiaryentryOverviewItems,
       overviewTypeEnum: OverviewType.Diaryentry
