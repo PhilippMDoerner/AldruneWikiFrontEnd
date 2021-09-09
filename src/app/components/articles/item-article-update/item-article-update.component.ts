@@ -68,18 +68,14 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin {
       error => this.warnings.showWarning(error)
     );
 
-    console.log("Associated: " + this.isForAssociatedObjectCreation());
     if(this.isForAssociatedObjectCreation()){
       const itemOwnerName: string = this.route.snapshot.params.character_name;
     
       this.characterService.readByParam(this.campaign, itemOwnerName).pipe(first()).subscribe(
-        (itemOwner: CharacterObject) => {this.userModel.owner = itemOwner.pk; console.log(this.userModel)},
+        (itemOwner: CharacterObject) => this.userModel.owner = itemOwner.pk,
         error => this.routingService.routeToErrorPage(error)
       );
     }
-
-    console.log(this.formlyFields);
-    console.log(this);
   }
 
   /**

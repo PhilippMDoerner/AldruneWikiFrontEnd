@@ -125,8 +125,7 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
   handleFileUpload(event: any){
     const uploadInProgress: boolean = event.type === HttpEventType.UploadProgress;
     const uploadFinished: boolean = event.type === HttpEventType.Response;
-    // console.log("handleFileUpload");
-    // console.log(event);
+
     if (uploadInProgress){ //Update recorded upload-progress
       this.fileUploadProgress = (event.loaded / event.total * 100)
 

@@ -78,8 +78,6 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
 
   
   createUserModel(queryParameters: any): void{
-    console.log(this);
-
     this.userModel = new this.userModelClass();
 
     this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(

@@ -88,7 +88,6 @@ export class CampaignGuardService extends AdminGuardService{
     if (campaignNameOfRoute == null) throw "Invalid Route Exception. The campaign-route you're trying to access has no campaign name parameter";
 
     const hasNoRoleInCampaign: boolean = this.tokenService.getCampaignRole(campaignNameOfRoute) == null;
-    console.log(`Your user ${this.tokenService.getCurrentUserName()} has this role ${this.tokenService.getCampaignRole(campaignNameOfRoute)} in campaign ${campaignNameOfRoute}`)
     if (hasNoRoleInCampaign){
       this.routingService.routeToPath('campaign-overview');
       return false;

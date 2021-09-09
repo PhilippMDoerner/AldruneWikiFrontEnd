@@ -111,9 +111,7 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   requestPasswordReset(){
     this.mailService.requestPasswordReset(this.recoveryModel.username).pipe(first()).subscribe(
-      (response) => {
-        console.log(response);
-      },
+      (response) =>  console.log(response),
       (error) => console.log(error)
     )
   }

@@ -37,7 +37,6 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
   ) { super() }
 
   ngOnInit(): void{
-    console.log(this);
     const hasDisplayModeParam = !(this.route.snapshot.params['displayMode'] == null);
     this.diaryEntryView = (hasDisplayModeParam) ? this.route.snapshot.params['displayMode'] === "diaryEntry" : true;
 

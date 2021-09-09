@@ -114,7 +114,6 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
      * @description Determines which action is to be taken upon submission: create or update an article
      */
     onSubmit(){
-        console.log(this.userModel);
         if(this.isInUpdateState() || this.isInOutdatedUpdateState()){
             this.articleUpdate(this.userModel);
         } else if(this.isInCreateState()){
@@ -212,9 +211,6 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
     onCancel(context?: any){
         const isCalledFromOverwritingFunction = this.routingService == null;
         context = isCalledFromOverwritingFunction ? context : this;
-        console.log("On cancel with params: ")
-        console.log(this.updateCancelRoute);
-        console.log(this.creationCancelRoute);
 
         if (context.isInUpdateState() || context.isInOutdatedUpdateState()){
             const {routeName, params} = context.updateCancelRoute;

@@ -120,7 +120,6 @@ async function isSessionAuthorPairUniqueValidator(control: any){
     const selectedAuthorAlreadyHasDiaryentryOnSession: boolean = authorIdsWithDiaryentriesOnSession.includes(selectedAuthorId);
     const isInitialValue: boolean = control.pristine; //True if this is an initial value, never changed by the user
 
-    console.log(`selectedAuthorAlreadyHasDiaryentryOnSession: ${selectedAuthorAlreadyHasDiaryentryOnSession}\n isInitialValue: ${isInitialValue}`)
     if (selectedAuthorAlreadyHasDiaryentryOnSession && !isInitialValue){
         return null//{ "isInvalidSessionAuthorPair": true};
     }

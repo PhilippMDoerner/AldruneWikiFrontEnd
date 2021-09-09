@@ -42,7 +42,7 @@ export abstract class GenericService {
   readByParam(campaign: string, params: any): Observable<any>{
     if (typeof params !== "string" && typeof params !== "number"){
       console.error("The params you used")
-      console.log(params)
+      console.error(params)
       throw `Invalid params exception. You tried to use the base readByParams of GenericService with a parameter 
       of type ${typeof params}, which is neither a string nor a number. This indicates your call is more complex than 
       this base implementation is useful for. Overwrite readByParam in the service that inherits from  

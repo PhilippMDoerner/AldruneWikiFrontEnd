@@ -60,7 +60,6 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
     }
 
     createUserModel(): void{
-        console.log("cardmixin createusermodel");
         //if (this.userModelClass == null) throw (`Undefined user model class property. ArticleFormMixin needs a defined 
         //class that this data belongs to to create a user model. This hasn't been defined on this component!`);
         this.userModel = new this.userModelClass();

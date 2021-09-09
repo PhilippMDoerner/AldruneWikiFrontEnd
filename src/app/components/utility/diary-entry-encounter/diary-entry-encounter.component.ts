@@ -112,9 +112,6 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
   articleCreate(userModel: any){
     const executionContext = this;
 
-    console.log("article create on diaryentry encounter component")
-    console.log(executionContext);
-
     this.encounterService.createForDiaryentry(this.campaign_details.name, userModel).subscribe(
         (response: any) => this.onCreationSuccess(response, executionContext),
         (errorResponse: any) => this.onCreationError(errorResponse, executionContext)

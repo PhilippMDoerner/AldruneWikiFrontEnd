@@ -35,9 +35,7 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
   mouseLongitude: number;
   hideCoordinatesState: boolean = true;
 
-  ngOnInit(): void {
-    console.log(this.map)
-  }
+  ngOnInit(): void{}
 
   ngAfterContentInit(){
     this.initMap();
