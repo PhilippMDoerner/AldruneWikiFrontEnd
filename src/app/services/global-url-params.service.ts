@@ -1,9 +1,11 @@
+import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, Navigation, NavigationEnd, NavigationStart, Params, Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { filter, first } from 'rxjs/operators';
+import { filter, first, tap } from 'rxjs/operators';
 import { CampaignOverview } from '../models/campaign';
 import { CampaignService } from './campaign.service';
+import { RoutingService } from './routing.service';
 import { TokenService } from './token.service';
 import { WarningsService } from './warnings.service';
 
@@ -16,9 +18,10 @@ export class GlobalUrlParamsService {
 
   constructor(
     private campaignService: CampaignService,
-    private warnings: WarningsService,
     private tokenService: TokenService,
     private router: Router,
+    private routingService: RoutingService,
+    private urlLocation: Location
   ) { 
     this.currentCampaignSet
       .subscribe(() => this.updateCurrentlySelectedCampaignFromRoute());
@@ -34,14 +37,69 @@ export class GlobalUrlParamsService {
    */
   private startListeningToRoutingEvents(): void{
     this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(() => this.updateCurrentlySelectedCampaignFromRoute());
+      .pipe(
+        tap(event => this.onRouteChangeStart(event)),
+        filter(event => event instanceof NavigationEnd)
+      )
+      .subscribe((event: NavigationEnd) => this.onRouteChangeEnd(event));
   }
 
-  updateCurrentlySelectedCampaign(newCampaignName: string): void{
+  /** 
+   * @description Primarily event listener for whenever a route changes, only fired once per route change.
+   * Tries to keep all global variables up to date as needed as the route keeps changing.
+   * Acts the moment routing begins aka when the navigation starts
+   */
+  private onRouteChangeStart(event: any): void{
+    const isStartOfRouteChange: boolean = event instanceof NavigationStart;
+    if(!isStartOfRouteChange) return;
+
+    this.refreshCampaignSetIfNecessary(event);
+  }
+
+  /**
+   * @description Primarily event listener for whenever a route changes, ideally only fired once per route change.
+   * Tries to keep all global variables up to date as the route keeps changing and being updated.
+   * Acts the moment the new route is reached aka when the navigation has been finished.
+   */
+  private onRouteChangeEnd(event: NavigationEnd): void{
+    this.updateCurrentlySelectedCampaignFromRoute()
+  }
+
+  private async refreshCampaignSetIfNecessary(event: NavigationStart): Promise<void>{
+    if(this.isCampaignSetRefreshNecessary(event)){
+      await this.refreshAndReturnToLastURL();
+    }
+  }
+
+  /**
+   * @description Refreshes the current campaign set aka updates it with data from the server.
+   * If this succeeds, also try to reach the last location again that was attempted to be reached
+   * before an error was thrown and the campaign set was removed due to not having an internet connection.
+   */
+  async refreshAndReturnToLastURL(): Promise<void>{
+    await this.autoUpdateCampaignSet();
+    this.urlLocation.back();
+  }
+
+  /**
+   * @description Checks if the current campaign set actually needs to be refreshed. This is true
+   * if the current campaign set is null, aka no value. An exceptions are when the routing is currently
+   * to an error page, you do not need to refresh when routing to an error page (specifically HTTP 504),
+   * it just creates unnecessary double routing.
+   */
+  private isCampaignSetRefreshNecessary(event: NavigationStart): boolean{
+    const isErrorPage: boolean = event.url.includes("error");
+    if(isErrorPage) return false;
+
+    const hasCampaignsLoaded: boolean = this.currentCampaignSet.value != null;
+    return !hasCampaignsLoaded;
+  }
+  
+
+  async updateCurrentlySelectedCampaign(newCampaignName: string): Promise<void>{
     if(newCampaignName === this.currentCampaign.value?.name) return;
 
-    const currentlySelectedCampaign: CampaignOverview = this.findCampaignByName(newCampaignName);
+    const currentlySelectedCampaign: CampaignOverview = await this.findCampaignByName(newCampaignName);
     this.currentCampaign.next(currentlySelectedCampaign);
   }
 
@@ -61,19 +119,31 @@ export class GlobalUrlParamsService {
     this.updateCurrentlySelectedCampaign(null);
   }
 
-  private updateCurrentlySelectedCampaignFromRoute(): void{
+  private getCurrentRouteParams(): Params{
     const routeData: ActivatedRoute = this.router.routerState.root.firstChild;
     if(routeData == null) return;
 
-    const campaignName: string = routeData.snapshot.params.campaign;
+    return routeData.snapshot.params;
+  }
+
+  private updateCurrentlySelectedCampaignFromRoute(): void{
+    const routeParameters: Params = this.getCurrentRouteParams();
+    console.log("Updating campaign with these parameters");
+    console.log(routeParameters);
+    const campaignName: string = routeParameters?.campaign;
     this.updateCurrentlySelectedCampaign(campaignName);
   }
 
-  private findCampaignByName(campaignName: string): CampaignOverview{
+  private async findCampaignByName(campaignName: string): Promise<CampaignOverview>{
     if (campaignName == null) return undefined;
 
-    const currentCampaignSet: CampaignOverview[] = this.currentCampaignSet.value;
-    if (currentCampaignSet == null) return undefined;
+    let currentCampaignSet: CampaignOverview[] = this.currentCampaignSet.value;
+    if (currentCampaignSet == null){
+      await this.autoUpdateCampaignSet();
+      currentCampaignSet = this.currentCampaignSet.value;
+
+      if (currentCampaignSet == null) return undefined
+    };
 
     campaignName = campaignName.toLowerCase();
     return currentCampaignSet.find((campaign: CampaignOverview) => campaign.name.toLowerCase() === campaignName);
@@ -82,9 +152,11 @@ export class GlobalUrlParamsService {
   async autoUpdateCampaignSet(): Promise<void>{
     if(!this.tokenService.hasValidJWTToken()) return;
 
-    this.campaignService.campaignList().pipe(first()).subscribe(
-      (campaigns: CampaignOverview[]) => this.updateCampaignSet(campaigns),
-      error => this.warnings.showWarning(error)
-    );
+    this.campaignService.campaignList()
+      .pipe(first())
+      .subscribe(
+        (campaigns: CampaignOverview[]) => this.updateCampaignSet(campaigns),
+        error => this.routingService.routeToErrorPage(error)
+      );
   }
 }

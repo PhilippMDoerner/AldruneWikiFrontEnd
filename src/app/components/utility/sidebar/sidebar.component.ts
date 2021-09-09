@@ -16,7 +16,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constants: any = Constants;
 
   @Input() showSidebar: BehaviorSubject<boolean>;
-  currentCampaignName: string = "";
   currentCampaign: CampaignOverview;
 
   parameterSubscription: Subscription;
@@ -25,44 +24,52 @@ export class SidebarComponent implements OnInit, OnDestroy {
   showUserSection: boolean = false;
   showAdminSection: boolean = false;
 
+  isLoggedIn: boolean = true;
+
   //TODO: customizeable sidebar order of menu items
   constructor(
     public routingService: RoutingService,
     public tokenService: TokenService,
-    private globalUrlParams: GlobalUrlParamsService,
+    public globalUrlParams: GlobalUrlParamsService,
     private cdRef: ChangeDetectorRef,
   ) { 
 
   }
 
   ngOnInit(): void {
+    this.sidebarEntries = this.constants.articleTypeMetaData.filter(metaDataEntry => metaDataEntry.showInSidebar);
+
     this.parameterSubscription = this.globalUrlParams.getCurrentCampaign()
-      .pipe(filter((campaign: CampaignOverview) => campaign != null))
       .subscribe(
         (campaign: CampaignOverview) => {
           this.currentCampaign = campaign;
-          this.updateSidebarEntries(this.currentCampaign.name);
+
+          if(this.currentCampaign != null){
+            this.updateSidebarEntries(this.currentCampaign?.name);
+          }
+
           this.cdRef.detectChanges();
         }
       );
   }
 
+  async refreshGlobalData(): Promise<void>{
+    await this.globalUrlParams.autoUpdateCampaignSet();
+    this.routingService.routeToPath('campaign-overview');
+  }
+
   updateSidebarEntries(campaignName: string): void{
-    const metaData = this.constants.articleTypeMetaData;
-    this.sidebarEntries = this.processMetaData(campaignName, metaData);
+    this.updateSidebarEntryRoutes(campaignName);
     this.showAdminSection = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
   }
 
-  processMetaData(campaignName: string, allMetaData: any){
-    const sidebarEntries = allMetaData.filter(metaDataEntry => metaDataEntry.showInSidebar)
-    const processedEntries = sidebarEntries.map(metaDataEntry => {
+  updateSidebarEntryRoutes(campaignName: string): void{
+    this.sidebarEntries.map(metaDataEntry => {
         const routeName: string = metaDataEntry.route
         const routeUrl: string = this.routingService.getRoutePath(routeName, {campaign: campaignName});
         metaDataEntry.route = routeUrl;
         return metaDataEntry;
-    });
-  
-    return processedEntries;
+    });  
   }
 
   logout(): void{

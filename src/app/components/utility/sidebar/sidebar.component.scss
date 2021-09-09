@@ -26,6 +26,7 @@
         color: var(--link-blue);
     }
 
+
     #sidebar:hover li a{
         justify-content: unset;
         padding-left: 1rem;
@@ -182,6 +183,13 @@ li a i{ //entry icon
     display: flex ;
     align-items: center;
     justify-content: center;
+}
+
+.disabled-entry{
+    pointer-events: none;
+    opacity: 0.3;
+    color: unset;
+    background-color: unset;
 }
 
 

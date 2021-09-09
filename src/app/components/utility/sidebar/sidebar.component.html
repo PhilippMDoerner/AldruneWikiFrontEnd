@@ -2,20 +2,20 @@
 [ngClass]="{'swiped-right': showSidebar.getValue(), 'swiped-left': !showSidebar.getValue()}"
 >
     <!-- Brand -->
-    <ul class="brand-line d-flex" *ngIf="currentCampaign; else nonCampaignBrand">
+    <ul class="brand-line d-flex">
         <li title="campaign-overview">
             <a routerLink="{{ routingService.getRoutePath('campaign-overview', {}) }}" class="on-hover-show flex overview-link">
                 <span class="fas fa-chevron-left fa-2x"></span>
             </a> 
         </li>
 
-        <li class="flex-1 brand-entry" title="{{currentCampaign.name}}-Home">
-            <a class="pl-0" routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaign.name}) }}">
+        <li class="flex-1 brand-entry" title="{{currentCampaign?.name}}-Home" [ngClass]="{'disabled-entry': !currentCampaign}">
+            <a class="pl-0" routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaign?.name}) }}">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <img class="campaign-icon"
                     [src]="constants.wikiUrl + currentCampaign?.icon" alt="..."
                     />
-                    <span class="ml-2 on-hover-show">{{currentCampaign.name}}</span>
+                    <span class="ml-2 on-hover-show">{{currentCampaign?.name}}</span>
                 </h3>
             </a>
         </li>
@@ -25,7 +25,7 @@
     <!-- Sidebar Items -->
     <ul>
         <!-- User Section. This is a menu-container, it's title identified by "container-title" class, which is relevant for swipe gesture behaviour, see app.component.ts -->
-        <li id="user-section" [ngClass]="{'active': showUserSection}">
+        <li id="user-section" [ngClass]="{'active': showUserSection, 'disabled-entry': !currentCampaign}">
             <a class="pointer" (click)="showUserSection = !showUserSection">
                 <i class="fa fa-user-circle"></i>
                 <span class="on-hover-show container-title">
@@ -34,7 +34,7 @@
                     <i class="fa" [ngClass]="{'fa-chevron-down': !showUserSection, 'fa-chevron-up': showUserSection}"></i>
                 </span>
             </a>
-            <ul id="user-links" class="on-hover-show" >
+            <ul id="user-links" class="on-hover-show">
                 <!-- Profile -->
                 <li>
                     <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('profile', {campaign: currentCampaign?.name, username: tokenService.getCurrentUserName()})}}">
@@ -58,13 +58,12 @@
                         <span> Logout</span> 
                     </a>
                 </li>
-
             </ul>
         </li>
 
         <!-- Sidebar Entries -->
-        <li>
-            <ul *ngIf="currentCampaign">
+        <li [ngClass]="{'disabled-entry': !currentCampaign}">
+            <ul>
                 <li *ngFor="let entry of sidebarEntries">
                     <a routerLink="{{entry.route}}" class="d-flex align-items-center entry">
                         <i class="{{ entry.iconClass}}"></i>
@@ -83,7 +82,6 @@
             <a class="pl-0" routerLink="{{ routingService.getRoutePath('campaign-overview') }}">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <span class="fas fa-chevron-left"></span>
-                    <span class="fas fa-globe-americas"></span>
                     <span class="ml-2 on-hover-show"> To campaigns</span>
                 </h3>
             </a>
