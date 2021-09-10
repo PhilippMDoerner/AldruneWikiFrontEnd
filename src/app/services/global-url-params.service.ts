@@ -14,6 +14,8 @@ import { WarningsService } from './warnings.service';
 })
 export class GlobalUrlParamsService {
   currentCampaignSet: BehaviorSubject<CampaignOverview[]> = new BehaviorSubject(null); 
+  isLoadingCampaignSet: boolean = false;
+
   currentCampaign: BehaviorSubject<CampaignOverview> = new BehaviorSubject(null);
 
   constructor(
@@ -97,7 +99,10 @@ export class GlobalUrlParamsService {
   
 
   async updateCurrentlySelectedCampaign(newCampaignName: string): Promise<void>{
+    console.log(`Updating from ${this.currentCampaign.value?.name} to new campaign ${newCampaignName}`);
+
     if(newCampaignName === this.currentCampaign.value?.name) return;
+    console.log("Got past check, actually updating now");
 
     const currentlySelectedCampaign: CampaignOverview = await this.findCampaignByName(newCampaignName);
     this.currentCampaign.next(currentlySelectedCampaign);
@@ -128,8 +133,7 @@ export class GlobalUrlParamsService {
 
   private updateCurrentlySelectedCampaignFromRoute(): void{
     const routeParameters: Params = this.getCurrentRouteParams();
-    console.log("Updating campaign with these parameters");
-    console.log(routeParameters);
+
     const campaignName: string = routeParameters?.campaign;
     this.updateCurrentlySelectedCampaign(campaignName);
   }
@@ -150,12 +154,17 @@ export class GlobalUrlParamsService {
   }
 
   async autoUpdateCampaignSet(): Promise<void>{
-    if(!this.tokenService.hasValidJWTToken()) return;
+    if(!this.tokenService.hasValidJWTToken() || this.isLoadingCampaignSet) return;
+    
+    this.isLoadingCampaignSet = true;
 
     this.campaignService.campaignList()
       .pipe(first())
       .subscribe(
-        (campaigns: CampaignOverview[]) => this.updateCampaignSet(campaigns),
+        (campaigns: CampaignOverview[]) => {
+          this.isLoadingCampaignSet = false;
+          this.updateCampaignSet(campaigns);
+        },
         error => this.routingService.routeToErrorPage(error)
       );
   }
