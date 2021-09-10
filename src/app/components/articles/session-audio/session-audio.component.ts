@@ -1,8 +1,9 @@
 import { Component, ContentChild, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
 import { Timestamp, TimestampObject } from 'src/app/models/timestamp';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -10,8 +11,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
 import { WarningsService } from 'src/app/services/warnings.service';
-import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
-
+import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
 @Component({
   selector: 'app-session-audio',
@@ -19,13 +19,11 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   styleUrls: ['./session-audio.component.scss']
 })
 
-export class SessionAudioComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
+export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDestroy {
   constants: any = Constants;
 
-  campaign: string = this.route.snapshot.params.campaign;
-  sessionAudio: SessionAudio;
-  priorSessionAudio: {isMainSessionInt: number, sessionNumber: number};
-  nextSessionAudio: {isMainSessionInt: number, sessionNumber: number};
+  priorSessionAudioUrl: string;
+  nextSessionAudioUrl: string;
   sessionAudioKeyControlMapping: any = {
     "Space": this.togglePlayer,
     "Enter": this.togglePlayer,
@@ -34,11 +32,12 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
     "ArrowLeft": this.seekBackwards,
   }
 
+  deleteRoute = {routeName: "sessionaudio-overview", params: {campaign: null}};
+
   timestamps: Timestamp[];
   createTimestampEventSubject: Subject<number> = new Subject();
   isInTimestampCreateState: boolean = false;
   
-  parameter_subscription: Subscription;
   create_timestamp_event_subscription: Subscription;
 
   @ContentChild("audioSource") audioSourceChild: ElementRef;
@@ -47,42 +46,78 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
   @ViewChild("playerSection") playerSection: any;
 
   constructor(
-    private route: ActivatedRoute,
+    route: ActivatedRoute,
     private router: Router,
-    private sessionAudioService: SessionAudioService,
+    sessionAudioService: SessionAudioService,
     private timestampService: SessionAudioTimestampService,
-    private warnings: WarningsService,  
-    public routingService: RoutingService,
-    private globalUrlParams: GlobalUrlParamsService,
-  ) { super() }
+    warnings: WarningsService,  
+    routingService: RoutingService,
+    globalUrlParams: GlobalUrlParamsService,
+  ) { super(
+      sessionAudioService,
+      route,
+      routingService,
+      warnings,
+      globalUrlParams
+  ) }
 
   ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const isMainSessionInt: number = params.isMainSession;
-      const sessionNumber: number = params.sessionNumber;
-
-      this.sessionAudioService.readByParam(this.campaign, {isMainSession: isMainSessionInt, sessionNumber})
-        .pipe(first())
-        .subscribe(
-          (sessionAudio: SessionAudioObject) => {
-            this.sessionAudio = sessionAudio;
-            this.priorSessionAudio = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
-            this.nextSessionAudio = sessionAudio.sessionAudioNeighbours.nextSessionAudio;
-          }, 
-          error => this.routingService.routeToErrorPage(error)
-        );
-
-      this.timestampService.getTimestamps(this.campaign, isMainSessionInt, sessionNumber)
-        .pipe(first())
-        .subscribe(
-          (timestamps: TimestampObject[]) => this.timestamps = timestamps,
-          error => this.routingService.routeToErrorPage(error)
-        );      
-    });
+    super.ngOnInit();
 
     this.create_timestamp_event_subscription = this.createTimestampEventSubject.subscribe(
       (timestampTime: number) => this.toggleTimestampCreateState()
     );
+  }
+
+  onArticleLoadFinished(sessionAudio: SessionAudioObject){
+    super.onArticleLoadFinished(sessionAudio);
+
+    const priorSessionAudioData: {isMainSessionInt: number, sessionNumber: number} = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
+    this.priorSessionAudioUrl = this.createSessionAudioUrl(priorSessionAudioData);
+
+    const nextSessionAudioData: {isMainSessionInt: number, sessionNumber: number} = sessionAudio.sessionAudioNeighbours.nextSessionAudio;
+    this.nextSessionAudioUrl = this.createSessionAudioUrl(nextSessionAudioData);
+  }
+
+  createSessionAudioUrl(sessionAudioData: {isMainSessionInt: number, sessionNumber: number}): string{
+    if (
+      sessionAudioData == null 
+      || sessionAudioData.isMainSessionInt == null 
+      || sessionAudioData.sessionNumber == null
+    ){
+      return null;
+    }
+
+    return this.routingService.getRoutePath('sessionaudio', {
+      campaign: this.campaign.name,
+      isMainSession: sessionAudioData.isMainSessionInt, 
+      sessionNumber: sessionAudioData.sessionNumber
+    });
+  }
+
+  getQueryParameter(params: Params): any{
+    const isMainSessionInt: number = params.isMainSession;
+    const sessionNumber: number = params.sessionNumber;
+    return {isMainSession: isMainSessionInt, sessionNumber};
+  }
+
+  /**  Added loading timestamp data to normal article data being loaded */
+  async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
+    super.loadArticleData(campaign, params);
+
+    this.loadSessionAudioTimestamps(campaign, params);
+  }
+
+  async loadSessionAudioTimestamps(campaign: CampaignOverview, params: Params): Promise<void>{
+    const isMainSessionInt: number = params.isMainSession;
+    const sessionNumber: number = params.sessionNumber;
+
+    this.timestampService.getTimestamps(campaign.name, isMainSessionInt, sessionNumber)
+      .pipe(first())
+      .subscribe(
+        (timestamps: TimestampObject[]) => this.timestamps = timestamps,
+        error => this.routingService.routeToErrorPage(error)
+      ); 
   }
 
   routeToSessionAudio({isMainSessionInt, sessionNumber}){
@@ -95,13 +130,6 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
     );
     this.router.navigateByUrl(sessionAudioUrl);
     this.router.routeReuseStrategy.shouldReuseRoute = function () { return false; };
-  }
-
-  deleteArticle(){
-    this.sessionAudioService.delete(this.sessionAudio.pk).pipe(first()).subscribe(
-      response => this.routingService.routeToPath('sessionaudio-overview', {campaign: this.campaign}),
-      error => this.warnings.showWarning(error)
-    );
   }
 
   @HostListener('document:keydown', ["$event"]) 
@@ -173,7 +201,8 @@ export class SessionAudioComponent extends PermissionUtilityFunctionMixin implem
   }
 
   ngOnDestroy(){
-    if(this.parameter_subscription) this.parameter_subscription.unsubscribe();
+    super.ngOnDestroy();
+
     if(this.create_timestamp_event_subscription) this.create_timestamp_event_subscription.unsubscribe();
   }
 }

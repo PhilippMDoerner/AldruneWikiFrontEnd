@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { LocationObject } from 'src/app/models/location';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -16,7 +16,7 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class LocationArticleComponent extends ArticleMixin implements OnInit {
   //ArticleMixin Variables
   articleData: LocationObject;
-  deleteRoute = {routeName: "location-overview", params: {campaign: this.campaign}}
+  deleteRoute = {routeName: "location-overview", params: {campaign: null}}
 
 
   constructor(
@@ -35,17 +35,10 @@ export class LocationArticleComponent extends ArticleMixin implements OnInit {
     ) 
   }
 
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const locationName: string = params['name'];
-      const parentLocationName: string = params['parent_name'] ? params['parent_name'] : "None";
-      this.campaign = params.campaign;
-
-      this.articleService.readByParam(this.campaign, {parentLocationName, locationName}).pipe(first()).subscribe(
-        (location: LocationObject) => this.articleData = location,
-        error => this.routingService.routeToErrorPage(error)
-      );
-    });
+  getQueryParameter(params: Params): any{
+    const locationName: string = params['name'];
+    const parentLocationName: string = params['parent_name'] ? params['parent_name'] : "None";
+    return {locationName, parentLocationName};
   }
 
   buildLocationRoute(index: number){

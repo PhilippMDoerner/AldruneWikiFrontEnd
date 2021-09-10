@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="sessionAudio; else loading" class="container">
+    <article *ngIf="articleData; else loading" class="container">
         <div class="row" *ngIf="hasUpdatePermission">
             <div class="col-12">
                 <app-edit-toggle 
@@ -12,7 +12,7 @@
         <div class="row">
             <!-- Heading -->
             <h1 class="text-center col-lg-12">
-                {{ sessionAudio.session_details.name}}
+                {{ articleData.session_details.name}}
                 <i class="fa fa-volume-up"></i>
             </h1>
         </div>
@@ -28,7 +28,7 @@
             <vime-player class="w-100" #vimePlayer>
                 <!-- Vime-Audio-Source -->
                 <vime-audio cross-origin>
-                    <source [src]="sessionAudio.audio_file" type="audio/mp3" crossorigin="anonymous" #audioSource/>
+                    <source [src]="articleData.audio_file" type="audio/mp3" crossorigin="anonymous" #audioSource/>
                 </vime-audio>
     
                 <!-- Vime-UI -->
@@ -41,23 +41,23 @@
             <!-- Next Session -->
             <div class="col-lg-3 col-6 px-0">
                 <a  
-                *ngIf="nextSessionAudio"
-                (click)="routeToSessionAudio(nextSessionAudio)"
+                *ngIf="nextSessionAudioUrl"
+                routerLink="{{nextSessionAudioUrl}}"
                 class="btn btn-secondary"
                 > 
                     <i class="fa fa-arrow-left mr-1"></i>
-                    Session {{nextSessionAudio.sessionNumber}}
+                    Session {{articleData.sessionAudioNeighbours.nextSessionAudio.sessionNumber}}
                 </a>
             </div>
 
             <!-- Prior Session -->
             <div class="col-lg-3 col-6 px-0">
                 <a  
-                *ngIf="priorSessionAudio"
-                (click)="routeToSessionAudio(priorSessionAudio)"
+                *ngIf="priorSessionAudioUrl"
+                routerLink="{{priorSessionAudioUrl}}"
                 class="btn btn-secondary float-right"
                 > 
-                    Session {{priorSessionAudio.sessionNumber}}
+                    Session {{articleData.sessionAudioNeighbours.priorSessionAudio.sessionNumber}}
                     <i class="fa fa-arrow-right ml-1"></i>
                 </a>
             </div>
@@ -78,7 +78,7 @@
         <div class="mb-4">
             <app-timestamp-list 
             [timestamps]="timestamps"
-            [sessionAudio]="sessionAudio"
+            [sessionAudio]="articleData"
             [vimePlayer]="vimePlayer"
             [createTimestampEventSubject]="createTimestampEventSubject"
             (timestampCreate)="toggleTimestampCreateState()"
@@ -89,7 +89,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('sessionaudio-overview', {campaign: campaign})"
+        [link]="routingService.getRoutePath('sessionaudio-overview', {campaign: campaign.name})"
         [label]="'Back to SessionAudio Overview'"
         [deleteMessage]="'Delete recording?'"
         ></app-article-footer>

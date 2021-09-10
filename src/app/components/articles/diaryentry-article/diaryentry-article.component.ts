@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { DiaryEntry } from 'src/app/models/diaryentry';
+import { DiaryEntry, DiaryEntryObject } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -18,7 +18,7 @@ export class DiaryentryArticleComponent extends ArticleMixin {
   articleData: DiaryEntry;
   nextDiaryentryUrl: string;
   priorDiaryentryUrl: string;
-  deleteRoute = {routeName: 'diaryentry-overview', params: {campaign: this.campaign}};
+  deleteRoute = {routeName: 'diaryentry-overview', params: {campaign: null}};
 
   constructor(
     diaryEntryService: DiaryentryService,
@@ -36,26 +36,21 @@ export class DiaryentryArticleComponent extends ArticleMixin {
     )
   }
 
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const isMainSession: number = parseInt(params.isMainSession);
-      const sessionNumber: number = parseInt(params.sessionNumber);
-      const authorName: string = params.authorName;
-      this.campaign = params.campaign;
-  
-      this.articleService.readByParam(this.campaign, {isMainSession, sessionNumber, authorName}).pipe(first()).subscribe(
-        diaryEntry => {
-          this.articleData = diaryEntry;
+  getQueryParameter(params: Params): any{
+    const isMainSession: number = parseInt(params.isMainSession);
+    const sessionNumber: number = parseInt(params.sessionNumber);
+    const authorName: string = params.authorName;
+    return {isMainSession, sessionNumber, authorName};
+  }
 
-          const priorDiaryentryStub = this.articleData.adjacent_diaryentries.prior_diaryentry;
-          this.priorDiaryentryUrl = this.createDiaryentryURL(priorDiaryentryStub);
-          
-          const nextDiaryentryStub = this.articleData.adjacent_diaryentries.next_diaryentry;
-          this.nextDiaryentryUrl = this.createDiaryentryURL(nextDiaryentryStub);
-        },
-        error => this.routingService.routeToErrorPage(error)
-      );
-    });
+  onArticleLoadFinished(diaryentry: DiaryEntryObject): void{
+    super.onArticleLoadFinished(diaryentry);
+
+    const priorDiaryentryStub = diaryentry.adjacent_diaryentries.prior_diaryentry;
+    this.priorDiaryentryUrl = this.createDiaryentryURL(priorDiaryentryStub);
+    
+    const nextDiaryentryStub = diaryentry.adjacent_diaryentries.next_diaryentry;
+    this.nextDiaryentryUrl = this.createDiaryentryURL(nextDiaryentryStub);
   }
 
   onDescriptionUpdate(){
@@ -73,7 +68,7 @@ export class DiaryentryArticleComponent extends ArticleMixin {
       sessionNumber: sessionNumber,
       isMainSession: isMainSession,
       authorName: authorName,
-      campaign: this.campaign
+      campaign: this.campaign.name
     });
   }
 }

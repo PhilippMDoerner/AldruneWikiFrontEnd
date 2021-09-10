@@ -19,7 +19,7 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   //ArticleMixin Variables
   articleData: ExtendedMap;
-  deleteRoute = {routeName: "character-overview", params: {campaign: this.campaign}}
+  deleteRoute = {routeName: "character-overview", params: {campaign: null}}
 
   //Custom Variables
   maps: OverviewItemObject[];
@@ -61,11 +61,11 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
       );
   }
 
-  getQueryParameter(params: Params): string {
+  getQueryParameter(params: Params): any {
     const mapName: any = super.getQueryParameter(params);
     if (mapName == null) return this.campaign.default_map_details.name;
 
-    return mapName;
+    return {name: mapName};
   }
 
   ngAfterViewInit(){

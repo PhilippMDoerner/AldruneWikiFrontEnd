@@ -19,7 +19,7 @@ import { GlobalUrlParamsService } from 'src/app/services/global-url-params.servi
 export class CharacterArticleComponent extends ArticleMixin implements OnInit, OnDestroy {
   //ArticleMixin Variables
   articleData: CharacterObject;
-  deleteRoute = {routeName: "character-overview", params: {campaign: this.campaign}}
+  deleteRoute = {routeName: "character-overview", params: {campaign: null}}
   queryParameterName = "name";
 
   //Custom Variables

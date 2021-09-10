@@ -15,7 +15,7 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 export class CreatureArticleComponent extends ArticleMixin implements OnInit {
   //ArticleMixin Variables
   articleData: CreatureObject;
-  deleteRoute = {routeName: "creature-overview", params: {campaign: this.campaign}};
+  deleteRoute = {routeName: "creature-overview", params: {campaign: null}};
   queryParameterName = "name";
 
   constructor(

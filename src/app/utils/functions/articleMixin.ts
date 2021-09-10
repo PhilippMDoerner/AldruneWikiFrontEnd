@@ -56,8 +56,6 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
                     .pipe(filter(campaign => campaign != null))
                     .subscribe((campaign: CampaignOverview) => this.afterBackgroundDataLoaded(campaign));
             });
-
-        this.onInitHook();
     }
 
     /**
@@ -81,6 +79,8 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
         console.log(`Setting up try catch for load article data while loading is ${this.isLoadingArticleData}`)
         if(this.isLoadingArticleData) return;
 
+        this.updateOnDeleteRouteParameters(campaign, params);
+
         this.isLoadingArticleData = true;
 
         try{
@@ -96,45 +96,35 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
      * @description loads the data for the current article. Is fired either when the route changes
      */
     async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-        console.log(`Attempting loading Article Data for campaign ${campaign.name} with param ${this.getQueryParameter(params)}`);
+        console.log(`Attempting loading Article Data for campaign ${campaign.name} with params:`);
+        console.log( this.getQueryParameter(params));
         const campaignName: string = campaign.name;
         if(campaignName == null) return;
 
-        const queryParameter: string | number = this.getQueryParameter(params);
+        const queryParameter  = this.getQueryParameter(params);
         if(queryParameter == null) return;
 
         this.articleService.readByParam(campaignName, queryParameter)
             .pipe(first())
-            .subscribe((articleData: ArticleObject) => this.articleData = articleData);
+            .subscribe((articleData: ArticleObject) => this.onArticleLoadFinished(articleData));
     }
 
-    getQueryParameter(params: Params): string | number{
-        return params[this.queryParameterName];
+    getQueryParameter(params: Params){
+        return {name: params[this.queryParameterName]};
+    }
+
+    updateOnDeleteRouteParameters(campaign: CampaignOverview, params: Params): void{
+        this.deleteRoute.params.campaign = campaign.name;
     }
 
     /**
-     * @description A hook that executes every time the currently selected campaign changes.
-     * Executes after a request for new article data has been sent out
-     * @param params: The parameters of the current routes
-     */
-     afterArticleLoadHook(params: Params): void{}
-
-
-    /**
-     * @description A hook that executes every time the page finishes loading/reloading article data 
-     * Executes after the attribute "this.articleData" has been updated
-     * @param campaign: The currently selected campaign by the params
-     * @param params: The parameters of the current routes
+     * @description Executes after the article data has been loaded, but not been assigned yet to this.articleData
+     * this.campaigns will already be available.
      */
     onArticleLoadFinished(articleData: ArticleObject): void{
         this.articleData = articleData;
     }
 
-    /**
-     * @description A hook that executes after subscriptions have started for parameters and global parameters
-     * in ngOnInit()
-     */ 
-    onInitHook(): void{}
 
     onDescriptionUpdate(updatedDescription: string){
         const descriptionPatch = {description: updatedDescription, update_datetime: this.articleData.update_datetime};

@@ -59,7 +59,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('quest-overview', {campaign: campaign})"
+        [link]="routingService.getRoutePath('quest-overview', {campaign: campaign.name})"
         [label]="'Back to Quest Overview'"
         [deleteMessage]="'Delete Quest ?'"
         ></app-article-footer>
