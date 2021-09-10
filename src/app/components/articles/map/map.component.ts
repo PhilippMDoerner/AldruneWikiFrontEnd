@@ -1,12 +1,12 @@
 import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { ExtendedMap, MapObject } from 'src/app/models/map';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MapService } from 'src/app/services/map.service';
-import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
@@ -34,7 +34,6 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
     private router: Router,
     public route: ActivatedRoute,
     mapService: MapService,
-    private overviewService: OverviewService,
     public warnings: WarningsService,  
     public routingService: RoutingService,
     globalUrlParams: GlobalUrlParamsService,
@@ -48,37 +47,43 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
     )
   }
 
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const mapName = params['name'];
-      this.campaign = params.campaign;
+  async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
+    super.loadArticleData(campaign, params);
 
-      this.articleService.readByParam(this.campaign, mapName).pipe(first()).subscribe( 
-        (map: MapObject) => this.articleData = map,
+    const hasYetToLoadMapsForOverview = this.maps == null;
+    if(!hasYetToLoadMapsForOverview) return;
+
+    this.articleService.campaignList(this.campaign.name)
+      .pipe(first())
+      .subscribe(
+        (campaignMaps: OverviewItemObject[]) => this.maps = campaignMaps,
         error => this.routingService.routeToErrorPage(error)
       );
+  }
 
-      this.articleService.campaignList(this.campaign).pipe(first()).subscribe(
-        (overviewItems: OverviewItemObject[]) => this.maps = overviewItems,
-        error => this.routingService.routeToErrorPage(error)
-      );
-    })
+  getQueryParameter(params: Params): string {
+    const mapName: any = super.getQueryParameter(params);
+    if (mapName == null) return this.campaign.default_map_details.name;
+
+    return mapName;
   }
 
   ngAfterViewInit(){
-    this.mapChoice.changes.pipe(first()).subscribe((components: QueryList<any>) =>{
-      this.setInitialMapChoiceValue();
-    })
+    this.mapChoice.changes
+      .pipe(first())
+      .subscribe((components: QueryList<any>) => this.setInitialMapChoiceValue());
   }
 
   setInitialMapChoiceValue(): void{
-    const currentMap: string = this.route.snapshot.params.name;
-    const currentMapIndex = this.getMapOptionIndex(currentMap);
+    const queryParameters: Params = this.route.snapshot.params;
+    const currentMapName: string = queryParameters.name;
+    console.log("Load da map "+currentMapName);
+    const currentMapIndex: number = this.getMapOptionIndex(currentMapName);
     const mapChoiceElement = this.getMapChoiceElement();
     mapChoiceElement.selectedIndex = currentMapIndex;
   }
 
-  getMapChoiceElement(): any{
+  getMapChoiceElement(): any{ //HTMLElement
     return this.mapChoice.first.nativeElement;
   }
 
@@ -93,9 +98,7 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   }
 
   routeToMap(newMap: string){
-    const mapUrl: string = this.routingService.getRoutePath('map', {name: newMap, campaign: this.campaign});
-    this.router.navigateByUrl(mapUrl);
-    this.router.routeReuseStrategy.shouldReuseRoute = function () {return false;};
+    this.routingService.routeToPath('map', {name: newMap, campaign: this.campaign.name});
   }
 
   onMapChange(event){
