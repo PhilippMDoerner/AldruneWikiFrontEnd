@@ -40,16 +40,16 @@ export abstract class GenericService {
    * @returns The data from that endpoint by the service
    */
   readByParam(campaign: string, params: any): Observable<any>{
-    if (typeof params !== "string" && typeof params !== "number"){
-      console.error("The params you used")
+    if (typeof params.name !== "string"){
+      console.error("The params you used in the service")
       console.error(params)
       throw `Invalid params exception. You tried to use the base readByParams of GenericService with a parameter 
-      of type ${typeof params}, which is neither a string nor a number. This indicates your call is more complex than 
+      object without the "name" attribute. This indicates your call is more complex than 
       this base implementation is useful for. Overwrite readByParam in the service that inherits from  
-      GenericService and implement the function yourself`;
+      GenericObjectService and implement the function yourself`;
     }
 
-    return this.http.get(`${this.baseUrl}/${campaign}/${params}/`);
+    return this.http.get(`${this.baseUrl}/${campaign}/${params.name}/`);
   }
 
   delete(pk: number): Observable<any>{

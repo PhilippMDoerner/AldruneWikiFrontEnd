@@ -47,20 +47,20 @@ export abstract class GenericObjectService{
    */
   @TransformObservable("objectClass")
   readByParam(campaign: string, params: any): Observable<any>{
-    if (typeof params !== "string" && typeof params !== "number"){
-      console.error("The params you used")
+    if (typeof params.name !== "string"){
+      console.error("The params you used in the service")
       console.error(params)
       throw `Invalid params exception. You tried to use the base readByParams of GenericObjectService with a parameter 
-      of type ${typeof params}, which is neither a string nor a number. This indicates your call is more complex than 
+      object without the "name" attribute. This indicates your call is more complex than 
       this base implementation is useful for. Overwrite readByParam in the service that inherits from  
       GenericObjectService and implement the function yourself`;
     }
 
     if(campaign == null){
-      throw "You tried to use readByParam without specifying which campaign you're querying for";
+      throw "You tried to use readByParam without specifying which campaign you're querying for!";
     }
 
-    const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/${campaign}/${params}/`);
+    const dataObs: Observable<any> = this.http.get(`${this.baseUrl}/${campaign}/${params.name}/`);
     return transformObservableContent(dataObs, this.objectClass);
   }
 
