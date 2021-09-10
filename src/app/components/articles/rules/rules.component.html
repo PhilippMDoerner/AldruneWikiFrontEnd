@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="rules; else loading" class="container">
+    <article *ngIf="articles; else loading" class="container">
 
         <!-- Heading -->
         <div class="row">
@@ -7,28 +7,28 @@
         </div>
 
         <!-- Rules -->
-        <div *ngFor="let rule of rules; let i = index">
+        <div *ngFor="let rule of articles; let i = index">
             <app-rule
             #ruleElements
             [cardData] = "rule"
-            [campaign_details]="campaign_details"
+            [campaign]="campaign"
             [index] = "i"
-            (cardDelete) = "onRuleDelete(i)"
+            (cardDelete) = "onArticleDelete(i)"
             ></app-rule>
         </div>
 
         <!-- Insert new Rule -->
         <div class="expand row justify-content-center" *ngIf="tokenService.isAdmin()">
-            <div class="btn btn-primary" (click)="addRule()">
+            <div class="btn btn-primary" (click)="addArticle()">
                 <i class="fa fa-3x fa-plus pointer" title="Add Rule"></i>
             </div>
         </div>
 
         <!-- Button to Frontpage -->
         <div class="row mt-5">
-            <div class="btn btn-secondary col-md-3" routerLink="{{ routingService.getRoutePath('home1', {campaign: campaign}) }}">
+            <a class="btn btn-secondary col-md-3" routerLink="{{ routingService.getRoutePath('home2', {campaign: campaign.name}) }}">
                 Back To Frontpage
-            </div>
+            </a>
         </div>
 
     </article>

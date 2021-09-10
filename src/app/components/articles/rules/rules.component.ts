@@ -1,57 +1,38 @@
 import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { first, tap } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
-import { Rule, RuleObject } from "src/app/models/rule";
-import { CampaignService } from 'src/app/services/campaign.service';
+import {  RuleObject } from "src/app/models/rule";
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { RuleService } from 'src/app/services/rule.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { ArticleListMixin } from 'src/app/utils/functions/articleListMixin';
 @Component({
   selector: 'app-rules',
   templateUrl: './rules.component.html',
   styleUrls: ['./rules.component.scss']
 })
-export class RulesComponent implements OnInit, AfterViewInit {
-  rules: Rule[];
-  panelIsOpenArray: boolean[];
-  constants: any = Constants;
-  parameterSubscription: Subscription;
-  campaign_details: {name: string, pk: number} = {name: this.route.snapshot.params.campaign, pk: null};
-
+export class RulesComponent extends ArticleListMixin implements OnInit, AfterViewInit {
+ 
   @ViewChildren("ruleElements") ruleComponents: QueryList<any>;
 
+  articleModelClass = RuleObject;
+  articleStarterTitle = "New Rule";
+
   constructor(
-    private ruleService: RuleService,
+    ruleService: RuleService,
     public routingService: RoutingService,
     public tokenService: TokenService,
-    private route: ActivatedRoute,
-    private warning: WarningsService,
-    private campaignService: CampaignService,
-    private globalUrlParams: GlobalUrlParamsService
-  ) { }
-
-  ngOnInit(): void {
-    this.parameterSubscription = this.route.params.subscribe(
-      params => {
-        this.ruleService.campaignList(this.campaign_details.name)
-          .pipe(first())
-          .pipe(tap((rules: RuleObject[]) => this.panelIsOpenArray = rules.map(rule => true)))
-          .subscribe(
-            (rules: RuleObject[]) => this.rules = rules.sort((rule1, rule2) => rule1.name < rule2.name ? -1 : 1),
-            error => this.routingService.routeToErrorPage(error)
-          );
-
-        this.campaignService.readByParam(this.campaign_details.name) //TODO Replace this with a subscription to globalurlparams
-          .pipe(first())
-          .subscribe(
-            (campaign_details: {name: string, pk:number}) => this.campaign_details = campaign_details,
-            error => this.warning.showWarning(error)
-          );        
-      }
+    route: ActivatedRoute,
+    warning: WarningsService,
+    globalUrlParams: GlobalUrlParamsService
+  ) { 
+    super(
+      ruleService,
+      route,
+      routingService,
+      warning,
+      globalUrlParams
     )
   }
 
@@ -70,15 +51,5 @@ export class RulesComponent implements OnInit, AfterViewInit {
     if(hasTargetSpell){
       targetRuleComponent.element.nativeElement.scrollIntoView();
     }
-  }
-
-  addRule(){
-    const newRule = new RuleObject();
-    newRule.name = "New Rule";
-    this.rules.push(newRule);
-  }
-
-  onRuleDelete(index: number){
-    this.rules.splice(index, 1);
   }
 }

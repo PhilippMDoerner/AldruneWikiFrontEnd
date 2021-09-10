@@ -4,6 +4,7 @@ import { FormlyFieldConfig } from "@ngx-formly/core";
 import { first } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
 import { ArticleObject } from "src/app/models/base-models";
+import { CampaignOverview } from "src/app/models/campaign";
 import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
 import { WarningsService } from "src/app/services/warnings.service";
@@ -23,7 +24,7 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
     @Input() isOpen: boolean = false;
     @Input() cardData: any; //The general data of the card
     @Input() index: number;
-    @Input() campaign_details: {name: string, pk: number} = {name: this.route.snapshot.params.campaign, pk: null};
+    @Input() campaign: CampaignOverview;
 
     card: ElementRef;
 
@@ -63,7 +64,7 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
         //if (this.userModelClass == null) throw (`Undefined user model class property. ArticleFormMixin needs a defined 
         //class that this data belongs to to create a user model. This hasn't been defined on this component!`);
         this.userModel = new this.userModelClass();
-        this.userModel.campaign = this.campaign_details.pk;
+        this.userModel.campaign = this.campaign.pk;
     }
 
     isInCreateState(): boolean{

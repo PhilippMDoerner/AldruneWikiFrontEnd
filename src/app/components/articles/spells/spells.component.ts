@@ -10,54 +10,36 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { SpellService } from 'src/app/services/spell.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { ArticleListMixin } from 'src/app/utils/functions/articleListMixin';
 
 @Component({
   selector: 'app-spells',
   templateUrl: './spells.component.html',
   styleUrls: ['./spells.component.scss']
 })
-export class SpellsComponent implements OnInit, AfterViewInit, OnDestroy {
-  panelIsOpenArray: boolean[];
-  spells: SpellObject[];
-  constants: any = Constants;
-  campaign_details: {name: string, pk: number} = {name: this.route.snapshot.params.campaign, pk: null};
-  paramSubscription: Subscription;
+export class SpellsComponent extends ArticleListMixin implements OnInit, AfterViewInit, OnDestroy {
+  articleModelClass = SpellObject;
+  articleStarterTitle = "New Spell";
 
   selectedClasses: String[] = []; 
 
   @ViewChildren("spellElements") spellComponents: QueryList<any>;
 
   constructor(
-    private spellService: SpellService,
-    public routingService: RoutingService,
+    spellService: SpellService,
+    routingService: RoutingService,
     public tokenService: TokenService,
-    private route: ActivatedRoute,
-    private warning: WarningsService,
-    private campaignService: CampaignService,
-    private globalUrlParams: GlobalUrlParamsService
-  ) { }
-
-  ngOnInit(): void {
-    this.paramSubscription = this.route.params.subscribe(
-      params => {
-        this.spellService.campaignList(params.campaign)
-          .pipe(first())
-          .pipe(tap((spells: SpellObject[]) => this.panelIsOpenArray = spells.map(spell => true)))
-          .subscribe(
-            (spells: SpellObject[]) => this.spells = spells.sort((spell1, spell2) => spell1.name < spell2.name ? -1 : 1),
-            error => this.routingService.routeToErrorPage(error)
-          );
-
-
-        this.campaignService.readByParam(params.campaign) //TODO Replace with subscription to globalurlparams
-          .pipe(first())
-          .subscribe(
-            (campaign_details: {name: string, pk:number}) => this.campaign_details = campaign_details,
-            error => this.warning.showWarning(error)
-          );        
-      },
-      error => this.warning.showWarning(error) 
-    );
+    route: ActivatedRoute,
+    warning: WarningsService,
+    globalUrlParams: GlobalUrlParamsService
+  ) { 
+    super(
+      spellService,
+      route,
+      routingService,
+      warning,
+      globalUrlParams
+    )
   }
 
   ngAfterViewInit(): void{
@@ -77,12 +59,6 @@ export class SpellsComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  addSpell(){
-    const newSpell = new SpellObject();
-    newSpell.name = "New Spell";
-    this.spells.push(newSpell);
-  }
-
   selectClass(className: String){
     const isAlreadySelected = this.selectedClasses.includes(className);
     if (!isAlreadySelected){
@@ -96,13 +72,5 @@ export class SpellsComponent implements OnInit, AfterViewInit, OnDestroy {
     const playerClasses : SpellPlayerClassConnection[] = spell.player_class_connections;
     const hasClass = playerClasses.some((connection: SpellPlayerClassConnection) => (this.selectedClasses.includes(connection.player_class_details.name)));
     return hasClass;
-  }
-
-  onSpellDelete(index: number){
-    this.spells.splice(index, 1);
-  }
-
-  ngOnDestroy(): void{
-    if(this.paramSubscription) this.paramSubscription.unsubscribe();
   }
 }

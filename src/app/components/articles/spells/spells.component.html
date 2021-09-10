@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="spells; else loading" class="container">
+    <article *ngIf="articles; else loading" class="container">
         <h1 class="text-center mb-3">
             Spells
             <span 
@@ -13,14 +13,14 @@
 
 
         <!-- Spells -->
-        <div *ngFor="let spell of spells; let i = index">
+        <div *ngFor="let spell of articles; let i = index">
             <app-spell
             #spellElements
             [id]="spell.name.replaceAll(' ', '-').replaceAll('\'', '')"
             [index] = "i"
             [cardData] = "spell"
-            [campaign_details] = "campaign_details"
-            (cardDelete) = "onSpellDelete(i)"
+            [campaign] = "campaign"
+            (cardDelete) = "onArticleDelete(i)"
             (classSelect) = "selectClass($event)"
             *ngIf="hasSelectedClasses(spell)"
             ></app-spell>
@@ -29,14 +29,14 @@
 
         <!-- Insert new Spell -->
         <div class="expand row justify-content-center" *ngIf="this.tokenService.isAdmin()">
-            <div class="btn btn-primary" (click)="addSpell()">
+            <div class="btn btn-primary" (click)="addArticle()">
                 <i class="fa fa-3x fa-plus pointer" title="Add Spell"></i>
             </div>
         </div>
 
-        <div class="btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign_details.name})}}">
+        <a class="btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign.name})}}">
             Back To Frontpage
-        </div>
+        </a>
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
