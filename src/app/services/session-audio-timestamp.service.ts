@@ -20,6 +20,6 @@ export class SessionAudioTimestampService extends GenericObjectService{
 
   @TransformArrayObservable(TimestampObject)
   getTimestamps(campaign: string, isMainSessionInt: number, sessionNumber: number): Observable<Timestamp[]>{
-    return this.http.get<Timestamp[]>(`${this.baseUrl}/${campaign}/${isMainSessionInt}/${sessionNumber}`);
+    return this.http.get<Timestamp[]>(`${this.baseUrl}/${campaign}/${isMainSessionInt}/${sessionNumber}/`);
   }
 }
