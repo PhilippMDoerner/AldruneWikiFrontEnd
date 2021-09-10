@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Navigation, NavigationEnd, NavigationStart, Params, Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
-import { filter, first, tap } from 'rxjs/operators';
+import { filter, first, skip, tap } from 'rxjs/operators';
 import { CampaignOverview } from '../models/campaign';
 import { CampaignService } from './campaign.service';
 import { RoutingService } from './routing.service';
@@ -26,6 +26,7 @@ export class GlobalUrlParamsService {
     private urlLocation: Location
   ) { 
     this.currentCampaignSet
+      .pipe(skip(1))//The 
       .subscribe(() => this.updateCurrentlySelectedCampaignFromRoute());
 
     this.autoUpdateCampaignSet()
@@ -97,12 +98,14 @@ export class GlobalUrlParamsService {
     return !hasCampaignsLoaded;
   }
   
-
+  //This is called twice during initialization, once after campaign set has been loaded 
+  //and once after the the first routing has finished, as the routing will trigger onRouteChangeEnd which 
   async updateCurrentlySelectedCampaign(newCampaignName: string): Promise<void>{
-    console.log(`Updating from ${this.currentCampaign.value?.name} to new campaign ${newCampaignName}`);
+    const isAlreadySelected: boolean = newCampaignName === this.currentCampaign.value?.name;
+    const hasNotYetLoadedCampaignSet: boolean = this.currentCampaignSet.value == null;
+    if(isAlreadySelected || hasNotYetLoadedCampaignSet) return;
 
-    if(newCampaignName === this.currentCampaign.value?.name) return;
-    console.log("Got past check, actually updating now");
+    console.log(`Updating from ${this.currentCampaign.value?.name} to new campaign ${newCampaignName}`);
 
     const currentlySelectedCampaign: CampaignOverview = await this.findCampaignByName(newCampaignName);
     this.currentCampaign.next(currentlySelectedCampaign);
