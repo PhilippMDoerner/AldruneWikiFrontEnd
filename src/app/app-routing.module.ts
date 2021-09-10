@@ -441,7 +441,7 @@ const campaignRoutes: CampaignRoute[] = [
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign`,
-		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/${Constants.defaultMapName}`,
+		component: MapComponent,
 		data:{ name: "default-map", requiredRole: CampaignRole.GUEST},
 		canActivate: [CampaignGuardService]
 	},
