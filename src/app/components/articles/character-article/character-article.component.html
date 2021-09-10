@@ -28,7 +28,7 @@
                     {{ articleData.race }}
                     {{ createPlayerClassString() }}
                     <span *ngIf="articleData.organization"> of the 
-                        <a routerLink="{{ routingService.getRoutePath('organization', {name: articleData.organization_details.name, campaign: campaign}) }}">
+                        <a routerLink="{{ routingService.getRoutePath('organization', {name: articleData.organization_details.name, campaign: campaign.name}) }}">
                             {{ articleData.organization_details.name }}
                         </a>
                     </span> 
@@ -42,7 +42,7 @@
                     <a routerLink="{{ routingService.getRoutePath('location', {
                             name: articleData.current_location_details.name,
                             parent_name: articleData.current_location_details.parent_location,
-                            campaign: campaign
+                            campaign: campaign.name
                         }) 
                     }}">
                     
@@ -78,7 +78,7 @@
         <div class="mb-5">
             <app-object-list    
             [articleType]="'item'" 
-            [createLink]="routingService.getRoutePath('item-character-create', {character_name: articleData.name, campaign: campaign})"
+            [createLink]="routingService.getRoutePath('item-character-create', {character_name: articleData.name, campaign: campaign.name})"
             [heading]="'Items of Note'"
             [items]="articleData.items"
             ></app-object-list>
@@ -87,14 +87,13 @@
         <!-- Encounters -->
         <app-encounter-accordion 
         [encounters]="articleData.encounters" 
-        [capaign]="campaign"
         [articleCharacter]="articleData"
         ></app-encounter-accordion>
 
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('character-overview', {campaign: campaign})"
+        [link]="routingService.getRoutePath('character-overview', {campaign: campaign.name})"
         [label]="'Back to Characters'"
         [deleteMessage]="'Delete '+articleData.name+'?'"
         ></app-article-footer>
