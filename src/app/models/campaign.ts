@@ -9,6 +9,8 @@ interface BaseCampaignData{
     pk?: number;
     background_image?: string;
     icon?: string;
+    default_map?: number;
+    default_map_details?: {pk: number, name: string};
 }
 
 export interface Campaign extends BaseCampaignData{
@@ -33,6 +35,8 @@ export class CampaignObject implements Campaign{
     subtitle: string;
     background_image: string;
     icon: string;
+    default_map?: number;
+    default_map_details?: {pk: number, name: string};
 
     members?: User[];
     admins?: User[];
