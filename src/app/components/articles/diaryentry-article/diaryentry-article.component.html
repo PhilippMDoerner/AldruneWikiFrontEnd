@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="articleData; else loading" class="container">
+    <article *ngIf="articleData && campaign; else loading" class="container">
         <div class="row m-0">
             <div class="col-12 d-flex justify-content-end">
                 <app-edit-toggle 
@@ -56,6 +56,7 @@
         <!-- DiaryEntry Text In Encounters -->
         <app-diary-entry-encounter-list
         [diaryEntry]="articleData"
+        [campaign]="campaign"
         ></app-diary-entry-encounter-list>
 
         <!-- Next/Prior Diaryentry Buttons -->
