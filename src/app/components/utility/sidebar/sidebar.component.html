@@ -13,7 +13,7 @@
             <a class="pl-0" routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaign?.name}) }}">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <img class="campaign-icon"
-                    [src]="constants.wikiUrl + currentCampaign?.icon" alt="..."
+                    [src]="currentCampaign?.icon" alt="..."
                     />
                     <span class="ml-2 on-hover-show">{{currentCampaign?.name}}</span>
                 </h3>
