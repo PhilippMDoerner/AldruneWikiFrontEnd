@@ -49,8 +49,6 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
      *      --> loadArticleData
      */
     ngOnInit(): void{
-        console.log(this);
-
         this.globalUrlParams.getCampaigns()
             .pipe(
                 filter((campaigns: CampaignOverview[]) => campaigns != null),
