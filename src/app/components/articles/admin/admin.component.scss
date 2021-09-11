@@ -1,5 +1,7 @@
 .usertable .row{
     line-height: 1.2;
+    margin-left: -15px;
+    margin-right: -15px;
 }
 
 .usertable .fa-trash{
@@ -18,4 +20,10 @@
 
 .warning{
     background-color: #936512 !important;
+}
+
+@media(max-width: 768px){
+    .hide-on-mobile{
+        display: none !important;
+    }
 }

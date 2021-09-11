@@ -46,16 +46,6 @@ export class UserRowComponent implements OnInit {
     )
   }
 
-  updateUserAdminRights(): void{
-    this.user.is_staff = this.adminInput.nativeElement.checked;
-    this.user.is_superuser = this.suInput.nativeElement.checked;
-    
-    this.userService.updateUserAdminState(this.user).pipe(first()).subscribe(
-      (updatedUser: UserObject) => this.user = updatedUser,
-      error => this.warnings.showWarning(error)
-    )
-  }
-
   //GROUPS
   isUserInGroup(groupPk: number): boolean{
     return this.user.groups.includes(groupPk);

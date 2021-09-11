@@ -1,37 +1,15 @@
 <div class="py-2 row">
     <!-- Username Column -->
-    <div class="col-sm-3 col-6 d-flex align-items-center">
+    <div class="col-md-3 col-4 p-0 d-flex align-items-center">
         <span class="ml-3">
             {{user.username}}
             <span title="Deleted/Deactivated" *ngIf="!user.is_active"> (†) </span>
         </span>
     </div>
 
-    <!-- is_staff checkbox Column-->
-    <div class="col-sm-1 col-3 d-flex align-items-center">
-        <input 
-        type="checkbox" 
-        [checked]="user.is_staff"
-        [disabled]="!tokenService.isSuperUser()" 
-        #isAdminInput 
-        (change)="updateUserAdminRights()"
-        >
-    </div>
-
-    <!-- is admin checkbox Columnn -->
-    <div class="col-sm-1 col-3 d-flex align-items-center">
-        <input 
-        type="checkbox" 
-        [checked]="user.is_superuser" 
-        [disabled]="!tokenService.isSuperUser()"
-        #isSUInput 
-        (change)="updateUserAdminRights()"
-        >
-    </div>
-
     <!-- Group Column -->
-    <div class="col-sm-3 col-6 d-flex flex-column justify-content-center hide-container">
-        <span *ngFor="let groupPk of user.groups" class="badge cursor-default bg-dark border-white vanish-container">  
+    <div class="col-md-5 col-6 p-0 d-flex flex-column justify-content-center hide-container">
+        <span *ngFor="let groupPk of user.groups" class="badge cursor-default bg-dark border-white vanish-container hide-overflow">  
             {{ getGroupName(groupPk) }} 
             <span class="fa fa-times icon vanish-icon" (click)="removeUserFromGroup(groupPk)"></span>
         </span>
@@ -39,12 +17,16 @@
     </div>
 
     <!-- Email Column -->
-    <div class="col-sm-3 col-6 align-items-center" [ngClass]="{'d-none': isDeleteState, 'd-flex': !isDeleteState}">
+    <div class="col-md-3 p-0 align-items-center hide-on-mobile" [ngClass]="{'d-none': isDeleteState, 'd-flex': !isDeleteState}">
         <span class="d-block text-break"> {{user.email}} </span>
     </div>
 
     <!-- Delete Column -->
-    <div class="d-flex align-items-center justify-content-center" [ngClass]="{'col-sm-1 col-3': !isDeleteState, 'col-sm-4 col-12': isDeleteState}" *ngIf="user.is_active">
+    <div 
+    class="d-flex p-0  align-items-center justify-content-center" 
+    [ngClass]="{'col-1': !isDeleteState, 'col-md-4 col-12': isDeleteState}" 
+    *ngIf="user.is_active"
+    >
         <span *ngIf="!isDeleteState; else userDelete" class="fa fa-trash icon" (click)="toggleDeleteState()" placement="top" [ngbTooltip]="'Delete user ?'"></span>
     </div>
 </div>

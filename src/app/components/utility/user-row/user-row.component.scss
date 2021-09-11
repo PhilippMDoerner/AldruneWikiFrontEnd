@@ -22,3 +22,14 @@
 .cursor-default{
     cursor: default;
 }
+
+.hide-overflow{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media(max-width: 768px){
+    .hide-on-mobile{
+        display: none !important;
+    }
+}
