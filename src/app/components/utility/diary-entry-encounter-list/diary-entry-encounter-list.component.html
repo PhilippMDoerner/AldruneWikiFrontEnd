@@ -28,13 +28,13 @@
             <!-- Encounters -->
             <app-diary-entry-encounter
             #encounters
-            *ngIf="!isEncounterUpdating[encounterIndex] else waiting;"
+            *ngIf="!isEncounterUpdating[encounterIndex] && campaign else waiting;"
             class="col-12 px-0"
             [cardData]="encounter"
             [index]="encounterIndex"
             [cutEncounterIndex]="cutEncounterIndex"
             [diaryEntryView]="diaryEntryView"
-            [campaign_details]="diaryEntry.campaign_details"
+            [campaign]="campaign"
             (cardDelete)="deleteEncounter(encounterIndex)"
             (cardCreate)="onEncounterCreate($event)"
             (encounterOrderIncrease)="onEncounterOrderIncrease(encounterIndex)"

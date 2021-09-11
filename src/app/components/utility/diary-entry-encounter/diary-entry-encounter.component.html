@@ -1,4 +1,5 @@
-<div 
+<div
+*ngIf="campaign"
 class="container" 
 [ngClass]="{'highlight encounter': !diaryEntryView, 'mb-3': diaryEntryView, 'isBeingCutOut': cutEncounterIndex === index}"
 #card

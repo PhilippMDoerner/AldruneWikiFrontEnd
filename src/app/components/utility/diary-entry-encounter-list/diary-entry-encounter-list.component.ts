@@ -2,9 +2,9 @@ import { AfterViewInit, Component, Input, OnInit, QueryList, ViewChildren } from
 import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
-import { CampaignService } from 'src/app/services/campaign.service';
 import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -20,6 +20,8 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
   //TODO: Create a mixin for lists
 
   @Input() diaryEntry: DiaryEntryObject;
+  @Input() campaign: CampaignOverview;
+
   @ViewChildren("encounters") encounterElements: QueryList<any>;
   encounters: EncounterObject[] = [];
   isEncounterUpdating: boolean[] = [];
@@ -33,10 +35,11 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     private routingService: RoutingService,
     private route: ActivatedRoute,
     private encounterService: EncounterServiceService,
-    private campaignService: CampaignService,
   ) { super() }
 
   ngOnInit(): void{
+    console.log(`Campaign in list is ${this.campaign.name}`)
+
     const hasDisplayModeParam = !(this.route.snapshot.params['displayMode'] == null);
     this.diaryEntryView = (hasDisplayModeParam) ? this.route.snapshot.params['displayMode'] === "diaryEntry" : true;
 
@@ -226,7 +229,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
 
   async swapEncountersInDb(encounter1_pk: number, encounter2_pk: number): Promise<EncounterObject[]>{
     //Ensure you don't trigger unique-together db-constraint by shifting/unshifting the encounter's order_index
-    const campaignName = this.diaryEntry.campaign_details.name;
+    const campaignName = this.campaign.name;
     const swappingEncountersPromise: Promise<EncounterObject[]> = this.encounterService.swapEncounterOrder(campaignName, encounter1_pk, encounter2_pk).toPromise();
 
     return swappingEncountersPromise;
@@ -253,7 +256,7 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
 
     this.isUpdating = true;
     
-    this.encounterService.cutInsertEncounter(this.diaryEntry.campaign_details.name, encounter, newOrderIndex).pipe(first()).subscribe(
+    this.encounterService.cutInsertEncounter(this.campaign.name, encounter, newOrderIndex).pipe(first()).subscribe(
       reorderedEncounters => {
         this.encounters = reorderedEncounters;
         this.isUpdating = false;

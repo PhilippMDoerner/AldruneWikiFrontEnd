@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
 import { Constants, OverviewType } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
 import { EncounterConnection, EncounterConnectionObject } from 'src/app/models/encounterconnection';
 import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
@@ -31,11 +32,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
 
   @ViewChild('card') card: ElementRef;
 
-  formlyFields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "title"}),
-    this.formlyService.genericSelect({key: "location", label: "Encounter Location", overviewType: OverviewType.Location, required: false, campaign: this.campaign.name}),
-    this.formlyService.genericTextField({key: "description", required: true}),
-  ];
+  formlyFields: FormlyFieldConfig[];
   //TODO: Implement for the compare form container to display only the fields that differ
   //TODO: Implement for the compare form container to highlight text differences in the server version
   
@@ -69,6 +66,14 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
       encounterService,
       route
     ); 
+  }
+
+  getFormlyFieldConfigurations(campaign: CampaignOverview): FormlyFieldConfig[]{
+    return [
+      this.formlyService.genericInput({key: "title"}),
+      this.formlyService.genericSelect({key: "location", label: "Encounter Location", overviewType: OverviewType.Location, required: false, campaign: campaign.name}),
+      this.formlyService.genericTextField({key: "description", required: true}),
+    ];
   }
 
 
