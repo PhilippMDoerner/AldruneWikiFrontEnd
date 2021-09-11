@@ -6,7 +6,7 @@ import { OverviewService } from 'src/app/services/overview.service';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { RoutingService } from 'src/app/services/routing.service';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { CharacterService } from 'src/app/services/character/character.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
@@ -31,7 +31,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     character: {
       image: `/assets/overview_images/characters.jpg`,
       heading: "Characters",
-      processing: null,
+      processing: (listItems: OverviewItemObject[]) => this.processCharacterOverviewItems(listItems),
       overviewTypeEnum: OverviewType.Character
     },
     creature: {
@@ -43,7 +43,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     diaryentry: {
       image: `/assets/overview_images/diaryentries.png`,
       heading: "Diaryentries",
-      processing: this.processDiaryentryOverviewItems,
+      processing: (listItems: OverviewItemObject[]) => this.processDiaryentryOverviewItems(listItems),
       overviewTypeEnum: OverviewType.Diaryentry
     },
     item: {
@@ -55,7 +55,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     location: {
       image: `/assets/overview_images/locations.jpg`,
       heading: "Locations",
-      processing: this.processLocationOverviewItems,
+      processing: (listItems: OverviewItemObject[]) => this.processLocationOverviewItems(listItems),
       overviewTypeEnum: OverviewType.Location
     },
     organization: {
@@ -93,24 +93,19 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     this.overviewTypeName = urlSplit[urlSplit.length - 2];
     const configs: any = this.overviewTypeMetaData[this.overviewTypeName];
 
-    const listItemObs: Observable<OverviewItem[]> = this.overviewService.getCampaignOverviewItems(this.campaign, configs.overviewTypeEnum);
-    listItemObs.pipe(first()).subscribe(
-      (listItems: OverviewItemObject[]) => {
-        this.listItems = listItems;
-
-        const processingFunction = configs.processing;
-        if(processingFunction != null) processingFunction(this);
-      }, 
-      error => this.routingService.routeToErrorPage(error)
-    );
-
-    if(this.overviewTypeName === this.characterOverview){
-      this.characterService.getPlayerCharacters(this.campaign).pipe(first()).subscribe(
-        (playerCharacters: OverviewItemObject[]) => this.playerCharacters = playerCharacters,
-        error => this.routingService.routeToErrorPage(error)
+    this.overviewService.getCampaignOverviewItems(this.campaign, configs.overviewTypeEnum)
+      .pipe(
+        first(),
+        map((listItems: OverviewItemObject[]) => {
+          const processingFunction = configs.processing;
+          const hasProcessingFunction = processingFunction != null;
+          return hasProcessingFunction ? processingFunction(listItems) : listItems;
+        })
       )
-    }
-    
+      .subscribe(
+        (listItems: OverviewItemObject[]) => this.listItems = listItems, 
+        error => this.routingService.routeToErrorPage(error)
+      );    
   }
 
   ngAfterViewInit(): void{
@@ -133,10 +128,24 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     this.routingService.routeToApiObject(firstFilteredListItem);
   }
 
-  processDiaryentryOverviewItems(context: this): void{
-    context.listItems.forEach( 
-      (diaryEntryItem: OverviewItemObject) => diaryEntryItem.name_full = context.buildDiaryEntryNameForList(diaryEntryItem)
+  processCharacterOverviewItems(characterListItems: OverviewItemObject[]): OverviewItemObject[]{
+    const playerCharacters: OverviewItemObject[] = [];
+    const nonPlayerCharacters: OverviewItemObject[] = [];
+
+    characterListItems.forEach(
+      (item: OverviewItemObject) => item.player_character ? playerCharacters.push(item) : nonPlayerCharacters.push(item)
     );
+
+    this.playerCharacters = playerCharacters;
+
+    return nonPlayerCharacters;
+  }
+
+  processDiaryentryOverviewItems(diaryentryListItems: OverviewItemObject[]): OverviewItemObject[]{
+    diaryentryListItems.forEach( 
+      (item: OverviewItemObject) => item.name_full = this.buildDiaryEntryNameForList(item)
+    );
+    return diaryentryListItems;
   }
   
   /**
@@ -144,10 +153,10 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
    * any parent name at the start.
    * @param {this} context - This component, needed to grant access despite the function being assigned to an object.
    */
-  processLocationOverviewItems(context: this): void{
-    context.listItems.forEach(
+  processLocationOverviewItems(locationItems: OverviewItemObject[]): OverviewItemObject[]{
+    locationItems.forEach(
       (locationItem: OverviewItemObject) => {
-        const parents: OverviewItemObject[] = context.getParentLocations(locationItem, context);
+        const parents: OverviewItemObject[] = this.getParentLocations(locationItem);
         const parentNames: string[] = parents.map((location: OverviewItemObject) => location.name).reverse();
         const locationPath: string = parentNames.join(" - ");
 
@@ -155,17 +164,18 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
       }
     );
 
-    context.sortLocationsByNameFull(context);
+    this.sortLocationsByNameFull(locationItems);
+    return locationItems;
   }
 
-  getParentLocations(location: OverviewItemObject, context: this): OverviewItemObject[]{
+  getParentLocations(location: OverviewItemObject): OverviewItemObject[]{
     const parents: OverviewItemObject[] = [location];
 
     var currentLocation: OverviewItemObject = location; 
 
     while(currentLocation.parent_location_details.pk != null){ // aka hasParentLocation
       const parentLocationPk: number = currentLocation.parent_location_details.pk;
-      const parentLocation: OverviewItemObject = context.getListItemByPk(parentLocationPk);
+      const parentLocation: OverviewItemObject = this.getListItemByPk(parentLocationPk);
       parents.push(parentLocation);
 
       currentLocation = parentLocation;
@@ -181,8 +191,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     return targetItem;
   }
 
-  sortLocationsByNameFull(context: this){
-    const locations: OverviewItemObject[] = context.listItems;
+  sortLocationsByNameFull(locations: OverviewItemObject[]){
     locations.sort((loc1: OverviewItemObject, loc2: OverviewItemObject) => (loc1.name_full > loc2.name_full) ? 1 : -1);
   }
 
@@ -202,7 +211,6 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     
     return `${startWithSessionNumber} ${daysCoveredByEntry} ${title}`;
   }
-
 
   padNumber(num: number, padCount: number, paddingCharacter="0"): string{
     const overlengthString: string = paddingCharacter.repeat(padCount) + num;

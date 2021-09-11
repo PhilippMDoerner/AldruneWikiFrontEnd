@@ -72,7 +72,6 @@
                     <ul class="mb-0">
                         <span *ngFor="let characterEntry of characterLetterEntries.value" class="px-0">
                             <li 
-                            *ngIf="!characterEntry.player_character"
                             [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                             >
                                 <a routerLink="{{ characterEntry.getAbsoluteRouterUrl() }}"> 
