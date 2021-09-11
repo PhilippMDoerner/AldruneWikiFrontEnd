@@ -9,6 +9,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { first } from 'rxjs/operators';
 import { CharacterService } from 'src/app/services/character/character.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 
 @Component({
   selector: 'app-article-overview',
@@ -23,6 +24,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   paramSubscription: Subscription;
 
   @ViewChildren("filter") filterField: QueryList<ElementRef>;
+  @ViewChild('overviewMainCard') articleElement: ElementRef;
 
   constants: any = Constants;
   overviewTypeMetaData: any = {
@@ -110,6 +112,12 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     }
     
   }
+
+  ngAfterViewInit(): void{
+    if(!this.articleElement?.nativeElement) return;
+
+    animateElement(this.articleElement.nativeElement, 'fadeIn');
+}
 
   //This function exists only so that it triggers the NgClass of the listItems in the template
   filterListItems(){}
