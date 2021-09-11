@@ -1,4 +1,4 @@
-import { Directive, OnDestroy, OnInit } from "@angular/core";
+import { AfterViewInit, Directive, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { BehaviorSubject, Subscription } from "rxjs";
 import { filter, first } from "rxjs/operators";
@@ -10,10 +10,11 @@ import { GenericService } from "src/app/services/generic.service";
 import { GlobalUrlParamsService } from "src/app/services/global-url-params.service";
 import { RoutingService } from "src/app/services/routing.service";
 import { WarningsService } from "src/app/services/warnings.service";
+import { animateElement } from "./animationDecorator";
 import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 
 @Directive()
-export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy{
+export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnInit, AfterViewInit, OnDestroy{
     constants = Constants;
     parameter_subscription: Subscription;
     globalParamSubscription: Subscription;
@@ -27,6 +28,8 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
     textfieldFormStateSubject: BehaviorSubject<string> = new BehaviorSubject(Constants.displayState);
 
     deleteRoute: { routeName: string, params: any }; //Data to generate route to go to to if deletion of article succeeds
+
+    @ViewChild('article') articleElement: ElementRef;
 
     constructor(
         public articleService: GenericObjectService | GenericService,
@@ -46,6 +49,8 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
      *      --> loadArticleData
      */
     ngOnInit(): void{
+        console.log(this);
+
         this.globalUrlParams.getCampaigns()
             .pipe(
                 filter((campaigns: CampaignOverview[]) => campaigns != null),
@@ -58,15 +63,21 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
             });
     }
 
+    ngAfterViewInit(): void{
+        if(!this.articleElement?.nativeElement) return;
+
+        animateElement(this.articleElement.nativeElement, 'fadeIn')
+            .then(_ => this.onInitAnimationEnd());
+    }
+    
+    onInitAnimationEnd(): void{}
+
     /**
      * @description Fired after it has been assured that campaignoverview set has been loaded. "this.campaign" is set within this callback
      * as is the loading of article data. If you wish to work with campaign data, do it after this callback.
      */
     async afterBackgroundDataLoaded(campaign: CampaignOverview): Promise<void>{
         this.campaign = campaign;
-
-        console.log("Got campaign, now loading url parameters")
-        console.log(this.campaign);
 
         const parameterSubcsriptionNeedsToBeCreated = this.parameter_subscription == null;
         if(!parameterSubcsriptionNeedsToBeCreated) return;
@@ -76,7 +87,6 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
     }
 
     async onArticleRouteChange(campaign: CampaignOverview, params: Params){
-        console.log(`Setting up try catch for load article data while loading is ${this.isLoadingArticleData}`)
         if(this.isLoadingArticleData) return;
 
         this.updateOnDeleteRouteParameters(campaign, params);
@@ -96,8 +106,6 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
      * @description loads the data for the current article. Is fired either when the route changes
      */
     async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-        console.log(`Attempting loading Article Data for campaign ${campaign.name} with params:`);
-        console.log( this.getQueryParameter(params));
         const campaignName: string = campaign.name;
         if(campaignName == null) return;
 
