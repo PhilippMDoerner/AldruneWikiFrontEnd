@@ -131,7 +131,7 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
 
         const executionContext = this;
 
-        this.articleService.update(userModel.pk, userModel).pipe(first()).subscribe(
+        this.articleService.patch(userModel.pk, userModel).pipe(first()).subscribe(
             (response: ApiObject) => this.onUpdateSuccess(response, executionContext),
             (errorResponse: any) => this.onUpdateError(errorResponse, executionContext)
         )
