@@ -20,6 +20,7 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
     userModelClass: any;
 
     formState: string;
+    formlyFields: FormlyFieldConfig[];
     
     @Input() isOpen: boolean = false;
     @Input() cardData: any; //The general data of the card
@@ -27,8 +28,6 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
     @Input() campaign: CampaignOverview;
 
     card: ElementRef;
-
-    formlyFields: FormlyFieldConfig[];
 
     @Output() cardDelete: EventEmitter<number>; //This doesn't work when usingInjectable because it needs the output property, but 
 
@@ -48,6 +47,7 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
 
     ngOnInit(): void {
         this.determineCardStateOnInit();
+        this.getFormlyFieldConfigurations(this.campaign);
 
         if (this.isInCreateState()){
             this.isOpen = true;
@@ -58,6 +58,10 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
     determineCardStateOnInit(): void{
         const isForCreation: boolean = this.cardData.pk == null;
         this.formState = isForCreation ? this.constants.createState : this.constants.displayState;
+    }
+
+    getFormlyFieldConfigurations(campaign: CampaignOverview): FormlyFieldConfig[]{
+        return this.formlyFields;
     }
 
     createUserModel(): void{
