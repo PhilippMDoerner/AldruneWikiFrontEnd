@@ -78,19 +78,14 @@ export class CampaignUpdateComponent extends ArticleFormMixin {
   }
 
   onUpdateSuccess(updatedArticle: any, self: any){
-    this.routingService.routeToPath('home2', {campaign: updatedArticle.name});
+    this.routingService.routeToPath('campaign-admin', {campaign: updatedArticle.name});
 
-    this.campaignService.campaignList().pipe(first()).subscribe(
-      (campaigns: CampaignOverview[]) => this.globalUrlParam.updateCampaignSet(campaigns)
-    );
+    this.globalUrlParam.autoUpdateCampaignSet();
   }
 
-  onCreationSuccess(createdArticle: any, self: ArticleFormMixin){
-    this.routingService.routeToPath('home2', {campaign: createdArticle.name});
-
-    this.campaignService.campaignList().pipe(first()).subscribe(
-      (campaigns: CampaignOverview[]) => this.globalUrlParam.updateCampaignSet(campaigns)
-    );
+  async onCreationSuccess(createdArticle: any, self: ArticleFormMixin){
+    await this.globalUrlParam.autoUpdateCampaignSet();
+    this.routingService.routeToPath('campaign-admin', {campaign: createdArticle.name});
   }
 
 }
