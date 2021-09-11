@@ -1,4 +1,4 @@
-import { Directive, OnDestroy, OnInit, QueryList, ViewChildren } from "@angular/core";
+import { Directive, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { Subscription } from "rxjs";
@@ -11,6 +11,7 @@ import { GenericService } from "src/app/services/generic.service";
 import { GlobalUrlParamsService } from "src/app/services/global-url-params.service";
 import { RoutingService } from "src/app/services/routing.service";
 import { WarningsService } from "src/app/services/warnings.service";
+import { animateElement } from "./animationDecorator";
 import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 
 @Directive()
@@ -30,8 +31,12 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
     articleStarterTitle = "New Article Item";
     articlesSortProperty = "name";
 
+    //For Scrolling feature
     @ViewChildren("articles") articleElements: QueryList<any>;
     articlesInitialScrollParameter = "articleTitle"
+
+    //For Animation Feature
+    @ViewChild('listArticle') listArticleElement: ElementRef;
 
     constructor(
         public articleService: GenericObjectService | GenericService,
@@ -68,7 +73,18 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
     ngAfterViewInit(): void{
         const articleTitle: string = this.route.snapshot.params[this.articlesInitialScrollParameter];
         this.scrollToArticleInQueryList(this.articleElements, articleTitle);
+
+        this.animateListArticle();
     }
+
+    animateListArticle(): void{
+        if(!this.listArticleElement?.nativeElement) return;
+
+        animateElement(this.listArticleElement.nativeElement, 'fadeIn')
+            .then(_ => this.onInitAnimationEnd());
+    }
+
+    onInitAnimationEnd(): void{}
 
     scrollToArticleInQueryList(articleQueryList: QueryList<any>, articleTitle: string){
         if (articleTitle == null) return;
@@ -91,9 +107,6 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
     async afterBackgroundDataLoaded(campaign: CampaignOverview): Promise<void>{
         this.campaign = campaign;
 
-        console.log("Got campaign, now loading url parameters")
-        console.log(this.campaign);
-
         const parameterSubcsriptionNeedsToBeCreated = this.parameterSubscription == null;
         if(!parameterSubcsriptionNeedsToBeCreated) return;
         
@@ -102,7 +115,6 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
     }
 
     async onArticleRouteChange(campaign: CampaignOverview, params: Params){
-        console.log(`Setting up try catch for load article data while loading is ${this.isLoadingArticles}`)
         if(this.isLoadingArticles) return;
 
         this.isLoadingArticles = true;
@@ -120,8 +132,6 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
      * @description loads the data for the current article. Is fired either when the route changes
      */
     async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-        console.log(`Attempting loading Article Data for campaign ${campaign.name}:`);
-
         const campaignName: string = campaign.name;
         if(campaignName == null) return;
 
