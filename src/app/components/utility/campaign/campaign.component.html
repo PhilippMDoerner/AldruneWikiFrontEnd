@@ -10,12 +10,16 @@
         </div>
 
         <!-- Heading -->
-        <div class="row">
+        <div class="row mb-5">
             <h1 class="text-center col"> {{ articleData.name }} </h1>
         </div>
 
         <!-- Image Fields of Campaign -->
-        <div class="card my-3 mx-0 py-3 row flex-row">
+        <h1> 
+            <span class="fas fa-cog"></span>
+            Campaign Settings
+        </h1>
+        <div class="card mb-5 mx-0 py-3 row flex-row">
             <div class="col-sm-6 d-flex flex-column align-items-center">
                 <h3 class="text-center">Background</h3>
                 <img title="Campaign background image" class="gallery-image" [src]="articleData.background_image" alt="Background image of this campaign">
@@ -24,12 +28,25 @@
                 <h3 class="text-center">Icon</h3>
                 <img title="Campaign Icon" class="gallery-image" [src]="articleData.icon" alt="Icon of this campaign">
             </div>
+
+            <div class="col-12 row mt-4">
+                <strong class="col-sm-3 col-6">Default Map: </strong>
+                <div class="col-sm-9 col-6">{{ campaign.default_map_details.name }}</div>
+
+                <strong class="col-sm-3 col-6">Subtitle: </strong>
+                <div class="col-sm-9 col-6" [innerHtml]="campaign.subtitle"></div>
+            </div>
         </div>
 
 
         <!-- Members & Admins-->
+        <h1> 
+            <span class="fas fa-users-cog"></span> 
+            Campaign Members 
+        </h1>
+        
         <div class="mb-3 row">
-            <div class="col-sm-6 col-12">
+            <div class="col-sm-6 col-12 mb-3">
                 <div class="p-3 card">
                     <h3 class="text-center">
                         <span class="fas fa-user-secret"></span>
@@ -59,7 +76,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-6 col-12">
+            <div class="col-sm-6 col-12 mb-3">
                 <div class="p-3 card">
                     <h3 class="text-center">
                         <span class="fas fa-users"></span>
@@ -87,7 +104,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-6 col-12">
+            <div class="col-sm-6 col-12 mb-3">
                 <div class="p-3 card">
                     <h3 class="text-center">
                         <span class="fas fa-users"></span>
