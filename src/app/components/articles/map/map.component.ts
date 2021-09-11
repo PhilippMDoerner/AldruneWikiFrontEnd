@@ -76,8 +76,9 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
 
   setInitialMapChoiceValue(): void{
     const queryParameters: Params = this.route.snapshot.params;
-    const currentMapName: string = queryParameters.name;
-    console.log("Load da map "+currentMapName);
+    let currentMapName: string = queryParameters.name;
+    if (currentMapName == null) currentMapName = this.campaign.default_map_details.name;
+
     const currentMapIndex: number = this.getMapOptionIndex(currentMapName);
     const mapChoiceElement = this.getMapChoiceElement();
     mapChoiceElement.selectedIndex = currentMapIndex;
