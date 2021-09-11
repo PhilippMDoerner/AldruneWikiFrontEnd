@@ -1,4 +1,4 @@
-import { Directive, OnDestroy, OnInit } from "@angular/core";
+import { Directive, OnDestroy, OnInit, QueryList, ViewChildren } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { Subscription } from "rxjs";
@@ -29,6 +29,9 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
 
     articleStarterTitle = "New Article Item";
     articlesSortProperty = "name";
+
+    @ViewChildren("articles") articleElements: QueryList<any>;
+    articlesInitialScrollParameter = "articleTitle"
 
     constructor(
         public articleService: GenericObjectService | GenericService,
@@ -61,6 +64,25 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
             });
     }
     
+
+    ngAfterViewInit(): void{
+        const articleTitle: string = this.route.snapshot.params[this.articlesInitialScrollParameter];
+        this.scrollToArticleInQueryList(this.articleElements, articleTitle);
+    }
+
+    scrollToArticleInQueryList(articleQueryList: QueryList<any>, articleTitle: string){
+        if (articleTitle == null) return;
+        articleTitle = articleTitle.toLowerCase();
+
+        const targetArticle = articleQueryList.find( article => this.getArticleTitle(article).toLowerCase() == articleTitle);
+        if(targetArticle == null) return;
+
+        targetArticle.card.nativeElement.scrollIntoView();
+    }
+
+    getArticleTitle(article: any): string{
+        return article.cardData.title;
+    }
 
     /**
      * @description Fired after it has been assured that campaignoverview set has been loaded. "this.campaign" is set within this callback
@@ -127,7 +149,6 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
     onArticleLoadFinished(articles: ArticleObject[]): void{
         this.articles = articles;
     }
-
 
 
     //ARTICLE MODIFICATION LOGIC

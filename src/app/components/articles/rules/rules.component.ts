@@ -13,11 +13,11 @@ import { ArticleListMixin } from 'src/app/utils/functions/articleListMixin';
   styleUrls: ['./rules.component.scss']
 })
 export class RulesComponent extends ArticleListMixin implements OnInit, AfterViewInit {
- 
-  @ViewChildren("ruleElements") ruleComponents: QueryList<any>;
-
   articleModelClass = RuleObject;
   articleStarterTitle = "New Rule";
+
+  @ViewChildren("ruleElements") articleElements: QueryList<any>;
+  articlesInitialScrollParameter = "name";
 
   constructor(
     ruleService: RuleService,
@@ -34,22 +34,5 @@ export class RulesComponent extends ArticleListMixin implements OnInit, AfterVie
       warning,
       globalUrlParams
     )
-  }
-
-  ngAfterViewInit(): void{
-    const urlRuleName: string = this.route.snapshot.params["name"];
-
-    this.ruleComponents.changes.subscribe( 
-      (queryList: QueryList<any>) => this.scrollToRuleInQueryList(queryList, urlRuleName)
-    );
-  }
-
-  scrollToRuleInQueryList(queryList: QueryList<any>, ruleName: string){
-    const targetRuleComponent = queryList.find( ruleComponent => ruleComponent.cardData.name === ruleName );
-    const hasTargetSpell = targetRuleComponent != null;
-
-    if(hasTargetSpell){
-      targetRuleComponent.element.nativeElement.scrollIntoView();
-    }
   }
 }

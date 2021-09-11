@@ -23,7 +23,8 @@ export class SpellsComponent extends ArticleListMixin implements OnInit, AfterVi
 
   selectedClasses: String[] = []; 
 
-  @ViewChildren("spellElements") spellComponents: QueryList<any>;
+  @ViewChildren("spellElements") articleElements: QueryList<any>;
+  articlesInitialScrollParameter = "name";
 
   constructor(
     spellService: SpellService,
@@ -42,21 +43,8 @@ export class SpellsComponent extends ArticleListMixin implements OnInit, AfterVi
     )
   }
 
-  ngAfterViewInit(): void{
-    const urlSpellName: string = this.route.snapshot.params["name"];
-
-    this.spellComponents.changes.subscribe( 
-      (queryList: QueryList<any>) => this.scrollToSpellInQueryList(queryList, urlSpellName)
-    );
-  }
-
-  scrollToSpellInQueryList(queryList: QueryList<any>, spellName: string){
-    const targetSpellComponent = queryList.find( spellComponent => spellComponent.cardData.name === spellName );
-    const hasTargetSpell = targetSpellComponent != null;
-
-    if(hasTargetSpell){
-      targetSpellComponent.element.nativeElement.scrollIntoView();
-    }
+  getArticleTitle(spell: any){
+    return spell.cardData.name;
   }
 
   selectClass(className: String){
