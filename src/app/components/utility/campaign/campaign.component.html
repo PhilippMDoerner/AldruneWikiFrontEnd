@@ -14,9 +14,16 @@
             <h1 class="text-center col"> {{ articleData.name }} </h1>
         </div>
 
-        <div class="card my-3 p-3">
-            <h3 class="text-center">Background</h3>
-            <img title="None" class="gallery-image" [src]="articleData.background_image" alt="">
+        <!-- Image Fields of Campaign -->
+        <div class="card my-3 mx-0 py-3 row flex-row">
+            <div class="col-sm-6 d-flex flex-column align-items-center">
+                <h3 class="text-center">Background</h3>
+                <img title="Campaign background image" class="gallery-image" [src]="articleData.background_image" alt="Background image of this campaign">
+            </div>
+            <div class="col-sm-6 d-flex flex-column align-items-center">
+                <h3 class="text-center">Icon</h3>
+                <img title="Campaign Icon" class="gallery-image" [src]="articleData.icon" alt="Icon of this campaign">
+            </div>
         </div>
 
 
