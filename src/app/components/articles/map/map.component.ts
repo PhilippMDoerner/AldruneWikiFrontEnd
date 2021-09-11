@@ -62,10 +62,10 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   }
 
   getQueryParameter(params: Params): any {
-    const mapName: any = super.getQueryParameter(params);
-    if (mapName == null) return this.campaign.default_map_details.name;
+    const mapParameters: {name: string} = super.getQueryParameter(params);
+    if (mapParameters.name == null) mapParameters.name = this.campaign.default_map_details.name;
 
-    return {name: mapName};
+    return mapParameters;
   }
 
   ngAfterViewInit(){
