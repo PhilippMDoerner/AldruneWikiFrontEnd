@@ -112,7 +112,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     if(!this.articleElement?.nativeElement) return;
 
     animateElement(this.articleElement.nativeElement, 'fadeIn');
-}
+  }
 
   //This function exists only so that it triggers the NgClass of the listItems in the template
   filterListItems(){}
@@ -155,27 +155,27 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
    */
   processLocationOverviewItems(locationItems: OverviewItemObject[]): OverviewItemObject[]{
     locationItems.forEach(
-      (locationItem: OverviewItemObject) => {
-        const parents: OverviewItemObject[] = this.getParentLocations(locationItem);
+      (location: OverviewItemObject) => {
+        const parents: OverviewItemObject[] = this.getParentLocations(location, locationItems);
         const parentNames: string[] = parents.map((location: OverviewItemObject) => location.name).reverse();
         const locationPath: string = parentNames.join(" - ");
 
-        locationItem.name_full = locationPath;      
+        location.name_full = locationPath;      
       }
     );
 
-    this.sortLocationsByNameFull(locationItems);
+    //this.sortLocationsByNameFull(locationItems);
     return locationItems;
   }
 
-  getParentLocations(location: OverviewItemObject): OverviewItemObject[]{
+  getParentLocations(location: OverviewItemObject, listItems: OverviewItemObject[]): OverviewItemObject[]{
     const parents: OverviewItemObject[] = [location];
 
     var currentLocation: OverviewItemObject = location; 
 
     while(currentLocation.parent_location_details.pk != null){ // aka hasParentLocation
       const parentLocationPk: number = currentLocation.parent_location_details.pk;
-      const parentLocation: OverviewItemObject = this.getListItemByPk(parentLocationPk);
+      const parentLocation: OverviewItemObject = this.getListItemByPk(parentLocationPk, listItems);
       parents.push(parentLocation);
 
       currentLocation = parentLocation;
@@ -184,10 +184,10 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     return parents;
   }
 
-  getListItemByPk(pk: number): OverviewItemObject{
+  getListItemByPk(pk: number, listItems: OverviewItemObject[]): OverviewItemObject{
     if (pk == null) return null;
 
-    const targetItem: OverviewItemObject = this.listItems.find((item: OverviewItemObject) => item.pk === pk);
+    const targetItem: OverviewItemObject = listItems.find((item: OverviewItemObject) => item.pk === pk);
     return targetItem;
   }
 
