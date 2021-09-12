@@ -33,11 +33,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
 
   @ViewChild('card') card: ElementRef;
 
-  formlyFields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "title"}),
-    this.formlyService.genericSelect({key: "location", label: "Encounter Location", overviewType: OverviewType.Location, campaign: this.route.snapshot.params.campaign}),
-    this.formlyService.genericTextField({key: "description", required: true}),
-  ];
+  formlyFields: FormlyFieldConfig[] = [];
   //TODO: Implement for the compare form container to display only the fields that differ
   //TODO: Implement for the compare form container to highlight text differences in the server version
   

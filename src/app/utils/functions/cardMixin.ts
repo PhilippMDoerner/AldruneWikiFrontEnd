@@ -51,7 +51,7 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
 
     ngOnInit(): void {
         this.determineCardStateOnInit();
-        this.getFormlyFieldConfigurations(this.campaign);
+        this.formlyFields = this.getFormlyFieldConfigurations(this.campaign);
 
         if (this.isInCreateState()){
             this.isOpen = true;
