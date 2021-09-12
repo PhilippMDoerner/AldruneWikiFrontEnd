@@ -1,5 +1,10 @@
 <div class="main" #adminCard>
     <article *ngIf="true; else loading">
+        <div class="btn btn-secondary mb-3" routerLink="{{routingService.getRoutePath('campaign-overview')}}">
+            <span class="fas fa-globe-americas"></span>
+            Back To campaign overview
+        </div>
+
         <!-- Sections -->
         <div *ngFor="let table of tables; let tableIndex = index" class="mb-3">
             <!-- Section Heading -->
@@ -80,6 +85,11 @@
                 (formlyCancel)="createStateArray[tableIndex] = !createStateArray[tableIndex]"
                 ></app-formly-formcontainer>
             </div>
+        </div>
+
+        <div class="btn btn-secondary mb-3" routerLink="{{routingService.getRoutePath('campaign-overview')}}">
+            <span class="fas fa-globe-americas"></span>
+            Back To campaign overview
         </div>
     </article>
 </div>

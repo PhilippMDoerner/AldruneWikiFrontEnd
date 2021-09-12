@@ -4,6 +4,7 @@ import { first } from 'rxjs/operators';
 import { MarkerTypeService } from 'src/app/services/marker-type.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { PlayerClassService } from 'src/app/services/player-class.service';
+import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
@@ -46,6 +47,7 @@ export class ConfigTablesComponent implements OnInit {
     private markerTypeService: MarkerTypeService,
     private playerClassService: PlayerClassService,
     private warnings: WarningsService,
+    public routingService: RoutingService,
   ) { }
 
   ngOnInit(): void {
