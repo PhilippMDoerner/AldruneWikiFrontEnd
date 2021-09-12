@@ -70,8 +70,6 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
     }
 
     fetchUserModel(queryParameters: any): void{
-        console.log("Fetchusermodel");
-        console.log(queryParameters);
         if (queryParameters.name == null) throw `Invalid query Parameters exception. You're trying to fetch the user model
         of an article model without using the default query parameter "name", instead resorting to ${queryParameters}. 
         Please use "name" or overwrite "fetchUserModel"`;
