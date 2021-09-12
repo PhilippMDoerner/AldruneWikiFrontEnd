@@ -158,11 +158,6 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
   deleteEncounter(encounterIndex: number): void{
     const numberOfEncountersToDelete = 1;
     this.encounters.splice(encounterIndex, numberOfEncountersToDelete);
-
-    const hasNoEncounters = this.encounters.length === 0;
-    if(hasNoEncounters){
-      this.routingService.routeToPath('diaryentry-overview');
-    }
   }
 
   sortEncounters(){
