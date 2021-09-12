@@ -33,7 +33,11 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
 
   @ViewChild('card') card: ElementRef;
 
-  formlyFields: FormlyFieldConfig[];
+  formlyFields: FormlyFieldConfig[] = [
+    this.formlyService.genericInput({key: "title"}),
+    this.formlyService.genericSelect({key: "location", label: "Encounter Location", overviewType: OverviewType.Location, campaign: this.route.snapshot.params.campaign}),
+    this.formlyService.genericTextField({key: "description", required: true}),
+  ];
   //TODO: Implement for the compare form container to display only the fields that differ
   //TODO: Implement for the compare form container to highlight text differences in the server version
   
@@ -82,6 +86,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
 
   //TODO: Overhaul when specific data is loaded, ideally put some stuff like loading character choices or the like in an afterviewinit on the list component managing these cards
   createUserModel(): void{
+    console.log(this);
     this.userModel = new EncounterObject();
     this.userModel.campaign = this.campaign.pk;
     this.userModel.diaryentry = this.cardData.diaryentry;
