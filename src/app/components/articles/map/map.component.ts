@@ -71,6 +71,8 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(){
+    super.ngAfterViewInit();
+
     this.mapChoice.changes
       .pipe(first())
       .subscribe((components: QueryList<any>) => this.setInitialMapChoiceValue());
