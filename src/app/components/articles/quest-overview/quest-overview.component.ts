@@ -8,6 +8,7 @@ import { GlobalUrlParamsService } from 'src/app/services/global-url-params.servi
 import { QuestService } from 'src/app/services/quest.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
@@ -24,6 +25,8 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
   parameterSubscription: Subscription;
 
   private quest_subscription: Subscription;
+
+  @ViewChild('overviewMainCard') articleElement: ElementRef;
 
   constructor(
     private questService: QuestService,
@@ -58,6 +61,12 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
       },
       error => this.warning.showWarning(error)
     );
+  }
+
+  ngAfterViewInit(): void{
+    if(!this.articleElement?.nativeElement) return;
+
+    animateElement(this.articleElement.nativeElement, 'fadeIn');
   }
 
   groupQuestsByTaker(itemArray: QuestObject[]): Array<{key:string, value:QuestObject[]}>{
