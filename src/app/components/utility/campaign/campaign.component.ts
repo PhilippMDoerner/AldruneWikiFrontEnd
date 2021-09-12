@@ -38,11 +38,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
       sortProp: "username", 
       label: "User",
       overviewType: OverviewType.User,
-      disabledExpression: (selectOption: User) => {
-        const isAdmin = this.isInGroup(selectOption, this.articleData.admin_group_name);
-        const isMember = this.isInGroup(selectOption, this.articleData.member_group_name);
-        return isAdmin || isMember;
-      },
+      disabledExpression: (selectOption: User) => this.isInGroup(selectOption, this.articleData.member_group_name),
       tooltipMessage: "",
       warningMessage: "The user you selected is already member of this campaign"
     }),
