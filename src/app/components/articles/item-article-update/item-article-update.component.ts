@@ -73,7 +73,7 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin {
     if(this.isForAssociatedObjectCreation()){
       const itemOwnerName: string = this.route.snapshot.params.character_name;
     
-      this.characterService.readByParam(this.campaign, itemOwnerName).pipe(first()).subscribe(
+      this.characterService.readByParam(this.campaign, {name: itemOwnerName}).pipe(first()).subscribe(
         (itemOwner: CharacterObject) => this.userModel.owner = itemOwner.pk,
         error => this.routingService.routeToErrorPage(error)
       );

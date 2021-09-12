@@ -58,7 +58,7 @@ export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into 
   }
 
   createUserModel(latitude: number, longitude: number){
-    this.mapService.readByParam(this.campaign, this.mapName).pipe(first()).subscribe(
+    this.mapService.readByParam(this.campaign, {name: this.mapName}).pipe(first()).subscribe(
       (map: MapObject) =>{
         this.model = new MapMarkerObject();
         this.model.map = map.pk;

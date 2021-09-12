@@ -76,7 +76,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
   createMarkerModel(latitude: number, longitude: number){
     this.markerModel = new MapMarkerObject();
 
-    this.mapService.readByParam(this.campaign, this.mapName).pipe(first()).subscribe(
+    this.mapService.readByParam(this.campaign, {name: this.mapName}).pipe(first()).subscribe(
       (map: ExtendedMap) =>{
         this.markerModel.map = map.pk;
         this.markerModel.latitude = latitude;
