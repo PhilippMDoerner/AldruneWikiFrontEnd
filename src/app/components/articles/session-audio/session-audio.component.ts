@@ -11,6 +11,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
 @Component({
@@ -44,6 +45,7 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
   @ViewChild("audioSource") audioSourceChild2: ElementRef;
   @ViewChild("vimePlayer") vimePlayer: any; 
   @ViewChild("playerSection") playerSection: any;
+  @ViewChild('article') articleElement: ElementRef;
 
   constructor(
     route: ActivatedRoute,
@@ -67,6 +69,11 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
     this.create_timestamp_event_subscription = this.createTimestampEventSubject.subscribe(
       (timestampTime: number) => this.toggleTimestampCreateState()
     );
+  }
+
+  ngAfterViewInit(): void{
+    if(!this.articleElement?.nativeElement) return;
+    animateElement(this.articleElement.nativeElement, 'fadeIn');
   }
 
   onArticleLoadFinished(sessionAudio: SessionAudioObject){
