@@ -28,7 +28,7 @@ export class CampaignUpdateComponent extends ArticleFormMixin {
   creationCancelRoute = {routeName: "campaign-overview", params: {}};
 
   formlyFields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "name", isNameInput: true, required: true}),
+    this.formlyService.genericInput({key: "name", isNameInput: true, required: true, maxLength: 400}),
     this.formlyService.genericInput({key: "subtitle", isNameInput: false, required: false, maxLength: 400}),
     this.formlyService.genericSelect({key: "default_map", label: "Default Map", valueProp: "pk", overviewType: OverviewType.Map, campaign: this.campaign}),
     this.formlyService.singleFileField({key: "background_image", required: true}),

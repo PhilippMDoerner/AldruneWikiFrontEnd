@@ -3,9 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { BaseCampaignData, Campaign, CampaignObject } from 'src/app/models/campaign';
 import { PermissionGroup } from 'src/app/models/group';
 import { User, UserObject } from 'src/app/models/user';
 import { AdminService } from 'src/app/services/admin.service';
+import { CampaignService } from 'src/app/services/campaign.service';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { GroupService } from 'src/app/services/group.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -43,6 +46,18 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
   statistics: any;
   databaseDeleteConfirmationCount: number = 0;
 
+  //CAMPAIGN VARIABLES
+  campaigns: CampaignObject[];
+  isCampaignCreateState: boolean = false;
+
+  campaignModel: BaseCampaignData;
+  campaignFields: FormlyFieldConfig[] = [
+    this.formlyService.genericInput({key: "name", isNameInput: true, required: true, maxLength: 400, placeholder: "Your campaign's name..."}),
+    this.formlyService.genericInput({key: "subtitle", isNameInput: false, required: false, maxLength: 400, placeholder: "The subtitle to show on the home page"}),
+    this.formlyService.singleFileField({key: "background_image", required: true}),
+    this.formlyService.singleFileField({key: "icon", required: true}),
+  ];
+
   constructor(
     private userService: UserService,
     private warnings: WarningsService,
@@ -52,6 +67,8 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
     private groupService: GroupService,
     public tokenService: TokenService,
     private route: ActivatedRoute,
+    private campaignService: CampaignService,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { }
 
   ngOnInit(): void {
@@ -60,6 +77,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
       error => this.warnings.showWarning(error)
     );
 
+    // LOAD USERS
     this.userService.list().pipe(first()).subscribe(
       (users: UserObject[]) => {
         this.users = users.sort((user1 :UserObject, user2: UserObject) => {
@@ -71,13 +89,21 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
       error => this.warnings.showWarning(error)
     );
 
+    // LOAD GROUPS
     this.groupService.list().pipe(first()).subscribe(
       (groups: PermissionGroup[]) => this.groups = groups,
       error => this.warnings.showWarning(error)
     );
 
+    // LOAD GLOBAL STATISTICS
     this.adminService.getStatistics().pipe(first()).subscribe(
       statisticsData => this.statistics = statisticsData,
+      error => this.warnings.showWarning(error)
+    );
+
+    // LOAD CAMPAIGNS
+    this.campaignService.list().pipe(first()).subscribe(
+      (campaigns: CampaignObject[]) => this.campaigns = campaigns,
       error => this.warnings.showWarning(error)
     );
   }
@@ -152,8 +178,32 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
     )
   }
 
+  //CAMPAIGNS
+  toggleCampaignCreateState(): void{
+    this.isCampaignCreateState = !this.isCampaignCreateState;
+
+    if(this.isCampaignCreateState){
+      this.campaignModel = { 
+        name: null,
+        subtitle: null,
+        background_image: null,
+        icon: null,
+      };
+    }
+  }
+
+  createNewCampaign(): void{
+    this.campaignService.create(this.campaignModel).pipe(first()).subscribe(
+      (newCampaign: CampaignObject) => {
+        this.campaigns.push(newCampaign);
+        this.isCampaignCreateState = false;
+        this.globalUrlParams.autoUpdateCampaignSet();
+      },
+      error => this.warnings.showWarning(error)
+    );
+  }
+
   ngOnDestroy(): void{
     if (this.parameterSubscription) this.parameterSubscription.unsubscribe();
   }
-
 }

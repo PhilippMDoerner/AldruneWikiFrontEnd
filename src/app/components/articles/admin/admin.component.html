@@ -5,7 +5,7 @@
     </div>
 
     <!-- TODO: Make Design mobile useable -->
-    <article *ngIf="users && groups && statistics; else loading">
+    <article *ngIf="users && groups && statistics && campaigns; else loading">
         <!-- Users Section -->
         <div class="mb-3">
             <!-- Section Heading -->
@@ -118,6 +118,61 @@
                     <div class="col-6 col-sm-3"> {{ statistic.value }}</div>
                 </div>
             </div>
+        </div>
+
+
+        <!-- Campaign Section -->
+        <div class="mb-3">
+            <!-- Section Heading -->
+            <div class="d-flex justify-content-between">
+                <h3 class="mb-0"> 
+                    <span class="fas fa-dragon"></span>
+                    Campaigns
+                </h3>
+
+                <!-- Heading Buttons -->
+                <div class="align-self-end position-relative top1">
+                    <!-- Add Campaign -->
+                    <div class="btn btn-primary border-white" (click)="toggleCampaignCreateState()"> 
+                        <span *ngIf="!isCampaignCreateState">
+                            <span class="fa fa-plus"></span>
+                            Add Campaign
+                        </span>
+                        <span *ngIf="isCampaignCreateState">
+                            <span class="fa fa-times"></span>
+                            Cancel Campaign Creation
+                        </span>
+                    </div>
+                </div> 
+            </div>
+
+            <hr class="white-separator">
+
+            <!-- Section Body -->
+            <div class="container mb-5" *ngIf="!isCampaignCreateState">
+                <div class="row mb-4" *ngFor="let campaign of campaigns">
+                    <div class="col-sm-3">
+                        <img [src]="campaign.icon" alt="Icon of campaign {{campaign.name}}" class="mr-3 campaign-icon">
+                        <strong>  {{ campaign.name }} </strong>
+                    </div>
+                    <div class="col-sm-3">Admins: {{campaign.admins.length}}</div>
+                    <div class="col-sm-3">Members: {{campaign.members.length}}</div>
+                    <div class="col-sm-3">Guest: {{campaign.guests.length}}</div>
+                </div>
+            </div>
+
+            <!-- New Campaign Entry -->
+            <div *ngIf="isCampaignCreateState" class="my-2 card p-3">
+                <h4>Adding new Campaign</h4>
+                <!-- Form -->
+                <app-formly-formcontainer 
+                [model]="campaignModel" 
+                [fields]="campaignFields"
+                (formlySubmit)="createNewCampaign()"
+                (formlyCancel)="toggleCampaignCreateState()"
+                ></app-formly-formcontainer>    
+            </div>
+
         </div>
 
         <div class="btn btn-secondary mb-3" routerLink="{{routingService.getRoutePath('campaign-overview')}}">

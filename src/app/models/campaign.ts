@@ -3,7 +3,7 @@ import { Image } from './image';
 import { Constants } from '../app.constants';
 import { User } from './user';
 
-interface BaseCampaignData{
+export interface BaseCampaignData{
     name: string;
     subtitle: string;
     pk?: number;

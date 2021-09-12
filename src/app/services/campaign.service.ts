@@ -39,10 +39,8 @@ export class CampaignService extends GenericService{
   }
 
   create(data: Campaign): Observable<Campaign>{
-    const formData: FormData = convertSingleFileModelToFormData(data, "background_image");
-    const formData2: FormData = convertSingleFileModelToFormData(formData, "icon");
-
-    return super.create(formData2);
+    const formData: FormData = convertMultiFileModelToFormData(data, ["background_image", "icon"]);
+    return super.create(formData);
   }
 
   update(pk: number, data: Campaign): Observable<Campaign>{
