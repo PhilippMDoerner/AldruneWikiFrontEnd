@@ -128,6 +128,7 @@
                 <h3 class="mb-0"> 
                     <span class="fas fa-dragon"></span>
                     Campaigns
+                    <i class="ml-3 spinner-border" *ngIf="isWaitingForCampaignCreation"></i>
                 </h3>
 
                 <!-- Heading Buttons -->
@@ -149,7 +150,7 @@
             <hr class="white-separator">
 
             <!-- Section Body -->
-            <div class="container mb-5" *ngIf="!isCampaignCreateState">
+            <div class="container mb-5" *ngIf="!isCampaignCreateState && !isWaitingForCampaignCreation">
                 <div class="row mb-4" *ngFor="let campaign of campaigns">
                     <div class="col-sm-3">
                         <img [src]="campaign.icon" alt="Icon of campaign {{campaign.name}}" class="mr-3 campaign-icon">
@@ -162,7 +163,7 @@
             </div>
 
             <!-- New Campaign Entry -->
-            <div *ngIf="isCampaignCreateState" class="my-2 card p-3">
+            <div *ngIf="isCampaignCreateState && !isWaitingForCampaignCreation" class="my-2 card p-3">
                 <h4>Adding new Campaign</h4>
                 <!-- Form -->
                 <app-formly-formcontainer 

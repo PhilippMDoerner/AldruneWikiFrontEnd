@@ -49,6 +49,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
   //CAMPAIGN VARIABLES
   campaigns: CampaignObject[];
   isCampaignCreateState: boolean = false;
+  isWaitingForCampaignCreation: boolean = false;
 
   campaignModel: BaseCampaignData;
   campaignFields: FormlyFieldConfig[] = [
