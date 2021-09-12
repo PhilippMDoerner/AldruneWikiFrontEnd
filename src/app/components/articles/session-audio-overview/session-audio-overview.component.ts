@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -7,6 +7,7 @@ import { OverviewItem } from 'src/app/models/overviewItem';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
@@ -14,11 +15,13 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   templateUrl: './session-audio-overview.component.html',
   styleUrls: ['./session-audio-overview.component.scss']
 })
-export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
+export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, AfterViewInit {
   constants: any = Constants;
   campaign: string = this.route.snapshot.params.campaign;
 
   sessionAudioFiles: OverviewItem[];
+
+  @ViewChild('overviewMainCard') articleElement: ElementRef;
 
   constructor(
     private overviewService: OverviewService,
@@ -38,5 +41,10 @@ export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixi
           error => this.routingService.routeToErrorPage(error)
         );      
     });
+  }
+
+  ngAfterViewInit(): void{
+    if(!this.articleElement?.nativeElement) return;
+    animateElement(this.articleElement.nativeElement, 'fadeIn');
   }
 }
