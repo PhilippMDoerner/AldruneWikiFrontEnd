@@ -9,6 +9,8 @@ import { first, throwIfEmpty } from 'rxjs/operators';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { ActivatedRoute } from '@angular/router';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-image-gallery',
@@ -49,7 +51,11 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
     private formlyService: MyFormlyService,
     private warnings: WarningsService,  
     public routingService: RoutingService,
-    ) { super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   @HostListener('document:keyup', ['$event'])
   changeMainImage(event): void{

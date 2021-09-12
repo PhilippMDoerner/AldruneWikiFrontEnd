@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Campaign, CampaignObject } from 'src/app/models/campaign';
 import { CampaignService } from 'src/app/services/campaign.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -19,7 +21,11 @@ export class CampaignListComponent extends PermissionUtilityFunctionMixin implem
   constructor(
     private campaignService: CampaignService,
     private warnings: WarningsService,
-  ) { super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
     this.campaignService.list().pipe(first()).subscribe(

@@ -7,6 +7,7 @@ import { Quest, QuestObject } from 'src/app/models/quest';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { QuestService } from 'src/app/services/quest.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
@@ -31,10 +32,12 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
   constructor(
     private questService: QuestService,
     public routingService: RoutingService,
-    private route: ActivatedRoute,
     private warning: WarningsService,
-    private globalUrlParams: GlobalUrlParamsService,
-  ) { super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
     this.parameterSubscription = this.route.params.subscribe( params => {

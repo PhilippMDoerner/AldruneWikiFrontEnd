@@ -7,6 +7,7 @@ import { OverviewItem } from 'src/app/models/overviewItem';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -26,9 +27,11 @@ export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixi
   constructor(
     private overviewService: OverviewService,
     public routingService: RoutingService,
-    private route: ActivatedRoute,
-    private globalUrlParams: GlobalUrlParamsService,
-  ) { super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {

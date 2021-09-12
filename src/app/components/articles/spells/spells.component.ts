@@ -29,7 +29,7 @@ export class SpellsComponent extends ArticleListMixin implements OnInit, AfterVi
   constructor(
     spellService: SpellService,
     routingService: RoutingService,
-    public tokenService: TokenService,
+    tokenService: TokenService,
     route: ActivatedRoute,
     warning: WarningsService,
     globalUrlParams: GlobalUrlParamsService
@@ -39,7 +39,8 @@ export class SpellsComponent extends ArticleListMixin implements OnInit, AfterVi
       route,
       routingService,
       warning,
-      globalUrlParams
+      globalUrlParams,
+      tokenService
     )
   }
 

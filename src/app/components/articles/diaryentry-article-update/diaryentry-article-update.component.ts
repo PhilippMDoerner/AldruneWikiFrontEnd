@@ -10,6 +10,7 @@ import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.servic
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 import { sessionAlreadyHasAuthor } from 'src/app/utils/functions/formly-validation'
@@ -73,15 +74,17 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
     public routingService: RoutingService,
     campaignService: CampaignService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { 
     super(
       router,
       routingService,
       warnings,
       diaryEntryService,
-      route,
       campaignService,
-      globalUrlParams
+      globalUrlParams,
+      route,
+      tokenService,
     )
   }
 

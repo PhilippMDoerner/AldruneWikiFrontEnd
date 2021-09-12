@@ -7,6 +7,7 @@ import { ArticleObject } from "src/app/models/base-models";
 import { CampaignOverview } from "src/app/models/campaign";
 import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
+import { TokenService } from "src/app/services/token.service";
 import { WarningsService } from "src/app/services/warnings.service";
 import { animateElement } from "./animationDecorator";
 import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
@@ -42,8 +43,11 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
     constructor(
         public warnings: WarningsService,
         public articleService: GenericService | GenericObjectService,
-        public route: ActivatedRoute
-    ){ super() }
+        route: ActivatedRoute,
+        tokenService: TokenService,
+      ) { 
+        super(tokenService, route);
+      }
 
     ngOnInit(): void {
         this.determineCardStateOnInit();

@@ -1,7 +1,8 @@
 import { DecodedTokenPayload } from 'src/app/models/jwttoken';
 import { TokenService } from 'src/app/services/token.service';
-import { Constants } from 'src/app/app.constants';
+import { CampaignRole, Constants } from 'src/app/app.constants';
 import { Directive, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 /** This small library's purpose is solely to allow adding quick checks on whether a user has a specific permission or not
  * This is solely intended for usage inside of components that apply the Decorator/Mixin Below
@@ -72,31 +73,44 @@ export function AddPermissionUtilityFunctions(): Function {
 
 @Directive()
 export class PermissionUtilityFunctionMixin{
+    campaignRole: CampaignRole;
+    isAdminOrSuperUser: boolean;
     hasUpdatePermission: boolean;
-    hasViewPermission: boolean;
-    hasDeletePermission: boolean;
     hasCreatePermission: boolean;
+    hasDeletePermission: boolean;
+    hasViewPermission: boolean;
 
-    constructor(){
+    constructor(
+        public tokenService: TokenService,
+        public route: ActivatedRoute,
+    ){
+        const memberships = this.tokenService.getCampaignMemberships();
+        const campaignName: string = this.route.snapshot.params.campaign;
+        this.campaignRole = memberships[campaignName];
+
+        this.isAdminOrSuperUser = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
         this.hasCreatePermission = this.userHasCreatePermission();
         this.hasViewPermission = this.userHasViewPermission();
-        this.hasDeletePermission = this.userHasDeletePermission();
         this.hasUpdatePermission = this.userHasUpdatePermission();
+        this.hasDeletePermission = this.userHasDeletePermission();
     }
 
     userHasUpdatePermission = () => {
-        return hasPermissions([Constants.apiUpdatePermission]);
+        const hasPermissionFromRole: boolean = [CampaignRole.ADMIN, CampaignRole.MEMBER].includes(this.campaignRole);
+        return hasPermissionFromRole || this.isAdminOrSuperUser;
     }
 
     userHasViewPermission = () => {
-        return hasPermissions([Constants.apiViewPermission]);
-    }
+        const hasPermissionFromRole: boolean = [CampaignRole.ADMIN, CampaignRole.MEMBER, CampaignRole.GUEST].includes(this.campaignRole);
+        return hasPermissionFromRole || this.isAdminOrSuperUser;    }
 
     userHasDeletePermission = () => {
-        return hasPermissions([Constants.apiDeletePermission]);
+        const hasPermissionFromRole: boolean = [CampaignRole.ADMIN, CampaignRole.MEMBER].includes(this.campaignRole);
+        return hasPermissionFromRole || this.isAdminOrSuperUser;
     }
 
     userHasCreatePermission = () => {
-        return hasPermissions([Constants.apiCreatePermission]);
+        const hasPermissionFromRole: boolean = [CampaignRole.ADMIN, CampaignRole.MEMBER].includes(this.campaignRole);
+        return hasPermissionFromRole || this.isAdminOrSuperUser;
     }
 }

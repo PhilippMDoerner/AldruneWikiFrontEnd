@@ -12,6 +12,7 @@ import { EncounterConnectionService } from 'src/app/services/encounter-connectio
 import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { CardFormMixin } from 'src/app/utils/functions/cardMixin';
 
@@ -60,11 +61,13 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
     private encounterConnectionService: EncounterConnectionService,
     private formlyService: MyFormlyService,
     route: ActivatedRoute,
+    tokenService: TokenService,
   ) { 
     super(
       warning,
       encounterService,
-      route
+      route,
+      tokenService,
     ); 
   }
 

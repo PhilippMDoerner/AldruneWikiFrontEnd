@@ -13,6 +13,7 @@ import { OverviewService } from 'src/app/services/overview.service';
 import { QuoteConnectionService } from 'src/app/services/quote-connection.service';
 import { QuoteService } from 'src/app/services/quote.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { copyToClipboard } from 'src/app/utils/functions/copy-to-clipboard';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
@@ -62,8 +63,11 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
     private overviewService: OverviewService,
     private warningsService: WarningsService,
     public routingService: RoutingService,
-    private route: ActivatedRoute,
-  ) { super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(){
     if(this.inCreateState){

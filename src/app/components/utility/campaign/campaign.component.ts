@@ -10,6 +10,7 @@ import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
@@ -87,13 +88,15 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
     private formlyService: MyFormlyService, 
     private campaignService: CampaignService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { 
     super(
       campaignService, 
       route, 
       routingService, 
       warnings,
-      globalUrlParams
+      globalUrlParams,
+      tokenService,
     );
   }
 

@@ -10,6 +10,7 @@ import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
 import { GlobalUrlParamsService } from "src/app/services/global-url-params.service";
 import { RoutingService } from "src/app/services/routing.service";
+import { TokenService } from "src/app/services/token.service";
 import { WarningsService } from "src/app/services/warnings.service";
 import { animateElement } from "./animationDecorator";
 import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
@@ -40,12 +41,13 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
 
     constructor(
         public articleService: GenericObjectService | GenericService,
-        public route: ActivatedRoute,
+        route: ActivatedRoute,
         public routingService: RoutingService,
         public warnings: WarningsService,
-        public globalUrlParams: GlobalUrlParamsService
+        public globalUrlParams: GlobalUrlParamsService,
+        tokenService: TokenService,
     ){
-        super();
+        super(tokenService, route);
     }
 
     /**

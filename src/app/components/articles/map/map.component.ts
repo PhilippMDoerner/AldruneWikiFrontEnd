@@ -8,6 +8,7 @@ import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MapService } from 'src/app/services/map.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
@@ -31,19 +32,20 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   @ViewChildren('mapChoice') mapChoice: QueryList<any>;
 
   constructor(
-    private router: Router,
     public route: ActivatedRoute,
     mapService: MapService,
     public warnings: WarningsService,  
     public routingService: RoutingService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { 
     super(
       mapService,
       route,
       routingService,
       warnings,
-      globalUrlParams
+      globalUrlParams,
+      tokenService,
     )
   }
 

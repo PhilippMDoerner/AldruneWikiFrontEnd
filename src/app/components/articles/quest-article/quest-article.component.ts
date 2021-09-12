@@ -4,6 +4,7 @@ import {  QuestObject } from 'src/app/models/quest';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { QuestService } from 'src/app/services/quest.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
@@ -24,13 +25,15 @@ export class QuestArticleComponent extends ArticleMixin implements OnInit {
     public warnings: WarningsService,  
     public routingService: RoutingService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) {
     super(
       questService,
       route,
       routingService,
       warnings,
-      globalUrlParams
+      globalUrlParams,
+      tokenService,
     )
    }
 }

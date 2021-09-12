@@ -4,6 +4,7 @@ import { DiaryEntry, DiaryEntryObject } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
@@ -25,13 +26,15 @@ export class DiaryentryArticleComponent extends ArticleMixin {
     public warning: WarningsService,  
     public routingService: RoutingService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { 
     super(
       diaryEntryService,
       route,
       routingService,
       warning,
-      globalUrlParams
+      globalUrlParams,
+      tokenService,
     )
   }
 

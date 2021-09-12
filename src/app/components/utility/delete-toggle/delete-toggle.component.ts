@@ -2,6 +2,8 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { Constants } from 'src/app/app.constants';
 import { AddPermissionUtilityFunctions, CurrentUserHasPermissions, hasPermissions, PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
+import { TokenService } from 'src/app/services/token.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-delete-toggle',
@@ -17,7 +19,12 @@ export class DeleteToggleComponent extends PermissionUtilityFunctionMixin implem
 
   @ViewChild("deleteButton") deleteButton: ElementRef;
 
-  constructor() { super() }
+  constructor(
+    tokenService: TokenService,
+    route: ActivatedRoute
+  ) { 
+    super(tokenService, route); 
+  }
 
   ngOnInit(): void {
   }

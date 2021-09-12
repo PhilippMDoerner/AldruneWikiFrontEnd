@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Constants } from 'src/app/app.constants';
+import { TokenService } from 'src/app/services/token.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
@@ -14,7 +16,12 @@ export class ObjectListComponent extends PermissionUtilityFunctionMixin implemen
   @Input() articleType: string;
   @Input() createLink: string = "";
 
-  constructor() { super() }
+  constructor(    
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
     if (this.createLink === "") this.createLink = `${Constants.wikiUrlFrontendPrefix}/${this.articleType}/create`;

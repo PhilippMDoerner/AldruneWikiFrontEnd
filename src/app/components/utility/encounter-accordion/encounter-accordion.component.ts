@@ -14,6 +14,7 @@ import { EncounterServiceService } from "src/app/services/encounter/encounter-se
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { OverviewService } from 'src/app/services/overview.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -54,8 +55,11 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
     private formlyService: MyFormlyService,
     private warnings: WarningsService,  
     public routingService: RoutingService,
-    private route: ActivatedRoute,
-  ) { super(); }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
     this.isOpen = {};

@@ -1,15 +1,11 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
 import { Rule, RuleObject } from 'src/app/models/rule';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { RoutingService } from 'src/app/services/routing.service';
 import { RuleService } from 'src/app/services/rule.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
-import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { CardFormMixin } from 'src/app/utils/functions/cardMixin';
 
 @Component({
@@ -38,12 +34,14 @@ export class RuleComponent extends CardFormMixin implements OnInit {
     private formlyService: MyFormlyService,
     public warnings: WarningsService,  
     public element: ElementRef,
-    route: ActivatedRoute
+    route: ActivatedRoute,
+    tokenService: TokenService,
   ) { 
     super(
       warnings,
       ruleService,
-      route
+      route,
+      tokenService
     )
   }
 }

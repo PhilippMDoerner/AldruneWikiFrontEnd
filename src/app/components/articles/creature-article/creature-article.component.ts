@@ -4,6 +4,7 @@ import { CreatureObject } from 'src/app/models/creature';
 import { CreatureService } from 'src/app/services/creature/creature.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 
@@ -24,13 +25,15 @@ export class CreatureArticleComponent extends ArticleMixin implements OnInit {
     public warnings: WarningsService,  
     public routingService: RoutingService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { 
     super(
       creatureService,
       route,
       routingService,
       warnings,
-      globalUrlParams
+      globalUrlParams,
+      tokenService,
     )
   }
 }

@@ -14,6 +14,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { QuoteConnectionService } from 'src/app/services/quote-connection.service';
 import { QuoteService } from 'src/app/services/quote.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -49,11 +50,13 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
     private quoteService: QuoteService,
     private quoteConnectionService: QuoteConnectionService,
     private characterService: CharacterService,
-    private route: ActivatedRoute,
     private warning: WarningsService,
     public routingService: RoutingService,
-    private globalUrlParams: GlobalUrlParamsService,
-  ) { super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
     this.parameter_subscription = this.route.params.subscribe(

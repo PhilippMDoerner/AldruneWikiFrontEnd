@@ -22,7 +22,7 @@ export class RulesComponent extends ArticleListMixin implements OnInit, AfterVie
   constructor(
     ruleService: RuleService,
     public routingService: RoutingService,
-    public tokenService: TokenService,
+    tokenService: TokenService,
     route: ActivatedRoute,
     warning: WarningsService,
     globalUrlParams: GlobalUrlParamsService
@@ -32,7 +32,8 @@ export class RulesComponent extends ArticleListMixin implements OnInit, AfterVie
       route,
       routingService,
       warning,
-      globalUrlParams
+      globalUrlParams,
+      tokenService,
     )
   }
 }

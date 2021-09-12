@@ -12,6 +12,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-organization-article-update',
@@ -44,15 +45,17 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
     public routingService: RoutingService,
     campaignService: CampaignService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { 
     super(
       router,
       routingService,
       warnings,
       organizationService,
-      route,
       campaignService,
-      globalUrlParams
+      globalUrlParams,
+      route,
+      tokenService,
     )
   }
 }

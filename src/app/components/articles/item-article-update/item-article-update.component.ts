@@ -12,6 +12,7 @@ import { GlobalUrlParamsService } from 'src/app/services/global-url-params.servi
 import { ItemService } from 'src/app/services/item/item.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 
@@ -47,15 +48,16 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin {
     routingService: RoutingService,
     public campaignService: CampaignService,
     globalUrlParams: GlobalUrlParamsService,
-
+    tokenService: TokenService,
   ) { super(
     router, 
     routingService, 
     warnings, 
     itemService,
-    route,
     campaignService,
     globalUrlParams,
+    route,
+    tokenService,
   ) }
 
   createUserModel(queryParameters): void{

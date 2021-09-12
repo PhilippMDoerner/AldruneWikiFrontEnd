@@ -8,6 +8,7 @@ import { GlobalUrlParamsService } from 'src/app/services/global-url-params.servi
 import { MapService } from 'src/app/services/map.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 
@@ -43,15 +44,17 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
     public routingService: RoutingService,
     campaignService: CampaignService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { 
     super(
       router, 
       routingService, 
       warnings, 
       mapService,
-      route,
       campaignService,
-      globalUrlParams
+      globalUrlParams,
+      route,
+      tokenService,
     ) 
   }
 

@@ -16,6 +16,7 @@ import { CharacterPlayerClassConnectionService } from 'src/app/services/characte
 import { OverviewType } from 'src/app/app.constants';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-character-article-update',
@@ -59,15 +60,17 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
     private characterConnectionService: CharacterPlayerClassConnectionService,
     campaignService: CampaignService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { 
     super(
       router,
       routingService, 
       warnings, 
       characterService, //articleService
-      route,
       campaignService,
-      globalUrlParams
+      globalUrlParams,
+      route,
+      tokenService
     ) 
   }
 

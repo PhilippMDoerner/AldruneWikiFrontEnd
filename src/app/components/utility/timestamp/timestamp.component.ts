@@ -4,6 +4,8 @@ import { TimestampObject } from 'src/app/models/timestamp';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
+import { TokenService } from 'src/app/services/token.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-timestamp',
@@ -19,7 +21,11 @@ export class TimestampComponent extends PermissionUtilityFunctionMixin implement
 
   constructor(
     private timestampService: SessionAudioTimestampService,
-  ) { super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
   }

@@ -10,6 +10,7 @@ import { first, map } from 'rxjs/operators';
 import { CharacterService } from 'src/app/services/character/character.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-article-overview',
@@ -79,10 +80,11 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     private overviewService: OverviewService,
     private router: Router,  
     public routingService: RoutingService,
-    private characterService: CharacterService,
-    private route: ActivatedRoute,
-    private globalUrlParams: GlobalUrlParamsService,
-  ) { super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
     this.paramSubscription = this.route.params.subscribe(params => {

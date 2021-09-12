@@ -10,6 +10,7 @@ import { GlobalUrlParamsService } from 'src/app/services/global-url-params.servi
 import { RoutingService } from 'src/app/services/routing.service';
 import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
@@ -55,12 +56,14 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
     warnings: WarningsService,  
     routingService: RoutingService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { super(
       sessionAudioService,
       route,
       routingService,
       warnings,
-      globalUrlParams
+      globalUrlParams,
+      tokenService,
   ) }
 
   ngOnInit(): void {

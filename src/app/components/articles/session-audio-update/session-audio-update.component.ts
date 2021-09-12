@@ -13,6 +13,7 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 import { OverviewType } from 'src/app/app.constants';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-session-audio-update',
@@ -58,16 +59,18 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
     public warnings: WarningsService,  
     public routingService: RoutingService,
     campaignService: CampaignService,
-    globalUrlParams: GlobalUrlParamsService
+    globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { 
     super(
       router,
       routingService,
       warnings,
       audioService,
-      route,
       campaignService,
-      globalUrlParams
+      globalUrlParams,
+      route,
+      tokenService,
     )
   }
 

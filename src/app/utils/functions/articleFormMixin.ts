@@ -10,6 +10,7 @@ import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
 import { GlobalUrlParamsService } from "src/app/services/global-url-params.service";
 import { RoutingService } from "src/app/services/routing.service";
+import { TokenService } from "src/app/services/token.service";
 import { WarningsService } from "src/app/services/warnings.service";
 import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 
@@ -36,14 +37,15 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
         public routingService: RoutingService,
         public warnings: WarningsService,
         public articleService: GenericService | GenericObjectService,
-        public route: ActivatedRoute,
         public campaignService: CampaignService,
-        public globalUrlParam: GlobalUrlParamsService
-    ){
-        super();
+        public globalUrlParam: GlobalUrlParamsService,
+        route: ActivatedRoute,
+        tokenService: TokenService,
+      ) { 
+        super(tokenService, route);
         const isUpdateRoute : boolean = this.router.url.includes("update");
         this.formState = isUpdateRoute ? Constants.updateState : Constants.createState;
-    }
+      }
 
     ngOnInit(): void{
         this.parameterSubscription = this.route.params.subscribe(params => {

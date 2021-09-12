@@ -63,14 +63,15 @@ export class SpellComponent extends CardFormMixin implements OnInit {
     public routingService: RoutingService,
     private spellConnectionService: SpellPlayerClassConnectionService,
     private playerClassService: PlayerClassService,
-    public tokenService: TokenService,
+    tokenService: TokenService,
     public element: ElementRef, //Allows calling this from the outside for scroll into view
     route: ActivatedRoute
   ) { 
     super(
       warnings,
       spellService,
-      route
+      route,
+      tokenService
     ) 
   }
 

@@ -7,6 +7,7 @@ import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
 import { EncounterServiceService } from 'src/app/services/encounter/encounter-service.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -33,9 +34,12 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
   constructor(
     private warning: WarningsService,
     private routingService: RoutingService,
-    private route: ActivatedRoute,
     private encounterService: EncounterServiceService,
-  ) { super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void{
     console.log(`Campaign in list is ${this.campaign.name}`)

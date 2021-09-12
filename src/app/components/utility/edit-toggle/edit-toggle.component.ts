@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Constants } from 'src/app/app.constants';
+import { TokenService } from 'src/app/services/token.service';
 import { CurrentUserHasPermissions, hasPermissions, PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
@@ -13,8 +14,11 @@ export class EditToggleComponent extends PermissionUtilityFunctionMixin implemen
   @Input() isInUpdateState: boolean = false;
   
   constructor(
-    private router: Router,
-  ){ super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
   }

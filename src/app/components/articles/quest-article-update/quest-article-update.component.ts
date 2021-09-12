@@ -12,6 +12,7 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 import { OverviewType } from 'src/app/app.constants';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-quest-article-update',
@@ -67,15 +68,17 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
     public routingService: RoutingService,
     campaignService: CampaignService,
     globalUrlParams: GlobalUrlParamsService,
+    tokenService: TokenService,
   ) { 
     super(
       router,
       routingService,
       warnings,
       questService,
-      route,
       campaignService,
-      globalUrlParams
+      globalUrlParams,
+      route,
+      tokenService,
     )
   }
 }

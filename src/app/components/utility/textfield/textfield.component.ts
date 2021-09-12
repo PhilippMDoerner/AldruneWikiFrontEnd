@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, EventEmitter, Output, OnChanges } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
+import { TokenService } from 'src/app/services/token.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
@@ -18,7 +20,12 @@ export class TextfieldComponent extends PermissionUtilityFunctionMixin implement
 
   textModel: string;
 
-  constructor() { super() }
+  constructor(    
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
     this.textModel = this.initialText;

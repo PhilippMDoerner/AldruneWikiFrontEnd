@@ -1,10 +1,12 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { Location, LocationObject } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -23,7 +25,11 @@ export class LocationAccordionComponent extends PermissionUtilityFunctionMixin i
     private locationService: LocationService,
     private warnings: WarningsService,
     public routingService: RoutingService,
-  ) { super() }
+    route: ActivatedRoute,
+    tokenService: TokenService,
+  ) { 
+    super(tokenService, route);
+  }
 
   ngOnInit(): void {
     this.isOpen = {};
