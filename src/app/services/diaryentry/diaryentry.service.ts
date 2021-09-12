@@ -18,33 +18,10 @@ export class DiaryentryService extends GenericObjectService {
 
   constructor(public http : HttpClient) { super(http, DiaryEntryObject)}
 
-  @TransformArrayObservable(DiaryEntryObject)
-  list(): Observable<DiaryEntry[]>{
-    return this.http.get<DiaryEntry[]>(this.baseUrl);
-  }
-
-  @TransformObservable(DiaryEntryObject)
-  read(diaryEntryPk: number): Observable<DiaryEntry>{
-    const url = `${this.baseUrl}/pk/${diaryEntryPk}/`;
-    return this.http.get<DiaryEntry>(url);
-  }
-
   @TransformObservable(DiaryEntryObject)
   readByParam(campaign: string, params: {isMainSession: number | string, sessionNumber: number | string, authorName: string}): Observable<DiaryEntry>{
     const url = `${this.baseUrl}/${campaign}/${params.sessionNumber}/${params.isMainSession}/${params.authorName}/`;
     return this.http.get<DiaryEntry>(url);
   }
-
-  @TransformObservable(DiaryEntryObject)
-  update(pk: number, model: DiaryEntry): Observable<DiaryEntry>{
-    const url = `${this.baseUrl}/pk/${pk}/`;
-    return this.http.put<DiaryEntry>(url, model);
-  }
-
-  @TransformObservable(DiaryEntryObject)
-  create(diaryEntry: DiaryEntry): Observable<DiaryEntry>{
-    return this.http.post<DiaryEntry>(`${this.baseUrl}/`, diaryEntry);
-  }
-
 
 }
