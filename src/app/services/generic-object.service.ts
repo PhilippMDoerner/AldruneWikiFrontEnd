@@ -69,6 +69,7 @@ export abstract class GenericObjectService{
   }
 
   patch(pk: number, data: any): Observable<any>{
-    return this.http.patch(`${this.baseUrl}/pk/${pk}/`, data);
+    const dataObs: Observable<any> = this.http.patch(`${this.baseUrl}/pk/${pk}/`, data);
+    return transformObservableContent(dataObs, this.objectClass);
   }
 }
