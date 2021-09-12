@@ -148,6 +148,14 @@ li a i{ //entry icon
     color: var(--link-blue);
 }
 
+#sidebar:hover .brand-entry h3#brand span,
+#sidebar:hover .brand-entry h3#brand,
+#sidebar:hover .brand-entry{
+    overflow:hidden;
+    text-overflow: ellipsis;
+}
+
+
 .brand-line a{
     border-bottom: none !important;
 }
