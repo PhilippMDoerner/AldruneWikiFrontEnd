@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -22,6 +23,8 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
 
   formState: string;
 
+  campaign: string = this.route.snapshot.params.campaign;
+
   model: SessionObject;
   form: FormGroup = new FormGroup({});
   fields: FormlyFieldConfig[] = [
@@ -40,6 +43,7 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
     private modalService: NgbModal,
     private formlyService: MyFormlyService,
     private sessionService: SessionService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(){
@@ -54,18 +58,23 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
         })
       })
     } else if (this.formState === Constants.createState){
-      this.sessionService.list().pipe(first()).subscribe((sessions: SessionObject[]) => {
+      this.sessionService.campaignList(this.campaign).pipe(first()).subscribe((sessions: SessionObject[]) => {
         const lastSession = sessions[0];
         this.model = new SessionObject();
 
-        const lastSessionDate: Date = new Date(lastSession.session_date);
-        const assumedThisSessionDate: Date = this.addDaysToDate(7, lastSessionDate);
-        this.model.session_date = this.dateToYYYMMDDString(assumedThisSessionDate);
+        this.model.session_date = this.getNextSessionDate(lastSession);
         this.model.is_main_session = true;
         this.model.session_number = lastSession.session_number + 1;
       })
     }
 
+  }
+
+  getNextSessionDate(lastSession: any): string{
+    console.log(lastSession);
+    const lastSessionDate: Date = new Date(lastSession.session_date);
+    const assumedThisSessionDate: Date = this.addDaysToDate(7, lastSessionDate);
+    return this.dateToYYYMMDDString(assumedThisSessionDate);
   }
 
   addDaysToDate(days: number, oldDate: Date): Date{
@@ -74,6 +83,7 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
   }
 
   dateToYYYMMDDString(date: Date){
+    console.log(date);
     return date.toISOString().slice(0,10);
   }
 
