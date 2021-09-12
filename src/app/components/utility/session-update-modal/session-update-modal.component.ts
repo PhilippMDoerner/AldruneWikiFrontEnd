@@ -71,7 +71,6 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
   }
 
   getNextSessionDate(lastSession: any): string{
-    console.log(lastSession);
     const lastSessionDate: Date = new Date(lastSession.session_date);
     const assumedThisSessionDate: Date = this.addDaysToDate(7, lastSessionDate);
     return this.dateToYYYMMDDString(assumedThisSessionDate);
