@@ -83,7 +83,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngAfterViewInit(): void{
-    animateElement(this.adminCard.nativeElement, 'zoomIn');
+    animateElement(this.adminCard.nativeElement, 'fadeIn');
   }
 
   //USERS

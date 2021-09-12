@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { MarkerTypeService } from 'src/app/services/marker-type.service';
@@ -6,6 +6,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { PlayerClassService } from 'src/app/services/player-class.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { WarningsService } from 'src/app/services/warnings.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 
 @Component({
   selector: 'app-config-tables',
@@ -39,6 +40,8 @@ export class ConfigTablesComponent implements OnInit {
     }
   ];
 
+  @ViewChild("adminCard") article: ElementRef;
+  
   createStateArray: boolean[] = [];
   modelBackup: any[] = [];
 
@@ -57,6 +60,11 @@ export class ConfigTablesComponent implements OnInit {
       this.modelBackup.push(modelCopy);
       this.createStateArray.push(false);
     }
+  }
+
+
+  ngAfterViewInit(): void{
+    animateElement(this.article.nativeElement, 'fadeIn');
   }
 
   resetModel(index: number){

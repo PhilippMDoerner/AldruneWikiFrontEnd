@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
@@ -18,7 +18,7 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy {
+export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('profileCard') profileCard: ElementRef;
   user: UserObject;
   parameterSubscription: Subscription;
@@ -60,7 +60,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   ngAfterViewInit(): void{
-    animateElement(this.profileCard.nativeElement, 'zoomIn');
+    animateElement(this.profileCard.nativeElement, 'fadeIn');
   }
 
   toggleProfileEditState(): void{
