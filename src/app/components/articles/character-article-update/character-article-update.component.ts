@@ -1,5 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from "rxjs";
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 //models and constants
