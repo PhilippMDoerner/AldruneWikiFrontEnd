@@ -138,7 +138,7 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
    * @param {DiaryEntryObject} diaryEntry 
    */
   onCreationSuccess(diaryEntry: DiaryEntryObject){
-    this.routingService.routeToPath('diaryentry2', {
+    this.routingService.routeToPath('diaryentry', {
       sessionNumber: diaryEntry.session_details.session_number,
       isMainSession: diaryEntry.session_details.is_main_session_int,
       authorName: diaryEntry.author_details.name,
