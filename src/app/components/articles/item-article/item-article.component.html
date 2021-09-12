@@ -16,7 +16,7 @@
         <div class="row">
             <p *ngIf="articleData.owner_details" class="text-center col mb-5"> 
                 Owned by: 
-                <a routerLink="{{ routingService.getRoutePath('character', {name: articleData.owner_details.name, campaign: campaign}) }}">
+                <a routerLink="{{ routingService.getRoutePath('character', {name: articleData.owner_details.name, campaign: campaign.name}) }}">
                     {{ articleData.owner_details.name }}
                 </a>
             </p>
@@ -43,7 +43,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('item-overview', {campaign: campaign})"
+        [link]="routingService.getRoutePath('item-overview', {campaign: campaign.name})"
         [label]="'Back to Items'"
         [deleteMessage]="'Delete '+articleData.name+'?'"
         ></app-article-footer>

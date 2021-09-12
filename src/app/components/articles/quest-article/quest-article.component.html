@@ -38,7 +38,7 @@
             <span class="col-7">
                 <a 
                 *ngIf="articleData.giver_details; else NoQuestGiver" 
-                routerLink="{{ routingService.getRoutePath('character', {name: articleData.giver_details.name, campaign: campaign}) }}"
+                routerLink="{{ routingService.getRoutePath('character', {name: articleData.giver_details.name, campaign: campaign.name}) }}"
                 >
                     {{ articleData.giver_details.name }}
                 </a>

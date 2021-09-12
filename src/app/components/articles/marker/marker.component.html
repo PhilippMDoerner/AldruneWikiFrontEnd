@@ -70,7 +70,7 @@
         [link]="routingService.getRoutePath('location', {
                 parent_name: articleData.location_details.parent_location_name, 
                 name: articleData.location_details.name,
-                campaign: campaign
+                campaign: campaign.name
             }
         )"
         [label]="'Back to '+articleData.location_details.name"
