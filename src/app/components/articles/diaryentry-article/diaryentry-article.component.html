@@ -90,7 +90,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('diaryentry-overview', {campaign: campaign})"
+        [link]="routingService.getRoutePath('diaryentry-overview', {campaign: campaign.name})"
         [label]="'Back to Diaryentries'"
         [deleteMessage]="'Delete this Diaryentry?'"
         ></app-article-footer>
