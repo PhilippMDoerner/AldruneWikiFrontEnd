@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { MapObject, Map } from 'src/app/models/map';
 import { CampaignService } from 'src/app/services/campaign.service';
@@ -55,5 +53,16 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
       campaignService,
       globalUrlParams
     ) 
+  }
+
+  articleUpdate(userModel: MapObject): void{
+    const hasMapImage: boolean = this.hasImageSelected(userModel.image);
+    if (!hasMapImage) delete userModel.image;
+
+    super.articleUpdate(userModel);
+  }
+
+  hasImageSelected(imageFieldValue: any) : boolean{
+    return imageFieldValue.constructor.name === "FileList";
   }
 }
