@@ -62,24 +62,6 @@ export class CampaignUpdateComponent extends ArticleFormMixin {
     return {name: params.campaign};
   }
 
-  /**
-   * Preprocesses the usermodel a bit before sending out the patch request. This is solely so that this doesn't accidentally
-   * update the image fields if there are no new files attached.
-   */
-  articleUpdate(userModel: CampaignObject): void{
-    const hasNewIcon: boolean = this.hasImageSelected(userModel.icon);
-    if (!hasNewIcon) delete userModel.icon;
-
-    const hasNewBackgroundImage: boolean = this.hasImageSelected(userModel.background_image);
-    if (!hasNewBackgroundImage) delete userModel.background_image;
-
-    super.articleUpdate(userModel);
-  }
-
-  hasImageSelected(imageFieldValue: any) : boolean{
-    return imageFieldValue.constructor.name === "FileList";
-  }
-
   onUpdateSuccess(updatedArticle: any, self: any){
     this.routingService.routeToPath('campaign-admin', {campaign: updatedArticle.name});
 

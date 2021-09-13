@@ -39,13 +39,47 @@ export class CampaignService extends GenericService{
   }
 
   create(data: Campaign): Observable<Campaign>{
-    const formData: FormData = convertMultiFileModelToFormData(data, ["background_image", "icon"]);
-    return super.create(formData);
+    const campaignData = this.processCampaignData(data);
+    return super.create(campaignData);
   }
 
   update(pk: number, data: Campaign): Observable<Campaign>{
-    const formData: any = convertMultiFileModelToFormData(data, ["background_image", "icon"]);    
-    return super.update(pk, formData);
+    const campaignData = this.processCampaignData(data);
+    return super.update(pk, campaignData);
+  }
+
+  patch(pk: number, data: Campaign): Observable<Campaign>{
+    const campaignData = this.processCampaignData(data);
+    return super.patch(pk, campaignData);
+  }
+
+  private processCampaignData(userModel: Campaign): Campaign | FormData{
+    const hasNewIcon: boolean = this.hasImageSelected(userModel.icon);
+    const hasNewBackgroundImage: boolean = this.hasImageSelected(userModel.background_image);
+
+    if (!hasNewIcon && !hasNewBackgroundImage){
+      delete userModel.icon;
+      delete userModel.background_image;
+      return userModel;
+
+    } else if (!hasNewIcon && hasNewBackgroundImage){
+      delete userModel.icon;
+      const userModelFormData: FormData = convertSingleFileModelToFormData(userModel, 'background_image');
+      return userModelFormData;
+
+    } else if (hasNewIcon && !hasNewBackgroundImage){
+      delete userModel.background_image;
+      const userModelFormData: FormData = convertSingleFileModelToFormData(userModel, 'icon');
+      return userModelFormData;
+
+    } else {
+      const userModelFormData: FormData = convertMultiFileModelToFormData(userModel, ["background_image", "icon"]);
+      return userModelFormData;
+    }
+  }
+
+  private hasImageSelected(imageFieldValue: any) : boolean{
+    return imageFieldValue.constructor.name === "FileList";
   }
 
   delete(pk: number): Observable<any>{
