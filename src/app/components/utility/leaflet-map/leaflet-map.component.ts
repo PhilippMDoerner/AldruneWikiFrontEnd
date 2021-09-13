@@ -7,6 +7,7 @@ import { Marker } from 'leaflet';
 import * as L from "node_modules/leaflet";
 import 'leaflet/dist/leaflet.css';
 import { RoutingService } from 'src/app/services/routing.service';
+import { CampaignOverview } from 'src/app/models/campaign';
 
 let DefaultIcon = L.icon({
   iconUrl: `${Constants.wikiMediaUrl}/leaflet/marker-icon.png`,
@@ -23,7 +24,7 @@ let DefaultIcon = L.icon({
 })
 export class LeafletMapComponent implements OnInit, AfterContentInit {
   @Input() map: ExtendedMap;
-  @Input() campaign: string;
+  @Input() campaign: CampaignOverview;
 
   private leafletMap;
   constructor(
@@ -77,14 +78,14 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
       latitude: latitude,
       longitude: longitude,
       map_name: this.map.name,
-      campaign: this.campaign,
+      campaign: this.campaign.name,
     });
 
     const locationMapCreateUrl: string = this.routingService.getRoutePath('location-map-create', {
       latitude: latitude, 
       longitude: longitude, 
       map_name: this.map.name,
-      campaign: this.campaign
+      campaign: this.campaign.name,
     });
 
     const popupContentHTML: string = `
@@ -170,7 +171,7 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
 
   makeLocationHeading(marker: MapMarkerObject): string{
     const location_url = this.routingService.getRoutePath("location", {
-      campaign: this.campaign, 
+      campaign: this.campaign.name, 
       parent_name: marker.location_details.parent_location_name,
       name: marker.location_details.name
     });
@@ -193,7 +194,7 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
         const sublocationUrl = this.routingService.getRoutePath('location', {
           parent_name: marker.location_details.name,
           name: sublocationName,
-          campaign: this.campaign,
+          campaign: this.campaign.name,
         });
         sublocationList += `<li><a href="${sublocationUrl}"> ${sublocationName}</a></li>`
       }
