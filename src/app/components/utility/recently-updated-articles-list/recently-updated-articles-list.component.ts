@@ -20,6 +20,7 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
   constants: Constants = Constants;
   pageNumber: number = 0;
   isLoadingNextPage: boolean = false;
+  hasLoadedAllArticles: boolean = false;
 
   constructor(
     private recentUpdatesServices: RecentlyUpdatedService,
@@ -77,7 +78,7 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
   }
 
   loadNextPage(): void{ //TODO: Let the pagination load more here
-    if(this.isLoadingNextPage || this.articles == null) return;
+    if(this.isLoadingNextPage || this.articles == null || this.hasLoadedAllArticles) return;
 
     this.pageNumber += 1;
     this.isLoadingNextPage = true;
@@ -86,6 +87,7 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
       (articles: OverviewItemObject[]) => {
         this.articles = this.articles.concat(articles);
         this.isLoadingNextPage = false;
+        if(articles.length === 0) this.hasLoadedAllArticles = true;
       },
       error => this.warnings.showWarning(error)
     );
