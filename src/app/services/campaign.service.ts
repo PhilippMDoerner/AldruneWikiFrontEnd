@@ -48,6 +48,17 @@ export class CampaignService extends GenericService{
     return super.update(pk, formData);
   }
 
+  delete(pk: number): Observable<any>{
+    throw "You can not delete a campaign, please use 'deactivate' instead";
+  }
+
+  /** Under the hood this may call "delete" but "delete" does not actually delete a campaign in the backend, it just deactivates it 
+   * The functions were renamed to make that fact clear
+   */
+  deactivate(pk: number): Observable<any>{
+    return super.delete(pk);
+  }
+
   /**
    * @description Allows you to send a read query based on a param, e.g. "name", assuming the backend is set up for it.
    * The targetted URL will be "${baseURL of API Endpoint}/param"

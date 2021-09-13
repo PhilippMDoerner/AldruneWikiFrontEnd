@@ -1,6 +1,6 @@
 <div class="main" #article>
     <article *ngIf="articleData; else loading" class="container">
-        <div class="row">
+        <div class="row" *ngIf="!articleData.is_deactivated">
             <div class="col-12">
                 <app-edit-toggle 
                 [isInUpdateState]=false 
@@ -135,7 +135,8 @@
 
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
-        (delete)="deleteArticle()"
+        (delete)="deactivateCampaign()"
+        [showDelete]="!articleData.is_deactivated"
         [link]="routingService.getRoutePath('home1', {campaign: articleData.name})"
         [label]="'Back to ' + articleData.name"
         [deleteMessage]="'Deactivate Campaign ?'"

@@ -26,7 +26,6 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   queryParameterName = "name";
 
   //CUSTOM VARIABLES
-  
   addMemberState: boolean = false;
   addAdminState: boolean = false;
   addGuestState: boolean = false;
@@ -201,6 +200,17 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
     const groupsOfUser = selectOption.group_details;
     const isMember = groupsOfUser.some(group => group.name.toLowerCase() === groupName);
     return isMember;
+  }
+
+  deleteArticle(){
+    throw "You can not delete a campaign, please use 'deactivateCampaign' instead";
+  }
+
+  deactivateCampaign(){
+    this.campaignService.deactivate(this.articleData.pk).pipe(first()).subscribe(
+      response => this.routingService.routeToPath("campaign-overview"),
+      error => this.warnings.showWarning(error)
+    );
   }
 
 }
