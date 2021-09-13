@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { Constants } from 'src/app/app.constants';
+import { CampaignRole, Constants } from 'src/app/app.constants';
 import { RoutingService } from 'src/app/services/routing.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { TokenService } from 'src/app/services/token.service';
@@ -16,6 +16,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   @Input() showSidebar: BehaviorSubject<boolean>;
   currentCampaign: CampaignOverview;
+  campaignRole: CampaignRole;
 
   parameterSubscription: Subscription;
 
@@ -44,6 +45,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           this.currentCampaign = campaign;
 
           if(this.currentCampaign != null){
+            this.campaignRole = this.tokenService.getCampaignRole(campaign?.name);
             this.updateSidebarEntries(this.currentCampaign?.name);
           }
 

@@ -29,7 +29,7 @@
             <a class="pointer" (click)="showUserSection = !showUserSection">
                 <i class="fa fa-user-circle"></i>
                 <span class="on-hover-show container-title">
-                    User
+                    User ({{campaignRole |titlecase}})
                     <span *ngIf="showAdminSection"> & Admin</span>
                     <i class="fa" [ngClass]="{'fa-chevron-down': !showUserSection, 'fa-chevron-up': showUserSection}"></i>
                 </span>
