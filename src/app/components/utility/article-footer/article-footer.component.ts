@@ -10,6 +10,7 @@ export class ArticleFooterComponent implements OnInit {
   @Input() label: string;
   @Input() clickEmissionValue: any;
   @Input() deleteMessage: string;
+  @Input() showDelete: boolean = true;
   @Output() buttonClick: EventEmitter<any> = new EventEmitter();
   @Output() delete: EventEmitter<any> = new EventEmitter();
 

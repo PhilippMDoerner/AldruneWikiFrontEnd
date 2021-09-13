@@ -12,6 +12,7 @@
 
     <!-- Delete Article -->
     <app-delete-toggle
+    *ngIf="showDelete"
     [deleteMessage]="deleteMessage"
     (deleteEvent)="onDelete()"
     class="col-md-9 float-right px-0"
