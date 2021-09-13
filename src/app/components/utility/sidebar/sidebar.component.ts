@@ -3,7 +3,6 @@ import { Constants } from 'src/app/app.constants';
 import { RoutingService } from 'src/app/services/routing.service';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { TokenService } from 'src/app/services/token.service';
-import { filter } from 'rxjs/operators';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { CampaignOverview } from 'src/app/models/campaign';
 
@@ -60,7 +59,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   updateSidebarEntries(campaignName: string): void{
     this.updateSidebarEntryRoutes(campaignName);
-    this.showAdminSection = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
+    this.showAdminSection = this.tokenService.isCampaignAdmin(campaignName) || this.tokenService.isAdmin() || this.tokenService.isSuperUser();
   }
 
   updateSidebarEntryRoutes(campaignName: string): void{
