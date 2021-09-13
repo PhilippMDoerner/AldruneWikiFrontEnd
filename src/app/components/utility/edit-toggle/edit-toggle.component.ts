@@ -9,7 +9,7 @@ import { CurrentUserHasPermissions, hasPermissions, PermissionUtilityFunctionMix
   templateUrl: './edit-toggle.component.html',
   styleUrls: ['./edit-toggle.component.scss']
 })
-export class EditToggleComponent extends PermissionUtilityFunctionMixin implements OnInit {
+export class EditToggleComponent extends PermissionUtilityFunctionMixin{
   @Input() link: string = "update";
   @Input() isInUpdateState: boolean = false;
   
@@ -18,8 +18,5 @@ export class EditToggleComponent extends PermissionUtilityFunctionMixin implemen
     tokenService: TokenService,
   ) { 
     super(tokenService, route);
-  }
-
-  ngOnInit(): void {
   }
 }

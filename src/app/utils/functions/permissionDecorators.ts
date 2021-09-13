@@ -86,7 +86,7 @@ export class PermissionUtilityFunctionMixin{
     ){
         const memberships = this.tokenService.getCampaignMemberships();
         const campaignName: string = this.route.snapshot.params.campaign;
-        this.campaignRole = memberships[campaignName];
+        this.campaignRole = memberships[campaignName.toLowerCase()];
 
         this.isAdminOrSuperUser = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
         this.hasCreatePermission = this.userHasCreatePermission();
