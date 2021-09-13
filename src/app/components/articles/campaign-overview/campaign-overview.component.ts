@@ -3,7 +3,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { CampaignOverview } from 'src/app/models/campaign';
+import { Campaign, CampaignOverview } from 'src/app/models/campaign';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -40,6 +40,7 @@ export class CampaignOverviewComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
+    console.log(this);
     this.globalUrlParamSubscription = this.globalUrlParams.getCampaigns()
       .pipe(
         filter(campaignData => campaignData != null), //Necessary as the first value if you start on campaign-overview is null. That would jump you straight to 504 with the tap below
@@ -47,7 +48,13 @@ export class CampaignOverviewComponent implements OnInit {
           if(campaignData == null && this.campaignData == null) this.routingService.routeToPath('error', {errorStatus: 504});
         })
       )
-      .subscribe((campaignData: CampaignOverview[]) => this.campaignData = campaignData);
+      .subscribe((campaignData: CampaignOverview[]) => this.campaignData = this.processCampaignData(campaignData));
+  }
+
+  processCampaignData(campaigns: CampaignOverview[]): CampaignOverview[]{
+    // campaigns = campaigns.concat(campaigns);
+    const sortedCampaigns = campaigns.sort((c1, c2) => c1.name < c2.name ? -1 : 1);
+    return sortedCampaigns;
   }
 
   isGlobalAdmin(): boolean{

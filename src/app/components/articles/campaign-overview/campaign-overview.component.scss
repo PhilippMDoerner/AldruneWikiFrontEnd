@@ -9,6 +9,16 @@
     position: relative;
     display: flex;
     justify-content: center;
+    background-size: cover;
+    background-position: center;
+    min-height: 30vh;
+    opacity: 0.75;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.campaign:hover{
+    opacity: 1;
+    border-bottom: none;
 }
 
 .campaign-overlay{
@@ -19,7 +29,8 @@
 
 .campaign-overlay.overlay-heading{
     width: 100%;
-    height: 4rem;
+    min-height: 4rem;
+    line-break: anywhere;
 }
 
 .campaign-overlay.overlay-lock{
@@ -41,7 +52,7 @@
 
 .background-image{
     width: 100%;
-    height: 100vh;
+    height: 100%;
     object-fit: cover;
     opacity: 0.5;
     transition: opacity 0.2s ease-in-out;
@@ -55,7 +66,33 @@
     background-color: var(--wiki-background-1);
     align-items: center;
     justify-content: center;
+    height: 10%;
 }
+
+#campaign-overview-body{
+    height: 90%;
+}
+
+#campaign-overview-body .container{
+    max-width: unset !important;
+}
+
+#campaign-overview-body .container,
+#campaign-overview-body .container .row,
+#campaign-overview-body .container .row .col-sm{
+    max-height: 100%;
+}
+
+@media(max-width: 768px){
+    .overlay-heading h3{
+        font-size: 1.5rem;
+    }
+
+    #campaign-overview-heading{
+        height: unset;
+    }
+}
+
 
 @media(max-width: 576px){
     .campaign-row{
@@ -74,12 +111,13 @@
         height: unset;
     }
 
-    .background-image{
-        max-height: 33vh;
-        opacity: 1;
+    #campaign-overview-heading{
+        flex-direction: column;
     }
 
-    #campaign-overview-heading{
+    #heading-buttons{
+        display:flex;
+        justify-content: center;
         flex-direction: column;
     }
 }
