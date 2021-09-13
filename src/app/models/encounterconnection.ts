@@ -12,4 +12,5 @@ export class EncounterConnectionObject implements EncounterConnection{
     pk?: number;
     encounter: number;
     character: number;
+    campaign?: number //Exists to allow CampaignArticlePermission in the backend to check which campaign to look at for if you got permission or not
 }
