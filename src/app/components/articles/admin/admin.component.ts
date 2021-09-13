@@ -53,7 +53,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
   campaignModel: BaseCampaignData;
   campaignFields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "name", isNameInput: true, required: true, maxLength: 400, placeholder: "Your campaign's name..."}),
+    this.formlyService.genericInput({key: "name", isNameInput: true, required: true, maxLength: 40, placeholder: "Your campaign's name..."}),
     this.formlyService.genericInput({key: "subtitle", isNameInput: false, required: false, maxLength: 400, placeholder: "The subtitle to show on the home page"}),
     this.formlyService.singleFileField({key: "background_image", required: true}),
     this.formlyService.singleFileField({key: "icon", required: true}),
