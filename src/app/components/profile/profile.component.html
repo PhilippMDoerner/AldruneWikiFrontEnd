@@ -30,6 +30,12 @@
 
             <div class="col-6">Email</div>
             <div class="col-6">{{ user.email }}</div>
+            
+            <h5 class="col-12 mb-0 mt-4">Campaign Memberships</h5>
+            <div *ngFor="let campaignRole of campaignRolesList" class="col-12 row">
+                <div class="col-6">{{campaignRole.campaignName | titlecase}}</div>
+                <div class="col-6">{{campaignRole.role | titlecase}}</div>
+            </div>
         </div>
 
         <!-- Password Form -->

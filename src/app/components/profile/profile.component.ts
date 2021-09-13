@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
@@ -9,6 +8,7 @@ import { UserObject } from 'src/app/models/user';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 import { UserService } from 'src/app/services/user.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
@@ -23,6 +23,7 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   user: UserObject;
   parameterSubscription: Subscription;
   campaign: CampaignOverview;
+  campaignRolesList: {campaignName: string, role: string}[];
 
   profileEditState: boolean = false;
   passwordEditState: boolean = false;
@@ -44,8 +45,8 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     public routingService: RoutingService,
     private formlyService: MyFormlyService,
     private warnings : WarningsService,
-    private route: ActivatedRoute,
-    private globalUrlParams: GlobalUrlParamsService
+    private globalUrlParams: GlobalUrlParamsService,
+    private tokenService: TokenService
   ) { }
 
   ngOnInit(): void {
@@ -55,8 +56,15 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     );
 
     this.parameterSubscription = this.globalUrlParams.getCurrentCampaign().subscribe(
-      (campaign: CampaignOverview) => this.campaign = campaign
+      (campaign: CampaignOverview) => this.afterCampaignLoadFinished(campaign)
     );
+  }
+
+  afterCampaignLoadFinished(campaign: CampaignOverview): void{
+    this.campaign = campaign;
+    const campaignRoles = this.tokenService.getCampaignMemberships();
+    const rolesList = Object.keys(campaignRoles).map(campaignName => {return {campaignName, role: campaignRoles[campaignName]}})
+    this.campaignRolesList = rolesList;
   }
 
   ngAfterViewInit(): void{
