@@ -30,7 +30,7 @@ export class CampaignUpdateComponent extends ArticleFormMixin {
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true, required: true, maxLength: 400}),
     this.formlyService.genericInput({key: "subtitle", isNameInput: false, required: false, maxLength: 400}),
-    this.formlyService.genericSelect({key: "default_map", label: "Default Map", valueProp: "pk", overviewType: OverviewType.Map, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "default_map", label: "Default Map", valueProp: "pk", overviewType: OverviewType.Map, campaign: this.campaign, required: false}),
     this.formlyService.singleFileField({key: "background_image", required: true}),
     this.formlyService.singleFileField({key: "icon", required: true}),
   ];
