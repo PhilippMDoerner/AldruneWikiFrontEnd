@@ -32,6 +32,8 @@ export class RoutingService {
 
 
   public getRoutePath(routeName: string, params = {}): string{
+    console.log("Triggered getting routepath")
+    //console.trace()
     let variableRoutePath = this.getVariableRoutePathByName(routeName);
 
     if (this.hasPathVariables(variableRoutePath)){

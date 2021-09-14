@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
 import { Constants, OverviewType } from 'src/app/app.constants';
@@ -22,6 +22,9 @@ import { CardFormMixin } from 'src/app/utils/functions/cardMixin';
   styleUrls: ['./diary-entry-encounter.component.scss']
 })
 export class DiaryEntryEncounterComponent extends CardFormMixin {
+  //URLs
+  connectedCharacterUrls: string[];
+
   //CardFormMixin variables
   cardData: EncounterObject; //If the Encounter is being newly created, this is an old encounter, else its the current encounter
 
@@ -69,6 +72,15 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
       route,
       tokenService,
     ); 
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articleData: EncounterObject, params: Params){
+    this.connectedCharacterUrls = articleData.encounterConnections.map(
+      (connection: EncounterConnection) => this.routingService.getRoutePath('character', {
+          name: connection.character_details.name, 
+          campaign: campaign.name
+      })
+    );
   }
 
   getFormlyFieldConfigurations(campaign: CampaignOverview): FormlyFieldConfig[]{
