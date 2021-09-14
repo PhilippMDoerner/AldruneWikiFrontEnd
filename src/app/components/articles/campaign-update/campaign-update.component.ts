@@ -64,7 +64,7 @@ export class CampaignUpdateComponent extends ArticleFormMixin {
     return {name: params.campaign};
   }
 
-  updateRouterLinks(params: Params): void{
+  updateRouterLinks(campaignName: string, userModel: CampaignObject, params: Params): void{
     this.campaignAdminUrl = this.routingService.getRoutePath('campaign-admin', {campaign: params.campaign});
     this.campaignOverviewUrl = this.routingService.getRoutePath('campaign-overview');
   }

@@ -50,7 +50,6 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
     ngOnInit(): void{
         this.parameterSubscription = this.route.params.subscribe(params => {
             const queryParameters: object = this.getQueryParameters(params);        
-            this.updateRouterLinks(params);
             if (this.isInUpdateState()){
                 this.updateCancelDeleteRoutes(params);
 
@@ -67,7 +66,7 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
     }
 
     /** This function exists solely as a hook to be overwritten */
-    updateRouterLinks(params: Params): void {}
+    updateRouterLinks(campaignName: string, userModel: ArticleObject, params: Params): void {}
 
     updateCancelDeleteRoutes(params: Params): void{
         //TODO: Throw an error if updatecancelroute / creationcancelroute are not properly created by the child class
@@ -80,7 +79,10 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
         Please use "name" or overwrite "fetchUserModel"`;
 
         this.articleService.readByParam(this.campaign, queryParameters).pipe(first()).subscribe(
-            (article: ArticleObject) =>  this.userModel = article, 
+            (article: ArticleObject) =>  {
+                this.userModel = article;
+                this.updateRouterLinks(this.campaign, this.userModel, this.route.snapshot.params);
+            }, 
             error => this.routingService.routeToErrorPage(error)
         );
     }
@@ -93,6 +95,7 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
         this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
             (campaignData: {name: String, pk: number}) => {
                 this.userModel.campaign = campaignData.pk;
+                this.updateRouterLinks(this.campaign, this.userModel, this.route.snapshot.params);
             },
             error => this.warnings.showWarning(error)
         );
