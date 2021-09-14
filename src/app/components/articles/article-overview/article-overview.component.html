@@ -99,10 +99,10 @@
                     <span class="row" *ngFor="let diaryEntry of authorDiaryEntries.value">
                         <li 
                         class="col"
-                        [ngClass]="{'d-none': !buildDiaryEntryNameForList(diaryEntry).toLowerCase().includes(filter.value.toLowerCase())}"
+                        [ngClass]="{'d-none': !diaryEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                         >
                             <a routerLink="{{ diaryEntry.getAbsoluteRouterUrl()}}" >
-                                {{buildDiaryEntryNameForList(diaryEntry)}}
+                                {{diaryEntry.name_full}}
                             </a>
                         </li>
                     </span>
@@ -135,7 +135,7 @@
         </div>
 
         <div class="row">
-            <a routerLink="{{routingService.getRoutePath('home2', {campaign: campaign})}}" class="mt-4 col-sm-3 btn btn-secondary">
+            <a routerLink="{{homeUrl}}" class="mt-4 col-sm-3 btn btn-secondary">
                 Back to Frontpage
             </a>
         </div>

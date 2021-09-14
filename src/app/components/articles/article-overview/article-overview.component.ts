@@ -1,16 +1,16 @@
 import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
+import { OverviewItemObject } from "src/app/models/overviewItem";
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { OverviewService } from 'src/app/services/overview.service';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { RoutingService } from 'src/app/services/routing.service';
-import { first, map } from 'rxjs/operators';
-import { CharacterService } from 'src/app/services/character/character.service';
+import { filter, first, map } from 'rxjs/operators';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { TokenService } from 'src/app/services/token.service';
+import { CampaignOverview } from 'src/app/models/campaign';
 
 @Component({
   selector: 'app-article-overview',
@@ -18,10 +18,16 @@ import { TokenService } from 'src/app/services/token.service';
   styleUrls: ['./article-overview.component.scss'],
 })
 export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
+  //URLS
+  homeUrl: string;
+
+  diaryentryNames: string[];
+
+  //OTHER VARIABLES
   listItems: OverviewItemObject[];
   playerCharacters: OverviewItemObject[];
   isInitialAnimationFinished: boolean = false;
-  campaign: string;
+  campaign: CampaignOverview;
   paramSubscription: Subscription;
 
   @ViewChildren("filter") filterField: QueryList<ElementRef>;
@@ -82,32 +88,57 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     public routingService: RoutingService,
     route: ActivatedRoute,
     tokenService: TokenService,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { 
     super(tokenService, route);
   }
 
   ngOnInit(): void {
-    this.paramSubscription = this.route.params.subscribe(params => {
-      this.campaign = params.campaign; //TODO: Replace this with a subscription to globalurlparams
-    });
+    this.paramSubscription = this.globalUrlParams.getCurrentCampaign()
+      .pipe(filter(campaign => campaign != null))
+      .subscribe(
+        (campaign: CampaignOverview) => {
+          this.campaign = campaign;
+          this.onAfterCampaignLoaded(campaign);
+        }
+      )
 
+  }
+
+  onAfterCampaignLoaded(campaign: CampaignOverview){
+    const configs = this.getOverviewConfigs();
+
+    this.overviewService.getCampaignOverviewItems(campaign.name, configs.overviewTypeEnum)
+    .pipe(
+      first(),
+      map((listItems: OverviewItemObject[]) => {
+        const processingFunction = configs.processing;
+        const hasProcessingFunction = processingFunction != null;
+        return hasProcessingFunction ? processingFunction(listItems) : listItems;
+      })
+    )
+    .subscribe(
+      (listItems: OverviewItemObject[]) => {
+        this.listItems = listItems;
+        this.onAfterItemsLoaded(campaign, listItems);
+      }, 
+      error => this.routingService.routeToErrorPage(error)
+    );   
+  }
+
+  onAfterItemsLoaded(campaign: CampaignOverview, listItems: OverviewItemObject[]){
+    this.setRouterLinks(campaign, listItems)
+  }
+
+  setRouterLinks(campaign: CampaignOverview, listItems: OverviewItemObject[]): void{
+    this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaign.name});
+  }
+
+  getOverviewConfigs(): any{
     const urlSplit: string[] = this.router.url.split('/');
     this.overviewTypeName = urlSplit[urlSplit.length - 2];
     const configs: any = this.overviewTypeMetaData[this.overviewTypeName];
-
-    this.overviewService.getCampaignOverviewItems(this.campaign, configs.overviewTypeEnum)
-      .pipe(
-        first(),
-        map((listItems: OverviewItemObject[]) => {
-          const processingFunction = configs.processing;
-          const hasProcessingFunction = processingFunction != null;
-          return hasProcessingFunction ? processingFunction(listItems) : listItems;
-        })
-      )
-      .subscribe(
-        (listItems: OverviewItemObject[]) => this.listItems = listItems, 
-        error => this.routingService.routeToErrorPage(error)
-      );    
+    return configs;
   }
 
   ngAfterViewInit(): void{
