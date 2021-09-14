@@ -75,11 +75,18 @@ export class OverviewItemObject implements OverviewItem{
     //For Session-Type OverviewItems (Solely for diaryentry-create and update select statements)
     author_ids?: number[];
 
+    absoluteRouterUrl?: string;
+    
     getAbsoluteRouterUrl(): string{
         if (!this.article_type) throw "Can not generate URL for undefined article_type";
-        const ArticleClass = ArticleTypeToObjectClassMapping[this.article_type]
-        const articleObject = new ArticleClass(this);
-        return articleObject.getAbsoluteRouterUrl();
+
+        if(!this.absoluteRouterUrl){
+            const ArticleClass = ArticleTypeToObjectClassMapping[this.article_type]
+            const articleObject = new ArticleClass(this);
+            this.absoluteRouterUrl = articleObject.getAbsoluteRouterUrl();
+        }
+
+        return this.absoluteRouterUrl;
     }
 }
 
