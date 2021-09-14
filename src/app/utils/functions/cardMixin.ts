@@ -1,5 +1,5 @@
 import { Directive, ElementRef, EventEmitter, Input, Output } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { first } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
@@ -57,7 +57,12 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
             this.isOpen = true;
             this.createUserModel();
         }
+
+        this.updateDynamicVariables(this.campaign, this.cardData, this.route.snapshot.params);
     }
+
+    /** This is purely a hook to be overwritten to set static urls and other variables*/
+    updateDynamicVariables(campaign: CampaignOverview, articleData: ArticleObject, params: Params): void{}
 
     determineCardStateOnInit(): void{
         const isForCreation: boolean = this.cardData.pk == null;
