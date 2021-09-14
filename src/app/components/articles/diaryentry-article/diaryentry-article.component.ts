@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { DiaryEntry, DiaryEntryObject } from 'src/app/models/diaryentry';
 import { DiaryentryService } from 'src/app/services/diaryentry/diaryentry.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -14,6 +15,9 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
   styleUrls: ['./diaryentry-article.component.scss']
 })
 export class DiaryentryArticleComponent extends ArticleMixin {
+  //URLs
+  diaryentryOverviewUrl: string;
+
   //ArticleMixin Variables
   articleData: DiaryEntry;
   nextDiaryentryUrl: string;
@@ -53,6 +57,10 @@ export class DiaryentryArticleComponent extends ArticleMixin {
     
     const nextDiaryentryStub = diaryentry.adjacent_diaryentries.next_diaryentry;
     this.nextDiaryentryUrl = this.createDiaryentryURL(nextDiaryentryStub);
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articleData: DiaryEntryObject, params: Params): void{
+    this.diaryentryOverviewUrl = this.routingService.getRoutePath('diaryentry-overview', {campaign: campaign.name});
   }
 
   onDescriptionUpdate(){
