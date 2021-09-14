@@ -23,6 +23,9 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
+  //URLS
+  campaignOverviewUrl: string;
+
   @ViewChild('adminCard') adminCard: ElementRef;
   parameterSubscription: Subscription;
   campaign: string;
@@ -74,7 +77,10 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.parameterSubscription = this.route.params.subscribe(
-      params => this.campaign = params.campaign,
+      params => {
+        this.campaign = params.campaign;
+        this.setRouterLinks(this.campaign);
+      },
       error => this.warnings.showWarning(error)
     );
 
@@ -111,6 +117,10 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngAfterViewInit(): void{
     animateElement(this.adminCard.nativeElement, 'fadeIn');
+  }
+
+  setRouterLinks(campaign: string): void{
+    this.campaignOverviewUrl = this.routingService.getRoutePath('campaign-overview');
   }
 
   //USERS
