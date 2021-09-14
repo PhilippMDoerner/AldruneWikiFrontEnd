@@ -1,27 +1,20 @@
 <div class="main">
-    <article class="mb-5">
+    <article class="mb-5" *ngIf="userModel; else loading">
         <div class="row">
             <div class="col-12">
                 <app-edit-toggle 
-                [isInUpdateState]=true 
-                [link]="routingService.getRoutePath('campaign-admin', {campaign: campaign})"
+                [isInUpdateState]="true" 
+                [link]="campaignAdminUrl"
                 ></app-edit-toggle>
             </div>
         </div>
         
         <!-- Heading -->
-        <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
+        <div>
             <h2 class="text-center">
                 Updating Campaign {{ userModel.name }}
             </h2>
         </div>
-        <ng-template #createState>
-            <app-edit-toggle [isInUpdateState]=true [link]="routingService.getRoutePath('campaign-overview', {})"></app-edit-toggle>
-
-            <h2 class="text-center">
-                Adding a new Campaign
-            </h2>
-        </ng-template>
 
 
         <!-- Form -->

@@ -18,6 +18,9 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   styleUrls: ['./campaign-update.component.scss']
 })
 export class CampaignUpdateComponent extends ArticleFormMixin {
+  //URLs
+  campaignAdminUrl: string;
+  campaignOverviewUrl: string;
 
   //Defining ArticleFormMixin Properties
   serverModel: CampaignObject;
@@ -58,8 +61,12 @@ export class CampaignUpdateComponent extends ArticleFormMixin {
   }
 
   getQueryParameters(params: Params): object{
-    console.log(this)
     return {name: params.campaign};
+  }
+
+  updateRouterLinks(params: Params): void{
+    this.campaignAdminUrl = this.routingService.getRoutePath('campaign-admin', {campaign: params.campaign});
+    this.campaignOverviewUrl = this.routingService.getRoutePath('campaign-overview');
   }
 
   onUpdateSuccess(updatedArticle: any, self: any){
@@ -69,8 +76,7 @@ export class CampaignUpdateComponent extends ArticleFormMixin {
   }
 
   async onCreationSuccess(createdArticle: any, self: ArticleFormMixin){
-    await this.globalUrlParam.autoUpdateCampaignSet();
-    this.routingService.routeToPath('campaign-admin', {campaign: createdArticle.name});
+    throw "InvalidFunctionError. Campaign Update can not create campaigns";
   }
 
 }
