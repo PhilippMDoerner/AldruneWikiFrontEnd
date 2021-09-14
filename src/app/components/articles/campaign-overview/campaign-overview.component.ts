@@ -29,6 +29,11 @@ export class CampaignOverviewComponent implements OnInit {
   campaignData: CampaignOverview[];
   constants: Constants = Constants;
 
+  //URLs
+  generalAdminUrl: string = this.routingService.getRoutePath('admin');
+  configTableUrl: string = this.routingService.getRoutePath('config-tables');
+  isGlobalAdmin: boolean;
+
   @ViewChild('campaignOverviewContainer') campaignOverviewContainer: ElementRef;
 
   globalUrlParamSubscription: Subscription;
@@ -57,8 +62,9 @@ export class CampaignOverviewComponent implements OnInit {
     return sortedCampaigns;
   }
 
-  isGlobalAdmin(): boolean{
-    return this.tokenService.isAdmin() || this.tokenService.isSuperUser();
+  onAfterCampaignDataRetrieved(campaignData: CampaignOverview[]): void{
+    this.campaignData = this.processCampaignData(campaignData);
+    this.isGlobalAdmin = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
   }
 
   routeToCampaign(campaignName: string ): void{
