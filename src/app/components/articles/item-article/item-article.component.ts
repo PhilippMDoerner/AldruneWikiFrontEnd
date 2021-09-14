@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Item } from 'src/app/models/item';
+import { ActivatedRoute, Params } from '@angular/router';
+import { CampaignOverview } from 'src/app/models/campaign';
+import { Item, ItemObject } from 'src/app/models/item';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { ItemService } from 'src/app/services/item/item.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -15,6 +16,10 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 })
 
 export class ItemArticleComponent extends ArticleMixin {
+  //URLs
+  ownerUrl: string;
+  itemOverviewUrl: string;
+
   //ArticleMixin Variables
   articleData: Item;
   deleteRoute = {routeName: "item-overview", params: {campaign: null}}
@@ -36,5 +41,10 @@ export class ItemArticleComponent extends ArticleMixin {
       globalUrlParams,
       tokenservice,
     )
+   }
+
+   updateDynamicVariables(campaign: CampaignOverview, articleData: ItemObject, params: Params): void{
+    this.ownerUrl = this.routingService.getRoutePath('character', {name: articleData.owner_details?.name, campaign: campaign.name});
+    this.itemOverviewUrl = this.routingService.getRoutePath('item-overview', {campaign: campaign.name});
    }
 }

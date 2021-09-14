@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -22,7 +22,9 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   styleUrls: ['./item-article-update.component.scss']
 })
 export class ItemArticleUpdateComponent extends ArticleFormMixin {
-
+  //URLs
+  itemOverviewUrl: string;
+  
   //Defining ArticleFormMixin Properties
   serverModel: Item;
   userModel: ItemObject;
@@ -59,6 +61,10 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin {
     route,
     tokenService,
   ) }
+
+  updateRouterLinks(campaignName: string, userModel: ItemObject, params: Params): void{
+    this.itemOverviewUrl = this.routingService.getRoutePath('item-overview', {campaign: campaignName});
+  }
 
   createUserModel(queryParameters): void{
     this.userModel = new this.userModelClass();
