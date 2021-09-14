@@ -47,14 +47,14 @@
                 <!-- Table Body -->
                 <tbody id="{{questTaker.key}}-quests">
                     <tr 
-                    *ngFor="let quest of questTaker.value" 
+                    *ngFor="let quest of questTaker.value; let questIndex = index" 
                     [ngClass]='{"d-none": isFilteredOut(filterStates[questTaker.key], quest.status)}'
                     >
                         <!-- Quest Name Column -->
                         <td>
                             <a 
                             id="quest{{ quest.pk }}" 
-                            routerLink="{{routingService.getRoutePath('quest', {name: quest.name, campaign: campaign}) }}"
+                            routerLink="{{ questURLs[questIndex] }}"
                             >
                                  <span class="bold">{{ quest.name }}</span>
                             </a>
@@ -87,7 +87,7 @@
         <div class="row mx-0">
             <div 
             class="btn btn-secondary col-md-3" 
-            routerLink="{{routingService.getRoutePath('home1', {campaign: campaign})}}"
+            routerLink="{{ homeUrl }}"
             >
                 Back To Frontpage
             </div>

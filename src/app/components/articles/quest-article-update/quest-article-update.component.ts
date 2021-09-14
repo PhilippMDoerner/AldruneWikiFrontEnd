@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { QuestObject, Quest } from 'src/app/models/quest';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { QuestService } from 'src/app/services/quest.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
@@ -20,6 +18,9 @@ import { TokenService } from 'src/app/services/token.service';
   styleUrls: ['./quest-article-update.component.scss']
 })
 export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnInit {
+  //URLs
+  questOverviewUrl: string;
+
   //Defining ArticleFormMixin Properties
   userModel: QuestObject;
   serverModel: Quest;
@@ -80,5 +81,9 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
       route,
       tokenService,
     )
+  }
+
+  updateRouterLinks(campaignName: string, userModel: QuestObject, params: Params): void{
+    this.questOverviewUrl = this.routingService.getRoutePath('quest-overview', {campaign: campaignName});
   }
 }

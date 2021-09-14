@@ -38,7 +38,7 @@
             <span class="col-7">
                 <a 
                 *ngIf="articleData.giver_details; else NoQuestGiver" 
-                routerLink="{{ routingService.getRoutePath('character', {name: articleData.giver_details.name, campaign: campaign.name}) }}"
+                routerLink="{{ questGiverUrl }}"
                 >
                     {{ articleData.giver_details.name }}
                 </a>
@@ -59,7 +59,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('quest-overview', {campaign: campaign.name})"
+        [link]="questOverviewUrl"
         [label]="'Back to Quest Overview'"
         [deleteMessage]="'Delete Quest ?'"
         ></app-article-footer>

@@ -1,8 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { filter, first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { Quest, QuestObject } from 'src/app/models/quest';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { QuestService } from 'src/app/services/quest.service';
@@ -18,11 +19,16 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   styleUrls: ['./quest-overview.component.scss']
 })
 export class QuestOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
+  //URLs
+  questURLs: string[];
+  homeUrl: string;
+
+  //Other variables
   quests: Array<{key:string, value:QuestObject[]}>;
   filterStateTypes: string[];
   filterStates: object;
   constants: any = Constants;
-  campaign: string;
+  campaign: CampaignOverview;
   parameterSubscription: Subscription;
 
   private quest_subscription: Subscription;
@@ -35,35 +41,50 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
     private warning: WarningsService,
     route: ActivatedRoute,
     tokenService: TokenService,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { 
     super(tokenService, route);
   }
 
   ngOnInit(): void {
-    this.parameterSubscription = this.route.params.subscribe( params => {
-        this.campaign = params.campaign; //TODO: replace this with a subscription to globalurlparams
+    this.parameterSubscription = this.globalUrlParams.getCurrentCampaign()
+      .pipe(filter(campaign => campaign != null))
+      .subscribe( 
+        (campaign: CampaignOverview) => this.onAfterCampaignLoaded(campaign),
+        error => this.warning.showWarning(error)
+      );
+  }
 
-        this.questService.campaignList(this.campaign).pipe(first()).subscribe(
-          (quests: QuestObject[]) => {
-            this.quests = this.groupQuestsByTaker(quests);
+  onAfterCampaignLoaded(campaign: CampaignOverview): void{
+    this.campaign = campaign;
     
-            this.filterStateTypes = [];
-            this.filterStates = {};
-            for(let quest of quests){
-              if (!this.filterStates[quest.taker_details.name]){
-                this.filterStates[quest.taker_details.name] = 'Default';
-              }
-    
-              if (!this.filterStateTypes.includes(quest.status)){
-                this.filterStateTypes.push(quest.status);
-              }
-            };
-          }, 
-          error => this.routingService.routeToErrorPage(error)
-        );
-      },
-      error => this.warning.showWarning(error)
+    this.questService.campaignList(campaign.name).pipe(first()).subscribe(
+      (quests: QuestObject[]) => this.onAfterItemsLoaded(campaign, quests),
+      error => this.routingService.routeToErrorPage(error)
     );
+  }
+
+  onAfterItemsLoaded(campaign: CampaignOverview, quests: QuestObject[]){
+    this.quests = this.groupQuestsByTaker(quests);
+
+    this.filterStateTypes = [];
+    this.filterStates = {};
+    quests.forEach((quest: QuestObject) => {
+      if (!this.filterStates[quest.taker_details.name]){
+        this.filterStates[quest.taker_details.name] = 'Default';
+      }
+
+      if (!this.filterStateTypes.includes(quest.status)){
+        this.filterStateTypes.push(quest.status);
+      }
+    });
+
+    this.updateDynamicVariables(campaign, quests, this.route.snapshot.params);
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articles: QuestObject[], params: Params){
+    this.questURLs = articles.map((quest: QuestObject) => this.routingService.getRoutePath('quest', {name: quest.name, campaign: campaign.name}));
+    this.homeUrl = this.routingService.getRoutePath('home1', {campaign: campaign.name});
   }
 
   ngAfterViewInit(): void{
