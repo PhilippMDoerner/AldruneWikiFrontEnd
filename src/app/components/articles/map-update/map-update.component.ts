@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Constants } from 'src/app/app.constants';
 import { MapObject, Map } from 'src/app/models/map';
@@ -18,6 +18,10 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   styleUrls: ['./map-update.component.scss']
 })
 export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
+  //URLs
+  mapUrl: string;
+  defaultMapUrl: string;
+
   //Defining ArticleFormMixin Properties
   userModel: MapObject;
   serverModel: Map;
@@ -56,6 +60,11 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
       route,
       tokenService,
     ) 
+  }
+
+  updateRouterLinks(campaignName: string, userModel: MapObject, params: Params): void{
+    this.mapUrl = this.routingService.getRoutePath('map', {name: userModel.name, campaign: campaignName});
+    this.defaultMapUrl = this.routingService.getRoutePath('default-map', {campaign: campaignName})
   }
 
   articleUpdate(userModel: MapObject): void{

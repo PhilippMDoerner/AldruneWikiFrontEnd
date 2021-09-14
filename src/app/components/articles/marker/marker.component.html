@@ -67,12 +67,7 @@
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deleteArticle()"
-        [link]="routingService.getRoutePath('location', {
-                parent_name: articleData.location_details.parent_location_name, 
-                name: articleData.location_details.name,
-                campaign: campaign.name
-            }
-        )"
+        [link]="locationUrl"
         [label]="'Back to '+articleData.location_details.name"
         [deleteMessage]="'Delete Marker?'"
         ></app-article-footer>

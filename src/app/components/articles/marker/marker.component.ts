@@ -19,6 +19,9 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
   styleUrls: ['./marker.component.scss']
 })
 export class MarkerComponent extends ArticleMixin implements OnInit {
+  //URLs
+  locationUrl: string;
+
   //ArticleMixin Variables
   articleData: MapMarkerObject;
   deleteRoute = {routeName: "location", params: {name: null, parent_name: null, campaign: null}}
@@ -47,6 +50,14 @@ export class MarkerComponent extends ArticleMixin implements OnInit {
     const mapName: string = params['map_name'];
 
     return {parentLocationName, locationName, mapName};
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articleData: MapMarkerObject, params: Params): void{
+    this.locationUrl = this.routingService.getRoutePath('location', {
+        parent_name: articleData.location_details.parent_location_name, 
+        name: articleData.location_details.name,
+        campaign: campaign.name
+    });
   }
 
   updateOnDeleteRouteParameters(campaign: CampaignOverview, params: Params){

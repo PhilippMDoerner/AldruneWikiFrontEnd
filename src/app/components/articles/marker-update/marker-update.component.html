@@ -13,12 +13,7 @@
         <ng-template #createState>
             <app-edit-toggle 
             [isInUpdateState]=true 
-            [link]="routingService.getRoutePath('location', {
-                    parent_name: userModel.location_details.parent_location_name, 
-                    name: userModel.location_details.name,
-                    campaign: campaign
-                }
-            )"
+            [link]="locationUrl"
             ></app-edit-toggle>
 
             <h2 class="text-center"> Adding a new Marker </h2>

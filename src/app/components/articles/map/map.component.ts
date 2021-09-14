@@ -18,6 +18,10 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
   styleUrls: ['./map.component.scss']
 })
 export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
+  //URLs
+  createMapUrl: string;
+  homeUrl: string;
+
   //ArticleMixin Variables
   articleData: ExtendedMap;
   deleteRoute = {routeName: "character-overview", params: {campaign: null}}
@@ -47,6 +51,11 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
       globalUrlParams,
       tokenService,
     )
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articleData: MapObject, params: Params): void{
+    this.createMapUrl = this.routingService.getRoutePath('map-create', {campaign: campaign.name});
+    this.homeUrl = this.routingService.getRoutePath('home1', {campaign: campaign.name});
   }
 
   async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{

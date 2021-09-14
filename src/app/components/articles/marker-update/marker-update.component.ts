@@ -22,6 +22,9 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   styleUrls: ['./marker-update.component.scss']
 })
 export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
+  //URLs
+  locationUrl: string;
+
   //Defining ArticleFormMixin Properties
   userModel: MapMarkerObject;
   serverModel: MapMarker;
@@ -64,6 +67,14 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
       route,
       tokenService,
     )
+  }
+
+  updateRouterLinks(campaignName: string, userModel: MapMarkerObject, params: Params): void{
+    this.locationUrl = this.routingService.getRoutePath('location', {
+        parent_name: userModel.location_details.parent_location_name, 
+        name: userModel.location_details.name,
+        campaign: campaignName
+    });
   }
   //TODO: Refactor this function into 2 separate functions and instead of predefining the object above
   //TODO: Add description fields that if they're empty they should show an informative text on blue background that this is empty, why not add some text? With a button on it to do so

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
@@ -19,6 +19,9 @@ import { GlobalUrlParamsService } from 'src/app/services/global-url-params.servi
   styleUrls: ['./marker-map-create.component.scss']
 })
 export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into ArticleFormMixin
+  //URLs
+  mapUrl: string;
+
   private parameter_subscription: Subscription;
 
   mapName: string;
@@ -54,7 +57,12 @@ export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into 
       this.mapName = params['map_name'];
 
       this.createUserModel(latitude, longitude);
+      this.updateRouterLinks(this.campaign, params);
     });
+  }
+
+  updateRouterLinks(campaignName: string, params: Params): void{
+    this.mapUrl = this.routingService.getRoutePath('map', {name: params.map_name, campaign: campaignName});
   }
 
   createUserModel(latitude: number, longitude: number){
