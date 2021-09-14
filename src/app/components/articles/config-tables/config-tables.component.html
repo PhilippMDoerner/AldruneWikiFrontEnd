@@ -1,6 +1,6 @@
 <div class="main" #adminCard>
     <article *ngIf="true; else loading">
-        <div class="btn btn-secondary mb-3" routerLink="{{routingService.getRoutePath('campaign-overview')}}">
+        <div class="btn btn-secondary mb-3" routerLink="{{ campaignOverviewUrl }}">
             <span class="fas fa-globe-americas"></span>
             Back To campaign overview
         </div>
@@ -87,7 +87,7 @@
             </div>
         </div>
 
-        <div class="btn btn-secondary mb-3" routerLink="{{routingService.getRoutePath('campaign-overview')}}">
+        <div class="btn btn-secondary mb-3" routerLink="{{ campaignOverviewUrl }}">
             <span class="fas fa-globe-americas"></span>
             Back To campaign overview
         </div>

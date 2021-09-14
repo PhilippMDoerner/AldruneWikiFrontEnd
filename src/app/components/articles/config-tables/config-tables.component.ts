@@ -14,6 +14,10 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
   styleUrls: ['./config-tables.component.scss']
 })
 export class ConfigTablesComponent implements OnInit {
+  //URLs
+  campaignOverviewUrl: string;
+
+
   tables = [
     {
       name: "Marker Type",
@@ -60,8 +64,13 @@ export class ConfigTablesComponent implements OnInit {
       this.modelBackup.push(modelCopy);
       this.createStateArray.push(false);
     }
+
+    this.updateRouterLinks();
   }
 
+  updateRouterLinks(): void{
+    this.campaignOverviewUrl = this.routingService.getRoutePath('campaign-overview');
+  }
 
   ngAfterViewInit(): void{
     animateElement(this.article.nativeElement, 'fadeIn');
