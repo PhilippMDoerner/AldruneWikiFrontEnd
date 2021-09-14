@@ -50,7 +50,7 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
     ngOnInit(): void{
         this.parameterSubscription = this.route.params.subscribe(params => {
             const queryParameters: object = this.getQueryParameters(params);        
-
+            this.updateRouterLinks(params);
             if (this.isInUpdateState()){
                 this.updateCancelDeleteRoutes(params);
 
@@ -65,6 +65,9 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
     getQueryParameters(params: Params): object{
         return {name: params.name};
     }
+
+    /** This function exists solely as a hook to be overwritten */
+    updateRouterLinks(params: Params): void {}
 
     updateCancelDeleteRoutes(params: Params): void{
         //TODO: Throw an error if updatecancelroute / creationcancelroute are not properly created by the child class
