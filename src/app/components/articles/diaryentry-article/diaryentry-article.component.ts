@@ -45,8 +45,8 @@ export class DiaryentryArticleComponent extends ArticleMixin {
     return {isMainSession, sessionNumber, authorName};
   }
 
-  onArticleLoadFinished(diaryentry: DiaryEntryObject): void{
-    super.onArticleLoadFinished(diaryentry);
+  onArticleLoadFinished(diaryentry: DiaryEntryObject, params: Params): void{
+    super.onArticleLoadFinished(diaryentry, params);
 
     const priorDiaryentryStub = diaryentry.adjacent_diaryentries.prior_diaryentry;
     this.priorDiaryentryUrl = this.createDiaryentryURL(priorDiaryentryStub);

@@ -79,8 +79,8 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
     animateElement(this.articleElement.nativeElement, 'fadeIn');
   }
 
-  onArticleLoadFinished(sessionAudio: SessionAudioObject){
-    super.onArticleLoadFinished(sessionAudio);
+  onArticleLoadFinished(sessionAudio: SessionAudioObject, params: Params){
+    super.onArticleLoadFinished(sessionAudio, params);
 
     const priorSessionAudioData: {isMainSessionInt: number, sessionNumber: number} = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
     this.priorSessionAudioUrl = this.createSessionAudioUrl(priorSessionAudioData);

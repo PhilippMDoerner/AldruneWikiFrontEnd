@@ -102,6 +102,9 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
         }
     }
 
+    /** This is purely a hook to be overwritten to set static urls */
+    updateDynamicVariables(campaign: CampaignOverview, articleData: ArticleObject, params: Params){}
+
     /**
      * @description loads the data for the current article. Is fired either when the route changes
      */
@@ -114,7 +117,7 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
 
         this.articleService.readByParam(campaignName, queryParameter)
             .pipe(first())
-            .subscribe((articleData: ArticleObject) => this.onArticleLoadFinished(articleData));
+            .subscribe((articleData: ArticleObject) => this.onArticleLoadFinished(articleData, params));
     }
 
     getQueryParameter(params: Params){
@@ -129,8 +132,9 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
      * @description Executes after the article data has been loaded, but not been assigned yet to this.articleData
      * this.campaigns will already be available.
      */
-    onArticleLoadFinished(articleData: ArticleObject): void{
+    onArticleLoadFinished(articleData: ArticleObject, params: Params): void{
         this.articleData = articleData;
+        this.updateDynamicVariables(this.campaign, articleData, params);
     }
 
 
