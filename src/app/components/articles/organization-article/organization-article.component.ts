@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
+import { ActivatedRoute, Params } from '@angular/router';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { Organization, OrganizationObject } from 'src/app/models/organization';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { OrganizationService } from 'src/app/services/organization/organization.service';
@@ -17,6 +15,12 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
   styleUrls: ['./organization-article.component.scss']
 })
 export class OrganizationArticleComponent extends ArticleMixin implements OnInit {
+  //URLs
+  organizationOverviewUrl: string;
+  characterCreateUrl: string;
+  headquartersUrl: string;
+  organizationLeaderUrl: string;
+
   //ArticleMixinVariables
   articleData: Organization;
   deleteRoute = {routeName: "organization-overview", params: {campaign: null}};
@@ -39,5 +43,16 @@ export class OrganizationArticleComponent extends ArticleMixin implements OnInit
       globalUrlParams,
       tokenService,
     )
+   }
+
+   updateDynamicVariables(campaign: CampaignOverview, articleData: OrganizationObject, params: Params): void{
+    this.organizationOverviewUrl = this.routingService.getRoutePath('organization-overview', {campaign: campaign.name});
+    this.characterCreateUrl = this.routingService.getRoutePath('character-create', {campaign: campaign.name});
+    this.headquartersUrl = this.routingService.getRoutePath('location', {
+      name: articleData.headquarter_details.name, 
+      parent_name: articleData.headquarter_details.parent_name,
+      campaign: campaign.name
+    });
+    this.organizationLeaderUrl = this.routingService.getRoutePath('character', {name: articleData.leader, campaign: campaign.name})
    }
 }

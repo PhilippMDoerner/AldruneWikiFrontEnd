@@ -1,12 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
-import { Constants, OverviewType } from 'src/app/app.constants';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { OverviewType } from 'src/app/app.constants';
 import { OrganizationObject, Organization } from 'src/app/models/organization';
 import { OrganizationService } from 'src/app/services/organization/organization.service';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
