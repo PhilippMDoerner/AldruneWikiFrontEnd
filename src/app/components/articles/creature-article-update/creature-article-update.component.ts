@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, Params } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Observable, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
 import { Creature, CreatureObject } from 'src/app/models/creature';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { CreatureService } from 'src/app/services/creature/creature.service';
@@ -20,6 +17,10 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   styleUrls: ['./creature-article-update.component.scss']
 })
 export class CreatureArticleUpdateComponent extends ArticleFormMixin implements OnInit {
+  //URLs
+  creatureUrl: string;
+  creatureOverviewUrl: string;
+
   //Defining ArticleFormMixin Properties
   serverModel: CreatureObject;
   userModel: Creature;
@@ -54,5 +55,10 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
       route,
       tokenService,
     );
+  }
+
+  updateRouterLinks(campaignName: string, userModel: CreatureObject, params: Params): void{
+    this.creatureUrl = this.routingService.getRoutePath('creature', {name: userModel?.name, campaign: campaignName});
+    this.creatureOverviewUrl = this.routingService.getRoutePath('creature-overview', {campaign: campaignName});
   }
 }
