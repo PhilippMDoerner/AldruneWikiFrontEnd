@@ -21,6 +21,9 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   styleUrls: ['./location-article-update.component.scss']
 })
 export class LocationArticleUpdateComponent extends ArticleFormMixin {
+  //URLs
+  locationOverviewUrl: string;
+
   //Defining ArticleFormMixin Properties
   serverModel: Location;
   userModel: LocationObject;
@@ -57,6 +60,10 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
       route,
       tokenService,
     )
+  }
+
+  updateRouterLinks(campaignName: string, userModel: LocationObject, params: Params): void{
+    this.locationOverviewUrl = this.routingService.getRoutePath('location-overview', {campaign: campaignName})
   }
 
   getQueryParameters(params: Params): object{

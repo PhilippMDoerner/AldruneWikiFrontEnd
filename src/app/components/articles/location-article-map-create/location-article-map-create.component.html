@@ -2,7 +2,7 @@
     <article class="mb-5" *ngIf="markerModel && locationModel; else loading">
         <app-edit-toggle 
         [isInUpdateState]=true 
-        [link]="routingService.getRoutePath('map', {name: mapName, campaign: campaign})"
+        [link]="mapUrl"
         ></app-edit-toggle>
         
         <h2 class="text-center"> Adding Location and Marker </h2>

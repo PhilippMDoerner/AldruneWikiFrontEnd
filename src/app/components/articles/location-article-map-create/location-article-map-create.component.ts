@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
@@ -23,6 +23,9 @@ import { GlobalUrlParamsService } from 'src/app/services/global-url-params.servi
   styleUrls: ['./location-article-map-create.component.scss']
 })
 export class LocationArticleMapCreateComponent implements OnInit {
+  //URLs
+  mapUrl: string;
+
   private parameter_subscription: Subscription;
 
   constants: any = Constants;
@@ -52,7 +55,7 @@ export class LocationArticleMapCreateComponent implements OnInit {
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
     this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
     this.formlyService.genericSelect({key: "map", overviewType: OverviewType.Map, campaign: this.campaign}),
-    this.formlyService.genericSelect({key: "type", label: "Marker Type", overviewType: OverviewType.MarkerType, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "type", label: "Marker Type", overviewType: OverviewType.MarkerTypeType, campaign: this.campaign}),
     this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
     this.formlyService.genericInput({key: "icon", label: "Custom Icon", required: false})
   ]
@@ -64,9 +67,14 @@ export class LocationArticleMapCreateComponent implements OnInit {
       this.mapName = params['map_name'];
 
       this.createUserModel(latitude, longitude);
+
+      this.updateRouterLinks(this.campaign, params);
     });
   }
 
+  updateRouterLinks(campaignName: string, params: Params): void{
+    this.mapUrl = this.routingService.getRoutePath('map', {name: params.map_name, campaign: campaignName});
+  }
 
   createUserModel(latitude: number, longitude: number): void{
     this.createMarkerModel(latitude, longitude);
