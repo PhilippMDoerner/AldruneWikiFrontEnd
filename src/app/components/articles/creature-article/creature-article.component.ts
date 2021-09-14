@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { CreatureObject } from 'src/app/models/creature';
 import { CreatureService } from 'src/app/services/creature/creature.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -14,6 +15,9 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
   styleUrls: ['./creature-article.component.scss']
 })
 export class CreatureArticleComponent extends ArticleMixin implements OnInit {
+  //URLs
+  creatureOverviewUrl: string;
+  
   //ArticleMixin Variables
   articleData: CreatureObject;
   deleteRoute = {routeName: "creature-overview", params: {campaign: null}};
@@ -35,5 +39,9 @@ export class CreatureArticleComponent extends ArticleMixin implements OnInit {
       globalUrlParams,
       tokenService,
     )
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articleData: CreatureObject, params: Params){
+    this.creatureOverviewUrl = this.routingService.getRoutePath('creature-overview', {campaign: campaign.name});
   }
 }
