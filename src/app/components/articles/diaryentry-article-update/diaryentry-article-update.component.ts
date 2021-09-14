@@ -3,6 +3,7 @@ import { AbstractControl, FormControl } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 import { OverviewType } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { CampaignService } from 'src/app/services/campaign.service';
@@ -21,6 +22,9 @@ import { sessionAlreadyHasAuthor } from 'src/app/utils/functions/formly-validati
   styleUrls: ['./diaryentry-article-update.component.scss']
 })
 export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implements OnInit {
+  //URLs
+  diaryentryOverviewUrl: string;
+  
   //Defining ArticleFormMixin Properties
   serverModel: DiaryEntryObject;
   userModel: DiaryEntryObject;
@@ -86,6 +90,10 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
       route,
       tokenService,
     )
+  }
+
+  updateRouterLinks(campaignName: string, userModel: DiaryEntryObject, params: Params): void{
+    this.diaryentryOverviewUrl = this.routingService.getRoutePath('diaryentry-overview', {campaign: campaignName});
   }
 
   getQueryParameters(params: Params): object{
