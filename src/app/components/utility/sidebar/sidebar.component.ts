@@ -14,6 +14,12 @@ import { CampaignOverview } from 'src/app/models/campaign';
 export class SidebarComponent implements OnInit, OnDestroy {
   constants: any = Constants;
 
+  //URLS
+  profileUrl: string;
+  campaignOverviewUrl: string;
+  homeUrl: string;
+  campaignAdminUrl: string;
+
   @Input() showSidebar: BehaviorSubject<boolean>;
   currentCampaign: CampaignOverview;
   campaignRole: CampaignRole;
@@ -61,7 +67,18 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   updateSidebarEntries(campaignName: string): void{
     this.updateSidebarEntryRoutes(campaignName);
+    this.updateGeneralRouterLinks(campaignName);
     this.showAdminSection = this.tokenService.isCampaignAdmin(campaignName) || this.tokenService.isAdmin() || this.tokenService.isSuperUser();
+  }
+
+  updateGeneralRouterLinks(campaignName: string): void{
+    this.campaignOverviewUrl = this.routingService.getRoutePath("campaign-overview");
+    this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaignName});
+    this.profileUrl = this.routingService.getRoutePath('profile', {
+      campaign: campaignName, 
+      username: this.tokenService.getCurrentUserName()
+    });
+    this.campaignAdminUrl = this.routingService.getRoutePath('campaign-admin', {campaign: campaignName})
   }
 
   updateSidebarEntryRoutes(campaignName: string): void{

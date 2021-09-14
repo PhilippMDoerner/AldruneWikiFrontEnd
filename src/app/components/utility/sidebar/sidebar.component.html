@@ -4,13 +4,13 @@
     <!-- Brand -->
     <ul class="brand-line d-flex">
         <li class="entry" title="campaign-overview">
-            <a routerLink="{{ routingService.getRoutePath('campaign-overview', {}) }}" class="on-hover-show flex overview-link">
+            <a routerLink="{{ campaignOverviewUrl }}" class="on-hover-show flex overview-link">
                 <span class="fas fa-chevron-left fa-2x"></span>
             </a> 
         </li>
 
         <li class="flex-1 entry brand-entry" title="{{currentCampaign?.name}}-Home" [ngClass]="{'disabled-entry': !currentCampaign}">
-            <a class="pl-0" routerLink="{{ routingService.getRoutePath('home2', {campaign: currentCampaign?.name}) }}">
+            <a class="pl-0" routerLink="{{ homeUrl }}">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <img class="campaign-icon"
                     [src]="currentCampaign?.icon" alt="..."
@@ -36,7 +36,7 @@
             <ul id="user-links" class="on-hover-show">
                 <!-- Profile -->
                 <li class="entry">
-                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('profile', {campaign: currentCampaign?.name, username: tokenService.getCurrentUserName()})}}">
+                    <a class="on-hover-show" routerLink="{{ profileUrl }}">
                         <i class="fa fa-user"></i>
                         <span> Profile </span>
                     </a>
@@ -44,7 +44,7 @@
 
                 <!-- Admin Section -->
                 <li *ngIf="showAdminSection" class="entry">
-                    <a class="on-hover-show" routerLink="{{ routingService.getRoutePath('campaign-admin', {campaign: currentCampaign?.name}) }}" >
+                    <a class="on-hover-show" routerLink="{{ campaignAdminUrl }}" >
                         <i class="fas fa-dragon"></i>
                         <span> Campaign Admin </span>
                     </a>
@@ -78,7 +78,7 @@
 <ng-template #nonCampaignBrand>
     <ul class="brand-line d-flex">
         <li class="flex-1">
-            <a class="pl-0" routerLink="{{ routingService.getRoutePath('campaign-overview') }}">
+            <a class="pl-0" routerLink="{{ campaignOverviewUrl }}">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <span class="fas fa-chevron-left"></span>
                     <span class="ml-2 on-hover-show"> To campaigns</span>
