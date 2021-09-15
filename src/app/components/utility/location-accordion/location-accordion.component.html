@@ -6,12 +6,7 @@
         <ng-template ngbPanelTitle class="button-container">
             <span class="location-title"> 
                 <a 
-                routerLink="{{routingService.getRoutePath('location', {
-                        name: location.name, 
-                        parent_name: location.parent_location_details.name,
-                        campaign: campaign
-                    })
-                }}"
+                routerLink="{{ locationUrls[i] }}"
                 > 
                     {{ location.name }} 
                 </a>
@@ -35,8 +30,8 @@
             <div class="location-character mb-1" *ngIf="location.characters.length > 0">
                 <span class="mr-4"> Characters: </span>
                 <span class="d-inline-flex align-items-center flex-wrap">
-                    <span class="badge badge-secondary mr-2 p-1 mb-1" *ngFor="let character of location.characters">
-                        <a routerLink="{{routingService.getRoutePath('character', {name: character.name, campaign: campaign}) }}">
+                    <span class="badge badge-secondary mr-2 p-1 mb-1" *ngFor="let character of location.characters; let characterIndex = index">
+                        <a routerLink="{{ locationCharacterUrls[i][characterIndex] }}">
                             {{ character.name }}
                         </a>
                     </span>

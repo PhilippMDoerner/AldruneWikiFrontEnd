@@ -16,7 +16,11 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   styleUrls: ['./location-accordion.component.scss']
 })
 export class LocationAccordionComponent extends PermissionUtilityFunctionMixin implements OnInit {
+  locationUrls: string[];
+  locationCharacterUrls: string[][];
+
   constants: any = Constants;
+  campaignName: string = this.route.snapshot.params.campaign;
   @Input() sublocations: LocationObject[];
   sublocationDescriptionFormStates: BehaviorSubject<string>[] = [];
   isOpen: object;
@@ -34,13 +38,24 @@ export class LocationAccordionComponent extends PermissionUtilityFunctionMixin i
   ngOnInit(): void {
     this.isOpen = {};
 
+    this.locationCharacterUrls = [];
     this.sublocations.forEach((location, index) => {
       const accordionPanelId = `static-${index}`;
       this.isOpen[accordionPanelId] = false;
 
       const formStateSubject: BehaviorSubject<string> = new BehaviorSubject(Constants.displayState);
       this.sublocationDescriptionFormStates.push(formStateSubject);
+
+      const characters = location.characters;
+      const singleLocationCharacterUrls = characters.map(character => this.routingService.getRoutePath('character', {name: character.name, campaign: this.campaignName}) )
+      this.locationCharacterUrls.push(singleLocationCharacterUrls);
     });
+
+    this.locationUrls = this.sublocations.map(location => this.routingService.getRoutePath('location', {
+      name: location.name, 
+      parent_name: location.parent_location_details.name,
+      campaign: this.campaignName
+    }));
   }
 
   onSublocationUpdate(updateText: string, sublocationIndex: number){
