@@ -19,6 +19,9 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+  //URLs
+  homeUrl: string;
+
   @ViewChild('profileCard') profileCard: ElementRef;
   user: UserObject;
   parameterSubscription: Subscription;
@@ -50,25 +53,33 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
+    this.parameterSubscription = this.globalUrlParams.getCurrentCampaign().subscribe(
+      (campaign: CampaignOverview) => {
+        this.campaign = campaign;
+        this.onAfterCampaignLoadFinished(campaign);
+      }
+    );
+
+    const campaignRoles = this.tokenService.getCampaignMemberships();
+    const rolesList = Object.keys(campaignRoles).map(campaignName => {return {campaignName, role: campaignRoles[campaignName]}});
+    this.campaignRolesList = rolesList;
+  }
+
+  onAfterCampaignLoadFinished(campaign: CampaignOverview): void{
     this.userService.getThisUser().pipe(first()).subscribe(
       (user: UserObject) => this.user = user,
       error => this.routingService.routeToPath(error)
     );
 
-    this.parameterSubscription = this.globalUrlParams.getCurrentCampaign().subscribe(
-      (campaign: CampaignOverview) => this.afterCampaignLoadFinished(campaign)
-    );
-  }
-
-  afterCampaignLoadFinished(campaign: CampaignOverview): void{
-    this.campaign = campaign;
-    const campaignRoles = this.tokenService.getCampaignMemberships();
-    const rolesList = Object.keys(campaignRoles).map(campaignName => {return {campaignName, role: campaignRoles[campaignName]}})
-    this.campaignRolesList = rolesList;
+    this.updateDynamicVariables(campaign);
   }
 
   ngAfterViewInit(): void{
     animateElement(this.profileCard.nativeElement, 'fadeIn');
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview): void{
+    this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaign.name});
   }
 
   toggleProfileEditState(): void{
