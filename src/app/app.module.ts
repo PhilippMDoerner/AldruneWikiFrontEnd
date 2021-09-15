@@ -93,7 +93,6 @@ import { Home2Component } from './components/home2/home2.component';
 import { SidebarComponent } from './components/utility/sidebar/sidebar.component';
 import { RecentlyUpdatedArticlesListComponent } from './components/utility/recently-updated-articles-list/recently-updated-articles-list.component';
 import { CampaignComponent } from './components/utility/campaign/campaign.component';
-import { CampaignListComponent } from './components/utility/campaign-list/campaign-list.component';
 import { CampaignOverviewComponent } from './components/articles/campaign-overview/campaign-overview.component';
 import { BackgroundImageComponent } from './components/utility/background-image/background-image.component';
 import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
@@ -175,7 +174,6 @@ import { CampaignUpdateComponent } from './components/articles/campaign-update/c
     SidebarComponent,
     RecentlyUpdatedArticlesListComponent,
     CampaignComponent,
-    CampaignListComponent,
     CampaignOverviewComponent,
     BackgroundImageComponent,
     CampaignUpdateComponent,

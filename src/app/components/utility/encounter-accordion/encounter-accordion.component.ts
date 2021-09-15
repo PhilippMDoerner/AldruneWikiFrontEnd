@@ -26,6 +26,9 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   styleUrls: ['./encounter-accordion.component.scss']
 })
 export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin implements OnInit {
+  //URLs
+  encounterConnectionUrls: string[][];
+
   constants: any = Constants;
   @Input() encounters: EncounterObject[];
   @Input() articleCharacter: Character;
@@ -64,10 +67,16 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
   ngOnInit(): void {
     this.isOpen = {};
 
+    this.encounterConnectionUrls = [];
     this.encounters.forEach((encounter, index) => {
       const accordionPanelId = `static-${index}`;
       this.isOpen[accordionPanelId] = false;
+
+      const connections: EncounterConnection[] = encounter.encounterConnections;
+      const connectionUrls: string[] = connections.map(connection => this.routingService.getRoutePath('character', {name: connection.character_details.name, campaign: this.campaign}))
+      this.encounterConnectionUrls.push(connectionUrls);
     });
+    
   }
 
   isInCreateState(): boolean{

@@ -47,8 +47,8 @@
                     <span class="mr-4 tag-label"> Characters: </span>
                     <div class="d-inline-flex align-items-center flex-wrap">
                         <!-- Connection List -->
-                        <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections">
-                            <a routerLink="{{ routingService.getRoutePath('character', {name: connection.character_details.name, campaign: campaign}) }}">
+                        <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections; let connectionIndex=index">
+                            <a routerLink="{{ encounterConnectionUrls[i][connectionIndex] }}">
                                 {{ connection.character_details.name }}
                             </a>
                             <i 
