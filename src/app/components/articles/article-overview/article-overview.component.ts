@@ -197,7 +197,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
       }
     );
 
-    //this.sortLocationsByNameFull(locationItems);
+    this.sortLocationsByNameFull(locationItems);
     return locationItems;
   }
 
