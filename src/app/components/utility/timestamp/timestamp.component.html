@@ -1,7 +1,7 @@
 <div *ngIf="!isInDeleteState; else deleteRequest" class="row ml-auto mw-85">
     <!-- Timestamp Time -->
     <a (click)="vimePlayer.currentTime=timestamp.time" class="timestamp pointer col-lg-2 col-3 px-0"> 
-        {{timeToString(timestamp.time)}} 
+        {{timeString}} 
     </a>    
 
     <!-- Timestamp Name -->

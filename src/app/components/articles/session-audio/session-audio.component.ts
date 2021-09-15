@@ -22,6 +22,9 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 })
 
 export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDestroy {
+  //URLs
+  sessionAudioOverviewUrl: string;
+
   constants: any = Constants;
 
   priorSessionAudioUrl: string;
@@ -77,6 +80,10 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
   ngAfterViewInit(): void{
     if(!this.articleElement?.nativeElement) return;
     animateElement(this.articleElement.nativeElement, 'fadeIn');
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articleData: SessionAudioObject, params: Params){
+    this.sessionAudioOverviewUrl = this.routingService.getRoutePath('sessionaudio-overview', {campaign: campaign.name});
   }
 
   onArticleLoadFinished(sessionAudio: SessionAudioObject, params: Params){

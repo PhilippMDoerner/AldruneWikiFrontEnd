@@ -14,6 +14,7 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class TimestampComponent extends PermissionUtilityFunctionMixin implements OnInit {
   @Input() timestamp: TimestampObject;
+  timeString: string;
   @Input() vimePlayer: any;
   @Output() timestampDelete: EventEmitter<TimestampObject> = new EventEmitter();
   @ViewChild('timestampDeleteElement') timestampDeleteElementRef : ElementRef;
@@ -28,6 +29,8 @@ export class TimestampComponent extends PermissionUtilityFunctionMixin implement
   }
 
   ngOnInit(): void {
+    const time: any = this.timestamp.time;
+    this.timeString = this.timeToString(time);
   }
 
   timeToString(seconds: number): string{
