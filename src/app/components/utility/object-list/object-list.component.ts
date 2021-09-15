@@ -15,6 +15,7 @@ export class ObjectListComponent extends PermissionUtilityFunctionMixin implemen
   @Input() items: {'name': string}[];
   @Input() articleType: string;
   @Input() createLink: string = "";
+  campaign: string = this.route.snapshot.params.campaign;
 
   constructor(    
     route: ActivatedRoute,

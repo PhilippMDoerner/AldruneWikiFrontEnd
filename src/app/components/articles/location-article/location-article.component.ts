@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { first } from 'rxjs/operators';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { LocationObject } from 'src/app/models/location';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -86,7 +85,7 @@ export class LocationArticleComponent extends ArticleMixin implements OnInit {
     const locationUrl: string = this.routingService.getRoutePath('location', {
       parent_name: parentLocationName, 
       name: locationName,
-      campaign: this.campaign,
+      campaign: this.campaign.name,
     });
     
     return locationUrl;
