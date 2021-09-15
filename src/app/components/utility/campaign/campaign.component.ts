@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { OverviewType } from 'src/app/app.constants';
-import { CampaignObject } from 'src/app/models/campaign';
+import { CampaignObject, CampaignOverview } from 'src/app/models/campaign';
 import { User, UserObject } from 'src/app/models/user';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -20,6 +20,9 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
   styleUrls: ['./campaign.component.scss']
 })
 export class CampaignComponent extends ArticleMixin implements OnInit {
+  //URLs
+  homeUrl: string;
+
   //ArticleMixin Variables
   articleData: CampaignObject;
   deleteRoute = {routeName: "campaign-overview", params: {}};
@@ -99,6 +102,9 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
     );
   }
 
+  updateDynamicVariables(campaign: CampaignOverview, articleData: CampaignObject, params: Params){
+    this.homeUrl = this.routingService.getRoutePath('home1', {campaign: articleData.name});
+  }
 
   toggleGuestAddState(): void{
     this.addGuestState = !this.addGuestState;

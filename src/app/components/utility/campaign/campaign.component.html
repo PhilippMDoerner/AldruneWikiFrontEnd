@@ -137,7 +137,7 @@
         <app-article-footer
         (delete)="deactivateCampaign()"
         [showDelete]="!articleData.is_deactivated"
-        [link]="routingService.getRoutePath('home1', {campaign: articleData.name})"
+        [link]="homeUrl"
         [label]="'Back to ' + articleData.name"
         [deleteMessage]="'Deactivate Campaign ?'"
         ></app-article-footer>
