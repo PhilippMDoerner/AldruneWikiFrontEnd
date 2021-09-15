@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
@@ -14,6 +14,9 @@ import { RoutingService } from 'src/app/services/routing.service';
   styleUrls: ['./search.component.scss']
 })
 export class SearchComponent implements OnInit, OnDestroy {
+  //URLs
+  homeUrl: string;
+
   articles: Article[];
   searchString: string;
   emptySearchSubtitle: string;
@@ -45,7 +48,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     "Here is where Sam would put his dead Caitriona, IF HE COULD REACH HER!"
   ]
 
-  ngOnInit(): void {    
+  ngOnInit(): void {  
     this.parameter_subscription = this.route.params.subscribe(params => {
       this.searchString = params['searchString'];
       this.campaign = params.campaign;
@@ -53,12 +56,18 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.articleService.getSearchedArticles(this.campaign, this.searchString)
         .pipe(first())
         .subscribe(
-          (articles: OverviewArticleObject[]) => this.articles = articles,
+          (articles: OverviewArticleObject[]) => this.onAfterArticleLoadFinished(params.campaign, articles, params),
           error => this.routingService.routeToErrorPage(error)
         );      
     });
 
     this.emptySearchSubtitle = this.getRandomSubtitle();
+  }
+
+  onAfterArticleLoadFinished(campaignName: string, articles: OverviewArticleObject[], params: Params){
+    this.articles = articles;
+    
+    this.homeUrl = this.routingService.getRoutePath('home1', {campaign: campaignName});
   }
 
   sidebarColor(articleType: string): string{
