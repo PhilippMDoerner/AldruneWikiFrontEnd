@@ -1,11 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyField, FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants, OverviewType } from 'src/app/app.constants';
-import { Character } from 'src/app/models/character';
+import { CampaignOverview } from 'src/app/models/campaign';
+import { Character, CharacterObject } from 'src/app/models/character';
 import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
 import { Quote, QuoteConnection, QuoteConnectionObject, QuoteObject } from 'src/app/models/quote';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -24,17 +25,20 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
   styleUrls: ['./quotefield.component.scss']
 })
 export class QuotefieldComponent extends PermissionUtilityFunctionMixin implements OnInit, OnChanges{
+  //URLs
+  connectedCharacterURLs: string[];
+  quoteOverviewUrl: string;
+  
   constants: any = Constants;
 
   @Input() quote: Quote;
   @Input() character: Character;
+  @Input() campaign: CampaignOverview;
   @Input() enableRandomQuotes: boolean = false;
   @Input() enableLinkToOverview: boolean = false;
   @Input() enableCreatingQuotes: boolean = false;
   @Input() inCreateState: boolean = false;
   
-  campaign: string = this.route.snapshot.params.campaign;
-
   @Output() delete: EventEmitter<Quote> = new EventEmitter<Quote>();
 
   quote_subscription: Subscription;
@@ -49,12 +53,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
 
   model: Quote;
   form = new FormGroup({});
-  fields: FormlyFieldConfig[] = [
-    this.formlyService.genericTextField({key: "quote", required: true}),
-    this.formlyService.genericInput({key: "description", required: true}),
-    this.formlyService.genericSelect({key: "session", overviewType: OverviewType.Session, required: true, campaign: this.campaign}),
-    this.formlyService.genericSelect({key: "encounter", overviewType: OverviewType.Encounter, required: false, campaign: this.campaign})
-  ]
+  fields: FormlyFieldConfig[];
 
   constructor(
     private quoteService: QuoteService,
@@ -73,6 +72,31 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
     if(this.inCreateState){
       this.toggleCreateState();
     }
+
+    this.setFormlyFields(this.campaign);
+    this.updateDynamicVariables(this.campaign, this.character, this.quote.connections);
+  }
+
+  setFormlyFields(campaign: CampaignOverview): void{
+    this.fields = [
+      this.formlyService.genericTextField({key: "quote", required: true}),
+      this.formlyService.genericInput({key: "description", required: true}),
+      this.formlyService.genericSelect({key: "session", overviewType: OverviewType.Session, required: true, campaign: campaign.name}),
+      this.formlyService.genericSelect({key: "encounter", overviewType: OverviewType.Encounter, required: false, campaign: campaign.name})
+    ]
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articleData: Character, connectedCharacters: QuoteConnection[]){
+    this.connectedCharacterURLs = connectedCharacters.map(
+      (connection: QuoteConnection) => this.routingService.getRoutePath('character', {
+        name: connection.character_details.name, 
+        campaign: campaign.name
+      })
+    );
+
+    this.quoteOverviewUrl = this.routingService.getRoutePath('quote-overview', {name: articleData.name, campaign: campaign.name})
+
+
   }
 
   ngOnChanges(){
@@ -83,7 +107,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
 
   getNextRandomQuote(){
     this.isLoadingNextQuote = true;
-    this.quoteService.getRandomQuote(this.campaign, this.character.name).pipe(first()).subscribe(
+    this.quoteService.getRandomQuote(this.campaign.name, this.character.name).pipe(first()).subscribe(
       (quote: QuoteObject) => {
         if (quote.quote){
           this.quote = quote;
@@ -139,7 +163,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
     this.inQuoteConnectionCreateState = !this.inQuoteConnectionCreateState;
 
     if (!this.characters){
-      this.overviewService.getCampaignOverviewItems(this.campaign, OverviewType.Character).pipe(first()).subscribe(
+      this.overviewService.getCampaignOverviewItems(this.campaign.name, OverviewType.Character).pipe(first()).subscribe(
         (characters: OverviewItemObject[]) => this.characters = characters,
         error => this.warningsService.showWarning(error)
       );

@@ -1,7 +1,8 @@
-<div *ngIf="quote && quote.pk || inCreateState; else addNewQuoteButton">
+<div *ngIf="campaign && quote && quote.pk || inCreateState; else addNewQuoteButton">
     <app-quotefield
     [character]="character"
     [quote]="quote"
+    [campaign]="campaign"
     [enableCreatingQuotes]="true"
     [enableLinkToOverview]="true"
     [enableRandomQuotes]="true"

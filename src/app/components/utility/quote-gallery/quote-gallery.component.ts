@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { Character } from 'src/app/models/character';
 import { QuoteObject, Quote } from 'src/app/models/quote';
 import { QuoteService } from 'src/app/services/quote.service';
@@ -22,8 +23,8 @@ export class QuoteGalleryComponent extends PermissionUtilityFunctionMixin implem
   quote: Quote;
   quote_subscription: Subscription;
   @Input() character: Character;
+  @Input() campaign: CampaignOverview;
   isLoadingNextQuote: boolean = false;
-  campaign: string = this.route.snapshot.params.campaign;
 
   inCreateState: boolean = false;
   inDeleteState: boolean = false;
@@ -45,7 +46,7 @@ export class QuoteGalleryComponent extends PermissionUtilityFunctionMixin implem
 
   getNextRandomQuote(){
     this.isLoadingNextQuote = true;
-    this.quoteService.getRandomQuote(this.campaign, this.character.name).pipe(first()).subscribe(
+    this.quoteService.getRandomQuote(this.campaign.name, this.character.name).pipe(first()).subscribe(
       (quote: QuoteObject) => {
         if (quote.quote){
           this.quote = quote;

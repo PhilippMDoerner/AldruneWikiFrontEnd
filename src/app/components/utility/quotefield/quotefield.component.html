@@ -18,8 +18,8 @@
 
                 <span class="d-inline-flex align-items-center flex-wrap">
                     <!-- Display Existing Quote Connections -->
-                    <span class="badge badge-secondary mr-2 text-center vanish-container" *ngFor="let connection of quote.connections">
-                        <a routerLink="{{ routingService.getRoutePath('character', {name: connection.character_details.name, campaign: campaign}) }}">
+                    <span class="badge badge-secondary mr-2 text-center vanish-container" *ngFor="let connection of quote.connections; let connectionIndex = index">
+                        <a routerLink="{{ connectedCharacterURLs[connectionIndex] }}">
                             {{connection.character_details.name}}
                         </a>
                         
@@ -103,7 +103,7 @@
             <i 
             class="fa fa-th-list fa-1-5x icon mr-3" 
             title="See all quotes" 
-            routerLink="{{ routingService.getRoutePath('quote-overview', {name: character.name, campaign: campaign}) }}"
+            routerLink="{{ quoteOverviewUrl }}"
             *ngIf="enableLinkToOverview"
             ></i>
         </div>

@@ -1,5 +1,5 @@
 <div class="main" #article>
-    <article *ngIf="articleData; else loading" class="container">
+    <article *ngIf="articleData && campaign; else loading" class="container">
         <div class="row" *ngIf="hasUpdatePermission">
             <div class="col-12">
                 <app-edit-toggle 
@@ -55,7 +55,7 @@
 
         <!-- Quote -->
         <div class="mb-3">
-            <app-quote-gallery [character]="articleData"></app-quote-gallery>
+            <app-quote-gallery [character]="articleData" [campaign]="campaign"></app-quote-gallery>
         </div>
 
         <!-- Description -->

@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { first, map } from 'rxjs/operators';
 import { OverviewType } from 'src/app/app.constants';
-import { CharacterObject } from 'src/app/models/character';
+import { CampaignOverview } from 'src/app/models/campaign';
+import { Character, CharacterObject } from 'src/app/models/character';
 import { OverviewItem } from 'src/app/models/overviewItem';
 import { Quote, QuoteConnection, QuoteConnectionObject, QuoteObject } from 'src/app/models/quote';
 import { CharacterService } from 'src/app/services/character/character.service';
@@ -16,17 +17,20 @@ import { QuoteService } from 'src/app/services/quote.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
-import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
+import { ArticleListMixin } from 'src/app/utils/functions/articleListMixin';
 
 @Component({
   selector: 'app-quote-overview',
   templateUrl: './quote-overview.component.html',
   styleUrls: ['./quote-overview.component.scss']
 })
-export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
-  quotes: Quote[];
-  character: CharacterObject;
-  campaign: string = this.route.snapshot.params.campaign;
+export class QuoteOverviewComponent extends ArticleListMixin implements OnInit, OnDestroy {
+  //URLs
+  characterUrl: string;
+
+  //Other variables
+  articles: any[];
+  character: Character;
 
   baseQuoteConnection: QuoteConnection = new QuoteConnectionObject();
   inQuoteCreateState: boolean = false;
@@ -35,15 +39,7 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
 
   quoteModel: QuoteObject;
   quoteForm = new FormGroup({});
-  quoteFields: FormlyFieldConfig[] = [
-    this.formlyService.genericTextField({key: "quote", required: true}),
-    this.formlyService.genericInput({key: "description", required: true}),
-    this.formlyService.genericSelect({key: "session", overviewType: OverviewType.Session, required: true, campaign: this.campaign}),
-    this.formlyService.genericSelect({key: "encounter", overviewType: OverviewType.Encounter, required: false, campaign: this.campaign})
-  ]
-
-  parameter_subscription: Subscription;
-
+  quoteFields: FormlyFieldConfig[];
 
   constructor(
     private formlyService: MyFormlyService,
@@ -54,31 +50,57 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
     public routingService: RoutingService,
     route: ActivatedRoute,
     tokenService: TokenService,
+    globalUrlParams: GlobalUrlParamsService,
   ) { 
-    super(tokenService, route);
+    super(
+      characterService,
+      route,
+      routingService,
+      warning,
+      globalUrlParams,
+      tokenService
+    );
+  }
+  
+  async onArticleRouteChange(campaign: CampaignOverview, params: Params): Promise<void>{
+    super.onArticleRouteChange(campaign, params);
+
+    this.updateFormlyFields(campaign, params);
   }
 
-  ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(
-      params => {
-        const characterName = params.name;
+  updateFormlyFields(campaign: CampaignOverview, params: Params): void{
+    this.quoteFields = [
+      this.formlyService.genericTextField({key: "quote", required: true}),
+      this.formlyService.genericInput({key: "description", required: true}),
+      this.formlyService.genericSelect({key: "session", overviewType: OverviewType.Session, required: true, campaign: campaign.name}),
+      this.formlyService.genericSelect({key: "encounter", overviewType: OverviewType.Encounter, required: false, campaign: campaign.name})
+    ]
+  }
 
-        // Get Character
-        this.characterService.readByParam(this.campaign, {name: characterName}).pipe(first()).subscribe(
-          (character: CharacterObject) => this.character = character,
-          error => this.routingService.routeToErrorPage(error)
-        );
-        
-        // Get Character Quotes
-        this.quoteService.getAllCharacterQuotes(this.campaign, characterName).pipe(first()).subscribe(
-          (quotes: Quote[]) => {
-            this.quotes = quotes;
-            this.quotes.sort(this.sortQuotesBySession);
-          },
-          error => this.routingService.routeToErrorPage(error)
-        );
-      },
-      error => this.warning.showWarning(error)
+  /**This is called in "onArticleLoadFinished", by that time both character and quotes will have been loaded */
+  updateDynamicVariables(campaign: CampaignOverview, articles: any[], params: Params): void{//articles is Quote[] but Quotes aren't ArticleObjects...yet
+    this.characterUrl = this.routingService.getRoutePath('character', {name: this.character.name, campaign: campaign.name});
+  }
+
+  async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
+    console.log(this);
+    const campaignName: string = campaign.name;
+    if(campaignName == null) return;
+
+    const characterName: string = params.name;
+
+    this.character = await this.characterService.readByParam(campaignName, {name: characterName}).toPromise();
+
+    this.quoteService.getAllCharacterQuotes(campaign.name, characterName)
+      .pipe(
+        first(),
+        map((quotes: Quote[]) => {
+          quotes.sort(this.sortQuotesBySession);
+          return quotes;
+        })
+      )
+      .subscribe((quotes: any[]) => this.onArticleLoadFinished(quotes),
+      error => this.routingService.routeToErrorPage(error)
     );
   }
 
@@ -97,7 +119,7 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
     };
   }
 
-  async onSubmit(){
+  async addArticle(){
     try{
       // Create Quote
       const quote: QuoteObject = await this.quoteService.create(this.quoteModel).toPromise();
@@ -108,8 +130,8 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
       
       // Combine in Frontend, add to quotes and sort
       quote.connections = [connection];
-      this.quotes.unshift(quote);
-      this.quotes.sort(this.sortQuotesBySession);
+      this.articles.unshift(quote);
+      this.articles.sort(this.sortQuotesBySession);
 
     } catch (error){
       this.warning.showWarning(error);
@@ -121,14 +143,4 @@ export class QuoteOverviewComponent extends PermissionUtilityFunctionMixin imple
   onCancel(){
     this.inQuoteCreateState = false;
   }
-
-  deleteQuote(quoteIndex: number){
-    const quotesToDeleteCount: number = 1;
-    this.quotes.splice(quoteIndex, quotesToDeleteCount);
-  }
-
-  ngOnDestroy(){
-    if(this.parameter_subscription) this.parameter_subscription.unsubscribe();
-  }
-
 }

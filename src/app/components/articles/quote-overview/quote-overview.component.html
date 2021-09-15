@@ -1,9 +1,9 @@
 <div class="main">
-    <article class="container" *ngIf="quotes && character; else loading">
+    <article class="container" *ngIf="articles && character; else loading">
         <h3 class="text-center"> Quote Overview </h3>
         <h5 class="text-center"> 
             Quotes of: 
-            <a routerLink="{{routingService.getRoutePath('character', {name: character.name, campaign: campaign}) }}">
+            <a routerLink="{{ characterUrl }}">
                 {{ character.name }}
             </a>
         </h5>
@@ -26,7 +26,7 @@
     
         </blockquote>
 
-        <div *ngFor="let quote of quotes; let quoteIndex = index" class="mb-5">
+        <div *ngFor="let quote of articles; let quoteIndex = index" class="mb-5">
             <!-- Quote Heading -->
             <h4 *ngIf="quote.pk"> Session {{ quote.session_details.session_number }} </h4>
             <h4 *ngIf="!quote.pk"> Create Quote </h4>
@@ -34,6 +34,7 @@
             <!-- Quote Body -->
             <app-quotefield
             [character]="character"
+            [campaign]="campaign"
             [quote]="quote"
             (delete)="deleteQuote(quoteIndex)"
             ></app-quotefield>
