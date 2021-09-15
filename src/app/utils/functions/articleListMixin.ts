@@ -1,6 +1,5 @@
 import { Directive, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
-import { FormlyFieldConfig } from "@ngx-formly/core";
 import { Subscription } from "rxjs";
 import { filter, first, map, tap } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
@@ -159,8 +158,11 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
      */
     onArticleLoadFinished(articles: ArticleObject[]): void{
         this.articles = articles;
+        this.updateDynamicVariables(this.campaign, articles, this.route.snapshot.params);
     }
 
+    /** This is purely a hook to be overwritten to set static urls and other variables*/
+    updateDynamicVariables(campaign: CampaignOverview, articles: ArticleObject[], params: Params): void{}
 
     //ARTICLE MODIFICATION LOGIC
     addArticle(){

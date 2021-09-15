@@ -36,6 +36,7 @@ export class EncounterObject implements Encounter {
     orderIndexIncrement: number = 10;
 
     name?: string;
+    name_full?: string;
     pk?: number;
     description: string;
     encounterConnections?: EncounterConnection[];
