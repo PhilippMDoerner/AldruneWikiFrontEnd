@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { CampaignOverview } from 'src/app/models/campaign';
 import {  RuleObject } from "src/app/models/rule";
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -13,6 +14,9 @@ import { ArticleListMixin } from 'src/app/utils/functions/articleListMixin';
   styleUrls: ['./rules.component.scss']
 })
 export class RulesComponent extends ArticleListMixin implements OnInit, AfterViewInit {
+  //URLs
+  homeUrl: string;
+
   articleModelClass = RuleObject;
   articleStarterTitle = "New Rule";
 
@@ -35,5 +39,9 @@ export class RulesComponent extends ArticleListMixin implements OnInit, AfterVie
       globalUrlParams,
       tokenService,
     )
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articles: RuleObject[], params: Params){
+    this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaign.name});
   }
 }
