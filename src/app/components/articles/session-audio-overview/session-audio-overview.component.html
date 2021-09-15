@@ -4,7 +4,7 @@
         <!-- Requires m-0 because on mobile it else goes into overflow -->
         <div class="row m-0">
             <!-- Normal Session Audio Cards -->
-            <div class="col-md-4 col-sm-6" *ngFor="let sessionAudio of sessionAudioFiles">
+            <div class="col-md-4 col-sm-6" *ngFor="let sessionAudio of sessionAudioFiles; let audioIndex=index">
                 <div class="card my-3">
                     <!-- Card Title -->
                     <div class="card-header">
@@ -22,7 +22,7 @@
                     
                     -->
                     <div class="card-body d-flex justify-content-center flex-column">
-                        <a routerLink="{{routingService.getRoutePath('sessionaudio', {campaign: campaign, isMainSession: sessionAudio.session_details.is_main_session_int, sessionNumber: sessionAudio.session_details.session_number})}}"
+                        <a routerLink="{{ sessionAudioURLs[audioIndex]}}"
                             class="text-center btn btn-primary"> 
                             <span class="fa fa-desktop"></span>
                             <strong> Stream </strong>
@@ -45,7 +45,7 @@
 
         <!-- Button To Frontpage -->
         <div class="row mx-0">
-            <div class="col-md-3 mt-5 btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign})}}">
+            <div class="col-md-3 mt-5 btn btn-secondary" routerLink="{{ homeUrl }}">
                 Back To Frontpage
             </div>
         </div>

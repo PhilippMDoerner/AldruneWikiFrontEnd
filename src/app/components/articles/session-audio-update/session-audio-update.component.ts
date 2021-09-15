@@ -21,6 +21,9 @@ import { TokenService } from 'src/app/services/token.service';
   styleUrls: ['./session-audio-update.component.scss']
 })
 export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnInit {
+  //URLs
+  sessionAudioURL: string;
+
   //Defining ArticleFormMixin Properties
   userModel: SessionAudioObject;
   serverModel: SessionAudio;
@@ -72,6 +75,10 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
       route,
       tokenService,
     )
+  }
+
+  updateRouterLinks(campaignName: string, userModel: SessionAudioObject, params: Params): void {
+    this.sessionAudioURL = this.routingService.getRoutePath('sessionaudio-overview', {campaign: campaignName});
   }
 
   fetchUserModel(queryParameters): void{
