@@ -110,10 +110,16 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
      */
     async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
         const campaignName: string = campaign.name;
-        if(campaignName == null) return;
+        if(campaignName == null){
+            this.isLoadingArticleData = false;
+            return
+        };
 
-        const queryParameter  = this.getQueryParameter(params);
-        if(queryParameter == null) return;
+        const queryParameter = this.getQueryParameter(params);
+        if(queryParameter == null){
+            this.isLoadingArticleData = false;
+            return;
+        };
 
         this.articleService.readByParam(campaignName, queryParameter)
             .pipe(first())
