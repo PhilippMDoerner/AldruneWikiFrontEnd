@@ -1,8 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
+import { filter, first } from 'rxjs/operators';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { UserObject } from 'src/app/models/user';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -53,7 +52,9 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
   ) { }
 
   ngOnInit(): void {
-    this.parameterSubscription = this.globalUrlParams.getCurrentCampaign().subscribe(
+    this.parameterSubscription = this.globalUrlParams.getCurrentCampaign()
+      .pipe(filter(campaign => campaign != null))
+      .subscribe(
       (campaign: CampaignOverview) => {
         this.campaign = campaign;
         this.onAfterCampaignLoadFinished(campaign);
