@@ -90,7 +90,6 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
         if(this.isLoadingArticleData) return;
 
         this.updateOnDeleteRouteParameters(campaign, params);
-
         this.isLoadingArticleData = true;
 
         try{
@@ -110,16 +109,10 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
      */
     async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
         const campaignName: string = campaign.name;
-        if(campaignName == null){
-            this.isLoadingArticleData = false;
-            return
-        };
+        if(campaignName == null) return;
 
         const queryParameter = this.getQueryParameter(params);
-        if(queryParameter == null){
-            this.isLoadingArticleData = false;
-            return;
-        };
+        if(queryParameter == null) return;
 
         this.articleService.readByParam(campaignName, queryParameter)
             .pipe(first())
