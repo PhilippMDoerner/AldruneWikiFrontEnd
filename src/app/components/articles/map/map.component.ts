@@ -29,7 +29,6 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   //Custom Variables
   maps: OverviewItemObject[];
 
-  isInitialAnimationFinished: boolean = false;
   //Must be ViewChildren instead of ViewChild. Otherwise the Element is not loaded in ngAfterViewInit.
   //That is because the ngIf on <article> leads to the element not being loaded in time, see the following link
   // https://stackoverflow.com/questions/34947154/angular-2-viewchild-annotation-returns-undefined
