@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
@@ -59,22 +59,41 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   }
 
   async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-    super.loadArticleData(campaign, params);
-
     const hasYetToLoadMapsForOverview = this.maps == null;
     if(!hasYetToLoadMapsForOverview) return;
 
     this.articleService.campaignList(this.campaign.name)
       .pipe(first())
       .subscribe(
-        (campaignMaps: OverviewItemObject[]) => this.maps = campaignMaps,
+        async (campaignMaps: OverviewItemObject[]) => {
+          this.maps = campaignMaps;
+          await super.loadArticleData(campaign, params);
+
+          const articleHasLoaded: boolean = this.articleData != null;
+          if (!articleHasLoaded) this.updateDynamicVariables(campaign, null, params);
+        },
         error => this.routingService.routeToErrorPage(error)
       );
   }
 
+  /** 
+   * Fetches the map name from the url. If there is no map name parameter, it tries to give back the default map configured
+   * for this campaign. If there is no default map, it tries to load the first map in the list of maps. If there are no maps,
+   * it returns null
+   */
   getQueryParameter(params: Params): any {
+    const hasMaps: boolean = this.maps.length > 0;
+    if(!hasMaps) return null;
+
     const mapParameters: {name: string} = super.getQueryParameter(params);
-    if (mapParameters.name == null) mapParameters.name = this.campaign.default_map_details.name;
+
+    if (mapParameters.name == null) {
+      const default_map_name: string = this.campaign.default_map_details?.name;
+      const first_map_name: string = this.maps[0].name;
+
+      const hasDefaultMap: boolean = default_map_name != null;
+      mapParameters.name = hasDefaultMap ? default_map_name : first_map_name;
+    }
 
     return mapParameters;
   }
@@ -90,7 +109,8 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   setInitialMapChoiceValue(): void{
     const queryParameters: Params = this.route.snapshot.params;
     let currentMapName: string = queryParameters.name;
-    if (currentMapName == null) currentMapName = this.campaign.default_map_details.name;
+    if (currentMapName == null) currentMapName = this.campaign.default_map_details?.name;
+    if (currentMapName == null) return;
 
     const currentMapIndex: number = this.getMapOptionIndex(currentMapName);
     const mapChoiceElement = this.getMapChoiceElement();

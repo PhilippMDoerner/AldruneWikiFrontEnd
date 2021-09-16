@@ -1,5 +1,5 @@
 <div class="main" #article>
-    <article *ngIf="maps && articleData; else loading" class="container">
+    <article *ngIf="maps; else loading" class="container">
         <!-- Heading -->
         <div class="row" *ngIf="hasUpdatePermission">
             <div class="col-12">
@@ -10,7 +10,7 @@
             </div>
         </div>
         
-        <div class="row text-center">
+        <div class="row text-center" *ngIf="maps.length > 0">
             <h3 class="icon-container col">
                 <!-- Map-Selector -->
                 <!-- TODO: Add font awesome icons to the select choices like this https://stackoverflow.com/questions/36743041/font-awesome-icon-in-select-option -->
@@ -28,8 +28,8 @@
         </div>
 
         <!-- Leaflet Map -->
-        <div class="row">
-            <div class="mb-5 col">
+        <div class="row" *ngIf="articleData; else noMapMessage">
+            <div class="mb-5 col" *ngIf="!isLoadingArticleData; else loading">
                 <app-leaflet-map 
                 [map]="articleData"
                 [campaign]="campaign"
@@ -41,6 +41,7 @@
 
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
+        *ngIf="articleData"
         (delete)="deleteMap()"
         [link]="homeUrl"
         [label]="'Back to Frontpage'"
@@ -50,3 +51,22 @@
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
+
+<ng-template #noMapMessage>
+    <div class="row justify-content-center align-items-center flex-column mt-5" *ngIf="hasCreatePermission; else noMapMessageGuest">
+        <p class="h4"> <strong> There's no map yet! Want to add one? </strong> </p>
+        <a routerLink="{{ createMapUrl }}" class="mt-3 btn btn-lg btn-primary col-sm-4">
+            <span class="fas fa-plus"></span>
+            Add Map
+        </a>
+    </div>
+</ng-template>
+
+<ng-template #noMapMessageGuest>
+    <div class="row justify-content-center align-items-center flex-column mt-5">
+        <p class="h4"><strong> There's no map yet, but maybe there will be in the future! </strong></p>
+        <a routerLink="{{ homeUrl }}" class="mt-3 btn btn-lg btn-secondary">
+            Back to home page
+        </a>
+    </div>
+</ng-template>
