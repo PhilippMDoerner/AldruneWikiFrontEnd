@@ -2,6 +2,11 @@ ul{
 	list-style-type: disclosure-closed;
 }
 
+.overview-image{
+    max-height: 20rem;
+    object-fit: cover;
+}
+
 .filter-bar{
     background-color: transparent;
     border: 1px white solid;
