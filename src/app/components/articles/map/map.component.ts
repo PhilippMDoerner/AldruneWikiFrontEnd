@@ -87,14 +87,20 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
     const mapParameters: {name: string} = super.getQueryParameter(params);
 
     if (mapParameters.name == null) {
-      const default_map_name: string = this.campaign.default_map_details?.name;
-      const first_map_name: string = this.maps[0].name;
-
-      const hasDefaultMap: boolean = default_map_name != null;
-      mapParameters.name = hasDefaultMap ? default_map_name : first_map_name;
+      mapParameters.name = this.getSecondaryMapChoice();
     }
 
     return mapParameters;
+  }
+
+  getSecondaryMapChoice(): string{
+    if (this.maps.length === 0) return;
+
+    const default_map_name: string = this.campaign.default_map_details?.name;
+    const first_map_name: string = this.maps[0].name;
+
+    const campaignHasDefaultMap: boolean = default_map_name != null;
+    return campaignHasDefaultMap ? default_map_name : first_map_name;
   }
 
   ngAfterViewInit(){
@@ -141,7 +147,17 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
 
   deleteMap(){
     this.articleService.delete(this.articleData.pk).pipe(first()).subscribe(
-      response => this.routeToMap(Constants.defaultMapName),
+      response => {
+        const mapIndex: number = this.maps.findIndex((map: OverviewItemObject) => this.articleData.name === map.name);
+        this.maps.splice(mapIndex, 1);
+
+        const fallbackMapName: string = this.getSecondaryMapChoice();
+        if (fallbackMapName != null){
+          this.routeToMap(fallbackMapName);
+        } else {
+          this.routingService.routeToPath("default-map", {campaign: this.campaign.name});
+        }
+      },
       error => this.warnings.showWarning(error)
     );
   }
