@@ -159,7 +159,9 @@ export class TokenService {
 
   private isBadToken(token: string): boolean{
     const isEmptyToken: boolean = !token;
-    return isEmptyToken || this.isTokenForAnonymousUser(token);
+    const decodedAccessToken: DecodedTokenPayload = this.getDecodedAccessTokenPayload();
+    const isOldVersionToken: boolean = decodedAccessToken.campaign_memberships == null;
+    return isEmptyToken || this.isTokenForAnonymousUser(token) || isOldVersionToken;
   }
 
   private isTokenForAnonymousUser(token: string): boolean{

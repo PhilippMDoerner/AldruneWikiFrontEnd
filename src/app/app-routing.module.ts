@@ -53,6 +53,12 @@ const generalRoutes: GeneralRoute[] = [
 		data: {name: 'start'}
 	},
 	{
+		path: "wiki2",
+		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaigns`, 
+		pathMatch: 'full',
+		data: {name: 'start'}
+	},
+	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/home`,
 		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaigns`, 
 		pathMatch: "full",

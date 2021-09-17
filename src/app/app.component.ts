@@ -1,12 +1,11 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router, RouterEvent } from '@angular/router';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { Constants } from './app.constants';
-import { Campaign } from './models/campaign';
-import { CampaignService } from './services/campaign.service';
 import { RoutingService } from './services/routing.service';
+import { TokenService } from './services/token.service';
 import { WarningsService } from './services/warnings.service';
 import { onlyOnTouch } from './utils/functions/utilityDecorators';
 
@@ -35,10 +34,16 @@ export class AppComponent implements OnInit, OnDestroy{
     private serviceWorkerUpdate: SwUpdate,
     private warnings: WarningsService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private tokenService: TokenService,
   ){}
 
   ngOnInit(){
+    if (!this.tokenService.hasValidJWTToken()){
+      this.tokenService.removeJWTTokenFromLocalStorage();
+      this.routingService.routeToPath("login");
+    }
+
     this.serviceWorkerSubscription = this.serviceWorkerUpdate.available.subscribe(
       event => {
         this.warnings.showAlert("There's an update to this webpage, that you've just downloaded in the background! We now need to reload the page to move it into cache...");
