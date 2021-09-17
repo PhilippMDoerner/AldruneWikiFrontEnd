@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { Constants } from '../app.constants';
-import {Campaign, CampaignOverview } from '../models/campaign';
+import {Campaign, CampaignOverview, WikiStatistics } from '../models/campaign';
 import { User } from '../models/user';
 import { convertMultiFileModelToFormData, convertSingleFileModelToFormData } from '../utils/formDataConverter';
 import { GenericService } from './generic.service';
@@ -91,6 +91,10 @@ export class CampaignService extends GenericService{
    */
   deactivate(pk: number): Observable<any>{
     return super.delete(pk);
+  }
+
+  statistics(campaign_name: string): Observable<any>{
+    return this.http.get<WikiStatistics>(`${Constants.wikiApiUrl}/admin/statistics/${campaign_name}`);
   }
 
   /**

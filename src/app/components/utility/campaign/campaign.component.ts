@@ -4,7 +4,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { OverviewType } from 'src/app/app.constants';
-import { CampaignObject, CampaignOverview } from 'src/app/models/campaign';
+import { CampaignObject, CampaignOverview, WikiStatistics } from 'src/app/models/campaign';
 import { User, UserObject } from 'src/app/models/user';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -29,6 +29,8 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   queryParameterName = "name";
 
   //CUSTOM VARIABLES
+  campaignStatistics: WikiStatistics;
+
   addMemberState: boolean = false;
   addAdminState: boolean = false;
   addGuestState: boolean = false;
@@ -102,6 +104,15 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
 
   updateDynamicVariables(campaign: CampaignOverview, articleData: CampaignObject, params: Params){
     this.homeUrl = this.routingService.getRoutePath('home1', {campaign: articleData.name});
+  }
+
+  async afterBackgroundDataLoaded(campaign: CampaignOverview): Promise<void>{
+    super.afterBackgroundDataLoaded(campaign);
+
+    this.campaignService.statistics(campaign.name).pipe(first()).subscribe(
+      (statistics: WikiStatistics) => this.campaignStatistics = statistics,
+      error => this.warnings.showWarning(error)
+    );
   }
 
   toggleGuestAddState(): void{

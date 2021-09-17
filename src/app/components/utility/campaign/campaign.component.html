@@ -133,6 +133,20 @@
             </div>
         </div>
 
+        <!-- Campaign Statistics -->
+        <h1>
+            <span class="fas fa-table"></span>
+            Campaign Statistics
+        </h1>
+
+        <div class="container mb-5" *ngIf="campaignStatistics; else loading">
+            <div class="row" *ngFor="let statistic of campaignStatistics | keyvalue">
+                <div class="col-6 col-sm-3"> {{ statistic.key }}</div>
+                <div class="col-6 col-sm-3"> {{ statistic.value }}</div>
+            </div>
+        </div>
+
+
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
         (delete)="deactivateCampaign()"

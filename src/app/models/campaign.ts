@@ -54,3 +54,23 @@ export class CampaignObject implements Campaign{
         return `${Constants.wikiUrlFrontendPrefix}/admin` ;
     }
 }
+
+
+export interface WikiStatistics{
+    creature_count: number;
+    character_count: number;
+    diaryentry_count: number;
+    encounter_count: number;
+    item_count: number;
+    location_count: number;
+    map_count: number;
+    marker_count: number;
+    organization_count: number;
+    quest_count: number;
+    quote_count: number;
+    rule_count: number;
+    session_audio_count: number;
+    session_count: number;
+    spell_count: number;
+    timestamp_count: number;
+}
