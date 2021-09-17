@@ -3,7 +3,7 @@
         <div class="row" *ngIf="hasUpdatePermission">
             <div class="col-12">
                 <app-edit-toggle 
-                [isInUpdateState]=false 
+                [isInUpdateState]="false" 
                 [link]="'update'"
                 ></app-edit-toggle>
             </div>

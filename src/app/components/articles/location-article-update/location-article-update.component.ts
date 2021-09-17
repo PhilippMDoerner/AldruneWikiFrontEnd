@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { Constants, OverviewType } from 'src/app/app.constants';
+import { OverviewType } from 'src/app/app.constants';
 import { LocationObject, Location } from 'src/app/models/location';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -63,7 +62,7 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
   }
 
   updateRouterLinks(campaignName: string, userModel: LocationObject, params: Params): void{
-    this.locationOverviewUrl = this.routingService.getRoutePath('location-overview', {campaign: campaignName})
+    this.locationOverviewUrl = this.routingService.getRoutePath('location-overview', {campaign: campaignName});
   }
 
   getQueryParameters(params: Params): object{
@@ -92,7 +91,10 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
     this.userModel.parent_location = null;
 
     this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
-      (campaignData: {name: String, pk: number}) => this.userModel.campaign = campaignData.pk,
+      (campaignData: {name: String, pk: number}) => {
+        this.userModel.campaign = campaignData.pk;
+        this.updateRouterLinks(this.campaign, this.userModel, null);
+      },
       error => this.warnings.showWarning(error)
     );
 
@@ -107,6 +109,8 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
             parent_location: location.parent_location_details.name,
             name_full: location.name_full
           };
+
+          this.updateRouterLinks(this.campaign, this.userModel, null);
         },
         error => this.routingService.routeToErrorPage(error)
       );
