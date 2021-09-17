@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -22,6 +21,8 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
   @Input() icon: string = "fa-pencil";
   @Output() updateSession: EventEmitter<SessionObject> = new EventEmitter();
   @Output() createSession: EventEmitter<SessionObject> = new EventEmitter();
+
+  sessionList: SessionObject[];
 
   formState: string;
 
@@ -81,16 +82,18 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
       });
   }
 
-  createModel(campaign: CampaignOverview){
-    this.sessionService.campaignList(this.campaign.name).pipe(first()).subscribe((sessions: SessionObject[]) => {
-      const lastSession = sessions[0];
-      this.model = new SessionObject();
+  async createModel(campaign: CampaignOverview){
+    if (this.sessionList == null) {
+      this.sessionList = await this.sessionService.campaignList(this.campaign.name).toPromise();
+    }
+    
+    const lastSession = this.sessionList[0];
+    this.model = new SessionObject();
 
-      this.model.session_date = this.getNextSessionDate(lastSession);
-      this.model.is_main_session = true;
-      this.model.session_number = lastSession.session_number + 1;
-      this.model.campaign = campaign.pk;
-    })
+    this.model.session_date = this.getNextSessionDate(lastSession);
+    this.model.is_main_session = true;
+    this.model.session_number = lastSession.session_number + 1;
+    this.model.campaign = campaign.pk;
   }
 
   getNextSessionDate(lastSession: any): string{
