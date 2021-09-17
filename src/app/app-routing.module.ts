@@ -48,7 +48,7 @@ const generalRoutes: GeneralRoute[] = [
 	//Redirect Routes
 	{
 		path: "",
-		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/${Constants.defaultCampaign}`,
+		redirectTo: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaigns`, 
 		pathMatch: 'full',
 		data: {name: 'start'}
 	},
