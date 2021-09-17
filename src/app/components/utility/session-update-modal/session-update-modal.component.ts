@@ -1,12 +1,14 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { delay, filter, first, tap } from 'rxjs/operators';
+import { filter, first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { SessionObject } from 'src/app/models/session';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { SessionService } from 'src/app/services/session.service';
 
@@ -23,7 +25,7 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
 
   formState: string;
 
-  campaign: string = this.route.snapshot.params.campaign;
+  campaign: CampaignOverview;
 
   model: SessionObject;
   form: FormGroup = new FormGroup({});
@@ -38,36 +40,57 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
   constants : any = Constants;
   
   sessionpk_subscription: Subscription;
+  parameterSubscription: Subscription;
 
   constructor(
     private modalService: NgbModal,
     private formlyService: MyFormlyService,
     private sessionService: SessionService,
-    private route: ActivatedRoute,
+    private globalUrlParams: GlobalUrlParamsService,
   ) { }
 
   ngOnInit(){
     this.formState = (this.session_pk_subject) ? Constants.updateState : Constants.createState;
 
+    this.parameterSubscription = this.globalUrlParams.getCurrentCampaign()
+      .pipe(filter(campaign => campaign != null))
+      .subscribe(
+      (campaign: CampaignOverview) => {
+        this.campaign = campaign;
+        this.onAfterCampaignLoad(campaign);
+      }
+    )
+  }
+
+  onAfterCampaignLoad(campaign: CampaignOverview): void{
     if (this.formState === Constants.updateState){
-      this.sessionpk_subscription = this.session_pk_subject.pipe(
-        filter(sessionPk => !!sessionPk),
-      ).subscribe((sessionPk: number) => {
-        this.sessionService.read(sessionPk).pipe(first()).subscribe((session: SessionObject) => {
-          this.model = session;
-        })
-      })
+      this.fetchUserModel();
+
     } else if (this.formState === Constants.createState){
-      this.sessionService.campaignList(this.campaign).pipe(first()).subscribe((sessions: SessionObject[]) => {
-        const lastSession = sessions[0];
-        this.model = new SessionObject();
-
-        this.model.session_date = this.getNextSessionDate(lastSession);
-        this.model.is_main_session = true;
-        this.model.session_number = lastSession.session_number + 1;
-      })
+      this.createModel(campaign);
     }
+  }
 
+  fetchUserModel(){
+    this.sessionpk_subscription = this.session_pk_subject
+      .pipe(filter(sessionPk => !!sessionPk))
+      .subscribe((sessionPk: number) => {
+        this.sessionService.read(sessionPk)
+          .pipe(first())
+          .subscribe((session: SessionObject) => this.model = session);
+      });
+  }
+
+  createModel(campaign: CampaignOverview){
+    this.sessionService.campaignList(this.campaign.name).pipe(first()).subscribe((sessions: SessionObject[]) => {
+      const lastSession = sessions[0];
+      this.model = new SessionObject();
+
+      this.model.session_date = this.getNextSessionDate(lastSession);
+      this.model.is_main_session = true;
+      this.model.session_number = lastSession.session_number + 1;
+      this.model.campaign = campaign.pk;
+    })
   }
 
   getNextSessionDate(lastSession: any): string{
@@ -82,7 +105,6 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
   }
 
   dateToYYYMMDDString(date: Date){
-    console.log(date);
     return date.toISOString().slice(0,10);
   }
 
@@ -109,5 +131,6 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(){
     if (this.sessionpk_subscription) this.sessionpk_subscription.unsubscribe();
+    if (this.parameterSubscription) this.parameterSubscription.unsubscribe();
   }
 }
