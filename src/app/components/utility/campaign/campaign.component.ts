@@ -42,7 +42,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
       label: "User",
       overviewType: OverviewType.User,
       disabledExpression: (selectOption: User) => this.isInGroup(selectOption, this.articleData.member_group_name),
-      tooltipMessage: "",
+      tooltipMessage: "Members typically represent the individual player characters + the GM(s)",
       warningMessage: "The user you selected is already member of this campaign"
     }),
   ];
@@ -55,10 +55,8 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
       sortProp: "username", 
       label: "User",
       overviewType: OverviewType.User,
-      disabledExpression: (selectOption: User) => {
-        return this.isInGroup(selectOption, this.articleData.admin_group_name);
-      },
-      tooltipMessage: "",
+      disabledExpression: (selectOption: User) => this.isInGroup(selectOption, this.articleData.admin_group_name),
+      tooltipMessage: "Keep in mind that being an admin only represents being the one administering this campaign, not being a member of it!",
       warningMessage: "The user you selected is already admin of this campaign"
     }),
   ];
@@ -77,7 +75,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
         const isGuest = this.isInGroup(selectOption, this.articleData.guest_group_name);
         return isAdmin || isMember || isGuest;
       },
-      tooltipMessage: "",
+      tooltipMessage: "Keep in mind that there's no point in being a guest when you're already a member or admin.",
       warningMessage: "The user you selected is already guest of this campaign"
     }),
   ];
