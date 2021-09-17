@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1629911513601,
+  "timestamp": 1631885220827,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -14,12 +14,12 @@
         "/4.d5c837075df5a8484b9c.js",
         "/favicon.ico",
         "/index.html",
-        "/main.0143209ec763af7ef954.js",
+        "/main.7e443b440868523b269b.js",
         "/manifest.webmanifest",
         "/polyfills.a6cee9d4b9da9e6c7e50.js",
         "/runtime.6076814ef49a1a1583c0.js",
         "/scripts.7003bce63d47e1b5a54b.js",
-        "/styles.215e2535872c320834c7.css"
+        "/styles.5bb8268dfa2b186e07b4.css"
       ],
       "patterns": [
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic01\\.jpg",
@@ -43,6 +43,13 @@
         "ignoreVary": true
       },
       "urls": [
+        "/assets/default_images/audio_pic_default.png",
+        "/assets/default_images/background_default.png",
+        "/assets/default_images/icon_default.png",
+        "/assets/error_images/404.png",
+        "/assets/error_images/500.jpeg",
+        "/assets/error_images/504.jpeg",
+        "/assets/error_images/noscript.jpg",
         "/assets/icons/icon-128x128.png",
         "/assets/icons/icon-144x144.png",
         "/assets/icons/icon-152x152.png",
@@ -56,6 +63,13 @@
         "/assets/marker-icon-2x.png",
         "/assets/marker-icon.png",
         "/assets/marker-shadow.png",
+        "/assets/overlay.png",
+        "/assets/overview_images/characters.jpg",
+        "/assets/overview_images/creatures.jpg",
+        "/assets/overview_images/diaryentries.png",
+        "/assets/overview_images/items.jpg",
+        "/assets/overview_images/locations.jpg",
+        "/assets/overview_images/organizations.jpg",
         "/fa-brands-400.216edb96b562c79adc09.svg",
         "/fa-brands-400.329a95a9172fdb2cccb4.woff",
         "/fa-brands-400.89a52ae1d02b86d61439.eot",
@@ -84,6 +98,19 @@
     }
   ],
   "dataGroups": [
+    {
+      "name": "campaignData",
+      "patterns": [
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/campaign\\/[^/]*\\/"
+      ],
+      "strategy": "performance",
+      "maxSize": 100,
+      "maxAge": 259200000,
+      "cacheQueryOptions": {
+        "ignoreVary": true
+      },
+      "version": 1
+    },
     {
       "name": "aldruneWikiOverview",
       "patterns": [
@@ -134,6 +161,13 @@
   ],
   "hashTable": {
     "/4.d5c837075df5a8484b9c.js": "29a44e57e0e6a8cdda9064c72797f9f03a549320",
+    "/assets/default_images/audio_pic_default.png": "e2a061d71735b37e617c471b09795e7f0a193fc3",
+    "/assets/default_images/background_default.png": "3338cebf09ea92cd72aceb03928acf9ae59fb056",
+    "/assets/default_images/icon_default.png": "67de2ccbf8b467dae5d613902a76c143ed40cd44",
+    "/assets/error_images/404.png": "5165c0960d6d86163288375979f6a88984767cc1",
+    "/assets/error_images/500.jpeg": "d62f661192d03996b87205fae9760fca01162acb",
+    "/assets/error_images/504.jpeg": "cf71df28a9fc350755b7e3c7baf06b214ab9ea24",
+    "/assets/error_images/noscript.jpg": "776fe9cad9d179fe335d9cb53f489a493c520087",
     "/assets/icons/icon-128x128.png": "5b795ca8c72bac9409ee5f62451d6b9f8826f41d",
     "/assets/icons/icon-144x144.png": "973641ef59ba65bf5fc4dd473a07554493c1820c",
     "/assets/icons/icon-152x152.png": "e51eae71acc3e37759f7500ccfbdd76462d8629b",
@@ -147,6 +181,13 @@
     "/assets/marker-icon-2x.png": "cf3a536596b1f58e0ac805404183c8e6d6bdacb5",
     "/assets/marker-icon.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/assets/marker-shadow.png": "7b6a8df63930381e96604e705168d0527d6b82bc",
+    "/assets/overlay.png": "428cb1e28c236e7a48194c7469347fe5a5e0caef",
+    "/assets/overview_images/characters.jpg": "db82c1476c313ff8d011910f2e8ab409f589d506",
+    "/assets/overview_images/creatures.jpg": "fdeede3d93b0877c643d6ef06a30a8180c1ad383",
+    "/assets/overview_images/diaryentries.png": "588c48c64636da4c908f5c6e3b378fe9e6e8d213",
+    "/assets/overview_images/items.jpg": "263567bd4309c01c566f29b41add2b70f64cdcad",
+    "/assets/overview_images/locations.jpg": "08d6c5d33e578d97df2951207140881a603ad712",
+    "/assets/overview_images/organizations.jpg": "ca3fc4ea64269c5c46aced4f54718986b29d7098",
     "/fa-brands-400.216edb96b562c79adc09.svg": "24aff44d36f6c4a6a08230474b546b29641c75d6",
     "/fa-brands-400.329a95a9172fdb2cccb4.woff": "5f8cab91347c553c1eb87f9b527f6bee8a28e40d",
     "/fa-brands-400.89a52ae1d02b86d61439.eot": "a400bc89d3cb4d45a3b90791800587a1e4ebafa6",
@@ -168,16 +209,16 @@
     "/fontawesome-webfont.8b43027f47b20503057d.eot": "d980c2ce873dc43af460d4d572d441304499f400",
     "/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/fontawesome-webfont.f691f37e57f04c152e23.woff": "28b782240b3e76db824e12c02754a9731a167527",
-    "/index.html": "e9e56e17506151aa84a6d4eaf1c50d0b95a5bc0c",
+    "/index.html": "524a29c4b2aef479a90830db494453152bc7f219",
     "/layers-2x.8f2c4d11474275fbc161.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/layers.416d91365b44e4b4f477.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/main.0143209ec763af7ef954.js": "b36d8bc6803ae64de1a2da523881d014e9c20f83",
+    "/main.7e443b440868523b269b.js": "3df22aef45ed00658ee74fc70893a094b09e3e4b",
     "/manifest.webmanifest": "116c35892aa2a2a2ae967202ecd0a917f9fe39db",
     "/marker-icon.2b3e1faf89f94a483539.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/polyfills.a6cee9d4b9da9e6c7e50.js": "dbc502f030c7bb83c7caa1feee7aff990831f7d9",
     "/runtime.6076814ef49a1a1583c0.js": "60542d45ef1f7bfeb255f45ea6a167ec92d2cc96",
     "/scripts.7003bce63d47e1b5a54b.js": "aa300fb1b006c382abc70d8bef08ea089dad59fc",
-    "/styles.215e2535872c320834c7.css": "919fc117eb2f78f455d11940468512cb5783732a"
+    "/styles.5bb8268dfa2b186e07b4.css": "a89087ff0ca34c6259e3e8a26f77a3143af94e2b"
   },
   "navigationUrls": [
     {
