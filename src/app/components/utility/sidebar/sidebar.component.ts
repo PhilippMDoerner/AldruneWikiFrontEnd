@@ -49,7 +49,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
       .subscribe(
         (campaign: CampaignOverview) => {
           this.currentCampaign = campaign;
-
+          //TODO: When jumping to item-article-update, that triggers a full sidebar component re-render including the links here. Figure out why that is
           if(this.currentCampaign != null){
             this.campaignRole = this.tokenService.getCampaignRole(campaign?.name);
             this.updateSidebarEntries(this.currentCampaign?.name);
@@ -72,6 +72,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   }
 
   updateGeneralRouterLinks(campaignName: string): void{
+    console.log("Update general router links")
     this.campaignOverviewUrl = this.routingService.getRoutePath("campaign-overview");
     this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaignName});
     this.profileUrl = this.routingService.getRoutePath('profile', {

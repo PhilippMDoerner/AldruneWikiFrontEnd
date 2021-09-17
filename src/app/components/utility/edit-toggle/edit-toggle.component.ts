@@ -1,8 +1,7 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Constants } from 'src/app/app.constants';
+import { Component, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { TokenService } from 'src/app/services/token.service';
-import { CurrentUserHasPermissions, hasPermissions, PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 @Component({
   selector: 'app-edit-toggle',
