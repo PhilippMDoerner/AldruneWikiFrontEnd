@@ -8,16 +8,30 @@
 
 <!-- Input -->
 <div class="d-flex">
-    <div class="flex-1">
+    <div class="flex-1" *ngIf="showField">
         <ng-container #fieldComponent></ng-container>
     </div>
 
     <div class="ml-2 align-self-end d-flex">
         <!-- Create Modal -->
-        <app-session-update-modal [session_pk_subject]="null" [icon]="'fa-plus'"></app-session-update-modal>
+        <app-session-update-modal 
+        [session_pk_subject]="null" 
+        [icon]="'fa-plus'"
+        (updateSession)="reinitializeSessionField()"
+        (createSession)="reinitializeSessionField()"
+        ></app-session-update-modal>
+        
         <!-- Update Modal -->
-        <app-session-update-modal [session_pk_subject]="formControl.valueChanges"></app-session-update-modal>
+        <app-session-update-modal
+        (createSession)="reinitializeSessionField()"
+        (updateSession)="reinitializeSessionField()"
+        [session_pk_subject]="formControl.valueChanges"
+        ></app-session-update-modal>
+
         <!-- Delete Modal -->
-        <app-session-delete-modal [session_pk_subject]="formControl.valueChanges"></app-session-delete-modal>
+        <app-session-delete-modal
+        (deleteSession)="reinitializeSessionField()"
+        [session_pk_subject]="formControl.valueChanges"
+        ></app-session-delete-modal>
     </div>
 </div>
