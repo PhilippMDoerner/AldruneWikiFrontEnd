@@ -165,12 +165,6 @@ export class Constants{
     public static get accessTokenType(): string { return "access";}
     public static get refreshTokenType(): string { return "refresh";}
     public static get anonymousUserName(): string { return "AnonymousUser";}
-    public static get apiViewPermission(): string { return "wikientries.view_apipermissions";}
-    public static get apiCreatePermission(): string { return "wikientries.add_apipermissions";}
-    public static get apiDeletePermission(): string { return "wikientries.delete_apipermissions";}
-    public static get apiUpdatePermission(): string { return "wikientries.change_apipermissions";}
-    public static get adminPermission(): string { return "Admin";} //The actual value isn't all that relevant, the variable itself is recognized
-    public static get superuserPermission(): string { return "SuperUser";} //The actual value isn't all that relevant, the variable itself is recognized
 
     // Keys for LocalStorage
     public static get accessTokenKey(): string { return "access_token";}
