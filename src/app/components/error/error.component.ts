@@ -27,6 +27,16 @@ export class ErrorComponent implements OnInit, OnDestroy {
       title: "400 Bad Request",
       image: Constants.badInputImageUrl
     },
+    401: {
+      htmlBody: "Sorry man, this is an invite-only club. Got to be logged in to get anything.",
+      title: "401 Unauthorized",
+      image: Constants.pageNotFoundImageUrl
+    },
+    403: {
+      htmlBody: "Naughty naughty! You're not allowed to do what you just did!",
+      title: "403 Forbidden",
+      image: Constants.pageNotFoundImageUrl
+    },
     404: {
       htmlBody: "We couldn't find the site you are looking for. <br> But a dragon found you !",
       title: "404 Not Found",
