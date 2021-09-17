@@ -22,7 +22,7 @@ export class Constants{
     public static get isTouchDevice(): boolean { 
       return ( 'ontouchstart' in window ) || 
              ( navigator.maxTouchPoints > 0 ) || 
-             ( navigator.msMaxTouchPoints > 0 );
+             ( navigator.maxTouchPoints > 0 );
     };
 
     //strings representing states
