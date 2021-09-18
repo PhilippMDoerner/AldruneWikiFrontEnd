@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1631889052026,
+  "timestamp": 1631966353380,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -14,7 +14,7 @@
         "/4.d5c837075df5a8484b9c.js",
         "/favicon.ico",
         "/index.html",
-        "/main.8b5f2ffba688a47f5753.js",
+        "/main.9101c490e5661af8529c.js",
         "/manifest.webmanifest",
         "/polyfills.a6cee9d4b9da9e6c7e50.js",
         "/runtime.6076814ef49a1a1583c0.js",
@@ -32,7 +32,9 @@
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/wiki\\/images\\/504\\.jpeg",
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/fileserver\\/images\\/audio_pic\\.png",
         "https:\\/\\/fonts\\.googleapis\\.com\\/css\\?family=Source\\+Sans\\+Pro:300italic,600italic,300,600",
-        "https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/@vime\\/core@latest\\/icons\\/sprite\\.svg"
+        "https:\\/\\/cdn\\.jsdelivr\\.net\\/npm\\/@vime\\/core@latest\\/icons\\/sprite\\.svg",
+        "https:\\/\\/www\\.aldrune\\.com\\/media\\/campaign_icons\\/.*",
+        "https:\\/\\/www\\.aldrune\\.com\\/media\\/campaign_backgrounds\\/.*"
       ]
     },
     {
@@ -101,7 +103,7 @@
     {
       "name": "campaignData",
       "patterns": [
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/campaign\\/[^/]*\\/"
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/campaign\\/overview\\/"
       ],
       "strategy": "performance",
       "maxSize": 100,
@@ -114,19 +116,19 @@
     {
       "name": "aldruneWikiOverview",
       "patterns": [
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/character",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/location",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/item",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/organization",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/diaryentry",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/creature",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/quest",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/overview\\/sessionaudio",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/spell",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/rule\\/"
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/character\\/[^/]*\\/overview\\/",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/location\\/[^/]*\\/overview\\/",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/item\\/[^/]*\\/overview\\/",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/organization\\/[^/]*\\/overviewv",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/diaryentry\\/[^/]*\\/overview\\/",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/creature\\/[^/]*\\/overview\\/",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/quest\\/[^/]*\\/overview\\/",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/sessionaudio\\/[^/]*\\/overview\\/",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/spell\\/[^/]*\\/overview\\/",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/rule\\/[^/]*\\/overview\\/"
       ],
       "strategy": "freshness",
-      "maxSize": 15,
+      "maxSize": 50,
       "maxAge": 345600000,
       "timeoutMs": 5000,
       "cacheQueryOptions": {
@@ -137,6 +139,7 @@
     {
       "name": "aldruneWikiArticles",
       "patterns": [
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/campaign\\/.*",
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/character\\/.*",
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/location\\/.*",
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/organization\\/.*",
@@ -145,14 +148,15 @@
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/creature\\/.*",
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/map\\/.*",
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/randomquote\\/.*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/recentupdates",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/recentupdates\\/.*",
         "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/sessionaudio\\/.*",
-        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/timestamplist\\/.*"
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/timestamp\\/.*",
+        "https:\\/\\/www\\.aldrune\\.com\\/wiki1\\/api\\/admin\\/statistics\\/.*"
       ],
       "strategy": "freshness",
-      "maxSize": 500,
+      "maxSize": 5000,
       "maxAge": 7776000000,
-      "timeoutMs": 5000,
+      "timeoutMs": 4000,
       "cacheQueryOptions": {
         "ignoreVary": true
       },
@@ -209,10 +213,10 @@
     "/fontawesome-webfont.8b43027f47b20503057d.eot": "d980c2ce873dc43af460d4d572d441304499f400",
     "/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/fontawesome-webfont.f691f37e57f04c152e23.woff": "28b782240b3e76db824e12c02754a9731a167527",
-    "/index.html": "66afb7f78b626c26730788cb2c31417d3861170d",
+    "/index.html": "4efbcc68a3db7221ba238c8407044714d56dbcb7",
     "/layers-2x.8f2c4d11474275fbc161.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/layers.416d91365b44e4b4f477.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/main.8b5f2ffba688a47f5753.js": "5c8c161002d8437b97f8f71da6f3ee66f81046c9",
+    "/main.9101c490e5661af8529c.js": "e4703c6c1648198cce16d7d87ac32e7c9903ee45",
     "/manifest.webmanifest": "116c35892aa2a2a2ae967202ecd0a917f9fe39db",
     "/marker-icon.2b3e1faf89f94a483539.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/polyfills.a6cee9d4b9da9e6c7e50.js": "dbc502f030c7bb83c7caa1feee7aff990831f7d9",
