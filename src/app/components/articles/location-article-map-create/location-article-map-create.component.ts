@@ -50,12 +50,16 @@ export class LocationArticleMapCreateComponent implements OnInit {
     private globalUrlParams: GlobalUrlParamsService,
   ) { }
 
-  location_fields: FormlyFieldConfig[] = this.formlyService.getFieldConfigForLocation(this.campaign);
+  location_fields: FormlyFieldConfig[] = [
+    this.formlyService.genericInput({key: "name", isNameInput: true}),
+    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", overviewType: OverviewType.Location, sortProp: "name_full", campaign: this.campaign, required: false}),
+  ];
+
   marker_fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
     this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
     this.formlyService.genericSelect({key: "map", overviewType: OverviewType.Map, campaign: this.campaign}),
-    this.formlyService.genericSelect({key: "type", label: "Marker Type", overviewType: OverviewType.MarkerTypeType, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "type", labelProp: "name", valueProp: "id", label: "Marker Type", overviewType: OverviewType.MarkerTypeType, campaign: this.campaign}),
     this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
     this.formlyService.genericInput({key: "icon", label: "Custom Icon", required: false})
   ]

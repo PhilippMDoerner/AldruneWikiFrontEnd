@@ -22,6 +22,7 @@ export class MyFormlyService {
     return config
   }
 
+
   genericSelect(config: FormlyOverviewSelectConfig): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 
@@ -95,6 +96,8 @@ export class MyFormlyService {
       },
     };
   }
+
+
   customSelect(config: FormlyCustomSelectConfig): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 
@@ -345,102 +348,5 @@ export class MyFormlyService {
 
   private capitalizeFirstLetter(s: string){
     return s.charAt(0).toUpperCase() + s.slice(1);
-  }
-
-  // getFieldConfigForMarker(): FormlyFieldConfig[]{
-  //   return [
-  //     {
-  //       key: "latitude",
-  //       type: "input",
-  //       templateOptions:{
-  //         label: "Latitude",
-  //         type: "number",
-  //         required: true,
-  //       }
-  //     },
-  //     {
-  //       key: "longitude",
-  //       type: "input",
-  //       templateOptions:{
-  //         label: "Longitude",
-  //         type: "number",
-  //         required: true,
-  //       }
-  //     },
-  //     {
-  //       key: "location",
-  //       type: "select",
-  //       templateOptions:{
-  //         label: "Location",
-  //         labelProp: "name_full",
-  //         valueProp: "pk",
-  //         required: true,
-  //         options: this.selectOptionService.getOverviewItems(config.campaign, OverviewType.Location),
-  //       }
-  //     },
-  //     {
-  //       key: "map",
-  //       type: "select",
-  //       templateOptions:{
-  //         label: "Map",
-  //         labelProp: "name_full",
-  //         valueProp: "pk",
-  //         required: true,
-  //         options: this.selectOptionService.getOverviewItems('map'),
-  //       }
-  //     },
-  //     {
-  //       key: "type",
-  //       type: "select",
-  //       templateOptions:{
-  //         label: "Marker Type",
-  //         labelProp: "name_full",
-  //         valueProp: "pk",
-  //         options: this.selectOptionService.getOverviewItems('marker_type'),
-  //       }
-  //     },
-  //     {
-  //       key: "color",
-  //       type: "input",
-  //       templateOptions:{
-  //         label: "Custom Color",
-  //         type: "string"
-  //       }
-  //     },
-  //     {
-  //       key: "icon",
-  //       type: "input",
-  //       templateOptions:{
-  //         label: "Custom Icon",
-  //         type: "string"
-  //       }
-  //     }
-  //   ];
-  // }
-
-  getFieldConfigForLocation(campaign: string): FormlyFieldConfig[]{
-    return [
-      {
-        key: "name",
-        type: "input",
-        templateOptions:{
-          label: "Name",
-          required: true
-        },
-        validators: {
-          validation: ['hasSpecialCharacters']
-        }
-      },
-      {
-        key: "parent_location",
-        type: "select",
-        templateOptions:{
-          label: "Parent Location",
-          labelProp: "name_full",
-          valueProp: "pk",
-          options: this.selectOptionService.getCampaignOverviewItems(campaign, OverviewType.Location),
-        }
-      },
-    ];
   }
 }
