@@ -35,7 +35,7 @@ export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into 
     this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
     this.formlyService.genericSelect({key: "location", sortProp: "name_full", overviewType: OverviewType.Location, campaign: this.campaign}),
     this.formlyService.genericSelect({key: "map", overviewType: OverviewType.Map, campaign: this.campaign}),
-    this.formlyService.genericSelect({key: 'type', label: "Marker Type", overviewType: OverviewType.MarkerType, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: 'type', labelProp: "name", label: "Marker Type", overviewType: OverviewType.MarkerTypeType, campaign: this.campaign}),
     this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
     this.formlyService.genericInput({key: "icon", label: "Custom Icon", required: false}),
   ];
