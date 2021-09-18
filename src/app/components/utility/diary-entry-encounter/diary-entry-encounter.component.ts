@@ -94,7 +94,6 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
 
   //TODO: Overhaul when specific data is loaded, ideally put some stuff like loading character choices or the like in an afterviewinit on the list component managing these cards
   createUserModel(): void{
-    console.log(this);
     this.userModel = new EncounterObject();
     this.userModel.campaign = this.campaign.pk;
     this.userModel.diaryentry = this.cardData.diaryentry;

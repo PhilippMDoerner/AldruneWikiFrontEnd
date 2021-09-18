@@ -104,7 +104,8 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
       location: null,
       title: "New Encounter",
       getAbsoluteRouterUrl: null,
-      order_index: newOrderIndex
+      order_index: newOrderIndex,
+      encounterConnections: []
     };
     const newEncounter: EncounterObject = new EncounterObject(newEncounterData);
 
