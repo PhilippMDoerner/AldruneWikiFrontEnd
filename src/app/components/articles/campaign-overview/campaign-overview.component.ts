@@ -45,7 +45,6 @@ export class CampaignOverviewComponent implements OnInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    console.log(this);
     this.globalUrlParamSubscription = this.globalUrlParams.getCampaigns()
       .pipe(
         filter(campaignData => campaignData != null), //Necessary as the first value if you start on campaign-overview is null. That would jump you straight to 504 with the tap below

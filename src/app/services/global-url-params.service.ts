@@ -105,8 +105,6 @@ export class GlobalUrlParamsService {
     const hasNotYetLoadedCampaignSet: boolean = this.currentCampaignSet.value == null;
     if(isAlreadySelected || hasNotYetLoadedCampaignSet) return;
 
-    console.log(`Updating from ${this.currentCampaign.value?.name} to new campaign ${newCampaignName}`);
-
     const currentlySelectedCampaign: CampaignOverview = await this.findCampaignByName(newCampaignName);
     this.currentCampaign.next(currentlySelectedCampaign);
   }

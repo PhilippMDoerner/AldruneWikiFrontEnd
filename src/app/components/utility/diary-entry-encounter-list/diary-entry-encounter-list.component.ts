@@ -42,8 +42,6 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
   }
 
   ngOnInit(): void{
-    console.log(`Campaign in list is ${this.campaign.name}`)
-
     const hasDisplayModeParam = !(this.route.snapshot.params['displayMode'] == null);
     this.diaryEntryView = (hasDisplayModeParam) ? this.route.snapshot.params['displayMode'] === "diaryEntry" : true;
 
