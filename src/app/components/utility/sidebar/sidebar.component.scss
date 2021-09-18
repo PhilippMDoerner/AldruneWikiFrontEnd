@@ -47,6 +47,10 @@
         justify-content: center;
     }
 
+    #sidebar:hover .on-hover-show.flex{
+        display: flex;
+        align-items: center;
+    }
 }
 
 /* For slide in/out left animations on swiping left/right on Touch devices */

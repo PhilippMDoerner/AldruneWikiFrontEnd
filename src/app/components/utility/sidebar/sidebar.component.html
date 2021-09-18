@@ -36,7 +36,7 @@
             <ul id="user-links" class="on-hover-show">
                 <!-- Profile -->
                 <li class="entry">
-                    <a class="on-hover-show" routerLink="{{ profileUrl }}">
+                    <a class="on-hover-show flex" routerLink="{{ profileUrl }}">
                         <i class="fa fa-user"></i>
                         <span> Profile </span>
                     </a>
@@ -44,7 +44,7 @@
 
                 <!-- Admin Section -->
                 <li *ngIf="showAdminSection" class="entry">
-                    <a class="on-hover-show" routerLink="{{ campaignAdminUrl }}" >
+                    <a class="on-hover-show flex" routerLink="{{ campaignAdminUrl }}" >
                         <i class="fas fa-dragon"></i>
                         <span> Campaign Admin </span>
                     </a>
@@ -52,7 +52,7 @@
 
                 <!-- Logout -->
                 <li class="entry">
-                    <a class="on-hover-show pointer" (click)="logout()"> 
+                    <a class="on-hover-show flex pointer" (click)="logout()"> 
                         <i class="fas fa-sign-out-alt"></i>
                         <span> Logout</span> 
                     </a>
