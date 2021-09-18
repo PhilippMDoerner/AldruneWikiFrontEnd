@@ -20,33 +20,39 @@ export class PermissionUtilityFunctionMixin{
         public tokenService: TokenService,
         public route: ActivatedRoute,
     ){
-        const memberships = this.tokenService.getCampaignMemberships();
-        const campaignName: string = this.route.snapshot.params.campaign;
-        this.campaignRole = memberships[campaignName.toLowerCase()];
-
         this.isAdminOrSuperUser = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
-        this.hasCreatePermission = this.userHasCreatePermission();
-        this.hasViewPermission = this.userHasViewPermission();
-        this.hasUpdatePermission = this.userHasUpdatePermission();
-        this.hasDeletePermission = this.userHasDeletePermission();
+
+        if (this.isAdminOrSuperUser){
+            this.hasCreatePermission = true;
+            this.hasViewPermission = true;
+            this.hasUpdatePermission = true;
+            this.hasDeletePermission = true;        
+        } else {
+            const memberships = this.tokenService.getCampaignMemberships();
+            const campaignName: string = this.route.snapshot.params.campaign;
+            this.campaignRole = memberships[campaignName.toLowerCase()];
+
+            this.hasCreatePermission = this.userHasCreatePermission();
+            this.hasViewPermission = this.userHasViewPermission();
+            this.hasUpdatePermission = this.userHasUpdatePermission();
+            this.hasDeletePermission = this.userHasDeletePermission();
+        }
+
     }
 
     userHasUpdatePermission = () => {
-        const hasPermissionFromRole: boolean = [CampaignRole.ADMIN, CampaignRole.MEMBER].includes(this.campaignRole);
-        return hasPermissionFromRole || this.isAdminOrSuperUser;
+        return [CampaignRole.ADMIN, CampaignRole.MEMBER].includes(this.campaignRole);
     }
 
     userHasViewPermission = () => {
-        const hasPermissionFromRole: boolean = [CampaignRole.ADMIN, CampaignRole.MEMBER, CampaignRole.GUEST].includes(this.campaignRole);
-        return hasPermissionFromRole || this.isAdminOrSuperUser;    }
+        return [CampaignRole.ADMIN, CampaignRole.MEMBER, CampaignRole.GUEST].includes(this.campaignRole);
+    }
 
     userHasDeletePermission = () => {
-        const hasPermissionFromRole: boolean = [CampaignRole.ADMIN, CampaignRole.MEMBER].includes(this.campaignRole);
-        return hasPermissionFromRole || this.isAdminOrSuperUser;
+        return [CampaignRole.ADMIN, CampaignRole.MEMBER].includes(this.campaignRole);
     }
 
     userHasCreatePermission = () => {
-        const hasPermissionFromRole: boolean = [CampaignRole.ADMIN, CampaignRole.MEMBER].includes(this.campaignRole);
-        return hasPermissionFromRole || this.isAdminOrSuperUser;
+        return [CampaignRole.ADMIN, CampaignRole.MEMBER].includes(this.campaignRole);
     }
 }
