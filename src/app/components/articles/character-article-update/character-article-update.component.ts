@@ -41,7 +41,7 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
     this.formlyService.customStringSelect({key:"gender", label: "Sex", options: ["Other", "Female", "Male"]}),
     this.formlyService.genericInput({key: "race"}),
     this.formlyService.genericSelect({key: "organization", overviewType: OverviewType.Organization, campaign: this.campaign, required: false}),
-    this.formlyService.genericSelect({key: "current_location", label: "Location", overviewType: OverviewType.Location, campaign: this.campaign, required: false}),
+    this.formlyService.genericSelect({key: "current_location", sortProp: "name_full", label: "Location", overviewType: OverviewType.Location, campaign: this.campaign, required: false}),
   ];
 
   //Custom Properties

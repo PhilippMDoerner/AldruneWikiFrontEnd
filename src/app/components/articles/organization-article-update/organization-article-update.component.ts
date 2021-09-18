@@ -29,7 +29,7 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
     this.formlyService.genericSelect({key: "leader", valueProp: "name", overviewType: OverviewType.Character, campaign: this.campaign, required: false}),
-    this.formlyService.genericSelect({key: "headquarter", overviewType: OverviewType.Location, campaign: this.campaign, required: false}),
+    this.formlyService.genericSelect({key: "headquarter", sortProp: "name_full", overviewType: OverviewType.Location, campaign: this.campaign, required: false}),
   ];
 
   //Custom Properties
