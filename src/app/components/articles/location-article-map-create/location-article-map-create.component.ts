@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
@@ -8,7 +8,7 @@ import { MapService } from 'src/app/services/map.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { LocationObject, Location } from 'src/app/models/location';
+import { LocationObject } from 'src/app/models/location';
 import { LocationService } from 'src/app/services/location/location.service';
 import { first } from 'rxjs/operators';
 import { ExtendedMap } from 'src/app/models/map';
