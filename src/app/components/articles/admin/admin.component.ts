@@ -28,7 +28,6 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild('adminCard') adminCard: ElementRef;
   parameterSubscription: Subscription;
-  campaign: string;
 
   // USER VARIABLES
   users: UserObject[];
@@ -77,10 +76,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.parameterSubscription = this.route.params.subscribe(
-      params => {
-        this.campaign = params.campaign;
-        this.setRouterLinks(this.campaign);
-      },
+      params => this.setRouterLinks(),
       error => this.warnings.showWarning(error)
     );
 
@@ -119,7 +115,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
     animateElement(this.adminCard.nativeElement, 'fadeIn');
   }
 
-  setRouterLinks(campaign: string): void{
+  setRouterLinks(): void{
     this.campaignOverviewUrl = this.routingService.getRoutePath('campaign-overview');
   }
 
@@ -170,23 +166,6 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
 
     //Cast to a File() type
     return <File>theBlob;
-  }
-
-  progressClearDatabaseState(): void{
-    this.databaseDeleteConfirmationCount ++;
-
-    const confirmationCountForDeletion = 5;
-    if(this.databaseDeleteConfirmationCount === confirmationCountForDeletion){
-      this.clearDatabase();
-      this.databaseDeleteConfirmationCount = 0;
-    } 
-  }
-
-  clearDatabase(): void{
-    this.adminService.clearDatabase().pipe(first()).subscribe(
-      (response) => this.routingService.routeToPath('home1', {campaign: this.campaign}),
-      error => this.warnings.showWarning(error)
-    )
   }
 
   //CAMPAIGNS
