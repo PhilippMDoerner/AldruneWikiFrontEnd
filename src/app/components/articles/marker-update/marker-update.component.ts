@@ -36,7 +36,7 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
     this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
-    this.formlyService.genericSelect({key: "location", overviewType: OverviewType.Location, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "location", sortProp: "name_full", overviewType: OverviewType.Location, campaign: this.campaign}),
     this.formlyService.genericSelect({key: "map", overviewType: OverviewType.Map, campaign: this.campaign}),
     this.formlyService.genericSelect({key: 'type', label: "Marker Type", labelProp: "name", valueProp: "id", overviewType: OverviewType.MarkerTypeType, campaign: this.campaign}),
     this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),

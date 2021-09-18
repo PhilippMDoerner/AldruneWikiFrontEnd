@@ -86,7 +86,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
   getFormlyFieldConfigurations(campaign: CampaignOverview): FormlyFieldConfig[]{
     return [
       this.formlyService.genericInput({key: "title"}),
-      this.formlyService.genericSelect({key: "location", label: "Encounter Location", overviewType: OverviewType.Location, required: false, campaign: campaign.name}),
+      this.formlyService.genericSelect({key: "location", label: "Encounter Location", sortProp: "name_full", overviewType: OverviewType.Location, required: false, campaign: campaign.name}),
       this.formlyService.genericTextField({key: "description", required: true}),
     ];
   }
