@@ -33,7 +33,7 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
   
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
-    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", overviewType: OverviewType.Location, campaign: this.campaign, required: false}),
+    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", overviewType: OverviewType.Location, sortProp: "name_full", campaign: this.campaign, required: false}),
   ];
   //TODO: Turn parent_location into disable select, a location shouldn't be able to select itself as parent location
   //Custom properties
