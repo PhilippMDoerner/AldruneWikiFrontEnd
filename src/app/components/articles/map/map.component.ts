@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { ExtendedMap, MapObject } from 'src/app/models/map';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
@@ -21,6 +20,7 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   //URLs
   createMapUrl: string;
   homeUrl: string;
+  updateMapUrl: string;
 
   //ArticleMixin Variables
   articleData: ExtendedMap;
@@ -55,6 +55,7 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
   updateDynamicVariables(campaign: CampaignOverview, articleData: MapObject, params: Params): void{
     this.createMapUrl = this.routingService.getRoutePath('map-create', {campaign: campaign.name});
     this.homeUrl = this.routingService.getRoutePath('home1', {campaign: campaign.name});
+    this.updateMapUrl = this.routingService.getRoutePath("map-update", {campaign:campaign.name, name: articleData?.name});
   }
 
   async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
