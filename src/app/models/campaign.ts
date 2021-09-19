@@ -11,6 +11,8 @@ export interface BaseCampaignData{
     icon?: string;
     default_map?: number;
     default_map_details?: {pk: number, name: string};
+    is_deactivated: boolean;
+    has_audio_recording_permission: boolean;
 }
 
 export interface Campaign extends BaseCampaignData{
@@ -37,6 +39,8 @@ export class CampaignObject implements Campaign{
     icon: string;
     default_map?: number;
     default_map_details?: {pk: number, name: string};
+    is_deactivated: boolean;
+    has_audio_recording_permission: boolean;
 
     members?: User[];
     admins?: User[];
