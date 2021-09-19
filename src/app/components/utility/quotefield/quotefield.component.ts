@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { FormlyField, FormlyFieldConfig } from '@ngx-formly/core';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
-import { Character, CharacterObject } from 'src/app/models/character';
+import { Character } from 'src/app/models/character';
 import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
 import { Quote, QuoteConnection, QuoteConnectionObject, QuoteObject } from 'src/app/models/quote';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -74,7 +74,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
     }
 
     this.setFormlyFields(this.campaign);
-    this.updateDynamicVariables(this.campaign, this.character, this.quote.connections);
+    this.updateDynamicVariables(this.campaign, this.character, this.quote?.connections);
   }
 
   setFormlyFields(campaign: CampaignOverview): void{
@@ -87,16 +87,16 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   }
 
   updateDynamicVariables(campaign: CampaignOverview, articleData: Character, connectedCharacters: QuoteConnection[]){
-    this.connectedCharacterURLs = connectedCharacters.map(
-      (connection: QuoteConnection) => this.routingService.getRoutePath('character', {
-        name: connection.character_details.name, 
-        campaign: campaign.name
-      })
-    );
+    if(connectedCharacters != null){
+      this.connectedCharacterURLs = connectedCharacters.map(
+        (connection: QuoteConnection) => this.routingService.getRoutePath('character', {
+          name: connection.character_details.name, 
+          campaign: campaign.name
+        })
+      );
+    }
 
     this.quoteOverviewUrl = this.routingService.getRoutePath('quote-overview', {name: articleData.name, campaign: campaign.name})
-
-
   }
 
   ngOnChanges(){
