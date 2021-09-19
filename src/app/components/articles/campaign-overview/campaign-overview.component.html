@@ -18,7 +18,7 @@ id="container-overview"
             </a>
         </div>
     </div>
-    <div class="row mx-0" id="campaign-overview-body">
+    <div class="row mx-0" id="campaign-overview-body" *ngIf="campaignData; else loading">
         <a 
         class="px-0 campaign pointer" 
         *ngFor="let campaign of campaignData" 
