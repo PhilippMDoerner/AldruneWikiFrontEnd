@@ -83,7 +83,6 @@ export class QuoteOverviewComponent extends ArticleListMixin implements OnInit, 
   }
 
   async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-    console.log(this);
     const campaignName: string = campaign.name;
     if(campaignName == null) return;
 

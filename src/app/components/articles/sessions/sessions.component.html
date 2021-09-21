@@ -6,6 +6,13 @@
             <h1 class="text-center col"> Sessions </h1>
         </div>
 
+        <div class="mb-3 row" *ngIf="tokenService.isAdmin()">
+            <div class="btn btn-primary col-lg-2 col-sm-3" (click)="addArticle()" title="Add Session"> 
+                <i class="fa fa-plus"></i>
+                Add Session
+            </div>
+        </div>
+
         <!-- Sessions -->
         <div *ngFor="let session of articles; let i = index">
             <app-session
@@ -15,13 +22,6 @@
             [index] = "i"
             (cardDelete) = "onArticleDelete(i)"
             ></app-session>
-        </div>
-
-        <!-- Insert new Session -->
-        <div class="expand row justify-content-center" *ngIf="tokenService.isAdmin()">
-            <div class="btn btn-primary" (click)="addArticle()">
-                <i class="fa fa-3x fa-plus pointer" title="Add Session"></i>
-            </div>
         </div>
 
         <!-- Button to Frontpage -->
