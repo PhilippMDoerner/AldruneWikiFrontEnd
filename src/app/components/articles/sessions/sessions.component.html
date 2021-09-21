@@ -1,0 +1,36 @@
+<div class="main" #listArticle>
+    <article *ngIf="articles; else loading" class="container">
+
+        <!-- Heading -->
+        <div class="row">
+            <h1 class="text-center col"> Sessions </h1>
+        </div>
+
+        <!-- Sessions -->
+        <div *ngFor="let session of articles; let i = index">
+            <app-session
+            #ruleElements
+            [cardData] = "session"
+            [campaign]="campaign"
+            [index] = "i"
+            (cardDelete) = "onArticleDelete(i)"
+            ></app-session>
+        </div>
+
+        <!-- Insert new Session -->
+        <div class="expand row justify-content-center" *ngIf="tokenService.isAdmin()">
+            <div class="btn btn-primary" (click)="addArticle()">
+                <i class="fa fa-3x fa-plus pointer" title="Add Session"></i>
+            </div>
+        </div>
+
+        <!-- Button to Frontpage -->
+        <div class="row mt-5">
+            <a class="btn btn-secondary col-md-3" routerLink="{{ homeUrl }}">
+                Back To Frontpage
+            </a>
+        </div>
+
+    </article>
+    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+</div>

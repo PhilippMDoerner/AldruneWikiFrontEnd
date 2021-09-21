@@ -42,6 +42,7 @@ import { CampaignOverviewComponent } from './components/articles/campaign-overvi
 import { CampaignComponent } from './components/utility/campaign/campaign.component';
 import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
 import { AdminRoute, CampaignRoute, GeneralRoute } from './app.routing-models';
+import { SessionsComponent } from './components/articles/sessions/sessions.component';
 
 
 const generalRoutes: GeneralRoute[] = [
@@ -488,6 +489,12 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:campaign/:name`,
 		component: SpellsComponent,
 		data:{ name: "spell", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService]
+	},
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessions/:campaign`,
+		component: SessionsComponent,
+		data:{ name: "sessions", requiredRole: CampaignRole.GUEST},
 		canActivate: [CampaignGuardService]
 	},
 

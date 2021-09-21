@@ -96,6 +96,8 @@ import { CampaignComponent } from './components/utility/campaign/campaign.compon
 import { CampaignOverviewComponent } from './components/articles/campaign-overview/campaign-overview.component';
 import { BackgroundImageComponent } from './components/utility/background-image/background-image.component';
 import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
+import { SessionsComponent } from './components/articles/sessions/sessions.component';
+import { SessionComponent } from './components/utility/session/session.component';
 
 @NgModule({
   declarations: [
@@ -177,6 +179,8 @@ import { CampaignUpdateComponent } from './components/articles/campaign-update/c
     CampaignOverviewComponent,
     BackgroundImageComponent,
     CampaignUpdateComponent,
+    SessionsComponent,
+    SessionComponent,
   ],
   imports: [
     BrowserModule,
