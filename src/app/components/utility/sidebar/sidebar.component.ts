@@ -44,6 +44,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.sidebarEntries = this.constants.articleTypeMetaData.filter(metaDataEntry => metaDataEntry.showInSidebar);
+    this.sidebarEntries.sort((entry1, entry2) => entry1.title > entry2.title ? 1 : -1);
 
     this.parameterSubscription = this.globalUrlParams.getCurrentCampaign()
       .subscribe(
