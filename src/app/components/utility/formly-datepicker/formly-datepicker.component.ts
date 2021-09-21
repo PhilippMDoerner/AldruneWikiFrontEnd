@@ -24,7 +24,12 @@ import { FieldType } from '@ngx-formly/core';
     }
 
     toModel(date: NgbDateStruct | null): string | null {
-      return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : '';
+      if (date == null) return "";
+
+      const dayString: string = `${date.day}`.padStart(2, "0");
+      const monthString: string = `${date.month}`.padStart(2, "0");
+      const yearString: string = `${date.year}`.padStart(4, "0");
+      return `${yearString}${this.DELIMITER}${monthString}${this.DELIMITER}${dayString}`;
     }
   }
 
@@ -47,7 +52,12 @@ import { FieldType } from '@ngx-formly/core';
   }
  
    format(date: NgbDateStruct | null): string {
-     return date ? date.year + this.DELIMITER + date.month + this.DELIMITER + date.day : '';
+     if (date == null) return "";
+
+     const dayString: string = `${date.day}`.padStart(2, "0");
+     const monthString: string = `${date.month}`.padStart(2, "0");
+     const yearString: string = `${date.year}`.padStart(4, "0");
+     return `${yearString}${this.DELIMITER}${monthString}${this.DELIMITER}${dayString}`;
    }
  }
 
