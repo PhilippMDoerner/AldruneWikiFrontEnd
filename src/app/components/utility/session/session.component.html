@@ -49,13 +49,13 @@
                         </a>
                     </div>
                 </div>
-
-                <a [routerLink]="sessionAudioUrl">
-                    <h5>
+                <h5 *ngIf="cardData.has_recording">
+                    <a [routerLink]="sessionAudioUrl">
                         <span class="fa fa-file-audio-o"></span> 
-                        SessionRecording 
-                    </h5>
-                </a>
+                        Recording 
+                    </a>
+                </h5>
+
             </div>
 
             <app-formly-formcontainer 
