@@ -158,6 +158,14 @@ export class Constants{
           article_types: ["spell", "spells"],
           showInSidebar: true,
         },
+        {
+          title: "Sessions",
+          iconClass: "fas fa-calendar-alt",
+          route: "sessions",
+          color: null,
+          article_types: ["session", "sessions"],
+          showInSidebar: true,
+        }
       ]
     } 
 
