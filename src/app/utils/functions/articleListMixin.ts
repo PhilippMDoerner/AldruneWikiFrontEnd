@@ -140,14 +140,23 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
                 first(),
                 tap((articles: ArticleObject[]) => this.showArticleArray = articles.map(article => true)),
                 map((articles: ArticleObject[]) => {
+                    const isReverseSort: boolean = this.articlesSortProperty.startsWith("-");
+
+                    const articleSortProperty: string = isReverseSort ? this.articlesSortProperty.slice(1) : this.articlesSortProperty;
+                    
                     const sortedArticles: ArticleObject[] = articles.sort((article1, article2) => {
-                        return article1[this.articlesSortProperty] < article2[this.articlesSortProperty] ? -1 : 1;
+                        return article1[articleSortProperty] < article2[articleSortProperty] ? -1 : 1;
                     });
-                    return sortedArticles;
+
+
+                    return isReverseSort ? sortedArticles.reverse() : sortedArticles;
                 })
             )
             .subscribe(
-                (articles: ArticleObject[]) => this.onArticleLoadFinished(articles),
+                (articles: ArticleObject[]) => {
+                    this.articles = articles;
+                    this.onArticleLoadFinished(articles);
+                },
                 error => this.routingService.routeToErrorPage(error)
             );
     }
@@ -157,7 +166,6 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
      * this.campaigns will already be available.
      */
     onArticleLoadFinished(articles: ArticleObject[]): void{
-        this.articles = articles;
         this.updateDynamicVariables(this.campaign, articles, this.route.snapshot.params);
     }
 
