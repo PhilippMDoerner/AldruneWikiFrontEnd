@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { CampaignOverview } from 'src/app/models/campaign';
 import {  RuleObject } from "src/app/models/rule";
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
