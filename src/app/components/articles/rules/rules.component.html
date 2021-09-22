@@ -6,6 +6,13 @@
             <h1 class="text-center col">Rules</h1>
         </div>
 
+        <div class="mb-3 row" *ngIf="tokenService.isAdmin()">
+            <a class="btn btn-primary col-lg-2 col-sm-3" (click)="addArticle()"> 
+                <i class="fa fa-plus"></i>
+                Add Rule
+            </a>
+        </div>
+
         <!-- Rules -->
         <div *ngFor="let rule of articles; let i = index">
             <app-rule
@@ -15,13 +22,6 @@
             [index] = "i"
             (cardDelete) = "onArticleDelete(i)"
             ></app-rule>
-        </div>
-
-        <!-- Insert new Rule -->
-        <div class="expand row justify-content-center" *ngIf="tokenService.isAdmin()">
-            <div class="btn btn-primary" (click)="addArticle()">
-                <i class="fa fa-3x fa-plus pointer" title="Add Rule"></i>
-            </div>
         </div>
 
         <!-- Button to Frontpage -->

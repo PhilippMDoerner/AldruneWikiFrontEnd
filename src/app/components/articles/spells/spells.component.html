@@ -12,6 +12,14 @@
         </h1>
 
 
+        <div class="mb-3 row mx-0" *ngIf="hasCreatePermission">
+            <a class="btn btn-primary col-lg-2 col-sm-3" (click)="addArticle()"> 
+                <i class="fa fa-plus"></i>
+                Add Spell
+            </a>
+        </div>
+
+
         <!-- Spells -->
         <div *ngFor="let spell of articles; let i = index">
             <app-spell
@@ -24,14 +32,6 @@
             (classSelect) = "selectClass($event)"
             *ngIf="hasSelectedClasses(spell)"
             ></app-spell>
-        </div>
-
-
-        <!-- Insert new Spell -->
-        <div class="expand row justify-content-center" *ngIf="this.tokenService.isAdmin()">
-            <div class="btn btn-primary" (click)="addArticle()">
-                <i class="fa fa-3x fa-plus pointer" title="Add Spell"></i>
-            </div>
         </div>
 
         <a class="btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign.name})}}">
