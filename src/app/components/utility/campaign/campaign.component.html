@@ -50,7 +50,9 @@
                 <div class="p-3 card">
                     <h3 class="text-center">
                         Admins
-                        <sup class="fas fa-info-circle icon" [ngbTooltip]="adminTooltip"></sup>
+                        <app-tooltip-infocircle 
+                        [tooltipMessage]="adminTooltip"
+                        ></app-tooltip-infocircle>
                     </h3>
 
                     <div *ngFor="let user of articleData.admins">
@@ -80,7 +82,9 @@
                 <div class="p-3 card">
                     <h3 class="text-center">
                         Party members
-                        <sup class="fas fa-info-circle icon" [ngbTooltip]="memberTooltip"></sup>
+                        <app-tooltip-infocircle 
+                        [tooltipMessage]="memberTooltip"
+                        ></app-tooltip-infocircle>
                     </h3>
 
                     <div *ngFor="let user of articleData.members">
@@ -108,7 +112,9 @@
                 <div class="p-3 card">
                     <h3 class="text-center">
                         Guests
-                        <sup class="fas fa-info-circle icon" [ngbTooltip]="guestTooltip"></sup>
+                        <app-tooltip-infocircle 
+                        [tooltipMessage]="guestTooltip"
+                        ></app-tooltip-infocircle>
                     </h3>
 
                     <div *ngFor="let user of articleData.guests">
