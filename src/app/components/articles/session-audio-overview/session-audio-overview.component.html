@@ -1,6 +1,14 @@
 <div class="main" #overviewMainCard>
     <article *ngIf="sessionAudioFiles; else loading">
         <h1 class="text-center">Session Audio Files</h1>
+
+        <div class="mb-3 row mx-3" *ngIf="hasCreatePermission">
+            <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
+                <i class="fa fa-plus"></i>
+                Add Recording
+            </a>
+        </div>
+
         <!-- Requires m-0 because on mobile it else goes into overflow -->
         <div class="row m-0">
             <!-- Normal Session Audio Cards -->
@@ -30,17 +38,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- Add Session Audio card -->
-            <div class="col-md-4 col-sm-6" [ngClass]="{'d-none': !hasCreatePermission}">
-                <div class="card my-3 pointer add-icon-card h-82" routerLink="create">
-                    <!-- Card Title -->
-                    <div class="card-body d-flex justify-content-center align-items-center">
-                        <i class="fa fa-5x icon fa-plus" aria-hidden="true"></i> 
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- Button To Frontpage -->
