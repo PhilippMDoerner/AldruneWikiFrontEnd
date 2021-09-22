@@ -1,6 +1,11 @@
 <!-- Heading -->
 <div class="row">
-    <h4 class="col"> Encounters </h4>
+    <h4 class="col"> 
+        Encounters
+        <app-tooltip-infocircle 
+        [tooltipMessage]="'List of all encounters with this character. Starts with the most recent encounter and ends with the latest.'"
+        ></app-tooltip-infocircle>
+    </h4>
 </div>
 
 <div class="encounter-list mb-5 mt-3" *ngIf="isInDisplayState(); else EncounterForm">

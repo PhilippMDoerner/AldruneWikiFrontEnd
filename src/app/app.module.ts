@@ -98,6 +98,7 @@ import { BackgroundImageComponent } from './components/utility/background-image/
 import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
 import { SessionsComponent } from './components/articles/sessions/sessions.component';
 import { SessionComponent } from './components/utility/session/session.component';
+import { TooltipInfocircleComponent } from './components/utility/tooltip-infocircle/tooltip-infocircle.component';
 
 @NgModule({
   declarations: [
@@ -181,6 +182,7 @@ import { SessionComponent } from './components/utility/session/session.component
     CampaignUpdateComponent,
     SessionsComponent,
     SessionComponent,
+    TooltipInfocircleComponent,
   ],
   imports: [
     BrowserModule,
