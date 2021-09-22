@@ -3,7 +3,12 @@
 
         <!-- Heading -->
         <div class="row">
-            <h1 class="text-center col"> Sessions </h1>
+            <h1 class="text-center col"> 
+                Sessions
+                <app-tooltip-infocircle 
+                [tooltipMessage]="'A list of all sessions that happened this campaigns'"
+                ></app-tooltip-infocircle>
+            </h1>
         </div>
 
         <div class="mb-3 row" *ngIf="tokenService.isAdmin()">
