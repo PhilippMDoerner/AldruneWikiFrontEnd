@@ -176,7 +176,7 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
     addArticle(){
         const newArticle: ArticleObject = new this.articleModelClass();
         newArticle.name = this.articleStarterTitle;
-        this.articles.push(newArticle);
+        this.articles.unshift(newArticle);
     }
 
 
