@@ -22,12 +22,12 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
 
   @Input() diaryEntry: DiaryEntryObject;
   @Input() campaign: CampaignOverview;
+  @Input() diaryEntryView: boolean;
 
   @ViewChildren("encounters") encounterElements: QueryList<any>;
   encounters: EncounterObject[] = [];
   isEncounterUpdating: boolean[] = [];
   isUpdating: boolean = false;
-  diaryEntryView: boolean = true;
 
   cutEncounterIndex: number;
 
@@ -69,10 +69,6 @@ export class DiaryEntryEncounterListComponent extends PermissionUtilityFunctionM
     if(hasTargetEncounter){
       targetEncounter.card.nativeElement.scrollIntoView();
     }
-  }
-
-  toggleDiaryEntryView(){
-    this.diaryEntryView = !this.diaryEntryView;
   }
 
   /**

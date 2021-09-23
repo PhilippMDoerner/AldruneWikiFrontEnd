@@ -1,25 +1,15 @@
 <div class="container px-0" *ngIf="!isUpdating; else waiting">
-    <div class="d-flex mb-5 justify-content-center">
-        <div class="col-lg-4 col-md-6 col-12 btn btn-secondary" (click)="toggleDiaryEntryView()" *ngIf="hasUpdatePermission && hasDeletePermission && hasCreatePermission">
-            Currently viewing as : 
-            <span *ngIf="diaryEntryView"> Diary entry </span>
-            <span *ngIf="!diaryEntryView"> Encounter list </span>
-        </div>
-    </div>
-
     <!-- Insert new first Encounter -->
-    <div *ngIf="!diaryEntryView && hasUpdatePermission && hasDeletePermission && userHasCreatePermission" class="expand row">
-        <div class="col-md-3 col-0"></div>
-        <div class="col-md-6 d-flex justify-content-around">
-            <div class="btn btn-primary" (click)="toggleEncounterCreateState(-1)">
-                <i class="fa fa-3x fa-plus pointer" title="Add Encounter to Diaryentry"></i>
-            </div>
-
-            <div class="btn btn-secondary" [ngClass]="{'disabled': cutEncounterIndex == null}" (click)="insertExcisedEncounter(-1 + 1)">
-                <i class="fas fa-3x fa-file-import pointer" title="Insert Cut Encounter"></i>
-            </div>
+    <div *ngIf="!diaryEntryView && hasUpdatePermission && hasDeletePermission && userHasCreatePermission" class="d-flex mb-4 justify-content-center row">
+        <div class="col-md-4 col-6 btn btn-lg btn-primary" (click)="toggleEncounterCreateState(-1)">
+            <i class="fa fa-plus pointer" title="Add Encounter to Diaryentry"></i>
+            Add First Encounter
         </div>
-        <div class="col-md-3 col-0"></div>
+
+        <div class="col-md-4 col-6 btn btn-lg btn-secondary" [ngClass]="{'disabled': cutEncounterIndex == null}" (click)="insertExcisedEncounter(-1 + 1)">
+            <i class="fas fa-file-import pointer" title="Insert Cut Encounter"></i>
+            Insert Cut Encounter
+        </div>
     </div>
 
     <!-- Diaryentry - Encounters -->
@@ -29,7 +19,6 @@
             <app-diary-entry-encounter
             #encounters
             *ngIf="!isEncounterUpdating[encounterIndex] && campaign else waiting;"
-            class="col-12 px-0"
             [cardData]="encounter"
             [index]="encounterIndex"
             [cutEncounterIndex]="cutEncounterIndex"
@@ -44,18 +33,16 @@
             ></app-diary-entry-encounter>
 
             <!-- Insert new Encounter -->
-            <div *ngIf="!diaryEntryView" class="expand row">
-                <div class="col-md-3 col-0"></div>
-                <div class="col-md-6 d-flex justify-content-around">
-                    <div class="btn btn-primary" (click)="toggleEncounterCreateState(encounterIndex)">
-                        <i class="fa fa-3x fa-plus pointer" title="Add Encounter to Diaryentry"></i>
-                    </div>
-                    <!-- insertExcisedEncounter has encounterIndex+1 because the insertion is supposed to happen AFTER this encounter, not before it -->
-                    <div class="btn btn-secondary" [ngClass]="{'disabled': cutEncounterIndex == null}" (click)="insertExcisedEncounter(encounterIndex)">
-                        <i class="fas fa-3x fa-file-import pointer" title="Insert Cut Encounter"></i>
-                    </div>
+            <div *ngIf="!diaryEntryView" class="d-flex my-4 justify-content-center">
+                <div class="col-md-4 col-6 btn btn-lg btn-primary" (click)="toggleEncounterCreateState(encounterIndex)">
+                    <i class="fa fa-plus pointer" title="Add Encounter to Diaryentry"></i>
+                    Add Encounter
                 </div>
-                <div class="col-md-3 col-0"></div>
+                <!-- insertExcisedEncounter has encounterIndex+1 because the insertion is supposed to happen AFTER this encounter, not before it -->
+                <div class="col-md-4 col-6 btn btn-lg btn-secondary" [ngClass]="{'disabled': cutEncounterIndex == null}" (click)="insertExcisedEncounter(encounterIndex)">
+                    <i class="fas fa-file-import pointer" title="Insert Cut Encounter"></i>
+                    Insert Cut Encounter
+                </div>
             </div>
 
         </div>

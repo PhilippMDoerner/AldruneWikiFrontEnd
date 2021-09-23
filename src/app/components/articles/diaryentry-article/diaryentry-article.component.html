@@ -1,23 +1,34 @@
 <div class="main" #article>
     <article *ngIf="articleData && campaign; else loading" class="container">
-        <div class="row m-0">
-            <div class="col-12 d-flex justify-content-end">
+        <div class="row" *ngIf="hasUpdatePermission">
+            <div class="col-12 d-flex align-items-end flex-column">
                 <app-edit-toggle 
-                [isInUpdateState]=false 
+                [isInUpdateState]="false"
                 [link]="'update'"
                 ></app-edit-toggle>
+                
+                <div class="btn btn-secondary mt-2" (click)="diaryentryDisplayMode=!diaryentryDisplayMode">
+                    <span *ngIf="diaryentryDisplayMode">
+                        <span class="fa fa-pencil"></span> 
+                        Edit Encounters
+                    </span>
+                    <span *ngIf="!diaryentryDisplayMode">
+                        <span class="fa fa-times"></span> 
+                        Read Diaryentry
+                    </span>
+                </div>
             </div>
         </div>
 
 
         <!-- Heading -->
-        <div class="row m-0">
+        <div class="row">
             <h1 class="text-center col">
                 Diary Entry # {{ articleData.session_details.session_number }} <br>
                 {{ articleData.title }}
             </h1>
         </div>
-        <div class="row mx-0 mb-5" id="authors">
+        <div class="row mb-2" id="authors">
             <p class="text-center col-12"> 
                 Written by: {{ articleData.author_details.name }} <br>
                 <span *ngIf="coAuthors"> Together with: {{ coAuthors }} </span> 
@@ -26,9 +37,9 @@
         </div>
 
         <!-- Next/Prior Diaryentry Buttons -->
-        <div class="mb-3 d-flex align-items-center justify-content-between">
+        <div class="row mb-3 d-flex align-items-center justify-content-between">
             <!-- Next Diaryentry -->
-            <div class="col-lg-2 col-md-4 col-5 px-0">
+            <div class="col-lg-2 col-md-4 col-5">
                 <a  
                 *ngIf="articleData.adjacent_diaryentries.next_diaryentry"
                 routerLink="{{nextDiaryentryUrl}}"
@@ -41,7 +52,7 @@
 
 
             <!-- Prior Diaryentry -->
-            <div class="col-lg-2 col-md-4 col-5 px-0">
+            <div class="col-lg-2 col-md-4 col-5">
                 <a  
                 *ngIf="articleData.adjacent_diaryentries.prior_diaryentry"
                 routerLink="{{priorDiaryentryUrl}}"
@@ -56,13 +67,14 @@
         <!-- DiaryEntry Text In Encounters -->
         <app-diary-entry-encounter-list
         [diaryEntry]="articleData"
+        [diaryEntryView]="diaryentryDisplayMode"
         [campaign]="campaign"
         ></app-diary-entry-encounter-list>
 
         <!-- Next/Prior Diaryentry Buttons -->
         <div class="mb-3 d-flex align-items-center justify-content-between">
             <!-- Next Diaryentry -->
-            <div class="col-lg-2 col-md-4 col-5 px-0">
+            <div class="col-lg-2 col-md-4 col-5">
                 <a  
                 *ngIf="articleData.adjacent_diaryentries.next_diaryentry"
                 routerLink="{{nextDiaryentryUrl}}"
@@ -75,7 +87,7 @@
 
 
             <!-- Prior Diaryentry -->
-            <div class="col-lg-2 col-md-4 col-5 px-0">
+            <div class="col-lg-2 col-md-4 col-5">
                 <a  
                 *ngIf="articleData.adjacent_diaryentries.prior_diaryentry"
                 routerLink="{{priorDiaryentryUrl}}"

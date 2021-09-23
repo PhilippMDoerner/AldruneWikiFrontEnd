@@ -18,6 +18,9 @@ export class DiaryentryArticleComponent extends ArticleMixin {
   //URLs
   diaryentryOverviewUrl: string;
 
+  //Custom Variables
+  diaryentryDisplayMode: boolean = true;
+
   //ArticleMixin Variables
   articleData: DiaryEntry;
   nextDiaryentryUrl: string;
