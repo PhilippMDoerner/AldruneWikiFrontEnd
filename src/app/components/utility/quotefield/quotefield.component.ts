@@ -26,7 +26,7 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 })
 export class QuotefieldComponent extends PermissionUtilityFunctionMixin implements OnInit, OnChanges{
   //URLs
-  connectedCharacterURLs: string[];
+  connectedCharacterURLs: string[] = [];
   quoteOverviewUrl: string;
   
   constants: any = Constants;
@@ -40,6 +40,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   @Input() inCreateState: boolean = false;
   
   @Output() delete: EventEmitter<Quote> = new EventEmitter<Quote>();
+  @Output() create: EventEmitter<Quote> = new EventEmitter<Quote>();
 
   quote_subscription: Subscription;
 
@@ -69,16 +70,17 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   }
 
   ngOnInit(){
-    if(this.inCreateState){
+    if(this.inCreateState || this.isEmptyQuote(this.quote)){
+      this.quote.connections = [];
       this.toggleCreateState();
     }
 
-    this.setFormlyFields(this.campaign);
+    this.fields = this.getFormlyFieldConfigurations(this.campaign);
     this.updateDynamicVariables(this.campaign, this.character, this.quote?.connections);
   }
 
-  setFormlyFields(campaign: CampaignOverview): void{
-    this.fields = [
+  getFormlyFieldConfigurations(campaign: CampaignOverview): FormlyFieldConfig[]{
+    return [
       this.formlyService.genericTextField({key: "quote", required: true}),
       this.formlyService.genericInput({key: "description", required: true}),
       this.formlyService.genericSelect({key: "session", overviewType: OverviewType.Session, required: true, campaign: campaign.name}),
@@ -105,6 +107,10 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
     }
   }
 
+  isEmptyQuote(quote: Quote): boolean{
+    return quote.pk == null;
+  }
+
   getNextRandomQuote(){
     this.isLoadingNextQuote = true;
     this.quoteService.getRandomQuote(this.campaign.name, this.character.name).pipe(first()).subscribe(
@@ -124,12 +130,14 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
         this.quoteService.update(this.model.pk, this.model);
     try{
       this.quote = await responseObservable.toPromise();
+      this.model = this.quote;
 
       if(this.inCreateState){
         const connectionToThisCharacter: QuoteConnection = {"quote": this.quote.pk, "character": this.character.pk};
         const connection: QuoteConnectionObject = await this.quoteConnectionservice.create(connectionToThisCharacter).toPromise();
         this.quote.connections = [connection];
         this.inCreateState = false;
+        this.create.emit(this.quote);
       } else {
         this.inEditState = false;
       }

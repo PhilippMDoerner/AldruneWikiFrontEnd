@@ -22,6 +22,6 @@ export class QuoteService extends GenericService{
   }
 
   getAllCharacterQuotes(campaign: string, character_name: string): Observable<Quote[]>{
-    return this.http.get<Quote[]>(`${this.baseUrl}/${campaign}/${character_name}`);
+    return this.http.get<Quote[]>(`${this.baseUrl}/${campaign}/${character_name}/`);
   }
 }
