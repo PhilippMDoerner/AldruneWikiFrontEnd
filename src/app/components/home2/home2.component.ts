@@ -48,10 +48,6 @@ export class Home2Component implements OnInit, AfterViewInit, OnDestroy {
     animateElement(this.articleElement.nativeElement, 'fadeIn');
   }
 
-  sidebarColor(articleType: string): string{
-    return Constants.articleTypeSidebarColorMapping[articleType];
-  }
-
   startSearch(): void{
     if (this.searchString != null){
       const cleaned_search = this.searchString.replace(/[^a-zA-Z0-9]/g,' ').trim();
