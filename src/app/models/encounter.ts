@@ -91,31 +91,16 @@ export class EncounterObject implements Encounter {
         return this.getUnshiftedOrderIndex() - this.orderIndexIncrement;
     }
 
-    //TODO: Get rid of hard-coded URL patterns in objects
     getAbsoluteRouterUrl(): string{
         if (!this.diaryentry_details.session_number || !this.diaryentry_details.author_name || this.diaryentry_details.is_main_session == null) {
             console.error(this.diaryentry_details);
             throw `Can't generate URL for Encounter object without all necessary information! I only have this:`;
         }
         return `${Constants.wikiUrlFrontendPrefix}/diaryentry/${this.campaign_details.name}/${this.diaryentry_details.session_number}/${this.diaryentry_details.is_main_session}/${this.diaryentry_details.author_name}/${this.title}`;
-
-        // return this.routingService.getRoutePath("diaryentry-encounter", {
-        //     campaign: this.campaign_details.name, 
-        //     sessionNumber: this.diaryentry_details.session_number,
-        //     isMainSession: this.diaryentry_details.is_main_session,
-        //     authorName: this.diaryentry_details.author_name,
-        //     encounterTitle: this.title
-        // });
     }
 
     getAbsoluteLocationRouterUrl(): string{
         if (!this.location_details) throw "Can't generate URL for Location of Encounter object without locatoin_details !";
         return `${Constants.wikiUrlFrontendPrefix}/location/${this.campaign_details.name}/${this.location_details.parent_location_name}/${this.location_details.name}`;
-
-    //     return this.routingService.getRoutePath("location", {
-    //         name: this.location_details.name,
-    //         parent_name: this.location_details.parent_location_name,
-    //         campaign: this.campaign_details.name
-    //     });
     }
 }

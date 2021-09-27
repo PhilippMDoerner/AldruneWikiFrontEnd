@@ -105,7 +105,6 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
         this.userModel = {...this.userModel};
     }
 
-    //TODO: Get rid of these functions due to permissionutility mixin
     isInCreateState(): boolean{
         return this.formState === Constants.createState;
     }

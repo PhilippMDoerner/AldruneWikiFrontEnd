@@ -65,7 +65,6 @@ export class AdminGuardService implements CanActivate{
 }
 
 
-//TODO: Make a service, that checks if the user has guest permission on the given stuff
 @Injectable({
   providedIn: 'root'
 })
@@ -78,7 +77,7 @@ export class CampaignGuardService extends AdminGuardService{
 
   canActivate(route: ActivatedRouteSnapshot): boolean{
     if (!this.isUserLoggedIn()) {
-      this.routingService.routeToPath('login');//TODO: Replace this to route to a campaign-based login instead that auto-routes to the desired campaign
+      this.routingService.routeToPath('login');
       return false;
     }
 
@@ -96,15 +95,7 @@ export class CampaignGuardService extends AdminGuardService{
     const requiredMiniumRole: CampaignRole = route.data.requiredRole; 
     if (requiredMiniumRole == null) throw "Invalid Route Exception. The campaign-route you're trying to access has no defined minimum role needed to access it";
 
-    return this.hasNecessaryRole(campaignNameOfRoute, requiredMiniumRole);
-  }
-
-  hasNecessaryRole(campaignName: string, requiredRole: CampaignRole): boolean{
-    if(this.isGlobalRole(requiredRole)){
-      return this.hasGlobalRoleOrBetter(requiredRole);
-    } else {
-      return this.hasRoleOrBetter(campaignName, requiredRole);
-    }
+    return this.hasRoleOrBetter(campaignNameOfRoute, requiredMiniumRole);
   }
 
   hasRoleOrBetter(campaignName: string, role: CampaignRole): boolean{
@@ -115,13 +106,5 @@ export class CampaignGuardService extends AdminGuardService{
     if (role === CampaignRole.ADMIN) return isCampaignAdmin;
     if (role === CampaignRole.MEMBER) return isCampaignAdmin || isCampaignMember;
     if (role === CampaignRole.GUEST) return isCampaignAdmin || isCampaignMember || isCampaignGuest;
-  }
-
-  hasGlobalRoleOrBetter(role: CampaignRole): boolean{
-    return true; //TODO: Implement this
-  }
-
-  isGlobalRole(role: CampaignRole): boolean{
-    return role === CampaignRole.GLOBALGUEST || role === CampaignRole.GLOBALMEMBER;
   }
 }
