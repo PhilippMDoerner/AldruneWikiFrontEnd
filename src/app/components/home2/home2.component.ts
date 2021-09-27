@@ -1,5 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostBinding, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
@@ -28,7 +27,6 @@ export class Home2Component implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private routingService: RoutingService,
-    private route: ActivatedRoute,
     private globalUrlParams: GlobalUrlParamsService
   ) { }
 
