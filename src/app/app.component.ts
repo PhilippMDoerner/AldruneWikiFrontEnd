@@ -7,7 +7,7 @@ import { Constants } from './app.constants';
 import { RoutingService } from './services/routing.service';
 import { TokenService } from './services/token.service';
 import { WarningsService } from './services/warnings.service';
-import { onlyOnTouch } from './utils/functions/utilityDecorators';
+import { onlyOnTouchDevices } from './utils/functions/utilityDecorators';
 
 @Component({
   selector: 'app-root',
@@ -114,17 +114,17 @@ export class AppComponent implements OnInit, OnDestroy{
 
 
   //TOUCH EVENT HANDLERS
-  @onlyOnTouch
+  @onlyOnTouchDevices
   onSwipeLeft(event: any): void{
     this.showSidebarSubject.next(false);
   }
 
-  @onlyOnTouch
+  @onlyOnTouchDevices
   onSwipeRight(event: any): void{
     this.showSidebarSubject.next(true);
   }
 
-  @onlyOnTouch
+  @onlyOnTouchDevices
   onTap(event: any){
     const sidebarIsVisible = this.showSidebarSubject.value === true;
 
