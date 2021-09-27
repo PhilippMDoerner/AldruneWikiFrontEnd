@@ -500,24 +500,6 @@ const campaignRoutes: CampaignRoute[] = [
 
 	//Search Routes
 	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search`,
-		component: SearchComponent,
-		data:{ name: "startSearch", requiredRole: CampaignRole.GLOBALGUEST},
-		canActivate: [CampaignGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:searchString`,
-		component: SearchComponent,
-		data:{ name: "search", requiredRole: CampaignRole.GLOBALGUEST},
-		canActivate: [CampaignGuardService]
-	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/:campaign/search`,
-		component: SearchComponent,
-		data:{ name: "startCampaignSearch", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
-	},
-	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:campaign/:searchString`,
 		component: SearchComponent,
 		data:{ name: "campaignSearch", requiredRole: CampaignRole.GUEST},

@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TransformArrayObservable, TransformObservable, transformObservableArrayContent, transformObservableContent } from '../utils/functions/transform';
+import { TransformObservable, transformObservableArrayContent, transformObservableContent } from '../utils/functions/transform';
 //TODO: See if you can't throw in an inheritance of GenericService
 @Injectable({
   providedIn: 'root'
@@ -50,7 +50,6 @@ export abstract class GenericObjectService{
    * @param param 
    * @returns The data from that endpoint transformed into an object specified by the service
    */
-  @TransformObservable("objectClass")
   readByParam(campaign: string, params: any): Observable<any>{
     if (typeof params.name !== "string"){
       console.error("The params you used in the service")
