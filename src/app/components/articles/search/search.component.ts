@@ -53,10 +53,13 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.searchString = params['searchString'];
       this.campaign = params.campaign;
 
-      this.articleService.getSearchedArticles(this.campaign, this.searchString)
+      this.articleService.getCampaignSearchArticle(this.campaign, this.searchString)
         .pipe(first())
         .subscribe(
-          (articles: OverviewArticleObject[]) => this.onAfterArticleLoadFinished(params.campaign, articles, params),
+          (articles: OverviewArticleObject[]) => {
+            this.articles = articles;
+            this.onAfterArticleLoadFinished(params.campaign, articles, params);
+          },
           error => this.routingService.routeToErrorPage(error)
         );      
     });
@@ -64,9 +67,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     this.emptySearchSubtitle = this.getRandomSubtitle();
   }
 
-  onAfterArticleLoadFinished(campaignName: string, articles: OverviewArticleObject[], params: Params){
-    this.articles = articles;
-    
+  onAfterArticleLoadFinished(campaignName: string, articles: OverviewArticleObject[], params: Params){    
     this.homeUrl = this.routingService.getRoutePath('home1', {campaign: campaignName});
   }
 

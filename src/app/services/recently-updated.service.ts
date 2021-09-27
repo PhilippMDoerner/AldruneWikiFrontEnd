@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
 import { OverviewItem } from '../models/overviewItem';
 import { Article, OverviewArticleObject } from '../models/recentlyUpdatedArticle';
-import { TransformArrayObservable } from '../utils/functions/transform';
+import { transformObservableArrayContent, transformObservableContent } from 'src/app/utils/functions/transform';
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +15,22 @@ export class RecentlyUpdatedService {
 
   constructor(private http: HttpClient) { }
 
-  @TransformArrayObservable(OverviewArticleObject)
   getRecentlyUpdatedArticle(campaign: string, pageNumber: number): Observable<OverviewItem[]>{
     if(pageNumber == null) pageNumber = 0;
 
-    return this.http.get<OverviewItem[]>(`${this.recentlyUpdatedUrl}/${campaign}/${pageNumber}`);
+    const resultObservable = this.http.get<OverviewItem[]>(`${this.recentlyUpdatedUrl}/${campaign}/${pageNumber}`);
+    return transformObservableArrayContent(resultObservable, OverviewArticleObject);
   }
 
-  @TransformArrayObservable(OverviewArticleObject)
-  getSearchedArticles(campaign: string, searchString: string): Observable<OverviewItem[]>{
-    return this.http.get<OverviewItem[]>(`${this.searchUrl}/${campaign}/${searchString}`);
+  getGlobalSearchArticle(searchString: string): Observable<OverviewItem[]>{
+    const resultObservable = this.http.get<OverviewItem[]>(`${this.searchUrl}/${searchString}`);
+
+    return transformObservableArrayContent(resultObservable, OverviewArticleObject);
+  }
+
+  getCampaignSearchArticle(campaign: string, searchString: string): Observable<OverviewItem[]>{
+    const resultObservable = this.http.get<OverviewItem[]>(`${this.searchUrl}/${campaign}/${searchString}`);
+
+    return transformObservableArrayContent(resultObservable, OverviewArticleObject);
   }
 }
