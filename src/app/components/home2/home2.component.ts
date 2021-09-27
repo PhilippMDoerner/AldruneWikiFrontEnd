@@ -20,7 +20,6 @@ export class Home2Component implements OnInit, AfterViewInit, OnDestroy {
   constants = Constants;
   campaignData: CampaignOverview;
 
-  parameterSubscription: Subscription;
   campaignSubscription: Subscription;
 
   recentlyUpdatedArticles: OverviewItem[];
@@ -60,14 +59,7 @@ export class Home2Component implements OnInit, AfterViewInit, OnDestroy {
     this.routingService.routeToPath('campaignSearch', {campaign: this.campaignData.name, searchString: this.searchString});
   }
 
-  /** Necessary to still allow selecting the search field on this page. Else the "preventDefault" bit on the touch events blocks that */
-  focusSearchField(){
-    this.searchField.nativeElement.click();
-    this.searchField.nativeElement.focus();
-  }
-
   ngOnDestroy(): void{
     if(this.campaignSubscription) this.campaignSubscription.unsubscribe();
-    if(this.parameterSubscription) this.parameterSubscription.unsubscribe();
   }
 }
