@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { TransformObservable, transformObservableArrayContent, transformObservableContent } from '../utils/functions/transform';
+import { transformObservableArrayContent, transformObservableContent } from '../utils/functions/transform';
 //TODO: See if you can't throw in an inheritance of GenericService
 @Injectable({
   providedIn: 'root'
