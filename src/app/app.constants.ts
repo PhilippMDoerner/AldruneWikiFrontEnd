@@ -179,7 +179,7 @@ export class Constants{
     public static get refreshTokenKey(): string { return "refresh_token";}
 
     // Static Image URLs
-    public static get audioImageUrl(): string { return `/assets/default_images/audio_pic_default.png`; }
+    public static get audioImageUrl(): string { return `/assets/default_images/audio_pic_default.webp`; }
     public static get timeoutImageUrl(): string { return `/assets/error_images/504.jpeg`; }
     public static get badInputImageUrl(): string { return `/assets/error_images/400.png`; }
     public static get pageNotFoundImageUrl(): string { return `/assets/error_images/404.png`; }
@@ -200,9 +200,9 @@ export class Constants{
     public static get maxDistanceToPageBottomForPaginationLoad(): number { return 400};
 
     //Default Image for Image Gallery
-    public static get defaultBackgroundImageUrl(): string { return `/assets/default_images/background_default.png`;}
-    public static get defaultImageUrl(): string { return `assets/default_images/icon_default.png`;}
-    public static get defaultCampaignIconUrl(): string { return `/assets/icons/icon-512x512.png`;}
+    public static get defaultBackgroundImageUrl(): string { return `/assets/default_images/background_default.webp`;}
+    public static get defaultImageUrl(): string { return `assets/default_images/icon_default.webp`;}
+    public static get defaultCampaignIconUrl(): string { return `/assets/icons/icon-512x512.webp`;}
 
     //Default Map to display
     public static get defaultMapName(): string {return `Aldrune`};

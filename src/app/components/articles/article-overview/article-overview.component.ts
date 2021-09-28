@@ -36,37 +36,37 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   constants: any = Constants;
   overviewTypeMetaData: any = {
     character: {
-      image: `/assets/overview_images/characters.jpg`,
+      image: `/assets/overview_images/characters.webp`,
       heading: "Characters",
       processing: (listItems: OverviewItemObject[]) => this.processCharacterOverviewItems(listItems),
       overviewTypeEnum: OverviewType.Character
     },
     creature: {
-      image: `/assets/overview_images/creatures.jpg`,
+      image: `/assets/overview_images/creatures.webp`,
       heading: "Creatures",
       processing: null,
       overviewTypeEnum: OverviewType.Creature
     },
     diaryentry: {
-      image: `/assets/overview_images/diaryentries.png`,
+      image: `/assets/overview_images/diaryentries.webp`,
       heading: "Diaryentries",
       processing: (listItems: OverviewItemObject[]) => this.processDiaryentryOverviewItems(listItems),
       overviewTypeEnum: OverviewType.Diaryentry
     },
     item: {
-      image: `/assets/overview_images/items.jpg`,
+      image: `/assets/overview_images/items.webp`,
       heading: "Items",
       processing: null,
       overviewTypeEnum: OverviewType.Item
     },
     location: {
-      image: `/assets/overview_images/locations.jpg`,
+      image: `/assets/overview_images/locations.webp`,
       heading: "Locations",
       processing: (listItems: OverviewItemObject[]) => this.processLocationOverviewItems(listItems),
       overviewTypeEnum: OverviewType.Location
     },
     organization: {
-      image: `/assets/overview_images/organizations.jpg`,
+      image: `/assets/overview_images/organizations.webp`,
       heading: "Organizations",
       processing: null,
       overviewTypeEnum: OverviewType.Organization
