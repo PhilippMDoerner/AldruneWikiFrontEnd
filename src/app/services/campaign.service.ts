@@ -8,6 +8,7 @@ import { User } from '../models/user';
 import { convertMultiFileModelToFormData, convertSingleFileModelToFormData } from '../utils/formDataConverter';
 import { GenericService } from './generic.service';
 import { TokenService } from './token.service';
+import { EmptySearchResponse } from 'src/app/models/emptySearchResponse';
 
 @Injectable({
   providedIn: 'root'
@@ -136,5 +137,13 @@ export class CampaignService extends GenericService{
   removeAdmin(campaign: string, user: User): Observable<User[]>{
     const requestBody = {action: "remove_admin", user}
     return this.http.patch<User[]>(`${this.baseUrl}/${campaign}/members/`, requestBody);
+  }
+
+  addEmptySearchResponse(responseModel: EmptySearchResponse): Observable<EmptySearchResponse>{
+    return this.http.post<EmptySearchResponse>(`${Constants.wikiApiUrl}/emptysearchresponse/`, responseModel);
+  }
+
+  deleteEmptySearchResponse(emptySearchResponsePk: number): Observable<any>{
+    return this.http.delete(`${Constants.wikiApiUrl}/emptysearchresponse/pk/${emptySearchResponsePk}`);
   }
 }

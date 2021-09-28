@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { OverviewType } from 'src/app/app.constants';
 import { CampaignObject, CampaignOverview, WikiStatistics } from 'src/app/models/campaign';
+import { EmptySearchResponse } from 'src/app/models/emptySearchResponse';
 import { User, UserObject } from 'src/app/models/user';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -31,6 +32,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   //CUSTOM VARIABLES
   campaignStatistics: WikiStatistics;
 
+  // Add Members
   addMemberState: boolean = false;
   addAdminState: boolean = false;
   addGuestState: boolean = false;
@@ -82,6 +84,12 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
     }),
   ];
 
+  // Add Empty Search Response
+  addResponseState: boolean = false;
+  responseModel: EmptySearchResponse;
+  responseFormlyFields: FormlyFieldConfig[] = [
+    this.formlyService.genericInput({key: "text", placeholder: "Quest Name", maxLength: 400}),
+  ]
 
   constructor(
     warnings: WarningsService,
@@ -204,6 +212,8 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
     );
   }
 
+
+
   /**
    * @description Checks if a given user is already a member in the current campaign.
    * @returns boolean
@@ -219,6 +229,40 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
 
   deleteArticle(){
     throw "You can not delete a campaign, please use 'deactivateCampaign' instead";
+  }
+
+
+
+  toggleResponseAddState(): void{
+    this.addResponseState = !this.addResponseState;
+
+    if(this.addResponseState){
+      this.responseModel = {campaign: this.campaign.pk, text: null};
+    }
+  }
+
+  onAddResponseSubmit(): void{
+    this.campaignService.addEmptySearchResponse(this.responseModel)
+      .pipe(first())
+      .subscribe(
+        (emptySearchResponse: EmptySearchResponse) => {
+          this.articleData.emptySearchResponses.push(emptySearchResponse);
+          this.articleData.emptySearchResponses.sort((response1, response2) => response1 > response2 ? 1 : -1);
+        },
+        error => this.warnings.showWarning(error)
+      );
+  }
+
+  onRemoveResponse(emptySearchResponse: EmptySearchResponse): void{
+    this.campaignService.deleteEmptySearchResponse(emptySearchResponse.id)
+      .pipe(first())
+      .subscribe(
+        response => {
+          const deletedResponseIndex: number = this.articleData.emptySearchResponses.indexOf(emptySearchResponse);
+          this.articleData.emptySearchResponses.splice(deletedResponseIndex, 1);
+        },
+        error => this.warnings.showWarning(error)
+      );
   }
 
   deactivateCampaign(){

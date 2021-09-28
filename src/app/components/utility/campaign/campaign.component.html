@@ -152,6 +152,40 @@
             </div>
         </div>
 
+        <!-- EmptySearchResponses -->
+        <h1>
+            <span class="fas fa-search"></span>
+            Empty Search Responses
+            <app-tooltip-infocircle 
+            [tooltipMessage]="'Shown when a search came up empty. You can throw in in-jokes or references about things coming up empty.'"
+            ></app-tooltip-infocircle>
+        </h1>
+
+        <div class="row mb-5">
+            <div class="col-12 mb-3">
+                <div class="p-3 card">
+                    <div *ngFor="let emptyResponse of articleData.emptySearchResponses" class="mb-3">
+                        {{emptyResponse.text}}
+
+                        <app-delete-toggle
+                        [deleteMessage]="'Remove response?'"
+                        (deleteEvent)="onRemoveResponse(emptyResponse)"
+                        class="float-right px-0"
+                        ></app-delete-toggle>
+                    </div>
+
+                    <!-- Form -->
+                    <app-formly-formcontainer 
+                    *ngIf="addResponseState; else addResponseButton"
+                    [model]="responseModel" 
+                    [fields]="responseFormlyFields"
+                    (formlySubmit)="onAddResponseSubmit()" 
+                    (formlyCancel)="addResponseState=false"
+                    ></app-formly-formcontainer>
+
+                </div> 
+            </div>
+        </div>
 
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
@@ -184,6 +218,13 @@
     <button class="btn btn-primary mt-3" (click)="toggleGuestAddState()">
         <span class="fas user-plus icon"> </span>
         Add Guest
+    </button>
+</ng-template>
+
+<ng-template #addResponseButton>
+    <button class="btn btn-primary mt-3" (click)="toggleResponseAddState()">
+        <span class="fas fa-plus icon"> </span>
+        Add EmptySearchResponse
     </button>
 </ng-template>
 

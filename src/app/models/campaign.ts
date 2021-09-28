@@ -1,4 +1,5 @@
 import { Constants } from '../app.constants';
+import { EmptySearchResponse } from './emptySearchResponse';
 import { User } from './user';
 
 export interface BaseCampaignData{
@@ -21,6 +22,8 @@ export interface Campaign extends BaseCampaignData{
     member_group_name?: string;
     admin_group_name?: string;
     guest_group_name?: string;
+
+    emptySearchResponses?: EmptySearchResponse[];
 }
 
 export interface CampaignOverview extends BaseCampaignData{
@@ -47,6 +50,8 @@ export class CampaignObject implements Campaign{
     member_group_name?: string;
     admin_group_name?: string;
     guest_group_name?: string;
+
+    emptySearchResponses: EmptySearchResponse[];
 
     constructor(object?: Campaign){
         if (object) Object.assign(this, object);
