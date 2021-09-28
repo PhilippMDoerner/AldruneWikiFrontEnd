@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="articles; else loading" class="container">
+    <article *ngIf="articles || emptySearchSubtitle; else loading" class="container">
          <!-- Heading -->
          <div class="row">
             <h1 class="text-center col">Search Results</h1>

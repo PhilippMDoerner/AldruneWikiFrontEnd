@@ -34,19 +34,7 @@ export class SearchComponent implements OnInit, OnDestroy {
     public routingService: RoutingService,
     private globalUrlParams: GlobalUrlParamsService,
   ) { }
-  
-  //TODO: Turn this into a table in the backend
-  nothingFoundSubtitles: string[] = [
-    "This page is about as empty as Illfae's heart.",
-    "Were you looking for Barbatos conscience?",
-    "Ah, I see, you were trying to find moments where Rhiannon was humble.",
-    "You know, looking for moments where Cait had normal goals was never going to get you anything.",
-    "Of course you wouldn't find anything on Relentless' crimes, he's innocent!",
-    "... I'm surprised, I did expect to find more supporting Fen's conspiracy theories.",
-    "If you were looking for Bathilde's age, it's ancient and nobody knows for sure.",
-    "Yeah, that's about as much as Murtagh leaves of his enemies if he's pissed off.",
-    "Here is where Sam would put his dead Caitriona, IF HE COULD REACH HER!"
-  ]
+
 
   ngOnInit(): void {  
     this.parameter_subscription = this.route.params.subscribe(params => {
@@ -56,15 +44,14 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.articleService.getCampaignSearchArticle(this.campaign, this.searchString)
         .pipe(first())
         .subscribe(
-          (articles: OverviewArticleObject[]) => {
-            this.articles = articles;
-            this.onAfterArticleLoadFinished(params.campaign, articles, params);
+          (response: any) => {
+            this.articles = response.articles;
+            this.emptySearchSubtitle = response.empty_response;
+            this.onAfterArticleLoadFinished(params.campaign, response.articles, params);
           },
           error => this.routingService.routeToErrorPage(error)
         );      
     });
-
-    this.emptySearchSubtitle = this.getRandomSubtitle();
   }
 
   onAfterArticleLoadFinished(campaignName: string, articles: OverviewArticleObject[], params: Params){    
@@ -81,12 +68,6 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   hasActiveFilter(): boolean{
     return this.filterOptions.length > 0;
-  }
-
-  getRandomSubtitle(): string{
-    const subtitleCount = this.nothingFoundSubtitles.length;
-    const subtitleIndex = Math.floor(Math.random()*subtitleCount);
-    return this.nothingFoundSubtitles[subtitleIndex];
   }
 
   ngOnDestroy(){

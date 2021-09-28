@@ -2,9 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Constants } from '../app.constants';
-import { OverviewItem } from '../models/overviewItem';
-import { Article, OverviewArticleObject } from '../models/recentlyUpdatedArticle';
+import { OverviewItem, OverviewItemObject } from '../models/overviewItem';
+import { OverviewArticleObject } from '../models/recentlyUpdatedArticle';
 import { transformObservableArrayContent, transformObservableContent } from 'src/app/utils/functions/transform';
+import { map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -22,15 +23,33 @@ export class RecentlyUpdatedService {
     return transformObservableArrayContent(resultObservable, OverviewArticleObject);
   }
 
-  getGlobalSearchArticle(searchString: string): Observable<OverviewItem[]>{
-    const resultObservable = this.http.get<OverviewItem[]>(`${this.searchUrl}/${searchString}`);
+  
+  getGlobalSearchArticle(searchString: string): Observable<{articles: OverviewItem[], emptyResonse: string}>{
+    const resultObservable = this.http.get<{articles: OverviewItem[], emptyResonse: string}>(`${this.searchUrl}/${searchString}`);
+    const modifiedObservable = resultObservable.pipe(
+      map(searchResponse => {
+        const searchArticles: OverviewItem[] = searchResponse.articles;
+        const searchArticleObjects: OverviewItemObject[] = searchArticles.map((item: OverviewItem) =>  new OverviewItemObject(item));
+        searchResponse.articles = searchArticleObjects;
+        return searchResponse;
+      })
+    );
 
-    return transformObservableArrayContent(resultObservable, OverviewArticleObject);
+    return modifiedObservable;
   }
 
-  getCampaignSearchArticle(campaign: string, searchString: string): Observable<OverviewItem[]>{
-    const resultObservable = this.http.get<OverviewItem[]>(`${this.searchUrl}/${campaign}/${searchString}`);
 
-    return transformObservableArrayContent(resultObservable, OverviewArticleObject);
+  getCampaignSearchArticle(campaign: string, searchString: string): Observable<{articles: OverviewItem[], emptyResonse: string}>{
+    const resultObservable = this.http.get<{articles: OverviewItem[], emptyResonse: string}>(`${this.searchUrl}/${campaign}/${searchString}`);
+    const modifiedObservable = resultObservable.pipe(
+      map(searchResponse => {
+        const searchArticles: OverviewItem[] = searchResponse.articles;
+        const searchArticleObjects: OverviewItemObject[] = searchArticles.map((item: OverviewItem) =>  new OverviewItemObject(item));
+        searchResponse.articles = searchArticleObjects;
+        return searchResponse;
+      })
+    );
+
+    return modifiedObservable;
   }
 }
