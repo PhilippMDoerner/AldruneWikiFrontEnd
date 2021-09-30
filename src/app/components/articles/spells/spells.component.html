@@ -12,7 +12,7 @@
         </h1>
 
 
-        <div class="mb-3 row mx-0" *ngIf="hasCreatePermission">
+        <div class="mb-3 row" *ngIf="hasCreatePermission">
             <a class="btn btn-primary col-lg-2 col-sm-3" (click)="addArticle()"> 
                 <i class="fa fa-plus"></i>
                 Add Spell
@@ -21,8 +21,9 @@
 
 
         <!-- Spells -->
-        <div *ngFor="let spell of articles; let i = index">
+        <div *ngFor="let spell of articles; let i = index" class="row">
             <app-spell
+            class="flex-1"
             #spellElements
             [id]="spell.name.replaceAll(' ', '-').replaceAll('\'', '')"
             [index] = "i"
@@ -34,9 +35,12 @@
             ></app-spell>
         </div>
 
-        <a class="btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign.name})}}">
-            Back To Frontpage
-        </a>
+        <div class="row">
+            <a class="col-lg-2 col-md-3 btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign.name})}}">
+                Back To Frontpage
+            </a>
+        </div>
+
     </article>
     <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
