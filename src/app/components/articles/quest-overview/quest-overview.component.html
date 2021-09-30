@@ -5,34 +5,38 @@
             <h2 class="major col mb-4 pb-1 border-bottom">Quests</h2>
         </div>
 
-        <div *ngFor="let questTaker of quests">
-            <div class="mb-3 mx-0 row">
-                <!-- Outer Table Heading -->
-                <h4 class="col-md-6 px-0 my-auto">
-                    {{questTaker.key}}'s Quests
-                    <i *ngIf="hasCreatePermission" class="fa fa-plus icon ml-2" routerLink="create"></i>
-                </h4>
+        <div class="row col-md-3 btn btn-primary mb-3" routerLink="create">
+            <span class="fas fa-plus"></span>
+            Add quest
+        </div>
 
-                <div class="col-3"></div>
+        <div *ngFor="let questTaker of quests" class="row mb-5">
+            <div class="mb-3 col-12">
+                <div class="row">
+                    <!-- Outer Table Heading -->
+                    <h4 class="col-md-9 my-auto px-0">
+                        {{questTaker.key}}'s Quests
+                    </h4>
 
-                <!-- Filterselect -->
-                <select 
-                name="quest-status" 
-                class="col-md-3" 
-                [(ngModel)]="filterStates[questTaker.key]"
-                >
-                    <option selected value="Default">Default</option>
-                    <option value="All">All</option>
-                    <option 
-                    *ngFor="let filterStateType of filterStateTypes" 
-                    value="{{filterStateType}}"
+                    <!-- Filterselect -->
+                    <select 
+                    name="quest-status" 
+                    class="col-md-3" 
+                    [(ngModel)]="filterStates[questTaker.key]"
                     >
-                        {{filterStateType}}
-                    </option>
-                </select>
+                        <option selected value="Default">Default</option>
+                        <option value="All">All</option>
+                        <option 
+                        *ngFor="let filterStateType of filterStateTypes" 
+                        value="{{filterStateType}}"
+                        >
+                            {{filterStateType}}
+                        </option>
+                    </select>
+                </div>
             </div>
 
-            <table class="table table-dark table-striped mytable mb-5 pb-2">
+            <table class="table table-dark table-striped mytable pb-2">
                 <!-- Inner Table Heading -->
                 <thead>
                     <tr>
@@ -84,7 +88,7 @@
             </table>
         </div>
     
-        <div class="row mx-0">
+        <div class="row">
             <div 
             class="btn btn-secondary col-md-3" 
             routerLink="{{ homeUrl }}"
