@@ -58,7 +58,7 @@
                         <td>
                             <a 
                             id="quest{{ quest.pk }}" 
-                            routerLink="{{ questURLs[questIndex] }}"
+                            routerLink="{{ quest.getAbsoluteRouterUrl() }}"
                             >
                                  <span class="bold">{{ quest.name }}</span>
                             </a>

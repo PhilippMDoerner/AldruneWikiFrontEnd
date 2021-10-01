@@ -33,12 +33,18 @@ export class QuestObject implements Quest{
     campaign_details?: {pk: number, name: string};
     campaign: number;
 
+    absoluteRouterUrl?: string;
+
     constructor(object?: Quest){
         if (object) Object.assign(this, object)
     }
 
     getAbsoluteRouterUrl(): string{
-        return `${Constants.wikiUrlFrontendPrefix}/quest/${this.campaign_details.name}/${this.name}`;
+        if (this.absoluteRouterUrl == null){
+            this.absoluteRouterUrl = `${Constants.wikiUrlFrontendPrefix}/quest/${this.campaign_details.name}/${this.name}`;
+        }
+
+        return this.absoluteRouterUrl;
 
         // return this.routingService.getRoutePath("quest", {campaign: this.campaign_details.name, name: this.name});
     }

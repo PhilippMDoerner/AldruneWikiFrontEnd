@@ -20,7 +20,6 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 })
 export class QuestOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
   //URLs
-  questURLs: string[];
   homeUrl: string;
 
   //Other variables
@@ -53,6 +52,8 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
         (campaign: CampaignOverview) => this.onAfterCampaignLoaded(campaign),
         error => this.warning.showWarning(error)
       );
+    
+    console.log
   }
 
   onAfterCampaignLoaded(campaign: CampaignOverview): void{
@@ -83,7 +84,6 @@ export class QuestOverviewComponent extends PermissionUtilityFunctionMixin imple
   }
 
   updateDynamicVariables(campaign: CampaignOverview, articles: QuestObject[], params: Params){
-    this.questURLs = articles.map((quest: QuestObject) => this.routingService.getRoutePath('quest', {name: quest.name, campaign: campaign.name}));
     this.homeUrl = this.routingService.getRoutePath('home1', {campaign: campaign.name});
   }
 
