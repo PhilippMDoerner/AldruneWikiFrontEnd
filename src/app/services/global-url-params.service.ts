@@ -1,13 +1,14 @@
 import { Location } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Navigation, NavigationEnd, NavigationStart, Params, Router } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, NavigationEnd, NavigationStart, Params, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { filter, first, skip, tap } from 'rxjs/operators';
 import { CampaignOverview } from '../models/campaign';
 import { CampaignService } from './campaign.service';
 import { RoutingService } from './routing.service';
+import { TitleService } from './title.service';
 import { TokenService } from './token.service';
-import { WarningsService } from './warnings.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,10 +24,11 @@ export class GlobalUrlParamsService {
     private tokenService: TokenService,
     private router: Router,
     private routingService: RoutingService,
-    private urlLocation: Location
+    private urlLocation: Location,
+    private myTitleService: TitleService,
   ) { 
     this.currentCampaignSet
-      .pipe(skip(1))//The 
+      .pipe(skip(1)) 
       .subscribe(() => this.updateCurrentlySelectedCampaignFromRoute());
 
     this.autoUpdateCampaignSet()
@@ -65,7 +67,10 @@ export class GlobalUrlParamsService {
    * Acts the moment the new route is reached aka when the navigation has been finished.
    */
   private onRouteChangeEnd(event: NavigationEnd): void{
-    this.updateCurrentlySelectedCampaignFromRoute()
+    this.updateCurrentlySelectedCampaignFromRoute();
+
+    const routeData: ActivatedRoute = this.getCurrentRouteData();
+    this.myTitleService.updatePageTitle(routeData);
   }
 
   private async refreshCampaignSetIfNecessary(event: NavigationStart): Promise<void>{
@@ -126,10 +131,14 @@ export class GlobalUrlParamsService {
   }
 
   private getCurrentRouteParams(): Params{
-    const routeData: ActivatedRoute = this.router.routerState.root.firstChild;
+    const routeData: ActivatedRoute = this.getCurrentRouteData();
     if(routeData == null) return;
 
     return routeData.snapshot.params;
+  }
+
+  private getCurrentRouteData(): ActivatedRoute{
+    return this.router.routerState.root.firstChild;
   }
 
   private updateCurrentlySelectedCampaignFromRoute(): void{
