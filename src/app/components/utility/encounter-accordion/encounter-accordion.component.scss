@@ -18,7 +18,7 @@
 }
 
 .badge{
-    background-color: #1b1f22;
+    background-color: var(--wiki-background-2);
 }
 
 .badge a:hover{
@@ -56,7 +56,7 @@
 }
 
 #encounter-delete{
-    background-color: #1b1f22 !important;
+    background-color: var(--wiki-background-2) !important;
 }
 
 .panel-title .encounter-title, .panel-title .icon{
@@ -86,16 +86,16 @@ h4:hover .icon{
 }
 
 .btn-secondary{
-    background-color: #1b1f22;
+    background-color: var(--wiki-background-2);
 }
 
 .btn-outline-secondary{
-    border-color: #1b1f22;
+    border-color: var(--wiki-background-2);
     color: white;
 }
 
 .btn-outline-secondary:hover{
-    background-color: #1b1f22;
+    background-color: var(--wiki-background-2);
 }
 
 .delete-request .btn-secondary{

@@ -23,7 +23,7 @@
 }
 
 .badge{
-    background-color: #1b1f22;
+    background-color: var(--wiki-background-2);
 }
 
 .badge a:hover{
@@ -62,16 +62,16 @@
 
 
 .btn-secondary{
-    background-color: #1b1f22;
+    background-color: var(--wiki-background-2);
 }
 
 .btn-outline-secondary{
-    border-color: #1b1f22;
+    border-color: var(--wiki-background-2);
     color: white;
 }
 
 .btn-outline-secondary:hover{
-    background-color: #1b1f22;
+    background-color: var(--wiki-background-2);
 }
 
 .delete-request .btn-secondary{
@@ -81,7 +81,7 @@
 
 .order-arrows .fa{
     border-color: #393e41;
-    background-color: #1b1f22;
+    background-color: var(--wiki-background-2);
     border-radius: 0.25rem;
     padding: 0.33rem 0.5rem;
 }

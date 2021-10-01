@@ -119,6 +119,8 @@ body {
 	--link-blue: 	hsl(228, 100%, 76%);
 	--beige:		#b9b987;
 	--wiki-background-1: rgba(27, 31, 34, 0.85);
+	--highlight-gray: rgba(61, 70, 77, 0.85);
+	--wiki-background-2: rgb(27, 31, 34);
 
 }
 
@@ -509,42 +511,37 @@ blockquote{
     padding: 0.5rem 0 0.5rem 2rem;
 }
 
-blockquote p{
-	margin-bottom: 0;
-}
 
-blockquote strong{
-	font-weight: bold;
-}
 strong{
 	font-weight: bold;
 }
 
 .highlight{
-	background-color: rgba(61, 70, 77, 0.85);
+	background-color: var(--highlight-gray);
 }
 
 .hover-highlight{
 	transition: 0.2s background-color;
 }
+
 @media (hover: hover) and (pointer: fine) {
 	.hover-highlight:hover{
-		background-color: rgba(61, 70, 77, 0.85);
+		background-color: var(--highlight-gray);
 	}
 }
 
 // Overwriting styling of ngx-bootstrap Datepicker
 
 div.ngb-dp-header{
-	background-color: #1b1f22;
+	background-color: var(--wiki-background-2);
 }
 
 .ngb-dp-month{
-    background-color: #1b1f22;
+    background-color: var(--wiki-background-2);
 }
 
 .ngb-dp-week.ngb-dp-weekdays{
-	background-color: #1b1f22;
+	background-color: var(--wiki-background-2);
 }
 
 div.ngb-dp-day div{
