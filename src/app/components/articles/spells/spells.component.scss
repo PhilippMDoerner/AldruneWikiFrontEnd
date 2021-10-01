@@ -2,11 +2,6 @@ table{
     background-color: transparent;
 }
 
-.card{
-    background-color: rgba(27, 31, 34, 0.95) !important;
-    border-color: grey;
-}
-
 .card-title{
     font-size: 1.3rem;
 }
@@ -42,27 +37,6 @@ table{
     .column-heading{
         font-size: medium;
     }
-}
-
-.expand .btn{
-    transition: visibility 0.2s;
-    visibility: hidden;
-}
-
-.expand:hover .btn{
-    visibility: visible;
-    padding: 0.75rem 1.5rem;
-}
-
-.expand{
-    transition: height 0.2s;
-    display: flex;
-    align-items: center;
-    height: 2rem;
-}
-
-.expand:hover{
-    height: 8rem;
 }
 
 .badge-secondary:hover{
