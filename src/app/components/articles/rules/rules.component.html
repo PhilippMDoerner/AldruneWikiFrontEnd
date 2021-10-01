@@ -17,10 +17,10 @@
         <div *ngFor="let rule of articles; let i = index">
             <app-rule
             #ruleElements
-            [cardData] = "rule"
+            [cardData]="rule"
             [campaign]="campaign"
-            [index] = "i"
-            (cardDelete) = "onArticleDelete(i)"
+            [index]="i"
+            (cardDelete)="onArticleDelete(i)"
             ></app-rule>
         </div>
 
