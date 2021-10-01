@@ -41,7 +41,7 @@ import { Home2Component } from './components/home2/home2.component';
 import { CampaignOverviewComponent } from './components/articles/campaign-overview/campaign-overview.component';
 import { CampaignComponent } from './components/utility/campaign/campaign.component';
 import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
-import { AdminRoute, CampaignRoute, GeneralRoute } from './app.routing-models';
+import { BaseNamedRoute, AdminRoute, CampaignRoute, GeneralRoute } from './app.routing-models';
 import { SessionsComponent } from './components/articles/sessions/sessions.component';
 
 
@@ -509,7 +509,7 @@ const campaignRoutes: CampaignRoute[] = [
 
 
 
-export const routes: Route[] = [].concat(generalRoutes, adminRoutes, campaignRoutes);
+export const routes: BaseNamedRoute[] = [].concat(generalRoutes, adminRoutes, campaignRoutes);
 
 @NgModule({
   imports: [RouterModule.forRoot(routes, { scrollPositionRestoration: 'enabled' })],

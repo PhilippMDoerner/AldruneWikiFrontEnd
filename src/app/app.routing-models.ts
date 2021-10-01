@@ -12,20 +12,22 @@ interface RoleRouteData extends NamedRouteData{
     requiredRole: CampaignRole;
 }
 
+export interface BaseNamedRoute extends Route{
+    data: NamedRouteData;
+}
+
 
 //Route Models
-export interface GeneralRoute extends Route{
-	data: NamedRouteData;
+export interface GeneralRoute extends BaseNamedRoute{
     canActivate?: [typeof LoginGuardService]
 }
 
-export interface AdminRoute extends Route{
-    data: NamedRouteData;
+export interface AdminRoute extends BaseNamedRoute{
     canActivate: [typeof AdminGuardService]
 }
 
 
-export interface CampaignRoute extends Route {
+export interface CampaignRoute extends BaseNamedRoute {
 	data: RoleRouteData
 	canActivate: [typeof CampaignGuardService];
 }
