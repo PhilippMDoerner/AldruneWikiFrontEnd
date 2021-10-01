@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1633078371991,
+  "timestamp": 1633112270256,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -14,12 +14,12 @@
         "/4.d5c837075df5a8484b9c.js",
         "/favicon.ico",
         "/index.html",
-        "/main.914ab577997e394e19c6.js",
+        "/main.88dbd39e03b325b28eff.js",
         "/manifest.webmanifest",
         "/polyfills.a6cee9d4b9da9e6c7e50.js",
         "/runtime.6076814ef49a1a1583c0.js",
         "/scripts.7003bce63d47e1b5a54b.js",
-        "/styles.5bb8268dfa2b186e07b4.css"
+        "/styles.ce75ec05332ed89fc30f.css"
       ],
       "patterns": [
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic01\\.jpg",
@@ -215,16 +215,16 @@
     "/fontawesome-webfont.8b43027f47b20503057d.eot": "d980c2ce873dc43af460d4d572d441304499f400",
     "/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/fontawesome-webfont.f691f37e57f04c152e23.woff": "28b782240b3e76db824e12c02754a9731a167527",
-    "/index.html": "1d7ebb57a2a08ecac2f432aa7cdcf57b518ee6a9",
+    "/index.html": "428b17617380149e8d5c71e1ea2bc525fb9e4ce8",
     "/layers-2x.8f2c4d11474275fbc161.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/layers.416d91365b44e4b4f477.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/main.914ab577997e394e19c6.js": "665209e6d92cdcf5f28d8962d3ab328c5477d3a0",
+    "/main.88dbd39e03b325b28eff.js": "363cdc00fe9ea4f3f9c5518b8a2e12de269f6819",
     "/manifest.webmanifest": "116c35892aa2a2a2ae967202ecd0a917f9fe39db",
     "/marker-icon.2b3e1faf89f94a483539.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/polyfills.a6cee9d4b9da9e6c7e50.js": "dbc502f030c7bb83c7caa1feee7aff990831f7d9",
     "/runtime.6076814ef49a1a1583c0.js": "60542d45ef1f7bfeb255f45ea6a167ec92d2cc96",
     "/scripts.7003bce63d47e1b5a54b.js": "aa300fb1b006c382abc70d8bef08ea089dad59fc",
-    "/styles.5bb8268dfa2b186e07b4.css": "a89087ff0ca34c6259e3e8a26f77a3143af94e2b"
+    "/styles.ce75ec05332ed89fc30f.css": "fcbd175bbd892c70996a5e743184f89d5593d45d"
   },
   "navigationUrls": [
     {
