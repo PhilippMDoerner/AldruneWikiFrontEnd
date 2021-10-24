@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { ActivatedRoute, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterEvent } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -22,8 +22,11 @@ export class AppComponent implements OnInit, OnDestroy{
   constants = Constants;
 
   routingSubscription: Subscription;
+  routingTransitionSubscription: Subscription;
   serviceWorkerSubscription: Subscription;
   parameterSubscription: Subscription;
+
+  loading: boolean = false;
 
   showSafariWarning: boolean; //Necessary to display warning about how this site is broken on iOS Safari
 
@@ -36,7 +39,7 @@ export class AppComponent implements OnInit, OnDestroy{
     private router: Router,
     private route: ActivatedRoute,
     private tokenService: TokenService,
-  ){}
+  ){console.log(this);}
 
   ngOnInit(){
     if (!this.tokenService.hasValidJWTToken()){
@@ -56,6 +59,22 @@ export class AppComponent implements OnInit, OnDestroy{
     this.routingSubscription = this.router.events
       .pipe(filter(this.isPageReroutingEndEvent))
       .subscribe((event) => this.onPageReroutingEnd(event));
+
+    this.routingTransitionSubscription = this.router.events
+      .subscribe((event: RouterEvent) => this.manageTransitionLoadingSpinner(event))
+  }
+
+  /**When loading a new page, this determines whether the loading spinner is shown or not */
+  manageTransitionLoadingSpinner(event: RouterEvent): void{
+    if (event instanceof NavigationStart) {
+      this.loading = true;
+    }
+
+    if (event instanceof NavigationEnd ||
+      event instanceof NavigationCancel ||
+      event instanceof NavigationError) {
+      this.loading = false;
+    }
   }
 
   /** Checks whether the given routing event is one that is fired at the end of routing, so when the new URL is reached */
@@ -140,6 +159,7 @@ export class AppComponent implements OnInit, OnDestroy{
 
   ngOnDestroy(): void{
     if(this.routingSubscription) this.routingSubscription.unsubscribe();
+    if(this.routingTransitionSubscription) this.routingTransitionSubscription.unsubscribe();
     if(this.serviceWorkerSubscription) this.serviceWorkerSubscription.unsubscribe();
     if(this.parameterSubscription) this.parameterSubscription.unsubscribe();
   }

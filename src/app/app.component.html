@@ -33,6 +33,9 @@ class="d-flex base-page"
     class="d-flex justify-content-center w-100"
     >
         <router-outlet #routerOutlet></router-outlet>
+        <div *ngIf="loading">
+            <app-spinner class="transition-spinner"></app-spinner>
+        </div>
     </div>
     <app-background-image></app-background-image>
 </div>

@@ -10,6 +10,17 @@ router-outlet + ::ng-deep * {
         justify-content: center;
 }
 
+.transition-spinner{
+        position: absolute;
+        width: 5rem;
+        height: 5rem;
+        margin: auto;
+        top: 40%;
+        left: 50%;
+        background-color: black;
+        border-radius: 3rem;
+}
+
 @media(max-width: 576px){
         .sidebar-wrapper{
                 width: 0rem;
