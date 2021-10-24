@@ -39,8 +39,8 @@ export class RecentlyUpdatedService {
   }
 
 
-  getCampaignSearchArticle(campaign: string, searchString: string): Observable<{articles: OverviewItem[], emptyResonse: string}>{
-    const resultObservable = this.http.get<{articles: OverviewItem[], emptyResonse: string}>(`${this.searchUrl}/${campaign}/${searchString}`);
+  getCampaignSearchArticle(campaign: string, searchString: string): Observable<{articles: OverviewItem[], emptyResponse: string}>{
+    const resultObservable = this.http.get<{articles: OverviewItem[], emptyResponse: string}>(`${this.searchUrl}/${campaign}/${searchString}`);
     const modifiedObservable = resultObservable.pipe(
       map(searchResponse => {
         const searchArticles: OverviewItem[] = searchResponse.articles;
