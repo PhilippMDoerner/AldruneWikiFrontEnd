@@ -43,6 +43,23 @@ import { CampaignComponent } from './components/utility/campaign/campaign.compon
 import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
 import { BaseNamedRoute, AdminRoute, CampaignRoute, GeneralRoute } from './app.routing-models';
 import { SessionsComponent } from './components/articles/sessions/sessions.component';
+import { CampaignDetailResolver, CampaignResolver, CampaignStatisticsResolver } from './utils/resolvers/campaign-resolver';
+import { CreatureResolver } from './utils/resolvers/creature-resolver';
+import { CharacterResolver } from './utils/resolvers/character-resolver';
+import { LocationResolver } from './utils/resolvers/location-resolver';
+import { DiaryentryResolver } from './utils/resolvers/diaryentry-resolver';
+import { ItemResolver } from './utils/resolvers/item-resolver';
+import { MapOverviewResolver, MapResolver } from './utils/resolvers/map-resolver';
+import { OrganizationResolver } from './utils/resolvers/organization-resolver';
+import { QuestOverviewResolver, QuestResolver } from './utils/resolvers/quest-resolver';
+import { QuoteResolver } from './utils/resolvers/quote-resolver';
+import { SessionAudioOverviewResolver, SessionAudioResolver, TimestampResolver } from './utils/resolvers/sessionaudio-resolver';
+import { MarkerResolver } from './utils/resolvers/marker-resolver';
+import { RuleResolver } from './utils/resolvers/rule-resolver';
+import { SpellResolver } from './utils/resolvers/spell-resolver';
+import { SessionResolver } from './utils/resolvers/session-resolver';
+import { SearchResolver } from './utils/resolvers/search-resolver';
+import { OverviewResolver } from './utils/resolvers/overview-resolver';
 
 
 const generalRoutes: GeneralRoute[] = [
@@ -149,7 +166,10 @@ const campaignRoutes: CampaignRoute[] = [
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/:campaign`, 
 		component: Home2Component, data:{ name: "home1", requiredRole: CampaignRole.GUEST}, 
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+		}
 	},
 
 	//General Campaign Routes
@@ -162,7 +182,12 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign`, 
 		component: CampaignComponent, 
 		data:{ name: "campaign-admin", requiredRole: CampaignRole.ADMIN}, 
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: CampaignDetailResolver,
+			campaignStatistics: CampaignStatisticsResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign/update`, 
@@ -176,7 +201,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign`, 
 		component: ArticleOverviewComponent, 
 		data:{ name: "character-overview", requiredRole: CampaignRole.GUEST}, 
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			overviewList: OverviewResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/create`,
@@ -188,7 +217,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/:name`, 
 		component: CharacterArticleComponent, 
 		data:{ name: "character", requiredRole: CampaignRole.GUEST}, 
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: CharacterResolver
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/:name/update`, 
@@ -202,25 +235,33 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign`,
 		component: ArticleOverviewComponent,
 		data:{ name: "location-overview", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			overviewList: OverviewResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/create`,
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name`,
 		component: LocationArticleComponent,
 		data:{ name: "location", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: LocationResolver
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name/create`,
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-parentlocation-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:latitude/:longitude/:map_name/create`,
@@ -240,19 +281,27 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign`,
 		component: ArticleOverviewComponent,
 		data:{ name: "diaryentry-overview", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			overviewList: OverviewResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/create`,
 		component: DiaryentryArticleUpdateComponent,
 		data:{ name: "diaryentry-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName`,
 		component: DiaryentryArticleComponent,
 		data:{ name: "diaryentry", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: DiaryentryResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/update`,
@@ -272,7 +321,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign`,
 		component: ArticleOverviewComponent,
 		data:{ name: "creature-overview", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			overviewList: OverviewResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/create`,
@@ -284,7 +337,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/:name`,
 		component: CreatureArticleComponent,
 		data:{ name: "creature", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: CreatureResolver
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/:name/update`,
@@ -298,7 +355,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign`,
 		component: ArticleOverviewComponent,
 		data:{ name: "organization-overview", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			overviewList: OverviewResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/create`,
@@ -310,7 +371,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/:name`,
 		component: OrganizationArticleComponent,
 		data:{ name: "organization", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: OrganizationResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/:name/update`,
@@ -324,25 +389,33 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign`,
 		component: ArticleOverviewComponent,
 		data:{ name: "item-overview", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			overviewList: OverviewResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/create`,
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:character_name/create`,
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-character-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:name`,
 		component: ItemArticleComponent,
 		data:{ name: "item", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: ItemResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:name/update`,
@@ -356,7 +429,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign`,
 		component: QuestOverviewComponent,
 		data:{ name: "quest-overview", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			overviewList: QuestOverviewResolver
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/create`,
@@ -368,7 +445,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/:name`,
 		component: QuestArticleComponent,
 		data:{ name: "quest", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: QuestResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/:name/update`,
@@ -382,7 +463,12 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quotes/:campaign/:name`,
 		component: QuoteOverviewComponent,
 		data: { name: "quote-overview", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			character: CharacterResolver,
+			articleList: QuoteResolver,
+		}
 	},
 
 	// SessionAudio Routes
@@ -390,20 +476,29 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign`,
 		component: SessionAudioOverviewComponent,
 		data:{ name: "sessionaudio-overview", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			overviewList: SessionAudioOverviewResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/create`,
 		component: SessionAudioUpdateComponent,
 		data:{ name: "sessionaudio-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
 	},
 			
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/:isMainSession/:sessionNumber`,
 		component: SessionAudioComponent,
 		data:{ name: "sessionaudio", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: SessionAudioResolver,
+			timestamps: TimestampResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/:isMainSession/:sessionNumber/update`,
@@ -429,7 +524,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/:map_name`,
 		component: MarkerComponent,
 		data:{ name: "marker", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: MarkerResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/:map_name/update`,
@@ -450,19 +549,27 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/default`,
 		component: MapComponent,
 		data:{ name: "default-map", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: MapResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/:name`,
 		component: MapComponent,
 		data:{ name: "map", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: MapResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/:name/update`,
 		component: MapUpdateComponent,
 		data:{ name: "map-update", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
 	},
 
 
@@ -471,31 +578,51 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules/:campaign`,
 		component: RulesComponent,
 		data:{ name: "rules", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			articleList: RuleResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/rules/:campaign/:name`,
 		component: RulesComponent,
 		data:{ name: "rule", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			articleList: RuleResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:campaign`,
 		component: SpellsComponent,
 		data:{ name: "spells", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			articleList: SpellResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/spells/:campaign/:name`,
 		component: SpellsComponent,
 		data:{ name: "spell", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			articleList: SpellResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessions/:campaign`,
 		component: SessionsComponent,
 		data:{ name: "sessions", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			articleList: SessionResolver,
+		}
 	},
 
 	//Search Routes
@@ -503,7 +630,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/search/:campaign/:searchString`,
 		component: SearchComponent,
 		data:{ name: "campaignSearch", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			searchResults: SearchResolver,
+		}
 	},
 ];
 

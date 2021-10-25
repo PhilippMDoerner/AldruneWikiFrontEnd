@@ -50,41 +50,18 @@ export class QuoteOverviewComponent extends ArticleListMixin implements OnInit, 
       globalUrlParams,
       tokenService
     );
-    console.log(this);
-  }
-  
-  async onArticleRouteChange(campaign: CampaignOverview, params: Params): Promise<void>{
-    super.onArticleRouteChange(campaign, params);
   }
 
+  ngOnInit(): void{
+    this.character = this.route.snapshot.data["character"];
+    super.ngOnInit();
+
+    this.articles = this.articles.sort(this.sortQuotesBySession);
+  }
 
   /**This is called in "onArticleLoadFinished", by that time both character and quotes will have been loaded */
   updateDynamicVariables(campaign: CampaignOverview, articles: any[], params: Params): void{//articles is Quote[] but Quotes aren't ArticleObjects...yet
     this.characterUrl = this.routingService.getRoutePath('character', {name: this.character.name, campaign: campaign.name});
-  }
-
-  async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-    const campaignName: string = campaign.name;
-    if(campaignName == null) return;
-
-    const characterName: string = params.name;
-
-    this.character = await this.characterService.readByParam(campaignName, {name: characterName}).toPromise();
-
-    this.quoteService.getAllCharacterQuotes(campaign.name, characterName)
-      .pipe(
-        first(),
-        map((quotes: Quote[]) => {
-          quotes.sort(this.sortQuotesBySession);
-          return quotes;
-        })
-      )
-      .subscribe((quotes: any[]) => {
-        this.articles = quotes;
-        this.onArticleLoadFinished(quotes);
-      },
-      error => this.routingService.routeToErrorPage(error)
-    );
   }
 
   sortQuotesBySession(quote1: Quote, quote2: Quote){
@@ -101,5 +78,4 @@ export class QuoteOverviewComponent extends ArticleListMixin implements OnInit, 
   onArticleDelete(index: number){
     this.articles.splice(index, 1);
   }
-
 }

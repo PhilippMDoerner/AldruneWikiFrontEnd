@@ -52,64 +52,25 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
     )
   }
 
-  updateDynamicVariables(campaign: CampaignOverview, articleData: MapObject, params: Params): void{
+  async ngOnInit(){
+    this.campaign = this.route.snapshot.data["campaign"];
+
+    const mapPageData: {mapData: MapObject, maps: OverviewItemObject[]} = this.route.snapshot.data["article"];
+    this.articleData = mapPageData.mapData;
+    this.maps =  mapPageData.maps;
+
+    this.updateDynamicVariables(this.campaign, this.articleData, null);
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articleData: ExtendedMap, params: Params): void{
     this.createMapUrl = this.routingService.getRoutePath('map-create', {campaign: campaign.name});
     this.homeUrl = this.routingService.getRoutePath('home1', {campaign: campaign.name});
     this.updateMapUrl = this.routingService.getRoutePath("map-update", {campaign:campaign.name, name: articleData?.name});
   }
 
-  async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-    const hasYetToLoadMapsForOverview = this.maps == null;
-    if(!hasYetToLoadMapsForOverview) return;
-
-    this.articleService.campaignList(this.campaign.name)
-      .pipe(first())
-      .subscribe(
-        async (campaignMaps: OverviewItemObject[]) => {
-          this.maps = campaignMaps;
-          await super.loadArticleData(campaign, params);
-
-          const articleHasLoaded: boolean = this.articleData != null;
-          if (!articleHasLoaded) this.updateDynamicVariables(campaign, null, params);
-        },
-        error => this.routingService.routeToErrorPage(error)
-      );
-  }
-
-  /** 
-   * Fetches the map name from the url. If there is no map name parameter, it tries to give back the default map configured
-   * for this campaign. If there is no default map, it tries to load the first map in the list of maps. If there are no maps,
-   * it returns null
-   */
-  getQueryParameter(params: Params): any {
-    const hasMaps: boolean = this.maps.length > 0;
-    if(!hasMaps) return null;
-
-    const mapParameters: {name: string} = super.getQueryParameter(params);
-
-    if (mapParameters.name == null) {
-      mapParameters.name = this.getSecondaryMapChoice();
-    }
-
-    return mapParameters;
-  }
-
-  getSecondaryMapChoice(): string{
-    if (this.maps.length === 0) return;
-
-    const default_map_name: string = this.campaign.default_map_details?.name;
-    const first_map_name: string = this.maps[0].name;
-
-    const campaignHasDefaultMap: boolean = default_map_name != null;
-    return campaignHasDefaultMap ? default_map_name : first_map_name;
-  }
-
   ngAfterViewInit(){
     super.ngAfterViewInit();
-
-    this.mapChoice.changes
-      .pipe(first())
-      .subscribe((components: QueryList<any>) => this.setInitialMapChoiceValue());
+    this.setInitialMapChoiceValue();
   }
 
   setInitialMapChoiceValue(): void{
@@ -137,8 +98,24 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
     throw `${mapName} is not a valid map name. There is no map with this name on the page!`;
   }
 
+  /**
+   * @description: Routes to a given map. This is being done using window.location.replace, NOT with routeToPath
+   * EXPLANATION: RouteToPath comes with an error. If you route and use resolvers, then somehow new data is being loaded
+   * and used in the JS side of things, but the HTML is not made to comply with that.
+   * This results in the leafletMapDiv still being there when the new leafletMap object is being created.
+   * The way leaflet works is, it associates a pre-existing HTML Element with the leafletMap object (under "_container").
+   * However, the HTML Element it finds is not empty, instead it is full of data of an already existing map.
+   * Leaflet proceeds to throw an error in that case, "map container is already initialized"
+   * The issue is, you can't just remove the map. If you remove the map when the page unloads, the leaflet map object 
+   * that gets created on the next page load gets associated with the HTML you just removed (WTF!?). At that point your displayed
+   * HTML is an empty map and your associated HTML is not in your DOM and only in RAM.
+   * 
+   * If you directly remove the HTMLElement you get something working, but somehow the leaflet map itself then starts behaving
+   * wonky, as if the center of the map had shifted 50% to the left.
+   */
   routeToMap(newMap: string){
-    this.routingService.routeToPath('map', {name: newMap, campaign: this.campaign.name});
+    const mapUrl = this.routingService.getRoutePath('map', {name: newMap, campaign: this.campaign.name});
+    window.location.replace(mapUrl);
   }
 
   onMapChange(event){
@@ -161,6 +138,16 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
       },
       error => this.warnings.showWarning(error)
     );
+  }
+
+  getSecondaryMapChoice(): string{
+    if (this.maps.length === 0) return;
+
+    const campaignDefaultMapName: string = this.campaign.default_map_details?.name;
+    if(campaignDefaultMapName != null) return campaignDefaultMapName
+
+    const firstMapName: string = this.maps[0].name;
+    return firstMapName;
   }
 
 }

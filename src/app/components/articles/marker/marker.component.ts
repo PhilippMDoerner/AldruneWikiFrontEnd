@@ -44,14 +44,6 @@ export class MarkerComponent extends ArticleMixin implements OnInit {
     )
    }
 
-  getQueryParameter(params: Params): any{
-    const parentLocationName: string = params['parent_location_name'];
-    const locationName: string = params['location_name'];
-    const mapName: string = params['map_name'];
-
-    return {parentLocationName, locationName, mapName};
-  }
-
   updateDynamicVariables(campaign: CampaignOverview, articleData: MapMarkerObject, params: Params): void{
     this.locationUrl = this.routingService.getRoutePath('location', {
         parent_name: articleData.location_details.parent_location_name, 

@@ -57,16 +57,18 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
      *      --> loadArticleData
      */
     ngOnInit(): void{
-        this.globalUrlParams.getCampaigns()
-            .pipe(
-                filter((campaigns: CampaignOverview[]) => campaigns != null),
-                first()
-            )
-            .subscribe((_) => {
-                this.globalParamSubscription = this.globalUrlParams.getCurrentCampaign()
-                    .pipe(filter(campaign => campaign != null))
-                    .subscribe((campaign: CampaignOverview) => this.afterBackgroundDataLoaded(campaign));
-            });
+        this.campaign = this.route.snapshot.data["campaign"];
+
+        const articles = this.route.snapshot.data["articleList"];
+        const sortedArticles = articles.sort((article1, article2) => {
+            return article1[this.articlesSortProperty] < article2[this.articlesSortProperty] ? -1 : 1;
+        });
+        const isReverseSort: boolean = this.articlesSortProperty.startsWith("-");
+        this.articles = isReverseSort ? sortedArticles.reverse() : sortedArticles;
+
+        this.showArticleArray = this.articles.map(article => true);
+
+        this.updateDynamicVariables(this.campaign, articles, this.route.snapshot.params);
     }
     
 
@@ -100,74 +102,6 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
         return article.cardData.title;
     }
 
-    /**
-     * @description Fired after it has been assured that campaignoverview set has been loaded. "this.campaign" is set within this callback
-     * as is the loading of article data. If you wish to work with campaign data, do it after this callback.
-     */
-    async afterBackgroundDataLoaded(campaign: CampaignOverview): Promise<void>{
-        this.campaign = campaign;
-
-        const parameterSubcsriptionNeedsToBeCreated = this.parameterSubscription == null;
-        if(!parameterSubcsriptionNeedsToBeCreated) return;
-        
-        this.parameterSubscription = this.route.params
-            .subscribe((params: Params) => this.onArticleRouteChange(this.campaign, params));
-    }
-
-    async onArticleRouteChange(campaign: CampaignOverview, params: Params){
-        if(this.isLoadingArticles) return;
-
-        this.isLoadingArticles = true;
-
-        try{
-            await this.loadArticleData(campaign, params);
-        } catch(error) {
-            this.routingService.routeToErrorPage(error);
-        } finally{
-            this.isLoadingArticles = false;
-        }
-    }
-
-    /**
-     * @description loads the data for the current article. Is fired either when the route changes
-     */
-    async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-        const campaignName: string = campaign.name;
-        if(campaignName == null) return;
-
-        this.articleService.campaignList(campaignName)
-            .pipe(
-                first(),
-                tap((articles: ArticleObject[]) => this.showArticleArray = articles.map(article => true)),
-                map((articles: ArticleObject[]) => {
-                    const isReverseSort: boolean = this.articlesSortProperty.startsWith("-");
-
-                    const articleSortProperty: string = isReverseSort ? this.articlesSortProperty.slice(1) : this.articlesSortProperty;
-                    
-                    const sortedArticles: ArticleObject[] = articles.sort((article1, article2) => {
-                        return article1[articleSortProperty] < article2[articleSortProperty] ? -1 : 1;
-                    });
-
-
-                    return isReverseSort ? sortedArticles.reverse() : sortedArticles;
-                })
-            )
-            .subscribe(
-                (articles: ArticleObject[]) => {
-                    this.articles = articles;
-                    this.onArticleLoadFinished(articles);
-                },
-                error => this.routingService.routeToErrorPage(error)
-            );
-    }
-
-    /**
-     * @description Executes after the article data has been loaded, but not been assigned yet to this.articleData
-     * this.campaigns will already be available.
-     */
-    onArticleLoadFinished(articles: ArticleObject[]): void{
-        this.updateDynamicVariables(this.campaign, articles, this.route.snapshot.params);
-    }
 
     /** This is purely a hook to be overwritten to set static urls and other variables*/
     updateDynamicVariables(campaign: CampaignOverview, articles: ArticleObject[], params: Params): void{}

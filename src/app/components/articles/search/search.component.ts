@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { Article, OverviewArticleObject } from 'src/app/models/recentlyUpdatedArticle';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
@@ -13,7 +13,7 @@ import { RoutingService } from 'src/app/services/routing.service';
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements OnInit, OnDestroy {
+export class SearchComponent implements OnInit {
   //URLs
   homeUrl: string;
 
@@ -21,37 +21,25 @@ export class SearchComponent implements OnInit, OnDestroy {
   searchString: string;
   emptySearchSubtitle: string;
   filterOptions: string[] = [];
-  campaign: string;
+  campaign: CampaignOverview;
 
   constants: any = Constants;
 
-  parameter_subscription: Subscription;
-
   constructor(
-    private articleService: RecentlyUpdatedService,
     private route: ActivatedRoute,
-    private router: Router,  
     public routingService: RoutingService,
-    private globalUrlParams: GlobalUrlParamsService,
   ) { }
 
 
-  ngOnInit(): void {  
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      this.searchString = params['searchString'];
-      this.campaign = params.campaign;
+  ngOnInit(): void { 
+    this.campaign = this.route.snapshot.data["campaign"];
+    this.searchString = this.route.snapshot.params.searchString;
 
-      this.articleService.getCampaignSearchArticle(this.campaign, this.searchString)
-        .pipe(first())
-        .subscribe(
-          (response: any) => {
-            this.articles = response.articles;
-            this.emptySearchSubtitle = response.empty_response;
-            this.onAfterArticleLoadFinished(params.campaign, response.articles, params);
-          },
-          error => this.routingService.routeToErrorPage(error)
-        );      
-    });
+    const searchData = this.route.snapshot.data["searchResults"];
+    this.articles = searchData.articles;
+    this.emptySearchSubtitle = searchData.empty_response;
+
+    this.onAfterArticleLoadFinished(this.campaign.name, searchData.articles, null);
   }
 
   onAfterArticleLoadFinished(campaignName: string, articles: OverviewArticleObject[], params: Params){    
@@ -69,9 +57,4 @@ export class SearchComponent implements OnInit, OnDestroy {
   hasActiveFilter(): boolean{
     return this.filterOptions.length > 0;
   }
-
-  ngOnDestroy(){
-    if (this.parameter_subscription) this.parameter_subscription.unsubscribe();
-  }
-
 }

@@ -1,6 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
@@ -41,30 +40,10 @@ export class SessionAudioOverviewComponent extends PermissionUtilityFunctionMixi
   }
 
   ngOnInit(): void {
-    this.globalUrlParams.getCurrentCampaign()
-      .pipe(filter(campaign => campaign != null))
-      .subscribe(
-        (campaign: CampaignOverview) => {
-          this.campaign = campaign;
-          this.onAfterCampaignLoad(campaign);
-        }
-      )
-  }
+    this.campaign = this.route.snapshot.data["campaign"];
+    this.sessionAudioFiles = this.route.snapshot.data["overviewList"];
 
-  onAfterCampaignLoad(campaign: CampaignOverview): void{
-    this.overviewService.getCampaignOverviewItems(campaign.name, OverviewType.Sessionaudio)
-      .pipe(first())
-      .subscribe(
-        (sessionAudioFiles: OverviewItem[]) => {
-          this.sessionAudioFiles = sessionAudioFiles;
-          this.onAfterItemsLoaded(campaign, sessionAudioFiles);
-        },
-        error => this.routingService.routeToErrorPage(error)
-      );      
-  }
-
-  onAfterItemsLoaded(campaign: CampaignOverview, listItems: OverviewItem[]): void{
-    this.updateDynamicVariables(campaign, listItems)
+    this.updateDynamicVariables(this.campaign, this.sessionAudioFiles);
   }
 
   updateDynamicVariables(campaign: CampaignOverview, listItems: OverviewItem[]): void{

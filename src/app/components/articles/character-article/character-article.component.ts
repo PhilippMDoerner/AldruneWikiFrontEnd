@@ -58,7 +58,7 @@ export class CharacterArticleComponent extends ArticleMixin implements OnInit, O
       this.updateRouteLinks(campaign, articleData, params);
 
       this.playerClassString = this.createPlayerClassString(articleData);
-    }
+  }
 
   updateRouteLinks(campaign: CampaignOverview, articleData: CharacterObject, params: Params): void{
     this.characterOverviewUrl = this.routingService.getRoutePath('character-overview', {campaign: campaign.name});

@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
@@ -26,13 +27,12 @@ export class Home2Component implements OnInit, AfterViewInit, OnDestroy {
 
   constructor(
     private routingService: RoutingService,
-    private globalUrlParams: GlobalUrlParamsService
+    private globalUrlParams: GlobalUrlParamsService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-    this.campaignSubscription = this.globalUrlParams.getCurrentCampaign().subscribe(
-      (campaign: CampaignOverview) => this.campaignData = campaign
-    );
+    this.campaignData = this.route.snapshot.data["campaign"];
   }
 
   ngAfterViewInit(): void{

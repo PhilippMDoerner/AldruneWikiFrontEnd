@@ -50,17 +50,13 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
      *      --> onArticleRouteChange - Called whenever the route changes. 
      *      --> loadArticleData
      */
+
     ngOnInit(): void{
-        this.globalUrlParams.getCampaigns()
-            .pipe(
-                filter((campaigns: CampaignOverview[]) => campaigns != null),
-                first()
-            )
-            .subscribe((_) => {
-                this.globalParamSubscription = this.globalUrlParams.getCurrentCampaign()
-                    .pipe(filter(campaign => campaign != null))
-                    .subscribe((campaign: CampaignOverview) => this.afterBackgroundDataLoaded(campaign));
-            });
+        this.campaign = this.route.snapshot.data["campaign"];
+        this.articleData = this.route.snapshot.data["article"];
+
+        this.updateDynamicVariables(this.campaign, this.articleData, null);
+        this.updateOnDeleteRouteParameters(this.campaign, this.route.snapshot.params);
     }
 
     ngAfterViewInit(): void{
@@ -72,70 +68,12 @@ export class ArticleMixin extends PermissionUtilityFunctionMixin implements OnIn
     
     onInitAnimationEnd(): void{}
 
-    /**
-     * @description Fired after it has been assured that campaignoverview set has been loaded. "this.campaign" is set within this callback
-     * as is the loading of article data. If you wish to work with campaign data, do it after this callback.
-     */
-    async afterBackgroundDataLoaded(campaign: CampaignOverview): Promise<void>{
-        this.campaign = campaign;
-
-        const parameterSubcsriptionNeedsToBeCreated = this.parameter_subscription == null;
-        if(!parameterSubcsriptionNeedsToBeCreated) return;
-        
-        this.parameter_subscription = this.route.params
-            .subscribe((params: Params) => this.onArticleRouteChange(this.campaign, params));
-    }
-
-    async onArticleRouteChange(campaign: CampaignOverview, params: Params){
-        if(this.isLoadingArticleData) return;
-
-        this.updateOnDeleteRouteParameters(campaign, params);
-        this.isLoadingArticleData = true;
-
-        try{
-            await this.loadArticleData(campaign, params);
-        } catch(error) {
-            this.routingService.routeToErrorPage(error);
-        } finally{
-            this.isLoadingArticleData = false;
-        }
-    }
-
     /** This is purely a hook to be overwritten to set static urls */
     updateDynamicVariables(campaign: CampaignOverview, articleData: ArticleObject, params: Params){}
-
-    /**
-     * @description loads the data for the current article. Is fired either when the route changes
-     */
-    async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-        const campaignName: string = campaign.name;
-        if(campaignName == null) return;
-
-        const queryParameter = this.getQueryParameter(params);
-        if(queryParameter == null) return;
-
-        this.articleService.readByParam(campaignName, queryParameter)
-            .pipe(first())
-            .subscribe((articleData: ArticleObject) => this.onArticleLoadFinished(articleData, params));
-    }
-
-    getQueryParameter(params: Params){
-        return {name: params[this.queryParameterName]};
-    }
 
     updateOnDeleteRouteParameters(campaign: CampaignOverview, params: Params): void{
         this.deleteRoute.params.campaign = campaign.name;
     }
-
-    /**
-     * @description Executes after the article data has been loaded, but not been assigned yet to this.articleData
-     * this.campaigns will already be available.
-     */
-    onArticleLoadFinished(articleData: ArticleObject, params: Params): void{
-        this.articleData = articleData;
-        this.updateDynamicVariables(this.campaign, articleData, params);
-    }
-
 
     onDescriptionUpdate(updatedDescription: string){
         const descriptionPatch = {description: updatedDescription, update_datetime: this.articleData.update_datetime};

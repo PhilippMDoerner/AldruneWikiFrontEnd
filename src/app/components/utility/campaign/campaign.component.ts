@@ -110,17 +110,15 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
     );
   }
 
-  updateDynamicVariables(campaign: CampaignOverview, articleData: CampaignObject, params: Params){
-    this.homeUrl = this.routingService.getRoutePath('home1', {campaign: articleData.name});
+  ngOnInit(){
+    super.ngOnInit();
+    
+    this.campaignStatistics = this.route.snapshot.data["campaignStatistics"];
+    this.updateDynamicVariables(this.campaign, this.articleData, null);
   }
 
-  async afterBackgroundDataLoaded(campaign: CampaignOverview): Promise<void>{
-    super.afterBackgroundDataLoaded(campaign);
-
-    this.campaignService.statistics(campaign.name).pipe(first()).subscribe(
-      (statistics: WikiStatistics) => this.campaignStatistics = statistics,
-      error => this.warnings.showWarning(error)
-    );
+  updateDynamicVariables(campaign: CampaignOverview, articleData: CampaignObject, params: Params){
+    this.homeUrl = this.routingService.getRoutePath('home1', {campaign: articleData.name});
   }
 
   toggleGuestAddState(): void{

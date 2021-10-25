@@ -1,14 +1,12 @@
 import { Component, ContentChild, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subject, Subscription } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
-import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
+import { SessionAudioObject } from 'src/app/models/sessionaudio';
 import { Timestamp, TimestampObject } from 'src/app/models/timestamp';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
-import { SessionAudioTimestampService } from 'src/app/services/session-audio-timestamp.service';
 import { SessionAudioService } from 'src/app/services/session-audio.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -55,7 +53,6 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
     route: ActivatedRoute,
     private router: Router,
     sessionAudioService: SessionAudioService,
-    private timestampService: SessionAudioTimestampService,
     warnings: WarningsService,  
     routingService: RoutingService,
     globalUrlParams: GlobalUrlParamsService,
@@ -75,6 +72,8 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
     this.create_timestamp_event_subscription = this.createTimestampEventSubject.subscribe(
       (timestampTime: number) => this.toggleTimestampCreateState()
     );
+
+    this.timestamps = this.route.snapshot.data["timestamps"];
   }
 
   ngAfterViewInit(): void{
@@ -84,25 +83,21 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
 
   updateDynamicVariables(campaign: CampaignOverview, articleData: SessionAudioObject, params: Params){
     this.sessionAudioOverviewUrl = this.routingService.getRoutePath('sessionaudio-overview', {campaign: campaign.name});
-  }
 
-  onArticleLoadFinished(sessionAudio: SessionAudioObject, params: Params){
-    super.onArticleLoadFinished(sessionAudio, params);
-
-    const priorSessionAudioData: {isMainSessionInt: number, sessionNumber: number} = sessionAudio.sessionAudioNeighbours.priorSessionAudio;
+    const priorSessionAudioData: {isMainSessionInt: number, sessionNumber: number} = articleData.sessionAudioNeighbours.priorSessionAudio;
     this.priorSessionAudioUrl = this.createSessionAudioUrl(priorSessionAudioData);
 
-    const nextSessionAudioData: {isMainSessionInt: number, sessionNumber: number} = sessionAudio.sessionAudioNeighbours.nextSessionAudio;
+    const nextSessionAudioData: {isMainSessionInt: number, sessionNumber: number} = articleData.sessionAudioNeighbours.nextSessionAudio;
     this.nextSessionAudioUrl = this.createSessionAudioUrl(nextSessionAudioData);
   }
 
   createSessionAudioUrl(sessionAudioData: {isMainSessionInt: number, sessionNumber: number}): string{
-    if (
-      sessionAudioData == null 
-      || sessionAudioData.isMainSessionInt == null 
-      || sessionAudioData.sessionNumber == null
-    ){
+    if (sessionAudioData == null){
       return null;
+    }
+    
+    if(sessionAudioData.isMainSessionInt == null || sessionAudioData.sessionNumber == null){
+      throw new Error(`Invalid URL Building exception. Trying to build a URL with incomplete parameters ${sessionAudioData}`);
     }
 
     return this.routingService.getRoutePath('sessionaudio', {
@@ -112,39 +107,9 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
     });
   }
 
-  getQueryParameter(params: Params): any{
-    const isMainSessionInt: number = params.isMainSession;
-    const sessionNumber: number = params.sessionNumber;
-    return {isMainSession: isMainSessionInt, sessionNumber};
-  }
-
-  /**  Added loading timestamp data to normal article data being loaded */
-  async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-    super.loadArticleData(campaign, params);
-
-    this.loadSessionAudioTimestamps(campaign, params);
-  }
-
-  async loadSessionAudioTimestamps(campaign: CampaignOverview, params: Params): Promise<void>{
-    const isMainSessionInt: number = params.isMainSession;
-    const sessionNumber: number = params.sessionNumber;
-
-    this.timestampService.getTimestamps(campaign.name, isMainSessionInt, sessionNumber)
-      .pipe(first())
-      .subscribe(
-        (timestamps: TimestampObject[]) => this.timestamps = timestamps,
-        error => this.routingService.routeToErrorPage(error)
-      ); 
-  }
-
-  routeToSessionAudio({isMainSessionInt, sessionNumber}){
+  routeToSessionAudio(sessionAudioData: {isMainSessionInt: number, sessionNumber: number}){
     //Only needed because the vime player doesn't properly trigger events for src changes
-    const sessionAudioUrl: string = this.routingService.getRoutePath('sessionaudio', {
-        isMainSession: isMainSessionInt, 
-        sessionNumber: sessionNumber,
-        campaign: this.campaign
-      }
-    );
+    const sessionAudioUrl: string = this.createSessionAudioUrl(sessionAudioData);
     this.router.navigateByUrl(sessionAudioUrl);
     this.router.routeReuseStrategy.shouldReuseRoute = function () { return false; };
   }

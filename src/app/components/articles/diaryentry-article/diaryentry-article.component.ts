@@ -52,18 +52,14 @@ export class DiaryentryArticleComponent extends ArticleMixin {
     return {isMainSession, sessionNumber, authorName};
   }
 
-  onArticleLoadFinished(diaryentry: DiaryEntryObject, params: Params): void{
-    super.onArticleLoadFinished(diaryentry, params);
-
-    const priorDiaryentryStub = diaryentry.adjacent_diaryentries.prior_diaryentry;
-    this.priorDiaryentryUrl = this.createDiaryentryURL(priorDiaryentryStub);
-    
-    const nextDiaryentryStub = diaryentry.adjacent_diaryentries.next_diaryentry;
-    this.nextDiaryentryUrl = this.createDiaryentryURL(nextDiaryentryStub);
-  }
-
   updateDynamicVariables(campaign: CampaignOverview, articleData: DiaryEntryObject, params: Params): void{
     this.diaryentryOverviewUrl = this.routingService.getRoutePath('diaryentry-overview', {campaign: campaign.name});
+
+    const priorDiaryentryStub = articleData.adjacent_diaryentries.prior_diaryentry;
+    this.priorDiaryentryUrl = this.createDiaryentryURL(priorDiaryentryStub);
+    
+    const nextDiaryentryStub = articleData.adjacent_diaryentries.next_diaryentry;
+    this.nextDiaryentryUrl = this.createDiaryentryURL(nextDiaryentryStub);
   }
 
   onDescriptionUpdate(){

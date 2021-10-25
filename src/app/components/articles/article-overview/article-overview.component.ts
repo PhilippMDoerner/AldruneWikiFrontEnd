@@ -17,7 +17,7 @@ import { CampaignOverview } from 'src/app/models/campaign';
   templateUrl: './article-overview.component.html',
   styleUrls: ['./article-overview.component.scss'],
 })
-export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy {
+export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
   //URLS
   homeUrl: string;
 
@@ -94,40 +94,15 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   }
 
   ngOnInit(): void {
-    this.paramSubscription = this.globalUrlParams.getCurrentCampaign()
-      .pipe(filter(campaign => campaign != null))
-      .subscribe(
-        (campaign: CampaignOverview) => {
-          this.campaign = campaign;
-          this.onAfterCampaignLoaded(campaign);
-        }
-      )
+    this.campaign = this.route.snapshot.data["campaign"];
 
-  }
-
-  onAfterCampaignLoaded(campaign: CampaignOverview){
+    const listItems: OverviewItemObject[] = this.route.snapshot.data["overviewList"];
     const configs = this.getOverviewConfigs();
+    const processingFunction = configs.processing;
+    const hasProcessingFunction = processingFunction != null;
+    this.listItems = hasProcessingFunction ? processingFunction(listItems) : listItems;
 
-    this.overviewService.getCampaignOverviewItems(campaign.name, configs.overviewTypeEnum)
-    .pipe(
-      first(),
-      map((listItems: OverviewItemObject[]) => {
-        const processingFunction = configs.processing;
-        const hasProcessingFunction = processingFunction != null;
-        return hasProcessingFunction ? processingFunction(listItems) : listItems;
-      })
-    )
-    .subscribe(
-      (listItems: OverviewItemObject[]) => {
-        this.listItems = listItems;
-        this.onAfterItemsLoaded(campaign, listItems);
-      }, 
-      error => this.routingService.routeToErrorPage(error)
-    );   
-  }
-
-  onAfterItemsLoaded(campaign: CampaignOverview, listItems: OverviewItemObject[]){
-    this.setRouterLinks(campaign, listItems)
+    this.setRouterLinks(this.campaign, this.listItems);
   }
 
   setRouterLinks(campaign: CampaignOverview, listItems: OverviewItemObject[]): void{
@@ -250,7 +225,5 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     return overlengthString.slice(padCount*-1);
   }
 
-  ngOnDestroy(): void{
-    if (this.paramSubscription) this.paramSubscription.unsubscribe();
-  }
+
 }

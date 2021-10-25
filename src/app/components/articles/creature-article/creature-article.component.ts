@@ -40,7 +40,7 @@ export class CreatureArticleComponent extends ArticleMixin implements OnInit {
       tokenService,
     )
   }
-
+  
   updateDynamicVariables(campaign: CampaignOverview, articleData: CreatureObject, params: Params){
     this.creatureOverviewUrl = this.routingService.getRoutePath('creature-overview', {campaign: campaign.name});
   }

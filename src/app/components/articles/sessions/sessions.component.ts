@@ -48,35 +48,6 @@ export class SessionsComponent extends ArticleListMixin implements OnInit, OnDes
     this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaign.name});
   }
 
-  async loadArticleData(campaign: CampaignOverview, params: Params): Promise<void>{
-    const campaignName: string = campaign.name;
-    if(campaignName == null) return;
-
-    this.articleService.campaignDetailList(campaignName)
-        .pipe(
-            first(),
-            tap((articles: SessionObject[]) => this.showArticleArray = articles.map(article => true)),
-            map((articles: SessionObject[]) => {
-                const isReverseSort: boolean = this.articlesSortProperty.startsWith("-");
-
-                const articleSortProperty: string = isReverseSort ? this.articlesSortProperty.slice(1) : this.articlesSortProperty;
-                
-                const sortedArticles: SessionObject[] = articles.sort((article1, article2) => {
-                    return article1[articleSortProperty] < article2[articleSortProperty] ? -1 : 1;
-                });
-
-                return isReverseSort ? sortedArticles.reverse() : sortedArticles;
-            })
-        )
-        .subscribe(
-            (articles: any[]) => {
-                this.articles = articles;
-                this.onArticleLoadFinished(articles);
-            },
-            error => this.routingService.routeToErrorPage(error)
-        );
-  }
-
   addArticle(): void{
     const newArticle: any = new SessionObject();
     newArticle.name = this.articleStarterTitle;
