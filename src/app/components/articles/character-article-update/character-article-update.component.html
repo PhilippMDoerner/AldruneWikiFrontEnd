@@ -4,7 +4,7 @@
         <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
             <app-edit-toggle 
             [isInUpdateState]=true 
-            [link]="routingService.getRoutePath('character', {name: userModel.name, campaign: campaign})"
+            [link]="updateCancelUrl"
             ></app-edit-toggle>
 
             <h2 class="text-center">
@@ -47,17 +47,13 @@
         (updateSubmit)="onSubmit()"
         (cancel)="onCancel()"
         ></app-compare-form-container>
-
-
     </article>
-<!-- Spinner while loading -->
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
 
 <ng-template #createState>
     <app-edit-toggle 
     [isInUpdateState]=true 
-    [link]="routingService.getRoutePath('character-overview', {campaign: campaign})"
+    [link]="creationCancelUrl"
     ></app-edit-toggle>
 
     <h2 class="text-center">

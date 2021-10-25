@@ -43,9 +43,9 @@ import { CampaignComponent } from './components/utility/campaign/campaign.compon
 import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
 import { BaseNamedRoute, AdminRoute, CampaignRoute, GeneralRoute } from './app.routing-models';
 import { SessionsComponent } from './components/articles/sessions/sessions.component';
-import { CampaignDetailResolver, CampaignResolver, CampaignStatisticsResolver } from './utils/resolvers/campaign-resolver';
-import { CreatureResolver } from './utils/resolvers/creature-resolver';
-import { CharacterResolver } from './utils/resolvers/character-resolver';
+import { CampaignDetailResolver, CampaignResolver, CampaignStatisticsResolver, CampaignUpdateResolver } from './utils/resolvers/campaign-resolver';
+import { CreatureResolver, CreatureUpdateResolver } from './utils/resolvers/creature-resolver';
+import { CharacterResolver, CharacterUpdateResolver } from './utils/resolvers/character-resolver';
 import { LocationResolver } from './utils/resolvers/location-resolver';
 import { DiaryentryResolver } from './utils/resolvers/diaryentry-resolver';
 import { ItemResolver } from './utils/resolvers/item-resolver';
@@ -193,7 +193,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign/update`, 
 		component: CampaignUpdateComponent, 
 		data:{ name: "campaign-update", requiredRole: CampaignRole.ADMIN}, 
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: CampaignUpdateResolver,
+		}
 	},
 
 	//Character Routes
@@ -211,7 +215,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/create`,
 		component: CharacterArticleUpdateComponent, 
 		data:{ name: "character-create", requiredRole: CampaignRole.MEMBER}, 
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: CharacterUpdateResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/:name`, 
@@ -226,8 +234,12 @@ const campaignRoutes: CampaignRoute[] = [
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/character/:campaign/:name/update`, 
 		component: CharacterArticleUpdateComponent, 
-		data:{ name: "character-update", requiredRole: CampaignRole.MEMBER}, 
-		canActivate: [CampaignGuardService]
+		data: { name: "character-update", requiredRole: CampaignRole.MEMBER}, 
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: CharacterUpdateResolver,
+		}
 	},
 
 	//Location Routes
@@ -331,7 +343,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/create`,
 		component: CreatureArticleUpdateComponent,
 		data:{ name: "creature-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: CreatureUpdateResolver
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/:name`,
@@ -347,7 +363,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/creature/:campaign/:name/update`,
 		component: CreatureArticleUpdateComponent,
 		data:{ name: "creature-update", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: CreatureUpdateResolver
+		}
 	},
 
 	// Organization Routes

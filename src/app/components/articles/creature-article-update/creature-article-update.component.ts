@@ -26,8 +26,8 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
   userModel: Creature;
   userModelClass = CreatureObject;
   
-  updateCancelRoute = {routeName: "creature", params: {name: null, campaign: this.campaign}};
-  creationCancelRoute = {routeName: "creature-overview", params: {campaign: this.campaign}};
+  updateCancelRoute = {routeName: "creature", params: {name: null, campaign: this.campaign.name}};
+  creationCancelRoute = {routeName: "creature-overview", params: {campaign: this.campaign.name}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),

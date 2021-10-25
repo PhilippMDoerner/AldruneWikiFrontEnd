@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 //models and constants
 import { ArticleFormMixin } from "src/app/utils/functions/articleFormMixin"
@@ -25,13 +25,14 @@ import { TokenService } from 'src/app/services/token.service';
 })
 
 export class CharacterArticleUpdateComponent extends ArticleFormMixin {
+  //URLs
+  updateCancelUrl: string;
+  creationCancelUrl: string;
+
   //Defining ArticleFormMixin Properties
   serverModel: CharacterObject;
   userModel: CharacterObject;
   userModelClass = CharacterObject;
-
-  updateCancelRoute = {routeName: "character", params: {name: null, campaign: this.campaign}};
-  creationCancelRoute = {routeName: "character-overview", params: {campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericCheckbox({key: "player_character", label: "Player Character", defaultValue: false}),
@@ -40,8 +41,8 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
     this.formlyService.genericInput({key: "title", required: false}),
     this.formlyService.customStringSelect({key:"gender", label: "Sex", options: ["Other", "Female", "Male"]}),
     this.formlyService.genericInput({key: "race"}),
-    this.formlyService.genericSelect({key: "organization", overviewType: OverviewType.Organization, campaign: this.campaign, required: false}),
-    this.formlyService.genericSelect({key: "current_location", sortProp: "name_full", label: "Location", overviewType: OverviewType.Location, campaign: this.campaign, required: false}),
+    this.formlyService.genericSelect({key: "organization", overviewType: OverviewType.Organization, campaign: this.campaign.name, required: false}),
+    this.formlyService.genericSelect({key: "current_location", sortProp: "name_full", label: "Location", overviewType: OverviewType.Location, campaign: this.campaign.name, required: false}),
   ];
 
   //Custom Properties
@@ -72,6 +73,11 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
       route,
       tokenService
     ) 
+  }
+
+  updateRouterLinks(campaignName: string, userModel: CharacterObject, params: Params): void{
+    this.updateCancelUrl = this.routingService.getRoutePath("character", {campaign: campaignName, name: userModel.name});
+    this.creationCancelUrl = this.routingService.getRoutePath('character-overview', {campaign: campaignName});
   }
 
   toggleConnectionCreateState(){
