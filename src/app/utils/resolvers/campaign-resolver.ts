@@ -1,11 +1,12 @@
 import { Injectable } from "@angular/core";
-import { ActivatedRouteSnapshot, Params, Resolve, RouterStateSnapshot } from "@angular/router";
-import { Observable } from "rxjs";
+import { ActivatedRouteSnapshot, Params, Resolve, Router, RouterStateSnapshot } from "@angular/router";
+import { Observable, of } from "rxjs";
 import { filter, first } from "rxjs/operators";
+import { ArticleObject } from "src/app/models/base-models";
 import { CampaignObject, CampaignOverview } from "src/app/models/campaign";
 import { CampaignService } from "src/app/services/campaign.service";
 import { GlobalUrlParamsService } from "src/app/services/global-url-params.service";
-import { BaseArticleResolver } from "./base-resolvers";
+import { BaseArticleResolver, BaseArticleUpdateResolver } from "./base-resolvers";
 
 
 @Injectable({ providedIn: 'root' })
@@ -17,7 +18,7 @@ export class CampaignResolver implements Resolve<CampaignOverview> {
     async resolve(
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
-    ): Promise<any>{
+    ): Promise<CampaignOverview>{
         await this.waitForAllCampaignDataToLoad();
 
         const campaignName: string = route.params.campaign;
@@ -68,4 +69,36 @@ export class CampaignStatisticsResolver {
 
         return this.campaignService.statistics(campaignName);
     } 
+}
+
+@Injectable({ providedIn: 'root' })
+export class CampaignUpdateResolver extends BaseArticleUpdateResolver{
+    dataModelClass = CampaignObject;
+
+    constructor( 
+        private campaignService: CampaignService,
+        router: Router,
+        globalUrlParamsService: GlobalUrlParamsService,
+    ) {
+        super(campaignService, globalUrlParamsService);
+    }
+
+    async resolve(
+        route: ActivatedRouteSnapshot,
+        state: RouterStateSnapshot
+    ): Promise<any>{        
+        const campaign: CampaignOverview = await super.resolve(route, state);
+
+        const modelData = this.isUpdateRoute(state) ? this.fetchData(campaign, null) : this.createData(campaign, null);
+        return modelData;
+    }
+
+    async createData(campaign: CampaignOverview, queryParameters: any): Promise<ArticleObject>{
+        const dataModel: ArticleObject = new this.dataModelClass();
+        return dataModel;
+    }
+
+    fetchData(campaign: CampaignOverview, queryParameters: any): Promise<ArticleObject>{
+        return this.campaignService.readByParam(campaign.name).toPromise();
+    }
 }

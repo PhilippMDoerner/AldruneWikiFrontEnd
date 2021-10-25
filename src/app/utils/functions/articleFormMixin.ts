@@ -1,10 +1,10 @@
-import { Directive, OnDestroy, OnInit } from "@angular/core";
+import { Directive, OnInit } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
-import { Subscription } from "rxjs";
 import { first } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
 import { ApiObject, ArticleObject } from "src/app/models/base-models";
+import { CampaignObject } from "src/app/models/campaign";
 import { CampaignService } from "src/app/services/campaign.service";
 import { GenericObjectService } from "src/app/services/generic-object.service";
 import { GenericService } from "src/app/services/generic.service";
@@ -16,18 +16,17 @@ import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 
 //TODO: Move all this ngoninit and ngondestroy logic from all the update pages to this page
 @Directive()
-export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy{
+export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements OnInit{
     constants = Constants;
     formState: string;
 
-    campaign: string = this.route.snapshot.params.campaign;
+    campaign: CampaignObject = this.route.snapshot.data["campaign"];
 
     userModelClass: any;
     userModel: ArticleObject; //A model of article-data for the user to edit
     serverModel: any; //A model of article-data from the server if there are update conflicts with the userModel
 
     formlyFields: FormlyFieldConfig[];
-    parameterSubscription: Subscription;
 
     updateCancelRoute: { routeName: string, params: any } = {routeName: "", params: {}}; //Data to generate route to go to to if update of article is cancelled
     creationCancelRoute: { routeName: string, params: any } = {routeName: "", params: {}}; //Data to generate route to go to if creation of article is cancelled
@@ -39,7 +38,7 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
         public articleService: GenericService | GenericObjectService,
         public campaignService: CampaignService,
         public globalUrlParam: GlobalUrlParamsService,
-        route: ActivatedRoute,
+        public route: ActivatedRoute,
         tokenService: TokenService,
       ) { 
         super(tokenService, route);
@@ -48,17 +47,11 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
       }
 
     ngOnInit(): void{
-        this.parameterSubscription = this.route.params.subscribe(params => {
-            const queryParameters: object = this.getQueryParameters(params);        
-            if (this.isInUpdateState()){
-                this.updateCancelDeleteRoutes(params);
+        this.userModel = this.route.snapshot.data["modelData"];
 
-                this.fetchUserModel(queryParameters);
-        
-            } else if (this.isInCreateState()) {
-                this.createUserModel(queryParameters);
-            }
-        });
+        const params: Params = this.route.snapshot.params;
+        this.updateCancelDeleteRoutes(params);
+        this.updateRouterLinks(this.campaign.name, this.userModel, params);
     }
 
     getQueryParameters(params: Params): object{
@@ -71,34 +64,6 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
     updateCancelDeleteRoutes(params: Params): void{
         //TODO: Throw an error if updatecancelroute / creationcancelroute are not properly created by the child class
         this.updateCancelRoute.params.name = params.name;
-    }
-
-    fetchUserModel(queryParameters: any): void{
-        if (queryParameters.name == null) throw `Invalid query Parameters exception. You're trying to fetch the user model
-        of an article model without using the default query parameter "name", instead resorting to ${queryParameters}. 
-        Please use "name" or overwrite "fetchUserModel"`;
-
-        this.articleService.readByParam(this.campaign, queryParameters).pipe(first()).subscribe(
-            (article: ArticleObject) =>  {
-                this.userModel = article;
-                this.updateRouterLinks(this.campaign, this.userModel, this.route.snapshot.params);
-            }, 
-            error => this.routingService.routeToErrorPage(error)
-        );
-    }
-    
-    createUserModel(queryParameters: any): void{
-        //if (this.userModelClass == null) throw (`Undefined user model class property. ArticleFormMixin needs a defined 
-        //class that this data belongs to to create a user model. This hasn't been defined on this component!`);
-        this.userModel = new this.userModelClass();
-        
-        this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
-            (campaignData: {name: String, pk: number}) => {
-                this.userModel.campaign = campaignData.pk;
-                this.updateRouterLinks(this.campaign, this.userModel, this.route.snapshot.params);
-            },
-            error => this.warnings.showWarning(error)
-        );
     }
 
     forceFieldRefresh(): void{
@@ -226,9 +191,5 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
             const {routeName, params} = context.creationCancelRoute;
             context.routingService.routeToPath(routeName, params);
         } 
-    }
-
-    ngOnDestroy(): void{
-        if(this.parameterSubscription) this.parameterSubscription.unsubscribe();
     }
 }
