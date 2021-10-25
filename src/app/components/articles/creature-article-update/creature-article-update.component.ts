@@ -18,16 +18,13 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 })
 export class CreatureArticleUpdateComponent extends ArticleFormMixin implements OnInit {
   //URLs
-  creatureUrl: string;
-  creatureOverviewUrl: string;
+  updateCancelUrl: string;
+  creationCancelUrl: string;
 
   //Defining ArticleFormMixin Properties
   serverModel: CreatureObject;
   userModel: Creature;
   userModelClass = CreatureObject;
-  
-  updateCancelRoute = {routeName: "creature", params: {name: null, campaign: this.campaign.name}};
-  creationCancelRoute = {routeName: "creature-overview", params: {campaign: this.campaign.name}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
@@ -58,7 +55,7 @@ export class CreatureArticleUpdateComponent extends ArticleFormMixin implements 
   }
 
   updateRouterLinks(campaignName: string, userModel: CreatureObject, params: Params): void{
-    this.creatureUrl = this.routingService.getRoutePath('creature', {name: userModel?.name, campaign: campaignName});
-    this.creatureOverviewUrl = this.routingService.getRoutePath('creature-overview', {campaign: campaignName});
+    this.updateCancelUrl = this.routingService.getRoutePath('creature', {name: userModel?.name, campaign: campaignName});
+    this.creationCancelUrl = this.routingService.getRoutePath('creature-overview', {campaign: campaignName});
   }
 }

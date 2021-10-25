@@ -17,6 +17,10 @@ import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 //TODO: Move all this ngoninit and ngondestroy logic from all the update pages to this page
 @Directive()
 export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements OnInit{
+    //URLs
+    updateCancelUrl: string;
+    creationCancelUrl: string;
+
     constants = Constants;
     formState: string;
 
@@ -27,9 +31,6 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
     serverModel: any; //A model of article-data from the server if there are update conflicts with the userModel
 
     formlyFields: FormlyFieldConfig[];
-
-    updateCancelRoute: { routeName: string, params: any } = {routeName: "", params: {}}; //Data to generate route to go to to if update of article is cancelled
-    creationCancelRoute: { routeName: string, params: any } = {routeName: "", params: {}}; //Data to generate route to go to if creation of article is cancelled
 
     constructor(
         public router: Router,
@@ -50,7 +51,6 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
         this.userModel = this.route.snapshot.data["modelData"];
 
         const params: Params = this.route.snapshot.params;
-        this.updateCancelDeleteRoutes(params);
         this.updateRouterLinks(this.campaign.name, this.userModel, params);
     }
 
@@ -61,10 +61,6 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
     /** This function exists solely as a hook to be overwritten */
     updateRouterLinks(campaignName: string, userModel: ArticleObject, params: Params): void {}
 
-    updateCancelDeleteRoutes(params: Params): void{
-        //TODO: Throw an error if updatecancelroute / creationcancelroute are not properly created by the child class
-        this.updateCancelRoute.params.name = params.name;
-    }
 
     forceFieldRefresh(): void{
         this.userModel = {...this.userModel};
@@ -183,13 +179,12 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
     onCancel(context?: any){
         const isCalledFromOverwritingFunction = this.routingService == null;
         context = isCalledFromOverwritingFunction ? context : this;
+        const router: Router = context.router;
 
         if (context.isInUpdateState() || context.isInOutdatedUpdateState()){
-            const {routeName, params} = context.updateCancelRoute;
-            context.routingService.routeToPath(routeName, params);
+            router.navigateByUrl(this.updateCancelUrl);
         } else {
-            const {routeName, params} = context.creationCancelRoute;
-            context.routingService.routeToPath(routeName, params);
+            router.navigateByUrl(this.creationCancelUrl);
         } 
     }
 }
