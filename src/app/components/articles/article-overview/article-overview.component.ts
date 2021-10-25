@@ -83,12 +83,10 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   diaryentryOverview: string = "diaryentry";
 
   constructor(
-    private overviewService: OverviewService,
     private router: Router,  
     public routingService: RoutingService,
     route: ActivatedRoute,
     tokenService: TokenService,
-    private globalUrlParams: GlobalUrlParamsService,
   ) { 
     super(tokenService, route);
   }

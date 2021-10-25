@@ -28,8 +28,7 @@ export class OverviewResolver implements Resolve<OverviewItemObject[]> {
         const urlSplit: string[] = overviewUrl.split('/');
         const overviewTypeString: string = urlSplit[urlSplit.length - 2];
         const capitalizedOverviewTypeString: string = this.capitalize(overviewTypeString);
-        console.log(capitalizedOverviewTypeString);
-        console.log(OverviewType);
+
         return OverviewType[capitalizedOverviewTypeString];
     }
 
