@@ -18,7 +18,7 @@ export interface Location extends ArticleObject{
     sublocations?: Location[],
     marker_details?: [{map: string, map_icon: string}],
 
-    getAbsoluteRouterUrlForParentLocation(): string
+    getAbsoluteRouterUrlForParentLocation?(): string
 }
 
 export interface SubLocation{
@@ -73,7 +73,7 @@ export class LocationObject implements Location{
         // });
     }
 
-    getAbsoluteRouterUrlForParentLocation(): string{
+    getAbsoluteRouterUrlForParentLocation?(): string{
         if (!this.parent_location_details) throw "Can't generate URL for Parent-Location of Location object without parent_location_details";
         return `${Constants.wikiUrlFrontendPrefix}/location/${this.campaign_details.name}/${this.parent_location_details.parent_location}/${this.parent_location_details.name}`;
 
