@@ -50,17 +50,11 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
     private globalUrlParams: GlobalUrlParamsService,
   ) { }
 
-  ngOnInit(){
+  async ngOnInit(){
     this.formState = (this.session_pk_subject) ? Constants.updateState : Constants.createState;
 
-    this.parameterSubscription = this.globalUrlParams.getCurrentCampaign()
-      .pipe(filter(campaign => campaign != null))
-      .subscribe(
-      (campaign: CampaignOverview) => {
-        this.campaign = campaign;
-        this.onAfterCampaignLoad(campaign);
-      }
-    )
+    this.campaign = await this.globalUrlParams.getCurrentCampaign();
+    this.onAfterCampaignLoad(this.campaign);
   }
 
   onAfterCampaignLoad(campaign: CampaignOverview): void{

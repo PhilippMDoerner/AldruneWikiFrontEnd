@@ -51,15 +51,9 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     private tokenService: TokenService
   ) { }
 
-  ngOnInit(): void {
-    this.parameterSubscription = this.globalUrlParams.getCurrentCampaign()
-      .pipe(filter(campaign => campaign != null))
-      .subscribe(
-      (campaign: CampaignOverview) => {
-        this.campaign = campaign;
-        this.onAfterCampaignLoadFinished(campaign);
-      }
-    );
+  async ngOnInit(): Promise<void> {
+    this.campaign =  await this.globalUrlParams.getCurrentCampaign();
+    this.onAfterCampaignLoadFinished(this.campaign);
 
     const campaignRoles = this.tokenService.getCampaignMemberships();
     const rolesList = Object.keys(campaignRoles).map(campaignName => {return {campaignName, role: campaignRoles[campaignName]}});

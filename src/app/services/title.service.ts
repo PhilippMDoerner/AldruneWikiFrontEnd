@@ -1,3 +1,4 @@
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Params } from '@angular/router';
@@ -13,34 +14,31 @@ export class TitleService {
   ) { }
 
 
-  updatePageTitle(route: ActivatedRoute): void{
-    const newPageTitle: string = this.getPageTitle(route);
+  updatePageTitle(routeParams: Params, routeName: string): void{
+    const newPageTitle: string = this.createPageTitle(routeParams, routeName);
     this.titleService.setTitle(newPageTitle);
   }
 
-  private getPageTitle(route: ActivatedRoute): string{
-    const params: Params = route.snapshot.params;
+  private createPageTitle(routeParams: Params, routeName: string): string{
 
-    const campaignName: string = params.campaign;
+    const campaignName: string = routeParams.campaign;
     if(campaignName == null) return this.defaultTitle;
 
-    const articleName = this.getArticleName(route);
+    const articleName = this.getArticleName(routeParams, routeName);
 
     const nextPageTitle: string = `${campaignName} ${articleName}`;
     return this.capitalizeFirstLetters(nextPageTitle);
   }
 
-  private getArticleName(route: ActivatedRoute): string{
-    const params: Params = route.snapshot.params;
-    const routeName: string = route.snapshot.data.name;
+  private getArticleName(routeParams: Params, routeName: string): string{
+    const articleName: string = routeParams.name;
+    if(articleName != null) return articleName;
 
-    if(params.name != null) return params.name;
+    const isDiaryentryRoute: boolean = routeName.includes("diaryentry") && routeParams.sessionNumber;
+    if(isDiaryentryRoute) return `Diaryentry ${routeParams.sessionNumber}`;
 
-    const isDiaryentryRoute: boolean = routeName.includes("diaryentry") && params.sessionNumber;
-    if(isDiaryentryRoute) return `Diaryentry ${params.sessionNumber}`;
-
-    const isSessionAudioRoute: boolean = routeName.includes('sessionaudio') && params.sessionNumber;
-    if(isSessionAudioRoute) return `Recording ${params.sessionNumber}`;
+    const isSessionAudioRoute: boolean = routeName.includes('sessionaudio') && routeParams.sessionNumber;
+    if(isSessionAudioRoute) return `Recording ${routeParams.sessionNumber}`;
 
     return routeName
   }

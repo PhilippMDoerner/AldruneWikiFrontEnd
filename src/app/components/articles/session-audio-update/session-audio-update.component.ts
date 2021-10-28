@@ -29,14 +29,14 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
   serverModel: SessionAudio;
   userModelClass = SessionAudioObject;
 
-  updateCancelRoute = {routeName: "sessionaudio", params: {isMainSession: null, sessionNumber: null, campaign: this.campaign}};
-  creationCancelRoute = {routeName: "sessionaudio-overview", params: {campaign: this.campaign}};
+  updateCancelRoute = {routeName: "sessionaudio", params: {isMainSession: null, sessionNumber: null, campaign: this.campaign.name}};
+  creationCancelRoute = {routeName: "sessionaudio-overview", params: {campaign: this.campaign.name}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericDisableSelect({
       key: "session", 
       overviewType: OverviewType.Session, 
-      campaign: this.campaign, 
+      campaign: this.campaign.name, 
       wrappers: ["session-update-wrapper"],
       disabledExpression: (selectOption: SessionAudio) => {
         const isCurrentlySelectedOption =  selectOption.pk === this.userModel.session_details?.pk;
@@ -82,7 +82,7 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
   }
 
   fetchUserModel(queryParameters): void{
-    this.articleService.readByParam(this.campaign, queryParameters).pipe(first()).subscribe(
+    this.articleService.readByParam(this.campaign.name, queryParameters).pipe(first()).subscribe(
       (sessionaudio: SessionAudioObject) => this.userModel = sessionaudio,
       error => this.routingService.routeToErrorPage(error)
     );
@@ -157,8 +157,6 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
   }
 
   ngOnDestroy(){
-    ArticleFormMixin.prototype.ngOnDestroy();
-
     if (this.file_subscription) this.file_subscription.unsubscribe();
   }
 }

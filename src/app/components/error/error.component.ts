@@ -65,16 +65,14 @@ export class ErrorComponent implements OnInit, OnDestroy {
     public globalUrlParams: GlobalUrlParamsService,
   ) { }
 
-  ngOnInit():void {
+  async ngOnInit():Promise<void> {
     this.parameterSubscription = this.route.params.subscribe( params => {
       const errorStatusParam: number = params["errorStatus"];
       const isKnownErrorStatus = this.errorContents.hasOwnProperty(errorStatusParam);
       this.errorStatus = isKnownErrorStatus ? errorStatusParam : 404;
     });
 
-    this.campaignSubscription = this.globalUrlParams.getCurrentCampaign().subscribe(
-      (campaign: CampaignOverview) => this.campaign = campaign
-    );
+    this.campaign = await this.globalUrlParams.getCurrentCampaign();
   }
 
   ngOnDestroy(): void{

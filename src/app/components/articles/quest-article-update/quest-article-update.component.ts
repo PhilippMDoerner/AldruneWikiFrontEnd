@@ -42,7 +42,7 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
         required: true,
       }
     },
-    this.formlyService.genericSelect({key: "giver", label: "Quest Giver", overviewType: OverviewType.Character, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "giver", label: "Quest Giver", overviewType: OverviewType.Character, campaign: this.campaign.name}),
     { 
       key: "taker",
       type: "select",
@@ -50,11 +50,11 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
         label: "Quest Taker",
         labelProp: "name",
         valueProp: "pk",
-        options: this.questService.getQuestTakers(this.campaign),
+        options: this.questService.getQuestTakers(this.campaign.name),
       }
     },
-    this.formlyService.genericSelect({key: "start_session", label: "Start Session", overviewType: OverviewType.Session, campaign: this.campaign}),
-    this.formlyService.genericSelect({key: "end_session", label: "End Session", overviewType: OverviewType.Session, campaign: this.campaign, required: false}),
+    this.formlyService.genericSelect({key: "start_session", label: "Start Session", overviewType: OverviewType.Session, campaign: this.campaign.name}),
+    this.formlyService.genericSelect({key: "end_session", label: "End Session", overviewType: OverviewType.Session, campaign: this.campaign.name, required: false}),
     this.formlyService.genericInput({key: "abstract", placeholder: "Quest Summary...", required: false, maxLength: 65})
   ];
 

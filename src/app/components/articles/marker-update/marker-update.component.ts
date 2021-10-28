@@ -36,9 +36,9 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
     this.formlyService.genericInput({key: "longitude", isNumberInput: true}),
-    this.formlyService.genericSelect({key: "location", sortProp: "name_full", overviewType: OverviewType.Location, campaign: this.campaign}),
-    this.formlyService.genericSelect({key: "map", overviewType: OverviewType.Map, campaign: this.campaign}),
-    this.formlyService.genericSelect({key: 'type', label: "Marker Type", labelProp: "name", valueProp: "id", overviewType: OverviewType.MarkerTypeType, campaign: this.campaign}),
+    this.formlyService.genericSelect({key: "location", sortProp: "name_full", overviewType: OverviewType.Location, campaign: this.campaign.name}),
+    this.formlyService.genericSelect({key: "map", overviewType: OverviewType.Map, campaign: this.campaign.name}),
+    this.formlyService.genericSelect({key: 'type', label: "Marker Type", labelProp: "name", valueProp: "id", overviewType: OverviewType.MarkerTypeType, campaign: this.campaign.name}),
     this.formlyService.genericInput({key: "color", label: "Custom Color", required: false}),
     this.formlyService.genericInput({key: "icon", label: "Custom Icon", required: false}),
   ];
@@ -101,14 +101,14 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
   }
 
   fetchUserModel(queryParameters: any){
-    this.articleService.readByParam(this.campaign, queryParameters).pipe(first()).subscribe(
+    this.articleService.readByParam(this.campaign.name, queryParameters).pipe(first()).subscribe(
       (marker: MapMarkerObject) => this.userModel = marker,
       error => this.routingService.routeToErrorPage(error)
     );
   }
 
   createUserModel(queryParameters){
-    this.locationService.readByParam(this.campaign, queryParameters).pipe(first()).subscribe(
+    this.locationService.readByParam(this.campaign.name, queryParameters).pipe(first()).subscribe(
       (location: LocationObject) => {
         this.userModel = new MapMarkerObject();
         this.userModel.location = location.pk;

@@ -24,29 +24,23 @@ export class BackgroundImageComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit(): void {
-    this.urlParamSubscription = this.globalURLParamService.getCurrentCampaign()
+    this.urlParamSubscription = this.globalURLParamService.currentCampaign
       .pipe(filter((campaign: CampaignOverview) => this.currentCampaign?.name !== campaign?.name))
-      .subscribe((campaign: CampaignOverview) => this.updateCurrentCampaign(campaign));
+      .subscribe((campaign: CampaignOverview) => this.updateCurrentCampaignBackground(campaign));
   }
 
-  async updateCurrentCampaign(campaign: CampaignOverview): Promise<void>{
-    await this.fadeOutBackgroundImage();
+  async updateCurrentCampaignBackground(campaign: CampaignOverview): Promise<void>{
+    await this.animateBackgroundImage("fadeOut");
 
     this.currentCampaign = campaign;
 
-    await this.fadeInBackgroundImage();
+    await this.animateBackgroundImage("fadeIn");
   }
 
-  async fadeOutBackgroundImage(): Promise<any>{
+  async animateBackgroundImage(animation: string): Promise<any>{
     if (this.backgroundImage == null) return;
 
-    return animateElement(this.backgroundImage.nativeElement, 'fadeOut');
-  }
-
-  async fadeInBackgroundImage(): Promise<any>{
-    if (this.backgroundImage == null) return;
-
-    return animateElement(this.backgroundImage.nativeElement, 'fadeIn');
+    return animateElement(this.backgroundImage.nativeElement, animation);
   }
 
   ngOnDestroy(): void{
