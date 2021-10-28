@@ -78,37 +78,10 @@ export class BaseArticleUpdateResolver{
         const params: Params = route.params;
         const queryParameters: object = this.getQueryParameters(params); 
         
-        const campaign: CampaignOverview = await this.getCurrentCampaign(route, state);
+        const campaign: CampaignOverview = await this.globalUrlParamsService.getCurrentCampaign();
 
         const modelData: Promise<ArticleObject> = this.isUpdateRoute(state) ? this.fetchData(campaign, queryParameters) : this.createData(campaign, queryParameters);
         return modelData;
-    }
-
-    /** Copied from CampaignResolver */
-    async getCurrentCampaign(
-        route: ActivatedRouteSnapshot,
-        state: RouterStateSnapshot
-    ): Promise<CampaignOverview>{
-        await this.waitForAllCampaignDataToLoad();
-
-        const campaignName: string = route.params.campaign;
-        this.globalUrlParamsService.updateCurrentlySelectedCampaign(campaignName);
-
-        return this.globalUrlParamsService.getCurrentCampaign()
-            .pipe(filter(campaign => campaign != null), first()).toPromise();
-    }
-
-    /**
-     * @description Waits for the list of total campaigns available to the user to finish loading. This is necessary to 
-     * ensure there is a campaign that that can be retrieved via "getCurrentCampaign".
-     */
-    async waitForAllCampaignDataToLoad(){
-        await this.globalUrlParamsService.getCampaigns()
-            .pipe(
-                filter((campaigns: CampaignOverview[]) => campaigns != null),
-                first()
-            )
-            .toPromise();
     }
 
     isUpdateRoute(state: RouterStateSnapshot): boolean{
