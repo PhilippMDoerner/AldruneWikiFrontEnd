@@ -20,20 +20,14 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   styleUrls: ['./location-article-update.component.scss']
 })
 export class LocationArticleUpdateComponent extends ArticleFormMixin {
-  //URLs
-  locationOverviewUrl: string;
-
   //Defining ArticleFormMixin Properties
   serverModel: Location;
   userModel: LocationObject;
   userModelClass = LocationObject;
 
-  updateCancelRoute = {routeName: "location", params: {name: null, parent_name: null, campaign: this.campaign}};
-  creationCancelRoute = {routeName: "location-overview", params: {campaign: this.campaign}};//Only used when creating normally, not when creating item for a specific character
-  
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
-    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", overviewType: OverviewType.Location, sortProp: "name_full", campaign: this.campaign, required: false}),
+    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", overviewType: OverviewType.Location, sortProp: "name_full", campaign: this.campaign.name, required: false}),
   ];
   //TODO: Turn parent_location into disable select, a location shouldn't be able to select itself as parent location
   //Custom properties
@@ -62,61 +56,14 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
   }
 
   updateRouterLinks(campaignName: string, userModel: LocationObject, params: Params): void{
-    this.locationOverviewUrl = this.routingService.getRoutePath('location-overview', {campaign: campaignName});
+    this.updateCancelUrl = this.routingService.getRoutePath("location", {
+      name: userModel.name, 
+      parent_name: userModel.parent_location_details?.name, 
+      campaign: campaignName
+    });
+
+    this.creationCancelUrl = this.routingService.getRoutePath('location-overview', {campaign: campaignName});
   }
-
-  getQueryParameters(params: Params): object{
-    return {locationName: params.name, parentLocationName: params.parent_name};
-  }
-
-  updateCancelDeleteRoutes(params: Params): void{
-    const locationName: string = params.name;
-    const parentLocationName: string = params.parent_name;
-
-    this.updateCancelRoute.params.name = locationName;
-    this.updateCancelRoute.params.parent_name = parentLocationName;
-  }
-
-
-  fetchUserModel(queryParameters): void{
-    this.articleService.readByParam(this.campaign, queryParameters).pipe(first()).subscribe(
-      (location: LocationObject) => this.userModel = location,
-      error => this.routingService.routeToErrorPage(error)
-    );
-  }
-
-  
-  createUserModel(queryParameters: any): void{
-    this.userModel = new this.userModelClass();
-    this.userModel.parent_location = null;
-
-    this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
-      (campaignData: {name: String, pk: number}) => {
-        this.userModel.campaign = campaignData.pk;
-        this.updateRouterLinks(this.campaign, this.userModel, null);
-      },
-      error => this.warnings.showWarning(error)
-    );
-
-    //Aditional info to user model if this is a sublocation
-    if(this.isForAssociatedObjectCreation()){
-      this.articleService.readByParam(this.campaign, queryParameters).pipe(first()).subscribe(
-        (location: LocationObject) => {
-          this.userModel.parent_location = location.pk;
-          this.userModel.parent_location_details = {
-            pk: location.pk,
-            name: location.name,
-            parent_location: location.parent_location_details.name,
-            name_full: location.name_full
-          };
-
-          this.updateRouterLinks(this.campaign, this.userModel, null);
-        },
-        error => this.routingService.routeToErrorPage(error)
-      );
-    } 
-  }
-
 
   /**
    * @description Executes when cancel button is clicked. Extends normal cancel logic for the extra step, that locations may be

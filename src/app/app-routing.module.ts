@@ -46,7 +46,7 @@ import { SessionsComponent } from './components/articles/sessions/sessions.compo
 import { CampaignDetailResolver, CampaignResolver, CampaignStatisticsResolver, CampaignUpdateResolver } from './utils/resolvers/campaign-resolver';
 import { CreatureResolver, CreatureUpdateResolver } from './utils/resolvers/creature-resolver';
 import { CharacterResolver, CharacterUpdateResolver } from './utils/resolvers/character-resolver';
-import { LocationResolver } from './utils/resolvers/location-resolver';
+import { LocationMapCreateResolver, LocationResolver, LocationUpdateResolver } from './utils/resolvers/location-resolver';
 import { DiaryentryResolver } from './utils/resolvers/diaryentry-resolver';
 import { ItemResolver } from './utils/resolvers/item-resolver';
 import { MapOverviewResolver, MapResolver } from './utils/resolvers/map-resolver';
@@ -54,7 +54,7 @@ import { OrganizationResolver } from './utils/resolvers/organization-resolver';
 import { QuestOverviewResolver, QuestResolver } from './utils/resolvers/quest-resolver';
 import { QuoteResolver } from './utils/resolvers/quote-resolver';
 import { SessionAudioOverviewResolver, SessionAudioResolver, TimestampResolver } from './utils/resolvers/sessionaudio-resolver';
-import { MarkerResolver } from './utils/resolvers/marker-resolver';
+import { MarkerMapCreateResolver, MarkerResolver } from './utils/resolvers/marker-resolver';
 import { RuleResolver } from './utils/resolvers/rule-resolver';
 import { SpellResolver } from './utils/resolvers/spell-resolver';
 import { SessionResolver } from './utils/resolvers/session-resolver';
@@ -258,6 +258,10 @@ const campaignRoutes: CampaignRoute[] = [
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-create", requiredRole: CampaignRole.MEMBER},
 		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: LocationUpdateResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name`,
@@ -274,18 +278,31 @@ const campaignRoutes: CampaignRoute[] = [
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-parentlocation-create", requiredRole: CampaignRole.MEMBER},
 		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: LocationUpdateResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:latitude/:longitude/:map_name/create`,
 		component: LocationArticleMapCreateComponent,
 		data:{ name: "location-map-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			locationModelData: LocationMapCreateResolver,
+			markerModelData: MarkerMapCreateResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/location/:campaign/:parent_name/:name/update`,
 		component: LocationArticleUpdateComponent,
 		data:{ name: "location-update", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: LocationUpdateResolver,
+		}
 	},
 
 	//DiaryEntry Routes

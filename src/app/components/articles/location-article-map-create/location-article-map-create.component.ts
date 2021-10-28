@@ -65,46 +65,14 @@ export class LocationArticleMapCreateComponent implements OnInit {
   ]
   //TODO: Make this make use of ArticleFormMixin
   ngOnInit(): void {
-    this.parameter_subscription = this.route.params.subscribe(params => {
-      const longitude: number = params['longitude'];
-      const latitude: number = params['latitude'];
-      this.mapName = params['map_name'];
+    this.markerModel = this.route.snapshot.data["markerModelData"];
+    this.locationModel = this.route.snapshot.data["locationModelData"];
 
-      this.createUserModel(latitude, longitude);
-
-      this.updateRouterLinks(this.campaign, params);
-    });
+    this.updateRouterLinks(this.campaign, this.route.snapshot.params);
   }
 
   updateRouterLinks(campaignName: string, params: Params): void{
     this.mapUrl = this.routingService.getRoutePath('map', {name: params.map_name, campaign: campaignName});
-  }
-
-  createUserModel(latitude: number, longitude: number): void{
-    this.createMarkerModel(latitude, longitude);
-    this.createLocationModel();
-  }
-
-  createMarkerModel(latitude: number, longitude: number){
-    this.markerModel = new MapMarkerObject();
-
-    this.mapService.readByParam(this.campaign, {name: this.mapName}).pipe(first()).subscribe(
-      (map: ExtendedMap) =>{
-        this.markerModel.map = map.pk;
-        this.markerModel.latitude = latitude;
-        this.markerModel.longitude = longitude;
-      },
-      error => this.routingService.routeToErrorPage(error)
-    );
-  }
-
-  createLocationModel(){
-    this.locationModel = new LocationObject();
-
-    this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
-      (campaignData: {name: String, pk: number}) => this.locationModel.campaign = campaignData.pk,
-      error => this.warnings.showWarning(error)
-    );
   }
 
   onSubmit(){
