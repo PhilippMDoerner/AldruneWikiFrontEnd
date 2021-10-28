@@ -19,26 +19,7 @@ export class CampaignResolver implements Resolve<CampaignOverview> {
         route: ActivatedRouteSnapshot,
         state: RouterStateSnapshot
     ): Promise<CampaignOverview>{
-        await this.waitForAllCampaignDataToLoad();
-
-        const campaignName: string = route.params.campaign;
-        this.globalUrlParams.updateCurrentlySelectedCampaign(campaignName);
-
-        return this.globalUrlParams.getCurrentCampaign()
-            .pipe(filter(campaign => campaign != null), first()).toPromise();
-    }
-
-    /**
-     * @description Waits for the list of total campaigns available to the user to finish loading. This is necessary to 
-     * ensure there is a campaign that that can be retrieved via "getCurrentCampaign".
-     */
-    async waitForAllCampaignDataToLoad(){
-        await this.globalUrlParams.getCampaigns()
-            .pipe(
-                filter((campaigns: CampaignOverview[]) => campaigns != null),
-                first()
-            )
-            .toPromise();
+        return await this.globalUrlParams.getCurrentCampaign();
     }
 }
 
