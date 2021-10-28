@@ -21,7 +21,7 @@ export class MapResolver implements Resolve<{mapData: MapObject, maps: OverviewI
         state: RouterStateSnapshot
     ): Promise<{mapData: MapObject, maps: OverviewItemObject[]}> {
         const params: Params = route.params;
-        const campaign: CampaignOverview = await this.getCurrentCampaign();
+        const campaign: CampaignOverview = await this.globalUrlParams.getCurrentCampaign();
         const maps: OverviewItemObject[] = await this.service.campaignList(campaign.name).pipe(first()).toPromise();
         
         const queryParameters: any = this.getQueryParameter(params, campaign, maps);
@@ -57,33 +57,6 @@ export class MapResolver implements Resolve<{mapData: MapObject, maps: OverviewI
 
         const firstMapName: string = maps[0].name;
         return firstMapName;
-    }
-
-
-    async getCurrentCampaign(): Promise<CampaignOverview>{
-        await this.waitForAllCampaignDataToLoad();
-        return this.globalUrlParams.getCurrentCampaign().value;
-    }
-
-    /**
-     * @description Waits for the list of total campaigns available to the user to finish loading. This is necessary to 
-     * ensure there is a campaign that that can be retrieved via "getCurrentCampaign". Particularly relevant in scenarios
-     * where there is an initial page load on a url there
-     */
-    async waitForAllCampaignDataToLoad(){
-        await this.globalUrlParams.getCampaigns()
-            .pipe(
-                filter((campaigns: CampaignOverview[]) => campaigns != null),
-                first()
-            )
-            .toPromise();
-        
-        await this.globalUrlParams.getCurrentCampaign()
-            .pipe(
-                filter((campaign: CampaignOverview) => campaign != null),
-                first()
-            )
-            .toPromise();
     }
 }
 
