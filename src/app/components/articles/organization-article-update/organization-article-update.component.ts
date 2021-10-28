@@ -23,13 +23,10 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
   serverModel: Organization;
   userModelClass = OrganizationObject;
 
-  updateCancelRoute = {routeName: 'organization', params: {name: null, campaign: this.campaign }};
-  creationCancelRoute = {routeName: 'organization-overview', params: {campaign: this.campaign}};
-
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
-    this.formlyService.genericSelect({key: "leader", valueProp: "name", overviewType: OverviewType.Character, campaign: this.campaign, required: false}),
-    this.formlyService.genericSelect({key: "headquarter", sortProp: "name_full", overviewType: OverviewType.Location, campaign: this.campaign, required: false}),
+    this.formlyService.genericSelect({key: "leader", valueProp: "name", overviewType: OverviewType.Character, campaign: this.campaign.name, required: false}),
+    this.formlyService.genericSelect({key: "headquarter", sortProp: "name_full", overviewType: OverviewType.Location, campaign: this.campaign.name, required: false}),
   ];
 
   //Custom Properties
@@ -55,5 +52,10 @@ export class OrganizationArticleUpdateComponent extends ArticleFormMixin impleme
       route,
       tokenService,
     )
+  }
+
+  updateRouterLinks(campaignName: string, userModel: OrganizationObject, params: Params){
+    this.creationCancelUrl = this.routingService.getRoutePath("organization-overview", {campaign: campaignName});
+    this.updateCancelUrl = this.routingService.getRoutePath("organization", {campaign: campaignName, name: params.name});
   }
 }

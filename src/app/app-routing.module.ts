@@ -50,7 +50,7 @@ import { LocationMapCreateResolver, LocationResolver, LocationUpdateResolver } f
 import { DiaryentryResolver } from './utils/resolvers/diaryentry-resolver';
 import { ItemResolver } from './utils/resolvers/item-resolver';
 import { MapOverviewResolver, MapResolver } from './utils/resolvers/map-resolver';
-import { OrganizationResolver } from './utils/resolvers/organization-resolver';
+import { OrganizationResolver, OrganizationUpdateResolver } from './utils/resolvers/organization-resolver';
 import { QuestOverviewResolver, QuestResolver } from './utils/resolvers/quest-resolver';
 import { QuoteResolver } from './utils/resolvers/quote-resolver';
 import { SessionAudioOverviewResolver, SessionAudioResolver, TimestampResolver } from './utils/resolvers/sessionaudio-resolver';
@@ -402,7 +402,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/create`,
 		component: OrganizationArticleUpdateComponent,
 		data:{ name: "organization-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: OrganizationUpdateResolver
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/:name`,
@@ -418,7 +422,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/organization/:campaign/:name/update`,
 		component: OrganizationArticleUpdateComponent,
 		data:{ name: "organization-update", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: OrganizationUpdateResolver
+		}
 	},
 
 	// Item Routes
