@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { OverviewType } from 'src/app/app.constants';
 import { CharacterObject } from 'src/app/models/character';
@@ -21,21 +20,15 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   templateUrl: './item-article-update.component.html',
   styleUrls: ['./item-article-update.component.scss']
 })
-export class ItemArticleUpdateComponent extends ArticleFormMixin {
-  //URLs
-  itemOverviewUrl: string;
-  
+export class ItemArticleUpdateComponent extends ArticleFormMixin {  
   //Defining ArticleFormMixin Properties
   serverModel: Item;
   userModel: ItemObject;
   userModelClass = ItemObject;
 
-  updateCancelRoute = {routeName: "item", params: {name: null, campaign: this.campaign }};
-  creationCancelRoute = {routeName: "item-overview", params: {campaign: this.campaign}};//Only used when creating normally, not when creating item for a specific character
-  
   formlyFields: FormlyFieldConfig[] = [ //TODO: Get auto pre select to work when you create item for a character. You get the options correctly and the usermodel also has the value correctly, it's just not displayed in the dropdown
     this.formlyService.genericInput({key: "name", isNameInput: true}),
-    this.formlyService.genericSelect({key: 'owner', overviewType: OverviewType.Character, campaign: this.campaign, required: false})
+    this.formlyService.genericSelect({key: 'owner', overviewType: OverviewType.Character, campaign: this.campaign.name, required: false})
   ];
 
   //Custom Properties
@@ -63,28 +56,10 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin {
   ) }
 
   updateRouterLinks(campaignName: string, userModel: ItemObject, params: Params): void{
-    this.itemOverviewUrl = this.routingService.getRoutePath('item-overview', {campaign: campaignName});
+    this.updateCancelUrl = this.routingService.getRoutePath("item", {campaign: campaignName, name: params.name});
+    this.creationCancelUrl = this.routingService.getRoutePath('item-overview', {campaign: campaignName});
   }
 
-  createUserModel(queryParameters): void{
-    this.userModel = new this.userModelClass();
-
-    this.campaignService.readByParam(this.campaign).pipe(first()).subscribe(
-      (campaignData: {name: String, pk: number}) => {
-          this.userModel.campaign = campaignData.pk;
-      },
-      error => this.warnings.showWarning(error)
-    );
-
-    if(this.isForAssociatedObjectCreation()){
-      const itemOwnerName: string = this.route.snapshot.params.character_name;
-    
-      this.characterService.readByParam(this.campaign, {name: itemOwnerName}).pipe(first()).subscribe(
-        (itemOwner: CharacterObject) => this.userModel.owner = itemOwner.pk,
-        error => this.routingService.routeToErrorPage(error)
-      );
-    }
-  }
 
   /**
    * @description Executes when cancel button is clicked. Extends normal cancel logic for the extra step, that items may be

@@ -48,7 +48,7 @@ import { CreatureResolver, CreatureUpdateResolver } from './utils/resolvers/crea
 import { CharacterResolver, CharacterUpdateResolver } from './utils/resolvers/character-resolver';
 import { LocationMapCreateResolver, LocationResolver, LocationUpdateResolver } from './utils/resolvers/location-resolver';
 import { DiaryentryResolver } from './utils/resolvers/diaryentry-resolver';
-import { ItemResolver } from './utils/resolvers/item-resolver';
+import { ItemCharacterCreationResolver, ItemResolver, ItemUpdateResolver } from './utils/resolvers/item-resolver';
 import { MapOverviewResolver, MapResolver } from './utils/resolvers/map-resolver';
 import { OrganizationResolver, OrganizationUpdateResolver } from './utils/resolvers/organization-resolver';
 import { QuestOverviewResolver, QuestResolver } from './utils/resolvers/quest-resolver';
@@ -445,12 +445,20 @@ const campaignRoutes: CampaignRoute[] = [
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-create", requiredRole: CampaignRole.MEMBER},
 		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: ItemUpdateResolver
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:character_name/create`,
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-character-create", requiredRole: CampaignRole.MEMBER},
 		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: ItemCharacterCreationResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:name`,
@@ -466,7 +474,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/item/:campaign/:name/update`,
 		component: ItemArticleUpdateComponent,
 		data:{ name: "item-update", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: ItemUpdateResolver
+		}
 	},
 
 	// Quest Routes
