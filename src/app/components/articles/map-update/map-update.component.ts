@@ -18,17 +18,10 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   styleUrls: ['./map-update.component.scss']
 })
 export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
-  //URLs
-  mapUrl: string;
-  defaultMapUrl: string;
-
   //Defining ArticleFormMixin Properties
   userModel: MapObject;
   serverModel: Map;
   userModelClass = MapObject;
-
-  updateCancelRoute = {routeName: 'map', params: {name: null, campaign: this.campaign}};
-  creationCancelRoute = {routeName: 'map', params: {name: Constants.defaultMapName, campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true, required: true}),
@@ -63,8 +56,8 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
   }
 
   updateRouterLinks(campaignName: string, userModel: MapObject, params: Params): void{
-    this.mapUrl = this.routingService.getRoutePath('map', {name: userModel.name, campaign: campaignName});
-    this.defaultMapUrl = this.routingService.getRoutePath('default-map', {campaign: campaignName})
+    this.updateCancelUrl = this.routingService.getRoutePath('map', {name: userModel.name, campaign: campaignName});
+    this.creationCancelUrl = this.routingService.getRoutePath('default-map', {campaign: campaignName})
   }
 
   articleUpdate(userModel: MapObject): void{

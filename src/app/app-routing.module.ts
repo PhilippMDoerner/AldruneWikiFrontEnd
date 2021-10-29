@@ -49,7 +49,7 @@ import { CharacterResolver, CharacterUpdateResolver } from './utils/resolvers/ch
 import { LocationMapCreateResolver, LocationResolver, LocationUpdateResolver } from './utils/resolvers/location-resolver';
 import { DiaryentryResolver, DiaryentryUpdateResolver } from './utils/resolvers/diaryentry-resolver';
 import { ItemCharacterCreationResolver, ItemResolver, ItemUpdateResolver } from './utils/resolvers/item-resolver';
-import { MapResolver } from './utils/resolvers/map-resolver';
+import { MapResolver, MapUpdateResolver } from './utils/resolvers/map-resolver';
 import { OrganizationResolver, OrganizationUpdateResolver } from './utils/resolvers/organization-resolver';
 import { QuestOverviewResolver, QuestResolver, QuestUpdateResolver } from './utils/resolvers/quest-resolver';
 import { QuoteResolver } from './utils/resolvers/quote-resolver';
@@ -643,7 +643,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/create`,
 		component: MapUpdateComponent,
 		data:{ name: "map-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: { 
+			campaign: CampaignResolver,
+			modelData: MapUpdateResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/map/:campaign/default`,
@@ -670,6 +674,10 @@ const campaignRoutes: CampaignRoute[] = [
 		component: MapUpdateComponent,
 		data:{ name: "map-update", requiredRole: CampaignRole.MEMBER},
 		canActivate: [CampaignGuardService],
+		resolve: { 
+			campaign: CampaignResolver,
+			modelData: MapUpdateResolver,
+		}
 	},
 
 

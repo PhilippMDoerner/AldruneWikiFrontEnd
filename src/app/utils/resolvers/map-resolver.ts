@@ -7,6 +7,7 @@ import { MapObject } from "src/app/models/map";
 import { OverviewItemObject } from "src/app/models/overviewItem";
 import { GlobalUrlParamsService } from "src/app/services/global-url-params.service";
 import { MapService } from "src/app/services/map.service";
+import { BaseArticleUpdateResolver } from "./base-resolvers";
 
 
 @Injectable({ providedIn: 'root' })
@@ -75,5 +76,17 @@ export class MapOverviewResolver implements Resolve<OverviewItemObject[]> {
         const campaignName: string = params.campaign;
         
         return this.service.campaignList(campaignName);
+    }
+}
+
+@Injectable({ providedIn: 'root' })
+export class MapUpdateResolver extends BaseArticleUpdateResolver {
+    dataModelClass = MapObject;
+
+    constructor( 
+        service: MapService,
+        globalUrlParams: GlobalUrlParamsService,
+    ) { 
+        super(service, globalUrlParams);
     }
 }

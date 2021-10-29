@@ -3,8 +3,8 @@
         <!-- Heading -->
         <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
             <app-edit-toggle
-            [isInUpdateState]=true 
-            [link]="mapUrl"
+            [isInUpdateState]="true" 
+            [link]="updateCancelUrl"
             ></app-edit-toggle>
 
             <h2 class="text-center"> Updating Map {{ userModel.name }} </h2>
@@ -12,8 +12,8 @@
         
         <ng-template #createState>
             <app-edit-toggle 
-            [isInUpdateState]=true 
-            [link]="defaultMapUrl"
+            [isInUpdateState]="true" 
+            [link]="creationCancelUrl"
             ></app-edit-toggle>
 
             <h2 class="text-center"> Adding a new Map </h2>
@@ -38,7 +38,5 @@
         (cancel)="onCancel()"
         ></app-compare-form-container>
 
-    </article>
-    <!-- Spinner while loading -->
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
+    </article> 
 </div>
