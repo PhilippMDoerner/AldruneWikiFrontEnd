@@ -21,16 +21,10 @@ import { TokenService } from 'src/app/services/token.service';
   styleUrls: ['./session-audio-update.component.scss']
 })
 export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnInit {
-  //URLs
-  sessionAudioURL: string;
-
   //Defining ArticleFormMixin Properties
   userModel: SessionAudioObject;
   serverModel: SessionAudio;
   userModelClass = SessionAudioObject;
-
-  updateCancelRoute = {routeName: "sessionaudio", params: {isMainSession: null, sessionNumber: null, campaign: this.campaign.name}};
-  creationCancelRoute = {routeName: "sessionaudio-overview", params: {campaign: this.campaign.name}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericDisableSelect({
@@ -78,32 +72,13 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
   }
 
   updateRouterLinks(campaignName: string, userModel: SessionAudioObject, params: Params): void {
-    this.sessionAudioURL = this.routingService.getRoutePath('sessionaudio-overview', {campaign: campaignName});
+    this.creationCancelUrl = this.routingService.getRoutePath('sessionaudio-overview', {campaign: campaignName});
+    this.updateCancelUrl = this.routingService.getRoutePath("sessionaudio", {
+      campaign: campaignName, 
+      sessionNumber: userModel.session_details?.session_number,
+      isMainSession: userModel.session_details?.is_main_session_int,
+    });
   }
-
-  fetchUserModel(queryParameters): void{
-    this.articleService.readByParam(this.campaign.name, queryParameters).pipe(first()).subscribe(
-      (sessionaudio: SessionAudioObject) => this.userModel = sessionaudio,
-      error => this.routingService.routeToErrorPage(error)
-    );
-  }
-
-  getQueryParameters(params: Params): object{
-    const isMainSessionInt: number = params['isMainSession'];
-    const sessionNumber: number = params['sessionNumber'];
-
-    return {isMainSession: isMainSessionInt, sessionNumber};
-  }
-
-  updateCancelDeleteRoutes(params: Params): void{
-    const isMainSessionInt: number = params['isMainSession'];
-    const sessionNumber: number = params['sessionNumber'];
-
-    //Update Cancel Route Params
-    this.updateCancelRoute.params.isMainSession = isMainSessionInt;
-    this.updateCancelRoute.params.sessionNumber = sessionNumber;
-  }
-
 
   onSubmit(){ //Allow for put requests
     //If you're not uploading a file, just send a patch request

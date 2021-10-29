@@ -4,7 +4,7 @@
         <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
             <app-edit-toggle 
             [isInUpdateState]=true 
-            [link]="'..'"
+            [link]="updateCancelUrl"
             ></app-edit-toggle>
 
             <h2 class="text-center">
@@ -22,15 +22,12 @@
             ></app-formly-formcontainer>
         </div>
     </article>
-
-    <!-- Spinner while loading -->
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
 
 <ng-template #createState>
     <app-edit-toggle 
     [isInUpdateState]=true 
-    [link]="sessionAudioUrl"
+    [link]="creationCancelUrl"
     ></app-edit-toggle>
 
     <h2 class="text-center">

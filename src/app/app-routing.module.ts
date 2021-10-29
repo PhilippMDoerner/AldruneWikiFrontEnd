@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Route} from '@angular/router';
+import { RouterModule} from '@angular/router';
 import { ArticleOverviewComponent } from "src/app/components/articles/article-overview/article-overview.component";
 import { CharacterArticleComponent } from "src/app/components/articles/character-article/character-article.component";
 import { LocationArticleComponent } from "src/app/components/articles/location-article/location-article.component";
@@ -49,11 +49,11 @@ import { CharacterResolver, CharacterUpdateResolver } from './utils/resolvers/ch
 import { LocationMapCreateResolver, LocationResolver, LocationUpdateResolver } from './utils/resolvers/location-resolver';
 import { DiaryentryResolver, DiaryentryUpdateResolver } from './utils/resolvers/diaryentry-resolver';
 import { ItemCharacterCreationResolver, ItemResolver, ItemUpdateResolver } from './utils/resolvers/item-resolver';
-import { MapOverviewResolver, MapResolver } from './utils/resolvers/map-resolver';
+import { MapResolver } from './utils/resolvers/map-resolver';
 import { OrganizationResolver, OrganizationUpdateResolver } from './utils/resolvers/organization-resolver';
 import { QuestOverviewResolver, QuestResolver, QuestUpdateResolver } from './utils/resolvers/quest-resolver';
 import { QuoteResolver } from './utils/resolvers/quote-resolver';
-import { SessionAudioOverviewResolver, SessionAudioResolver, TimestampResolver } from './utils/resolvers/sessionaudio-resolver';
+import { SessionAudioOverviewResolver, SessionAudioResolver, SessionAudioUpdateResolver, TimestampResolver } from './utils/resolvers/sessionaudio-resolver';
 import { MarkerMapCreateResolver, MarkerResolver } from './utils/resolvers/marker-resolver';
 import { RuleResolver } from './utils/resolvers/rule-resolver';
 import { SpellResolver } from './utils/resolvers/spell-resolver';
@@ -567,6 +567,10 @@ const campaignRoutes: CampaignRoute[] = [
 		component: SessionAudioUpdateComponent,
 		data:{ name: "sessionaudio-create", requiredRole: CampaignRole.MEMBER},
 		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: SessionAudioUpdateResolver
+		}
 	},
 			
 	{
@@ -584,7 +588,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/sessionaudio/:campaign/:isMainSession/:sessionNumber/update`,
 		component: SessionAudioUpdateComponent,
 		data:{ name: "sessionaudio-update", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: SessionAudioUpdateResolver
+		}
 	},
 
 	// Marker Routes
