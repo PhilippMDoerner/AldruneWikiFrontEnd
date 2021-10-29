@@ -105,6 +105,7 @@ export const fieldMatchValidator = {name: "fieldMatch", validation: passwordMatc
 
 /**
  * If you wish to manipulate this, you also have to manipulate in diaryentry-article-update "hasDiaryentryForAuthor"
+ * TODO: Fix how this makes way too many calls to the sessions api endpoint for no reason
  */
 async function isSessionAuthorPairUniqueValidator(control: any){
     const { session: selectedSessionId, author: selectedAuthorId } = control.value;
