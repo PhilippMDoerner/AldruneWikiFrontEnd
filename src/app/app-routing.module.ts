@@ -47,7 +47,7 @@ import { CampaignDetailResolver, CampaignResolver, CampaignStatisticsResolver, C
 import { CreatureResolver, CreatureUpdateResolver } from './utils/resolvers/creature-resolver';
 import { CharacterResolver, CharacterUpdateResolver } from './utils/resolvers/character-resolver';
 import { LocationMapCreateResolver, LocationResolver, LocationUpdateResolver } from './utils/resolvers/location-resolver';
-import { DiaryentryResolver } from './utils/resolvers/diaryentry-resolver';
+import { DiaryentryResolver, DiaryentryUpdateResolver } from './utils/resolvers/diaryentry-resolver';
 import { ItemCharacterCreationResolver, ItemResolver, ItemUpdateResolver } from './utils/resolvers/item-resolver';
 import { MapOverviewResolver, MapResolver } from './utils/resolvers/map-resolver';
 import { OrganizationResolver, OrganizationUpdateResolver } from './utils/resolvers/organization-resolver';
@@ -321,6 +321,10 @@ const campaignRoutes: CampaignRoute[] = [
 		component: DiaryentryArticleUpdateComponent,
 		data:{ name: "diaryentry-create", requiredRole: CampaignRole.MEMBER},
 		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: DiaryentryUpdateResolver
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName`,
@@ -336,13 +340,21 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/update`,
 		component: DiaryentryArticleUpdateComponent,
 		data:{ name: "diaryentry-update", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: LocationUpdateResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/diaryentry/:campaign/:sessionNumber/:isMainSession/:authorName/:encounterTitle`,
 		component: DiaryentryArticleComponent,
 		data:{ name: "diaryentry-encounter", requiredRole: CampaignRole.GUEST},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			article: DiaryentryResolver,
+		}
 	},
 
 	//Creature Routes

@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AbstractControl, FormControl } from '@angular/forms';
+import { AbstractControl } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormlyFieldConfig, FormlyTemplateOptions } from '@ngx-formly/core';
 import { OverviewType } from 'src/app/app.constants';
-import { CampaignOverview } from 'src/app/models/campaign';
 import { DiaryEntryObject } from 'src/app/models/diaryentry';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { CampaignService } from 'src/app/services/campaign.service';
@@ -21,20 +20,12 @@ import { sessionAlreadyHasAuthor } from 'src/app/utils/functions/formly-validati
   templateUrl: './diaryentry-article-update.component.html',
   styleUrls: ['./diaryentry-article-update.component.scss']
 })
-export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implements OnInit {
-  //URLs
-  diaryentryOverviewUrl: string;
-  
+export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implements OnInit {  
   //Defining ArticleFormMixin Properties
   serverModel: DiaryEntryObject;
   userModel: DiaryEntryObject;
   userModelClass = DiaryEntryObject;
 
-  updateCancelRoute = {routeName: "diaryentry", params: {
-    sessionNumber: null, isMainSession: null, authorName: null, campaign: this.campaign
-  }};
-  creationCancelRoute = {routeName: "diaryentry-overview", params: {campaign: this.campaign}};
-  
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title", isNameInput: true}),
     /**
@@ -51,12 +42,12 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
       },
       fieldGroup: [
         //Author
-        this.formlyService.genericSelect({key: "author", labelProp: "username", sortProp: "username", overviewType: OverviewType.User, campaign: this.campaign}),
+        this.formlyService.genericSelect({key: "author", labelProp: "username", sortProp: "username", overviewType: OverviewType.User, campaign: this.campaign.name}),
         //Session
         this.formlyService.genericDisableSelect({
           key: 'session', 
           overviewType: OverviewType.Session,
-          campaign: this.campaign, 
+          campaign: this.campaign.name, 
           disabledExpression: this.hasDiaryentryForAuthor, 
           tooltipMessage: "Sessions may be impossible to select if the selected author already has a diaryentry for that session.",
           warningMessage: sessionAlreadyHasAuthor.message,
@@ -93,22 +84,14 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
   }
 
   updateRouterLinks(campaignName: string, userModel: DiaryEntryObject, params: Params): void{
-    this.diaryentryOverviewUrl = this.routingService.getRoutePath('diaryentry-overview', {campaign: campaignName});
-  }
+    this.updateCancelUrl = this.routingService.getRoutePath("diaryentry", {
+      campaign: campaignName,
+      isMainSession: userModel.session_details?.is_main_session_int,
+      sessionNumber: userModel.session_details?.session_number,
+      authorName: userModel.author_details?.name,
+    })
 
-  getQueryParameters(params: Params): object{
-    const isMainSession: string = params.isMainSession;
-    const authorName: string = params.authorName;
-    const sessionNumber: string = params.sessionNumber;
-
-    return {isMainSession, authorName, sessionNumber}
-  }
-
-  fetchUserModel(queryParameters: any): void{
-    this.articleService.readByParam(this.campaign, queryParameters).subscribe(
-      (diaryEntry: DiaryEntryObject) => this.userModel = diaryEntry, 
-      error => this.routingService.routeToErrorPage(error)
-    );
+    this.creationCancelUrl = this.routingService.getRoutePath('diaryentry-overview', {campaign: campaignName});
   }
 
   /**
