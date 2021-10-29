@@ -343,7 +343,7 @@ const campaignRoutes: CampaignRoute[] = [
 		canActivate: [CampaignGuardService],
 		resolve: {
 			campaign: CampaignResolver,
-			modelData: LocationUpdateResolver,
+			modelData: DiaryentryUpdateResolver,
 		}
 	},
 	{

@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
 import { DiaryEntry, DiaryEntryObject } from "src/app/models/diaryentry";
-import { Encounter } from "src/app/models/encounter";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient } from "@angular/common/http";
 import { Constants } from "src/app/app.constants";
 import { Observable } from "rxjs";
-import { map } from 'rxjs/operators';
-import { DiaryEntryEncounterConnectionObject } from 'src/app/models/diaryencounterconnection';
 import { GenericObjectService } from '../generic-object.service';
-import { TransformArrayObservable, TransformObservable } from 'src/app/utils/functions/transform';
+import { TransformObservable } from 'src/app/utils/functions/transform';
 
 @Injectable({
   providedIn: 'root'

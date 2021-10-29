@@ -31,7 +31,7 @@ export class DiaryentryUpdateResolver extends BaseArticleUpdateResolver {
         super(service, globalUrlParamsService);
     }
 
-    getQueryParameter(params: Params): any{
+    getQueryParameters(params: Params): any{
         const isMainSession: number = parseInt(params.isMainSession);
         const sessionNumber: number = parseInt(params.sessionNumber);
         const authorName: string = params.authorName;
