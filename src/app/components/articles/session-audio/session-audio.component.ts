@@ -23,6 +23,7 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
   //URLs
   sessionAudioOverviewUrl: string;
 
+  articleData: SessionAudioObject;
   constants: any = Constants;
 
   priorSessionAudioUrl: string;
