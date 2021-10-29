@@ -13,7 +13,7 @@ import { ArticleListMixin } from 'src/app/utils/functions/articleListMixin';
   templateUrl: './spells.component.html',
   styleUrls: ['./spells.component.scss']
 })
-export class SpellsComponent extends ArticleListMixin implements OnInit, AfterViewInit, OnDestroy {
+export class SpellsComponent extends ArticleListMixin implements OnInit, AfterViewInit {
   articleModelClass = SpellObject;
   articleStarterTitle = "New Spell";
 

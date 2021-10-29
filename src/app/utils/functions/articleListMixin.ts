@@ -1,7 +1,6 @@
 import { Directive, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Subscription } from "rxjs";
-import { filter, first, map, tap } from "rxjs/operators";
 import { Constants } from "src/app/app.constants";
 import { ArticleObject } from "src/app/models/base-models";
 import { CampaignOverview } from "src/app/models/campaign";
@@ -15,7 +14,7 @@ import { animateElement } from "./animationDecorator";
 import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 
 @Directive()
-export class ArticleListMixin extends PermissionUtilityFunctionMixin implements OnInit, OnDestroy{
+export class ArticleListMixin extends PermissionUtilityFunctionMixin implements OnInit{
     constants = Constants;
     isLoadingArticles: boolean = false;
 
@@ -24,9 +23,6 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
     articles: ArticleObject[];
     showArticleArray: boolean[];
     articleModelClass: any;
-
-    parameterSubscription: Subscription;
-    globalParamSubscription: Subscription;
 
     articleStarterTitle = "New Article Item";
     articlesSortProperty = "name";
@@ -92,7 +88,7 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
         if (articleTitle == null) return;
         articleTitle = articleTitle.toLowerCase();
 
-        const targetArticle = articleQueryList.find( article => this.getArticleTitle(article).toLowerCase() == articleTitle);
+        const targetArticle = articleQueryList.find( article => this.getArticleTitle(article)?.toLowerCase() == articleTitle);
         if(targetArticle == null) return;
 
         targetArticle.card.nativeElement.scrollIntoView();
@@ -116,11 +112,5 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
 
     onArticleDelete(index: number){
         this.articles.splice(index, 1);
-    }
-
-
-    ngOnDestroy(){
-        if (this.parameterSubscription) this.parameterSubscription.unsubscribe();
-        if (this.globalParamSubscription) this.globalParamSubscription.unsubscribe();
     }
 }

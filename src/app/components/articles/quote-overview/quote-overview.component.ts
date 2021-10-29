@@ -19,7 +19,7 @@ import { ArticleListMixin } from 'src/app/utils/functions/articleListMixin';
   templateUrl: './quote-overview.component.html',
   styleUrls: ['./quote-overview.component.scss']
 })
-export class QuoteOverviewComponent extends ArticleListMixin implements OnInit, OnDestroy {
+export class QuoteOverviewComponent extends ArticleListMixin implements OnInit {
   //URLs
   characterUrl: string;
 

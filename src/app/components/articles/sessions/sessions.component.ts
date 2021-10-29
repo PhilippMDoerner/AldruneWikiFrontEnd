@@ -15,7 +15,7 @@ import { ArticleListMixin } from 'src/app/utils/functions/articleListMixin';
   templateUrl: './sessions.component.html',
   styleUrls: ['./sessions.component.scss']
 })
-export class SessionsComponent extends ArticleListMixin implements OnInit, OnDestroy, AfterViewInit {
+export class SessionsComponent extends ArticleListMixin implements OnInit, AfterViewInit {
   //URLs
   homeUrl: string;
 
