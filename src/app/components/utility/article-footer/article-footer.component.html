@@ -1,6 +1,6 @@
-<div class="row mx-0">
+<div class="row">
     <!-- Move to other Article -->
-    <div class="col-md-3 px-0">
+    <div class="col-md-3">
         <a
         *ngIf = "link, else nonLinkButton"
         (click) = "onClick()"
@@ -15,7 +15,7 @@
     *ngIf="showDelete"
     [deleteMessage]="deleteMessage"
     (deleteEvent)="onDelete()"
-    class="col-md-9 float-right px-0"
+    class="col-md-9 float-right"
     ></app-delete-toggle>
 </div>
 
