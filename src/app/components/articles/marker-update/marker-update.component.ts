@@ -22,16 +22,10 @@ import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
   styleUrls: ['./marker-update.component.scss']
 })
 export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
-  //URLs
-  locationUrl: string;
-
   //Defining ArticleFormMixin Properties
   userModel: MapMarkerObject;
   serverModel: MapMarker;
   userModelClass = MapMarkerObject;
-
-  updateCancelRoute = {routeName: 'marker', params: {location_name: null, parent_location_name: null, map_name: null, campaign: this.campaign}};
-  creationCancelRoute = {routeName: 'location', params: {name: null, parent_name: null, campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
@@ -70,56 +64,17 @@ export class MarkerUpdateComponent extends ArticleFormMixin implements OnInit {
   }
 
   updateRouterLinks(campaignName: string, userModel: MapMarkerObject, params: Params): void{
-    this.locationUrl = this.routingService.getRoutePath('location', {
+    this.creationCancelUrl = this.routingService.getRoutePath('location', {
         parent_name: userModel.location_details.parent_location_name, 
         name: userModel.location_details.name,
         campaign: campaignName
     });
-  }
-  //TODO: Refactor this function into 2 separate functions and instead of predefining the object above
-  //TODO: Add description fields that if they're empty they should show an informative text on blue background that this is empty, why not add some text? With a button on it to do so
-  updateCancelDeleteRoutes(params: Params): void{
-    const parentLocationName: string = params['parent_location_name'];
-    const locationName: string = params['location_name'];
-    const mapName: string = params['map_name'];
 
-    //Update Cancel Route Params
-    this.updateCancelRoute.params.location_name = locationName;
-    this.updateCancelRoute.params.parent_location_name = parentLocationName;
-    this.updateCancelRoute.params.map_name = mapName; //Undefined if route of this component is 'marker-create'
-
-    this.creationCancelRoute.params.name = locationName;
-    this.creationCancelRoute.params.parent_name = parentLocationName;
-  }
-
-  getQueryParameters(params: Params){
-    const parentLocationName = params['parent_location_name'];
-    const locationName = params['location_name'];
-    const mapName: string = params['map_name'];
-
-    return {parentLocationName, locationName, mapName};
-  }
-
-  fetchUserModel(queryParameters: any){
-    this.articleService.readByParam(this.campaign.name, queryParameters).pipe(first()).subscribe(
-      (marker: MapMarkerObject) => this.userModel = marker,
-      error => this.routingService.routeToErrorPage(error)
-    );
-  }
-
-  createUserModel(queryParameters){
-    this.locationService.readByParam(this.campaign.name, queryParameters).pipe(first()).subscribe(
-      (location: LocationObject) => {
-        this.userModel = new MapMarkerObject();
-        this.userModel.location = location.pk;
-        this.userModel.location_details = {
-          parent_location_name: location.parent_location_details.name,
-          name: location.name,
-          description: location.description,
-          sublocations: null,
-        };
-      },
-      error => this.routingService.routeToErrorPage(error)
-    );
+    this.updateCancelUrl = this.routingService.getRoutePath("marker", {
+      campaign: campaignName,
+      parent_location_name: userModel.location_details.parent_location_name,
+      location_name: userModel.location_details.name,
+      map_name: userModel.map_details?.name,
+    })
   }
 }

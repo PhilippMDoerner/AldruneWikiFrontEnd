@@ -1,10 +1,10 @@
 <div class="main">
-    <article class="mb-5" *ngIf="userModel; else loading">
+    <article class="mb-5">
         <!-- Heading -->
         <div *ngIf="(isInOutdatedUpdateState() || isInUpdateState()) && userModel; else createState">
             <app-edit-toggle 
             [isInUpdateState]=true 
-            [link]="'..'"
+            [link]="updateCancelUrl"
             ></app-edit-toggle>
 
             <h2 class="text-center"> Updating Marker for {{userModel.location_details.name}} on {{userModel.map_details.name}} </h2>
@@ -13,7 +13,7 @@
         <ng-template #createState>
             <app-edit-toggle 
             [isInUpdateState]=true 
-            [link]="locationUrl"
+            [link]="creationCancelUrl"
             ></app-edit-toggle>
 
             <h2 class="text-center"> Adding a new Marker </h2>
@@ -37,5 +37,4 @@
         (cancel)="onCancel()"
         ></app-compare-form-container>
     </article>
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

@@ -54,7 +54,7 @@ import { OrganizationResolver, OrganizationUpdateResolver } from './utils/resolv
 import { QuestOverviewResolver, QuestResolver, QuestUpdateResolver } from './utils/resolvers/quest-resolver';
 import { QuoteResolver } from './utils/resolvers/quote-resolver';
 import { SessionAudioOverviewResolver, SessionAudioResolver, SessionAudioUpdateResolver, TimestampResolver } from './utils/resolvers/sessionaudio-resolver';
-import { MarkerMapCreateResolver, MarkerResolver } from './utils/resolvers/marker-resolver';
+import { MarkerMapCreateResolver, MarkerResolver, MarkerUpdateResolver } from './utils/resolvers/marker-resolver';
 import { RuleResolver } from './utils/resolvers/rule-resolver';
 import { SpellResolver } from './utils/resolvers/spell-resolver';
 import { SessionResolver } from './utils/resolvers/session-resolver';
@@ -600,13 +600,21 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/create`,
 		component: MarkerUpdateComponent,
 		data:{ name: "marker-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: MarkerUpdateResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:latitude/:longitude/:map_name/create`,
 		component: MarkerMapCreateComponent,
 		data:{ name: "marker-map-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: MarkerMapCreateResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/:map_name`,
@@ -622,7 +630,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/marker/:campaign/:parent_location_name/:location_name/:map_name/update`,
 		component: MarkerUpdateComponent,
 		data:{ name: "marker-update", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: MarkerUpdateResolver,
+		}
 	},
 
 

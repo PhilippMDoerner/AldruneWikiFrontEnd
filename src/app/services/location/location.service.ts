@@ -3,7 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Constants } from "src/app/app.constants";
 import { Observable } from "rxjs";
 import { Location, LocationObject } from "src/app/models/location";
-import { TransformObservable } from 'src/app/utils/functions/transform';
+import { TransformObservable, transformObservableContent } from 'src/app/utils/functions/transform';
 import { GenericObjectService } from '../generic-object.service';
 
 @Injectable({
@@ -14,9 +14,9 @@ export class LocationService extends GenericObjectService{
 
   constructor(http : HttpClient) { super(http, LocationObject) }
 
-  @TransformObservable(LocationObject)
-  readByParam(campaign: string, params: {parentLocationName: string, locationName: string}): Observable<Location>{
+  readByParam(campaign: string, params: {parentLocationName: string, locationName: string}): Observable<LocationObject>{
     const url = `${this.baseUrl}/${campaign}/${params.parentLocationName}/${params.locationName}/`;
-    return this.http.get<Location>(url);
+    const dataObs: Observable<Location> = this.http.get<Location>(url);
+    return transformObservableContent(dataObs, LocationObject);
   }
 }
