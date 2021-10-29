@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, OnDestroy{
     private router: Router,
     private route: ActivatedRoute,
     private tokenService: TokenService,
-  ){console.log(this);}
+  ){}
 
   ngOnInit(){
     if (!this.tokenService.hasValidJWTToken()){
