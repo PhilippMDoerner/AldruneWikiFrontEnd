@@ -1,13 +1,15 @@
 <div class="main" #overviewMainCard>
-    <article *ngIf="quests; else loading" class="container">
+    <article class="container">
         <!-- Heading -->
         <div class="row">
             <h2 class="major col mb-4 pb-1 border-bottom">Quests</h2>
         </div>
 
-        <div class="row col-md-3 btn btn-primary mb-3" routerLink="create">
-            <span class="fas fa-plus"></span>
-            Add quest
+        <div class="row mb-3">
+            <div class="col-md-3 btn btn-primary" routerLink="create">
+                <span class="fas fa-plus"></span>
+                Add quest
+            </div>
         </div>
 
         <div *ngFor="let questTaker of quests" class="row mb-5">
@@ -96,9 +98,5 @@
                 Back To Frontpage
             </div>
         </div>
-
-
     </article>
-    <!-- Loading Spinner -->
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
