@@ -1,4 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
@@ -17,13 +18,12 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss']
 })
-export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ProfileComponent implements OnInit, AfterViewInit {
   //URLs
   homeUrl: string;
 
   @ViewChild('profileCard') profileCard: ElementRef;
   user: UserObject;
-  parameterSubscription: Subscription;
   campaign: CampaignOverview;
   campaignRolesList: {campaignName: string, role: string}[];
 
@@ -47,27 +47,21 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     public routingService: RoutingService,
     private formlyService: MyFormlyService,
     private warnings : WarningsService,
-    private globalUrlParams: GlobalUrlParamsService,
+    private route: ActivatedRoute,
     private tokenService: TokenService
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.campaign =  await this.globalUrlParams.getCurrentCampaign();
-    this.onAfterCampaignLoadFinished(this.campaign);
+    this.campaign = this.route.snapshot.data["campaign"];
+    this.user = this.route.snapshot.data["userData"]
 
     const campaignRoles = this.tokenService.getCampaignMemberships();
     const rolesList = Object.keys(campaignRoles).map(campaignName => {return {campaignName, role: campaignRoles[campaignName]}});
     this.campaignRolesList = rolesList;
+
+    this.updateDynamicVariables(this.campaign);
   }
 
-  onAfterCampaignLoadFinished(campaign: CampaignOverview): void{
-    this.userService.getThisUser().pipe(first()).subscribe(
-      (user: UserObject) => this.user = user,
-      error => this.routingService.routeToPath(error)
-    );
-
-    this.updateDynamicVariables(campaign);
-  }
 
   ngAfterViewInit(): void{
     animateElement(this.profileCard.nativeElement, 'fadeIn');
@@ -118,12 +112,5 @@ export class ProfileComponent implements OnInit, OnDestroy, AfterViewInit {
     )
   }
 
-  deleteThisUser(): void{
-
-  }
-
-  ngOnDestroy(): void{
-    if(this.parameterSubscription) this.parameterSubscription.unsubscribe();
-  }
-
+  deleteThisUser(): void{}
 }

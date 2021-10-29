@@ -60,6 +60,7 @@ import { SpellResolver } from './utils/resolvers/spell-resolver';
 import { SessionResolver } from './utils/resolvers/session-resolver';
 import { SearchResolver } from './utils/resolvers/search-resolver';
 import { OverviewResolver } from './utils/resolvers/overview-resolver';
+import { UserResolver } from './utils/resolvers/user-resolver';
 
 
 const generalRoutes: GeneralRoute[] = [
@@ -99,7 +100,11 @@ const generalRoutes: GeneralRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/profile/:campaign/:username`,
 		component: ProfileComponent,
 		data: { name: "profile"},
-		canActivate: [LoginGuardService]
+		canActivate: [LoginGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			userData: UserResolver
+		}
 	},
 	//Campaign Routes
 	{
