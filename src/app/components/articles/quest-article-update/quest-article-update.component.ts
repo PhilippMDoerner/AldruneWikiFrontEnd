@@ -18,16 +18,10 @@ import { TokenService } from 'src/app/services/token.service';
   styleUrls: ['./quest-article-update.component.scss']
 })
 export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnInit {
-  //URLs
-  questOverviewUrl: string;
-
   //Defining ArticleFormMixin Properties
   userModel: QuestObject;
   serverModel: Quest;
   userModelClass = QuestObject;
-
-  updateCancelRoute = {routeName: "quest", params: {name: null, campaign: this.campaign}};
-  creationCancelRoute = {routeName: "quest-overview", params: {campaign: this.campaign}};
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", placeholder: "Quest Name", isNameInput: true}),
@@ -84,6 +78,7 @@ export class QuestArticleUpdateComponent extends ArticleFormMixin implements OnI
   }
 
   updateRouterLinks(campaignName: string, userModel: QuestObject, params: Params): void{
-    this.questOverviewUrl = this.routingService.getRoutePath('quest-overview', {campaign: campaignName});
+    this.updateCancelUrl = this.routingService.getRoutePath("quest", {campaign: campaignName, name: userModel.name});
+    this.creationCancelUrl = this.routingService.getRoutePath('quest-overview', {campaign: campaignName});
   }
 }

@@ -51,7 +51,7 @@ import { DiaryentryResolver, DiaryentryUpdateResolver } from './utils/resolvers/
 import { ItemCharacterCreationResolver, ItemResolver, ItemUpdateResolver } from './utils/resolvers/item-resolver';
 import { MapOverviewResolver, MapResolver } from './utils/resolvers/map-resolver';
 import { OrganizationResolver, OrganizationUpdateResolver } from './utils/resolvers/organization-resolver';
-import { QuestOverviewResolver, QuestResolver } from './utils/resolvers/quest-resolver';
+import { QuestOverviewResolver, QuestResolver, QuestUpdateResolver } from './utils/resolvers/quest-resolver';
 import { QuoteResolver } from './utils/resolvers/quote-resolver';
 import { SessionAudioOverviewResolver, SessionAudioResolver, TimestampResolver } from './utils/resolvers/sessionaudio-resolver';
 import { MarkerMapCreateResolver, MarkerResolver } from './utils/resolvers/marker-resolver';
@@ -176,7 +176,10 @@ const campaignRoutes: CampaignRoute[] = [
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/home/:campaign`, 
 		component: Home2Component, data:{ name: "home2", requiredRole: CampaignRole.GUEST}, 
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaign/:campaign`, 
@@ -508,7 +511,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/create`,
 		component: QuestArticleUpdateComponent,
 		data:{ name: "quest-create", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: QuestUpdateResolver,
+		}
 	},
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/:name`,
@@ -524,7 +531,11 @@ const campaignRoutes: CampaignRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/quest/:campaign/:name/update`,
 		component: QuestArticleUpdateComponent,
 		data:{ name: "quest-update", requiredRole: CampaignRole.MEMBER},
-		canActivate: [CampaignGuardService]
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			modelData: QuestUpdateResolver,
+		}
 	},
 
 	//Quote Route
