@@ -1,5 +1,5 @@
 <div class="main" #article>
-    <article *ngIf="articleData && campaign; else loading" class="container">
+    <article class="container">
         <div class="row" *ngIf="hasUpdatePermission">
             <div class="col-12 d-flex align-items-end flex-column">
                 <app-edit-toggle 
@@ -31,7 +31,6 @@
         <div class="row mb-2" id="authors">
             <p class="text-center col-12"> 
                 Written by: {{ articleData.author_details.name }} <br>
-                <span *ngIf="coAuthors"> Together with: {{ coAuthors }} </span> 
                 on {{articleData.session_details.session_date | date: "longDate"}}
             </p>
         </div>
@@ -108,5 +107,4 @@
         ></app-article-footer>
         
     </article>
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

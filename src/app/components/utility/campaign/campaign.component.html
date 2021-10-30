@@ -1,5 +1,5 @@
 <div class="main" #article>
-    <article *ngIf="articleData; else loading" class="container">
+    <article class="container">
         <div class="row" *ngIf="!articleData.is_deactivated">
             <div class="col-12">
                 <app-edit-toggle 
@@ -145,7 +145,7 @@
             Campaign Statistics
         </h1>
 
-        <div class="container mb-5" *ngIf="campaignStatistics; else loading">
+        <div class="container mb-5">
             <div class="row" *ngFor="let statistic of campaignStatistics | keyvalue">
                 <div class="col-6 col-sm-3"> {{ statistic.key }}</div>
                 <div class="col-6 col-sm-3"> {{ statistic.value }}</div>
@@ -197,7 +197,6 @@
         ></app-article-footer>
         
     </article>
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
 
 <ng-template #addMemberButton>

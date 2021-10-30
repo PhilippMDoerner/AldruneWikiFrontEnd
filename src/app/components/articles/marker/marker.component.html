@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="articleData; else loading" class="container">
+    <article class="container">
         <app-edit-toggle></app-edit-toggle>
         <div class="row">
             <h1 class="text-center col">Marker on {{articleData.map_details.name}}</h1>
@@ -73,5 +73,4 @@
         ></app-article-footer>
 
     </article>
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

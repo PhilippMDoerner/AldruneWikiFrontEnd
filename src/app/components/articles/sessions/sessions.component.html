@@ -1,5 +1,5 @@
 <div class="main" #listArticle>
-    <article *ngIf="articles; else loading" class="container">
+    <article class="container">
 
         <!-- Heading -->
         <div class="row">
@@ -35,7 +35,5 @@
                 Back To Frontpage
             </a>
         </div>
-
     </article>
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

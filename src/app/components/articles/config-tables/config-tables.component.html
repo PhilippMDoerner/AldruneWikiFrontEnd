@@ -1,5 +1,5 @@
 <div class="main" #adminCard>
-    <article *ngIf="true; else loading">
+    <article>
         <div class="btn btn-secondary mb-3" routerLink="{{ campaignOverviewUrl }}">
             <span class="fas fa-globe-americas"></span>
             Back To campaign overview
@@ -93,6 +93,3 @@
         </div>
     </article>
 </div>
-
-<!-- Loading Spinner -->
-<ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

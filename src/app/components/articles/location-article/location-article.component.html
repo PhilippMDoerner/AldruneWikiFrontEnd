@@ -1,5 +1,5 @@
 <div class="main" #article>
-    <article *ngIf="articleData; else loading" class="container">
+    <article class="container">
         <div class="row" *ngIf="hasUpdatePermission">
             <div class="col-12">
                 <app-edit-toggle 
@@ -84,7 +84,5 @@
         [label]="'Back to Locations'"
         [deleteMessage]="'Delete '+articleData.name+'?'"
         ></app-article-footer>
-
     </article>
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

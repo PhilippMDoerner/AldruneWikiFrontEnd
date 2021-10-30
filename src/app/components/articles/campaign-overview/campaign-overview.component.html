@@ -18,7 +18,7 @@ id="container-overview"
             </a>
         </div>
     </div>
-    <div class="row mx-0" id="campaign-overview-body" *ngIf="campaignData; else loading">
+    <div class="row mx-0" id="campaign-overview-body">
         <a 
         class="px-0 campaign pointer" 
         *ngFor="let campaign of campaignData" 
@@ -44,5 +44,3 @@ id="container-overview"
 
 
 </div>
-
-<ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

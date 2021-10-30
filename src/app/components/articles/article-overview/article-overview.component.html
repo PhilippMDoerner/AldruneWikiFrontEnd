@@ -1,5 +1,5 @@
 <div class="main" #overviewMainCard>
-    <article *ngIf="listItems; else loading" class="pr-4 pl-4 container">
+    <article class="pr-4 pl-4 container">
         <!-- Heading -->
         <div class="row" *ngIf="overviewTypeName">
             <h1 class="major col mb-4 pb-1 border-bottom">{{ overviewTypeMetaData[overviewTypeName].heading }}</h1>
@@ -140,6 +140,4 @@
             </a>
         </div>
     </article>
-    <!-- Loading Spinner -->
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

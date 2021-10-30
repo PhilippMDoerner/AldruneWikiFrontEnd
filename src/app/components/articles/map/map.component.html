@@ -1,5 +1,5 @@
 <div class="main" #article>
-    <article *ngIf="maps; else loading" class="container">
+    <article class="container">
         <!-- Heading -->
         <div class="row" *ngIf="hasUpdatePermission">
             <div class="col-12">
@@ -49,7 +49,6 @@
         ></app-article-footer>
         
     </article>
-    <ng-template #loading class="mb-4"> <app-spinner class="m-auto"></app-spinner> </ng-template> 
 </div>
 
 <ng-template #noMapMessage>

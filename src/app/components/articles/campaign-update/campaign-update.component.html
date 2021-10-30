@@ -1,5 +1,5 @@
 <div class="main">
-    <article class="mb-5" *ngIf="userModel; else loading">
+    <article class="mb-5">
         <div class="row">
             <div class="col-12">
                 <app-edit-toggle 
@@ -36,7 +36,4 @@
         ></app-compare-form-container>
 
     </article>
-    
-    <!-- Spinner while loading -->
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

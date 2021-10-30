@@ -1,5 +1,5 @@
 <div class="main">
-    <article *ngIf="articles || emptySearchSubtitle; else loading" class="container">
+    <article class="container">
          <!-- Heading -->
          <div class="row">
             <h1 class="text-center col">Search Results</h1>
@@ -41,7 +41,6 @@
             </div>
         </div>
     </article>
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
 
 <ng-template #noSearchResults>

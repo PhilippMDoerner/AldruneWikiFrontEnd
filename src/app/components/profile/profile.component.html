@@ -1,5 +1,5 @@
 <div class="main" #profileCard>
-    <article class="container" *ngIf="user; else loading">
+    <article class="container">
         <!-- Section Heading -->
         <div class="d-flex justify-content-between row">
             <h3 class="mb-0 col-12 col-sm-6"> 
@@ -68,7 +68,4 @@
             ></app-formly-formcontainer>
         </div>
     </ng-template>
-
-    <!-- Loading Spinner -->
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

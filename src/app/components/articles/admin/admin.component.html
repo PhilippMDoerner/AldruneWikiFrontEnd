@@ -5,7 +5,7 @@
     </div>
 
     <!-- TODO: Make Design mobile useable -->
-    <article *ngIf="users && groups && statistics && campaigns; else loading">
+    <article>
         <!-- Users Section -->
         <div class="mb-3">
             <!-- Section Heading -->
@@ -182,7 +182,4 @@
         </div>
 
     </article>
-
-    <!-- Loading Spinner -->
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

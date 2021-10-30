@@ -1,4 +1,4 @@
-<div class="container px-0" *ngIf="!isUpdating; else waiting">
+<div class="container px-0">
     <!-- Insert new first Encounter -->
     <div *ngIf="!diaryEntryView && hasUpdatePermission && hasDeletePermission && userHasCreatePermission" class="d-flex mb-4 justify-content-center row">
         <div class="col-md-4 col-6 btn btn-lg btn-primary" (click)="toggleEncounterCreateState(-1)">
@@ -48,5 +48,3 @@
         </div>
     </div>
 </div>
-
-<ng-template #waiting class="mb-4"> <app-spinner></app-spinner> </ng-template> 

@@ -1,5 +1,5 @@
 <div class="main">
-    <article class="mb-5" *ngIf="model; else loading">
+    <article class="mb-5">
         <app-edit-toggle 
         [isInUpdateState]=true 
         [link]="mapUrl"
@@ -14,7 +14,5 @@
         (formlySubmit)="onSubmit()" 
         (formlyCancel)="onCancel()"
         ></app-formly-formcontainer>
-
     </article>
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

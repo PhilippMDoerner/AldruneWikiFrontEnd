@@ -1,5 +1,5 @@
 
-<div class="main" *ngIf="campaignData; else loading" #article>
+<div class="main" #article>
     <!-- Heading -->
     <header class="mb-1">
         <div class="d-flex flex-column">
@@ -39,5 +39,3 @@
     [campaign]="campaignData.name"
     ></app-recently-updated-articles-list>
 </div>
-
-<ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 

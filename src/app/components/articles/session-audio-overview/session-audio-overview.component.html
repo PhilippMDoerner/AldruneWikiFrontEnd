@@ -1,5 +1,5 @@
 <div class="main" #overviewMainCard>
-    <article *ngIf="sessionAudioFiles; else loading">
+    <article>
         <h1 class="text-center">Session Audio Files</h1>
 
         <div class="mb-3 row mx-3" *ngIf="hasCreatePermission">
@@ -46,8 +46,5 @@
                 Back To Frontpage
             </div>
         </div>
-
     </article>
-    <!-- Loading Spinner -->
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>

@@ -1,5 +1,5 @@
 <div class="main">
-    <article class="container" *ngIf="articles && character; else loading">
+    <article class="container">
         <h3 class="text-center"> Quote Overview </h3>
         <h5 class="text-center"> 
             Quotes of: 
@@ -37,7 +37,4 @@
             </a>
         </div>
     </article>
-
-    <!-- Loading Spinner -->
-    <ng-template #loading class="mb-4"> <app-spinner></app-spinner> </ng-template> 
 </div>
