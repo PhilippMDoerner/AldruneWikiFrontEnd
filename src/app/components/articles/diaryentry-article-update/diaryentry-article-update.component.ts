@@ -136,7 +136,7 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
       sessionNumber: diaryEntry.session_details.session_number,
       isMainSession: diaryEntry.session_details.is_main_session_int,
       authorName: diaryEntry.author_details.name,
-      campaign: this.campaign,
+      campaign: this.campaign.name,
       displayMode: "encounter"
     });
   }
