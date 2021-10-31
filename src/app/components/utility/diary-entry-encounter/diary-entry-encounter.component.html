@@ -68,9 +68,9 @@ class="container"
             ></app-compare-form-container>
         
             <!-- Encounter Connections -->
-            <hr class="white-line mt-4" *ngIf="!diaryEntryView">
+            <hr class="white-line mt-4" *ngIf="!diaryEntryView && !isInCreateState()">
 
-            <div class="encounter-connections d-flex align-items-center" *ngIf="!diaryEntryView">
+            <div class="encounter-connections d-flex align-items-center" *ngIf="!diaryEntryView && !isInCreateState()">
         
                 <span class="mr-4 tag-label"> Characters: </span>
                 <div class="d-inline-flex align-items-center flex-wrap">
