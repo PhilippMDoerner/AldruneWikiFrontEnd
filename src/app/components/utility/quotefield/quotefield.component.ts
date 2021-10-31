@@ -70,7 +70,9 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   }
 
   ngOnInit(){
+    console.log(this);
     if(this.inCreateState || this.isEmptyQuote(this.quote)){
+      this.quote = new QuoteObject();
       this.quote.connections = [];
       this.toggleCreateState();
     }
@@ -108,7 +110,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   }
 
   isEmptyQuote(quote: Quote): boolean{
-    return quote.pk == null;
+    return quote?.pk == null;
   }
 
   getNextRandomQuote(){
