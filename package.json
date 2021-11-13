@@ -45,7 +45,7 @@
   "devDependencies": {
     "@angular-devkit/build-angular": "^12.2.13",
     "@angular/cli": "^12.2.13",
-    "@angular/compiler-cli": "^12.0.0",
+    "@angular/compiler-cli": "^12.2.13",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "^2.0.9",
     "@types/leaflet": "^1.7.3",
