@@ -25,15 +25,18 @@
             </div>
 
             <!-- Vime-Player -->
-            <vime-player class="w-100" #vimePlayer>
-                <!-- Vime-Audio-Source -->
-                <vime-audio cross-origin>
+            <vm-player
+                theme="dark"
+                style="--vm-player-theme: #e86c8b;"
+                class="w-100"
+                #vimePlayer
+            >
+                <vm-audio cross-origin>
                     <source [src]="articleData.audio_file" type="audio/mp3" crossorigin="anonymous" #audioSource/>
-                </vime-audio>
-    
-                <!-- Vime-UI -->
-                <vime-default-ui></vime-default-ui>
-            </vime-player>
+                </vm-audio>
+                
+                <vm-default-ui></vm-default-ui>
+            </vm-player>
         </div>
 
         <!-- Next Buttons -->

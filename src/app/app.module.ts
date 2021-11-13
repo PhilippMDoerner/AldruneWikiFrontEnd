@@ -7,7 +7,6 @@ import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { CommonModule } from "@angular/common";
-import { VimeModule } from "@vime/angular/dist";
 
 
 import { AppComponent } from './app.component';
@@ -99,6 +98,7 @@ import { CampaignUpdateComponent } from './components/articles/campaign-update/c
 import { SessionsComponent } from './components/articles/sessions/sessions.component';
 import { SessionComponent } from './components/utility/session/session.component';
 import { TooltipInfocircleComponent } from './components/utility/tooltip-infocircle/tooltip-infocircle.component';
+import { VimeModule } from '@vime/angular';
 
 @NgModule({
   declarations: [
@@ -228,10 +228,10 @@ import { TooltipInfocircleComponent } from './components/utility/tooltip-infocir
       }), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,
     CommonModule,
-    VimeModule,
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' }),
     HammerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    VimeModule,
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
