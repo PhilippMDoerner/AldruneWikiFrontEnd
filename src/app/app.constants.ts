@@ -32,17 +32,6 @@ export class Constants{
     public static get outdatedUpdateState(): string {return "outdated"} //When an Update to an article is based on a version of an article that is outdated
     public static get displayState(): string {return "display";}
 
-    public static get createSignal(): string { return "create";}
-    public static get deleteSignal(): string { return "delete";}
-    public static get updateSignal(): string { return "update";}
-    public static get cancelSignal(): string { return "cancel";}
-
-    public static get maximumTapDistance(): number { return 20; }
-    //Minimum Amount of Movement necessary for a gesture to count as swipe. Measured in pixels.
-    public static get minimumSwipeDistance(): number { return 100; }
-    //Maximum Amount of time that can pass for a gesture to count as swipe. Measured in ms.
-    public static get maximumSwipeTime(): number { return 300; }
-
     //Mapping of article types to colors
     public static get articleTypeSidebarColorMapping(): object { return { 
         'item' : 'yellow',
