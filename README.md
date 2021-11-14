@@ -1,4 +1,4 @@
-#Storyfont
+# Storyfont
 
 This is the Angular frontend client of Storyfont, a PWA-ready webpage built to share your campaign notes with your fellow players. This application allows documenting the following things:
 
