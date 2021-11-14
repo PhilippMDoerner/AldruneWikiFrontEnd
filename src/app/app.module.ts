@@ -1,6 +1,6 @@
 import { BrowserModule, HammerModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
 import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
@@ -98,7 +98,6 @@ import { CampaignUpdateComponent } from './components/articles/campaign-update/c
 import { SessionsComponent } from './components/articles/sessions/sessions.component';
 import { SessionComponent } from './components/utility/session/session.component';
 import { TooltipInfocircleComponent } from './components/utility/tooltip-infocircle/tooltip-infocircle.component';
-import { VimeModule } from '@vime/angular';
 
 @NgModule({
   declarations: [
@@ -231,7 +230,6 @@ import { VimeModule } from '@vime/angular';
     ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' }),
     HammerModule,
     BrowserAnimationsModule,
-    VimeModule,
   ],
   providers: [
     { provide: TINYMCE_SCRIPT_SRC, useValue: 'tinymce/tinymce.min.js' },
@@ -251,6 +249,7 @@ import { VimeModule } from '@vime/angular';
     EncounterAccordionComponent
   ],
   schemas: [
+    CUSTOM_ELEMENTS_SCHEMA
   ]
 })
 export class AppModule { }
