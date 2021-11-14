@@ -77,7 +77,7 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
     return pixelDistanceToPageBottom < Constants.maxDistanceToPageBottomForPaginationLoad;
   }
 
-  loadNextPage(): void{ //TODO: Let the pagination load more here
+  loadNextPage(): void{
     if(this.isLoadingNextPage || this.articles == null || this.hasLoadedAllArticles) return;
 
     this.pageNumber += 1;
