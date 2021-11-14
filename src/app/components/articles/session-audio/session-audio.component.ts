@@ -119,7 +119,7 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
   playerControls(keyPressEvent){
     if (this.keyAffectsPlayer(keyPressEvent)){
       const controlFunction: Function = this.sessionAudioKeyControlMapping[keyPressEvent.code];
-      controlFunction(this.vimePlayer); //vimePlayer must be passed as an argument, as "this" doesn't work for callbacks
+      controlFunction(this.vimePlayer.nativeElement); //vimePlayer must be passed as an argument, as "this" doesn't work for callbacks
       keyPressEvent.preventDefault();
     }
   }
