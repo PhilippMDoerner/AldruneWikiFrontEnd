@@ -148,6 +148,32 @@ h2{
 	font-size: 1.5rem!important;
 }
 
+blockquote{
+	border-left: solid 4px #ffffff;
+    font-style: italic;
+    margin: 0;
+    padding: 0.5rem 0 0.5rem 2rem;
+}
+
+
+strong{
+	font-weight: bold;
+}
+
+
+a{
+	color: white;
+	border-bottom: dotted 1px gray;
+}
+
+a:hover{
+	color: var(--link-blue);
+	border-bottom: solid 2px gray;
+}
+
+article{
+	width: 100%;
+}
 
 //Background
 #bg {
@@ -205,16 +231,6 @@ h2{
 	color: gray
 }
 
-a{
-	color: white;
-	border-bottom: dotted 1px gray;
-}
-
-a:hover{
-	color: var(--link-blue);
-	text-decoration: none !important;
-	border-bottom: solid 2px gray;
-}
 
 .main{
 	max-width: 60rem;
@@ -227,10 +243,6 @@ a:hover{
 	font-size: 18px;
 }
 
-article{
-	width: 100%;
-}
-
 .white-separator{
     background-color: white;
     margin: 0 0 1rem 0;
@@ -238,10 +250,6 @@ article{
 
 .top1{
     top: 1px;
-}
-
-h2{
-    letter-spacing: 0.5rem;
 }
 
 .flex-1{
@@ -504,18 +512,6 @@ label{
 
 .text-color-black{
 	color: black;
-}
-
-blockquote{
-	border-left: solid 4px #ffffff;
-    font-style: italic;
-    margin: 0;
-    padding: 0.5rem 0 0.5rem 2rem;
-}
-
-
-strong{
-	font-weight: bold;
 }
 
 .highlight{
