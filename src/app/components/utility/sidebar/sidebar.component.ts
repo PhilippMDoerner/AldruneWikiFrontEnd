@@ -30,10 +30,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   showUserSection: boolean = false;
   showAdminSection: boolean = false;
 
-  isLoggedIn: boolean = true;
-
   //TODO: Fix that elements underneath the sidebar also get clicked when clicking on the sidebar (mostly an issue on mobile)
-  //TODO: Fix campaign overview page. Maybe do BEM while you're at it
 
   constructor(
     public routingService: RoutingService,
