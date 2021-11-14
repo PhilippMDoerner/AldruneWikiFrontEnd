@@ -14,7 +14,6 @@ import { TokenService } from "src/app/services/token.service";
 import { WarningsService } from "src/app/services/warnings.service";
 import { PermissionUtilityFunctionMixin } from "./permissionDecorators";
 
-//TODO: Move all this ngoninit and ngondestroy logic from all the update pages to this page
 @Directive()
 export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements OnInit{
     //URLs
