@@ -1,8 +1,10 @@
 #container-overview{
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh; //Ensures the campaigns take up at least the whole screen, maybe more
     max-width: unset !important;
     padding: 0 !important;
+    display: flex;
+    flex-direction: column;
 }
 
 .campaign{
@@ -31,14 +33,11 @@
     width: 100%;
     min-height: 4rem;
     line-break: anywhere;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.campaign-overlay.overlay-lock{
-    top: 35%;
-    height: 5rem;
-    width: 5rem;
-    background-color: unset;
-}
 
 .campaign:hover .campaign-overlay h3{
     color: var(--link-blue);
@@ -67,14 +66,6 @@
     align-items: center;
     justify-content: center;
     height: 10%;
-}
-
-#campaign-overview-body{
-    height: 90%;
-}
-
-#campaign-overview-body .container{
-    max-width: unset !important;
 }
 
 #campaign-overview-body .container,
@@ -106,8 +97,7 @@
     }
 
 
-    .background-image,
-    #container-overview{
+    .background-image{
         height: unset;
     }
 

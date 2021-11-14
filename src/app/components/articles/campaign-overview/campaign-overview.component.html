@@ -18,13 +18,12 @@ id="container-overview"
             </a>
         </div>
     </div>
-    <div class="row mx-0" id="campaign-overview-body">
+    <div class="row flex-1 mx-0" id="campaign-overview-body">
         <a 
         class="px-0 campaign pointer" 
         *ngFor="let campaign of campaignData" 
         (click)="routeToCampaign(campaign.name)"
         [ngClass]="{
-            'events-disabled': !campaign.isMember && !campaign.isGuest,
             'col-sm-12': campaignData.length === 1,
             'col-sm-6': campaignData.length === 2 || campaignData.length === 4,
             'col-sm-4': campaignData.length === 3 || campaignData.length >= 5
@@ -32,13 +31,8 @@ id="container-overview"
         [style.background-image]="'url('+ campaign.background_image +')'"
         >
             <div class="campaign-overlay overlay-heading text-center">
-                <h3 class="px-3"> {{campaign.name}}</h3>
-            </div>
-
-            <div 
-            *ngIf="!campaign.isMember && !campaign.isGuest"
-            class="campaign-overlay overlay-lock fas fa-lock fa-5x">
-            </div>        
+                <h3 class="mb-0 px-3"> {{campaign.name}}</h3>
+            </div>      
         </a>
     </div>
 
