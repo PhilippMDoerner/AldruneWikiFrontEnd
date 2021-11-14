@@ -56,6 +56,7 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin {
   ) }
 
   updateRouterLinks(campaignName: string, userModel: ItemObject, params: Params): void{
+    console.log(this);
     this.updateCancelUrl = this.routingService.getRoutePath("item", {campaign: campaignName, name: params.name});
     this.creationCancelUrl = this.routingService.getRoutePath('item-overview', {campaign: campaignName});
   }
@@ -69,7 +70,7 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin {
   onCancel(){
     if (this.isForAssociatedObjectCreation()){
       const characterName: string = this.route.snapshot.params['character_name'];
-      this.routingService.routeToPath('character', {name: characterName, campaign: this.campaign});
+      this.routingService.routeToPath('character', {name: characterName, campaign: this.campaign.name});
 
     } else { //Is "normal" article creation and thus "normal" cancel
       const executionContext = this;
