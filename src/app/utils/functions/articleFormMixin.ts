@@ -181,9 +181,9 @@ export class ArticleFormMixin extends PermissionUtilityFunctionMixin implements 
         const router: Router = context.router;
 
         if (context.isInUpdateState() || context.isInOutdatedUpdateState()){
-            router.navigateByUrl(this.updateCancelUrl);
+            router.navigateByUrl(context.updateCancelUrl);
         } else {
-            router.navigateByUrl(this.creationCancelUrl);
+            router.navigateByUrl(context.creationCancelUrl);
         } 
     }
 }

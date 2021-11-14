@@ -4,6 +4,7 @@ import { Observable } from "rxjs";
 import { Image } from "src/app/models/image";
 import { Constants } from "src/app/app.constants";
 import { convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
+import { GenericService } from '../generic.service';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -14,31 +15,32 @@ const httpOptions = {
 @Injectable({
   providedIn: 'root'
 })
-export class ImageUploadService {
-  imageUrl: string = `${Constants.wikiApiUrl}/image`;
+export class ImageUploadService extends GenericService {
+  baseUrl: string = `${Constants.wikiApiUrl}/image`;
 
-  constructor(private http: HttpClient) { }
-  imageData: Observable<any>;
+  constructor(http: HttpClient) {
+    super(http)
+  }
 
   getArticleImages(articleType: string, pk: number): Observable<Image[]>{
-    const url = `${this.imageUrl}/${articleType}/${pk}`;
+    const url = `${this.baseUrl}/${articleType}/${pk}`;
     return this.http.get<Image[]>(url);
   }
 
-  updateImage(imageModel: Image){
+  update(imagePk: number, imageModel: Image){
     const formData: FormData = convertSingleFileModelToFormData(imageModel, "image");
-    const url = `${this.imageUrl}/pk/${imageModel.pk}/`;
+    const url = `${this.baseUrl}/pk/${imagePk}/`;
     return this.http.put<Image>(url, formData);
   }
 
-  postImage(imageModel: Image): Observable<Image>{
+  create(imageModel: Image): Observable<Image>{
     const url = `${Constants.wikiApiUrl}/image/upload/`;
     const formData: FormData = convertSingleFileModelToFormData(imageModel, "image");
     return this.http.post<Image>(url, formData);
   }
 
-  deleteImage(image_pk: number){
-    const url = `${this.imageUrl}/pk/${image_pk}`;
+  delete(image_pk: number){
+    const url = `${this.baseUrl}/pk/${image_pk}`;
     return this.http.delete<Image>(url);
   }
 
