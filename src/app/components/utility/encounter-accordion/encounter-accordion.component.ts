@@ -45,8 +45,6 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
   serverModel: Encounter;
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "title"}),
-    this.formlyService.genericSelect({key: "author", labelProp: "name", overviewType: OverviewType.User, campaign: this.campaign}),
-    this.formlyService.genericSelect({key: "session_number", label: "Session", overviewType: OverviewType.Session, campaign: this.campaign}),
     this.formlyService.genericSelect({key: "location", label: "Encounter Location", sortProp: "name_full", overviewType: OverviewType.Location, campaign: this.campaign}),
     this.formlyService.genericTextField({key: "description", required: true}),
   ];
