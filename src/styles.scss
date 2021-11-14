@@ -168,6 +168,7 @@ a{
 
 a:hover{
 	color: var(--link-blue);
+	text-decoration: none;
 	border-bottom: solid 2px gray;
 }
 
@@ -302,10 +303,6 @@ article{
 
 .fa{
 	font-weight: normal !important;
-}
-
-.bold{
-	font-weight: bold;
 }
 
 .text-decoration-underline{
