@@ -69,7 +69,6 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
       route,
       tokenService,
     );
-    console.log(this);
   }
 
   updateRouterLinks(campaignName: string, userModel: SessionAudioObject, params: Params): void {

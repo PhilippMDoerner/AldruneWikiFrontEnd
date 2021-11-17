@@ -115,7 +115,6 @@ export class ImageCarouselComponent extends PermissionUtilityFunctionMixin {
       updateObservable = this.imageUploadService.update(this.userModel.pk, this.userModel);
 
     } else {
-      console.log("Not changing image, so we're patching ma boy")
       const minimizedUserModel = {pk: this.userModel.pk, name: this.userModel.name} as ImageObject;
       updateObservable= this.imageUploadService.patch(this.userModel.pk, minimizedUserModel);
     }

@@ -56,7 +56,6 @@ export class ItemArticleUpdateComponent extends ArticleFormMixin {
   ) }
 
   updateRouterLinks(campaignName: string, userModel: ItemObject, params: Params): void{
-    console.log(this);
     this.updateCancelUrl = this.routingService.getRoutePath("item", {campaign: campaignName, name: params.name});
     this.creationCancelUrl = this.routingService.getRoutePath('item-overview', {campaign: campaignName});
   }
