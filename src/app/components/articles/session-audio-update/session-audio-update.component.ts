@@ -68,7 +68,8 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
       globalUrlParams,
       route,
       tokenService,
-    )
+    );
+    console.log(this);
   }
 
   updateRouterLinks(campaignName: string, userModel: SessionAudioObject, params: Params): void {
@@ -125,7 +126,7 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
     const pathParams = {
       isMainSession: sessionAudio.session_details.is_main_session_int,
       sessionNumber: sessionAudio.session_details.session_number,
-      campaign: this.campaign
+      campaign: this.campaign.name
     }
 
     this.routingService.routeToPath('sessionaudio', pathParams);
