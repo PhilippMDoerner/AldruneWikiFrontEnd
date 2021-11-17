@@ -53,6 +53,12 @@
         [images]="this.articleData.images"
         ></app-image-gallery>
 
+        <app-image-carousel
+        [article_type]="'character'"
+        [article_pk]="this.articleData.pk"
+        [images]="this.articleData.images"
+        ></app-image-carousel>
+
         <!-- Quote -->
         <div class="mb-3">
             <app-quote-gallery [character]="articleData" [campaign]="campaign"></app-quote-gallery>

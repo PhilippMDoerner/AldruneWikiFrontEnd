@@ -1,11 +1,11 @@
-import { Component, OnInit, Input, HostListener, Output } from '@angular/core';
+import { Component, Input, HostListener, Output } from '@angular/core';
 import { Image, ImageObject } from "src/app/models/image";
 import { Constants } from "src/app/app.constants";
 import { ImageUploadService } from "src/app/services/image/image-upload.service";
 import { FormGroup } from '@angular/forms';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { first, throwIfEmpty } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -33,7 +33,6 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   model: Image;
   form: FormGroup = new FormGroup({});
   formImageName: string;
-  formImageFile: File = null;
 
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", required: false}),
@@ -44,7 +43,7 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
     this.formlyService.genericInput({key: "encounter_article", label: "Encounter Article", hide: true, isNumberInput: true, required: false}),
     this.formlyService.genericInput({key: "item_article", label: "Item Article", hide: true, isNumberInput: true, required: false}),
     this.formlyService.singleFileField({key: "image"})
-  ]
+  ];
 
   constructor(
     private imageUploadService: ImageUploadService,
@@ -136,7 +135,7 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   }
 
   updateImage(): void{
-    this.imageUploadService.updateImage(this.model).pipe(first()).subscribe(
+    this.imageUploadService.update(this.model.pk, this.model).pipe(first()).subscribe(
       (updatedImage: ImageObject) => {
         updatedImage.image = updatedImage.image.replace(Constants.wikiUrl, ""); //Backend somehow returns ImageObject where ImageObject.image includes the wikiUrl, which it shouldn't
         this.images[this.visibleImageIndex] = updatedImage;
@@ -159,7 +158,7 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   }
 
   createImage(): void{
-    this.imageUploadService.postImage(this.model).pipe(first()).subscribe(
+    this.imageUploadService.create(this.model).pipe(first()).subscribe(
       (createdImage: ImageObject) => {
         this.images.push(createdImage);
         this.resetImageModel();
@@ -179,7 +178,7 @@ export class ImageGalleryComponent extends PermissionUtilityFunctionMixin{
   deleteCurrentMainImage(): void{
     const currentMainImage = this.getCurrentMainImage();
 
-    this.imageUploadService.deleteImage(currentMainImage.pk).pipe(first()).subscribe(
+    this.imageUploadService.delete(currentMainImage.pk).pipe(first()).subscribe(
       response => {
         this.images.splice(this.visibleImageIndex, 1);
         if (this.visibleImageIndex === this.images.length){

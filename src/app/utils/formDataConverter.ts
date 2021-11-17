@@ -28,3 +28,10 @@ export function convertMultiFileModelToFormData(model: any, fileAttributeNames: 
     }
     return formData;
 }
+
+export function convertModelToFormData(model: any): FormData{
+    const formData = new FormData();
+    const modelProperties: string[] = Object.keys(model);
+    modelProperties.forEach((property: string) => formData.append(property, model[property]));
+    return formData;
+}

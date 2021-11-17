@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Image } from "src/app/models/image";
 import { Constants } from "src/app/app.constants";
-import { convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
+import { convertModelToFormData, convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
 import { GenericService } from '../generic.service';
 
 const httpOptions = {
@@ -37,6 +37,13 @@ export class ImageUploadService extends GenericService {
     const url = `${Constants.wikiApiUrl}/image/upload/`;
     const formData: FormData = convertSingleFileModelToFormData(imageModel, "image");
     return this.http.post<Image>(url, formData);
+  }
+
+  patch(imagePk: number, imageModel: Image): Observable<Image>{
+    const url = `${this.baseUrl}/pk/${imagePk}/`;
+
+    const formData: FormData = convertModelToFormData(imageModel);
+    return this.http.patch<Image>(url, formData);
   }
 
   delete(image_pk: number){

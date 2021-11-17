@@ -547,6 +547,17 @@ div.ngb-dp-day .btn-light:hover{
 	color: black !important;
 }
 
+// Fixing ImageCarousel's arrow-button anchor tags having a border bottom when they really, really, shouldn't
+a.carousel-control-prev:hover,
+a.carousel-control-next:hover{
+	border-bottom: none;
+
+	.carousel-control-next-icon,
+	.carousel-control-prev-icon{
+		scale: 2;
+	}
+}
+
 //FORMLY
 // Overwrite Formly warning message styling for better visibility
 formly-validation-message{

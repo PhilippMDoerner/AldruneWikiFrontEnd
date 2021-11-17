@@ -98,6 +98,7 @@ import { CampaignUpdateComponent } from './components/articles/campaign-update/c
 import { SessionsComponent } from './components/articles/sessions/sessions.component';
 import { SessionComponent } from './components/utility/session/session.component';
 import { TooltipInfocircleComponent } from './components/utility/tooltip-infocircle/tooltip-infocircle.component';
+import { ImageCarouselComponent } from './components/utility/image-carousel/image-carousel.component';
 
 @NgModule({
   declarations: [
@@ -182,6 +183,7 @@ import { TooltipInfocircleComponent } from './components/utility/tooltip-infocir
     SessionsComponent,
     SessionComponent,
     TooltipInfocircleComponent,
+    ImageCarouselComponent,
   ],
   imports: [
     BrowserModule,
