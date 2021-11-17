@@ -558,6 +558,13 @@ a.carousel-control-next:hover{
 	}
 }
 
+.carousel-indicators{
+	background: rgba(27, 31, 34, 0.85);
+	width: 40%;
+	margin-left: 30%;
+	margin-right: 30%;
+}
+
 //FORMLY
 // Overwrite Formly warning message styling for better visibility
 formly-validation-message{
