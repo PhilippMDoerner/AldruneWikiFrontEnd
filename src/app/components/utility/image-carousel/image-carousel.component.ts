@@ -53,12 +53,6 @@ export class ImageCarouselComponent extends PermissionUtilityFunctionMixin {
     tokenService: TokenService,
   ) { 
     super(tokenService, route);
-    console.log(this);
-  }
-
-  ngOnInit(): void {
-    console.log("image lengths")
-    console.log(this.images.length)
   }
 
   getCurrentMainImage(): ImageObject{
