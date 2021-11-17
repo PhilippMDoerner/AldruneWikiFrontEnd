@@ -9,19 +9,20 @@
 
 
 <ng-template #displayState>
-    <ngb-carousel 
-    #imageCarousel
-    *ngIf="images?.length > 0; else defaultImage"
-    interval="false"
-    (slide)="onSlide($event)"
-    >
-        <ng-template ngbSlide *ngFor="let image of images; let i = index" [id]="'imageIndex-' + i">
-            <div class="image-container" [title]="image.name">
-                <img [src]="constants.wikiUrl + image.image" alt="Image {{i}} of the character">
-            </div>
-        </ng-template>
-    
-    </ngb-carousel>
+    <ng-container *ngIf="images?.length > 0; else defaultImage">
+        <ngb-carousel 
+        #imageCarousel
+        interval="false"
+        (slide)="onSlide($event)"
+        >
+            <ng-template ngbSlide *ngFor="let image of images; let i = index" [id]="'imageIndex-' + i">
+                <div class="image-container" [title]="image.name">
+                    <img [src]="constants.wikiUrl + image.image" alt="Image {{i}} of the character">
+                </div>
+            </ng-template>
+        
+        </ngb-carousel>    
+    </ng-container>
 
     <!-- Image Edit/Delete/Create Buttons -->
     <div class="edit-image-buttons mt-2">
@@ -121,12 +122,13 @@
     <ngb-carousel>
 
         <ng-template ngbSlide>
-            <div class="image-container">
-                <img [src]="constants.wikiUrl + image.image" alt="Default Image stand in since this article has none">
+            <div class="image-container default-image">
+                <img [src]="constants.defaultImageUrl" alt="Default Image stand in since this article has none">
+                <div class="image-caption">
+                    <p>This article doesn't have an image yet</p>
+                </div>
             </div>
-            <div class="carousel-caption">
-                <p>No Image available</p>
-            </div>
+
         </ng-template>
 
     </ngb-carousel>

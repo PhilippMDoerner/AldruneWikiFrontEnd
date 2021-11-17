@@ -57,6 +57,8 @@ export class ImageCarouselComponent extends PermissionUtilityFunctionMixin {
   }
 
   ngOnInit(): void {
+    console.log("image lengths")
+    console.log(this.images.length)
   }
 
   getCurrentMainImage(): ImageObject{

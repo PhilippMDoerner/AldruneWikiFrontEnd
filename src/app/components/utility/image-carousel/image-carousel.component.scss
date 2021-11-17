@@ -8,6 +8,22 @@
     }
 }
 
+.image-caption{
+    background: rgba(0,0,0,0.7);
+    width: 50%;
+    text-align: center;
+    position: absolute;
+    bottom: 20%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0;
+
+    p{
+        margin:0;
+    }
+}
+
 .edit-image-buttons{
     display: flex;
     align-items: center;
@@ -20,6 +36,10 @@
 .mouseoverVisible{
     opacity: 0;
     transition: opacity 0.2s;
+}
+
+.defaultImage{
+    position: relative;
 }
 
 :host-context(app-image-carousel:hover){
