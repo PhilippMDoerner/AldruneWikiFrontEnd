@@ -20,7 +20,6 @@ import { ItemArticleComponent } from './components/articles/item-article/item-ar
 import { RulesComponent } from './components/articles/rules/rules.component';
 import { ArticleOverviewComponent } from './components/articles/article-overview/article-overview.component';
 import { TextfieldComponent } from './components/utility/textfield/textfield.component';
-import { ImageGalleryComponent } from './components/utility/image-gallery/image-gallery.component';
 import { EncounterAccordionComponent } from './components/utility/encounter-accordion/encounter-accordion.component';
 import { CharacterArticleUpdateComponent } from './components/articles/character-article-update/character-article-update.component';
 import { SpinnerComponent } from './components/utility/spinner/spinner.component';
@@ -113,7 +112,6 @@ import { ImageCarouselComponent } from './components/utility/image-carousel/imag
     RulesComponent,
     ArticleOverviewComponent,
     TextfieldComponent,
-    ImageGalleryComponent,
     EncounterAccordionComponent,
     CharacterArticleUpdateComponent,
     SpinnerComponent,
