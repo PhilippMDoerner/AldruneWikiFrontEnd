@@ -10,7 +10,6 @@ import { CommonModule } from "@angular/common";
 
 
 import { AppComponent } from './app.component';
-import { NavbarComponent } from "src/app/components/navbar/navbar.component";
 import { CharacterArticleComponent } from './components/articles/character-article/character-article.component';
 import { LocationArticleComponent } from './components/articles/location-article/location-article.component';
 import { OrganizationArticleComponent } from './components/articles/organization-article/organization-article.component';
@@ -102,7 +101,6 @@ import { ImageCarouselComponent } from './components/utility/image-carousel/imag
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
     CharacterArticleComponent,
     LocationArticleComponent,
     OrganizationArticleComponent,
