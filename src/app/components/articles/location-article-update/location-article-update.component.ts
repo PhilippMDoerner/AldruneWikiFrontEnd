@@ -27,9 +27,19 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
 
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "name", isNameInput: true}),
-    this.formlyService.genericSelect({key: "parent_location", label: "Parent Location", overviewType: OverviewType.Location, sortProp: "name_full", campaign: this.campaign.name, required: false}),
+    this.formlyService.genericDisableSelect({
+      key: "parent_location", 
+      label: "Parent Location", 
+      overviewType: OverviewType.Location, 
+      sortProp: "name_full",
+      campaign: this.campaign.name, 
+      required: false,
+      disabledExpression: (location: LocationObject) => location.name === this.userModel.name,
+      tooltipMessage: "The location that contains this new location, e.g. the location 'Mayor's House' within the location 'Small city Lundorf'",
+      warningMessage: "The location you selected can't have the same name as the location that is trying to contain it! That would mean that this location contained itself!"
+    }),
   ];
-  //TODO: Turn parent_location into disable select, a location shouldn't be able to select itself as parent location
+
   //Custom properties
 
   constructor(
