@@ -37,7 +37,6 @@ export class AppComponent implements OnInit, OnDestroy{
     private serviceWorkerUpdate: SwUpdate,
     private warnings: WarningsService,
     private router: Router,
-    private route: ActivatedRoute,
     private tokenService: TokenService,
   ){}
 
@@ -148,12 +147,15 @@ export class AppComponent implements OnInit, OnDestroy{
     const sidebarIsVisible = this.showSidebarSubject.value === true;
 
     const clickTarget: HTMLElement = event.target;
-    //const isClickOnSidebar = clickTarget.closest("#sidebar") != null;
     const isClickOnMenuContainer = clickTarget.closest(".container-title") != null;
 
     if (sidebarIsVisible && !isClickOnMenuContainer){
-      this.showSidebarSubject.next(false);
-      clickTarget.click();
+      //The sidebar should be hidden if anything on it that isn't a menu container was clicked
+      //However, if you hide it immediately, you get also a click event on whatever is underneath the sidebar
+      //Therefore, you have to delay it slightly... for some reason
+      window.setTimeout(() =>{
+        this.showSidebarSubject.next(false);
+      }, 100);
     } 
   }
 
