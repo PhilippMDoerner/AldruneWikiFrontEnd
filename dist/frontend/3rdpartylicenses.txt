@@ -117,6 +117,12 @@ MIT
 @ngx-formly/core
 MIT
 
+@ngx-loading-bar/core
+MIT
+
+@ngx-loading-bar/router
+MIT
+
 @stencil/core/internal
 
 @stencil/core/internal/app-data
