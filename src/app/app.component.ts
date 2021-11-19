@@ -66,6 +66,7 @@ export class AppComponent implements OnInit, OnDestroy{
 
   onPageReroutingEnd(routingEvent: NavigationEnd){
     this.updateSidebarAllowanceBasedOnRoute();
+    this.showSidebarSubject.next(false);
   }
 
   updateSidebarAllowanceBasedOnRoute(): void{
