@@ -213,7 +213,7 @@ export class Constants{
             content_css: 'dark',
             browser_spellcheck: true,
             menubar: false,
-            height: 350,
+            height: 500,
             convert_urls: false,
             relative_urls: false,
             branding: false,
