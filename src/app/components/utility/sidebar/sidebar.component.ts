@@ -30,8 +30,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   showUserSection: boolean = false;
   showAdminSection: boolean = false;
 
-  //TODO: Fix that elements underneath the sidebar also get clicked when clicking on the sidebar (mostly an issue on mobile)
-
   constructor(
     public routingService: RoutingService,
     public tokenService: TokenService,
