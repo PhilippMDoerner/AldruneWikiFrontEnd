@@ -26,8 +26,6 @@ export class AppComponent implements OnInit, OnDestroy{
   serviceWorkerSubscription: Subscription;
   parameterSubscription: Subscription;
 
-  loading: boolean = false;
-
   showSafariWarning: boolean; //Necessary to display warning about how this site is broken on iOS Safari
 
   @ViewChild('sidebar') sidebarRef: ElementRef;
@@ -58,24 +56,8 @@ export class AppComponent implements OnInit, OnDestroy{
     this.routingSubscription = this.router.events
       .pipe(filter(this.isPageReroutingEndEvent))
       .subscribe((event) => this.onPageReroutingEnd(event));
-
-    this.routingTransitionSubscription = this.router.events
-      .subscribe((event: RouterEvent) => this.manageTransitionLoadingSpinner(event))
   }
 
-  /**When loading a new page, this determines whether the loading spinner is shown or not */
-  manageTransitionLoadingSpinner(event: RouterEvent): void{
-    if (event instanceof NavigationStart) {
-      this.loading = true;
-    }
-
-    if (event instanceof NavigationEnd ||
-      event instanceof NavigationCancel ||
-      event instanceof NavigationError) {
-      this.loading = false;
-      this.showSidebarSubject.next(false);
-    }
-  }
 
   /** Checks whether the given routing event is one that is fired at the end of routing, so when the new URL is reached */
   isPageReroutingEndEvent(e: any): boolean{

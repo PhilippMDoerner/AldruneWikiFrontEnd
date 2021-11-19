@@ -1,4 +1,3 @@
-<!-- <app-navbar [outsideClickSubject]="outsideClickSubject"></app-navbar> -->
 <!-- Warning Displaying that Safari is not supported -->
 <div class="alert alert-warning alert-dismissable fade show mb-0 d-flex align-items-center" role="alert" *ngIf="showSafariWarning">
     <strong class="flex-1">
@@ -32,9 +31,11 @@ class="d-flex base-page"
     class="d-flex justify-content-center w-100"
     >
         <router-outlet #routerOutlet></router-outlet>
-        <div *ngIf="loading">
-            <app-spinner class="transition-spinner"></app-spinner>
-        </div>
     </div>
     <app-background-image></app-background-image>
 </div>
+
+<ngx-loading-bar 
+[color]="'hsl(228, 100%, 76%)'"
+[includeSpinner]="false"
+></ngx-loading-bar>
