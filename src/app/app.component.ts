@@ -73,6 +73,7 @@ export class AppComponent implements OnInit, OnDestroy{
       event instanceof NavigationCancel ||
       event instanceof NavigationError) {
       this.loading = false;
+      this.showSidebarSubject.next(false);
     }
   }
 
@@ -140,23 +141,6 @@ export class AppComponent implements OnInit, OnDestroy{
   @onlyOnTouchDevices
   onSwipeRight(event: any): void{
     this.showSidebarSubject.next(true);
-  }
-
-  @onlyOnTouchDevices
-  onTap(event: any){
-    const sidebarIsVisible = this.showSidebarSubject.value === true;
-
-    const clickTarget: HTMLElement = event.target;
-    const isClickOnMenuContainer = clickTarget.closest(".container-title") != null;
-
-    if (sidebarIsVisible && !isClickOnMenuContainer){
-      //The sidebar should be hidden if anything on it that isn't a menu container was clicked
-      //However, if you hide it immediately, you get also a click event on whatever is underneath the sidebar
-      //Therefore, you have to delay it slightly... for some reason
-      window.setTimeout(() =>{
-        this.showSidebarSubject.next(false);
-      }, 100);
-    } 
   }
 
   ngOnDestroy(): void{
