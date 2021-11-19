@@ -19,6 +19,7 @@ router-outlet + ::ng-deep * {
         left: 50%;
         background-color: black;
         border-radius: 3rem;
+        z-index: 1006;
 }
 
 @media(max-width: 576px){
