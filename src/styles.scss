@@ -1,7 +1,6 @@
 @use "sass:math";
 
 //Fonts
-@import url("https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600");
 input[type="submit"], button {
     font-family: Source Sans Pro,sans-serif !important;
 }
@@ -630,38 +629,25 @@ button{
 @font-face {
 	font-family: 'Source Sans Pro';
 	src: url('/assets/fonts/SourceSansPro-Light.ttf')  format('truetype');
-	font-weight: lighter;
+	font-weight: normal;
 }
 
 @font-face {
 	font-family: 'Source Sans Pro';
 	src: url('/assets/fonts/SourceSansPro-LightItalic.ttf')  format('truetype');
-	font-weight: lighter;
-	font-style: italic;
-}
-
-@font-face {
-	font-family: 'Source Sans Pro';
-	src: url('/assets/fonts/SourceSansPro-Regular.ttf')  format('truetype');
-	font-weight: normal;
-}
-
-@font-face {
-	font-family: 'Source Sans Pro';
-	src: url('/assets/fonts/SourceSansPro-Italic.ttf')  format('truetype');
 	font-weight: normal;
 	font-style: italic;
 }
 
 @font-face {
 	font-family: 'Source Sans Pro';
-	src: url('/assets/fonts/SourceSansPro-Bold.ttf')  format('truetype');
+	src: url('/assets/fonts/SourceSansPro-SemiBold.ttf')  format('truetype');
 	font-weight: bold;
 }
 
 @font-face {
 	font-family: 'Source Sans Pro';
-	src: url('/assets/fonts/SourceSansPro-BoldItalic.ttf')  format('truetype');
+	src: url('/assets/fonts/SourceSansPro-SemiBoldItalic.ttf')  format('truetype');
 	font-weight: bold;
 	font-style: italic;
 }
