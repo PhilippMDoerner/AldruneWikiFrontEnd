@@ -13,6 +13,8 @@
         <ngb-carousel 
         #imageCarousel
         interval="false"
+        [showNavigationArrows]="images.length > 1"
+        [showNavigationIndicators]="images.length > 1"
         (slide)="onSlide($event)"
         >
             <ng-template ngbSlide *ngFor="let image of images; let i = index" [id]="'imageIndex-' + i">
@@ -119,7 +121,7 @@
 </ng-template>
 
 <ng-template #defaultImage>
-    <ngb-carousel>
+    <ngb-carousel [showNavigationArrows]="false" [showNavigationIndicators]="false">
 
         <ng-template ngbSlide>
             <div class="image-container default-image">
