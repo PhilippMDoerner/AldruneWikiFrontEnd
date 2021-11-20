@@ -35,10 +35,10 @@
     #sidebar:hover .on-hover-show{
         display: block;
 
-        -webkit-animation: fadeInFromNone 0.6s ease-out;
-        -moz-animation: fadeInFromNone 0.6s ease-out;
-        -o-animation: fadeInFromNone 0.6s ease-out;
-        animation: fadeInFromNone 0.6s ease-out; 
+        -webkit-animation: fadeInFromNone 0.3s ease-out;
+        -moz-animation: fadeInFromNone 0.3s ease-out;
+        -o-animation: fadeInFromNone 0.3s ease-out;
+        animation: fadeInFromNone 0.3s ease-out; 
     }
 
     #sidebar:hover .on-hover-show.overview-link.flex{
@@ -185,10 +185,10 @@ li a i{ //entry icon
 #sidebar.swiped-right .on-hover-show{
     display: block;
 
-    -webkit-animation: fadeInFromNone 0.6s ease-out;
-    -moz-animation: fadeInFromNone 0.6s ease-out;
-    -o-animation: fadeInFromNone 0.6s ease-out;
-    animation: fadeInFromNone 0.6s ease-out;
+    -webkit-animation: fadeInFromNone 0.3s ease-out;
+    -moz-animation: fadeInFromNone 0.3s ease-out;
+    -o-animation: fadeInFromNone 0.3s ease-out;
+    animation: fadeInFromNone 0.3s ease-out;
 }
 
 #sidebar.swiped-right .on-hover-show.overview-link.flex{
@@ -258,7 +258,7 @@ li a i{ //entry icon
         opacity: 0;
     }
 
-    40% {
+    60% {
         display: block;
         opacity: 0;
     }
@@ -275,7 +275,7 @@ li a i{ //entry icon
         opacity: 0;
     }
 
-    40% {
+    60% {
         display: block;
         opacity: 0;
     }
@@ -292,7 +292,7 @@ li a i{ //entry icon
         opacity: 0;
     }
 
-    40% {
+    60% {
         display: block;
         opacity: 0;
     }
@@ -309,7 +309,7 @@ li a i{ //entry icon
         opacity: 0;
     }
 
-    40% {
+    60% {
         display: block;
         opacity: 0;
     }
