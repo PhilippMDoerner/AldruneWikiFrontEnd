@@ -57,6 +57,7 @@
 #sidebar.swiped-right{
     display: block;
     width: 20rem;
+    touch-action: pan-y !important; //Essential to allow scrolling in sidebar despite hammerjs being active
 
     -webkit-animation: slideInLeft 0.2s ease-out;
     -moz-animation: slideInLeft 0.2s ease-out;
