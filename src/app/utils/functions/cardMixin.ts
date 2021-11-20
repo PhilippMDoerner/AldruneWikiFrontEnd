@@ -111,7 +111,7 @@ export abstract class CardFormMixin extends PermissionUtilityFunctionMixin{
             this.formState = Constants.updateState;
             this.resetModel();
 
-        } else if (this.isInUpdateState()){
+        } else if (this.isInUpdateState() || this.isInOutdatedUpdateState()){
             this.formState = Constants.displayState;
 
         } else if (this.isInCreateState()){
