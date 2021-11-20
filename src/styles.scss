@@ -626,6 +626,47 @@ button{
 	z-index: 1000;
 }
 
+//FONTS
+@font-face {
+	font-family: 'Source Sans Pro';
+	src: url('/assets/fonts/SourceSansPro-Light.ttf')  format('truetype');
+	font-weight: lighter;
+}
+
+@font-face {
+	font-family: 'Source Sans Pro';
+	src: url('/assets/fonts/SourceSansPro-LightItalic.ttf')  format('truetype');
+	font-weight: lighter;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Source Sans Pro';
+	src: url('/assets/fonts/SourceSansPro-Regular.ttf')  format('truetype');
+	font-weight: normal;
+}
+
+@font-face {
+	font-family: 'Source Sans Pro';
+	src: url('/assets/fonts/SourceSansPro-Italic.ttf')  format('truetype');
+	font-weight: normal;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Source Sans Pro';
+	src: url('/assets/fonts/SourceSansPro-Bold.ttf')  format('truetype');
+	font-weight: bold;
+}
+
+@font-face {
+	font-family: 'Source Sans Pro';
+	src: url('/assets/fonts/SourceSansPro-BoldItalic.ttf')  format('truetype');
+	font-weight: bold;
+	font-style: italic;
+}
+
+
 // Mobile CSS
 @media(max-width: 992px){
 	//Notifications
