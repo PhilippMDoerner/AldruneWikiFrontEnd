@@ -17,29 +17,30 @@ import { SpellObject } from './spell';
 import { RuleObject } from './rule';
 
 export interface OverviewItem{
-    article_type: string,
-    name: string,
-    pk: number,
-    name_full: string,
-    description?: string,
-    update_date?: string,
+    article_type: string;
+    name: string;
+    pk: number;
+    name_full: string;
+    description?: string;
+    update_date?: string;
 
     //For Character-Type OverviewItems
-    player_character?: boolean,
-    images?: Image[]
+    player_character?: boolean;
+    images?: Image[];
 
     //For Location-Type OverviewItems
-    parent_location_details?: {name: string, pk: number},
+    parent_location_details?: {name: string, pk: number};
 
     //For Diaryentry-Type OverviewItems
-    session_details?: Session,
-    author_details?: {pk: number, name: string}
+    session_details?: Session;
+    author_details?: {pk: number, name: string};
 
     //For Session Audio-Type OverviewItems
-    audio_url?: string
+    audio_url?: string;
+    download_url?: string;
 
     //For Map-Type OverviewItems
-    icon?: string,
+    icon?: string;
 }
 
 export class OverviewItemObject implements OverviewItem{
