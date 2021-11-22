@@ -4,10 +4,10 @@
     <h5 class="pointer col-12 justify-content-between d-flex align-items-center spell-title" (click)="toggleSpellCard($event)">
         <!-- Spell Title -->
         <strong>
-            {{cardData.name}}
+            <span>{{cardData.name}}</span>
             <span *ngIf="cardData.concentration" class="ml-2">(C)</span>
             <span *ngIf="cardData.ritual" class="ml-2">(R)</span>
-            <div class="ml-4 d-inline-flex align-items-center">
+            <span class="d-inline-flex flex-wrap align-items-center ml-3">
                 <span
                 *ngFor="let connection of cardData.player_class_connections" 
                 class="badge badge-secondary mr-3"
@@ -17,14 +17,14 @@
                     <span *ngIf="tokenService.isAdmin()" class="fa fa-trash icon" (click)="deleteSpellPlayerClassConnection(connection)"></span>
                 </span>
 
-                <span *ngIf="tokenService.isAdmin()">
+                <ng-container *ngIf="tokenService.isAdmin()">
                     <span 
                     class="icon fa fa-plus fa-1-5x" 
                     (click)="toggleConnectionCreateState()" 
                     *ngIf="!isSpellConnectionCreateState; else connectionForm"
                     ></span>
-                </span>
-            </div>
+                </ng-container>
+            </span>
         </strong>
 
         <i class="fa icon" [ngClass]="{'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}"></i>
