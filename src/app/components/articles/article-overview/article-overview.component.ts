@@ -18,6 +18,8 @@ import { CampaignOverview } from 'src/app/models/campaign';
   styleUrls: ['./article-overview.component.scss'],
 })
 export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin implements OnInit {
+  OverviewType = OverviewType;
+
   //URLS
   homeUrl: string;
 
