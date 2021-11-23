@@ -5,7 +5,7 @@
             <h1 class="major col mb-4 pb-1 border-bottom">{{ overviewTypeMetaData[overviewTypeName]?.heading }}</h1>
         </div>
 
-        <ng-container [ngSwitch]="overviewTypeName" #heading>
+        <ng-container [ngSwitch]="overviewTypeMetaData[overviewTypeName].overviewTypeEnum" #heading>
             <ng-container *ngSwitchCase="OverviewType.Character" [ngTemplateOutlet]="characterHeading"></ng-container>
             <ng-container *ngSwitchDefault [ngTemplateOutlet]="defaultHeading"></ng-container>        
         </ng-container>
@@ -29,7 +29,7 @@
             >    
         </form>
 
-        <ng-container [ngSwitch]="overviewTypeName" #body> 
+        <ng-container [ngSwitch]="overviewTypeMetaData[overviewTypeName].overviewTypeEnum" #body> 
             <ng-container *ngSwitchCase="OverviewType.Character" [ngTemplateOutlet]="characterBody"></ng-container>
             <ng-container *ngSwitchCase="OverviewType.Diaryentry" [ngTemplateOutlet]="diaryentryBody"></ng-container>
             <ng-container *ngSwitchDefault [ngTemplateOutlet]="defaultBody"></ng-container>        
@@ -57,7 +57,7 @@
         <h3 class="col mb-0"> Player Characters </h3>
     </div>
 
-    <div class="mb-5 row">
+    <div class="mb-5 row" id="player-characters">
         <div *ngFor="let playerCharacter of playerCharacters" class="mb-4 col-md-4 col-sm-6 col-12">
             <a routerLink="{{ playerCharacter.getAbsoluteRouterUrl() }}">
                 <div class="card">
@@ -106,8 +106,6 @@
 
 
 <ng-template #diaryentryBody>
-    <ng-container [ngTemplateOutlet]="filterField"></ng-container>
-
     <div *ngFor="let authorDiaryEntries of listItems | groupBy: 'author_details.name'">
         <!-- Author Heading -->
         <div class="row">

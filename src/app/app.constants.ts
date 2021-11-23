@@ -324,23 +324,23 @@ export class Constants{
 
 
 export enum OverviewType{
-  Character,
-  Creature,
-  Diaryentry,
-  Encounter,
-  Item,
-  Location,
-  Map,
-  MarkerType,
-  MarkerTypeType,
-  Organization,
-  Quest,
-  Quote,
-  Rule,
-  Session,
-  Sessionaudio,
-  Spell,
-  User
+  Character = "CHARACTER",
+  Creature = "CREATURE",
+  Diaryentry = "DIARYENTRY",
+  Encounter = "ENCOUNTER",
+  Item = "ITEM",
+  Location = "LOCATION",
+  Map = "MAP",
+  MarkerType = "MARKERTYPE",
+  MarkerTypeType = "MARKERTYPETYPE",
+  Organization = "ORGANIZATION",
+  Quest = "QUEST",
+  Quote = "QUOTE",
+  Rule = "RULE",
+  Session = "SESSION",
+  Sessionaudio = "SESSIONAUDIO",
+  Spell = "SPELL",
+  User = "USER"
 }
 
 export enum CampaignRole{

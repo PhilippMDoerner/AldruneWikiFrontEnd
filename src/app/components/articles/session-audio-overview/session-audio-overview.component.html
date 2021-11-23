@@ -1,8 +1,8 @@
 <div class="main" #overviewMainCard>
-    <article>
+    <article class="container">
         <h1 class="text-center">Session Audio Files</h1>
 
-        <div class="mb-3 row mx-3" *ngIf="hasCreatePermission">
+        <div class="mb-3 row mx-0" *ngIf="hasCreatePermission">
             <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
                 <i class="fa fa-plus"></i>
                 Add Recording
@@ -10,7 +10,7 @@
         </div>
 
         <!-- Requires m-0 because on mobile it else goes into overflow -->
-        <div class="row m-0">
+        <div class="row">
             <!-- Normal Session Audio Cards -->
             <div class="col-md-4 col-sm-6" *ngFor="let sessionAudio of sessionAudioFiles; let audioIndex=index">
                 <div class="card my-3">
