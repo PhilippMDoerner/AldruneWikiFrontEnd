@@ -34,8 +34,8 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
     this.formlyService.genericCheckbox({key: "is_main_session", defaultValue: true, label: "Main Session?"}),
     this.formlyService.genericInput({key: "session_number", label: "Session Number", required: true}),
     this.formlyService.genericDatepicker({key: "session_date", label: "Day of the Session", required: true}),
-    this.formlyService.genericInput({key: "start_day", label: "Start Day", required: false, isNumberInput: true}),
-    this.formlyService.genericInput({key: "end_day", label: "End Day", required: false, isNumberInput: true})
+    this.formlyService.genericInput({key: "start_day", label: "Start Day", required: false }),
+    this.formlyService.genericInput({key: "end_day", label: "End Day", required: false })
   ];
 
   constants : any = Constants;
