@@ -1,13 +1,10 @@
-import { Component, ElementRef, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { OverviewItemObject } from "src/app/models/overviewItem";
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { OverviewService } from 'src/app/services/overview.service';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 import { RoutingService } from 'src/app/services/routing.service';
-import { filter, first, map } from 'rxjs/operators';
-import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { TokenService } from 'src/app/services/token.service';
 import { CampaignOverview } from 'src/app/models/campaign';
@@ -30,7 +27,6 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   playerCharacters: OverviewItemObject[];
   isInitialAnimationFinished: boolean = false;
   campaign: CampaignOverview;
-  paramSubscription: Subscription;
 
   @ViewChildren("filter") filterField: QueryList<ElementRef>;
   @ViewChild('overviewMainCard') articleElement: ElementRef;
