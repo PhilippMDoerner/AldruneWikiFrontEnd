@@ -47,7 +47,7 @@ export class Home2Component implements OnInit, AfterViewInit, OnDestroy {
 
   startSearch(): void{
     if (this.searchString != null){
-      const cleaned_search = this.searchString.replace(/[^a-zA-Z0-9]/g,' ').trim();
+      const cleaned_search = this.searchString.replace(/[^a-zA-Z0-9']/g,' ').trim();
       const cleaned_trimmed_search = cleaned_search.replace(/\s\s+/g, ' '); //Removes scenarios with more than 1 consecutive whitespace
   
       this.searchString = cleaned_trimmed_search;
