@@ -20,7 +20,7 @@ export const dateMessage = { name: "date", message: "This date does not follow t
 export const requiredIconMessage = { name: 'requiredIcon', message: "This field requires a fontawesome icon as input. Here is a list of them: https://fontawesome.com/v4.7.0/icons/" };
 export const faPrefixMessage = { name: 'faPrefix', message: "Icons are stored without the 'fa-' from font-awesome prefix" };
 export const notIntegerMessage = { name: 'notInteger', message: "Your input is not an integer. This field requires an integer number. No amount of revolution can overcome this." };
-export const hasSpecialCharactersMessage = { name: 'hasSpecialCharacters', message: 'Your input includes one of the following invalid special characters: [ ] { } ? | \\ " % ~ # < > \'. If you need to rebel, please dont against this.' };
+export const hasSpecialCharactersMessage = { name: 'hasSpecialCharacters', message: 'Your input includes one of the following invalid special characters: [ ] { } ? | \\ " % ~ # < >. If you need to rebel, please dont against this.' };
 export const fieldsDontMatchMessage = { name: 'fieldMatch', message: 'Password Not Matching'};
 export const sessionAlreadyHasAuthor = { name: 'isInvalidSessionAuthorPair', message: `
     The author you selected already has a diaryentry in the session you selected. You 
@@ -68,7 +68,7 @@ export const integerValidator = { name: 'notInteger', validation: isIntegerValid
 function hasNoSpecialCharactersValidation(control: FormControl): ValidationErrors{
     const isString = (typeof control.value === "string");
     if (isString){
-        const specialCharacters: string[] = ['[', ']', '{', '}', '|', '\\', '\"', '%', '~', '#', '<', '>', ']', '?', '\''];
+        const specialCharacters: string[] = ['[', ']', '{', '}', '|', '\\', '\"', '%', '~', '#', '<', '>', ']', '?'];
         for (const specialCharacter of specialCharacters){
             if (control.value.includes(specialCharacter)){
                 return { 'hasSpecialCharacters': true };
