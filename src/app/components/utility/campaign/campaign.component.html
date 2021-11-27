@@ -20,21 +20,21 @@
             Campaign Settings
         </h1>
         <div class="card mb-5 mx-0 py-3 row flex-row">
-            <div class="col-sm-6 d-flex flex-column align-items-center">
+            <div class="col-md-6 d-flex flex-column align-items-center">
                 <h3 class="text-center">Background</h3>
                 <img title="Campaign background image" class="gallery-image" [src]="articleData.background_image" alt="Background image of this campaign">
             </div>
-            <div class="col-sm-6 d-flex flex-column align-items-center">
+            <div class="col-md-6 d-flex flex-column align-items-center">
                 <h3 class="text-center">Icon</h3>
                 <img title="Campaign Icon" class="gallery-image" [src]="articleData.icon" alt="Icon of this campaign">
             </div>
 
             <div class="col-12 row mt-4">
-                <strong class="col-sm-3 col-6">Default Map: </strong>
-                <div class="col-sm-9 col-6">{{ campaign.default_map_details?.name }}</div>
+                <strong class="col-md-3 col-6">Default Map: </strong>
+                <div class="col-md-9 col-6">{{ campaign.default_map_details?.name }}</div>
 
-                <strong class="col-sm-3 col-6">Subtitle: </strong>
-                <div class="col-sm-9 col-6" [innerHtml]="campaign.subtitle"></div>
+                <strong class="col-md-3 col-6">Subtitle: </strong>
+                <div class="col-md-9 col-6" [innerHtml]="campaign.subtitle"></div>
             </div>
         </div>
 
@@ -46,7 +46,7 @@
         </h1>
         
         <div class="mb-3 row">
-            <div class="col-sm-6 col-12 mb-3">
+            <div class="col-md-6 col-12 mb-3">
                 <div class="p-3 card">
                     <h3 class="text-center">
                         Admins
@@ -61,7 +61,7 @@
                         <app-delete-toggle
                         [deleteMessage]="'Remove '+ user.username +' as admin?'"
                         (deleteEvent)="onRemoveAdmin(user)"
-                        class="float-right px-0"
+                        class="float-right px-0 mt-0"
                         ></app-delete-toggle>
                     </div>
 
@@ -78,7 +78,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-6 col-12 mb-3">
+            <div class="col-md-6 col-12 mb-3">
                 <div class="p-3 card">
                     <h3 class="text-center">
                         Party members
@@ -93,7 +93,7 @@
                         <app-delete-toggle
                         [deleteMessage]="'Remove '+ user.username +' as member?'"
                         (deleteEvent)="onRemoveMember(user)"
-                        class="float-right px-0"
+                        class="float-right px-0 mt-0"
                         ></app-delete-toggle>
                     </div>
 
@@ -108,7 +108,7 @@
                 </div>
             </div>
 
-            <div class="col-sm-6 col-12 mb-3">
+            <div class="col-md-6 col-12 mb-3">
                 <div class="p-3 card">
                     <h3 class="text-center">
                         Guests
@@ -123,7 +123,7 @@
                         <app-delete-toggle
                         [deleteMessage]="'Remove '+ user.username +' as guest?'"
                         (deleteEvent)="onRemoveGuest(user)"
-                        class="float-right px-0"
+                        class="float-right px-0 mt-0"
                         ></app-delete-toggle>
                     </div>
 
@@ -147,8 +147,8 @@
 
         <div class="container mb-5">
             <div class="row" *ngFor="let statistic of campaignStatistics | keyvalue">
-                <div class="col-6 col-sm-3"> {{ statistic.key }}</div>
-                <div class="col-6 col-sm-3"> {{ statistic.value }}</div>
+                <div class="col-6 col-md-3"> {{ statistic.key }}</div>
+                <div class="col-6 col-md-3"> {{ statistic.value }}</div>
             </div>
         </div>
 
