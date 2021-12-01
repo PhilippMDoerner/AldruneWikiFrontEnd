@@ -21,7 +21,8 @@ export class SessionsComponent extends ArticleListMixin implements OnInit, After
 
   articleModelClass = SessionObject;
   articleStarterTitle = "New Session";
-  articlesSortProperty = "-session_date";
+  articlesSortProperty = "session_date";
+  isReverseSort = true;
 
   @ViewChildren("sessionElements") articleElements: QueryList<any>;
   articlesInitialScrollParameter = "name";

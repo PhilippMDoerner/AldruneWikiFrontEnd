@@ -26,6 +26,7 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
 
     articleStarterTitle = "New Article Item";
     articlesSortProperty = "name";
+    isReverseSort = false;
 
     //For Scrolling feature
     @ViewChildren("articles") articleElements: QueryList<any>;
@@ -59,8 +60,7 @@ export class ArticleListMixin extends PermissionUtilityFunctionMixin implements 
         const sortedArticles = articles.sort((article1, article2) => {
             return article1[this.articlesSortProperty] < article2[this.articlesSortProperty] ? -1 : 1;
         });
-        const isReverseSort: boolean = this.articlesSortProperty.startsWith("-");
-        this.articles = isReverseSort ? sortedArticles.reverse() : sortedArticles;
+        this.articles = this.isReverseSort ? sortedArticles.reverse() : sortedArticles;
 
         this.showArticleArray = this.articles.map(article => true);
 

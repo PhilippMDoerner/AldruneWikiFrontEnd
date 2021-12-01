@@ -33,11 +33,9 @@ export class QuoteOverviewComponent extends ArticleListMixin implements OnInit {
   characters: OverviewItem[];
 
   constructor(
-    private quoteService: QuoteService,
-    private quoteConnectionService: QuoteConnectionService,
-    private characterService: CharacterService,
-    private warning: WarningsService,
-    public routingService: RoutingService,
+    characterService: CharacterService,
+    warning: WarningsService,
+    routingService: RoutingService,
     route: ActivatedRoute,
     tokenService: TokenService,
     globalUrlParams: GlobalUrlParamsService,
