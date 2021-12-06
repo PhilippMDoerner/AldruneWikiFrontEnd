@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentInit, AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Constants } from 'src/app/app.constants';
 import { ExtendedMap } from 'src/app/models/map';
@@ -22,7 +22,7 @@ let DefaultIcon = L.icon({
   templateUrl: './leaflet-map.component.html',
   styleUrls: ['./leaflet-map.component.scss']
 })
-export class LeafletMapComponent implements OnInit, AfterContentInit {
+export class LeafletMapComponent implements AfterContentInit {
   @Input() map: ExtendedMap;
   @Input() campaign: CampaignOverview;
 
@@ -36,41 +36,46 @@ export class LeafletMapComponent implements OnInit, AfterContentInit {
   mouseLongitude: number;
   hideCoordinatesState: boolean = true;
 
-  ngOnInit(): void{}
 
   ngAfterContentInit(){
-    this.initMap();
+    /*
+     * It is mystifying why this is needed. If this isn't there, leaflet will mess up the initial 
+     * calculation of the translate3D CSS rule of the .leaflet-image-layer element, which will cause the
+     * map to wildly jump around when clicked. Chances are, it's because translate3D is trying to be 
+     * calculated before the map element is properly initialized and putting this onto another thread
+     * forces it to wait for that.
+     **/
+    setTimeout(() => this.initMap(), 0);
   }
 
   initMap(){
     this.leafletMap = L.map('leafletMapDiv', {
-      crs: L.CRS.Simple,
-      minZoom: -1,
-      maxZoom: 2,
+        crs: L.CRS.Simple,
+        minZoom: -1,
+        maxZoom: 2,
     });
-    this.addMarkers()
+    this.addMapImage();
+    this.addMarkers();
     this.setMapEventListeners();
-    this.addMapImage()
   }
 
   setMapEventListeners(){
-    // Get the map coordinates of the point the mouse hovers over
+    //Get the map coordinates of the point the mouse hovers over
     this.leafletMap.on('mousemove', event => {
       this.mouseLatitude = event.latlng.lat;
       this.mouseLongitude = event.latlng.lng;
-    })
+    });
 
     this.leafletMap.on('click', event => {
       const latitude = parseInt(event.latlng.lat);
       const longitude = parseInt(event.latlng.lng);
 
       const popupContentHTML = this.makeFreePopupContentHTML(longitude, latitude);
-
       L.popup()
         .setLatLng([latitude, longitude])
         .setContent(popupContentHTML)
         .openOn(this.leafletMap);
-    })
+    });
   }
 
   makeFreePopupContentHTML(longitude: number, latitude: number): string{
