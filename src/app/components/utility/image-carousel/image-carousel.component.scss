@@ -48,3 +48,10 @@
         opacity: 1;
     }
 }
+
+@media (hover: none) {
+    .edit-image-buttons,
+    .mouseoverVisible{
+        opacity: 1;
+    }
+}
