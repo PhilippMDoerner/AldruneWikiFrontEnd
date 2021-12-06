@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { first } from 'rxjs/operators';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { ExtendedMap, MapObject } from 'src/app/models/map';
@@ -41,6 +41,7 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
     public routingService: RoutingService,
     globalUrlParams: GlobalUrlParamsService,
     tokenService: TokenService,
+    public router: Router,
   ) { 
     super(
       mapService,
@@ -98,24 +99,9 @@ export class MapComponent extends ArticleMixin implements OnInit, OnDestroy {
     throw `${mapName} is not a valid map name. There is no map with this name on the page!`;
   }
 
-  /**
-   * @description: Routes to a given map. This is being done using window.location.replace, NOT with routeToPath
-   * EXPLANATION: RouteToPath comes with an error. If you route and use resolvers, then somehow new data is being loaded
-   * and used in the JS side of things, but the HTML is not made to comply with that.
-   * This results in the leafletMapDiv still being there when the new leafletMap object is being created.
-   * The way leaflet works is, it associates a pre-existing HTML Element with the leafletMap object (under "_container").
-   * However, the HTML Element it finds is not empty, instead it is full of data of an already existing map.
-   * Leaflet proceeds to throw an error in that case, "map container is already initialized"
-   * The issue is, you can't just remove the map. If you remove the map when the page unloads, the leaflet map object 
-   * that gets created on the next page load gets associated with the HTML you just removed (WTF!?). At that point your displayed
-   * HTML is an empty map and your associated HTML is not in your DOM and only in RAM.
-   * 
-   * If you directly remove the HTMLElement you get something working, but somehow the leaflet map itself then starts behaving
-   * wonky, as if the center of the map had shifted 50% to the left.
-   */
   routeToMap(newMap: string){
     const mapUrl = this.routingService.getRoutePath('map', {name: newMap, campaign: this.campaign.name});
-    window.location.replace(mapUrl);
+    this.router.navigateByUrl(mapUrl);
   }
 
   onMapChange(event){
