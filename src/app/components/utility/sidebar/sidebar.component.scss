@@ -1,3 +1,5 @@
+@import '/src/app/cssvariables.scss';
+
 #sidebar{
     height: 100vh;
     width: 4rem;
@@ -206,7 +208,7 @@ li a i{ //entry icon
 }
 
 
-@media(max-width: 576px){
+@media(max-width: $small-screen){
     #brand{
         padding-left: 0.5rem;
     }
@@ -240,7 +242,7 @@ li a i{ //entry icon
     }
 }
 
-@media(max-width: 325px){
+@media(max-width: $xsmall-screen){
     #brand{
         font-size: 1.5rem;
     }

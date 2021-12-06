@@ -1,3 +1,5 @@
+@import '/src/app/cssvariables.scss';
+
 table{
     background-color: transparent;
 }
@@ -33,7 +35,7 @@ table{
     border-bottom: 1px grey solid;
 }
 
-@media(max-width:767px){
+@media(max-width: $medium-screen){
     .column-heading{
         font-size: medium;
     }

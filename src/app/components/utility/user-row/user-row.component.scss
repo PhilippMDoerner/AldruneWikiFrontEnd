@@ -1,3 +1,5 @@
+@import '/src/app/cssvariables.scss';
+
 .hide-icon{
     opacity: 0;
     transition: opacity 0.2s;
@@ -28,7 +30,7 @@
     text-overflow: ellipsis;
 }
 
-@media(max-width: 768px){
+@media(max-width: $medium-screen){
     .hide-on-mobile{
         display: none !important;
     }

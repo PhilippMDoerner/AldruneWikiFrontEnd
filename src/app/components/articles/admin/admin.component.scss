@@ -1,3 +1,5 @@
+@import '/src/app/cssvariables.scss';
+
 .usertable .row{
     line-height: 1.2;
     margin-left: -15px;
@@ -26,7 +28,7 @@
     max-height: 2rem;
 }
 
-@media(max-width: 768px){
+@media(max-width: $medium-screen){
     .hide-on-mobile{
         display: none !important;
     }

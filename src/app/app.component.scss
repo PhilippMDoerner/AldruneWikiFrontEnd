@@ -1,3 +1,5 @@
+@import '/src/app/cssvariables.scss';
+
 .sidebar-wrapper{
         width: 4rem;
         min-width: 4rem;
@@ -22,7 +24,7 @@ router-outlet + ::ng-deep * {
         z-index: 1006;
 }
 
-@media(max-width: 576px){
+@media(max-width: $small-screen){
         .sidebar-wrapper{
                 width: 0rem;
                 min-width: 0rem;

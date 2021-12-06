@@ -1,3 +1,5 @@
+@import '/src/app/cssvariables.scss';
+
 #container-overview{
     width: 100vw;
     min-height: 100vh; //Ensures the campaigns take up at least the whole screen, maybe more
@@ -74,7 +76,7 @@
     max-height: 100%;
 }
 
-@media(max-width: 768px){
+@media(max-width: $medium-screen){
     .overlay-heading h3{
         font-size: 1.5rem;
     }
@@ -85,7 +87,7 @@
 }
 
 
-@media(max-width: 576px){
+@media(max-width: $small-screen){
     .campaign-row{
         flex-direction: column;
         flex: 1;

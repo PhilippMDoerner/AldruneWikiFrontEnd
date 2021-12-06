@@ -1,3 +1,5 @@
+@import '/src/app/cssvariables.scss';
+
 .heading{
     margin-bottom: 0rem;
 }
@@ -95,13 +97,13 @@
 }
 
 
-@media(max-width: 768px){
+@media(max-width: $medium-screen){
 	.edit-image-buttons{
         opacity: 1;
     }
 }
 
-@media(max-width: 576px){
+@media(max-width: $small-screen){
     div.order-arrows.flex-column{
         flex-direction: row !important;
     }

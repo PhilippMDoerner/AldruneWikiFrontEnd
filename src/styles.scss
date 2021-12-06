@@ -1,4 +1,6 @@
 @use "sass:math";
+@import '/src/app/cssvariables.scss';
+
 
 //Fonts
 input[type="submit"], button {
@@ -95,7 +97,6 @@ $marker-width: 100px;
 
 /* Leaflet CSS */
 @import "~leaflet/dist/leaflet.css";
-
 
 /* Bootstrap customizations */
 @import './app/custom_bootstrap.scss';
@@ -654,7 +655,7 @@ button{
 
 
 // Mobile CSS
-@media(max-width: 992px){
+@media(max-width: $large-screen){
 	//Notifications
 	.notification{
 		right: 17%;
@@ -670,7 +671,7 @@ button{
 	}
 }
 
-@media(max-width: 768px){
+@media(max-width: $medium-screen){
 	app-delete-toggle{
 		margin-top: 2rem;
 	}
@@ -690,7 +691,7 @@ button{
 	}
 }
 
-@media(max-width: 576px){
+@media(max-width: $small-screen){
 	//Notifications
 	.notification{
 		right: 5%;

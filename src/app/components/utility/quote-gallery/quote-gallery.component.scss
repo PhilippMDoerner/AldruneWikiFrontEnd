@@ -1,3 +1,5 @@
+@import '/src/app/cssvariables.scss';
+
 .hide-icon{
     opacity: 0;
     transition: opacity 0.2s;
@@ -35,7 +37,7 @@ blockquote:hover ~ .icon-container, .icon-container:hover{
     opacity: 1;
 }
 
-@media(max-width: 768px){
+@media(max-width: $medium-screen){
 	.icon-container{
         opacity: 1;
     }

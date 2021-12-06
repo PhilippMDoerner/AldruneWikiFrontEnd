@@ -1,3 +1,5 @@
+@import '/src/app/cssvariables.scss';
+
 .header-buttons{
     display:flex;
     justify-content: flex-end;
@@ -9,7 +11,7 @@
     word-break: break-all;
 }
 
-@media(max-width: 576px){
+@media(max-width: $small-screen){
     .header-buttons{
         justify-content: space-evenly;
     }

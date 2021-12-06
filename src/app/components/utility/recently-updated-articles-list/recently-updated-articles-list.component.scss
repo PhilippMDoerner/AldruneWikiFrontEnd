@@ -1,3 +1,4 @@
+@import '/src/app/cssvariables.scss';
 
 .card{
     line-height: 1.25;
@@ -57,7 +58,7 @@ header{
     text-align: center;
 }
 
-@media(max-width: 576px){
+@media(max-width: $small-screen){
     .card-img-top{
         max-height: 5rem;
     }

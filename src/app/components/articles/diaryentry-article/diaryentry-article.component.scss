@@ -1,3 +1,5 @@
+@import '/src/app/cssvariables.scss';
+
 .encounter{
     padding: 0.5rem 0 0.5rem 0;
     transition: 0.2s padding;
@@ -7,7 +9,7 @@
     padding: 0.5rem 3rem;
 }
 
-@media(max-width: 576px){
+@media(max-width: $small-screen){
     #authors.mb-5{
         margin-bottom: 0.5rem !important;
     }
