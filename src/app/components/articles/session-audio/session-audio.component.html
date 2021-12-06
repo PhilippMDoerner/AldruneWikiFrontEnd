@@ -18,7 +18,7 @@
         </div>
 
         <!-- Audio Player -->
-        <div class="mt-4 mb-1 row" #playerSection>
+        <div class="mt-4 mb-1 row mx-0" #playerSection>
             <!-- Background Image -->
             <div class="black-background col-12 px-0" (click)="togglePlayer(vimePlayer)">
                 <img class="mw-100" src="{{constants.audioImageUrl}}"/>
@@ -42,7 +42,7 @@
         <!-- Next Buttons -->
         <div class="mb-3 row justify-content-between">
             <!-- Next Session -->
-            <div class="col-lg-3 col-6 px-0">
+            <div class="col-lg-3 col-6">
                 <a  
                 *ngIf="nextSessionAudioUrl"
                 routerLink="{{nextSessionAudioUrl}}"
@@ -54,7 +54,7 @@
             </div>
 
             <!-- Prior Session -->
-            <div class="col-lg-3 col-6 px-0">
+            <div class="col-lg-3 col-6">
                 <a  
                 *ngIf="priorSessionAudioUrl"
                 routerLink="{{priorSessionAudioUrl}}"
@@ -67,9 +67,9 @@
         </div>
 
         <!-- Add Timestamp -->
-        <div class="row justify-content-center mb-3">
+        <div class=" mb-3 row justify-content-center mx-0">
             <div 
-            class="btn btn-primary mx-auto col-lg-4" 
+            class="btn btn-primary col-lg-4" 
             *ngIf = "hasCreatePermission"
             (click)="createTimestampEventSubject.next(this.vimePlayer.currentTime)"
             >
