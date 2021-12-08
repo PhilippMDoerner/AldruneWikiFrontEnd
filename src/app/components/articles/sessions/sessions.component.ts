@@ -52,6 +52,7 @@ export class SessionsComponent extends ArticleListMixin implements OnInit, After
   addArticle(): void{
     const newArticle: any = new SessionObject();
     newArticle.name = this.articleStarterTitle;
+    newArticle.campaign = this.campaign.pk;
 
     const maxSessionNumber: number = Math.max.apply(Math, this.articles.map((session: any) => session.session_number));
     newArticle.session_number = maxSessionNumber + 1;
