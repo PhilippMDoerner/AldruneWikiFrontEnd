@@ -25,10 +25,3 @@ select {
 .main{
     max-width: 75rem;
 }
-
-@media(max-width: $medium-screen){
-	app-leaflet-map{
-        margin-left: 1rem;
-        margin-right: 1rem;
-	}
-}

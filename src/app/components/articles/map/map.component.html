@@ -18,13 +18,16 @@
                 <select name="map" id="map" class="mw-100" #mapChoice (change)="onMapChange($event)">
                     <option *ngFor="let map of maps" value="{{map.name}}">{{map.name}}</option>
                 </select> 
-
-                <!-- Add Map Button -->
-                <i 
-                class="fa fa-plus icon ml-3" 
-                routerLink="{{ createMapUrl }}"
-                ></i>
             </h3>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-3" routerLink="{{ createMapUrl }}">
+                <div class="btn btn-primary w-100">
+                    <span class="fas fa-plus"></span>
+                    Add Map
+                </div>
+            </div>
         </div>
 
         <!-- Leaflet Map -->
