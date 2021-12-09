@@ -8,6 +8,9 @@
         <div>
             {{ cardData.name }}
             <span class="text-muted no-transform"> - {{ cardData.session_date | date}}</span>
+            <span class="text-muted no-transform hide-on-mobile">
+                - Day {{ cardData.start_day }} to {{cardData.end_day}}
+            </span>
         </div>
 
         <i [ngClass]="{'fa icon': true, 'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}"></i>
@@ -37,6 +40,15 @@
 
             <!-- Body -->
             <div *ngIf="isInDisplayState()">
+                <div class="mb-3">
+                    <h5 class="row mb-0">
+                        <span class="col">In-Game Days</span>    
+                    </h5>
+                    <span> {{ cardData.start_day }} to {{cardData.end_day}}</span>
+    
+                </div>
+
+
                 <div class="mb-5">
                     <h5 class="mb-1"> <span class="fas fa-book-open"></span> Diaryentries </h5>
                     <div class="d-flex flex-column">
