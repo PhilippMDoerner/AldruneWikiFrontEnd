@@ -22,8 +22,11 @@ export class GroupByPipe implements PipeTransform{
         }
         const groupedObj: {any : OverviewItemObject[]} = itemArray.reduce(callback, {});
         const groupArray: {key: string, value: OverviewItemObject[]}[] = Object.keys(groupedObj).map(key => ({ key, value: groupedObj[key] }));
+        const sortedGroupArray: {key: string, value: OverviewItemObject[]}[] = groupArray.sort(
+            (group1, group2) => group1.key.toLowerCase() < group2.key.toLowerCase() ? 1 : -1
+        );
 
-        return groupArray.reverse() //Necessary as Diaryentries are in inverse order
+        return sortedGroupArray.reverse() //Necessary as Diaryentries are in inverse order
     }
 
     getFieldValue(field: string, item: object): any{
