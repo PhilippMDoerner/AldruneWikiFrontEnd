@@ -24,7 +24,6 @@
           "https://www.aldrune.com/static/wiki/images/404.png",
           "https://www.aldrune.com/static/wiki/images/504.jpeg",
           "https://www.aldrune.com/static/fileserver/images/audio_pic.png",
-          "https://fonts.googleapis.com/css?family=Source+Sans+Pro:300italic,600italic,300,600",
           "https://cdn.jsdelivr.net/npm/@vime/core@latest/icons/sprite.svg",
           "https://www.aldrune.com/media/campaign_icons/**",
           "https://www.aldrune.com/media/campaign_backgrounds/**"
@@ -89,7 +88,6 @@
         "https://www.aldrune.com/wiki1/api/map/**",
         "https://www.aldrune.com/wiki1/api/randomquote/**",
         "https://www.aldrune.com/wiki1/api/recentupdates/**",
-        "https://www.aldrune.com/wiki1/api/sessionaudio/**",
         "https://www.aldrune.com/wiki1/api/timestamp/**",
         "https://www.aldrune.com/wiki1/api/admin/statistics/**"
       ],
