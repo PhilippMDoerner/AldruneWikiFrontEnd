@@ -61,6 +61,8 @@ import { SessionResolver } from './utils/resolvers/session-resolver';
 import { SearchResolver } from './utils/resolvers/search-resolver';
 import { OverviewResolver } from './utils/resolvers/overview-resolver';
 import { UserResolver } from './utils/resolvers/user-resolver';
+import { RelationshipMapComponent } from './components/articles/relationship-map/relationship-map.component';
+import { RelationshipMapResolver } from './utils/resolvers/relationship-map-resolver';
 
 
 const generalRoutes: GeneralRoute[] = [
@@ -747,6 +749,18 @@ const campaignRoutes: CampaignRoute[] = [
 		resolve: {
 			campaign: CampaignResolver,
 			searchResults: SearchResolver,
+		}
+	},
+
+	//Relationship Map Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/relationships/:campaign/:name`,
+		component: RelationshipMapComponent,
+		data:{ name: "relationshipMap", requiredRole: CampaignRole.GUEST},
+		canActivate: [CampaignGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			relationshipMap: RelationshipMapResolver,
 		}
 	},
 ];

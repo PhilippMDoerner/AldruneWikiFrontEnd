@@ -98,6 +98,7 @@ import { SessionComponent } from './components/utility/session/session.component
 import { TooltipInfocircleComponent } from './components/utility/tooltip-infocircle/tooltip-infocircle.component';
 import { ImageCarouselComponent } from './components/utility/image-carousel/image-carousel.component';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { RelationshipMapComponent } from './components/articles/relationship-map/relationship-map.component';
 
 @NgModule({
   declarations: [
@@ -181,6 +182,7 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
     SessionComponent,
     TooltipInfocircleComponent,
     ImageCarouselComponent,
+    RelationshipMapComponent,
   ],
   imports: [
     BrowserModule,
