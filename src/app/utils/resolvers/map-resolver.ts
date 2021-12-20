@@ -7,6 +7,7 @@ import { MapObject } from "src/app/models/map";
 import { OverviewItemObject } from "src/app/models/overviewItem";
 import { GlobalUrlParamsService } from "src/app/services/global-url-params.service";
 import { MapService } from "src/app/services/map.service";
+import { RoutingService } from "src/app/services/routing.service";
 import { BaseArticleUpdateResolver } from "./base-resolvers";
 
 
@@ -85,8 +86,8 @@ export class MapUpdateResolver extends BaseArticleUpdateResolver {
 
     constructor( 
         service: MapService,
-        globalUrlParams: GlobalUrlParamsService,
+        globalUrlParams: GlobalUrlParamsService, routing: RoutingService
     ) { 
-        super(service, globalUrlParams);
+        super(service, globalUrlParams, routing);
     }
 }
