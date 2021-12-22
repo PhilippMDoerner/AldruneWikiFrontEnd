@@ -1,170 +1,270 @@
 <!-- Spells -->
-<div class="card mb-3 px-4 pt-3 pb-1" #spellCard [ngClass] = "{'animate__animated animate__fadeInUp': isInCreateState()}">
-    <!-- Spell Panel Heading -->
-    <h5 class="pointer col-12 justify-content-between d-flex align-items-center spell-title" (click)="toggleSpellCard($event)">
-        <!-- Spell Title -->
-        <strong>
-            <span>{{cardData.name}}</span>
-            <span *ngIf="cardData.concentration" class="ml-2">(C)</span>
-            <span *ngIf="cardData.ritual" class="ml-2">(R)</span>
-            <span class="d-inline-flex flex-wrap align-items-center ml-3">
-                <span
-                *ngFor="let connection of cardData.player_class_connections" 
-                class="badge badge-secondary mr-3"
-                (click)="emitClassSelectEvent($event, connection.player_class_details.name)"
-                >
-                    {{connection.player_class_details.name}}
-                    <span *ngIf="tokenService.isAdmin()" class="fa fa-trash icon" (click)="deleteSpellPlayerClassConnection(connection)"></span>
-                </span>
+<div
+  class="card mb-3 px-4 pt-3 pb-1"
+  #spellCard
+  [ngClass]="{ 'animate__animated animate__fadeInUp': isInCreateState() }"
+>
+  <!-- Spell Panel Heading -->
+  <h5
+    class="
+      pointer
+      col-12
+      justify-content-between
+      d-flex
+      align-items-center
+      spell-title
+    "
+    (click)="toggleSpellCard($event)"
+  >
+    <!-- Spell Title -->
+    <strong>
+      <span>{{ cardData.name }}</span>
+      <span *ngIf="cardData.concentration" class="ml-2">(C)</span>
+      <span *ngIf="cardData.ritual" class="ml-2">(R)</span>
+      <span class="d-inline-flex flex-wrap align-items-center ml-3">
+        <span
+          *ngFor="let connection of cardData.player_class_connections"
+          class="badge badge-secondary badge-sm mr-3"
+          (click)="
+            emitClassSelectEvent($event, connection.player_class_details.name)
+          "
+        >
+          {{ connection.player_class_details.name }}
+        </span>
+      </span>
+    </strong>
 
-                <ng-container *ngIf="tokenService.isAdmin()">
-                    <span 
-                    class="icon fa fa-plus fa-1-5x" 
-                    (click)="toggleConnectionCreateState()" 
-                    *ngIf="!isSpellConnectionCreateState; else connectionForm"
-                    ></span>
-                </ng-container>
-            </span>
-        </strong>
+    <i
+      class="fa icon"
+      [ngClass]="{ 'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen }"
+    ></i>
+  </h5>
 
-        <i class="fa icon" [ngClass]="{'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}"></i>
-    </h5>
+  <!-- Spell Panel Content -->
+  <div class="mb-3" [ngbCollapse]="!isOpen">
+    <div class="col-12">
+      <!-- Separating line -->
+      <hr class="white-separator mb-2" />
 
+      <!-- Spell Heading -->
+      <div class="w-100 mb-4 d-flex justify-content-between">
+        <h4>{{ cardData.name }}</h4>
 
-    <!-- Spell Panel Content -->
-    <div class="mb-3" [ngbCollapse]="!isOpen">
-        <div class="col-12">
-            <!-- Separating line -->
-            <hr class="white-separator mb-2">
-
-            <!-- Spell Heading -->
-            <div class="w-100 mb-4 d-flex justify-content-between">
-                <h4> {{ cardData.name }}</h4>
-
-                <!-- Edit Toggler -->
-                <div class="btn btn-secondary max-content" *ngIf="hasUpdatePermission" (click)="toggleFormState()">
-                    <i class="fa" [ngClass]= "{'fa-pencil': isInDisplayState(), 'fa-times': !isInDisplayState()}"></i>
-                </div>
-            </div>
-
-            <!-- Spell Table -->
-            <div class="container" *ngIf="isInDisplayState()">
-                <div class="row">
-                    <!-- Spell Level -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">SPELL LEVEL</strong>
-                        <div class="column-body" *ngIf="cardData.spell_level"> {{ (cardData.spell_level) }} </div>
-                        <div class="column-body placeholder" *ngIf="!cardData.spell_level"> Placeholder </div>
-                    </div>
-
-                    <!-- Casting Time -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">CASTING TIME</strong>
-                        <div class="column-body" *ngIf="cardData.casting_time"> {{ (cardData.casting_time) }} </div>
-                        <div class="column-body placeholder" *ngIf="!cardData.casting_time"> Placeholder </div>
-                    </div>
-
-                    <!-- Range/Area -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">RANGE/AREA</strong>
-                        <div class="column-body" *ngIf="cardData.range"> {{ (cardData.range) }} </div>
-                        <div class="column-body placeholder" *ngIf="!cardData.range"> Placeholder </div>
-                    </div>
-
-                    <!-- Components -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">COMPONENTS</strong>
-                        <div class="column-body" *ngIf="cardData.components"> {{ (cardData.components) }} </div>
-                        <div class="column-body placeholder" *ngIf="!cardData.components"> Placeholder </div>
-                    </div>
-
-                    <!-- Duration -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">DURATION</strong>
-                        <div class="column-body" *ngIf="cardData.duration"> {{ (cardData.duration) }} </div>
-                        <div class="column-body placeholder" *ngIf="!cardData.duration"> Placeholder </div>
-                    </div>
-
-                    <!-- School -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">SCHOOL</strong>
-                        <div class="column-body" *ngIf="cardData.school"> {{ (cardData.school) }} </div>
-                        <div class="column-body placeholder" *ngIf="!cardData.school"> Placeholder </div>
-                    </div>
-
-                    <!-- Attack/Save -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">ATTACK/SAVE</strong>
-                        <div class="column-body" *ngIf="cardData.saving_throw"> {{ (cardData.saving_throw) }} </div>
-                        <div class="column-body placeholder" *ngIf="!cardData.saving_throw"> Placeholder </div>
-                    </div>
-
-                    <!-- Damage/Effect -->
-                    <div class="col-md-3 col-6 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">EFFECT</strong>
-                        <div class="column-body" *ngIf="cardData.damage"> {{ (cardData.damage) }} </div>
-                        <div class="column-body placeholder" *ngIf="!cardData.damage"> Placeholder </div>
-                    </div>
-
-                    <!-- Description -->
-                    <div class="col-12 d-flex flex-column spell">
-                        <strong class="border-bottom-grey column-heading">DESCRIPTION</strong>
-                        <div class="column-body" [innerHTML]="cardData.description"></div>
-                    </div>
-                    
-                </div>
-            </div>
-
-            <app-formly-formcontainer 
-            *ngIf="isInCreateState() || isInUpdateState()"
-            [model]="userModel" 
-            [fields]="formlyFields" 
-            (formlySubmit)="onSubmit()" 
-            (formlyCancel)="onCancel()"
-            ></app-formly-formcontainer>
-    
-            <app-compare-form-container
-            class="d-flex justify-content-center"
-            *ngIf="isInOutdatedUpdateState()"
-            [formlyFields]="formlyFields"
-            [modelFromUser]="userModel"
-            [modelFromServer]="serverModel"
-            [displayVertically]="true"
-            (updateSubmit)="onSubmit()"
-            (cancel)="onCancel()"
-            ></app-compare-form-container>
-        
-            <!-- Delete Toggler -->
-            <app-delete-toggle
-            [deleteMessage] = "'Delete this Spell ?'"
-            (deleteEvent) = "articleDelete(cardData)"
-            ></app-delete-toggle>
+        <!-- Edit Toggler -->
+        <div
+          class="btn btn-secondary max-content"
+          *ngIf="hasUpdatePermission"
+          (click)="toggleFormState()"
+        >
+          <i
+            class="fa"
+            [ngClass]="{
+              'fa-pencil': isInDisplayState(),
+              'fa-times': !isInDisplayState()
+            }"
+          ></i>
         </div>
+      </div>
+
+      <!-- Spell Table -->
+      <div class="container" *ngIf="isInDisplayState()">
+        <div class="row">
+          <!-- Spell Level -->
+          <div class="col-md-3 col-6 d-flex flex-column spell">
+            <strong class="border-bottom-grey column-heading"
+              >SPELL LEVEL</strong
+            >
+            <div class="column-body" *ngIf="cardData.spell_level">
+              {{ cardData.spell_level }}
+            </div>
+            <div class="column-body placeholder" *ngIf="!cardData.spell_level">
+              Placeholder
+            </div>
+          </div>
+
+          <!-- Casting Time -->
+          <div class="col-md-3 col-6 d-flex flex-column spell">
+            <strong class="border-bottom-grey column-heading"
+              >CASTING TIME</strong
+            >
+            <div class="column-body" *ngIf="cardData.casting_time">
+              {{ cardData.casting_time }}
+            </div>
+            <div class="column-body placeholder" *ngIf="!cardData.casting_time">
+              Placeholder
+            </div>
+          </div>
+
+          <!-- Range/Area -->
+          <div class="col-md-3 col-6 d-flex flex-column spell">
+            <strong class="border-bottom-grey column-heading"
+              >RANGE/AREA</strong
+            >
+            <div class="column-body" *ngIf="cardData.range">
+              {{ cardData.range }}
+            </div>
+            <div class="column-body placeholder" *ngIf="!cardData.range">
+              Placeholder
+            </div>
+          </div>
+
+          <!-- Components -->
+          <div class="col-md-3 col-6 d-flex flex-column spell">
+            <strong class="border-bottom-grey column-heading"
+              >COMPONENTS</strong
+            >
+            <div class="column-body" *ngIf="cardData.components">
+              {{ cardData.components }}
+            </div>
+            <div class="column-body placeholder" *ngIf="!cardData.components">
+              Placeholder
+            </div>
+          </div>
+
+          <!-- Duration -->
+          <div class="col-md-3 col-6 d-flex flex-column spell">
+            <strong class="border-bottom-grey column-heading">DURATION</strong>
+            <div class="column-body" *ngIf="cardData.duration">
+              {{ cardData.duration }}
+            </div>
+            <div class="column-body placeholder" *ngIf="!cardData.duration">
+              Placeholder
+            </div>
+          </div>
+
+          <!-- School -->
+          <div class="col-md-3 col-6 d-flex flex-column spell">
+            <strong class="border-bottom-grey column-heading">SCHOOL</strong>
+            <div class="column-body" *ngIf="cardData.school">
+              {{ cardData.school }}
+            </div>
+            <div class="column-body placeholder" *ngIf="!cardData.school">
+              Placeholder
+            </div>
+          </div>
+
+          <!-- Attack/Save -->
+          <div class="col-md-3 col-6 d-flex flex-column spell">
+            <strong class="border-bottom-grey column-heading"
+              >ATTACK/SAVE</strong
+            >
+            <div class="column-body" *ngIf="cardData.saving_throw">
+              {{ cardData.saving_throw }}
+            </div>
+            <div class="column-body placeholder" *ngIf="!cardData.saving_throw">
+              Placeholder
+            </div>
+          </div>
+
+          <!-- Damage/Effect -->
+          <div class="col-md-3 col-6 d-flex flex-column spell">
+            <strong class="border-bottom-grey column-heading">EFFECT</strong>
+            <div class="column-body" *ngIf="cardData.damage">
+              {{ cardData.damage }}
+            </div>
+            <div class="column-body placeholder" *ngIf="!cardData.damage">
+              Placeholder
+            </div>
+          </div>
+
+          <!-- Description -->
+          <div class="col-12 d-flex flex-column spell">
+            <strong class="border-bottom-grey column-heading"
+              >DESCRIPTION</strong
+            >
+            <div class="column-body" [innerHTML]="cardData.description"></div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        Classes:
+        <span
+          *ngFor="let connection of cardData.player_class_connections"
+          class="badge badge-secondary badge-lg mr-3 pointer"
+          (click)="
+            emitClassSelectEvent($event, connection.player_class_details.name)
+          "
+        >
+          {{ connection.player_class_details.name }}
+          <span
+            *ngIf="tokenService.isAdmin()"
+            class="fa fa-trash ml-2"
+            (click)="deleteSpellPlayerClassConnection(connection)"
+          ></span>
+        </span>
+
+        <ng-container *ngIf="tokenService.isAdmin()">
+          <span
+            class="badge badge-primary badge-lg pointer"
+            (click)="toggleConnectionCreateState()"
+            *ngIf="!isSpellConnectionCreateState; else connectionForm"
+          >
+            <span class="icon fa fa-plus"></span>
+            Add class
+          </span>
+        </ng-container>
+      </div>
+
+      <app-formly-formcontainer
+        *ngIf="isInCreateState() || isInUpdateState()"
+        [model]="userModel"
+        [fields]="formlyFields"
+        (formlySubmit)="onSubmit()"
+        (formlyCancel)="onCancel()"
+      ></app-formly-formcontainer>
+
+      <app-compare-form-container
+        class="d-flex justify-content-center"
+        *ngIf="isInOutdatedUpdateState()"
+        [formlyFields]="formlyFields"
+        [modelFromUser]="userModel"
+        [modelFromServer]="serverModel"
+        [displayVertically]="true"
+        (updateSubmit)="onSubmit()"
+        (cancel)="onCancel()"
+      ></app-compare-form-container>
+
+      <!-- Delete Toggler -->
+      <app-delete-toggle
+        [deleteMessage]="'Delete this Spell ?'"
+        (deleteEvent)="articleDelete(cardData)"
+      ></app-delete-toggle>
     </div>
+  </div>
 </div>
 
 <ng-template #formField>
-    <div id="edit-section">
-
-    </div>
+  <div id="edit-section"></div>
 </ng-template>
 
 <ng-template #connectionForm>
-    <!-- Form for Creating Quote Connections -->
-    <form class="d-inline-flex align-items-center" (submit)="createSpellPlayerClassConnection(connectionModel)">
-        <select class="form-control d-inline-block" name="connection" id="connection" [(ngModel)]="connectionModel.player_class">
-            <option 
-            *ngFor="let playerClass of playerClasses" 
-            value="{{playerClass.pk}}" 
-            [attr.disabled]="hasConnection(playerClass) ? true : null"
-            >
-                {{playerClass.name}}
-            </option>
-        </select>
+  <!-- Form for Creating Quote Connections -->
+  <form
+    class="d-inline-flex align-items-center"
+    (submit)="createSpellPlayerClassConnection(connectionModel)"
+  >
+    <select
+      class="form-control d-inline-block"
+      name="connection"
+      id="connection"
+      [(ngModel)]="connectionModel.player_class"
+    >
+      <option
+        *ngFor="let playerClass of playerClasses"
+        value="{{ playerClass.pk }}"
+        [attr.disabled]="hasConnection(playerClass) ? true : null"
+      >
+        {{ playerClass.name }}
+      </option>
+    </select>
 
-        <i class="fa fa-times icon mx-2 fa-1-5x" (click)="toggleConnectionCreateState()"></i>
-        <button type="submit" class="mx-2">
-            <i class="fa fa-check icon fa-1-5x"></i>
-        </button>
-    </form>
+    <i
+      class="fa fa-times icon mx-2 fa-1-5x"
+      (click)="toggleConnectionCreateState()"
+    ></i>
+    <button type="submit" class="mx-2">
+      <i class="fa fa-check icon fa-1-5x"></i>
+    </button>
+  </form>
 </ng-template>

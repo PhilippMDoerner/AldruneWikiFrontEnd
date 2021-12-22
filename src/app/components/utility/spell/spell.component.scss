@@ -1,73 +1,64 @@
-@import '/src/app/cssvariables.scss';
+@import "/src/app/cssvariables.scss";
+@import "/src/app/custom_bootstrap.scss";
 
-table{
-    background-color: transparent;
+table {
+  background-color: transparent;
 }
 
-.card{
-    background-color: rgba(27, 31, 34, 0.95) !important;
-    border-color: grey;
+.card {
+  background-color: rgba(27, 31, 34, 0.95) !important;
+  border-color: grey;
 }
 
-.card-title{
-    font-size: 1.3rem;
+.card-title {
+  font-size: 1.3rem;
 }
 
-.column-heading{
-    background-color: hsla(0,0%,100%,.05);
-    padding: 0.75rem;
+.column-heading {
+  background-color: hsla(0, 0%, 100%, 0.05);
+  padding: 0.75rem;
 }
 
-.column-body{
-    background-color: rgba(27,31,34,.95);
-    padding: 0.75rem;
+.column-body {
+  background-color: rgba(27, 31, 34, 0.95);
+  padding: 0.75rem;
 }
 
-.spell{
-    padding: 0;
+.spell {
+  padding: 0;
 }
 
-.placeholder{
-    color: transparent;
+.placeholder {
+  color: transparent;
 }
 
-.border-bottom-grey{
-    border-bottom: 1px grey solid;
+.border-bottom-grey {
+  border-bottom: 1px grey solid;
 }
 
-.spell-title .fa-trash, .spell-title .fa-plus{
-    visibility: hidden;
-    transition: visibility 0.2s ease-in-out;
+.badge-secondary .fa-trash:hover {
+  color: $red;
 }
 
-.spell-title .fa-trash:hover{
-    color: var(--red);
+.badge {
+  height: min-content;
 }
 
-.badge{
-    height: min-content;
+.badge-lg {
+  padding: 0.4em 0.8em;
 }
 
-.badge-secondary:hover{
-    background-color: var(--#{dark});
-    color: var(--link-blue);
+.badge-secondary:hover {
+  background-color: var(--#{dark});
+  color: var(--link-blue);
 }
 
-.badge-secondary:hover .fa-trash{
-    visibility: visible;
+@media (max-width: $medium-screen) {
+  .column-heading {
+    font-size: medium;
+  }
 }
 
-.spell-title:hover .fa-plus{
-    visibility: visible;
-}
-
-
-@media(max-width: $medium-screen){
-    .column-heading{
-        font-size: medium;
-    }
-}
-
-#edit-section{
-    margin-bottom: 1rem;
+#edit-section {
+  margin-bottom: 1rem;
 }
