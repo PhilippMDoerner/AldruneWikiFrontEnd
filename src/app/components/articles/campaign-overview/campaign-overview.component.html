@@ -1,40 +1,47 @@
-<div 
-class="container bg-color-black" 
-id="container-overview" 
-#campaignOverviewContainer 
-[@slideInOut]
+<div
+  class="container bg-color-black"
+  id="container-overview"
+  #campaignOverviewContainer
+  [@slideInOut]
 >
-    <div class="row mx-0" id="campaign-overview-heading">
-        <h3 class="flex-1 text-center">Choose your campaign</h3>
-        <div id="heading-buttons" *ngIf="isGlobalAdmin">
-            <a routerLink="{{ generalAdminUrl }}" class="float-right alert alert-info mb-0 p-2 mx-2">
-                <span class="fas fa-user-cog"></span>
-                General administration
-            </a>
-    
-            <a routerLink="{{ configTableUrl }}" class="float-right alert alert-info mb-0 p-2 mx-2">
-                <i class="fa fa-table"></i>
-                <span> Config Tables </span>
-            </a>
-        </div>
-    </div>
-    <div class="row flex-1 mx-0" id="campaign-overview-body">
-        <a 
-        class="px-0 campaign pointer" 
-        *ngFor="let campaign of campaignData" 
-        (click)="routeToCampaign(campaign.name)"
-        [ngClass]="{
-            'col-sm-12': campaignData.length === 1,
-            'col-sm-6': campaignData.length === 2 || campaignData.length === 4,
-            'col-sm-4': campaignData.length === 3 || campaignData.length >= 5
-        }"
-        [style.background-image]="'url('+ campaign.background_image +')'"
-        >
-            <div class="campaign-overlay overlay-heading text-center">
-                <h3 class="mb-0 px-3"> {{campaign.name}}</h3>
-            </div>      
-        </a>
-    </div>
+  <div class="row mx-0" id="campaign-overview-heading">
+    <h3 class="flex-1 text-center">
+      Choose your campaign
+      <app-spinner *ngIf="isLoading"></app-spinner>
+    </h3>
+    <div id="heading-buttons" *ngIf="isGlobalAdmin">
+      <a
+        routerLink="{{ generalAdminUrl }}"
+        class="float-right alert alert-info mb-0 p-2 mx-2"
+      >
+        <span class="fas fa-user-cog"></span>
+        General administration
+      </a>
 
-
+      <a
+        routerLink="{{ configTableUrl }}"
+        class="float-right alert alert-info mb-0 p-2 mx-2"
+      >
+        <i class="fa fa-table"></i>
+        <span> Config Tables </span>
+      </a>
+    </div>
+  </div>
+  <div class="row flex-1 mx-0" id="campaign-overview-body">
+    <a
+      class="px-0 campaign pointer"
+      *ngFor="let campaign of campaignData"
+      (click)="routeToCampaign(campaign.name)"
+      [ngClass]="{
+        'col-sm-12': campaignData.length === 1,
+        'col-sm-6': campaignData.length === 2 || campaignData.length === 4,
+        'col-sm-4': campaignData.length === 3 || campaignData.length >= 5
+      }"
+      [style.background-image]="'url(' + campaign.background_image + ')'"
+    >
+      <div class="campaign-overlay overlay-heading text-center">
+        <h3 class="mb-0 px-3">{{ campaign.name }}</h3>
+      </div>
+    </a>
+  </div>
 </div>

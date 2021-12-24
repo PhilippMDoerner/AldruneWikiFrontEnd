@@ -16,18 +16,19 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
-        style({transform: 'translateX(-100%)'}),
-        animate('500ms', style({transform: 'translateX(0%)'}))
+        style({ transform: 'translateX(-100%)' }),
+        animate('500ms', style({ transform: 'translateX(0%)' })),
       ]),
       transition(':leave', [
-        animate('500ms', style({transform: 'translateX(-100%)'}))
-      ])
-    ])
-  ]
+        animate('500ms', style({ transform: 'translateX(-100%)' })),
+      ]),
+    ]),
+  ],
 })
 export class CampaignOverviewComponent implements OnInit {
   campaignData: CampaignOverview[];
   constants: Constants = Constants;
+  isLoading: boolean = false;
 
   //URLs
   generalAdminUrl: string = this.routingService.getRoutePath('admin');
@@ -41,43 +42,59 @@ export class CampaignOverviewComponent implements OnInit {
   constructor(
     public routingService: RoutingService,
     private globalUrlParams: GlobalUrlParamsService,
-    private tokenService: TokenService,
-  ) { }
+    private tokenService: TokenService
+  ) {}
 
   async ngOnInit(): Promise<void> {
-    this.globalUrlParamSubscription = this.globalUrlParams.getCampaigns()
+    this.isLoading = true;
+
+    this.globalUrlParamSubscription = this.globalUrlParams
+      .getCampaigns()
       .pipe(
-        filter(campaignData => campaignData != null), //Necessary as the first value if you start on campaign-overview is null. That would jump you straight to 504 with the tap below
+        filter((campaignData) => campaignData != null), //Necessary as the first value if you start on campaign-overview is null. That would jump you straight to 504 with the tap below
         tap((campaignData: CampaignOverview[]) => {
-          if(campaignData == null && this.campaignData == null) this.routingService.routeToPath('error', {errorStatus: 504});
+          if (campaignData == null && this.campaignData == null)
+            this.routingService.routeToPath('error', { errorStatus: 504 });
         })
       )
       .subscribe((campaignData: CampaignOverview[]) => {
         this.campaignData = this.processCampaignData(campaignData);
         this.onAfterCampaignDataRetrieved(campaignData);
+        this.isLoading = false;
       });
   }
 
-  processCampaignData(campaigns: CampaignOverview[]): CampaignOverview[]{
+  processCampaignData(campaigns: CampaignOverview[]): CampaignOverview[] {
     // campaigns = campaigns.concat(campaigns);
-    const sortedCampaigns = campaigns.sort((c1, c2) => c1.name < c2.name ? -1 : 1);
+    const sortedCampaigns = campaigns.sort((c1, c2) =>
+      c1.name < c2.name ? -1 : 1
+    );
     return sortedCampaigns;
   }
 
-  onAfterCampaignDataRetrieved(campaignData: CampaignOverview[]): void{
+  onAfterCampaignDataRetrieved(campaignData: CampaignOverview[]): void {
     this.campaignData = this.processCampaignData(campaignData);
-    this.isGlobalAdmin = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
+    this.isGlobalAdmin =
+      this.tokenService.isAdmin() || this.tokenService.isSuperUser();
   }
 
-  routeToCampaign(campaignName: string ): void{
-    this.campaignOverviewContainer.nativeElement.style.setProperty('--animate-duration', '0.5s');
+  routeToCampaign(campaignName: string): void {
+    this.campaignOverviewContainer.nativeElement.style.setProperty(
+      '--animate-duration',
+      '0.5s'
+    );
     this.globalUrlParams.updateCurrentlySelectedCampaign(campaignName); //Allows the background to swap ahead of time while the other animation is running
 
-    animateElement(this.campaignOverviewContainer.nativeElement, 'slideOutLeft')
-      .then(() => this.routingService.routeToPath("home2", {campaign: campaignName}));
+    animateElement(
+      this.campaignOverviewContainer.nativeElement,
+      'slideOutLeft'
+    ).then(() =>
+      this.routingService.routeToPath('home2', { campaign: campaignName })
+    );
   }
 
-  ngOnDestroy(): void{
-    if(this.globalUrlParamSubscription) this.globalUrlParamSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    if (this.globalUrlParamSubscription)
+      this.globalUrlParamSubscription.unsubscribe();
   }
 }
