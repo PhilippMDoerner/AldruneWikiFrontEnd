@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1640261735981,
+  "timestamp": 1640377961258,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,12 +13,12 @@
       "urls": [
         "/916.36fb8f9b47d3e1f03c68.js",
         "/index.html",
-        "/main.b873dab5241503a6e3f4.js",
+        "/main.ecd0a97ef6db659dab86.js",
         "/manifest.webmanifest",
         "/polyfills.c19ebc6f0991fdae95ef.js",
-        "/runtime.5b978d481c28270f45a8.js",
+        "/runtime.11869da2416a939c53bb.js",
         "/scripts.485dc8d8d4ff61e7c82e.js",
-        "/styles.97d4d223677f3b11c22b.css"
+        "/styles.7eba35fca53fa4b90a84.css"
       ],
       "patterns": [
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic01\\.jpg",
@@ -239,16 +239,16 @@
     "/fontawesome-webfont.8b43027f47b20503057d.eot": "d980c2ce873dc43af460d4d572d441304499f400",
     "/fontawesome-webfont.c1e38fd9e0e74ba58f7a.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/fontawesome-webfont.f691f37e57f04c152e23.woff": "28b782240b3e76db824e12c02754a9731a167527",
-    "/index.html": "d3a5065e7fab6b646d92eeaf4dfac4ee426e6bd1",
+    "/index.html": "c39c79a07022299891cdde91a7241c38f3fd14f1",
     "/layers-2x.8f2c4d11474275fbc161.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/layers.416d91365b44e4b4f477.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/main.b873dab5241503a6e3f4.js": "662a59c4d7d4525c38a64e70795364d14c1b64bd",
+    "/main.ecd0a97ef6db659dab86.js": "7691413a6a87195e7a6decc38b19eb8a679f49a5",
     "/manifest.webmanifest": "116c35892aa2a2a2ae967202ecd0a917f9fe39db",
     "/marker-icon.2b3e1faf89f94a483539.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/polyfills.c19ebc6f0991fdae95ef.js": "729dc11487e81263547a0d02329bcc9c0ecd6fd7",
-    "/runtime.5b978d481c28270f45a8.js": "d73e38b8491b7924ff66e82b2636399c6b4d5d21",
+    "/runtime.11869da2416a939c53bb.js": "0285095cbd3ee5fb86b5cdc98e285e2cff928d02",
     "/scripts.485dc8d8d4ff61e7c82e.js": "959ada32803675ab099390478fb565351e07e20c",
-    "/styles.97d4d223677f3b11c22b.css": "f73515678a59accbf6496ce0eafd337df349e426"
+    "/styles.7eba35fca53fa4b90a84.css": "15ae33775382932c17de23d89296022934e1e1e7"
   },
   "navigationUrls": [
     {
