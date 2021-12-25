@@ -15,10 +15,12 @@ import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissi
 @Component({
   selector: 'app-quote-gallery',
   templateUrl: './quote-gallery.component.html',
-  styleUrls: ['./quote-gallery.component.scss']
+  styleUrls: ['./quote-gallery.component.scss'],
 })
-
-export class QuoteGalleryComponent extends PermissionUtilityFunctionMixin implements OnInit {
+export class QuoteGalleryComponent
+  extends PermissionUtilityFunctionMixin
+  implements OnInit
+{
   constants: any = Constants;
   quote: Quote;
   quote_subscription: Subscription;
@@ -35,34 +37,37 @@ export class QuoteGalleryComponent extends PermissionUtilityFunctionMixin implem
     private warningsService: WarningsService,
     public routingService: RoutingService,
     route: ActivatedRoute,
-    tokenService: TokenService,
-  ) { 
+    tokenService: TokenService
+  ) {
     super(tokenService, route);
   }
 
   ngOnInit(): void {
-    this.getNextRandomQuote()
+    this.getNextRandomQuote();
   }
 
-  getNextRandomQuote(){
+  getNextRandomQuote() {
     this.isLoadingNextQuote = true;
-    this.quoteService.getRandomQuote(this.campaign.name, this.character.name).pipe(first()).subscribe(
-      (quote: QuoteObject) => {
-        if (quote.quote){
-          this.quote = quote;
-        }
-        this.isLoadingNextQuote = false;
-      },
-      error => this.warningsService.showWarning(error)
-    );
+    this.quoteService
+      .getRandomQuote(this.campaign.name, this.character.name)
+      .pipe(first())
+      .subscribe(
+        (quote: QuoteObject) => {
+          if (quote.quote) {
+            this.quote = quote;
+          }
+          this.isLoadingNextQuote = false;
+        },
+        (error) => (this.quote = null)
+      );
   }
 
-  toggleCreateState(){
+  toggleCreateState() {
     this.inCreateState = !this.inCreateState;
   }
 
-  onQuoteDelete(){
+  onQuoteDelete() {
     this.getNextRandomQuote();
-    this.inCreateState=false;
+    this.inCreateState = false;
   }
 }
