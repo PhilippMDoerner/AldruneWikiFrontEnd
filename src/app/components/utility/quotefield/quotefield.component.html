@@ -1,144 +1,168 @@
 <div *ngIf="!inCreateState && !inEditState; else quoteForm" class="mb-3">
-    <div *ngIf="quote.pk">
-        <blockquote *ngIf="!isLoadingNextQuote; else loading">
-            <!-- Quote -->
-            <div [innerHTML]="quote.quote"></div>
+  <div *ngIf="quote.pk">
+    <blockquote *ngIf="!isLoadingNextQuote; else loading">
+      <!-- Quote -->
+      <div [innerHTML]="quote.quote"></div>
 
-            <!-- Quote Description -->
-            <div class="mb-3 ml-4">
-                <span *ngIf="quote.description" [innerHTML]="'- ' + quote.description"></span>
-                <span *ngIf="!quote.description"> - {{character.name}}</span>
-            </div>
+      <!-- Quote Description -->
+      <div class="mb-3 ml-4">
+        <span
+          *ngIf="quote.description"
+          [innerHTML]="'- ' + quote.description"
+        ></span>
+        <span *ngIf="!quote.description"> - {{ character.name }}</span>
+      </div>
 
-            <hr class="white-line">
+      <hr class="white-line" />
 
-            <!-- Quote Connections -->
-            <div class="quote-connections d-inline icon-container">
-                <span class="tag-label mr-2"> Characters: </span>
+      <!-- Quote Connections -->
+      <div class="quote-connections d-inline icon-container">
+        <span class="tag-label mr-2"> Characters: </span>
 
-                <span class="d-inline-flex align-items-center flex-wrap">
-                    <!-- Display Existing Quote Connections -->
-                    <span class="badge badge-secondary mr-2 text-center vanish-container" *ngFor="let connection of quote.connections; let connectionIndex = index">
-                        <a routerLink="{{ connectedCharacterURLs[connectionIndex] }}">
-                            {{connection.character_details.name}}
-                        </a>
-                        
-                        <i 
-                        class="fa fa-trash icon vanish-icon ml-2" 
-                        (click)="deleteQuoteConnection(connection)" 
-                        [ngClass]="{'d-none': !hasDeletePermission}"
-                        ></i>
-                    </span>
+        <span class="d-inline-flex align-items-center flex-wrap">
+          <!-- Display Existing Quote Connections -->
+          <span
+            class="badge badge-secondary mr-2 text-center vanish-container"
+            *ngFor="
+              let connection of quote.connections;
+              let connectionIndex = index
+            "
+          >
+            <a routerLink="{{ connectedCharacterURLs[connectionIndex] }}">
+              {{ connection.character_details.name }}
+            </a>
 
-                    <!-- Form for Creating Quote Connections -->
-                    <form class="d-flex align-items-center" *ngIf="inQuoteConnectionCreateState" (submit)="createQuoteConnection()">
-                        <select class="form-control" name="character" id="character" [(ngModel)]="baseQuoteConnection.character">
-                            <option 
-                            *ngFor="let character of characters" 
-                            value="{{character.pk}}" 
-                            [attr.disabled]="hasConnection(character) ? true : null"
-                            >
-                                {{character.name}}
-                            </option>
-                        </select>
-
-                        <i 
-                        class="fa icon mx-2 fa-times fa-1-5x"
-                        (click)="toggleQuoteConnectionCreateState()"
-                        ></i>
-                        
-                        <button type="submit" class="mx-2">
-                            <i class="fa icon fa-check fa-1-5x"></i>
-                        </button>
-                       
-                    </form>
-
-                    <i 
-                    class="fa icon fa-plus mx-2 fa-1-5x" 
-                    (click)="toggleQuoteConnectionCreateState()"
-                    *ngIf="hasCreatePermission && !inQuoteConnectionCreateState"
-                    ></i>
-                </span>
-            </div>
-        </blockquote>
-
-        <!-- Quote Refresh/Create/Edit/Delete Icons -->
-        <div class="icon-container hide-icon mt-1" *ngIf="!inDeleteState; else deleteRequest">
-            <!-- Load Next Quote -->
-            <i 
-            class="fa fa-refresh fa-1-5x icon mx-3" 
-            [ngClass]="{'d-none': !enableRandomQuotes}" 
-            (click)="getNextRandomQuote()"
-            title="Load new quote"
+            <i
+              class="fa fa-trash icon vanish-icon ml-2"
+              (click)="deleteQuoteConnection(connection)"
+              *ngIf="hasDeletePermission"
             ></i>
-            <!-- Edit Quote -->
-            <i 
-            class="fa fa-pencil fa-1-5x icon mx-3" 
-            [ngClass]="{'d-none': !hasUpdatePermission}" 
-            (click)="toggleEditState()"
-            title="Edit Quote"
-            ></i>
-            <!-- Create Quote -->
-            <i 
-            class="fa fa-plus fa-1-5x icon mx-3" 
-            [ngClass]="{'d-none': !hasCreatePermission || !enableCreatingQuotes}" 
-            (click)="toggleCreateState()"
-            title="Create Quote"
-            ></i>
-            <!-- Delete Quote -->
-            <i 
-            class="fa fa-trash fa-1-5x icon mx-3" 
-            [ngClass]="{'d-none': !hasDeletePermission}"
-            (click)="inDeleteState=true"
-            title="Delete Quote"
-            ></i>
-            <!-- Copy to Clipboard -->
-            <i 
-            class="fas fa-copy fa-1-5x icon mx-3" 
-            (click)="copyQuoteToClipboard()"
-            title="Copy Quote to Clipboard"
+          </span>
+
+          <!-- Form for Creating Quote Connections -->
+          <form
+            class="d-flex align-items-center"
+            *ngIf="inQuoteConnectionCreateState"
+            (submit)="createQuoteConnection()"
+          >
+            <select
+              class="form-control"
+              name="character"
+              id="character"
+              [(ngModel)]="baseQuoteConnection.character"
+            >
+              <option
+                *ngFor="let character of characters"
+                value="{{ character.pk }}"
+                [attr.disabled]="hasConnection(character) ? true : null"
+              >
+                {{ character.name }}
+              </option>
+            </select>
+
+            <i
+              class="fa icon mx-2 fa-times fa-1-5x"
+              (click)="toggleQuoteConnectionCreateState()"
             ></i>
 
-            <!-- Hyperlink to Quote Overview -->
-            <i 
-            class="fa fa-th-list fa-1-5x icon mr-3" 
-            title="See all quotes" 
-            routerLink="{{ quoteOverviewUrl }}"
-            *ngIf="enableLinkToOverview"
-            ></i>
-        </div>
+            <button type="submit" class="mx-2">
+              <i class="fa icon fa-check fa-1-5x"></i>
+            </button>
+          </form>
+
+          <span
+            class="pointer badge badge-primary"
+            (click)="toggleQuoteConnectionCreateState()"
+            *ngIf="hasCreatePermission && !inQuoteConnectionCreateState"
+          >
+            <i class="fa fa-plus mr-1"></i>
+            Add Character
+          </span>
+        </span>
+      </div>
+    </blockquote>
+
+    <!-- Quote Refresh/Create/Edit/Delete Icons -->
+    <div
+      class="icon-container hide-icon mt-1"
+      *ngIf="!inDeleteState; else deleteRequest"
+    >
+      <!-- Load Next Quote -->
+      <i
+        class="fa fa-refresh fa-1-5x icon mx-3"
+        [ngClass]="{ 'd-none': !enableRandomQuotes }"
+        (click)="getNextRandomQuote()"
+        title="Load new quote"
+      ></i>
+      <!-- Edit Quote -->
+      <i
+        class="fa fa-pencil fa-1-5x icon mx-3"
+        [ngClass]="{ 'd-none': !hasUpdatePermission }"
+        (click)="toggleEditState()"
+        title="Edit Quote"
+      ></i>
+      <!-- Create Quote -->
+      <i
+        class="fa fa-plus fa-1-5x icon mx-3"
+        [ngClass]="{ 'd-none': !hasCreatePermission || !enableCreatingQuotes }"
+        (click)="toggleCreateState()"
+        title="Create Quote"
+      ></i>
+      <!-- Delete Quote -->
+      <i
+        class="fa fa-trash fa-1-5x icon mx-3"
+        [ngClass]="{ 'd-none': !hasDeletePermission }"
+        (click)="inDeleteState = true"
+        title="Delete Quote"
+      ></i>
+      <!-- Copy to Clipboard -->
+      <i
+        class="fas fa-copy fa-1-5x icon mx-3"
+        (click)="copyQuoteToClipboard()"
+        title="Copy Quote to Clipboard"
+      ></i>
+
+      <!-- Hyperlink to Quote Overview -->
+      <i
+        class="fa fa-th-list fa-1-5x icon mr-3"
+        title="See all quotes"
+        routerLink="{{ quoteOverviewUrl }}"
+        *ngIf="enableLinkToOverview"
+      ></i>
     </div>
+  </div>
 </div>
-
 
 <!-- Loading Spinner -->
 <ng-template #loading><app-spinner></app-spinner></ng-template>
 
 <!-- Quote Create/Edit Form -->
 <ng-template #quoteForm>
-    <blockquote>
+  <blockquote>
+    <!-- Heading -->
+    <h5 class="border-white border-bottom">
+      <span *ngIf="inCreateState">Create Quote for {{ character.name }}</span>
+      <span *ngIf="inEditState">Updating Quote {{ quote.pk }}</span>
+    </h5>
 
-        <!-- Heading -->
-        <h5 class="border-white border-bottom">
-            <span *ngIf="inCreateState">Create Quote for {{character.name}}</span>
-            <span *ngIf="inEditState">Updating Quote {{quote.pk}}</span>
-        </h5>
-
-        <!-- Form -->
-        <form [formGroup]="form" (submit)="onSubmit()">
-            <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-            <div class="btn btn-secondary mr-3" (click)="onCancel()">Cancel</div>
-            <button type="submit" class="btn btn-primary"> Submit </button>
-        </form>
-
-    </blockquote>
+    <!-- Form -->
+    <form [formGroup]="form" (submit)="onSubmit()">
+      <formly-form
+        [form]="form"
+        [fields]="fields"
+        [model]="model"
+      ></formly-form>
+      <div class="btn btn-secondary mr-3" (click)="onCancel()">Cancel</div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+  </blockquote>
 </ng-template>
 
 <!-- Quote Delete "Form" -->
 <ng-template #deleteRequest>
-    <div>
-        Delete this quote?
-        <div class="btn btn-danger mr-2" (click)="deleteQuote()"> Yes </div>
-        <div class="btn btn-secondary mr-2" (click)="inDeleteState=false"> No </div>
-    </div>
+  <div>
+    Delete this quote?
+    <div class="btn btn-danger mr-2" (click)="deleteQuote()">Yes</div>
+    <div class="btn btn-secondary mr-2" (click)="inDeleteState = false">No</div>
+  </div>
 </ng-template>
