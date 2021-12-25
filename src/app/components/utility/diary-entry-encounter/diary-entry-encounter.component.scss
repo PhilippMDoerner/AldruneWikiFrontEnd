@@ -1,118 +1,115 @@
-@import '/src/app/cssvariables.scss';
+@import "/src/app/cssvariables.scss";
 
-.heading{
-    margin-bottom: 0rem;
+.heading {
+  margin-bottom: 0rem;
 }
 
-.encounter{
-    padding-top: 1.5rem;
-    padding-bottom: 1.5rem;
+.encounter {
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
 }
 
-.encounter .encounter-hidden{
-    display: block;
+.encounter .encounter-hidden {
+  display: block;
 }
 
-.encounter-connections{
-    flex-direction: row;
-    justify-content: flex-start;
-    font-size: 16px;
-    padding-bottom: 1rem; //Exists so that the delete-button does not overflow
+.encounter-connections {
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 16px;
+  padding-bottom: 1rem; //Exists so that the delete-button does not overflow
 }
 
-.badge a{
-    border-bottom: none;
+.badge a {
+  border-bottom: none;
 }
 
-.badge{
-    background-color: var(--wiki-background-2);
+.badge-secondary {
+  background-color: var(--wiki-background-2);
 }
 
-.badge a:hover{
-    color: var(--link-blue);
+.badge a:hover {
+  color: var(--link-blue);
 }
 
-.badge .icon{
-    transition: display 0.2s;
-    display: none;
+.badge .icon {
+  transition: display 0.2s;
+  display: none;
 }
 
-.badge:hover .icon{
-    display: inline;
+.badge:hover .icon {
+  display: inline;
 }
 
-.fa-check:hover{
-    color: green;
+.fa-check:hover {
+  color: green;
 }
 
-.fa-times:hover{
-    color: red;
+.fa-times:hover {
+  color: red;
 }
 
-.badge .fa-trash:hover{
-    color: red;
+.badge .fa-trash:hover {
+  color: red;
 }
 
-.white-line{
-    background-color: white;
-    margin: 0.3rem 0
+.white-line {
+  background-color: white;
+  margin: 0.3rem 0;
 }
 
-.tag-label{
-    font-size: 14px;
+.tag-label {
+  font-size: 14px;
 }
 
-
-.btn-secondary{
-    background-color: var(--wiki-background-2);
+.btn-secondary {
+  background-color: var(--wiki-background-2);
 }
 
-.btn-outline-secondary{
-    border-color: var(--wiki-background-2);
-    color: white;
+.btn-outline-secondary {
+  border-color: var(--wiki-background-2);
+  color: white;
 }
 
-.btn-outline-secondary:hover{
-    background-color: var(--wiki-background-2);
+.btn-outline-secondary:hover {
+  background-color: var(--wiki-background-2);
 }
 
-.delete-request .btn-secondary{
-    background-color: #393e41;
+.delete-request .btn-secondary {
+  background-color: #393e41;
 }
 
-
-.order-arrows .fa{
-    border-color: #393e41;
-    background-color: var(--wiki-background-2);
-    border-radius: 0.25rem;
-    padding: 0.33rem 0.5rem;
+.order-arrows .fa {
+  border-color: #393e41;
+  background-color: var(--wiki-background-2);
+  border-radius: 0.25rem;
+  padding: 0.33rem 0.5rem;
 }
 
-.encounter .order-arrows .fa{
-    display: inline-block;
+.encounter .order-arrows .fa {
+  display: inline-block;
 }
 
-.isBeingCutOut{
-    opacity: 0.5;
+.isBeingCutOut {
+  opacity: 0.5;
 }
 
-
-@media(max-width: $medium-screen){
-	.edit-image-buttons{
-        opacity: 1;
-    }
+@media (max-width: $medium-screen) {
+  .edit-image-buttons {
+    opacity: 1;
+  }
 }
 
-@media(max-width: $small-screen){
-    div.order-arrows.flex-column{
-        flex-direction: row !important;
-    }
+@media (max-width: $small-screen) {
+  div.order-arrows.flex-column {
+    flex-direction: row !important;
+  }
 
-    div.order-arrows.justify-content-start {
-        justify-content: center !important;
-    }
+  div.order-arrows.justify-content-start {
+    justify-content: center !important;
+  }
 
-    div.order-arrows .fa{
-        margin: 0 2rem;
-    }
+  div.order-arrows .fa {
+    margin: 0 2rem;
+  }
 }
