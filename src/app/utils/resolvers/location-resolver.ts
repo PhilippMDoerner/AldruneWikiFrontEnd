@@ -75,6 +75,7 @@ export class LocationUpdateResolver extends BaseArticleUpdateResolver {
   ): Promise<LocationObject> {
     const createdData: any = await super.createData(campaign, queryParameters);
     const locationData: LocationObject = createdData;
+    locationData.parent_location = null;
 
     if (this.isCreateRouteWithParentLocation(state, queryParameters)) {
       const parentLocation: LocationObject = await this.fetchParentLocationData(
