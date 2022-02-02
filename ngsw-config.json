@@ -44,17 +44,6 @@
   ],
   "dataGroups": [
     {
-      "name": "campaignData",
-      "urls": [
-        "https://www.aldrune.com/wiki1/api/campaign/overview/"
-      ],
-      "cacheConfig": {
-        "maxSize": 100,
-        "maxAge": "3d",
-        "strategy": "performance"
-      }
-    },
-    {
       "name": "aldruneWikiOverview",
       "urls": [
         "https://www.aldrune.com/wiki1/api/character/*/overview/",
@@ -98,5 +87,5 @@
         "strategy": "freshness"
       }
     }
-  ] 
+  ]
 }
