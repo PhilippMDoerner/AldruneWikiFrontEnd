@@ -1,13 +1,17 @@
-import { BrowserModule, HammerModule, HammerGestureConfig, HAMMER_GESTURE_CONFIG } from '@angular/platform-browser';
-import { BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {
+  BrowserModule,
+  HammerModule,
+  HammerGestureConfig,
+  HAMMER_GESTURE_CONFIG,
+} from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { EditorModule, TINYMCE_SCRIPT_SRC } from '@tinymce/tinymce-angular';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
-import { CommonModule } from "@angular/common";
-
+import { CommonModule } from '@angular/common';
 
 import { AppComponent } from './app.component';
 import { CharacterArticleComponent } from './components/articles/character-article/character-article.component';
@@ -28,8 +32,11 @@ import { FormlyBootstrapModule } from '@ngx-formly/bootstrap';
 import { FormlyFieldFile } from './components/utility/file-upload/file-upload.component';
 import { FileValueAccessor } from './components/utility/file-upload/file-value-accesor';
 
-import { GroupByPipe, GroupByFirstLetterPipe } from "src/app/utils/pipes/groupObjects.pipe";
-import { SafeHtmlPipe } from "src/app/utils/pipes/htmlSanitizer.pipe";
+import {
+  GroupByPipe,
+  GroupByFirstLetterPipe,
+} from 'src/app/utils/pipes/groupObjects.pipe';
+import { SafeHtmlPipe } from 'src/app/utils/pipes/htmlSanitizer.pipe';
 import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
 import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
@@ -58,20 +65,43 @@ import { MarkerMapCreateComponent } from './components/articles/marker-map-creat
 import { LocationArticleMapCreateComponent } from './components/articles/location-article-map-create/location-article-map-create.component';
 import { QuoteGalleryComponent } from './components/utility/quote-gallery/quote-gallery.component';
 import { LoginComponent } from './components/login/login.component';
-import { httpInterceptorProviders } from "src/app/interceptors/index";
+import { httpInterceptorProviders } from 'src/app/interceptors/index';
 import { FormlyDatepickerComponent } from './components/utility/formly-datepicker/formly-datepicker.component';
 import { SessionUpdateModalComponent } from './components/utility/session-update-modal/session-update-modal.component';
 import { SessionUpdateWrapperComponent } from './components/utility/session-update-wrapper/session-update-wrapper.component';
 import { TimestampListComponent } from './components/utility/timestamp-list/timestamp-list.component';
 import { TimestampComponent } from './components/utility/timestamp/timestamp.component';
 import { FormlyFormcontainerComponent } from './components/utility/formly-formcontainer/formly-formcontainer.component';
-import { AdminGuardService, CampaignGuardService, LoginGuardService } from './services/permission.service';
+import {
+  AdminGuardService,
+  CampaignGuardService,
+  LoginGuardService,
+} from './services/permission.service';
 import { SessionDeleteModalComponent } from './components/utility/session-delete-modal/session-delete-modal.component';
 import { ArticleFooterComponent } from './components/utility/article-footer/article-footer.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
-import { dateMessage, dateValidator, faPrefixMessage, iconValidator, integerValidator, invalidTimeMessage, notIntegerMessage, requiredIconMessage, requiredIconValidator, requiredMessage, requiredValidator, timeValidator, specialCharacterValidator, hasSpecialCharactersMessage, fieldMatchValidator, fieldsDontMatchMessage, sessionAuthorUniqueValidator, sessionAlreadyHasAuthor } from './utils/functions/formly-validation';
+import {
+  dateMessage,
+  dateValidator,
+  faPrefixMessage,
+  iconValidator,
+  integerValidator,
+  invalidTimeMessage,
+  notIntegerMessage,
+  requiredIconMessage,
+  requiredIconValidator,
+  requiredMessage,
+  requiredValidator,
+  timeValidator,
+  specialCharacterValidator,
+  hasSpecialCharactersMessage,
+  fieldMatchValidator,
+  fieldsDontMatchMessage,
+  sessionAuthorUniqueValidator,
+  sessionAlreadyHasAuthor,
+} from './utils/functions/formly-validation';
 import { DiaryEntryEncounterComponent } from './components/utility/diary-entry-encounter/diary-entry-encounter.component';
 import { DiaryEntryEncounterListComponent } from './components/utility/diary-entry-encounter-list/diary-entry-encounter-list.component';
 import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
@@ -191,42 +221,51 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
     HttpClientModule,
     ReactiveFormsModule,
     FormlyModule.forRoot({
-        types: [
-          { name: "file", component: FormlyFieldFile, wrappers: ['form-field'] },
-          { name: "tinymce", component: FormlyComponent},
-          { name: "datepicker", component: FormlyDatepickerComponent},
-          { name: "session-create-edit", component: SessionUpdateModalComponent},
-          { name: "formly-select-disable", component: FormlySelectDisableComponent},
-        ],
-        wrappers: [
-          { name: "session-update-wrapper", component: SessionUpdateWrapperComponent },
-        ],
-        validationMessages:[
-          invalidTimeMessage,
-          requiredMessage,
-          dateMessage,
-          requiredIconMessage,
-          faPrefixMessage,
-          notIntegerMessage,
-          hasSpecialCharactersMessage,
-          fieldsDontMatchMessage,
-          sessionAlreadyHasAuthor,
-        ],
-        validators:[
-          timeValidator,
-          requiredValidator,
-          dateValidator,
-          requiredIconValidator,
-          iconValidator,
-          integerValidator,
-          specialCharacterValidator,
-          fieldMatchValidator,
-          sessionAuthorUniqueValidator,
-        ]
-      }), //{ extras: { lazyRender: true } }
+      types: [
+        { name: 'file', component: FormlyFieldFile, wrappers: ['form-field'] },
+        { name: 'tinymce', component: FormlyComponent },
+        { name: 'datepicker', component: FormlyDatepickerComponent },
+        { name: 'session-create-edit', component: SessionUpdateModalComponent },
+        {
+          name: 'formly-select-disable',
+          component: FormlySelectDisableComponent,
+        },
+      ],
+      wrappers: [
+        {
+          name: 'session-update-wrapper',
+          component: SessionUpdateWrapperComponent,
+        },
+      ],
+      validationMessages: [
+        invalidTimeMessage,
+        requiredMessage,
+        dateMessage,
+        requiredIconMessage,
+        faPrefixMessage,
+        notIntegerMessage,
+        hasSpecialCharactersMessage,
+        fieldsDontMatchMessage,
+        sessionAlreadyHasAuthor,
+      ],
+      validators: [
+        timeValidator,
+        requiredValidator,
+        dateValidator,
+        requiredIconValidator,
+        iconValidator,
+        integerValidator,
+        specialCharacterValidator,
+        fieldMatchValidator,
+        sessionAuthorUniqueValidator,
+      ],
+    }), //{ extras: { lazyRender: true } }
     FormlyBootstrapModule,
     CommonModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production, registrationStrategy: 'registerImmediately' }),
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: environment.production,
+      registrationStrategy: 'registerImmediately',
+    }),
     HammerModule,
     BrowserAnimationsModule,
     LoadingBarRouterModule,
@@ -239,17 +278,11 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
     LoginGuardService,
     {
       provide: HAMMER_GESTURE_CONFIG,
-      useClass: HammerGestureConfig
-    }
+      useClass: HammerGestureConfig,
+    },
   ],
-  bootstrap: [
-    AppComponent
-  ],
-  exports: [
-    EncounterAccordionComponent
-  ],
-  schemas: [
-    CUSTOM_ELEMENTS_SCHEMA
-  ]
+  bootstrap: [AppComponent],
+  exports: [EncounterAccordionComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}
