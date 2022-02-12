@@ -1,5 +1,4 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
@@ -10,12 +9,11 @@ import { WarningsService } from 'src/app/services/warnings.service';
 @Component({
   selector: 'app-recently-updated-articles-list',
   templateUrl: './recently-updated-articles-list.component.html',
-  styleUrls: ['./recently-updated-articles-list.component.scss']
+  styleUrls: ['./recently-updated-articles-list.component.scss'],
 })
 export class RecentlyUpdatedArticlesListComponent implements OnInit {
   articles: OverviewItemObject[];
   @Input() campaign: string;
-
 
   constants: Constants = Constants;
   pageNumber: number = 0;
@@ -26,47 +24,52 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
     private recentUpdatesServices: RecentlyUpdatedService,
     private routingService: RoutingService,
     private warnings: WarningsService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
-    this.recentUpdatesServices.getRecentlyUpdatedArticle(this.campaign, this.pageNumber).pipe(first()).subscribe(
-      (articles: OverviewItemObject[]) => this.articles = articles,
-      error => this.routingService.routeToErrorPage(error)
-    );
+    this.recentUpdatesServices
+      .getRecentlyUpdatedArticle(this.campaign, this.pageNumber)
+      .pipe(first())
+      .subscribe(
+        (articles: OverviewItemObject[]) => (this.articles = articles),
+        (error) => this.routingService.routeToErrorPage(error)
+      );
   }
 
-  getArticleTypeMetaData(article_type: string){
+  getArticleTypeMetaData(article_type: string) {
     const allMetaData: any = Constants.articleTypeMetaData;
-    const metaData = allMetaData.filter(
-      metaDataEntry => metaDataEntry.article_types?.includes(article_type)
+    const metaData = allMetaData.filter((metaDataEntry) =>
+      metaDataEntry.article_types?.includes(article_type)
     );
 
     const hasArticleTypeCollision = metaData.length > 1;
-    if (hasArticleTypeCollision) throw `ArticleTypeCollisionException. The article type ${article_type}
-    is being used multiple times. Please fix this`;
+    if (hasArticleTypeCollision) {
+      throw `ArticleTypeCollisionException. The article type ${article_type} is being used multiple times. Please fix this`;
+    }
 
     return metaData[0];
   }
 
-  getArticleName(article: OverviewItemObject){
-    if(this.isDiaryEntry(article)) return `#${article.session_details.session_number} - ${article.name}`;
-    if(article.article_type === "location") return article.name;
-    
+  getArticleName(article: OverviewItemObject) {
+    if (this.isDiaryEntry(article))
+      return `#${article.session_details.session_number} - ${article.name}`;
+    if (article.article_type === 'location') return article.name;
+
     return article.name_full;
   }
 
-  isDiaryEntry(article: OverviewItemObject){
-    return article.article_type === "diaryentry";
+  isDiaryEntry(article: OverviewItemObject) {
+    return article.article_type === 'diaryentry';
   }
 
-  @HostListener("window:scroll", ["$event"])
+  @HostListener('window:scroll', ['$event'])
   onWindowScroll(event: Event) {
-    if (this.isNearPageEnd()){
+    if (this.isNearPageEnd()) {
       this.loadNextPage();
     }
   }
 
-  isNearPageEnd(): boolean{
+  isNearPageEnd(): boolean {
     const totalPageHeight: number = document.documentElement.scrollHeight;
     const visiblePageHeight: number = document.documentElement.clientHeight;
     const maxScrollHeight: number = totalPageHeight - visiblePageHeight;
@@ -74,23 +77,33 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
     const scrolledHeight: number = window.pageYOffset;
     const pixelDistanceToPageBottom: number = maxScrollHeight - scrolledHeight;
 
-    return pixelDistanceToPageBottom < Constants.maxDistanceToPageBottomForPaginationLoad;
+    return (
+      pixelDistanceToPageBottom <
+      Constants.maxDistanceToPageBottomForPaginationLoad
+    );
   }
 
-  loadNextPage(): void{
-    if(this.isLoadingNextPage || this.articles == null || this.hasLoadedAllArticles) return;
+  loadNextPage(): void {
+    if (
+      this.isLoadingNextPage ||
+      this.articles == null ||
+      this.hasLoadedAllArticles
+    )
+      return;
 
     this.pageNumber += 1;
     this.isLoadingNextPage = true;
 
-    this.recentUpdatesServices.getRecentlyUpdatedArticle(this.campaign, this.pageNumber).pipe(first()).subscribe(
-      (articles: OverviewItemObject[]) => {
-        this.articles = this.articles.concat(articles);
-        this.isLoadingNextPage = false;
-        if(articles.length === 0) this.hasLoadedAllArticles = true;
-      },
-      error => this.warnings.showWarning(error)
-    );
+    this.recentUpdatesServices
+      .getRecentlyUpdatedArticle(this.campaign, this.pageNumber)
+      .pipe(first())
+      .subscribe(
+        (articles: OverviewItemObject[]) => {
+          this.articles = this.articles.concat(articles);
+          this.isLoadingNextPage = false;
+          if (articles.length === 0) this.hasLoadedAllArticles = true;
+        },
+        (error) => this.warnings.showWarning(error)
+      );
   }
-
 }
