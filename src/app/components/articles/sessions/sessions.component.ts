@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { first, map, tap } from 'rxjs/operators';
 import { CampaignOverview } from 'src/app/models/campaign';
@@ -13,19 +20,22 @@ import { ArticleListMixin } from 'src/app/utils/functions/articleListMixin';
 @Component({
   selector: 'app-sessions',
   templateUrl: './sessions.component.html',
-  styleUrls: ['./sessions.component.scss']
+  styleUrls: ['./sessions.component.scss'],
 })
-export class SessionsComponent extends ArticleListMixin implements OnInit, AfterViewInit {
+export class SessionsComponent
+  extends ArticleListMixin
+  implements OnInit, AfterViewInit
+{
   //URLs
   homeUrl: string;
 
   articleModelClass = SessionObject;
-  articleStarterTitle = "New Session";
-  articlesSortProperty = "session_date";
+  articleStarterTitle = 'New Session';
+  articlesSortProperty = 'session_date';
   isReverseSort = true;
 
-  @ViewChildren("sessionElements") articleElements: QueryList<any>;
-  articlesInitialScrollParameter = "name";
+  @ViewChildren('sessionElements') articleElements: QueryList<any>;
+  articlesInitialScrollParameter = 'name';
 
   constructor(
     sessionService: SessionService,
@@ -33,8 +43,8 @@ export class SessionsComponent extends ArticleListMixin implements OnInit, After
     routingService: RoutingService,
     warnings: WarningsService,
     globalUrlParams: GlobalUrlParamsService,
-    tokenService: TokenService,
-  ) { 
+    tokenService: TokenService
+  ) {
     super(
       sessionService,
       route,
@@ -45,16 +55,25 @@ export class SessionsComponent extends ArticleListMixin implements OnInit, After
     );
   }
 
-  updateDynamicVariables(campaign: CampaignOverview, articles: any[], params: Params){
-    this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaign.name});
+  updateDynamicVariables(
+    campaign: CampaignOverview,
+    articles: any[],
+    params: Params
+  ) {
+    this.homeUrl = this.routingService.getRoutePath('home2', {
+      campaign: campaign.name,
+    });
   }
 
-  addArticle(): void{
+  addArticle(): void {
     const newArticle: any = new SessionObject();
     newArticle.name = this.articleStarterTitle;
     newArticle.campaign = this.campaign.pk;
 
-    const maxSessionNumber: number = Math.max.apply(Math, this.articles.map((session: any) => session.session_number));
+    const maxSessionNumber: number = Math.max.apply(
+      Math,
+      this.articles.map((session: any) => session.session_number)
+    );
     newArticle.session_number = maxSessionNumber + 1;
 
     const lastSession: any = this.articles[0];
@@ -63,19 +82,24 @@ export class SessionsComponent extends ArticleListMixin implements OnInit, After
     this.articles.unshift(newArticle);
   }
 
+  getNextSessionDate(lastSession: any): string {
+    let assumedThisSessionDate: Date;
+    if (lastSession == null) {
+      assumedThisSessionDate = new Date();
+    } else {
+      const lastSessionDate: Date = new Date(lastSession.session_date);
+      assumedThisSessionDate = this.addDaysToDate(7, lastSessionDate);
+    }
 
-  getNextSessionDate(lastSession: any): string{
-    const lastSessionDate: Date = new Date(lastSession.session_date);
-    const assumedThisSessionDate: Date = this.addDaysToDate(7, lastSessionDate);
     return this.dateToYYYMMDDString(assumedThisSessionDate);
   }
 
-  addDaysToDate(days: number, oldDate: Date): Date{
+  addDaysToDate(days: number, oldDate: Date): Date {
     const daysInSeconds = days * 86400000;
-    return new Date(oldDate.setTime( oldDate.getTime() + daysInSeconds));
+    return new Date(oldDate.setTime(oldDate.getTime() + daysInSeconds));
   }
 
-  dateToYYYMMDDString(date: Date){
-    return date.toISOString().slice(0,10);
+  dateToYYYMMDDString(date: Date) {
+    return date.toISOString().slice(0, 10);
   }
 }
