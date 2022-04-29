@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CampaignRole, Constants } from '../app.constants';
 import { DecodedTokenPayload, EncodedJWTToken } from '../models/jwttoken';
 import { User } from '../models/user';
@@ -17,7 +18,15 @@ export class TokenService {
 
   public getJWTToken(userModel: User): Observable<EncodedJWTToken>{
     const loginData: object = {username: userModel.username, password: userModel.password};
-    return this.http.post<EncodedJWTToken>(this.jwtTokenUrl, loginData);
+    return this.http.post<EncodedJWTToken>(this.jwtTokenUrl, loginData)
+      .pipe(
+        //This deals with the fact that nimstoryfont sends the claims with UTF-8 encoding, but JS needs UTF-16 encoding to properly work
+        //(https://stackoverflow.com/questions/13356493/decode-utf-8-with-javascript)
+        map((token: EncodedJWTToken) => {
+          let tokenString: string = JSON.stringify(token);
+          return JSON.parse(decodeURIComponent(escape(tokenString)));
+        })
+      );
   }
 
   public invalidateJWTToken(): void{
@@ -137,7 +146,7 @@ export class TokenService {
     const memberships: any = this.getCampaignMemberships();
     if (memberships == null) return null;
 
-    const role: string = memberships[campaignName.toLowerCase()];
+    const role: string = memberships[campaignName];
     return CampaignRole[role?.toUpperCase()]
   }
 
