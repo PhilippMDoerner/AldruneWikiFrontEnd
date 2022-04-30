@@ -162,8 +162,6 @@ export class TokenService {
         campaignMemberships[campaignIdentifier] = currentUserAccessTokenPayload.campaign_memberships[campaignIdentifier];
       }
     }
-    console.log(campaignMemberships);
-    console.log(currentUserAccessTokenPayload.campaign_memberships);
     return campaignMemberships;
   }
 

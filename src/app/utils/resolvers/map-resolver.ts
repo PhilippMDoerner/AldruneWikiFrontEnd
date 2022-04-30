@@ -29,8 +29,7 @@ export class MapResolver
     state: RouterStateSnapshot
   ): Promise<{ mapData: MapObject; maps: OverviewItemObject[] }> {
     const params: Params = route.params;
-    console.log('my params: ');
-    console.log(params);
+
     const campaign: CampaignOverview =
       await this.globalUrlParams.getCurrentCampaign();
     const maps: OverviewItemObject[] = await this.service
