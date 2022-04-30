@@ -165,8 +165,10 @@ export class EncounterAccordionComponent extends PermissionUtilityFunctionMixin 
   toggleEncounterConnectionCreationState(){
     this.inEncounterConnectionCreationState = !this.inEncounterConnectionCreationState;
     if (!this.characters){
-      this.overviewService.getCampaignOverviewItems(this.campaign, OverviewType.Character).pipe(first()).subscribe(
-        (characters: OverviewItemObject[]) => this.characters = characters,
+      this.overviewService.getCampaignOverviewItems(this.campaign, OverviewType.Character)
+      .pipe(first())
+      .subscribe(
+        (characters: OverviewItemObject[]) => this.characters = characters.filter(char => !char.player_character),
         error => this.warnings.showWarning(error)
       );
     }
