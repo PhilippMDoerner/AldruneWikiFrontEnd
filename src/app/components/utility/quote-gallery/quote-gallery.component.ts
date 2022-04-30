@@ -53,7 +53,7 @@ export class QuoteGalleryComponent
       .pipe(first())
       .subscribe(
         (quote: QuoteObject) => {
-          if (quote.quote) {
+          if (quote?.quote) {
             this.quote = quote;
           }
           this.isLoadingNextQuote = false;

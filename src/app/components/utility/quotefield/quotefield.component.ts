@@ -116,7 +116,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
     this.isLoadingNextQuote = true;
     this.quoteService.getRandomQuote(this.campaign.name, this.character.name).pipe(first()).subscribe(
       (quote: QuoteObject) => {
-        if (quote.quote){
+        if (quote?.quote){
           this.quote = quote;
         }
         this.isLoadingNextQuote = false;
