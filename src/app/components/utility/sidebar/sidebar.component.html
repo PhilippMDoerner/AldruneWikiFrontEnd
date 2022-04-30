@@ -14,7 +14,7 @@
             <a class="pl-0" routerLink="{{ homeUrl }}">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <img class="campaign-icon"
-                    [src]="currentCampaign?.icon" alt="..."
+                    [src]="constants.wikiUrl + currentCampaign?.icon" alt="..."
                     />
                     <span class="ml-2 on-hover-show">{{currentCampaign?.name}}</span>
                 </h3>

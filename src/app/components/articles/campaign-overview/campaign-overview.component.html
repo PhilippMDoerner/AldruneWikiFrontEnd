@@ -37,7 +37,7 @@
         'col-sm-6': campaignData.length === 2 || campaignData.length === 4,
         'col-sm-4': campaignData.length === 3 || campaignData.length >= 5
       }"
-      [style.background-image]="'url(' + campaign.background_image + ')'"
+      [style.background-image]="'url(' + constants.wikiUrl + campaign.background_image + ')'"
     >
       <div class="campaign-overlay overlay-heading text-center">
         <h3 class="mb-0 px-3">{{ campaign.name }}</h3>
