@@ -13,6 +13,7 @@ import { User } from '../models/user';
 export class TokenService {
   private jwtTokenUrl: string = Constants.wikiTokenUrl;
   private refreshTokenUrl: string = Constants.wikiTokenRefreshUrl;
+  private ID_IDENTIFIER_PREFIX: string = "id_";
 
   constructor(private http: HttpClient) { }
 
@@ -153,7 +154,17 @@ export class TokenService {
   /**Retrieves campaign memberships of a user from their token */
   public getCampaignMemberships(): any{
     const currentUserAccessTokenPayload: DecodedTokenPayload = this.getDecodedAccessTokenPayload();
-    return currentUserAccessTokenPayload?.campaign_memberships;
+
+    const campaignMemberships = {}
+    for (const campaignIdentifier of Object.keys(currentUserAccessTokenPayload.campaign_memberships)){
+      const isIdIdentifier: boolean = campaignIdentifier.startsWith(this.ID_IDENTIFIER_PREFIX);
+      if (! isIdIdentifier){
+        campaignMemberships[campaignIdentifier] = currentUserAccessTokenPayload.campaign_memberships[campaignIdentifier];
+      }
+    }
+    console.log(campaignMemberships);
+    console.log(currentUserAccessTokenPayload.campaign_memberships);
+    return campaignMemberships;
   }
 
   public isTokenExpired(token: string): boolean{
