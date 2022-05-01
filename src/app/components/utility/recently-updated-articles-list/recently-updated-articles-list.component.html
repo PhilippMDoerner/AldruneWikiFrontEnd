@@ -27,7 +27,8 @@
                     </div>
 
                     <div class="card-subtitle mb-2"> 
-                        {{ article.update_date | date }} 
+                        
+                        {{ article.update_datetime | date }} 
                         <div class="text-muted"> 
                             <span *ngIf="isDiaryEntry(article)"> {{article.author_details?.name}}'s </span>
                             {{ article.article_type}}
