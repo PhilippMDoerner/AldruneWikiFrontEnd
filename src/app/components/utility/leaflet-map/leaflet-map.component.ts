@@ -126,7 +126,7 @@ export class LeafletMapComponent implements AfterContentInit {
       [200, 140],
       [800, 1160],
     ];
-    L.imageOverlay(this.map.image, bounds).addTo(this.leafletMap);
+    L.imageOverlay(Constants.wikiUrl + this.map.image, bounds).addTo(this.leafletMap);
     this.leafletMap.fitBounds(bounds);
   }
 
