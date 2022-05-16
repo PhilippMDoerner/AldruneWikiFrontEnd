@@ -52,7 +52,18 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
       globalUrlParams,
       route,
       tokenService,
-    ) 
+    );
+  }
+
+  ngOnInit(): void {
+    super.ngOnInit();
+
+    this.userModel.icon = this.extractIconNameFromPath(this.userModel.icon);
+  }
+
+  extractIconNameFromPath(iconPath: string): string {
+    const iconPathSections = iconPath.split("/");
+    return iconPathSections[iconPathSections.length - 1];
   }
 
   updateRouterLinks(campaignName: string, userModel: MapObject, params: Params): void{
