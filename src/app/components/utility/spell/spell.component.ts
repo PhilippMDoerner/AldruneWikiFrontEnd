@@ -72,7 +72,7 @@ export class SpellComponent extends CardFormMixin implements OnInit {
       spellService,
       route,
       tokenService
-    ) 
+    );
   }
 
   toggleSpellCard(event: any){
@@ -115,6 +115,7 @@ export class SpellComponent extends CardFormMixin implements OnInit {
   }
 
   createSpellPlayerClassConnection(connection: SpellPlayerClassConnection){
+    connection.player_class = parseInt(`${connection.player_class}`);
     this.spellConnectionService.create(connection).pipe(first()).subscribe(
       (connection: SpellPlayerClassConnection) => {
         this.cardData.player_class_connections.push(connection);
