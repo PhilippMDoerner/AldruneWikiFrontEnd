@@ -45,6 +45,11 @@ export class OrganizationArticleComponent extends ArticleMixin implements OnInit
     )
    }
 
+   ngOnInit(): void {
+     super.ngOnInit();
+     this.articleData.members = this.articleData.members.sort((char1, char2) => char1.name > char2.name ? 1 : -1);
+   }
+
    updateDynamicVariables(campaign: CampaignOverview, articleData: OrganizationObject, params: Params): void{
     this.organizationOverviewUrl = this.routingService.getRoutePath('organization-overview', {campaign: campaign.name});
     this.characterCreateUrl = this.routingService.getRoutePath('character-create', {campaign: campaign.name});
