@@ -53,6 +53,12 @@ export class CharacterArticleComponent extends ArticleMixin implements OnInit, O
         tokenService,
       );
     }
+  
+  ngOnInit(): void {
+    super.ngOnInit();
+    this.articleData.items.sort((item1, item2) => item1.name > item2.name ? 1: -1);
+  }
+
 
   updateDynamicVariables(campaign: CampaignOverview, articleData: CharacterObject, params: Params): void{
       this.updateRouteLinks(campaign, articleData, params);
