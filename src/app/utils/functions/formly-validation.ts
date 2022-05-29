@@ -43,7 +43,7 @@ export const notIntegerMessage = {
 export const hasSpecialCharactersMessage = {
   name: 'hasSpecialCharacters',
   message:
-    'Your input includes one of the following invalid special characters: [ ] { } ? | \\ " % ~ # < >. If you need to rebel, please dont against this.',
+    'Your input includes one of the following invalid special characters: [ ] ( ) ? | \\ " % ~ # < >. If you need to rebel, please dont against this.',
 };
 export const fieldsDontMatchMessage = {
   name: 'fieldMatch',
@@ -109,8 +109,8 @@ function hasNoSpecialCharactersValidation(
     const specialCharacters: string[] = [
       '[',
       ']',
-      '{',
-      '}',
+      '(',
+      ')',
       '|',
       '\\',
       '"',
