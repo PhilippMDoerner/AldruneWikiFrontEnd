@@ -32,7 +32,7 @@
                 #vimePlayer
             >
                 <vm-audio cross-origin>
-                    <source [src]="articleData.audio_file" type="audio/mp3" crossorigin="anonymous" #audioSource/>
+                    <source [src]="constants.wikiUrl + '/' + articleData.audio_file" type="audio/mp3" crossorigin="anonymous" #audioSource/>
                 </vm-audio>
                 
                 <vm-default-ui></vm-default-ui>
