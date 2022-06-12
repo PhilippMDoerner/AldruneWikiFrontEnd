@@ -91,7 +91,7 @@ export class UserRowComponent implements OnInit {
     this.isDeleteState = !this.isDeleteState;
   }
 
-  deleteUser(userIndex: number): void{
+  deleteUser(): void{
     this.userService.delete(this.user.pk).pipe(first()).subscribe(
       (response) => {this.delete.emit(this.index)},
       error => this.warnings.showWarning(error)
