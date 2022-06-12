@@ -40,6 +40,7 @@ yarn-error.log
 testem.log
 /typings
 .eslintrc.json
+frontend*
 
 # System Files
 .DS_Store
