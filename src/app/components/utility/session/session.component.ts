@@ -2,7 +2,7 @@ import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { CampaignOverview } from 'src/app/models/campaign';
-import { SessionObject } from 'src/app/models/session';
+import { Session, SessionObject } from 'src/app/models/session';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { SessionService } from 'src/app/services/session.service';
@@ -52,6 +52,12 @@ export class SessionComponent extends CardFormMixin implements OnInit {
 
   createUserModel(): void{
     this.userModel = JSON.parse(JSON.stringify(this.cardData));
+  }
+
+  articleUpdate(userModel: any): void{
+    userModel.end_day = parseInt(userModel.end_day);
+    userModel.start_day = parseInt(userModel.start_day);
+    super.articleUpdate(userModel);
   }
 
   updateDynamicVariables(campaign: CampaignOverview, articleData: any, params: Params): void{
