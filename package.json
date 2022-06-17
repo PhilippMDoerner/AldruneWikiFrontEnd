@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxyconfig.json",
-    "build": "ng build --prod",
+    "build": "ng build --configuration production",
     "postbuild": "npm run commit",
     "commit": "git add dist/* && git commit -m 'build update' && git push origin",
     "test": "ng test",
