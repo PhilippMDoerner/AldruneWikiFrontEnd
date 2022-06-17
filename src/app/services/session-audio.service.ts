@@ -24,7 +24,12 @@ export class SessionAudioService extends GenericObjectService {
 
   @TransformObservable(SessionAudioObject)
   create(sessionAudioModel: SessionAudio): Observable<any>{
-    const headers = new HttpHeaders({ 'ngsw-bypass': 'true'});
+    const uploadProgressId = `${sessionAudioModel.campaign}_${sessionAudioModel.session}`;
+
+    const headers = new HttpHeaders({ 
+      'ngsw-bypass': 'true',
+      'X-Progress-ID': uploadProgressId,
+    });
 
     const formData: FormData = convertSingleFileModelToFormData(sessionAudioModel, "audio_file");
     return this.http.post<any>(`${this.baseUrl}/`, formData, {
