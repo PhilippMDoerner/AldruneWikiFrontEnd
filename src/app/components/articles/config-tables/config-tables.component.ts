@@ -26,7 +26,7 @@ export class ConfigTablesComponent implements OnInit {
       service: this.markerTypeService,
       model: {name: null, is_text_marker: false, icon: null, color: null},
       formFields: [
-        this.formlyService.genericInput({key: "name"}),
+        this.formlyService.genericInput({key: "name", isNameInput: true}),
         this.formlyService.genericCheckbox({key: "is_text_marker", label: "Show name instead of Icon", defaultValue: false}),
         this.formlyService.genericInput({key: "icon"}),
         this.formlyService.genericInput({key: "color"})
@@ -39,7 +39,7 @@ export class ConfigTablesComponent implements OnInit {
       service: this.playerClassService,
       model: {name: null},
       formFields: [
-        this.formlyService.genericInput({key: "name"})
+        this.formlyService.genericInput({key: "name", isNameInput: true})
       ]
     }
   ];

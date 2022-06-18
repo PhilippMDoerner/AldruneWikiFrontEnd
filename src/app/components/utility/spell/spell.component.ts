@@ -44,7 +44,7 @@ export class SpellComponent extends CardFormMixin implements OnInit {
   formlyFields: FormlyFieldConfig[] = [
     this.formlyService.genericCheckbox({key: "concentration", label: "Concentration", defaultValue: false}),
     this.formlyService.genericCheckbox({key: "ritual", defaultValue: false}),
-    this.formlyService.genericInput({key: "name"}),
+    this.formlyService.genericInput({key: "name", isNameInput: true}),
     this.formlyService.customSelect({key: "spell_level", label: "Spell Level", options: Constants.spellLevelOptions}),
     this.formlyService.customSelect({key: "casting_time", label: "Casting Time", options: Constants.castingTimeOptions}),
     this.formlyService.customSelect({key: "duration", options: Constants.durationOptions}),

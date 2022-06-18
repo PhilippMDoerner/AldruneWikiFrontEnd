@@ -25,7 +25,7 @@ export class RuleComponent extends CardFormMixin implements OnInit {
   cardDelete = new EventEmitter<number>()
 
   formlyFields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "name"}),
+    this.formlyService.genericInput({key: "name", isNameInput: true}),
     this.formlyService.genericTextField({key: "description"}),
   ];
 
