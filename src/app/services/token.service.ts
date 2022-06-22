@@ -20,14 +20,6 @@ export class TokenService {
   public getJWTToken(userModel: User): Observable<EncodedJWTToken>{
     const loginData: object = {username: userModel.username, password: userModel.password};
     return this.http.post<EncodedJWTToken>(this.jwtTokenUrl, loginData)
-      .pipe(
-        //This deals with the fact that nimstoryfont sends the claims with UTF-8 encoding, but JS needs UTF-16 encoding to properly work
-        //(https://stackoverflow.com/questions/13356493/decode-utf-8-with-javascript)
-        map((token: EncodedJWTToken) => {
-          let tokenString: string = JSON.stringify(token);
-          return JSON.parse(decodeURIComponent(escape(tokenString)));
-        })
-      );
   }
 
   public invalidateJWTToken(): void{
@@ -96,7 +88,18 @@ export class TokenService {
   //Exists for permissionDecorator.ts
   public static decodeTokenPayload(token: string): DecodedTokenPayload{
     const [encodedHeader, encodedPayload, encodedSignature]: string[] = token.split('.');
-    return JSON.parse(atob(encodedPayload));
+    const decodedPayloadStringUtf8 = atob(encodedPayload);
+    const decodedPayloadStringUtf16 = decodeURIComponent(escape(decodedPayloadStringUtf8));
+    return JSON.parse(decodedPayloadStringUtf16);
+  }
+
+
+  private swapUTFEncoding(token: string): string{
+    const [header, payload, signature] = token.split(".");
+
+    const decodedTokenString: string = atob(payload)
+    const utf8Token: DecodedTokenPayload = JSON.parse(decodeURIComponent(escape(decodedTokenString)));
+    return btoa(JSON.stringify(utf8Token));
   }
 
   private decodeTokenPayload(token: string): DecodedTokenPayload{
