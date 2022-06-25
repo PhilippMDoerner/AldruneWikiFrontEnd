@@ -12,6 +12,7 @@ export class Constants{
 
     public static get wikiStaticUrl(): string { return `${this.wikiUrl}/static`;}
     public static get wikiMediaUrl(): string { return `${this.wikiUrl}/media`;}
+    public static get wikiAudioUploadUrl(): string { return `${this.wikiUrl}/uploads`;}    
     public static get wikiTokenUrl(): string { return `${this.wikiApiUrl}/token`;}
     public static get wikiTokenRefreshUrl(): string {return `${this.wikiTokenUrl}/refresh`;}
     public static get wikiUrlFrontendPrefix(): string { return '/wiki2';};
@@ -24,6 +25,7 @@ export class Constants{
              ( navigator.maxTouchPoints > 0 ) || 
              ( navigator.maxTouchPoints > 0 );
     };
+    public static get prologueForbiddenCharacters(): RegExp { return /[\[\]\(\)\|\\\%~#<>\?/,]/g;};
 
     //strings representing states
     public static get createState(): string { return "create";}
