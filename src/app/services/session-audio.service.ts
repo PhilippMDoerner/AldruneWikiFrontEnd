@@ -1,11 +1,11 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Constants } from '../app.constants';
 import { SessionAudio, SessionAudioObject } from '../models/sessionaudio';
 import { convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
 import { TransformObservable } from '../utils/functions/transform';
-import { map } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 import { GenericObjectService } from './generic-object.service';
 
 @Injectable({
@@ -22,21 +22,17 @@ export class SessionAudioService extends GenericObjectService {
     return this.http.get<SessionAudio>(url);
   }
 
-  @TransformObservable(SessionAudioObject)
-  create(sessionAudioModel: SessionAudio): Observable<any>{
-    const uploadProgressId = `${sessionAudioModel.campaign}_${sessionAudioModel.session}`;
-
+  uploadFile(fileName: string, file: File): Observable<any>{
     const headers = new HttpHeaders({ 
       'ngsw-bypass': 'true',
-      'X-Progress-ID': uploadProgressId,
+      'X-Progress-ID': fileName,
     });
 
-    const formData: FormData = convertSingleFileModelToFormData(sessionAudioModel, "audio_file");
-    return this.http.post<any>(`${this.baseUrl}/`, formData, {
+    return this.http.post<any>(`${Constants.wikiAudioUploadUrl}/${fileName}`, file, {
       reportProgress: true,
       observe: 'events',
       headers: headers
-    });
+    }).pipe(tap(resp => console.log(resp)));
   }
 
   //@TransformObservable(SessionAudioObject)

@@ -10,7 +10,7 @@ import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { HttpEvent, HttpEventType, HttpUploadProgressEvent } from '@angular/common/http';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
-import { OverviewType } from 'src/app/app.constants';
+import { Constants, OverviewType } from 'src/app/app.constants';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { TokenService } from 'src/app/services/token.service';
@@ -50,7 +50,7 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
 
   constructor(
     private formlyService: MyFormlyService,
-    audioService: SessionAudioService,
+    public audioService: SessionAudioService,
     router: Router,
     route: ActivatedRoute,
     public warnings: WarningsService,  
@@ -98,7 +98,10 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
     if(this.isInUpdateState()){
       observable = this.articleService.update(this.userModel.pk, this.userModel);
     } else {
-      observable = this.articleService.create(this.userModel);
+      const file: File = this.userModel.audio_file[0] as any as File;
+      const fileName = file.name.replaceAll(Constants.prologueForbiddenCharacters, "")
+
+      observable = this.audioService.uploadFile(fileName, file);
     }
 
     this.file_subscription = observable.subscribe(
@@ -116,12 +119,26 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
 
     } else if(uploadFinished){ //Route to newly created object
       this.file_subscription.unsubscribe();
-      const sessionAudio: SessionAudio = event.body;
-      this.routeToSessionAudio(sessionAudio);
+      
+      if(this.isInCreateState()){
+        const fileName = event.body;
+        this.userModel.audio_file = fileName;
+        this.articleService.create(this.userModel)
+        .pipe(first())
+        .subscribe(
+          (sessionAudio: SessionAudio) => this.routeToSessionAudio(sessionAudio),
+          error => this.warnings.showWarning(error)
+        )
+      } else {
+        const sessionAudio: SessionAudio = event.body;
+        this.routeToSessionAudio(sessionAudio);
+      }
+
     }
   }
 
   routeToSessionAudio(sessionAudio: SessionAudio){
+    console.log("Routing to a path for ", sessionAudio)
     const pathParams = {
       isMainSession: sessionAudio.session_details.is_main_session_int,
       sessionNumber: sessionAudio.session_details.session_number,
