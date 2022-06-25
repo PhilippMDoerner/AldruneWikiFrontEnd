@@ -119,7 +119,6 @@ function hasNoSpecialCharactersValidation(
       '#',
       '<',
       '>',
-      ']',
       '?',
       '/',
     ];
