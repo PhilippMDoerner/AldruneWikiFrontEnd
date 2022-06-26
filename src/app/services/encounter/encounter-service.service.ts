@@ -25,7 +25,7 @@ export class EncounterServiceService extends GenericObjectService {
   }
 
   createForDiaryentry(campaign: string, encounter: Encounter): Observable<EncounterObject[]>{
-    const url = `${this.baseUrl}/${campaign}/diaryentryinsert/`;
+    const url = `${this.baseUrl}/`;
     const encounterObs: Observable<Encounter[]> = this.http.post<Encounter[]>(url, encounter);
     return transformObservableArrayContent(encounterObs, EncounterObject);
   }
