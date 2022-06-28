@@ -34,7 +34,7 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
       sortProp: "name_full",
       campaign: this.campaign.name, 
       required: false,
-      disabledExpression: (location: LocationObject) => location.name === this.userModel.name,
+      disabledExpression: (location: LocationObject) => this.isSameLocation(location, this.userModel) || this.isChildLocation(this.userModel, location),
       tooltipMessage: "The location that contains this new location, e.g. the location 'Mayor's House' within the location 'Small city Lundorf'",
       warningMessage: "The location you selected can't have the same name as the location that is trying to contain it! That would mean that this location contained itself!"
     }),
@@ -63,6 +63,14 @@ export class LocationArticleUpdateComponent extends ArticleFormMixin {
       route,
       tokenService,
     )
+  }
+
+  isSameLocation(location1: LocationObject, location2: LocationObject): boolean{
+    return location1.name === location2.name;
+  }
+
+  isChildLocation(parentLocation: LocationObject, childLocation: LocationObject): boolean{
+    return childLocation.parent_location === parentLocation.pk;
   }
 
   updateRouterLinks(campaignName: string, userModel: LocationObject, params: Params): void{
