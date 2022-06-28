@@ -104,6 +104,7 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
   }
 
   createPlayerClassConnection(connection: CharacterPlayerClassConnection){
+    connection.player_class = parseInt(connection.player_class as any); //Needed because the manually built select gives you back a string, not a number
     this.characterConnectionService.create(connection).pipe(first()).subscribe(
       (connection: CharacterPlayerClassConnection) => {
         this.userModel.player_class_connections.push(connection);
