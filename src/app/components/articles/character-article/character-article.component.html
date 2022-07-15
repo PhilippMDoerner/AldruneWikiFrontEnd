@@ -27,15 +27,21 @@
                     <span *ngIf="articleData.gender !=='Other'">{{ articleData.gender }}</span>
                     {{ articleData.race }}
                     {{ playerClassString }}
-                    <span *ngIf="articleData.organizations?.length > 0"> of the 
-                        <ng-container *ngFor="let organization of articleData.organizations; let i = index">
-                            <a routerLink="{{ organizationUrls[i] }}">
-                                {{ organization.name }}
-                            </a>
-                        </ng-container>
-                    </span> 
                 </div>    
             </div>
+
+            <ng-container *ngIf="articleData.organizations?.length > 0">  
+                <ng-container *ngFor="let organization of articleData.organizations; let i = index">
+                    <div class="row">
+                        <div class="col">
+                            {{ organization.role || "Member"}} of 
+                            <a routerLink="{{ organizationUrls[i] }}">
+                                <strong>{{ organization.name }}</strong>
+                            </a>
+                        </div>
+                    </div>
+                </ng-container>
+            </ng-container> 
 
             <!-- Current Location -->
             <div class="row">
