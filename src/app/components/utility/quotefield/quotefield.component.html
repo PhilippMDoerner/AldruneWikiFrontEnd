@@ -22,7 +22,7 @@
         <span class="d-inline-flex align-items-center flex-wrap">
           <!-- Display Existing Quote Connections -->
           <span
-            class="badge badge-secondary mr-2 text-center vanish-container"
+            class="badge badge-secondary p-2 mr-2 text-center vanish-container"
             *ngFor="
               let connection of quote.connections;
               let connectionIndex = index
@@ -70,14 +70,11 @@
             </button>
           </form>
 
-          <span
-            class="pointer badge badge-primary"
-            (click)="toggleQuoteConnectionCreateState()"
-            *ngIf="hasCreatePermission && !inQuoteConnectionCreateState"
-          >
-            <i class="fa fa-plus mr-1"></i>
-            Add Character
-          </span>
+          <app-inline-create-button
+          [labelText]="'Add Character'"
+          (click)="toggleQuoteConnectionCreateState()"
+          *ngIf="hasCreatePermission && !inQuoteConnectionCreateState"       >     
+          </app-inline-create-button>
         </span>
       </div>
     </blockquote>
