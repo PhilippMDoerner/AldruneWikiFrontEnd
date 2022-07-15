@@ -1,4 +1,16 @@
-<div class="badge badge-primary pointer no-underline ml-2">
-  <i class="fa fa-plus mx-1"></i>
-  {{ labelText }}
-</div>
+<ng-container [ngSwitch]="badgeStyle">
+  <ng-container *ngSwitchCase="styles.Text">
+    <div class="badge badge-primary pointer no-underline ml-2">
+      <i class="fa fa-plus mx-1"></i>
+      {{ labelText }}
+    </div>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="styles.Link">
+    <a class="badge badge-primary no-underline ml-2"  routerLink="{{ link }}" >
+    <i class="fa fa-plus mx-1"></i>
+    {{ labelText }}
+  </a>
+  </ng-container>
+</ng-container>
+
