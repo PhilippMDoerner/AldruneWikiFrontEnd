@@ -21,7 +21,7 @@ import { CampaignOverview } from 'src/app/models/campaign';
 export class CharacterArticleComponent extends ArticleMixin implements OnInit, OnDestroy {
   //URLs
   characterOverviewUrl: string;
-  organizationUrl: string;
+  organizationUrls: string[];
   locationUrl: string;
   itemCreateUrl: string;
 
@@ -40,14 +40,14 @@ export class CharacterArticleComponent extends ArticleMixin implements OnInit, O
     characterService: CharacterService,
     public route: ActivatedRoute,
     public warnings: WarningsService,  
-    public routingService: RoutingService,
+    public routing: RoutingService,
     globalUrlParams: GlobalUrlParamsService,
     tokenService: TokenService,
     ) { 
       super(
         characterService,
         route,
-        routingService,
+        routing,
         warnings,
         globalUrlParams,
         tokenService,
@@ -67,14 +67,19 @@ export class CharacterArticleComponent extends ArticleMixin implements OnInit, O
   }
 
   updateRouteLinks(campaign: CampaignOverview, articleData: CharacterObject, params: Params): void{
-    this.characterOverviewUrl = this.routingService.getRoutePath('character-overview', {campaign: campaign.name});
-    this.itemCreateUrl = this.routingService.getRoutePath('item-character-create', {character_name: articleData.name, campaign: campaign.name})
-    this.locationUrl = this.routingService.getRoutePath('location', {
+    this.characterOverviewUrl = this.routing.getRoutePath('character-overview', {campaign: campaign.name});
+    this.itemCreateUrl = this.routing.getRoutePath('item-character-create', {character_name: articleData.name, campaign: campaign.name})
+    this.locationUrl = this.routing.getRoutePath('location', {
       name: articleData.current_location_details?.name,
       parent_name: articleData.current_location_details?.parent_location,
       campaign: campaign.name
     }); 
-    this.organizationUrl = this.routingService.getRoutePath('organization', {name: articleData.organization_details?.name, campaign: campaign.name})
+    this.organizationUrls = articleData.organizations.map(organization => {
+      return this.routing.getRoutePath(
+        'organization', 
+        {name: organization.name, campaign: campaign.name}
+      );
+    });
   }
 
   createPlayerClassString(articleData: CharacterObject): string{
