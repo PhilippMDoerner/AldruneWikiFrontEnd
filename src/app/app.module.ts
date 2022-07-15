@@ -128,6 +128,7 @@ import { SessionComponent } from './components/utility/session/session.component
 import { TooltipInfocircleComponent } from './components/utility/tooltip-infocircle/tooltip-infocircle.component';
 import { ImageCarouselComponent } from './components/utility/image-carousel/image-carousel.component';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
+import { InlineCreateButtonComponent } from './components/utility/inline-create-button/inline-create-button.component';
 
 @NgModule({
   declarations: [
@@ -211,6 +212,7 @@ import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
     SessionComponent,
     TooltipInfocircleComponent,
     ImageCarouselComponent,
+    InlineCreateButtonComponent,
   ],
   imports: [
     BrowserModule,
