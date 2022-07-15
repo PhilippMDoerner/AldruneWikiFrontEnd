@@ -49,9 +49,18 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
   ];
 
   organizationFormlyFields: FormlyFieldConfig[] = [
-    this.formlyService.genericInput({key: "role", isNameInput: true}),
-    this.formlyService.genericSelect({key: "organization_id", sortProp: "name_full", label: "Organization", overviewType: OverviewType.Organization, campaign: this.campaign.name})
-  ]
+    this.formlyService.genericInput({key: "role", isNameInput: true, required: false}),
+    this.formlyService.genericDisableSelect({
+      key: "organization_id", 
+      sortProp: "name_full", 
+      label: "Organization", 
+      overviewType: OverviewType.Organization, 
+      campaign: this.campaign.name,
+      disabledExpression: (organization: Organization) => this.hasMembership(organization) ? true : null,
+      tooltipMessage: "The organization or group this character is a member of",
+      warningMessage: null
+    })
+  ];
 
   //Custom Properties
   playerClasses: PlayerClass[];
