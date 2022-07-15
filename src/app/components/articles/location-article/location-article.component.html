@@ -54,15 +54,13 @@
         <i class="mx-1 icon fas fa-{{ marker.map_icon }}"></i>
       </a>
 
-      <a
-        class="badge badge-primary no-underline ml-2"
-        *ngIf="hasCreatePermission"
-        routerLink="{{ markerCreateUrl }}"
-      >
-        <!-- Add-Marker-Icon -->
-        <i class="fa fa-plus icon mx-1"></i>
-        Add marker
-      </a>
+      <!-- Add-Marker-Badge -->
+      <app-inline-create-button
+      [labelText]="'Add Marker'"
+      [link]="markerCreateUrl"
+      *ngIf="hasCreatePermission"
+      >     
+      </app-inline-create-button>
     </div>
 
     <!-- Description -->
