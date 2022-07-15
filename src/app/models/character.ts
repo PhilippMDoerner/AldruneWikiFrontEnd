@@ -10,7 +10,7 @@ export interface Character extends ArticleObject{
     gender: string,
     race: string,
     description: string,
-    organizations?: characterOrganization[],
+    organizations?: CharacterOrganization[],
     current_location: number,
     current_location_details?: characterLocation,
     items?: characterItem[],
@@ -43,9 +43,10 @@ interface characterEncounterConnections{
     character_name: string,
 }
 
-interface characterOrganization{
+export interface CharacterOrganization{
     pk: number,
     name: string,
+    organization_id: number,
     role: string,
 }
 
@@ -69,7 +70,7 @@ export class CharacterObject implements Character{
     current_location: number;
     pk?: number;
     current_location_details?: characterLocation;
-    organizations?: characterOrganization[];
+    organizations?: CharacterOrganization[];
     items?: characterItem[];
     encounters?: characterEncounter[];
     images?: Image[];

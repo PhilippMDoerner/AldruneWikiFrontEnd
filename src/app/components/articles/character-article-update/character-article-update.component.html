@@ -23,10 +23,32 @@
                     <span class="ml-2 fa fa-trash icon" (click)="deletePlayerClassConnection(connection)"></span>
                 </span>
     
-                <span class="mx-3 fa fa-plus icon fa-1-5x" (click)="toggleConnectionCreateState()" *ngIf="!isCharacterConnectionCreationState; else connectionForm"></span>
+                <span 
+                class="mx-3 fa fa-plus icon fa-1-5x" 
+                (click)="toggleConnectionCreateState()" 
+                *ngIf="!isCharacterConnectionCreationState; else connectionForm"
+                ></span>
             </div>    
         </div>
 
+        <!-- Memberships -->
+        <div *ngIf="isInUpdateState()">
+            <h4 class="mb-0"> Memberships </h4>
+            <hr class="white-separator">
+    
+            <div id="organizations" class="mb-5" *ngIf="userModel">
+                <span class="badge badge-secondary mr-3" *ngFor="let membership of userModel.organizations">
+                    {{ membership.name }}
+                    <span class="ml-2 fa fa-trash icon" (click)="deleteOrganizationMembership(membership)"></span>
+                </span>
+    
+                <span 
+                class="mx-3 fa fa-plus icon fa-1-5x" 
+                (click)="toggleOrganizationMembershipCreateState()" 
+                *ngIf="!isOrganizationMembershipCreationState; else organizationMembershipForm"
+                ></span>
+            </div>    
+        </div>
         <!-- Form -->
         <h4 class="mb-0"> Character Data </h4>
         <hr class="white-separator">
@@ -76,6 +98,24 @@
         </select>
 
         <i class="fa fa-times icon mx-2 fa-1-5x" (click)="toggleConnectionCreateState()"></i>
+        <button type="submit"> <i class="fa fa-check icon fa-1-5x"></i> </button>
+    </form>
+</ng-template>
+
+<ng-template #organizationMembershipForm>
+    <!-- Form for creating Memberships to Organizations -->
+    <form class="d-inline-flex align-items-center" (submit)="createOrganizationMembership(membershipModel)">
+        <select class="form-control d-inline-block" name="membership" id="membership" [(ngModel)]="membershipModel.organization_id">
+            <option 
+            *ngFor="let organization of organizations" 
+            value="{{organization.pk}}" 
+            [attr.disabled]="hasMembership(organization) ? true : null"
+            >
+                {{organization.name}}
+            </option>
+        </select>
+
+        <i class="fa fa-times icon mx-2 fa-1-5x" (click)="toggleOrganizationMembershipCreateState()"></i>
         <button type="submit"> <i class="fa fa-check icon fa-1-5x"></i> </button>
     </form>
 </ng-template>

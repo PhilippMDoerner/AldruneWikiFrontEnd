@@ -3,7 +3,7 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
 import { FormlyFieldConfig } from "@ngx-formly/core";
 //models and constants
 import { ArticleFormMixin } from "src/app/utils/functions/articleFormMixin"
-import { CharacterObject } from "src/app/models/character";
+import { CharacterObject, CharacterOrganization } from "src/app/models/character";
 //services
 import { CharacterService } from "src/app/services/character/character.service";
 import { MyFormlyService } from 'src/app/services/my-formly.service';
@@ -17,6 +17,10 @@ import { OverviewType } from 'src/app/app.constants';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { TokenService } from 'src/app/services/token.service';
+import { Organization } from 'src/app/models/organization';
+import { OrganizationMembership } from 'src/app/models/organizationMembership';
+import { OrganizationMembershipService } from 'src/app/services/organization-membership.service';
+import { OrganizationService } from 'src/app/services/organization/organization.service';
 
 @Component({
   selector: 'app-character-article-update',
@@ -41,14 +45,22 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
     this.formlyService.genericInput({key: "title", required: false}),
     this.formlyService.customStringSelect({key:"gender", label: "Sex", options: ["Other", "Female", "Male"]}),
     this.formlyService.genericInput({key: "race"}),
-    this.formlyService.genericSelect({key: "organization", overviewType: OverviewType.Organization, campaign: this.campaign.name, required: false}),
     this.formlyService.genericSelect({key: "current_location", sortProp: "name_full", label: "Location", overviewType: OverviewType.Location, campaign: this.campaign.name, required: false}),
   ];
+
+  organizationFormlyFields: FormlyFieldConfig[] = [
+    this.formlyService.genericInput({key: "role", isNameInput: true}),
+    this.formlyService.genericSelect({key: "organization_id", sortProp: "name_full", label: "Organization", overviewType: OverviewType.Organization, campaign: this.campaign.name})
+  ]
 
   //Custom Properties
   playerClasses: PlayerClass[];
   isCharacterConnectionCreationState: boolean = false;
   connectionModel: CharacterPlayerClassConnection;
+
+  organizations: Organization[];
+  isOrganizationMembershipCreationState: boolean = false;
+  membershipModel: OrganizationMembership;
 
   constructor(
     characterService: CharacterService,
@@ -59,6 +71,8 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
     public routingService: RoutingService,
     private playerClassService: PlayerClassService,
     private characterConnectionService: CharacterPlayerClassConnectionService,
+    private organizationService: OrganizationService,
+    private organizationMembershipService: OrganizationMembershipService,
     campaignService: CampaignService,
     globalUrlParams: GlobalUrlParamsService,
     tokenService: TokenService,
@@ -80,6 +94,8 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
     this.creationCancelUrl = this.routingService.getRoutePath('character-overview', {campaign: campaignName});
   }
 
+
+  // CONNECTION FORM FUNCTIONS
   toggleConnectionCreateState(){
     if(!this.playerClasses){
       this.playerClassService.list().pipe(first()).subscribe(
@@ -96,8 +112,8 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
   deletePlayerClassConnection(connection: CharacterPlayerClassConnection){
     this.characterConnectionService.delete(connection.pk).pipe(first()).subscribe(
       (response) => {
-        const spellConnectionIndex: number =  this.userModel.player_class_connections.indexOf(connection);
-        this.userModel.player_class_connections.splice(spellConnectionIndex, 1);
+        const playerClassConnectionIndex: number =  this.userModel.player_class_connections.indexOf(connection);
+        this.userModel.player_class_connections.splice(playerClassConnectionIndex, 1);
       },
       (error) => this.warnings.showWarning(error),
     )
@@ -120,5 +136,56 @@ export class CharacterArticleUpdateComponent extends ArticleFormMixin {
 
   hasConnection(playerClass: PlayerClass){
     return this.userModel.player_class_connections.some((connection: CharacterPlayerClassConnection) => connection.player_class === playerClass.pk);
+  }
+
+  // ORGANIZATION MEMBERSHIP FORM FUNCTIONS
+  toggleOrganizationMembershipCreateState(){
+    if(!this.organizations){
+      this.organizationService.campaignList(this.campaign.name).pipe(first()).subscribe(
+        (organizations: Organization[]) => this.organizations = organizations,
+        error => this.warnings.showWarning(error)
+      );
+    }
+
+    this.isOrganizationMembershipCreationState = !this.isOrganizationMembershipCreationState;
+    
+    this.resetOrganizationMembershipModel();
+  }
+
+  resetOrganizationMembershipModel(){
+    this.membershipModel = {
+      role: null, 
+      organization_id: null,
+      member_id: this.userModel.pk}
+  };
+
+
+  deleteOrganizationMembership(deleteMembership: CharacterOrganization){
+    this.organizationMembershipService.delete(deleteMembership.pk).pipe(first()).subscribe(
+      (response) => {
+        const membershipIndex = this.userModel.organizations.findIndex(
+          (membership: CharacterOrganization) => membership.pk === deleteMembership.pk
+        );
+        this.userModel.organizations.splice(membershipIndex, 1);
+      },
+      (error) => this.warnings.showWarning(error),
+    )
+  }
+
+  createOrganizationMembership(membership: OrganizationMembership){
+    membership.organization_id = parseInt(membership.organization_id as any); //Needed because the manually built select gives you back a string, not a number
+    this.organizationMembershipService.create(membership).pipe(first()).subscribe(
+      (character: CharacterObject) => {
+        this.userModel = character;
+        this.toggleOrganizationMembershipCreateState();
+      },
+      error => this.warnings.showWarning(error)
+    )
+  }
+
+  hasMembership(organization: Organization){
+    return this.userModel.organizations.some(
+      (membership: CharacterOrganization) => membership.organization_id === organization.pk
+    );
   }
 }
