@@ -10,6 +10,9 @@
         <li *ngFor="let item of items">
             <a routerLink="{{constants.wikiUrlFrontendPrefix}}/{{articleType}}/{{campaign}}/{{item.name}}">
                 {{item.name}}
+                <ng-container *ngIf="articleType === 'organizationCharacter'">
+                    ({{ item.role}})
+                </ng-container>
             </a>
         </li>
     </ul>
