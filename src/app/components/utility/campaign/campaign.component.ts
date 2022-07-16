@@ -10,6 +10,7 @@ import { User, UserObject } from 'src/app/models/user';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { RefreshTokenService } from 'src/app/services/refresh-token.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
@@ -99,6 +100,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
     private campaignService: CampaignService,
     globalUrlParams: GlobalUrlParamsService,
     tokenService: TokenService,
+    private refreshTokenService: RefreshTokenService,
   ) { 
     super(
       campaignService, 
@@ -194,9 +196,10 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
 
   updateMembers(updateMemberObs: Observable<User[]>): void{
     updateMemberObs.pipe(first()).subscribe(
-      (members: User[]) => {
+      async (members: User[]) => {
         this.articleData.members = members.sort(this.sortByUsername);
         this.addMemberState = false;
+        await this.refreshTokenService.refreshAccessToken().toPromise();
       },
       error => this.warnings.showWarning(error)
     );
@@ -204,9 +207,10 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
 
   updateAdmins(updateAdminObs: Observable<User[]>): void{
     updateAdminObs.pipe(first()).subscribe(
-      (admins: User[]) => {
+      async (admins: User[]) => {
         this.articleData.admins = admins.sort(this.sortByUsername);
         this.addAdminState = false;
+        await this.refreshTokenService.refreshAccessToken().toPromise();
       },
       error => this.warnings.showWarning(error)
     );
@@ -214,9 +218,10 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
 
   updateGuests(updateGuestObs: Observable<User[]>): void{
     updateGuestObs.pipe(first()).subscribe(
-      (guests: User[]) => {
+      async (guests: User[]) => {
         this.articleData.guests = guests.sort(this.sortByUsername);
         this.addGuestState = false;
+        await this.refreshTokenService.refreshAccessToken().toPromise();
       },
       error => this.warnings.showWarning(error)
     );

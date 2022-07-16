@@ -33,8 +33,14 @@
             
             <h5 class="col-12 mb-0 mt-4">Campaign Memberships</h5>
             <div *ngFor="let campaignRole of campaignRolesList" class="col-12 row">
-                <div class="col-6">{{campaignRole.campaignName | titlecase}}</div>
-                <div class="col-6">{{campaignRole.role | titlecase}}</div>
+                <div class="col-5">{{campaignRole.campaignName | titlecase}}</div>
+                <div class="col-4">{{campaignRole.role | titlecase}}</div>
+                <div class="col-3">
+                    <div class="btn btn-secondary btn-sm" (click)="leaveCampaign(campaignRole)">
+                        <span class="fas fa-sign-out-alt"></span> 
+                        Leave Campaign
+                    </div> 
+                </div>
             </div>
         </div>
 
