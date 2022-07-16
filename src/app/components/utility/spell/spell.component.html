@@ -181,7 +181,7 @@
         Classes:
         <span
           *ngFor="let connection of cardData.player_class_connections"
-          class="badge badge-secondary badge-lg mr-3 pointer"
+          class="badge badge-secondary badge-lg p-2 mr-3 pointer"
           (click)="
             emitClassSelectEvent($event, connection.player_class_details.name)
           "
@@ -195,14 +195,12 @@
         </span>
 
         <ng-container *ngIf="tokenService.isAdmin()">
-          <span
-            class="badge badge-primary badge-lg pointer"
-            (click)="toggleConnectionCreateState()"
-            *ngIf="!isSpellConnectionCreateState; else connectionForm"
-          >
-            <span class="icon fa fa-plus"></span>
-            Add class
-          </span>
+          <app-inline-create-button
+          [labelText]="'Add Class'"
+          (click)="toggleConnectionCreateState()"
+          *ngIf="!isSpellConnectionCreateState; else connectionForm"
+          >     
+          </app-inline-create-button>
         </ng-container>
       </div>
 
