@@ -34,7 +34,7 @@
                 <ng-container *ngFor="let organization of articleData.organizations; let i = index">
                     <div class="row">
                         <div class="col">
-                            {{ organization.role || "Member"}} of 
+                            {{ organization.role }} of 
                             <a routerLink="{{ organizationUrls[i] }}">
                                 <strong>{{ organization.name }}</strong>
                             </a>
