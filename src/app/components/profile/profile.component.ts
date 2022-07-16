@@ -135,10 +135,18 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     campaignLeaveObservable
       .pipe(first())
       .subscribe( async response => {
-        const campaignIndex: number = this.campaignRolesList.findIndex(entry => entry.campaignName == campaignRole.campaignName);
+        const campaignIndex: number = this.campaignRolesList.findIndex(entry => entry.campaignName === campaignRole.campaignName);
         this.campaignRolesList.splice(campaignIndex, 1);
+
         await this.refreshTokenService.refreshAccessToken().toPromise();
-        this.ngOnInit();
+
+        const leftCurrentCampaign: boolean = campaignRole.campaignName === this.campaign.name;
+        if(leftCurrentCampaign){
+          this.routingService.routeToPath("campaign-overview");
+        } else {
+          //Stay on component and reinitalize it
+          this.ngOnInit();
+        }
       });
   }
 
