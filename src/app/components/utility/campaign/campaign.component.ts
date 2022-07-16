@@ -113,8 +113,20 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   ngOnInit(){
     super.ngOnInit();
     
+    this.sortCampaignGroups();
+
     this.campaignStatistics = this.route.snapshot.data["campaignStatistics"];
     this.updateDynamicVariables(this.campaign, this.articleData, null);
+  }
+
+  sortByUsername(entry1: User, entry2: User): number{
+    return entry1.username.toLowerCase() > entry2.username.toLowerCase() ? 1 : -1;
+  }
+
+  sortCampaignGroups(){
+    this.articleData.admins = this.articleData.admins.sort(this.sortByUsername);
+    this.articleData.members = this.articleData.members.sort(this.sortByUsername);
+    this.articleData.guests = this.articleData.guests.sort(this.sortByUsername);
   }
 
   updateDynamicVariables(campaign: CampaignOverview, articleData: CampaignObject, params: Params){
@@ -183,7 +195,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   updateMembers(updateMemberObs: Observable<User[]>): void{
     updateMemberObs.pipe(first()).subscribe(
       (members: User[]) => {
-        this.articleData.members = members;
+        this.articleData.members = members.sort(this.sortByUsername);
         this.addMemberState = false;
       },
       error => this.warnings.showWarning(error)
@@ -193,7 +205,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   updateAdmins(updateAdminObs: Observable<User[]>): void{
     updateAdminObs.pipe(first()).subscribe(
       (admins: User[]) => {
-        this.articleData.admins = admins;
+        this.articleData.admins = admins.sort(this.sortByUsername);
         this.addAdminState = false;
       },
       error => this.warnings.showWarning(error)
@@ -203,7 +215,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
   updateGuests(updateGuestObs: Observable<User[]>): void{
     updateGuestObs.pipe(first()).subscribe(
       (guests: User[]) => {
-        this.articleData.guests = guests;
+        this.articleData.guests = guests.sort(this.sortByUsername);
         this.addGuestState = false;
       },
       error => this.warnings.showWarning(error)
