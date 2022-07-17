@@ -8,7 +8,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { first } from 'rxjs/operators';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
-import { HttpEvent, HttpEventType, HttpUploadProgressEvent } from '@angular/common/http';
+import { HttpEventType } from '@angular/common/http';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 import { Constants, OverviewType } from 'src/app/app.constants';
 import { CampaignService } from 'src/app/services/campaign.service';

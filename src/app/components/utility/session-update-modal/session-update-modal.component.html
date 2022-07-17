@@ -1,7 +1,14 @@
 <ng-template #content let-modal>
     <!-- Header -->
     <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Update {{ model.name }}</h4>
+        <h4 class="modal-title" id="modal-basic-title">
+            <ng-container *ngIf="formState === constants.createState">
+                Create Session 
+            </ng-container>
+            <ng-container *ngIf="formState === constants.updateState">
+                Update {{ model.name }} 
+            </ng-container>
+        </h4>
         <div class="close" aria-label="Close" (click)="modal.dismiss()">
             <span aria-hidden="true" class="fa fa-times pointer"></span>
         </div>
