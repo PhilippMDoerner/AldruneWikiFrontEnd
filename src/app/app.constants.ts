@@ -5,7 +5,7 @@ export class Constants{
 
     // API Urls
     public static get wikiUrl(): string { return `https://${window.location.hostname}`;} //prod backend
-    // public static get wikiUrl(): string { return "https://localhost";} //dev backend
+    // public static get wikiUrl(): string { return "https://www.aldrune.com";} //dev backend
     public static get wikiApiUrl(): string { return `${this.wikiUrl}/${this.apiPrefix}/api`;} //prod backend / Docker container
     // public static get wikiApiUrl(): string { return `${this.wikiUrl}/${this.apiPrefix}`;} //dev backend
     public static get wikiSPAUrl(): string{ return `${this.wikiUrl}/${this.spaPrefix}`;}
