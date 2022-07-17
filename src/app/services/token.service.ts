@@ -150,7 +150,7 @@ export class TokenService {
     const memberships: any = this.getCampaignMemberships();
     if (memberships == null) return null;
 
-    const role: string = memberships[campaignName.toLowerCase()];
+    const role: string = memberships[campaignName];
     return CampaignRole[role?.toUpperCase()]
   }
 
