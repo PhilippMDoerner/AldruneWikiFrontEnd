@@ -150,7 +150,7 @@ export class TokenService {
     const memberships: any = this.getCampaignMemberships();
     if (memberships == null) return null;
 
-    const role: string = memberships[campaignName];
+    const role: string = memberships[campaignName.toLowerCase()];
     return CampaignRole[role?.toUpperCase()]
   }
 
@@ -162,7 +162,7 @@ export class TokenService {
     for (const campaignIdentifier of Object.keys(currentUserAccessTokenPayload.campaign_memberships)){
       const isIdIdentifier: boolean = campaignIdentifier.startsWith(this.ID_IDENTIFIER_PREFIX);
       if (! isIdIdentifier){
-        campaignMemberships[campaignIdentifier] = currentUserAccessTokenPayload.campaign_memberships[campaignIdentifier];
+        campaignMemberships[campaignIdentifier.toLowerCase()] = currentUserAccessTokenPayload.campaign_memberships[campaignIdentifier];
       }
     }
     return campaignMemberships;
