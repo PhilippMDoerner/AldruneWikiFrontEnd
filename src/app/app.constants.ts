@@ -166,8 +166,7 @@ export class Constants{
     public static get anonymousUserName(): string { return "AnonymousUser";}
 
     // Keys for LocalStorage
-    public static get accessTokenKey(): string { return "access_token";}
-    public static get refreshTokenKey(): string { return "refresh_token";}
+    public static get userDataKey(): string { return "user_data";}
 
     // Static Image URLs
     public static get audioImageUrl(): string { return `/assets/default_images/audio_pic_default.webp`; }

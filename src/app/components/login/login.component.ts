@@ -5,7 +5,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { EncodedJWTToken } from 'src/app/models/jwttoken';
+import { EncodedJWTToken, UserData } from 'src/app/models/jwttoken';
 import { User } from 'src/app/models/user';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MailService } from 'src/app/services/mail.service';
@@ -72,16 +72,16 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   onSubmit(){
-    this.tokenService.getJWTToken(this.model)
+    this.tokenService.login(this.model)
       .pipe(first())
       .subscribe( 
-        (jwtTokens: EncodedJWTToken) => this.onLoginSuccess(jwtTokens), 
+        (userData: UserData) => this.onLoginSuccess(userData), 
         error => this.onLoginFailure(error)
       );
   }
 
-  onLoginSuccess(jwtTokens: EncodedJWTToken): void{
-    this.tokenService.setTokens(jwtTokens);
+  onLoginSuccess(userData: UserData): void{
+    this.tokenService.setUserData(userData);
     this.globalUrlParams.autoUpdateCampaignSet();
 
     animateElement(this.loginMainCard.nativeElement, 'zoomOutDown')

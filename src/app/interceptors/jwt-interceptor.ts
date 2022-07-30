@@ -6,6 +6,7 @@ import { Constants } from "src/app/app.constants";
 import { RefreshTokenService } from '../services/refresh-token.service';
 import { TokenService } from '../services/token.service';
 import { RoutingService } from '../services/routing.service';
+import { UserData } from '../models/jwttoken';
 
 @Injectable({providedIn: 'root'})
 export class JWTInterceptor implements HttpInterceptor{
@@ -36,7 +37,7 @@ export class JWTInterceptor implements HttpInterceptor{
                 return this.handleByWaitingForRefresh(request, next);
             }
 
-            request = this.addTokenToRequest(accessToken, request);
+            request = this.addTokenToRequest(accessToken.token, request);
             return next.handle(request);
         } 
 
@@ -44,8 +45,9 @@ export class JWTInterceptor implements HttpInterceptor{
     }
 
     private handleByRefreshingAccessToken(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>{
-        return this.refreshTokenService.refreshAccessToken().pipe(
-            switchMap((newAccessToken: string) => {
+        return this.refreshTokenService.refreshUserData().pipe(
+            switchMap((newUserData: UserData) => {
+                const newAccessToken: string = newUserData.accessToken.token;
                 request = this.addTokenToRequest(newAccessToken, request);
                 return next.handle(request);
             }),

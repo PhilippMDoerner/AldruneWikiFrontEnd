@@ -199,7 +199,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
       async (members: User[]) => {
         this.articleData.members = members.sort(this.sortByUsername);
         this.addMemberState = false;
-        await this.refreshTokenService.refreshAccessToken().toPromise();
+        await this.refreshTokenService.refreshUserData().toPromise();
       },
       error => this.warnings.showWarning(error)
     );
@@ -210,7 +210,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
       async (admins: User[]) => {
         this.articleData.admins = admins.sort(this.sortByUsername);
         this.addAdminState = false;
-        await this.refreshTokenService.refreshAccessToken().toPromise();
+        await this.refreshTokenService.refreshUserData().toPromise();
       },
       error => this.warnings.showWarning(error)
     );
@@ -221,7 +221,7 @@ export class CampaignComponent extends ArticleMixin implements OnInit {
       async (guests: User[]) => {
         this.articleData.guests = guests.sort(this.sortByUsername);
         this.addGuestState = false;
-        await this.refreshTokenService.refreshAccessToken().toPromise();
+        await this.refreshTokenService.refreshUserData().toPromise();
       },
       error => this.warnings.showWarning(error)
     );

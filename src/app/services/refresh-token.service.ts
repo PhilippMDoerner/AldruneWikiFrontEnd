@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { filter, first, map, shareReplay, tap } from 'rxjs/operators';
-import { EncodedJWTToken } from '../models/jwttoken';
+import { EncodedJWTToken, TokenData, UserData } from '../models/jwttoken';
 import { TokenService } from './token.service';
 
 @Injectable({
@@ -18,21 +18,17 @@ export class RefreshTokenService {
    * As a side-effect (in tap) it also sets updates the value for refreshAcessTokenSubject for 
    * other waiting requests 
    */
-  public refreshAccessToken(): Observable<string>{
+  public refreshUserData(): Observable<UserData>{
     this.startWaitForRefreshState();
 
-    return this.tokenService.refreshToken().pipe(
-      tap((jwtToken: EncodedJWTToken) => {
-        this.tokenService.setRefreshToken(jwtToken.refresh);
+    return this.tokenService.refreshUserData().pipe(
+      tap((userData: UserData) => {
+        this.tokenService.setUserData(userData);
       }),
-      map((tokenResponse: EncodedJWTToken) => {
-        return tokenResponse.access;
-      }),
-      tap((accessToken: string) => {
-        this.tokenService.setAccessToken(accessToken);
-        this.endWaitForRefreshState(accessToken);
-      }),
-    )
+      tap((userData: UserData) => {
+        this.endWaitForRefreshState(userData.accessToken.token);
+      })
+    );
   }
 
   private startWaitForRefreshState(): void{
@@ -56,13 +52,11 @@ export class RefreshTokenService {
     )
   }
 
-  public tokenNeedsRefresh(accessToken: string): boolean{
-    const accessTokenExpired: boolean = this.tokenService.isTokenExpired(accessToken);
-    return accessTokenExpired && !this.tokenRefreshInProgress;
+  public tokenNeedsRefresh(accessToken: TokenData): boolean{
+    return this.tokenService.isTokenExpired(accessToken) && !this.tokenRefreshInProgress;
   }
 
-  public hasToWaitForRefresh(accessToken: string): boolean{
-    const accessTokenExpired: boolean = this.tokenService.isTokenExpired(accessToken);
-    return accessTokenExpired && this.tokenRefreshInProgress;
+  public hasToWaitForRefresh(accessToken: TokenData): boolean{
+    return this.tokenService.isTokenExpired(accessToken) && this.tokenRefreshInProgress;
   }
 }

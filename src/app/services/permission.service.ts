@@ -1,9 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { CampaignRole, Constants } from '../app.constants';
-import { CampaignRoute } from '../app.routing-models';
-import { DecodedTokenPayload } from '../models/jwttoken';
+import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
+import { CampaignRole } from '../app.constants';
 import { RoutingService } from './routing.service';
 import { TokenService } from './token.service';
 

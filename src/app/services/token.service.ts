@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CampaignRole, Constants } from '../app.constants';
-import { DecodedTokenPayload, EncodedJWTToken } from '../models/jwttoken';
+import { UserData, EncodedJWTToken, TokenData } from '../models/jwttoken';
 import { User } from '../models/user';
 
 @Injectable({
@@ -17,9 +17,14 @@ export class TokenService {
 
   constructor(private http: HttpClient) { }
 
-  public getJWTToken(userModel: User): Observable<EncodedJWTToken>{
+  public login(userModel: User): Observable<UserData>{
     const loginData: object = {username: userModel.username, password: userModel.password};
-    return this.http.post<EncodedJWTToken>(this.jwtTokenUrl, loginData)
+    return this.http.post<UserData>(this.jwtTokenUrl, loginData)
+  }
+
+  public refreshUserData(): Observable<UserData>{
+    const refreshToken = TokenService.getRefreshToken();
+    return this.http.post<UserData>(this.refreshTokenUrl, {refresh: refreshToken.token});
   }
 
   public invalidateJWTToken(): void{
@@ -27,110 +32,58 @@ export class TokenService {
   //   return this.http.post(`${this.jwtTokenUrl}/logout`, jwtToken); //This feature is not implemented in the backend
   }
 
-  public hasJWTToken(): boolean{
-    const hasAccessToken = localStorage.hasOwnProperty(Constants.accessTokenKey) &&  !this.isBadToken(this.getAccessToken());
-    const hasRefreshToken = localStorage.hasOwnProperty(Constants.refreshTokenKey) && !this.isBadToken(this.getRefreshToken());
-    return hasAccessToken && hasRefreshToken;
+  //static for permissionDecorator.ts
+  public static getUserData(): UserData{
+    return JSON.parse(localStorage.getItem(Constants.userDataKey));
   }
 
+
+  public hasJWTToken(): boolean{
+    if (TokenService.getUserData() == null) return false;
+    return !!TokenService.getAccessToken() && !!TokenService.getRefreshToken();
+  }
+  
   public hasValidJWTToken(): boolean{
     if (!this.hasJWTToken()) return false;
-    return !this.isTokenExpired(this.getRefreshToken());
+    return !this.isTokenExpired(TokenService.getRefreshToken());
   }
 
-  //Exists for permissionDecorator.ts
-  public static getAccessToken(): string{
-    return localStorage.getItem(Constants.accessTokenKey);
+  //static for permissionDecorator.ts
+  public static getAccessToken(): TokenData{
+    return this.getUserData().accessToken;
   }
 
-  private getAccessToken(): string{
-    return TokenService.getAccessToken();
+  //static for permissionDecorator.ts
+  public static getRefreshToken(): TokenData{
+    return this.getUserData().refreshToken;
   }
 
-  //Exists for permissionDecorator.ts
-  public static getRefreshToken(): string{
-    return localStorage.getItem(Constants.refreshTokenKey);
-  }
 
-  private getRefreshToken(): string{
-    return TokenService.getRefreshToken();
-  }
 
-  public refreshToken(): Observable<EncodedJWTToken>{
-    const refreshToken = this.getRefreshToken();
-    return this.http.post<EncodedJWTToken>(this.refreshTokenUrl, {refresh: refreshToken});
-  }
-
-  public setTokens(jwtToken: EncodedJWTToken): void{
-    this.setAccessToken(jwtToken.access);
-    this.setRefreshToken(jwtToken.refresh);
+  public setUserData(data: UserData): void{
+    localStorage.setItem(Constants.userDataKey, JSON.stringify(data));
   }
 
   public removeJWTTokenFromLocalStorage(): void{
-    localStorage.removeItem(Constants.accessTokenKey);
-    localStorage.removeItem(Constants.refreshTokenKey);
-  }
-
-  public setAccessToken(token: string): void{
-    if(this.decodeTokenPayload(token).token_type !== Constants.accessTokenType){
-      throw "The Token you are trying to set as an Access Token is not an Access Token. Something is incorrectly handled about JWT token storage!"
-    }
-    localStorage.setItem(Constants.accessTokenKey, token);
-  }
-
-  public setRefreshToken(token: string): void{
-    if(this.decodeTokenPayload(token).token_type !== Constants.refreshTokenType){
-      throw "The Token you are trying to set as a Refresh Token is not a Refresh Token. Something is incorrectly handled about JWT token storage!"
-    }
-    localStorage.setItem(Constants.refreshTokenKey, token);
-  }
-
-  //Exists for permissionDecorator.ts
-  public static decodeTokenPayload(token: string): DecodedTokenPayload{
-    const [encodedHeader, encodedPayload, encodedSignature]: string[] = token.split('.');
-    const decodedPayloadStringUtf8 = atob(encodedPayload);
-    const decodedPayloadStringUtf16 = decodeURIComponent(escape(decodedPayloadStringUtf8));
-    return JSON.parse(decodedPayloadStringUtf16);
-  }
-
-
-  private swapUTFEncoding(token: string): string{
-    const [header, payload, signature] = token.split(".");
-
-    const decodedTokenString: string = atob(payload)
-    const utf8Token: DecodedTokenPayload = JSON.parse(decodeURIComponent(escape(decodedTokenString)));
-    return btoa(JSON.stringify(utf8Token));
-  }
-
-  private decodeTokenPayload(token: string): DecodedTokenPayload{
-    return TokenService.decodeTokenPayload(token);
+    localStorage.removeItem(Constants.userDataKey);
   }
 
   public getCurrentUserPk(): number{
-    const currentUserAccessToken: string = this.getAccessToken();
-    const currentUserAccessTokenPayload: DecodedTokenPayload = this.decodeTokenPayload(currentUserAccessToken);
-    return currentUserAccessTokenPayload.user_id;
+    return TokenService.getUserData().userId;
   }
 
   public isAdmin(): boolean{
-    const currentUserAccessToken: string = this.getAccessToken();
-    if (currentUserAccessToken == null) return false;
-
-    const currentUserAccessTokenPayload: DecodedTokenPayload = this.decodeTokenPayload(currentUserAccessToken);
-    return currentUserAccessTokenPayload.isAdmin;
+    const data: UserData = TokenService.getUserData();
+    return (data == null) ? false : data.isAdmin; 
   }
 
   public isSuperUser(): boolean{
-    const currentUserAccessToken: string = this.getAccessToken();
-    if (currentUserAccessToken == null) return false;
-
-    const currentUserAccessTokenPayload: DecodedTokenPayload = this.decodeTokenPayload(currentUserAccessToken);
-    return currentUserAccessTokenPayload.isSuperUser;
+    const data: UserData = TokenService.getUserData();
+    return (data == null) ? false : data.isSuperUser; 
   }
 
   public getCurrentUserName(): string{
-    const currentUserAccessTokenPayload: DecodedTokenPayload = this.getDecodedAccessTokenPayload();
-    return currentUserAccessTokenPayload?.user_name;  
+    return TokenService.getUserData()?.userName;
   }
 
   public isCampaignMember(campaignName: string): boolean{
@@ -156,44 +109,34 @@ export class TokenService {
 
   /**Retrieves campaign memberships of a user from their token */
   public getCampaignMemberships(): any{
-    const currentUserAccessTokenPayload: DecodedTokenPayload = this.getDecodedAccessTokenPayload();
+    const data: UserData = TokenService.getUserData();
 
     const campaignMemberships = {}
-    for (const campaignIdentifier of Object.keys(currentUserAccessTokenPayload.campaign_memberships)){
+    for (const campaignIdentifier of Object.keys(data.campaignMemberships)){
       const isIdIdentifier: boolean = campaignIdentifier.startsWith(this.ID_IDENTIFIER_PREFIX);
       if (! isIdIdentifier){
-        campaignMemberships[campaignIdentifier.toLowerCase()] = currentUserAccessTokenPayload.campaign_memberships[campaignIdentifier];
+        campaignMemberships[campaignIdentifier.toLowerCase()] = data.campaignMemberships[campaignIdentifier];
       }
     }
     return campaignMemberships;
   }
 
-  public isTokenExpired(token: string): boolean{
-    const payload: DecodedTokenPayload = this.decodeTokenPayload(token);
-    const expiryTimestamp = payload.exp;
+  public isAccessTokenExpired(): boolean{
+    return this.isTokenExpired(TokenService.getAccessToken());
+  }
+
+  public isRefreshTokenExpired(): boolean{
+    return this.isTokenExpired(TokenService.getRefreshToken());
+  }
+
+  public isTokenExpired(token: TokenData): boolean{
+    const expiryTimestamp = token.exp;
     const currentTimestamp = Math.floor((new Date).getTime()/1000);
-    if (currentTimestamp >= expiryTimestamp){
-      console.log(`${payload.token_type} Token is expired. Request timestamp: ${new Date(currentTimestamp*1000).toString()}. Token expiry timestamp: ${new Date(expiryTimestamp*1000).toString()}`)
+
+    const isExpired = currentTimestamp >= expiryTimestamp;
+    if (isExpired){
+      console.log(`${token.type} Token is expired. Request timestamp: ${new Date(currentTimestamp*1000).toString()}. Token expiry timestamp: ${new Date(expiryTimestamp*1000).toString()}`)
     }
-    return currentTimestamp >= expiryTimestamp;
-  }
-
-  private isBadToken(token: string): boolean{
-    const isEmptyToken: boolean = !token;
-    const decodedAccessToken: DecodedTokenPayload = this.getDecodedAccessTokenPayload();
-    const isOldVersionToken: boolean = decodedAccessToken.campaign_memberships == null;
-    return isEmptyToken || this.isTokenForAnonymousUser(token) || isOldVersionToken;
-  }
-
-  private isTokenForAnonymousUser(token: string): boolean{
-    const payload: DecodedTokenPayload = this.decodeTokenPayload(token);
-    return payload.user_name === Constants.anonymousUserName;
-  }
-
-  private getDecodedAccessTokenPayload(): DecodedTokenPayload{
-    const currentUserAccessToken: string = this.getAccessToken();
-    if(currentUserAccessToken == null) return null;
-
-    return this.decodeTokenPayload(currentUserAccessToken);
+    return isExpired;
   }
 }

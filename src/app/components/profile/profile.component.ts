@@ -138,7 +138,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
         const campaignIndex: number = this.campaignRolesList.findIndex(entry => entry.campaignName === campaignRole.campaignName);
         this.campaignRolesList.splice(campaignIndex, 1);
 
-        await this.refreshTokenService.refreshAccessToken().toPromise();
+        await this.refreshTokenService.refreshUserData().toPromise();
 
         const leftCurrentCampaign: boolean = campaignRole.campaignName === this.campaign.name;
         if(leftCurrentCampaign){
