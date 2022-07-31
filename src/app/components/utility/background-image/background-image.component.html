@@ -1,4 +1,15 @@
-<div id="bg"
-#backgroundImage
-[style.background-image]="'linear-gradient(0deg,rgba(19,21,25,.5), rgba(19,21,25,.5)), url('+ (backgroundImageUrl | async) +'), url('+ constants.defaultBackgroundImageUrl +')'"
-></div>
+<ng-container 
+*ngIf="(backgroundImageUrl$ | async) as backgroundImageUrl; else defaultBackground"
+>
+  <div id="bg"
+  #backgroundImage
+  [style.background-image]="'linear-gradient(0deg,rgba(19,21,25,.5), rgba(19,21,25,.5)), url('+ backgroundImageUrl +')'"
+  ></div>
+</ng-container>
+
+<ng-template #defaultBackground>
+  <div id="bg"
+  #backgroundImage
+  [style.background-image]="'linear-gradient(0deg,rgba(19,21,25,.5), rgba(19,21,25,.5)), url('+ constants.defaultBackgroundImageUrl +')'"
+  ></div>
+</ng-template>

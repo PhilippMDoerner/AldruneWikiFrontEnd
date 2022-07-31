@@ -14,7 +14,7 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
 export class BackgroundImageComponent implements OnInit, OnDestroy {
   constants = Constants;
   currentCampaign: BehaviorSubject<CampaignOverview> = new BehaviorSubject(null);
-  backgroundImageUrl: Observable<string>;
+  backgroundImageUrl$: Observable<string>;
 
   urlParamSubscription: Subscription;
 
@@ -29,7 +29,7 @@ export class BackgroundImageComponent implements OnInit, OnDestroy {
       .pipe(filter((newCampaign: CampaignOverview) => !this.isCurrentCampaign(newCampaign)))
       .subscribe((newCampaign: CampaignOverview) => this.updateCurrentCampaignBackground(newCampaign));
   
-    this.backgroundImageUrl = this.currentCampaign.pipe(
+    this.backgroundImageUrl$ = this.currentCampaign.pipe(
       map(currentCampaign => {
         if(currentCampaign == null){
           return null;
