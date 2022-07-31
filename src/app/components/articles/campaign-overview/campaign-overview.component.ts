@@ -50,15 +50,9 @@ export class CampaignOverviewComponent implements OnInit {
 
     this.globalUrlParamSubscription = this.globalUrlParams
       .getCampaigns()
-      .pipe(
-        filter((campaignData) => campaignData != null), //Necessary as the first value if you start on campaign-overview is null. That would jump you straight to 504 with the tap below
-        tap((campaignData: CampaignOverview[]) => {
-          if (campaignData == null && this.campaignData == null)
-            this.routingService.routeToPath('error', { errorStatus: 504 });
-        })
-      )
+      .pipe(filter((campaignData) => campaignData != null))
       .subscribe((campaignData: CampaignOverview[]) => {
-        this.campaignData = this.processCampaignData(campaignData);
+        this.campaignData = this.sortCampaigns(campaignData);
         this.onAfterCampaignDataRetrieved(campaignData);
         this.isLoading = false;
       });
@@ -73,18 +67,12 @@ export class CampaignOverviewComponent implements OnInit {
     this.routingService.routeToPath('login-state', {state: 'logged-out'});
   }
 
-  processCampaignData(campaigns: CampaignOverview[]): CampaignOverview[] {
-    // campaigns = campaigns.concat(campaigns);
-    const sortedCampaigns = campaigns.sort((c1, c2) =>
-      c1.name < c2.name ? -1 : 1
-    );
-    return sortedCampaigns;
+  sortCampaigns(campaigns: CampaignOverview[]): CampaignOverview[] {
+    return campaigns.sort((c1, c2) => c1.name < c2.name ? -1 : 1);
   }
 
   onAfterCampaignDataRetrieved(campaignData: CampaignOverview[]): void {
-    this.campaignData = this.processCampaignData(campaignData);
-    this.isGlobalAdmin =
-      this.tokenService.isAdmin() || this.tokenService.isSuperUser();
+    this.isGlobalAdmin = this.tokenService.isAdmin() || this.tokenService.isSuperUser();
   }
 
   routeToCampaign(campaignName: string): void {
