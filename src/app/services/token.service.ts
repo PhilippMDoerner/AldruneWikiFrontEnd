@@ -100,6 +100,8 @@ export class TokenService {
   }
 
   public getCampaignRole(campaignName: string): CampaignRole{
+    if(campaignName == null) return null;
+
     const memberships: any = this.getCampaignMemberships();
     if (memberships == null) return null;
 
