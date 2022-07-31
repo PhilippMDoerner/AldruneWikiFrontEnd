@@ -36,8 +36,7 @@ export class BackgroundImageComponent implements OnInit, OnDestroy {
         } else {
           return `${Constants.wikiUrl}/${currentCampaign?.background_image}`;
         }
-      }),
-      tap(url => console.log(url))
+      })
     );
   }
 
