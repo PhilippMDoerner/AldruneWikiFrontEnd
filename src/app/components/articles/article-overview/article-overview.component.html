@@ -36,7 +36,7 @@
         </ng-container>
 
         <div class="row">
-            <a routerLink="{{homeUrl}}" class="mt-4 col-sm-3 btn btn-secondary">
+            <a [routerLink]="homeUrl" class="mt-4 col-sm-3 btn btn-secondary">
                 Back to Frontpage
             </a>
         </div>
@@ -47,7 +47,10 @@
 <ng-template #defaultHeading>
     <!-- Image -->
     <div class="row">
-        <img class="col overview-image px-0 mb-4" src="{{overviewTypeMetaData[overviewTypeName].image}}" alt="Image indicating the overview type"/>
+        <img 
+        class="col overview-image px-0 mb-4" 
+        [src]="overviewTypeMetaData[overviewTypeName].image" 
+        alt="Image indicating the overview type"/>
     </div>
 </ng-template>
 
@@ -59,7 +62,7 @@
 
     <div class="mb-5 row" id="player-characters">
         <div *ngFor="let playerCharacter of playerCharacters" class="mb-4 col-md-4 col-sm-6 col-12">
-            <a routerLink="{{ playerCharacter.getAbsoluteRouterUrl() }}">
+            <a [routerLink]="playerCharacter.getAbsoluteRouterUrl()">
                 <div class="card">
                     <img *ngIf="playerCharacter.images" class="card-img-top" [src]="constants.wikiUrl + playerCharacter.images[0]" alt="An image displaying a player character">
                     <div class="card-body p-3">
