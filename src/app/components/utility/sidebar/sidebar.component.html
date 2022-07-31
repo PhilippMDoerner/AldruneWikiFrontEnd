@@ -1,22 +1,23 @@
 <nav id="sidebar"
 (swipeleft)="true"
 [ngClass]="{'swiped-right': showSidebar.getValue(), 'swiped-left': !showSidebar.getValue()}"
+*ngIf="(currentCampaign$ | async) as currentCampaign"
 >
     <!-- Brand -->
     <ul class="brand-line d-flex">
         <li class="entry" title="campaign-overview">
-            <a routerLink="{{ campaignOverviewUrl }}" class="on-hover-show flex overview-link">
+            <a [routerLink]="campaignOverviewUrl" class="on-hover-show flex overview-link">
                 <span class="fas fa-chevron-left fa-2x"></span>
             </a> 
         </li>
 
-        <li class="flex-1 entry brand-entry" title="{{currentCampaign?.name}}-Home" [ngClass]="{'disabled-entry': !currentCampaign}">
+        <li class="flex-1 entry brand-entry" [title]="currentCampaign.name + '-Home'" [ngClass]="{'disabled-entry': currentCampaign == null}">
             <a class="pl-0" routerLink="{{ homeUrl }}">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <img class="campaign-icon"
-                    [src]="constants.wikiUrl + currentCampaign?.icon" alt="..."
+                    [src]="campaignIcon$ | async" alt="..."
                     />
-                    <span class="ml-2 on-hover-show">{{currentCampaign?.name}}</span>
+                    <span class="ml-2 on-hover-show">{{currentCampaign.name }}</span>
                 </h3>
             </a>
         </li>
@@ -30,7 +31,7 @@
             <a class="pointer" (click)="showUserSection = !showUserSection">
                 <i class="fa fa-user-circle"></i>
                 <span class="on-hover-show container-title">
-                    User ({{campaignRole |titlecase}})
+                    User ({{campaignRole$ | async | titlecase}})
                     <i class="fa" [ngClass]="{'fa-chevron-down': !showUserSection, 'fa-chevron-up': showUserSection}"></i>
                 </span>
             </a>
@@ -62,7 +63,7 @@
         </li>
 
         <!-- Sidebar Entries -->
-        <li [ngClass]="{'disabled-entry': !currentCampaign}">
+        <li [ngClass]="{'disabled-entry': currentCampaign == null}">
             <ul>
                 <li class="entry" *ngFor="let entry of sidebarEntries">
                     <a routerLink="{{entry.route}}" class="d-flex align-items-center entry">

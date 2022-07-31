@@ -1,10 +1,11 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CampaignRole, Constants } from 'src/app/app.constants';
 import { RoutingService } from 'src/app/services/routing.service';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { TokenService } from 'src/app/services/token.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { CampaignOverview } from 'src/app/models/campaign';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sidebar',
@@ -21,8 +22,9 @@ export class SidebarComponent implements OnInit, OnDestroy {
   campaignAdminUrl: string;
 
   @Input() showSidebar: BehaviorSubject<boolean>;
-  currentCampaign: CampaignOverview;
-  campaignRole: CampaignRole;
+  currentCampaign$: Observable<CampaignOverview>;
+  campaignRole$: Observable<CampaignRole>;
+  campaignIcon$: Observable<string>;
 
   parameterSubscription: Subscription;
 
@@ -43,16 +45,15 @@ export class SidebarComponent implements OnInit, OnDestroy {
     this.sidebarEntries = this.constants.articleTypeMetaData.filter(metaDataEntry => metaDataEntry.showInSidebar);
     this.sidebarEntries.sort((entry1, entry2) => entry1.title > entry2.title ? 1 : -1);
 
-    this.parameterSubscription = this.globalUrlParams.currentCampaign
+    this.currentCampaign$ = this.globalUrlParams.currentCampaign;
+    this.campaignRole$ = this.currentCampaign$.pipe(map(campaign => this.tokenService.getCampaignRole(campaign?.name)));
+    this.campaignIcon$ = this.currentCampaign$.pipe(map(campaign => campaign == null ? null : `${Constants.wikiUrl}${campaign.icon}`));
+    this.parameterSubscription = this.currentCampaign$
+      .pipe(filter(currentCampaign => currentCampaign != null))
       .subscribe(
         (campaign: CampaignOverview) => {
-          this.currentCampaign = campaign;
           //TODO: When jumping to item-article-update, that triggers a full sidebar component re-render including the links here. Figure out why that is
-          if(this.currentCampaign != null){
-            this.campaignRole = this.tokenService.getCampaignRole(campaign?.name);
-            this.updateSidebarEntries(this.currentCampaign?.name);
-          }
-
+          this.updateSidebarEntries(campaign.name);
           this.cdRef.detectChanges();
         }
       );
