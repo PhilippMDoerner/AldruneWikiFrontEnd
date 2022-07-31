@@ -1,6 +1,6 @@
 import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { BehaviorSubject, Observable, Subscription } from 'rxjs';
+import { filter, map, tap } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -13,7 +13,8 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
 })
 export class BackgroundImageComponent implements OnInit, OnDestroy {
   constants = Constants;
-  currentCampaign: CampaignOverview;
+  currentCampaign: BehaviorSubject<CampaignOverview> = new BehaviorSubject(null);
+  backgroundImageUrl: Observable<string>;
 
   urlParamSubscription: Subscription;
 
@@ -25,14 +26,29 @@ export class BackgroundImageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.urlParamSubscription = this.globalURLParamService.currentCampaign
-      .pipe(filter((campaign: CampaignOverview) => this.currentCampaign?.name !== campaign?.name))
-      .subscribe((campaign: CampaignOverview) => this.updateCurrentCampaignBackground(campaign));
+      .pipe(filter((newCampaign: CampaignOverview) => !this.isCurrentCampaign(newCampaign)))
+      .subscribe((newCampaign: CampaignOverview) => this.updateCurrentCampaignBackground(newCampaign));
+  
+    this.backgroundImageUrl = this.currentCampaign.pipe(
+      map(currentCampaign => {
+        if(currentCampaign == null){
+          return null;
+        } else {
+          return `${Constants.wikiUrl}/${currentCampaign?.background_image}`;
+        }
+      }),
+      tap(url => console.log(url))
+    );
+  }
+
+  isCurrentCampaign(campaign: CampaignOverview): boolean{
+    return this.currentCampaign.getValue()?.name === campaign?.name;
   }
 
   async updateCurrentCampaignBackground(campaign: CampaignOverview): Promise<void>{
     await this.animateBackgroundImage("fadeOut");
 
-    this.currentCampaign = campaign;
+    this.currentCampaign.next(campaign);
 
     await this.animateBackgroundImage("fadeIn");
   }
