@@ -34,7 +34,7 @@ export class BackgroundImageComponent implements OnInit, OnDestroy {
         if(currentCampaign == null){
           return null;
         } else {
-          return `${Constants.wikiUrl}/${currentCampaign?.background_image}`;
+          return `${Constants.wikiUrl}${currentCampaign?.background_image}`;
         }
       })
     );
