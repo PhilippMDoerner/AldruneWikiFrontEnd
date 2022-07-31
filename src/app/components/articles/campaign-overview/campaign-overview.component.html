@@ -5,27 +5,35 @@
   [@slideInOut]
 >
   <div class="row mx-0" id="campaign-overview-heading">
-    <h3 class="flex-1 text-center">
+    <div id="heading-buttons">
+      <a (click)="logout()" class="btn btn-secondary mx-2">
+        <i class="fas fa-sign-out-alt"></i>
+        <span> Logout</span> 
+      </a>
+
+      <ng-container *ngIf="isGlobalAdmin">
+        <a
+          [routerLink]="generalAdminUrl"
+          class="btn btn-info mx-2"
+        >
+          <span class="fas fa-user-cog"></span>
+          General administration
+        </a>
+
+        <a
+          [routerLink]="configTableUrl"
+          class="btn btn-info mx-2"
+        >
+          <i class="fa fa-table"></i>
+          <span> Config Tables </span>
+        </a>
+      </ng-container>
+    </div>
+
+    <h3 class="flex-1 mb-0 text-center">
       Choose your campaign
       <app-spinner *ngIf="isLoading"></app-spinner>
     </h3>
-    <div id="heading-buttons" *ngIf="isGlobalAdmin">
-      <a
-        routerLink="{{ generalAdminUrl }}"
-        class="float-right alert alert-info mb-0 p-2 mx-2"
-      >
-        <span class="fas fa-user-cog"></span>
-        General administration
-      </a>
-
-      <a
-        routerLink="{{ configTableUrl }}"
-        class="float-right alert alert-info mb-0 p-2 mx-2"
-      >
-        <i class="fa fa-table"></i>
-        <span> Config Tables </span>
-      </a>
-    </div>
   </div>
   <div class="row flex-1 mx-0" id="campaign-overview-body">
     <a

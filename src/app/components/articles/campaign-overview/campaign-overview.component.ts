@@ -64,6 +64,15 @@ export class CampaignOverviewComponent implements OnInit {
       });
   }
 
+  logout(): void{
+    if (this.tokenService.hasJWTToken()){
+      this.tokenService.invalidateJWTToken();
+      this.tokenService.removeJWTTokenFromLocalStorage();
+    }
+        
+    this.routingService.routeToPath('login-state', {state: 'logged-out'});
+  }
+
   processCampaignData(campaigns: CampaignOverview[]): CampaignOverview[] {
     // campaigns = campaigns.concat(campaigns);
     const sortedCampaigns = campaigns.sort((c1, c2) =>

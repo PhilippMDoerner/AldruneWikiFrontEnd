@@ -111,5 +111,10 @@
         display:flex;
         justify-content: center;
         flex-direction: column;
+        width: 100%;
+
+        .btn.mx-2{
+            margin: 0rem 0rem 0.5rem 0rem !important;
+        }
     }
 }
