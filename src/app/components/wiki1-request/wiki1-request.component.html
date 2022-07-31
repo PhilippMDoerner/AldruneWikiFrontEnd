@@ -1,6 +1,6 @@
 <div class="main d-flex flex-column">
     <h1 class="text-center mb-5"> Wiki1 Request </h1>
-    <img src="{{constants.timeoutImageUrl}}" alt="" class="center mb-3"/>
+    <img [src]="constants.timeoutImageUrl" alt="" class="center mb-3"/>
 
     <p class="text-center"> 
         Sorry, something in your cache went awry. You tried to call /wiki1 but your browser automatically redirected you to this page. <br> 
@@ -9,7 +9,7 @@
     </p>
     
     <div>
-        <a class="btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: constants.defaultCampaign})}}"> 
+        <a class="btn btn-secondary" [routerLink]="routingService.getRoutePath('home1', {campaign: constants.defaultCampaign})"> 
             To Wiki2 Frontpage 
         </a>
     </div>
