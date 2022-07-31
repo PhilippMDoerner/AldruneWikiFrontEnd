@@ -32,15 +32,11 @@
             <div class="col-6">{{ user.email }}</div>
             
             <h5 class="col-12 mb-0 mt-4">Campaign Memberships</h5>
-            <div *ngFor="let campaignRole of campaignRolesList" class="col-12 row">
-                <div class="col-5">{{campaignRole.campaignName | titlecase}}</div>
-                <div class="col-4">{{campaignRole.role | titlecase}}</div>
-                <div class="col-3">
-                    <div class="btn btn-secondary btn-sm" (click)="leaveCampaign(campaignRole)">
-                        <span class="fas fa-sign-out-alt"></span> 
-                        Leave Campaign
-                    </div> 
-                </div>
+            <div *ngFor="let campaignRole of campaignRolesList; let i = index" class="col-12">
+
+                <ng-container *ngTemplateOutlet="leaveCampaignStates[i] ? leaveCampaignForm : displayCampaignForm; context: {$implicit: {campaignRole, index: i}}">
+                </ng-container>
+
             </div>
         </div>
 
@@ -63,15 +59,39 @@
             ></app-article-footer>
         </div>
     </article>
-
-    <ng-template #profileForm>
-        <div class="card p-3 my-3">
-            <app-formly-formcontainer
-            [model] = "profileModel"
-            [fields] = "profileFields"
-            (formlyCancel) = "toggleProfileEditState()"
-            (formlySubmit) = "updateProfile()"
-            ></app-formly-formcontainer>
-        </div>
-    </ng-template>
 </div>
+
+<ng-template #profileForm>
+    <div class="card p-3 my-3">
+        <app-formly-formcontainer
+        [model] = "profileModel"
+        [fields] = "profileFields"
+        (formlyCancel) = "toggleProfileEditState()"
+        (formlySubmit) = "updateProfile()"
+        ></app-formly-formcontainer>
+    </div>
+</ng-template>
+
+<ng-template #displayCampaignForm let-context>
+    <div class="row">
+        <div class="col-5">{{context.campaignRole.campaignName | titlecase}}</div>
+        <div class="col-4">{{context.campaignRole.role | titlecase}}</div>
+        <div class="col-3 d-flex justify-content-end">
+            <div class="btn btn-secondary btn-sm" (click)="toggleLeaveCampaignState(context.index)">
+                <span class="fas fa-sign-out-alt"></span> 
+                <span class="hide-on-mobile">Leave Campaign</span>
+            </div> 
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #leaveCampaignForm let-context>
+    <div class="alert alert-danger mx-0 w-100 row" id="leave-campaign-form">
+        <div class="col-md-8">
+            <strong>Permanently leave '{{context.campaignRole.campaignName | titlecase}}'?</strong> 
+        </div>
+        <div class="btn btn-danger col-md-2" (click)="leaveCampaign(campaignRole)"> Yes </div>
+        <div class="btn btn-dark col-md-2" (click)="toggleLeaveCampaignState(context.index)"> No </div>
+    </div>
+
+</ng-template>

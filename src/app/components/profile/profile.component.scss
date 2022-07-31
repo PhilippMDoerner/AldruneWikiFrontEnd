@@ -9,6 +9,10 @@
 
 #profile-data div{
     word-break: break-all;
+
+    #leave-campaign-form strong{
+        word-break: initial;
+    }
 }
 
 @media(max-width: $small-screen){

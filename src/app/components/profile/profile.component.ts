@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   campaignRolesList: {campaignName: string, role: CampaignRole}[];
 
   profileEditState: boolean = false;
+  leaveCampaignStates: boolean[];
   passwordEditState: boolean = false;
 
   passwordModel: {};
@@ -62,6 +63,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     const campaignRoles = this.tokenService.getCampaignMemberships();
     const rolesList = Object.keys(campaignRoles).map(campaignName => {return {campaignName, role: campaignRoles[campaignName]}});
     this.campaignRolesList = rolesList;
+    this.leaveCampaignStates = this.campaignRolesList.map(entry => false);
 
     this.updateDynamicVariables(this.campaign);
   }
@@ -89,6 +91,10 @@ export class ProfileComponent implements OnInit, AfterViewInit {
     if(this.passwordEditState){
       this.passwordModel = {};
     }
+  }
+
+  toggleLeaveCampaignState(index: number): void{
+    this.leaveCampaignStates[index] = !this.leaveCampaignStates[index];
   }
 
   updatePassword(): void{
