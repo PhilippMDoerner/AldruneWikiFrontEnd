@@ -5,6 +5,7 @@ import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-error',
@@ -63,14 +64,21 @@ export class ErrorComponent implements OnInit, OnDestroy {
     public routingService: RoutingService,
     private route: ActivatedRoute,
     public globalUrlParams: GlobalUrlParamsService,
+    private tokenService: TokenService,
   ) { }
 
   async ngOnInit():Promise<void> {
-    this.parameterSubscription = this.route.params.subscribe( params => {
-      const errorStatusParam: number = params["errorStatus"];
-      const isKnownErrorStatus = this.errorContents.hasOwnProperty(errorStatusParam);
-      this.errorStatus = isKnownErrorStatus ? errorStatusParam : 404;
-    });
+    this.parameterSubscription = this.route.params.subscribe( 
+      params => {
+        const errorStatusParam: number = params["errorStatus"];
+        const isKnownErrorStatus = this.errorContents.hasOwnProperty(errorStatusParam);
+        this.errorStatus = isKnownErrorStatus ? errorStatusParam : 404;
+
+        if(this.errorStatus === 401){
+          this.tokenService.removeJWTTokenFromLocalStorage();
+        }
+      }
+    );
 
     this.campaign = await this.globalUrlParams.getCurrentCampaign();
   }
