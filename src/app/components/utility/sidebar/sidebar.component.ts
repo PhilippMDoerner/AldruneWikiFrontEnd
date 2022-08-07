@@ -16,7 +16,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   constants: any = Constants;
 
   //URLS
-  profileUrl: string;
   campaignOverviewUrl: string;
   homeUrl: string;
   campaignAdminUrl: string;
@@ -73,10 +72,6 @@ export class SidebarComponent implements OnInit, OnDestroy {
   updateGeneralRouterLinks(campaignName: string): void{
     this.campaignOverviewUrl = this.routingService.getRoutePath("campaign-overview");
     this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaignName});
-    this.profileUrl = this.routingService.getRoutePath('profile', {
-      campaign: campaignName, 
-      username: this.tokenService.getCurrentUserName()
-    });
     this.campaignAdminUrl = this.routingService.getRoutePath('campaign-admin', {campaign: campaignName})
   }
 
