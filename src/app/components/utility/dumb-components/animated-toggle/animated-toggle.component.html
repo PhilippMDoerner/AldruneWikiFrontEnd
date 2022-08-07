@@ -1,0 +1,17 @@
+<div class="fit-content" #toggle>
+  <ng-container *ngIf="isActive; then activeToggle; else inactiveToggle"></ng-container>
+</div>
+
+<ng-template #inactiveToggle>
+  <div (click)="toggleState()">
+    <ng-content select="inactiveButton"></ng-content>
+  </div>
+</ng-template>
+
+<ng-template #activeToggle>
+  <div class="delete-request float-right">
+    <span class="mr-3"> <strong>{{message}}</strong> </span>  
+    <div class="btn btn-danger float-right mr-2" (click)="emitConfirmationEvent()"> Yes </div>
+    <div class="btn btn-secondary float-right" (click)="toggleState()"> No </div>  
+  </div>
+</ng-template>
