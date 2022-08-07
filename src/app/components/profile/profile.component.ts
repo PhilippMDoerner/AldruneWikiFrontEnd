@@ -22,7 +22,7 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
 })
 export class ProfileComponent implements OnInit, AfterViewInit {
   //URLs
-  homeUrl: string;
+  campaignOverviewUrl: string;
 
   @ViewChild('profileCard') profileCard: ElementRef;
   user: UserObject;
@@ -32,6 +32,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   profileEditState: boolean = false;
   leaveCampaignStates: boolean[];
   passwordEditState: boolean = false;
+  hasProfileDeletePermission: boolean = false;
 
   passwordModel: {};
   passwordFields: FormlyFieldConfig[] = [
@@ -57,8 +58,9 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.campaign = this.route.snapshot.data["campaign"];
+    this.campaign = this.route.snapshot.data["campaign"] ?? {};
     this.user = this.route.snapshot.data["userData"]
+    this.hasProfileDeletePermission = this.tokenService.getCurrentUserPk() === this.user.pk; //This is not necessary, as the user data I query stems from the token, but this just makes sure of it should I change how I load the data in the future
 
     const campaignRoles = this.tokenService.getCampaignMemberships();
     const rolesList = Object.keys(campaignRoles).map(campaignName => {return {campaignName, role: campaignRoles[campaignName]}});
@@ -74,7 +76,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   updateDynamicVariables(campaign: CampaignOverview): void{
-    this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaign.name});
+    this.campaignOverviewUrl = this.routingService.getRoutePath('campaign-overview');
   }
 
   toggleProfileEditState(): void{

@@ -50,13 +50,30 @@
             ></app-formly-formcontainer>
         </div>
 
-        <div class="mt-5">
-            <app-article-footer
-            (delete)="deleteThisUser()"
-            [link]="homeUrl"
-            [label]="'Home'"
-            [deleteMessage]="'Delete your account?'"
-            ></app-article-footer>
+        <div class="mt-5 row">
+            <div class="col-md-3">
+                <a [routerLink]="campaignOverviewUrl" class="btn btn-secondary w-100">
+                    To Campaigns
+                </a>
+            </div>
+
+            <ng-container *ngIf="hasProfileDeletePermission">
+                <div class="col-md-9">
+                    <app-animated-toggle
+                    [message]="'Delete your account?'"
+                    (confirmationEvent)="deleteThisUser()"
+                    class="float-right"
+                    >
+                        <inactiveButton>
+                            <div class="btn btn-outline-danger">
+                                <i class="fa fa-trash"></i>
+                            </div> 
+                        </inactiveButton>
+                    </app-animated-toggle>
+                </div>
+
+            </ng-container>
+            
         </div>
     </article>
 </div>
