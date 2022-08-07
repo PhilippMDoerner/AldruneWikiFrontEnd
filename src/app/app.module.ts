@@ -129,6 +129,7 @@ import { TooltipInfocircleComponent } from './components/utility/tooltip-infocir
 import { ImageCarouselComponent } from './components/utility/image-carousel/image-carousel.component';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { InlineCreateButtonComponent } from './components/utility/inline-create-button/inline-create-button.component';
+import { AnimatedToggleComponent } from './components/utility/dumb-components/animated-toggle/animated-toggle.component';
 
 @NgModule({
   declarations: [
@@ -213,6 +214,7 @@ import { InlineCreateButtonComponent } from './components/utility/inline-create-
     TooltipInfocircleComponent,
     ImageCarouselComponent,
     InlineCreateButtonComponent,
+    AnimatedToggleComponent,
   ],
   imports: [
     BrowserModule,
