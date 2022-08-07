@@ -32,6 +32,7 @@ export class CampaignOverviewComponent implements OnInit {
 
   //URLs
   generalAdminUrl: string = this.routingService.getRoutePath('admin');
+  profileUrl: string;
   configTableUrl: string = this.routingService.getRoutePath('config-tables');
   isGlobalAdmin: boolean;
 
@@ -48,6 +49,7 @@ export class CampaignOverviewComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.isLoading = true;
 
+    this.profileUrl = this.routingService.getRoutePath("direct-profile", {username: this.tokenService.getCurrentUserName()});
     this.globalUrlParamSubscription = this.globalUrlParams
       .getCampaigns()
       .pipe(filter((campaignData) => campaignData != null))
