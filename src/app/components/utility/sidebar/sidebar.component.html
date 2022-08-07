@@ -12,7 +12,7 @@
         </li>
 
         <li class="flex-1 entry brand-entry" [title]="currentCampaign.name + '-Home'" [ngClass]="{'disabled-entry': currentCampaign == null}">
-            <a class="pl-0" routerLink="{{ homeUrl }}">
+            <a class="pl-0" [routerLink]="homeUrl">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <img class="campaign-icon"
                     [src]="campaignIcon$ | async" alt="..."
@@ -25,62 +25,45 @@
 
 
     <!-- Sidebar Items -->
-    <ul>
-        <!-- User Section. This is a menu-container, it's title identified by "container-title" class, which is relevant for swipe gesture behaviour, see app.component.ts -->
-        <li class="entry" id="user-section" [ngClass]="{'active': showUserSection, 'disabled-entry': !currentCampaign}">
-            <a class="pointer" (click)="showUserSection = !showUserSection">
-                <i class="fa fa-user-circle"></i>
-                <span class="on-hover-show container-title">
-                    User ({{campaignRole$ | async | titlecase}})
-                    <i class="fa" [ngClass]="{'fa-chevron-down': !showUserSection, 'fa-chevron-up': showUserSection}"></i>
-                </span>
+    <!-- Sidebar Entries -->
+
+    <!-- Admin Section -->
+    <ng-container *ngIf="showAdminSection">
+        <li class="entry" [ngClass]="{'disabled-entry': currentCampaign == null}">
+            <a class="d-flex align-items-center entry" [routerLink]="campaignAdminUrl" >
+                <i class="fas fa-hammer"></i>
+                <span class="on-hover-show"> Campaign Admin </span>
             </a>
-            <ul id="user-links" class="on-hover-show">
-                <!-- Profile -->
-                <li class="entry">
-                    <a class="on-hover-show flex" routerLink="{{ profileUrl }}">
-                        <i class="fa fa-user"></i>
-                        <span> Profile </span>
-                    </a>
-                </li>
-
-                <!-- Admin Section -->
-                <li *ngIf="showAdminSection" class="entry">
-                    <a class="on-hover-show flex" routerLink="{{ campaignAdminUrl }}" >
-                        <i class="fas fa-dragon"></i>
-                        <span> Campaign Admin </span>
-                    </a>
-                </li>
-
-                <!-- Logout -->
-                <li class="entry">
-                    <a class="on-hover-show flex pointer" (click)="logout()"> 
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span> Logout</span> 
-                    </a>
-                </li>
-            </ul>
         </li>
+    </ng-container>
 
-        <!-- Sidebar Entries -->
-        <li [ngClass]="{'disabled-entry': currentCampaign == null}">
-            <ul>
-                <li class="entry" *ngFor="let entry of sidebarEntries">
-                    <a routerLink="{{entry.route}}" class="d-flex align-items-center entry">
-                        <i class="{{ entry.iconClass}}"></i>
-                        <span class="on-hover-show">{{entry.title}}</span>
-                    </a>
-                </li>
-            </ul>
+    <!-- Campaign Overview Entries -->
+    <ng-container *ngFor="let entry of sidebarEntries">
+        <li class="entry" [ngClass]="{'disabled-entry': currentCampaign == null}">
+            <a [routerLink]="entry.route" class="d-flex align-items-center entry">
+                <i [class]="entry.iconClass"></i>
+                <span class="on-hover-show">{{entry.title}}</span>
+            </a>
         </li>
+    </ng-container>
 
+    <!-- Logout -->
+    <ul class="footer d-flex mt-auto">
+        <li class="entry w-100 align-self-end">
+            <a class="d-flex align-items-center entry pointer" (click)="logout()"> 
+                <i class="fas fa-sign-out-alt"></i>
+                <span class="on-hover-show">Logout</span> 
+            </a>
+        </li>
     </ul>
+
+
 </nav>
 
 <ng-template #nonCampaignBrand>
     <ul class="brand-line d-flex">
         <li class="flex-1">
-            <a class="pl-0" routerLink="{{ campaignOverviewUrl }}">
+            <a class="pl-0" [routerLink]="campaignOverviewUrl">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <span class="fas fa-chevron-left"></span>
                     <span class="ml-2 on-hover-show"> To campaigns</span>

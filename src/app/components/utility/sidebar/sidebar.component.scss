@@ -9,6 +9,9 @@
     z-index: 1005; //Necessary because map uses z-indexes going up to 1000
     overflow-y: auto;
     overflow-x: hidden; //Necessary because when sidebar folds out, x scrollbar appears
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
 
     border-right-color: white;
     border-right-width: 1px;
@@ -133,7 +136,9 @@ li a i{ //entry icon
     width: 3rem;
 }
 
-
+li.entry.footer{
+    align-self: flex-end;
+}
 
 #brand{
     height: 3rem;
