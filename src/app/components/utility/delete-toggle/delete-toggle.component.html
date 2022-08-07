@@ -1,10 +1,13 @@
-<div class="float-right" *ngIf="hasDeletePermission" #deleteButton>
-    <div *ngIf="!isInDeleteState" class="btn btn-outline-danger" (click)="toggleDeleteState()">
-        <i class="fa fa-trash"></i>
-    </div>
-    <div *ngIf="isInDeleteState" class="delete-request">
-        <span class="mr-3"> <strong>{{deleteMessage}}</strong> </span>  
-        <div class="btn btn-danger float-right mr-2" (click)="emitDeleteEvent()"> Yes </div>
-        <div class="btn btn-secondary float-right" (click)="toggleDeleteState()"> No </div>
-    </div>
-</div>
+<ng-container *ngIf="hasDeletePermission">
+    <app-animated-toggle
+    class="float-right"
+    [message]="deleteMessage"
+    (confirmationEvent)="emitDeleteEvent()"
+    >
+        <inactiveButton>
+            <div class="btn btn-outline-danger">
+                <i class="fa fa-trash"></i>
+            </div> 
+        </inactiveButton>
+    </app-animated-toggle>
+</ng-container>

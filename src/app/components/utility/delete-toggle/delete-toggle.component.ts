@@ -9,13 +9,10 @@ import { ActivatedRoute } from '@angular/router';
   templateUrl: './delete-toggle.component.html',
   styleUrls: ['./delete-toggle.component.scss'],
 })
-export class DeleteToggleComponent extends PermissionUtilityFunctionMixin implements OnInit {
-  isInDeleteState: boolean = false;
+export class DeleteToggleComponent extends PermissionUtilityFunctionMixin {
   @Input() deleteEventEmission: string = null;
   @Input() deleteMessage: string = "Delete this object?";
   @Output() deleteEvent : EventEmitter<string> = new EventEmitter();
-
-  @ViewChild("deleteButton") deleteButton: ElementRef;
 
   constructor(
     tokenService: TokenService,
@@ -24,18 +21,7 @@ export class DeleteToggleComponent extends PermissionUtilityFunctionMixin implem
     super(tokenService, route); 
   }
 
-  ngOnInit(): void {
-  }
-
-  toggleDeleteState(){
-    this.isInDeleteState = !this.isInDeleteState
-    animateElement( this.deleteButton.nativeElement , 'flipInY');
-  }
-
   emitDeleteEvent(){
-    if (this.isInDeleteState){
-      this.deleteEvent.emit(this.deleteEventEmission);
-    }
-    this.isInDeleteState = false;
+    this.deleteEvent.emit(this.deleteEventEmission);
   }
 }
