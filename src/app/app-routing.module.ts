@@ -105,16 +105,6 @@ const generalRoutes: GeneralRoute[] = [
 			userData: UserResolver
 		}
 	},
-	{
-		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/profile/:campaign/:username`,
-		component: ProfileComponent,
-		data: { name: "profile"},
-		canActivate: [LoginGuardService],
-		resolve: {
-			campaign: CampaignResolver,
-			userData: UserResolver
-		}
-	},
 	//Campaign Routes
 	{
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaigns`, 
