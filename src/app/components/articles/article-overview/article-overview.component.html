@@ -96,7 +96,7 @@
                     <li 
                     [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                     >
-                        <a routerLink="{{ characterEntry.getAbsoluteRouterUrl() }}"> 
+                        <a [routerLink]="characterEntry.getAbsoluteRouterUrl()"> 
                             {{characterEntry.name_full}}
                         </a>
                     </li>
@@ -122,7 +122,7 @@
                 class="col"
                 [ngClass]="{'d-none': !diaryEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                 >
-                    <a routerLink="{{ diaryEntry.getAbsoluteRouterUrl()}}" >
+                    <a [routerLink]="diaryEntry.getAbsoluteRouterUrl()" >
                         {{diaryEntry.name_full}}
                     </a>
                 </li>
@@ -149,7 +149,7 @@
                 *ngFor="let item of itemLetterEntries.value"
                 [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
                 >
-                    <a routerLink="{{ item.getAbsoluteRouterUrl() }}">
+                    <a [routerLink]="item.getAbsoluteRouterUrl()">
                         {{item.name_full}}
                     </a>
                 </li>
