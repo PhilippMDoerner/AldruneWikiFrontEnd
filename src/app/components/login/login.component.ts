@@ -5,7 +5,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
-import { EncodedJWTToken, UserData } from 'src/app/models/jwttoken';
+import { UserData } from 'src/app/models/jwttoken';
 import { User } from 'src/app/models/user';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MailService } from 'src/app/services/mail.service';
