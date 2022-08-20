@@ -138,7 +138,6 @@ export class SessionAudioUpdateComponent extends ArticleFormMixin implements OnI
   }
 
   routeToSessionAudio(sessionAudio: SessionAudio){
-    console.log("Routing to a path for ", sessionAudio)
     const pathParams = {
       isMainSession: sessionAudio.session_details.is_main_session_int,
       sessionNumber: sessionAudio.session_details.session_number,

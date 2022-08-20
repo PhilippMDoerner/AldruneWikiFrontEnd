@@ -72,7 +72,6 @@ export class ErrorComponent implements OnInit, OnDestroy {
   ) { }
 
   ngOnInit():void {
-    console.log(this)
     this.parameterSubscription = this.route.params.subscribe( 
       params => {
         const errorStatusParam: number = parseInt(params["errorStatus"]);
