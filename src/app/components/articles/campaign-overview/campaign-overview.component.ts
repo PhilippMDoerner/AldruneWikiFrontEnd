@@ -61,7 +61,7 @@ export class CampaignOverviewComponent implements OnInit {
   }
 
   logout(): void{
-    if (this.tokenService.hasJWTToken()){
+    if (this.tokenService.hasTokens()){
       this.tokenService.invalidateJWTToken();
       this.tokenService.removeJWTTokenFromLocalStorage();
     }

@@ -38,13 +38,13 @@ export class TokenService {
   }
 
 
-  public hasJWTToken(): boolean{
+  public hasTokens(): boolean{
     if (TokenService.getUserData() == null) return false;
     return !!TokenService.getAccessToken() && !!TokenService.getRefreshToken();
   }
   
   public hasValidJWTToken(): boolean{
-    if (!this.hasJWTToken()) return false;
+    if (!this.hasTokens()) return false;
     return !this.isTokenExpired(TokenService.getRefreshToken());
   }
 
