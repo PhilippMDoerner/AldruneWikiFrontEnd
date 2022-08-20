@@ -1,14 +1,24 @@
 <div class="main d-flex flex-column">
     <h1 class="text-center mb-5"> {{errorContents[errorStatus].title}} </h1>
-    <img src="{{errorContents[errorStatus].image}}" alt="" class="center mb-3"/>
+    <img [src]="errorContents[errorStatus].image" alt="" class="center mb-3"/>
 
     <p class="text-center" [innerHTML]="errorContents[errorStatus].htmlBody | safeHtml"> </p>
     
     <div class="d-flex justify-content-center">
-        <a (click)="globalUrlParams.refreshAndReturnToLastURL()" class="btn btn-primary">
-            <span *ngIf="campaign">Retry</span> 
-            <span *ngIf="!campaign">Reconnect!</span> 
-            <span class="fas fa-redo-alt"></span>
-        </a>
+        <ng-container *ngIf="hasTokenError; then loginLink else campaignLink"></ng-container>
     </div>
 </div>
+
+<ng-template #campaignLink>
+    <a class="btn btn-primary" [routerLink]="!! campaign ? campaignHomeUrl : campaignOverviewUrl">
+        Retry
+        <span class="ml-2 fas fa-redo-alt"></span>
+    </a> 
+</ng-template>
+
+<ng-template #loginLink>
+    <a class="btn btn-primary" [routerLink]="loginUrl">
+        Log in again
+        <span class="ml-2 fas fa-redo-alt"></span>
+    </a> 
+</ng-template>

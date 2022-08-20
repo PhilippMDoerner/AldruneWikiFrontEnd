@@ -16,6 +16,10 @@ export class ErrorComponent implements OnInit, OnDestroy {
   constants: any = Constants;
 
   campaign: CampaignOverview;
+  campaignHomeUrl: string;
+  campaignOverviewUrl: string;
+  loginUrl: string;
+  hasTokenError: boolean;
 
   parameterSubscription: Subscription;
   campaignSubscription: Subscription;
@@ -67,20 +71,27 @@ export class ErrorComponent implements OnInit, OnDestroy {
     private tokenService: TokenService,
   ) { }
 
-  async ngOnInit():Promise<void> {
+  ngOnInit():void {
+    console.log(this)
     this.parameterSubscription = this.route.params.subscribe( 
       params => {
-        const errorStatusParam: number = params["errorStatus"];
+        const errorStatusParam: number = parseInt(params["errorStatus"]);
         const isKnownErrorStatus = this.errorContents.hasOwnProperty(errorStatusParam);
         this.errorStatus = isKnownErrorStatus ? errorStatusParam : 404;
-
-        if(this.errorStatus === 401){
+        this.hasTokenError = [401].includes(this.errorStatus);
+        if(this.hasTokenError){
           this.tokenService.removeJWTTokenFromLocalStorage();
         }
       }
     );
 
-    this.campaign = await this.globalUrlParams.getCurrentCampaign();
+    this.globalUrlParams.getCurrentCampaign()
+      .then((campaign) => {
+        this.campaign = campaign;
+        this.campaignHomeUrl = this.routingService.getRoutePath("home1", {campaign: this.campaign.name});
+      });
+    this.loginUrl = this.routingService.getRoutePath("login");
+    this.campaignOverviewUrl = this.routingService.getRoutePath("campaign-overview");
   }
 
   ngOnDestroy(): void{
