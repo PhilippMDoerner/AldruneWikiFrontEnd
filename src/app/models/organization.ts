@@ -7,8 +7,16 @@ export interface Organization extends ArticleObject{
     description: string,
     headquarter: number,
     headquarter_details?: {name: string, parent_name: string, pk: number, name_full: string},
-    members?: {name: string, pk: number}[],
+    members?: OrganizationMember[],
     images?: Image[],
+}
+
+export interface OrganizationMember{
+    name: string;
+    pk: number;
+    alive: boolean;
+    organization_id: number;
+    role: string;
 }
 
 export class OrganizationObject implements Organization{
