@@ -3,14 +3,14 @@ import { Image } from './image';
 import { Constants } from '../app.constants';
 
 export interface Creature extends ArticleObject{
-    images?: Image,
+    images?: Image[],
     description: string,
     campaign: number;
 }
 
 export class CreatureObject implements Creature{
     pk?: number;
-    images?: Image;
+    images?: Image[];
     name?: string;
     description: string;
     campaign_details: {pk: number, name: string};
