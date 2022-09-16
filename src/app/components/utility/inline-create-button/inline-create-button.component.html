@@ -7,7 +7,7 @@
   </ng-container>
 
   <ng-container *ngSwitchCase="styles.Link">
-    <a class="badge badge-primary p-2 no-underline ml-2"  routerLink="{{ link }}" >
+    <a class="badge badge-primary p-2 no-underline ml-2"  [routerLink]="link" >
     <i class="fa fa-plus mx-1"></i>
     {{ labelText }}
   </a>
