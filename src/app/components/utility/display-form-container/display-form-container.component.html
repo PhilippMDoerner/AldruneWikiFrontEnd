@@ -1,28 +1,32 @@
-<div class="form-group" *ngFor="let field of formlyFields">
-    <div class="d-flex align-items-center">
-        <input 
-        *ngIf="field.type==='checkbox'"
-        type="checkbox" 
-        disabled 
-        class="custom-control mr-2 {{ field.className }}"
-        [checked]="modelCopy[field.key]"
-        >
+<ng-container *ngFor="let field of formlyFields">
+    <div class="form-group">
+        <div class="d-flex align-items-center">
+            <ng-container *ngIf="field.type==='checkbox'">
+                <input 
+                type="checkbox" 
+                disabled 
+                [class]="'custom-control mr-2 ' + field.className"
+                [checked]="modelCopy[field.key]">
+            </ng-container>
 
-        <label [ngClass]="{'mb-0': field.type==='checkbox'}">
-            {{ field.templateOptions.label }}
-            <span *ngIf="field.templateOptions.required">*</span>
-        </label>
+    
+            <label [ngClass]="{'mb-0': field.type==='checkbox'}">
+                {{ field.templateOptions.label }}
+                <ng-container *ngIf="field.templateOptions.required">*</ng-container>
+            </label>
+        </div>
+        
+        <ng-container *ngIf="['checkbox', 'tinymce'].includes(field.type)">
+            <div [class]="'form-control ' + field.className ">
+                {{ modelCopy[field.key] }}    
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="field.type==='tinymce'">
+            <div [class]="'custom-control mr-2 ' + field.className" [innerHTML]="modelCopy[field.key]"></div>
+        </ng-container>
+
     </div>
+</ng-container>
 
-    <div class="form-control {{ field.className }}" *ngIf="field.type !== 'checkbox' && field.type !== 'tinymce'">
-        {{ modelCopy[field.key] }}    
-    </div>
-
-    <div
-    *ngIf="field.type==='tinymce'"
-    class="custom-control mr-2 {{ field.className }}"
-    [innerHTML]="modelCopy[field.key]"
-    ></div>
-
-</div>
 
