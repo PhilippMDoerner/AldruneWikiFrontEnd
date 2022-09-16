@@ -1,17 +1,24 @@
-<h4>Locations of Interest <i class="fa fa-plus icon ml-1" [ngClass]="{'d-none': !hasCreatePermission}" routerLink="create"></i></h4>
+<h4>
+    Locations of Interest 
+    <i class="fa fa-plus icon ml-1" 
+    [ngClass]="{'d-none': !hasCreatePermission}" 
+    routerLink="create"></i>
+</h4>
 
 <ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)">
-    <ngb-panel id="static-{{i}}" *ngFor="let location of sublocations; let i = index">
+    <ngb-panel [id]="'static-'+i" *ngFor="let location of sublocations; let i = index">
         <!-- Header -->
         <ng-template ngbPanelTitle class="button-container">
             <span class="location-title"> 
-                <a 
-                routerLink="{{ locationUrls[i] }}"
-                > 
+                <a [routerLink]="locationUrls[i]"> 
                     {{ location.name }} 
                 </a>
             </span>
-            <i [ngClass]="{'fa float-right icon': true,'fa-chevron-down': !panelIsOpen(i),'fa-chevron-up': panelIsOpen(i)}"></i>
+            <i class="fa float-right icon" 
+            [ngClass]="{
+                'fa-chevron-down': !panelIsOpen(i),
+                'fa-chevron-up': panelIsOpen(i)
+            }"></i>
         </ng-template>
 
         <!-- Body -->
@@ -27,16 +34,20 @@
             </div>
 
             <!-- List of Characters at this location -->
-            <div class="location-character mb-1" *ngIf="location.characters.length > 0">
-                <span class="mr-4"> Characters: </span>
-                <span class="d-inline-flex align-items-center flex-wrap">
-                    <span class="badge badge-secondary mr-2 p-1 mb-1" *ngFor="let character of location.characters; let characterIndex = index">
-                        <a routerLink="{{ locationCharacterUrls[i][characterIndex] }}">
-                            {{ character.name }}
-                        </a>
+            <ng-container *ngIf="location.characters.length > 0">
+                <div class="location-character mb-1">
+                    <span class="mr-4"> Characters: </span>
+                    <span class="d-inline-flex align-items-center flex-wrap">
+                        <ng-container *ngFor="let character of location.characters; let characterIndex = index">
+                            <span class="badge badge-secondary mr-2 p-1 mb-1">
+                                <a [routerLink]="locationCharacterUrls[i][characterIndex]">
+                                    {{ character.name }}
+                                </a>
+                            </span>
+                        </ng-container>
                     </span>
-                </span>
-            </div>       
+                </div>  
+            </ng-container>     
         </ng-template>
 
     </ngb-panel>
