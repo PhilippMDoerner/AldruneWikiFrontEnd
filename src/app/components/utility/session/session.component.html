@@ -1,93 +1,105 @@
-<div class="card row mb-3 px-4 pt-3 pb-1" [ngClass] = "{'animate__animated animate__fadeInUp': isInCreateState()}" #card>
+<div class="card row mb-3 px-4 pt-3 pb-1" 
+[ngClass]="{'animate__animated animate__fadeInUp': isInCreateState()}" 
+#card>
     <!-- Sessions Panel Heading -->
-    <h5 
-    class="pointer col-12 justify-content-between d-flex align-items-center" 
-    (click)="toggleCard()" 
-    *ngIf="!isInOutdatedUpdateState()"
-    > 
-        <div>
-            {{ cardData.name }}
-            <span class="text-muted no-transform"> - {{ cardData.session_date | date}}</span>
-            <span class="text-muted no-transform hide-on-mobile">
-                - Day {{ cardData.start_day }} to {{cardData.end_day}}
-            </span>
-        </div>
+    <ng-container *ngIf="!isInOutdatedUpdateState()">
+        <h5 class="pointer col-12 justify-content-between d-flex align-items-center" 
+        (click)="toggleCard()"> 
+            <div>
+                {{ cardData.name }}
+                <span class="text-muted no-transform"> - {{ cardData.session_date | date}}</span>
+                <span class="text-muted no-transform hide-on-mobile">
+                    - Day {{ cardData.start_day }} to {{cardData.end_day}}
+                </span>
+            </div>
+    
+            <i class="fa icon"
+            [ngClass]="{
+                'fa-chevron-down': !isOpen, 
+                'fa-chevron-up': isOpen
+            }"></i>
+        </h5>
+    </ng-container>
 
-        <i [ngClass]="{'fa icon': true, 'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}"></i>
-    </h5>
 
     <!-- Sessions Panel Content -->
     <div class="mb-3 w-100" [ngbCollapse]="!isOpen">
         <div class="col-12">
             <!-- Separator -->
-            <hr class="white-separator mb-2" *ngIf="!isInOutdatedUpdateState()">
+            <ng-container *ngIf="!isInOutdatedUpdateState()">
+                <hr class="white-separator mb-2">
+            </ng-container>
 
             <!-- Heading -->
             <div class="mb-3">
                 <h4 class="d-inline"> {{ cardData.name }}</h4>
         
                 <!-- Edit Toggler -->
-                <div 
-                *ngIf="hasUpdatePermission"
-                class="btn btn-secondary float-right" 
-                (click)="toggleFormState()"
-                >
-                    <i class="fa fa-pencil" *ngIf="isInDisplayState()"></i>
-                    <i class="fa fa-times" *ngIf="!isInDisplayState()"></i>
-                </div>
+                <ng-container *ngIf="hasUpdatePermission">
+                    <div class="btn btn-secondary float-right" 
+                    (click)="toggleFormState()">
+                        <i class="fa fa-pencil" 
+                        [ngClass]="{
+                            'fa-pencil': isInDisplayState(),
+                            'fa-times': !isInDisplayState()
+                        }"></i>
+                    </div>
+                </ng-container>
+
             </div>
 
 
             <!-- Body -->
-            <div *ngIf="isInDisplayState()">
+            <ng-container *ngIf="isInDisplayState()">
                 <div class="mb-3">
                     <h5 class="row mb-0">
                         <span class="col">In-Game Days</span>    
                     </h5>
                     <span> {{ cardData.start_day }} to {{cardData.end_day}}</span>
-    
                 </div>
 
 
                 <div class="mb-5">
                     <h5 class="mb-1"> <span class="fas fa-book-open"></span> Diaryentries </h5>
                     <div class="d-flex flex-column">
-                        <a 
-                        [routerLink]="diaryentryUrls[diaryentryIndex]" 
-                        *ngFor="let diaryentry of cardData.diaryentries; let diaryentryIndex = index"
-                        class="ml-4 max-content-width"
-                        >
-                            {{diaryentry.author_name}} - {{diaryentry.name}}
-                        </a>
+                        <ng-container *ngFor="let diaryentry of cardData.diaryentries; let diaryentryIndex = index">
+                            <a [routerLink]="diaryentryUrls[diaryentryIndex]" class="ml-4 max-content-width">
+                                {{diaryentry.author_name}} - {{diaryentry.name}}
+                            </a>
+                        </ng-container>
                     </div>
                 </div>
-                <h5 *ngIf="cardData.has_recording">
-                    <a [routerLink]="sessionAudioUrl">
-                        <span class="fa fa-file-audio-o"></span> 
-                        Recording 
-                    </a>
-                </h5>
 
-            </div>
+                <ng-container *ngIf="cardData.has_recording">
+                    <h5>
+                        <a [routerLink]="sessionAudioUrl">
+                            <span class="fa fa-file-audio-o"></span> 
+                            Recording 
+                        </a>
+                    </h5>
+                </ng-container>
+            </ng-container>
 
-            <app-formly-formcontainer 
-            *ngIf="isInCreateState() || isInUpdateState()"
-            [model]="userModel" 
-            [fields]="formlyFields" 
-            (formlySubmit)="onSubmit()" 
-            (formlyCancel)="onCancel()"
-            ></app-formly-formcontainer>
+            <ng-container *ngIf="isInCreateState() || isInUpdateState()">
+                <app-formly-formcontainer 
+                [model]="userModel" 
+                [fields]="formlyFields" 
+                (formlySubmit)="onSubmit()" 
+                (formlyCancel)="onCancel()"
+                ></app-formly-formcontainer>
+            </ng-container>
 
-            <app-compare-form-container
-            class="d-flex justify-content-center"
-            *ngIf="isInOutdatedUpdateState()"
-            [formlyFields]="formlyFields"
-            [modelFromUser]="userModel"
-            [modelFromServer]="serverModel"
-            [displayVertically]="true"
-            (updateSubmit)="onSubmit()"
-            (cancel)="onCancel()"
-            ></app-compare-form-container>
+            <ng-container *ngIf="isInOutdatedUpdateState()">
+                <app-compare-form-container
+                class="d-flex justify-content-center"
+                [formlyFields]="formlyFields"
+                [modelFromUser]="userModel"
+                [modelFromServer]="serverModel"
+                [displayVertically]="true"
+                (updateSubmit)="onSubmit()"
+                (cancel)="onCancel()"
+                ></app-compare-form-container>    
+            </ng-container>
 
             <!-- Delete Toggler -->
             <app-delete-toggle
