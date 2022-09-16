@@ -1,49 +1,59 @@
 <div class="container px-0">
     <!-- Insert new first Encounter -->
-    <div *ngIf="!diaryEntryView && hasUpdatePermission && hasDeletePermission && userHasCreatePermission" class="d-flex mb-4 justify-content-center row">
-        <div class="col-md-4 col-6 btn btn-lg btn-primary" (click)="toggleEncounterCreateState(-1)">
-            <i class="fa fa-plus pointer" title="Add Encounter to Diaryentry"></i>
-            Add First Encounter
+    <ng-container  *ngIf="!diaryEntryView && hasUpdatePermission && hasDeletePermission && userHasCreatePermission">
+        <div class="d-flex mb-4 justify-content-center row">
+            <div class="col-md-4 col-6 btn btn-lg btn-primary" (click)="toggleEncounterCreateState(-1)">
+                <i class="fa fa-plus pointer" title="Add Encounter to Diaryentry"></i>
+                Add First Encounter
+            </div>
+    
+            <div class="col-md-4 col-6 btn btn-lg btn-secondary" [ngClass]="{'disabled': cutEncounterIndex == null}" (click)="insertExcisedEncounter(-1 + 1)">
+                <i class="fas fa-file-import pointer" title="Insert Cut Encounter"></i>
+                Insert Cut Encounter
+            </div>
         </div>
+    </ng-container>
 
-        <div class="col-md-4 col-6 btn btn-lg btn-secondary" [ngClass]="{'disabled': cutEncounterIndex == null}" (click)="insertExcisedEncounter(-1 + 1)">
-            <i class="fas fa-file-import pointer" title="Insert Cut Encounter"></i>
-            Insert Cut Encounter
-        </div>
-    </div>
 
     <!-- Diaryentry - Encounters -->
     <div class="row">
         <div *ngFor="let encounter of encounters; let encounterIndex = index" class="w-100">
             <!-- Encounters -->
-            <app-diary-entry-encounter
-            #encounters
-            *ngIf="!isEncounterUpdating[encounterIndex] && campaign else loading;"
-            [cardData]="encounter"
-            [index]="encounterIndex"
-            [cutEncounterIndex]="cutEncounterIndex"
-            [diaryEntryView]="diaryEntryView"
-            [campaign]="campaign"
-            (cardDelete)="deleteEncounter(encounterIndex)"
-            (cardCreate)="onEncounterCreate($event)"
-            (encounterOrderIncrease)="onEncounterOrderIncrease(encounterIndex)"
-            (encounterOrderDecrease)="onEncounterOrderDecrease(encounterIndex)"
-            (excisionStart)="onExcisionStart(encounterIndex)"
-            (excisionCancel)="onExcisionCancel(encounterIndex)"
-            ></app-diary-entry-encounter>
+            <ng-container *ngIf="!isEncounterUpdating[encounterIndex] && campaign else loading;">
+                <app-diary-entry-encounter
+                #encounters
+                [cardData]="encounter"
+                [index]="encounterIndex"
+                [cutEncounterIndex]="cutEncounterIndex"
+                [diaryEntryView]="diaryEntryView"
+                [campaign]="campaign"
+                (cardDelete)="deleteEncounter(encounterIndex)"
+                (cardCreate)="onEncounterCreate($event)"
+                (encounterOrderIncrease)="onEncounterOrderIncrease(encounterIndex)"
+                (encounterOrderDecrease)="onEncounterOrderDecrease(encounterIndex)"
+                (excisionStart)="onExcisionStart(encounterIndex)"
+                (excisionCancel)="onExcisionCancel(encounterIndex)"
+                ></app-diary-entry-encounter>
+            </ng-container>
 
             <!-- Insert new Encounter -->
-            <div *ngIf="!diaryEntryView" class="d-flex my-4 justify-content-center">
-                <div class="col-md-4 col-6 btn btn-lg btn-primary" (click)="toggleEncounterCreateState(encounterIndex)">
-                    <i class="fa fa-plus pointer" title="Add Encounter to Diaryentry"></i>
-                    Add Encounter
+            <ng-container *ngIf="!diaryEntryView">
+                <div class="d-flex my-4 justify-content-center">
+                    <div class="col-md-4 col-6 btn btn-lg btn-primary" 
+                    (click)="toggleEncounterCreateState(encounterIndex)">
+                        <i class="fa fa-plus pointer" title="Add Encounter to Diaryentry"></i>
+                        Add Encounter
+                    </div>
+                    <!-- insertExcisedEncounter has encounterIndex+1 because the insertion is supposed to happen AFTER this encounter, not before it -->
+                    <div class="col-md-4 col-6 btn btn-lg btn-secondary" 
+                    [ngClass]="{'disabled': cutEncounterIndex == null}" 
+                    (click)="insertExcisedEncounter(encounterIndex)">
+                        <i class="fas fa-file-import pointer" title="Insert Cut Encounter"></i>
+                        Insert Cut Encounter
+                    </div>
                 </div>
-                <!-- insertExcisedEncounter has encounterIndex+1 because the insertion is supposed to happen AFTER this encounter, not before it -->
-                <div class="col-md-4 col-6 btn btn-lg btn-secondary" [ngClass]="{'disabled': cutEncounterIndex == null}" (click)="insertExcisedEncounter(encounterIndex)">
-                    <i class="fas fa-file-import pointer" title="Insert Cut Encounter"></i>
-                    Insert Cut Encounter
-                </div>
-            </div>
+            </ng-container>
+
 
         </div>
     </div>
