@@ -35,7 +35,7 @@
         <div class="image-container" [title]="image.name">
           <img
             [src]="constants.wikiUrl + image.image"
-            alt="Image {{ i }} of the character"
+            [alt]="'Image ' + i + ' of the character'"
           />
         </div>
       </ng-template>
@@ -45,28 +45,27 @@
   <!-- Image Edit/Delete/Create Buttons -->
   <div class="edit-image-buttons mt-2">
     <!-- Create Image Button -->
-    <i
-      class="fa fa-plus-square-o fa-2x icon mx-4"
-      *ngIf="hasCreatePermission"
+    <ng-container *ngIf="hasCreatePermission">
+      <i class="fa fa-plus-square-o fa-2x icon mx-4"
       aria-hidden="true"
-      (click)="toggleCreateState()"
-    ></i>
+      (click)="toggleCreateState()"></i>
+    </ng-container>
+
 
     <!-- Update Image button -->
-    <i
-      class="fa fa-pencil fa-2x icon mx-4"
-      *ngIf="images?.length > 0 && hasUpdatePermission"
+    <ng-container *ngIf="images?.length > 0 && hasUpdatePermission">
+      <i class="fa fa-pencil fa-2x icon mx-4" 
       aria-hidden="true"
-      (click)="toggleEditState()"
-    ></i>
+      (click)="toggleEditState()"></i>
+    </ng-container>
 
     <!-- Delete Image Button -->
-    <i
-      class="fa fa-trash fa-2x icon mx-4"
-      *ngIf="images?.length > 1 && hasDeletePermission"
+    <ng-container *ngIf="images?.length > 1 && hasDeletePermission">
+      <i class="fa fa-trash fa-2x icon mx-4"
       aria-hidden="true"
-      (click)="toggleDeleteState()"
-    ></i>
+      (click)="toggleDeleteState()"></i>
+    </ng-container>
+
   </div>
 </ng-template>
 
