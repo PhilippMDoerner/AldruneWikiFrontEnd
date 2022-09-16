@@ -17,18 +17,12 @@
       </a>
 
       <ng-container *ngIf="isGlobalAdmin">
-        <a
-          [routerLink]="generalAdminUrl"
-          class="btn btn-info mx-2"
-        >
+        <a [routerLink]="generalAdminUrl" class="btn btn-info mx-2">
           <span class="fas fa-user-cog"></span>
           General administration
         </a>
 
-        <a
-          [routerLink]="configTableUrl"
-          class="btn btn-info mx-2"
-        >
+        <a [routerLink]="configTableUrl" class="btn btn-info mx-2">
           <i class="fa fa-table"></i>
           <span> Config Tables </span>
         </a>
@@ -41,20 +35,20 @@
     </h3>
   </div>
   <div class="row flex-1 mx-0" id="campaign-overview-body">
-    <a
-      class="px-0 campaign pointer"
-      *ngFor="let campaign of campaignData"
+    <ng-container *ngFor="let campaign of campaignData">
+      <a class="px-0 campaign pointer"
       (click)="routeToCampaign(campaign.name)"
       [ngClass]="{
         'col-sm-12': campaignData.length === 1,
         'col-sm-6': campaignData.length === 2 || campaignData.length === 4,
         'col-sm-4': campaignData.length === 3 || campaignData.length >= 5
       }"
-      [style.background-image]="'url(' + constants.wikiUrl + campaign.background_image + ')'"
-    >
-      <div class="campaign-overlay overlay-heading text-center">
-        <h3 class="mb-0 px-3">{{ campaign.name }}</h3>
-      </div>
-    </a>
+      [style.background-image]="'url(' + constants.wikiUrl + campaign.background_image + ')'">
+        <div class="campaign-overlay overlay-heading text-center">
+          <h3 class="mb-0 px-3">{{ campaign.name }}</h3>
+        </div>
+      </a>
+    </ng-container>
+
   </div>
 </div>
