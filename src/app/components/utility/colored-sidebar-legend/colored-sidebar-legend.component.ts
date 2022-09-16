@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { Constants } from 'src/app/app.constants';
+import { SearchPreferences } from 'src/app/models/search-preferences';
 import { PreferencesService } from 'src/app/services/preferences/preferences.service';
 
 @Component({
@@ -8,9 +9,11 @@ import { PreferencesService } from 'src/app/services/preferences/preferences.ser
   styleUrls: ['./colored-sidebar-legend.component.scss']
 })
 export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
-  filterSettings: any;
+  filterSettings: SearchPreferences;
+  settingNames: string[];
+  settingCssClasses: {[key: string]: string};
   
-  defaultSearchPreferences = {
+  defaultSearchPreferences: SearchPreferences = {
     character: false,
     creature: false,
     diaryentry: false,
@@ -34,17 +37,17 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if(this.interactable){
-      const storedPreferences = this.preferenceService.getStoredSearchPreferences();
+      const storedPreferences: SearchPreferences = this.preferenceService.getStoredSearchPreferences();
       this.filterSettings = (storedPreferences == null) ? this.defaultSearchPreferences : storedPreferences;
-      this.emitCurrentActiveFilters();
 
     } else {
       this.filterSettings = this.defaultSearchPreferences;
     }
-  }
 
-  getArticleOptionNames(): string[]{
-    return Object.keys(this.filterSettings);
+    this.settingNames = Object.keys(this.filterSettings);
+    this.emitCurrentActiveFilters();
+
+    this.settingCssClasses = this.calculateSettingCssClasses(this.settingNames);
   }
 
   selectArticleOption(clickedOption: string): void{
@@ -56,16 +59,27 @@ export class ColoredSidebarLegendComponent implements OnInit, OnDestroy {
   }
 
   emitCurrentActiveFilters(){
-    const articleOptionNames = this.getArticleOptionNames();
-    const selectedOptionNames = articleOptionNames.filter((option: string) => this.filterSettings[option]);
+    const selectedOptionNames = this.settingNames.filter((option: string) => this.filterSettings[option]);
     const modifiedOptionNames = selectedOptionNames.map((option: string) => option === "recording" ? "sessionaudio" : option);
 
     this.onFilterOptionSelect.emit(modifiedOptionNames);
   }
 
-  coloredSidebar(articleType: string): string{
-    const sidebarColor: string = Constants.articleTypeSidebarColorMapping[articleType];
-    return `sidebar ${sidebarColor}`;
+  calculateSettingCssClasses(settingNames: string[]): {[key: string]: string}{
+    const cssClassStrings: string[] = settingNames
+      .map(name => {
+        const sidebarColor: string = Constants.articleTypeSidebarColorMapping[name];
+        return `sidebar ${sidebarColor}`;
+      });
+    
+    let settingObject = {};
+    for(let i = 0; i < settingNames.length; i++){
+      const cssClass = cssClassStrings[i];
+      const settingName = settingNames[i];
+      settingObject[settingName] = cssClass;
+    }
+
+    return settingObject
   }
 
   ngOnDestroy(){
