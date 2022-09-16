@@ -1,24 +1,27 @@
-<div *ngIf="!isInDeleteState; else deleteRequest" class="row ml-auto mw-85">
-    <!-- Timestamp Time -->
-    <a (click)="vimePlayer.currentTime=timestamp.time" class="timestamp pointer col-lg-2 col-3 px-0"> 
-        {{timeString}} 
-    </a>    
-
-    <!-- Timestamp Name -->
-    <div class="col-lg-9 col-8 px-0">{{timestamp.name}}</div>
-
-    <!-- Delete Timestamp -->
-    <div class="col-1 px-0">
-        <i 
-        class="icon fa fa-trash delete-timestamp" 
-        [ngClass]="{'d-none': !hasDeletePermission}"
-        (click)="toggleDeleteState()"
-        ></i>
+<ng-container *ngIf="!isInDeleteState; else deleteRequest">
+    <div class="row ml-auto mw-85">
+        <!-- Timestamp Time -->
+        <a (click)="vimePlayer.currentTime=timestamp.time" class="timestamp pointer col-lg-2 col-3 px-0"> 
+            {{timeString}} 
+        </a>    
+    
+        <!-- Timestamp Name -->
+        <div class="col-lg-9 col-8 px-0">{{timestamp.name}}</div>
+    
+        <!-- Delete Timestamp -->
+        <div class="col-1 px-0">
+            <i class="icon fa fa-trash delete-timestamp" 
+            [ngClass]="{'d-none': !hasDeletePermission}"
+            (click)="toggleDeleteState()"></i>
+        </div>
     </div>
-</div>
+</ng-container>
+
 
 <ng-template #deleteRequest>
-    <div class="row animate__animated" [ngClass] = "{'animate__slideInRight': isInDeleteState}" #timestampDeleteElement>
+    <div class="row animate__animated" 
+    [ngClass]="{'animate__slideInRight': isInDeleteState}" 
+    #timestampDeleteElement>
         <div class="col-lg-2 col-0"></div>
         <div class="col-lg-7 col-12 timestamp-box">
             <span class="ml-2">Delete Timestamp?</span> 
