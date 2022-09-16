@@ -4,7 +4,7 @@
     <label for="datepicker">
         <strong>
             {{to.label}}
-            <span *ngIf="to.required">*</span>
+            <ng-container *ngIf="to.required">*</ng-container>
         </strong>
     </label>
 
