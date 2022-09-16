@@ -1,93 +1,108 @@
 <div class="main" #adminCard>
     <article>
-        <div class="btn btn-secondary mb-3" routerLink="{{ campaignOverviewUrl }}">
+        <div class="btn btn-secondary mb-3" [routerLink]="campaignOverviewUrl">
             <span class="fas fa-globe-americas"></span>
             Back To campaign overview
         </div>
 
         <!-- Sections -->
-        <div *ngFor="let table of tables; let tableIndex = index" class="mb-3">
-            <!-- Section Heading -->
-            <div class="d-flex justify-content-between">
-                <h3 class="mb-0"> 
-                    <span class="fa fa-{{table.icon}}"></span>
-                    {{ table.name }}
-                </h3>
-                
-                <!-- Heading Buttons -->
-                <div class="align-self-end position-relative top1">
-                    <!-- Add Users -->
-                    <div class="btn btn-dark border-white" (click)="createStateArray[tableIndex] = !createStateArray[tableIndex]">
-                        <!-- Create Entry -->
-                        <span *ngIf="!createStateArray[tableIndex]">
-                            <span class="fa fa-plus"></span>
-                            Add {{ table.name }}
-                        </span>
-
-                        <!-- Cancel creating entry -->
-                        <span *ngIf="createStateArray[tableIndex]">
-                            <span class="fa fa-times"></span>
-                            Cancel {{ table.name }} creation
-                        </span>
+        <ng-container *ngFor="let table of tables; let tableIndex = index">
+            <div class="mb-3">
+                <!-- Section Heading -->
+                <div class="d-flex justify-content-between">
+                    <h3 class="mb-0"> 
+                        <span [class]="'fa fa-' + table.icon"></span>
+                        {{ table.name }}
+                    </h3>
+                    
+                    <!-- Heading Buttons -->
+                    <div class="align-self-end position-relative top1">
+                        <!-- Add Users -->
+                        <div class="btn btn-dark border-white" (click)="createStateArray[tableIndex] = !createStateArray[tableIndex]">
+                            <!-- Create Entry -->
+                            <ng-container *ngIf="!createStateArray[tableIndex]">
+                                <span class="fa fa-plus"></span>
+                                Add {{ table.name }}
+                            </ng-container>
+    
+                            <!-- Cancel creating entry -->
+                            <ng-container *ngIf="createStateArray[tableIndex]">
+                                <span class="fa fa-times"></span>
+                                Cancel {{ table.name }} creation
+                            </ng-container>
+                        </div>
+    
+                        <div class="btn btn-primary border-white" (click)="loadTableEntries(tableIndex)">
+                            <span class="fa fa-refresh"></span>
+                            Load table data
+                        </div>
                     </div>
+    
+                </div>
+    
+                <hr class="white-separator">
+    
+                <!-- Section Body -->
+    
+                <ng-container *ngIf="!createStateArray[tableIndex]">
+                    <ng-container *ngIf="table.entries.length === 0">
+                        Load entries to see them
+                    </ng-container>
+    
+                    <div class="scroll-sideways">
+                        <!-- Table -->
+                        <ng-container *ngIf="table.entries.length > 0">
+                            <table class="table table-dark table-striped">
+                                <!-- Table heading -->
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <ng-container *ngFor="let property of table.entries[0]|keyvalue">
+                                            <th scope="col" class="text-uppercase">
+                                                {{property.key}}
+                                            </th>
+                                        </ng-container>
+                                    </tr>
+                                </thead>
+                                <!-- Table body -->
+                                <tbody>
+                                    <ng-container *ngFor="let entry of table.entries; let entryIndex = index">
+                                        <tr>
+                                            <th scope="row">{{ entry.id }} {{entry.pk}}</th>
+                                            <td *ngFor="let property of entry|keyvalue">{{property.value}}</td>
+                                            <td>
+                                                <app-delete-toggle
+                                                (deleteEvent)="deleteTableEntry(tableIndex, entryIndex)"
+                                                ></app-delete-toggle>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
 
-                    <div class="btn btn-primary border-white" (click)="loadTableEntries(tableIndex)">
-                        <span class="fa fa-refresh"></span>
-                        Load table data
+                                </tbody>
+                            </table>
+                        </ng-container>
+
                     </div>
-                </div>
+    
+                </ng-container>
+    
+                <ng-container *ngIf="createStateArray[tableIndex]">
+                    <div class="my-2 card p-3">
+                        <h4>Adding new {{ table.name }}</h4>
+                        <!-- Form -->
+                        <app-formly-formcontainer 
+                        [model]="table.model" 
+                        [fields]="table.formFields" 
+                        (formlySubmit)="createNewTableEntry(tableIndex)" 
+                        (formlyCancel)="createStateArray[tableIndex] = !createStateArray[tableIndex]"
+                        ></app-formly-formcontainer>
+                    </div>
+                </ng-container>
 
             </div>
+        </ng-container>
 
-            <hr class="white-separator">
-
-            <!-- Section Body -->
-
-            <div *ngIf="!createStateArray[tableIndex]">
-                <div *ngIf="table.entries.length === 0"> Load entries to see them</div>
-
-                <div class="scroll-sideways">
-                    <!-- Table -->
-                    <table class="table table-dark table-striped" *ngIf="table.entries.length > 0">
-                        <!-- Table heading -->
-                        <thead>
-                            <tr>
-                            <th scope="col">#</th>
-                            <th scope="col" class="text-uppercase" *ngFor="let property of table.entries[0]|keyvalue">
-                                {{property.key}}
-                            </th>
-                            </tr>
-                        </thead>
-                        <!-- Table body -->
-                        <tbody>
-                            <tr *ngFor="let entry of table.entries; let entryIndex = index">
-                                <th scope="row">{{ entry.id }} {{entry.pk}}</th>
-                                <td *ngFor="let property of entry|keyvalue">{{property.value}}</td>
-                                <td>
-                                    <app-delete-toggle
-                                    (deleteEvent)="deleteTableEntry(tableIndex, entryIndex)"
-                                    ></app-delete-toggle>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-            </div>
-
-            <div *ngIf="createStateArray[tableIndex]" class="my-2 card p-3">
-                <h4>Adding new {{ table.name }}</h4>
-                <!-- Form -->
-                <app-formly-formcontainer 
-                [model]="table.model" 
-                [fields]="table.formFields" 
-                (formlySubmit)="createNewTableEntry(tableIndex)" 
-                (formlyCancel)="createStateArray[tableIndex] = !createStateArray[tableIndex]"
-                ></app-formly-formcontainer>
-            </div>
-        </div>
-
-        <div class="btn btn-secondary mb-3" routerLink="{{ campaignOverviewUrl }}">
+        <div class="btn btn-secondary mb-3" [routerLink]="campaignOverviewUrl">
             <span class="fas fa-globe-americas"></span>
             Back To campaign overview
         </div>

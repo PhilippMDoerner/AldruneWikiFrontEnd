@@ -1,13 +1,15 @@
 <div class="main" #article>
     <article class="container">
-        <div class="row" *ngIf="hasUpdatePermission">
-            <div class="col-12">
-                <app-edit-toggle 
-                [isInUpdateState]=false 
-                [link]="'update'"
-                ></app-edit-toggle>
+        <ng-container *ngIf="hasUpdatePermission">
+            <div class="row">
+                <div class="col-12">
+                    <app-edit-toggle 
+                    [isInUpdateState]=false 
+                    [link]="'update'"
+                    ></app-edit-toggle>
+                </div>
             </div>
-        </div>
+        </ng-container>
 
         <!-- Heading -->
         <div class="row">
