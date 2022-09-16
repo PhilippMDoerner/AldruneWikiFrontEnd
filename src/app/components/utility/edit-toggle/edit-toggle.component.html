@@ -1,5 +1,10 @@
-<a class="btn btn-secondary float-right" 
-routerLink="{{link}}" 
-*ngIf="hasUpdatePermission">
-    <i [ngClass]="{'fa': true, 'fa-pencil': !isInUpdateState, 'fa-times': isInUpdateState}" id="edit-article"></i>
-</a>
+<ng-container *ngIf="hasUpdatePermission">
+    <a class="btn btn-secondary float-right" [routerLink]="link" >
+        <i class="fa"
+        [ngClass]="{
+            'fa-pencil': !isInUpdateState, 
+            'fa-times': isInUpdateState
+        }" 
+        id="edit-article"></i>
+    </a>
+</ng-container>
