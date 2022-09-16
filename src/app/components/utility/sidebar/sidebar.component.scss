@@ -19,10 +19,6 @@
 }
 
 @media (hover: hover) and (pointer: fine) {
-    #sidebar:hover { 
-        width: 20rem; 
-    }
-
     /* Styling list elements so their background color changes on hover but they still remain some distance away from the left edge */
     li.entry:hover,
     li.entry:focus a,
@@ -32,29 +28,33 @@
     }
 
 
-    #sidebar:hover li a{
-        justify-content: unset;
-        padding-left: 1rem;
-    }
+    #sidebar:hover {
+        width: 20rem; 
 
-    #sidebar:hover .on-hover-show{
-        display: block;
+        li a{
+            justify-content: unset;
+            padding-left: 1rem;
+        }
 
-        -webkit-animation: fadeInFromNone 0.3s ease-out;
-        -moz-animation: fadeInFromNone 0.3s ease-out;
-        -o-animation: fadeInFromNone 0.3s ease-out;
-        animation: fadeInFromNone 0.3s ease-out; 
-    }
+        .on-hover-show{
+            display: block;
+    
+            -webkit-animation: fadeInFromNone 0.3s ease-out;
+            -moz-animation: fadeInFromNone 0.3s ease-out;
+            -o-animation: fadeInFromNone 0.3s ease-out;
+            animation: fadeInFromNone 0.3s ease-out; 
+        }
 
-    #sidebar:hover .on-hover-show.overview-link.flex{
-        display: flex ;
-        align-items: center;
-        justify-content: center;
-    }
+        .on-hover-show.overview-link.flex{
+            display: flex ;
+            align-items: center;
+            justify-content: center;
+        }
 
-    #sidebar:hover .on-hover-show.flex{
-        display: flex;
-        align-items: center;
+        .on-hover-show.flex{
+            display: flex;
+            align-items: center;
+        }
     }
 }
 
@@ -95,11 +95,22 @@ li{
     height: 3rem;
     font-weight: bold;
     font-size: large;
-}
 
-#user-section #user-links{
-    padding-left: 1.5rem;
-    display: none;
+    a{
+        height: 100%;
+        display: flex;
+        align-items: center;
+        border-bottom: none;
+    }
+
+    i{ //entry icon
+        text-align: center;
+        width: 3rem;
+    }
+
+    &.entry.footer{
+        align-self: flex-end;
+    }
 }
 
 #sidebar.swiped-right #user-section.active,
@@ -108,12 +119,21 @@ li{
 }
 
 /* Required for the original container to not lose their height when the application of the .active class changes height to auto*/
-#user-section.active a{
-    height: 3rem;
-}
+#user-section {
+    #user-links{
+        padding-left: 1.5rem;
+        display: none;
+    }
 
-#user-section.active #user-links{
-    display: block;
+    &.active{
+        a{
+            height: 3rem;
+        }
+    
+        #user-links{
+            display: block;
+        }
+    }
 }
 
 #sidebar:hover #user-links .on-hover-show, 
@@ -125,21 +145,6 @@ li{
 }
 
 
-li a{
-    height: 100%;
-    display: flex;
-    align-items: center;
-    border-bottom: none;
-}
-
-li a i{ //entry icon
-    text-align: center;
-    width: 3rem;
-}
-
-li.entry.footer{
-    align-self: flex-end;
-}
 
 #brand{
     height: 3rem;
@@ -169,41 +174,45 @@ li.entry.footer{
 }
 
 
-.brand-line a{
-    border-bottom: none !important;
-}
+.brand-line {
+    a{
+        border-bottom: none !important;
+    }
 
-.brand-line .overview-link{
-    margin-top: auto;
-    margin-bottom: auto;
-    padding-right: 1rem;
-    border-right: solid 2px white;
-}
+    .overview-link{
+        margin-top: auto;
+        margin-bottom: auto;
+        padding-right: 1rem;
+        border-right: solid 2px white;
+    }
 
-.brand-line .overview-link:hover{
-    background-color: transparent;
-    color: var(--link-blue);
+    .overview-link:hover{
+        background-color: transparent;
+        color: var(--link-blue);
+    }
 }
 
 
 //Fade in from none animation
-#sidebar .on-hover-show{
-    display: none;
-}
+#sidebar {
+    .on-hover-show{
+        display: none;
+    }
 
-#sidebar.swiped-right .on-hover-show{
-    display: block;
+    &.swiped-right .on-hover-show{
+        display: block;
+    
+        -webkit-animation: fadeInFromNone 0.3s ease-out;
+        -moz-animation: fadeInFromNone 0.3s ease-out;
+        -o-animation: fadeInFromNone 0.3s ease-out;
+        animation: fadeInFromNone 0.3s ease-out;
 
-    -webkit-animation: fadeInFromNone 0.3s ease-out;
-    -moz-animation: fadeInFromNone 0.3s ease-out;
-    -o-animation: fadeInFromNone 0.3s ease-out;
-    animation: fadeInFromNone 0.3s ease-out;
-}
-
-#sidebar.swiped-right .on-hover-show.overview-link.flex{
-    display: flex ;
-    align-items: center;
-    justify-content: center;
+        &.overview-link.flex{
+            display: flex ;
+            align-items: center;
+            justify-content: center;
+        }
+    }
 }
 
 .disabled-entry{

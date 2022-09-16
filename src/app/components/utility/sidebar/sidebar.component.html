@@ -1,64 +1,69 @@
-<nav id="sidebar"
-(swipeleft)="true"
-[ngClass]="{'swiped-right': showSidebar.getValue(), 'swiped-left': !showSidebar.getValue()}"
-*ngIf="(currentCampaign$ | async) as currentCampaign"
->
-    <!-- Brand -->
-    <ul class="brand-line d-flex">
-        <li class="entry" title="campaign-overview">
-            <a [routerLink]="campaignOverviewUrl" class="on-hover-show flex overview-link">
-                <span class="fas fa-chevron-left fa-2x"></span>
-            </a> 
-        </li>
+<ng-container *ngIf="(currentCampaign$ | async) as currentCampaign">
+    <nav id="sidebar"
+    (swipeleft)="true"
+    [ngClass]="{
+        'swiped-right': showSidebar.getValue(), 
+        'swiped-left': !showSidebar.getValue()
+    }">
+        <!-- Brand -->
+        <ul class="brand-line d-flex">
+            <li class="entry" title="campaign-overview">
+                <a [routerLink]="campaignOverviewUrl" class="on-hover-show flex overview-link">
+                    <span class="fas fa-chevron-left fa-2x"></span>
+                </a> 
+            </li>
+    
+            <li class="flex-1 entry brand-entry" 
+            [title]="currentCampaign.name + '-Home'" 
+            [ngClass]="{'disabled-entry': currentCampaign == null}">
+                <a class="pl-0" [routerLink]="homeUrl">
+                    <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
+                        <img class="campaign-icon" [src]="campaignIcon$ | async" alt="..." />
+                        <span class="ml-2 on-hover-show">{{currentCampaign.name }}</span>
+                    </h3>
+                </a>
+            </li>
+        </ul>
+    
+    
+        <!-- Sidebar Items -->
+        <!-- Sidebar Entries -->
+    
+        <!-- Admin Section -->
+        <ng-container *ngIf="showAdminSection">
+            <li class="entry" [ngClass]="{'disabled-entry': currentCampaign == null}">
+                <a class="d-flex align-items-center entry" [routerLink]="campaignAdminUrl" >
+                    <i class="fas fa-hammer"></i>
+                    <span class="on-hover-show"> Campaign Admin </span>
+                </a>
+            </li>
+        </ng-container>
+    
+        <!-- Campaign Overview Entries -->
+        <ng-container *ngFor="let entry of sidebarEntries">
+            <li class="entry" [ngClass]="{'disabled-entry': currentCampaign == null}">
+                <a [routerLink]="entry.route" class="d-flex align-items-center entry">
+                    <i [class]="entry.iconClass"></i>
+                    <span class="on-hover-show">{{entry.title}}</span>
+                </a>
+            </li>
+        </ng-container>
+    
+        <!-- Logout -->
+        <ul class="footer d-flex mt-auto">
+            <li class="entry w-100 align-self-end">
+                <a class="d-flex align-items-center entry pointer" (click)="logout()"> 
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="on-hover-show">Logout</span> 
+                </a>
+            </li>
+        </ul>
+    
+    
+    </nav>
+</ng-container>
 
-        <li class="flex-1 entry brand-entry" [title]="currentCampaign.name + '-Home'" [ngClass]="{'disabled-entry': currentCampaign == null}">
-            <a class="pl-0" [routerLink]="homeUrl">
-                <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
-                    <img class="campaign-icon"
-                    [src]="campaignIcon$ | async" alt="..."
-                    />
-                    <span class="ml-2 on-hover-show">{{currentCampaign.name }}</span>
-                </h3>
-            </a>
-        </li>
-    </ul>
 
-
-    <!-- Sidebar Items -->
-    <!-- Sidebar Entries -->
-
-    <!-- Admin Section -->
-    <ng-container *ngIf="showAdminSection">
-        <li class="entry" [ngClass]="{'disabled-entry': currentCampaign == null}">
-            <a class="d-flex align-items-center entry" [routerLink]="campaignAdminUrl" >
-                <i class="fas fa-hammer"></i>
-                <span class="on-hover-show"> Campaign Admin </span>
-            </a>
-        </li>
-    </ng-container>
-
-    <!-- Campaign Overview Entries -->
-    <ng-container *ngFor="let entry of sidebarEntries">
-        <li class="entry" [ngClass]="{'disabled-entry': currentCampaign == null}">
-            <a [routerLink]="entry.route" class="d-flex align-items-center entry">
-                <i [class]="entry.iconClass"></i>
-                <span class="on-hover-show">{{entry.title}}</span>
-            </a>
-        </li>
-    </ng-container>
-
-    <!-- Logout -->
-    <ul class="footer d-flex mt-auto">
-        <li class="entry w-100 align-self-end">
-            <a class="d-flex align-items-center entry pointer" (click)="logout()"> 
-                <i class="fas fa-sign-out-alt"></i>
-                <span class="on-hover-show">Logout</span> 
-            </a>
-        </li>
-    </ul>
-
-
-</nav>
 
 <ng-template #nonCampaignBrand>
     <ul class="brand-line d-flex">
