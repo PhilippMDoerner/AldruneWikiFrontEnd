@@ -2,46 +2,68 @@
     <!-- List Heading -->
     <h3 class="row justify-content-center align-items-center">
         <span class="">Recent Updates</span>
-        <i class="ml-3 spinner-border" *ngIf="!articles"></i>
+        <ng-container *ngIf="!articles">
+            <i class="ml-3 spinner-border"></i>
+        </ng-container>
     </h3>
 
     <div class="row">
-        <div class="mycolpadding col-6 col-md-4 col-lg-3 mb-4" *ngFor="let article of articles">
-            <a 
-            routerLink="{{ article.getAbsoluteRouterUrl() }}" 
-            class="card"
-            [title]="article.article_type | titlecase"
-            >
-                <!-- Heading -->
-                <header class="card-img-top d-flex align-items-center justify-content-center">
-                    <img *ngIf="article.image_url else defaultIcon"  [src]="constants.wikiUrl + article.image_url" alt="article image" class="">
-                    <ng-template #defaultIcon>
-                        <i class="fa-4x {{ getArticleTypeMetaData(article.article_type).iconClass }}"></i>
-                    </ng-template>    
-                </header>
+        <ng-container *ngFor="let article of articles">
+            <div class="mycolpadding col-6 col-md-4 col-lg-3 mb-4">
+                <a class="card"
+                [routerLink]="article.getAbsoluteRouterUrl()" 
+                [title]="article.article_type | titlecase">
 
-                <!-- Body -->
-                <div class="card-body">
-                    <div class="card-title">
-                        <strong> {{ getArticleName(article)}} </strong>
-                    </div>
-
-                    <div class="card-subtitle mb-2"> 
+                    <!-- Heading -->
+                    <header class="card-img-top d-flex align-items-center justify-content-center">
+                        <ng-container 
+                        *ngTemplateOutlet="!!article.image_url ? articleIconTemplate : defaultIconTemplate; 
+                        context: { $implicit: { article } }"
+                        ></ng-container> 
+                    </header>
+    
+                    <!-- Body -->
+                    <div class="card-body">
+                        <div class="card-title">
+                            <strong> {{ getArticleName(article)}} </strong>
+                        </div>
+    
+                        <div class="card-subtitle mb-2"> 
+                            
+                            {{ article.update_datetime | date }} 
+                            <div class="text-muted"> 
+                                <ng-container *ngIf="isDiaryEntry(article)"> 
+                                    {{article.author_details?.name}}'s 
+                                </ng-container>
+                                {{ article.article_type}}
+                            </div>
+                        </div>
                         
-                        {{ article.update_datetime | date }} 
-                        <div class="text-muted"> 
-                            <span *ngIf="isDiaryEntry(article)"> {{article.author_details?.name}}'s </span>
-                            {{ article.article_type}}
+                        <div class="card-text">
+                            {{article.description}}
                         </div>
                     </div>
-                    
-                    <div class="card-text">
-                        {{article.description}}
-                    </div>
-                </div>
-            </a>
-        </div>
+                </a>
+                
+            </div>
+            
+        </ng-container>
+
+        
     </div>
+    
 </div>
 
-<div *ngIf="isLoadingNextPage" class="mb-4"> <app-spinner></app-spinner> <div> 
+<ng-container *ngIf="isLoadingNextPage">
+    <div class="mb-4"> 
+        <app-spinner></app-spinner> 
+    </div> 
+</ng-container>
+
+<ng-template #articleIconTemplate let-context>
+    <img [src]="constants.wikiUrl + context.article.image_url" alt="article image">
+</ng-template>
+
+<ng-template #defaultIconTemplate let-context>
+    <i [class]="'fa-4x ' + getArticleTypeMetaData(context.article.article_type).iconClass"></i>
+</ng-template>   
