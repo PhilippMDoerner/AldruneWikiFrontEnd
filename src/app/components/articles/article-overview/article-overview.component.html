@@ -11,12 +11,14 @@
         </ng-container>
 
         <!-- Adding Item button -->
-        <div class="mb-3 row" *ngIf="hasCreatePermission">
-            <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
-                <i class="fa fa-plus"></i>
-                Add {{ overviewTypeName | titlecase }}
-            </a>
-        </div>
+        <ng-container *ngIf="hasCreatePermission">
+            <div class="mb-3 row">
+                <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
+                    <i class="fa fa-plus"></i>
+                    Add {{ overviewTypeName | titlecase }}
+                </a>
+            </div>
+        </ng-container>
 
         <form autocomplete="off" class="row" (submit)="openFirstArticle(filter.value)">
             <input
@@ -25,8 +27,7 @@
             placeholder="Search for {{ overviewTypeName }}..."
             class="filter-bar mt-2 mb-4 w-100 col"
             #filter
-            (keyup)="filterListItems()"
-            >    
+            (keyup)="filterListItems()">    
         </form>
 
         <ng-container [ngSwitch]="overviewTypeMetaData[overviewTypeName].overviewTypeEnum" #body> 
@@ -61,16 +62,22 @@
     </div>
 
     <div class="mb-5 row" id="player-characters">
-        <div *ngFor="let playerCharacter of playerCharacters" class="mb-4 col-md-4 col-sm-6 col-12">
-            <a [routerLink]="playerCharacter.getAbsoluteRouterUrl()">
-                <div class="card">
-                    <img *ngIf="playerCharacter.images" class="card-img-top" [src]="constants.wikiUrl + playerCharacter.images[0]" alt="An image displaying a player character">
-                    <div class="card-body p-3">
-                        <h5 class="card-title mb-0 text-center">{{ playerCharacter.name_full }}</h5>
+        <ng-container *ngFor="let playerCharacter of playerCharacters">
+            <div class="mb-4 col-md-4 col-sm-6 col-12">
+                <a [routerLink]="playerCharacter.getAbsoluteRouterUrl()">
+                    <div class="card">
+                        <ng-container *ngIf="playerCharacter.images">
+                            <img class="card-img-top" 
+                            [src]="constants.wikiUrl + playerCharacter.images[0]" 
+                            alt="An image displaying a player character">
+                        </ng-container>
+                        <div class="card-body p-3">
+                            <h5 class="card-title mb-0 text-center">{{ playerCharacter.name_full }}</h5>
+                        </div>
                     </div>
-                </div>
-            </a> 
-        </div>
+                </a> 
+            </div>
+        </ng-container>
     </div>
 </ng-template>
 
@@ -83,33 +90,38 @@
     </div>
 
     <div class="row">
-        <div 
-        *ngFor="let characterLetterEntries of listItems | groupByFirstLetter: 'name'" 
-        [ngClass]="{'py-4 col-md-6 border-bottom': !filter.value, 'col-12': filter.value}"
-        >
-            <!-- Single-Letter-Group-Heading -->
-            <h5 class="mb-0" [ngClass]="{'d-none': filter.value}"> {{ characterLetterEntries.key }} </h5>
+        <ng-container *ngFor="let characterLetterEntries of listItems | groupByFirstLetter: 'name'">
+            <div [ngClass]="{
+                'py-4 col-md-6 border-bottom': !filter.value, 
+                'col-12': filter.value
+            }">
+                <!-- Single-Letter-Group-Heading -->
+                <h5 class="mb-0" [ngClass]="{'d-none': filter.value}"> {{ characterLetterEntries.key }} </h5>
+    
+                <!-- Single-Letter-Group-Names -->
+                <ul class="mb-0">
+                    <ng-container *ngFor="let characterEntry of characterLetterEntries.value">
+                        <span class="px-0">
+                            <li 
+                            [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
+                            >
+                                <a [routerLink]="characterEntry.getAbsoluteRouterUrl()"> 
+                                    {{characterEntry.name_full}}
+                                </a>
+                            </li>
+                        </span>
+                    </ng-container>
+                </ul>
+    
+            </div>
+        </ng-container>
 
-            <!-- Single-Letter-Group-Names -->
-            <ul class="mb-0">
-                <span *ngFor="let characterEntry of characterLetterEntries.value" class="px-0">
-                    <li 
-                    [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
-                    >
-                        <a [routerLink]="characterEntry.getAbsoluteRouterUrl()"> 
-                            {{characterEntry.name_full}}
-                        </a>
-                    </li>
-                </span>
-            </ul>
-
-        </div>
     </div>
 </ng-template>
 
 
 <ng-template #diaryentryBody>
-    <div *ngFor="let authorDiaryEntries of listItems | groupBy: 'author_details.name'">
+    <ng-container *ngFor="let authorDiaryEntries of listItems | groupBy: 'author_details.name'">
         <!-- Author Heading -->
         <div class="row">
             <h5 class="col" [ngClass]="{'d-none': filter.value}"> {{ authorDiaryEntries.key }} </h5>
@@ -117,18 +129,17 @@
 
         <!-- Author Entries -->
         <ul [ngClass]="{'mb-0': filter.value}">
-            <span class="row" *ngFor="let diaryEntry of authorDiaryEntries.value">
-                <li 
-                class="col"
-                [ngClass]="{'d-none': !diaryEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
-                >
-                    <a [routerLink]="diaryEntry.getAbsoluteRouterUrl()" >
-                        {{diaryEntry.name_full}}
-                    </a>
-                </li>
-            </span>
+            <ng-container *ngFor="let diaryEntry of authorDiaryEntries.value">
+                <span class="row">
+                    <li class="col" [ngClass]="{'d-none': !diaryEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}">
+                        <a [routerLink]="diaryEntry.getAbsoluteRouterUrl()" >
+                            {{diaryEntry.name_full}}
+                        </a>
+                    </li>
+                </span>
+            </ng-container>
         </ul>
-    </div>
+    </ng-container>
 </ng-template>
 
 
@@ -136,26 +147,25 @@
     <ng-container [ngTemplateOutlet]="filterField"></ng-container>
 
     <div class="row">
-        <div 
-        *ngFor="let itemLetterEntries of listItems | groupByFirstLetter: 'name_full'"
-        [ngClass]="{'py-4 col-md-6 border-bottom': !filter.value, 'col-12': filter.value}"
-        >
-            <!-- Letter Heading -->
-             <h5 class="mb-0" [ngClass]="{'d-none': filter.value}"> {{ itemLetterEntries.key }} </h5>
-    
-            <!-- Article List -->
-            <ul class="mb-0">
-                <li 
-                *ngFor="let item of itemLetterEntries.value"
-                [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
-                >
-                    <a [routerLink]="item.getAbsoluteRouterUrl()">
-                        {{item.name_full}}
-                    </a>
-                </li>
-            </ul>
-    
-        </div>
+        <ng-container *ngFor="let itemLetterEntries of listItems | groupByFirstLetter: 'name_full'">
+            <div [ngClass]="{'py-4 col-md-6 border-bottom': !filter.value, 'col-12': filter.value}">
+                <!-- Letter Heading -->
+                 <h5 class="mb-0" [ngClass]="{'d-none': filter.value}"> {{ itemLetterEntries.key }} </h5>
+        
+                <!-- Article List -->
+                <ul class="mb-0">
+                    <ng-container *ngFor="let item of itemLetterEntries.value">
+                        <li [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}">
+                            <a [routerLink]="item.getAbsoluteRouterUrl()">
+                                {{item.name_full}}
+                            </a>
+                        </li>
+                    </ng-container>
+                </ul>
+        
+            </div>
+        </ng-container>
+
     </div>
 
 </ng-template>
