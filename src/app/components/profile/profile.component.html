@@ -64,11 +64,11 @@
                     (confirmationEvent)="deleteThisUser()"
                     class="float-right"
                     >
-                        <inactiveButton>
+                        <div id="inactiveButton">
                             <div class="btn btn-outline-danger">
                                 <i class="fa fa-trash"></i>
                             </div> 
-                        </inactiveButton>
+                        </div>
                     </app-animated-toggle>
                 </div>
 
@@ -107,7 +107,7 @@
         <div class="col-md-8">
             <strong>Permanently leave '{{context.campaignRole.campaignName | titlecase}}'?</strong> 
         </div>
-        <div class="btn btn-danger col-md-2" (click)="leaveCampaign(campaignRole)"> Yes </div>
+        <div class="btn btn-danger col-md-2" (click)="leaveCampaign(context.campaignRole)"> Yes </div>
         <div class="btn btn-dark col-md-2" (click)="toggleLeaveCampaignState(context.index)"> No </div>
     </div>
 

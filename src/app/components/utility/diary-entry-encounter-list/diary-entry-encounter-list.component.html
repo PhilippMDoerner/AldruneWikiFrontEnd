@@ -18,7 +18,7 @@
             <!-- Encounters -->
             <app-diary-entry-encounter
             #encounters
-            *ngIf="!isEncounterUpdating[encounterIndex] && campaign else waiting;"
+            *ngIf="!isEncounterUpdating[encounterIndex] && campaign else loading;"
             [cardData]="encounter"
             [index]="encounterIndex"
             [cutEncounterIndex]="cutEncounterIndex"
@@ -48,3 +48,6 @@
         </div>
     </div>
 </div>
+
+<!-- Loading Spinner -->
+<ng-template #loading><app-spinner></app-spinner></ng-template>

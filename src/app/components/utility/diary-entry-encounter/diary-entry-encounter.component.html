@@ -75,7 +75,7 @@
         *ngIf="isInDisplayState()"
         [initialText]="cardData.description"
         [allowEdit]="false"
-        (updateText)="onSubmit($event)"
+        (updateText)="onSubmit()"
       ></app-textfield>
 
       <app-formly-formcontainer
