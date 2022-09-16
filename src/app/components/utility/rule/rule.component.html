@@ -1,12 +1,17 @@
 <div class="card row mb-3 px-4 pt-3 pb-1" [ngClass] = "{'animate__animated animate__fadeInUp': isInCreateState()}" #card>
     <!-- Rules Panel Heading -->
-    <h5 
-    class="pointer col-12 justify-content-between d-flex align-items-center" 
-    (click)="toggleCard()" 
-    *ngIf="!isInOutdatedUpdateState()"> 
-        <span>{{ cardData.name }}</span>
-        <i [ngClass]="{'fa icon': true, 'fa-chevron-down': !isOpen, 'fa-chevron-up': isOpen}"></i>
-    </h5>
+    <ng-container *ngIf="!isInOutdatedUpdateState()">
+        <h5 (click)="toggleCard()"
+        class="pointer col-12 justify-content-between d-flex align-items-center"> 
+            <span>{{ cardData.name }}</span>
+            <i class="fa icon" 
+            [ngClass]="{
+                'fa-chevron-down': !isOpen, 
+                'fa-chevron-up': isOpen
+            }"></i>
+        </h5>
+    </ng-container>
+
 
     <!-- Rules Panel Content -->
     <div class="mb-3 w-100" [ngbCollapse]="!isOpen">
@@ -19,38 +24,45 @@
                 <h4 class="d-inline"> {{ cardData.name }}</h4>
         
                 <!-- Edit Toggler -->
-                <div 
-                *ngIf="hasUpdatePermission"
-                class="btn btn-secondary float-right" 
-                (click)="toggleFormState()"
-                >
-                    <i class="fa fa-pencil" *ngIf="isInDisplayState()"></i>
-                    <i class="fa fa-times" *ngIf="!isInDisplayState()"></i>
-                </div>
+                <ng-container *ngIf="hasUpdatePermission">
+                    <div class="btn btn-secondary float-right" 
+                    (click)="toggleFormState()">
+                        <i class="fa" 
+                        [ngClass]="{
+                            'fa-times': !isInDisplayState(),
+                            'fa-pencil': isInDisplayState()
+                        }"></i>
+                    </div>
+                </ng-container>
+
             </div>
 
 
             <!-- Body -->
-            <div [innerHTML]="cardData.description" *ngIf="isInDisplayState()"></div>
+            <ng-container *ngIf="isInDisplayState()">
+                <div [innerHTML]="cardData.description" ></div>
+            </ng-container>
+        
+            <ng-container *ngIf="isInCreateState() || isInUpdateState()">
+                <app-formly-formcontainer 
+                [model]="userModel" 
+                [fields]="formlyFields" 
+                (formlySubmit)="onSubmit()" 
+                (formlyCancel)="onCancel()"
+                ></app-formly-formcontainer>
+            </ng-container>
 
-            <app-formly-formcontainer 
-            *ngIf="isInCreateState() || isInUpdateState()"
-            [model]="userModel" 
-            [fields]="formlyFields" 
-            (formlySubmit)="onSubmit()" 
-            (formlyCancel)="onCancel()"
-            ></app-formly-formcontainer>
-
-            <app-compare-form-container
-            class="d-flex justify-content-center"
-            *ngIf="isInOutdatedUpdateState()"
-            [formlyFields]="formlyFields"
-            [modelFromUser]="userModel"
-            [modelFromServer]="serverModel"
-            [displayVertically]="true"
-            (updateSubmit)="onSubmit()"
-            (cancel)="onCancel()"
-            ></app-compare-form-container>
+            <ng-container *ngIf="isInOutdatedUpdateState()">
+                <app-compare-form-container
+                class="d-flex justify-content-center"
+                [formlyFields]="formlyFields"
+                [modelFromUser]="userModel"
+                [modelFromServer]="serverModel"
+                [displayVertically]="true"
+                (updateSubmit)="onSubmit()"
+                (cancel)="onCancel()"
+                ></app-compare-form-container>
+            </ng-container>
 
             <!-- Delete Toggler -->
             <app-delete-toggle
