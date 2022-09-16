@@ -569,6 +569,27 @@ a.carousel-control-next:hover{
 	margin-right: 30%;
 }
 
+// Fixing NgbTooltip text sometimes being weird
+.my-tooltip{
+	.tooltip-inner{
+		background-color: lightblue;
+		color: black;
+	}
+
+ .tooltip-arrow::before {
+		border-right-color: lightblue;
+	}
+	.bs-tooltip-start .tooltip-arrow::before {
+		border-left-color: lightblue;
+	}
+	.bs-tooltip-top .tooltip-arrow::before {
+		border-top-color: lightblue;
+	}
+	.bs-tooltip-bottom .tooltip-arrow::before {
+		border-bottom-color: lightblue;
+	}
+}
+
 //FORMLY
 // Overwrite Formly warning message styling for better visibility
 formly-validation-message{

@@ -1,10 +1,9 @@
 <div class="form-group">
 
     <label for="formly_disable_select_{{to.label}}">
-        <strong
-        placement="top"
+        <strong placement="top"
         [ngbTooltip]="tooltipContent"
-        > 
+        [tooltipClass]="'my-tooltip'"> 
             {{to.label}} 
             <span class="fa fa-info-circle mx-1"></span>
             <span *ngIf="to.required">*</span>

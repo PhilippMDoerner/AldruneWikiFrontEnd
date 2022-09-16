@@ -26,8 +26,14 @@
     class="d-flex p-0  align-items-center justify-content-center" 
     [ngClass]="{'col-1': !isDeleteState, 'col-md-4 col-12': isDeleteState}" 
     *ngIf="user.is_active"
-    >
-        <span *ngIf="!isDeleteState; else userDelete" class="fa fa-trash icon" (click)="toggleDeleteState()" placement="top" [ngbTooltip]="'Delete user ?'"></span>
+    >   
+        <ng-container *ngIf="!isDeleteState; else userDelete">
+            <span class="fa fa-trash icon" 
+            (click)="toggleDeleteState()" 
+            placement="top" 
+            [ngbTooltip]="'Delete user ?'"
+            [tooltipClass]="'my-tooltip'"></span>
+        </ng-container>
     </div>
 </div>
 

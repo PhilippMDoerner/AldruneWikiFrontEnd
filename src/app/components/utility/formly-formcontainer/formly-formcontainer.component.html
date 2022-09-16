@@ -11,7 +11,8 @@
     *ngIf="!form.valid && enableSubmitButtons"
     class="btn btn-dark strikethrough" 
     placement="top" 
-    ngbTooltip="The form is not yet correctly filled out!"
+    [ngbTooltip]="'The form is not yet correctly filled out!'"
+    [tooltipClass]="'my-tooltip'"
     >
         <i class="fa fa-lock mr-2" aria-hidden="true"></i>
         Submit *
