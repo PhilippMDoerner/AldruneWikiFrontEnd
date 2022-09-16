@@ -15,7 +15,9 @@
             </div>
         </div>
 
-        <hr class="white-separator" *ngIf="displayVertically">
+        <ng-container *ngIf="displayVertically">
+            <hr class="white-separator">
+        </ng-container>
         
         <div class="col-12" [ngClass]="{'col-sm-6': !displayVertically}">
             <div>
