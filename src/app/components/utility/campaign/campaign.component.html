@@ -1,13 +1,15 @@
 <div class="main" #article>
     <article class="container">
-        <div class="row" *ngIf="!articleData.is_deactivated">
-            <div class="col-12">
-                <app-edit-toggle 
-                [isInUpdateState]="false"
-                [link]="'update'"
-                ></app-edit-toggle>
+        <ng-container *ngIf="!articleData.is_deactivated">
+            <div class="row">
+                <div class="col-12">
+                    <app-edit-toggle 
+                    [isInUpdateState]="false"
+                    [link]="'update'"
+                    ></app-edit-toggle>
+                </div>
             </div>
-        </div>
+        </ng-container>
 
         <!-- Heading -->
         <div class="row mb-5">
@@ -22,11 +24,17 @@
         <div class="card mb-5 mx-0 py-3 row flex-row">
             <div class="col-md-6 d-flex flex-column align-items-center">
                 <h3 class="text-center">Background</h3>
-                <img title="Campaign background image" class="gallery-image" [src]="constants.wikiUrl + articleData.background_image" alt="Background image of this campaign">
+                <img title="Campaign background image" 
+                class="gallery-image" 
+                [src]="constants.wikiUrl + articleData.background_image" 
+                alt="Background image of this campaign">
             </div>
             <div class="col-md-6 d-flex flex-column align-items-center">
                 <h3 class="text-center">Icon</h3>
-                <img title="Campaign Icon" class="gallery-image" [src]="constants.wikiMediaUrl + '/' + articleData.icon" alt="Icon of this campaign">
+                <img title="Campaign Icon" 
+                class="gallery-image" 
+                [src]="constants.wikiMediaUrl + '/' + articleData.icon" 
+                alt="Icon of this campaign">
             </div>
 
             <div class="col-12 row mt-4">
@@ -66,13 +74,14 @@
                     </div>
 
                     <!-- Form -->
-                    <app-formly-formcontainer 
-                    *ngIf="addAdminState; else addAdminButton"
-                    [model]="adminModel" 
-                    [fields]="adminFormlyFields" 
-                    (formlySubmit)="onAddAdminSubmit()" 
-                    (formlyCancel)="addAdminState=false"
-                    ></app-formly-formcontainer>
+                    <ng-container *ngIf="addAdminState; else addAdminButton">
+                        <app-formly-formcontainer 
+                        [model]="adminModel" 
+                        [fields]="adminFormlyFields" 
+                        (formlySubmit)="onAddAdminSubmit()" 
+                        (formlyCancel)="addAdminState=false"
+                        ></app-formly-formcontainer>
+                    </ng-container>
 
 
                 </div>
@@ -98,13 +107,14 @@
                     </div>
 
                     <!-- Form -->
-                    <app-formly-formcontainer 
-                    *ngIf="addMemberState; else addMemberButton"
-                    [model]="memberModel" 
-                    [fields]="memberFormlyFields"
-                    (formlySubmit)="onAddMemberSubmit()" 
-                    (formlyCancel)="addMemberState=false"
-                    ></app-formly-formcontainer>
+                    <ng-container *ngIf="addMemberState; else addMemberButton">
+                        <app-formly-formcontainer
+                        [model]="memberModel" 
+                        [fields]="memberFormlyFields"
+                        (formlySubmit)="onAddMemberSubmit()" 
+                        (formlyCancel)="addMemberState=false"
+                        ></app-formly-formcontainer>
+                    </ng-container>
                 </div>
             </div>
 
@@ -128,13 +138,15 @@
                     </div>
 
                     <!-- Form -->
-                    <app-formly-formcontainer 
-                    *ngIf="addGuestState; else addGuestButton"
-                    [model]="guestModel"
-                    [fields]="guestFormlyFields"
-                    (formlySubmit)="onAddGuestSubmit()" 
-                    (formlyCancel)="addGuestState=false"
-                    ></app-formly-formcontainer>
+                    <ng-container *ngIf="addGuestState; else addGuestButton">
+                        <app-formly-formcontainer 
+                        [model]="guestModel"
+                        [fields]="guestFormlyFields"
+                        (formlySubmit)="onAddGuestSubmit()" 
+                        (formlyCancel)="addGuestState=false"
+                        ></app-formly-formcontainer>
+                    </ng-container>
+
                 </div>
             </div>
         </div>
@@ -175,13 +187,14 @@
                     </div>
 
                     <!-- Form -->
-                    <app-formly-formcontainer 
-                    *ngIf="addResponseState; else addResponseButton"
-                    [model]="responseModel" 
-                    [fields]="responseFormlyFields"
-                    (formlySubmit)="onAddResponseSubmit()" 
-                    (formlyCancel)="addResponseState=false"
-                    ></app-formly-formcontainer>
+                    <ng-container *ngIf="addResponseState; else addResponseButton">
+                        <app-formly-formcontainer
+                        [model]="responseModel" 
+                        [fields]="responseFormlyFields"
+                        (formlySubmit)="onAddResponseSubmit()" 
+                        (formlyCancel)="addResponseState=false"
+                        ></app-formly-formcontainer>
+                    </ng-container>
 
                 </div> 
             </div>

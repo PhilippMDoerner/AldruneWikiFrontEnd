@@ -1,13 +1,7 @@
 <div class="row">
-    <!-- Move to other Article -->
+    <!-- Move to other Page -->
     <div class="col-md-3">
-        <a
-        *ngIf="link, else nonLinkButton"
-        (click)="onClick()"
-        routerLink="{{link}}" 
-        class="btn btn-secondary w-100">
-            {{label}}
-        </a>
+        <ng-container *ngIf="link; then linkButton; else nonLinkButton"></ng-container>
     </div>
 
     <!-- Delete Article -->
@@ -19,11 +13,14 @@
     ></app-delete-toggle>
 </div>
 
+<ng-template #linkButton>
+    <a (click)="onClick()" [routerLink]="link" class="btn btn-secondary w-100">
+        {{label}}
+    </a>
+</ng-template>
 
 <ng-template #nonLinkButton>
-    <a
-    (click) = "onClick()"
-    class="col-md-3 btn btn-secondary">
+    <a (click)="onClick()" class="col-md-3 btn btn-secondary">
         {{label}}
     </a>
 </ng-template> 
