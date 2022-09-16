@@ -20,25 +20,27 @@
   padding-bottom: 1rem; //Exists so that the delete-button does not overflow
 }
 
-.badge a {
-  border-bottom: none;
+.badge{
+  a {
+    border-bottom: none;
+  }
+  
+  a:hover{
+    color: var(--link-blue);
+  }
+
+  .icon {
+    transition: display 0.2s;
+    display: none;
+  }
+}
+
+.badge:hover .icon{
+    display: inline;
 }
 
 .badge-secondary {
   background-color: var(--wiki-background-2);
-}
-
-.badge a:hover {
-  color: var(--link-blue);
-}
-
-.badge .icon {
-  transition: display 0.2s;
-  display: none;
-}
-
-.badge:hover .icon {
-  display: inline;
 }
 
 .fa-check:hover {
