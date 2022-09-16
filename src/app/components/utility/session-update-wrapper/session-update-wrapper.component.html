@@ -1,10 +1,13 @@
 <!-- Heading --> 
-<label *ngIf="to.additionalProperties?.showWrapperLabel">
-    <strong>
-        {{to.label}}
-        <span *ngIf="to.required">*</span>
-    </strong>
-</label>
+<ng-container *ngIf="to.additionalProperties?.showWrapperLabel">
+    <label >
+        <strong>
+            {{to.label}}
+            <ng-container *ngIf="to.required">*</ng-container>
+        </strong>
+    </label>
+</ng-container>
+
 
 <!-- Input -->
 <div class="d-flex">
