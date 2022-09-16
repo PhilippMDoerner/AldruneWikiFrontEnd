@@ -1,41 +1,58 @@
-<div class="py-2 row" *ngIf="user && groups">
-    <!-- Username Column -->
-    <div class="col-md-3 col-4 p-0 d-flex align-items-center">
-        <span class="ml-3">
-            {{user.username}}
-            <span title="Deleted/Deactivated" *ngIf="!user.is_active"> (†) </span>
-        </span>
-    </div>
-
-    <!-- Group Column -->
-    <div class="col-md-5 col-6 p-0 d-flex flex-column justify-content-center hide-container">
-        <span *ngFor="let groupPk of user.groups" class="badge cursor-default bg-dark border-white vanish-container hide-overflow">  
-            {{ getGroupName(groupPk) }} 
-            <span class="fa fa-times icon vanish-icon" (click)="removeUserFromGroup(groupPk)"></span>
-        </span>
-        <i class="fa fa-plus fa-1-5x icon hide-icon text-center" (click)="toggleGroupAddState()" *ngIf="!isAddGroupstate; else addGroup"></i>
-    </div>
-
-    <!-- Email Column -->
-    <div class="col-md-3 p-0 align-items-center hide-on-mobile" [ngClass]="{'d-none': isDeleteState, 'd-flex': !isDeleteState}">
-        <span class="d-block text-break"> {{user.email}} </span>
-    </div>
-
-    <!-- Delete Column -->
-    <div 
-    class="d-flex p-0  align-items-center justify-content-center" 
-    [ngClass]="{'col-1': !isDeleteState, 'col-md-4 col-12': isDeleteState}" 
-    *ngIf="user.is_active"
-    >   
-        <ng-container *ngIf="!isDeleteState; else userDelete">
-            <span class="fa fa-trash icon" 
-            (click)="toggleDeleteState()" 
-            placement="top" 
-            [ngbTooltip]="'Delete user ?'"
-            [tooltipClass]="'my-tooltip'"></span>
+<ng-container *ngIf="user && groups">
+    <div class="py-2 row">
+        <!-- Username Column -->
+        <div class="col-md-3 col-4 p-0 d-flex align-items-center">
+            <span class="ml-3">
+                {{user.username}}
+                <ng-container *ngIf="!user.is_active">
+                    <span title="Deleted/Deactivated" > (†) </span>
+                </ng-container>
+            </span>
+        </div>
+    
+        <!-- Group Column -->
+        <div class="col-md-5 col-6 p-0 d-flex flex-column justify-content-center hide-container">
+            <ng-container *ngFor="let groupPk of user.groups">
+                <span class="badge cursor-default bg-dark border-white vanish-container hide-overflow">  
+                    {{ getGroupName(groupPk) }} 
+                    <span class="fa fa-times icon vanish-icon" (click)="removeUserFromGroup(groupPk)"></span>
+                </span>
+            </ng-container>
+            
+            <ng-container *ngIf="!isAddGroupstate; else addGroup">
+                <i class="fa fa-plus fa-1-5x icon hide-icon text-center" 
+                (click)="toggleGroupAddState()"></i>
+            </ng-container>
+        </div>
+    
+        <!-- Email Column -->
+        <div class="col-md-3 p-0 align-items-center hide-on-mobile" 
+        [ngClass]="{
+            'd-none': isDeleteState, 
+            'd-flex': !isDeleteState
+        }">
+            <span class="d-block text-break"> {{user.email}} </span>
+        </div>
+    
+        <!-- Delete Column -->
+        <ng-container *ngIf="user.is_active">
+            <div 
+            class="d-flex p-0  align-items-center justify-content-center" 
+            [ngClass]="{
+                'col-1': !isDeleteState, 
+                'col-md-4 col-12': isDeleteState
+            }">   
+                <ng-container *ngIf="!isDeleteState; else userDelete">
+                    <span class="fa fa-trash icon" 
+                    (click)="toggleDeleteState()" 
+                    placement="top" 
+                    [ngbTooltip]="'Delete user ?'"
+                    [tooltipClass]="'my-tooltip'"></span>
+                </ng-container>
+            </div>
         </ng-container>
     </div>
-</div>
+</ng-container>
 
 <!-- Confirmation Window about deleting a user -->
 <ng-template #userDelete>
@@ -51,27 +68,22 @@
 <!-- Mini-Form to add group to user -->
 <ng-template #addGroup>
     <div class="mt-3">
+        
         <form (submit)="addUserToSelectedGroup(groupField.value)">
             <select class="form-control" name="character" id="character" [(ngModel)]="newGroup" #groupField>
-                <option 
-                *ngFor="let group of groups" 
-                value="{{group.id}}" 
-                [attr.disabled]="isUserInGroup(group.id) ? true : null"
-                >
-                    {{group.name}}
-                </option>
+                <ng-container *ngFor="let group of groups">
+                    <option [value]="group.id" [attr.disabled]="isUserInGroup(group.id) ? true : null">
+                        {{group.name}}
+                    </option>
+                </ng-container>
             </select>
 
             <div class="d-flex justify-content-around">
-                <i 
-                class="fa icon fa-times mx-2 fa-1-5x"
-                (click)="toggleGroupAddState()"
-                ></i>
+                <i class="fa icon fa-times mx-2 fa-1-5x" (click)="toggleGroupAddState()"></i>
                 
                 <button type="submit" class="d-flex">
                     <i class="fa icon fa-check fa-1-5x"></i>
                 </button>
-    
             </div>
         </form>
 
