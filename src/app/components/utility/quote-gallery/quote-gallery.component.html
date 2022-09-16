@@ -1,4 +1,4 @@
-<div *ngIf="campaign && quote && quote.pk || inCreateState; else addNewQuoteButton">
+<ng-container *ngIf="campaign && quote && quote.pk || inCreateState; else addNewQuoteButton">
     <app-quotefield
     [character]="character"
     [quote]="quote"
@@ -9,16 +9,14 @@
     [inCreateState]="inCreateState"
     (delete)="onQuoteDelete()"
     ></app-quotefield>
-</div>
+</ng-container>
 
 <!-- Add New Quote Button If Character has no Quote -->
 <ng-template #addNewQuoteButton>
     <div class="row">
-        <div 
-        class="btn btn-secondary col-md-3" 
+        <div class="btn btn-secondary col-md-3" 
         [ngClass]="{'d-none': !hasCreatePermission}" 
-        (click)="toggleCreateState()"
-        >
+        (click)="toggleCreateState()">
             Add Quote
         </div>
     </div>
