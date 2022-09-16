@@ -1,17 +1,19 @@
 <!-- Heading -->
-<div *ngIf="heading">
+<ng-container *ngIf="heading">
     <h4 [innerHTML]="heading" class="d-inline"></h4>
-    <h4 class="d-inline" *ngIf="hasUpdatePermission">
-        <i *ngIf="isInDisplayState() && allowEdit" (click)="enableEdit()" class="fa icon fa-pencil ml-2"></i>
-        <i *ngIf="isInUpdateState()" (click)="cancelEdit()" class="fa icon fa-times ml-2"></i>
-        <i *ngIf="isInUpdateState()" (click)="finishEdit()" class="fa icon fa-check ml-2"></i>
-    </h4>
-</div>
+    <ng-container *ngIf="hasUpdatePermission">
+        <h4 class="d-inline" >
+            <i *ngIf="isInDisplayState() && allowEdit" (click)="enableEdit()" class="fa icon fa-pencil ml-2"></i>
+            <i *ngIf="isInUpdateState()" (click)="cancelEdit()" class="fa icon fa-times ml-2"></i>
+            <i *ngIf="isInUpdateState()" (click)="finishEdit()" class="fa icon fa-check ml-2"></i>
+        </h4>
+    </ng-container>
+</ng-container>
 
 <!-- Text Body -->
 <form class="mt-2">
     <div>
-        <div *ngIf="isInUpdateState() && hasUpdatePermission">
+        <ng-container *ngIf="isInUpdateState() && hasUpdatePermission">
             <form (submit)="finishEdit()">
                 <editor 
                 [init]="constants.tinyMCESettings"
@@ -32,13 +34,14 @@
                 </button>
             </form>
 
-        </div>
+        </ng-container>
 
-        <div *ngIf="isInOutdatedUpdateState() && hasUpdatePermission">
+        <ng-container *ngIf="isInOutdatedUpdateState() && hasUpdatePermission">
             <!-- Informating heading -->
             <div class="alert alert-info">
                 <span class="fa fa-info-circle"></span>
-                While you were updating this article, somebody else went ahead and updated it as well. Please include their changes in your update before submitting.
+                While you were updating this article, somebody else went ahead and updated it as well. 
+                Please include their changes in your update before submitting.
             </div>
 
             <!-- Textfield-Form -->
@@ -77,7 +80,7 @@
                 </form>
             </div>
 
-        </div>
+        </ng-container>
 
         <div *ngIf="isInDisplayState() || !userHasUpdatePermission" [innerHTML]="textModel | safeHtml"></div>
     </div>
