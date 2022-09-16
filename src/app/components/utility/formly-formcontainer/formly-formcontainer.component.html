@@ -1,24 +1,33 @@
 <!-- Form -->
-<form [formGroup]="form" enctype="{{enctype}}" (submit)="onSubmit()">
+<form [formGroup]="form" [enctype]="enctype" (submit)="onSubmit()">
     <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
     <!-- Cancel Button -->
-    <div class="btn btn-dark mr-3" (click)="onCancel()" *ngIf="enableSubmitButtons">
-        Cancel
-    </div>
+    <ng-container *ngIf="enableSubmitButtons">
+        <div class="btn btn-dark mr-3" (click)="onCancel()">
+            Cancel
+        </div>
+    </ng-container>
+
 
     <!-- Submit Button -->
-    <div
-    *ngIf="!form.valid && enableSubmitButtons"
-    class="btn btn-dark strikethrough" 
+    <ng-container *ngIf="enableSubmitButtons">
+        <ng-container *ngIf="form.valid; then activeSubmitButton; else inactiveSubmitButton"></ng-container>
+    </ng-container>
+
+</form>
+
+<ng-template #activeSubmitButton>
+    <button type="submit" class="btn btn-primary">
+        Submit
+    </button>
+</ng-template>
+
+<ng-template #inactiveSubmitButton>
+    <div class="btn btn-dark strikethrough" 
     placement="top" 
     [ngbTooltip]="'The form is not yet correctly filled out!'"
-    [tooltipClass]="'my-tooltip'"
-    >
+    [tooltipClass]="'my-tooltip'">
         <i class="fa fa-lock mr-2" aria-hidden="true"></i>
         Submit *
     </div>
-
-    <button type="submit" class="btn btn-primary" *ngIf="form.valid && enableSubmitButtons">
-        Submit
-    </button>
-</form>
+</ng-template>
