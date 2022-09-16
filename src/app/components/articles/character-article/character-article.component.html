@@ -1,20 +1,22 @@
 <div class="main" #article>
     <article class="container">
-        <div class="row" *ngIf="hasUpdatePermission">
-            <div class="col-12">
-                <app-edit-toggle 
-                [isInUpdateState]=false 
-                [link]="'update'"
-                ></app-edit-toggle>
+        <ng-container *ngIf="hasUpdatePermission">
+            <div class="row" >
+                <div class="col-12">
+                    <app-edit-toggle 
+                    [isInUpdateState]=false 
+                    [link]="'update'"
+                    ></app-edit-toggle>
+                </div>
             </div>
-        </div>
+        </ng-container>
         
         <!-- Heading -->
         <div class="row">
             <h1 class="text-center subheading col">
-                <span *ngIf="articleData.title">{{ articleData.title }} - </span>
+                <ng-container *ngIf="articleData.title">{{ articleData.title }} - </ng-container>
                 {{ articleData.name }}
-                <span *ngIf="!articleData.alive"> (†) </span>
+                <ng-container *ngIf="!articleData.alive"> (†) </ng-container>
             </h1>
         </div>
 
@@ -24,7 +26,7 @@
             <!-- Organization -->
             <div class="row">
                 <div class="col">
-                    <span *ngIf="articleData.gender !=='Other'">{{ articleData.gender }}</span>
+                    <ng-conainter *ngIf="articleData.gender !=='Other'">{{ articleData.gender }}</ng-conainter>
                     {{ articleData.race }}
                     {{ playerClassString }}
                 </div>    
@@ -35,7 +37,7 @@
                     <div class="row">
                         <div class="col">
                             {{ organization.role }} of 
-                            <a routerLink="{{ organizationUrls[i] }}">
+                            <a [routerLink]="organizationUrls[i]">
                                 <strong>{{ organization.name }}</strong>
                             </a>
                         </div>
@@ -45,12 +47,14 @@
 
             <!-- Current Location -->
             <div class="row">
-                <div *ngIf="articleData.current_location" class="col">
-                    Last known location:
-                    <a routerLink="{{ locationUrl }}">
-                        <strong> {{ articleData.current_location_details.name }} </strong>
-                    </a>
-                </div>
+                <ng-container *ngIf="articleData.current_location">
+                    <div class="col">
+                        Last known location:
+                        <a [routerLink]="locationUrl">
+                            <strong> {{ articleData.current_location_details.name }} </strong>
+                        </a>
+                    </div>
+                </ng-container>
             </div>
         </div>
 
@@ -63,7 +67,10 @@
 
         <!-- Quote -->
         <div class="mb-3">
-            <app-quote-gallery [character]="articleData" [campaign]="campaign"></app-quote-gallery>
+            <app-quote-gallery 
+            [character]="articleData" 
+            [campaign]="campaign"
+            ></app-quote-gallery>
         </div>
 
         <!-- Description -->

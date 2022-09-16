@@ -1,7 +1,7 @@
 <div class="main">
     <article class="mb-5">
         <!-- Heading -->
-        <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
+        <ng-container *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
             <app-edit-toggle 
             [isInUpdateState]=true 
             [link]="updateCancelUrl"
@@ -10,57 +10,63 @@
             <h2 class="text-center">
                 Updating Character {{ userModel.name }}
             </h2>
-        </div>
+        </ng-container>
 
         <!-- Connections -->
-        <div *ngIf="isInUpdateState()">
+        <ng-container *ngIf="isInUpdateState()">
             <h4 class="mb-0"> Classes </h4>
             <hr class="white-separator">
-    
-            <div id="player-classes" class="mb-5" *ngIf="userModel">
-                <span class="badge badge-secondary mr-3" *ngFor="let connection of userModel.player_class_connections">
-                    {{ connection.player_class_details.name }}
-                    <span class="ml-2 fa fa-trash icon" (click)="deletePlayerClassConnection(connection)"></span>
-                </span>
-    
-                <!-- Add-Class-Badge -->
-                <app-inline-create-button
-                class="full-sized"
-                [labelText]="'Add Class'"
-                (click)="toggleConnectionCreateState()" 
-                *ngIf="!isCharacterConnectionCreationState; else connectionForm"
-                >     
-                </app-inline-create-button>
-            </div>    
-        </div>
+            
+            <ng-container *ngIf="userModel">
+                <div id="player-classes" class="mb-5">
+                    <ng-container *ngFor="let connection of userModel.player_class_connections">
+                        <span class="badge badge-secondary mr-3">
+                            {{ connection.player_class_details.name }}
+                            <span class="ml-2 fa fa-trash icon" (click)="deletePlayerClassConnection(connection)"></span>
+                        </span>
+            
+                        <!-- Add-Class-Badge -->
+                        <app-inline-create-button
+                        class="full-sized"
+                        [labelText]="'Add Class'"
+                        (click)="toggleConnectionCreateState()" 
+                        *ngIf="!isCharacterConnectionCreationState; else connectionForm">     
+                        </app-inline-create-button>
+                    </ng-container>
+                </div>    
+            </ng-container>
+        </ng-container>
 
         <!-- Memberships -->
-        <div *ngIf="isInUpdateState()" class="mb-5">
-            <h4 class="mb-0"> 
-                <ng-container *ngIf="!isOrganizationMembershipCreationState; else createMembershipHeader">
-                    Organization Memberships
-                </ng-container>
+        <ng-container *ngIf="isInUpdateState()">
+            <div class="mb-5">
+                <h4 class="mb-0"> 
+                    <ng-container *ngIf="!isOrganizationMembershipCreationState; else createMembershipHeader">
+                        Organization Memberships
+                    </ng-container>
+    
+                     </h4>
+                <hr class="white-separator">
+                
+                <ng-container *ngIf="!isOrganizationMembershipCreationState; else createMembershipForm">
+                    <div id="organizations" *ngIf="userModel">
+                        <span class="badge badge-secondary mr-3" *ngFor="let membership of userModel.organizations">
+                            {{ membership.name }}
+                            <span class="ml-2 fa fa-trash icon" (click)="deleteOrganizationMembership(membership)"></span>
+                        </span>
+                            
+                        <!-- Add-Organization-Membership-Badge -->
+                        <app-inline-create-button
+                        class="full-sized"
+                        [labelText]="'Add Membership'"
+                        (click)="toggleOrganizationMembershipCreateState()" 
+                        >     
+                        </app-inline-create-button>
+                    </div>   
+                </ng-container> 
+            </div>
+        </ng-container>
 
-                 </h4>
-            <hr class="white-separator">
-            
-            <ng-container *ngIf="!isOrganizationMembershipCreationState; else createMembershipForm">
-                <div id="organizations" *ngIf="userModel">
-                    <span class="badge badge-secondary mr-3" *ngFor="let membership of userModel.organizations">
-                        {{ membership.name }}
-                        <span class="ml-2 fa fa-trash icon" (click)="deleteOrganizationMembership(membership)"></span>
-                    </span>
-                        
-                    <!-- Add-Organization-Membership-Badge -->
-                    <app-inline-create-button
-                    class="full-sized"
-                    [labelText]="'Add Membership'"
-                    (click)="toggleOrganizationMembershipCreateState()" 
-                    >     
-                    </app-inline-create-button>
-                </div>   
-            </ng-container> 
-        </div>
         <!-- Form -->
         <h4 class="mb-0"> Character Data </h4>
         <hr class="white-separator">
@@ -100,17 +106,17 @@
     <!-- Form for Creating Player Class Connections -->
     <form class="d-inline-flex align-items-center" (submit)="createPlayerClassConnection(connectionModel)">
         <select class="form-control d-inline-block" name="connection" id="connection" [(ngModel)]="connectionModel.player_class">
-            <option 
-            *ngFor="let playerClass of playerClasses" 
-            value="{{playerClass.pk}}" 
-            [attr.disabled]="hasConnection(playerClass) ? true : null"
-            >
-                {{playerClass.name}}
-            </option>
+            <ng-container *ngFor="let playerClass of playerClasses">
+                <option [value]="playerClass.pk" [attr.disabled]="hasConnection(playerClass) ? true : null">
+                    {{playerClass.name}}
+                </option>
+            </ng-container>
         </select>
 
         <i class="fa fa-times icon mx-2 fa-1-5x" (click)="toggleConnectionCreateState()"></i>
-        <button type="submit"> <i class="fa fa-check icon fa-1-5x"></i> </button>
+        <button type="submit"> 
+            <i class="fa fa-check icon fa-1-5x"></i> 
+        </button>
     </form>
 </ng-template>
 
