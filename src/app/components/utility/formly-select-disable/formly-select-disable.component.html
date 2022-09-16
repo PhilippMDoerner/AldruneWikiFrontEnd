@@ -6,29 +6,30 @@
         [tooltipClass]="'my-tooltip'"> 
             {{to.label}} 
             <span class="fa fa-info-circle mx-1"></span>
-            <span *ngIf="to.required">*</span>
+            <ng-container *ngIf="to.required">*</ng-container>
         </strong>
 
     </label>
     
     <select 
-    id="formly_disable_select_{{to.label}}" 
-    required="{{to.required}}"
+    [id]="'formly_disable_select_' + to.label" 
+    [required]="to.required"
     class="form-control"
     [formControl]="formControl" 
     [formlyAttributes]="field"
     >
-        <option 
-        [ngValue]="selectOption[to.valueProp]"
-        *ngFor="let selectOption of allSelectOptions; let optionIndex = index"
-        [disabled]="this.isOptionDisabledArray[optionIndex]"
-        >
-            {{selectOption[to.labelProp]}}
-        </option>
+        <ng-container *ngFor="let selectOption of allSelectOptions; let optionIndex = index">
+            <option [ngValue]="selectOption[to.valueProp]" [disabled]="this.isOptionDisabledArray[optionIndex]">
+                {{selectOption[to.labelProp]}}
+            </option>
+        </ng-container>
     </select>
-    <div class="mywarningmessage" *ngIf="hasInvalidOptionSelected()">
-        {{ to.warningMessage }}
-    </div>
+
+    <ng-container *ngIf="hasInvalidOptionSelected()">
+        <div class="mywarningmessage">
+            {{ to.warningMessage }}
+        </div>
+    </ng-container>
 </div>
 
 <ng-template #tooltipContent>
