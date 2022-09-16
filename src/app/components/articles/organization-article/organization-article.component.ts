@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { OverviewType } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { Organization, OrganizationObject } from 'src/app/models/organization';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -26,6 +27,7 @@ export class OrganizationArticleComponent extends ArticleMixin implements OnInit
   deleteRoute = {routeName: "organization-overview", params: {campaign: null}};
   queryParameterName: string = 'name';
 
+  OverviewType = OverviewType;
 
   constructor(
     organizationService: OrganizationService,

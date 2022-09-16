@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Constants } from 'src/app/app.constants';
+import { Constants, OverviewType } from 'src/app/app.constants';
+import { Article } from 'src/app/models/recentlyUpdatedArticle';
 import { TokenService } from 'src/app/services/token.service';
 import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
@@ -13,9 +14,10 @@ export class ObjectListComponent extends PermissionUtilityFunctionMixin implemen
   constants: any = Constants;
   @Input() heading: string;
   @Input() items: {'name': string}[];
-  @Input() articleType: string;
+  @Input() articleType: OverviewType;
   @Input() createLink: string = "";
   campaign: string = this.route.snapshot.params.campaign;
+  itemLinks: string[];
 
   constructor(    
     route: ActivatedRoute,
@@ -25,8 +27,10 @@ export class ObjectListComponent extends PermissionUtilityFunctionMixin implemen
   }
 
   ngOnInit(): void {
-    if (this.createLink === "") this.createLink = `${Constants.wikiUrlFrontendPrefix}/${this.articleType}/create`;
-    
+    const articleTypeStr: string = this.articleType.toLocaleLowerCase();
+    if (this.createLink === "") this.createLink = `${Constants.wikiUrlFrontendPrefix}/${articleTypeStr}/create`;
+
+    this.itemLinks = this.items.map(item => `${Constants.wikiUrlFrontendPrefix}/${articleTypeStr}/${this.campaign}/${item.name}`);
   }
 
 }

@@ -10,6 +10,7 @@ import { ArticleMixin } from 'src/app/utils/functions/articleMixin';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { TokenService } from 'src/app/services/token.service';
 import { CampaignOverview } from 'src/app/models/campaign';
+import { OverviewType } from 'src/app/app.constants';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class CharacterArticleComponent extends ArticleMixin implements OnInit, O
   //Custom Variables
   quote: QuoteObject;
   quoteCreateState: boolean = false;
+  OverviewType = OverviewType;
 
   constructor(
     characterService: CharacterService,

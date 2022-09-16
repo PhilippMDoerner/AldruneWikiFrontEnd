@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
+import { OverviewType } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { LocationObject } from 'src/app/models/location';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -26,6 +27,7 @@ export class LocationArticleComponent extends ArticleMixin implements OnInit {
   articleData: LocationObject;
   deleteRoute = {routeName: "location-overview", params: {campaign: null}}
 
+  OverviewType = OverviewType;
 
   constructor(
     locationService: LocationService,
