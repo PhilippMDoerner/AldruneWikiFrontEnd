@@ -11,32 +11,33 @@
          ></app-colored-sidebar-legend>
          
         <!-- Article List -->
-        <div class="my-3" *ngIf="articles.length > 0 else noSearchResults">
-            <a 
-            routerLink="{{ article.getAbsoluteRouterUrl() }}" 
-            *ngFor="let article of articles"
-            class="card flex-row align-items-center sidebar-border py-2 row mh-60px {{sidebarColor(article.article_type)}}"
-            [ngClass]="{'d-none': hasActiveFilter() && !filterOptions.includes(article.article_type)}"
-            >
-               
-                <!-- Article Name -->
-                <div class="col-md-4 text-center">
-                        <h5 class="mb-0"><strong>{{article.name}}</strong></h5>
-                </div>
-                
-                <!-- Article Text -->
-                <div class="col-md-8 font-size-16">
-                    {{article.description}}
-                </div>
-            </a>
-        </div>
+        <ng-container *ngIf="articles.length > 0 else noSearchResults">
+            <div class="my-3">
+
+                <ng-container *ngFor="let article of articles">
+                    <a [routerLink]="article.getAbsoluteRouterUrl()" 
+                    class="card flex-row align-items-center sidebar-border py-2 row mh-60px {{sidebarColor(article.article_type)}}"
+                    [ngClass]="{'d-none': hasActiveFilter() && !filterOptions.includes(article.article_type)}">
+                       
+                        <!-- Article Name -->
+                        <div class="col-md-4 text-center">
+                            <h5 class="mb-0"><strong>{{article.name}}</strong></h5>
+                        </div>
+                        
+                        <!-- Article Text -->
+                        <div class="col-md-8 font-size-16">
+                            {{article.description}}
+                        </div>
+                    </a>
+                </ng-container>
+
+            </div>
+        </ng-container>
+
 
         <!-- Footer -->
         <div class="row">
-            <div 
-            class="btn btn-secondary col-md-3" 
-            routerLink="{{ homeUrl }}"
-            >
+            <div class="btn btn-secondary col-md-3" [routerLink]="homeUrl">
                 Back To Frontpage
             </div>
         </div>

@@ -1,13 +1,16 @@
 <div class="main" #article>
     <article class="container">
-        <div class="row" *ngIf="hasUpdatePermission">
-            <div class="col-12">
-                <app-edit-toggle 
-                [isInUpdateState]=false 
-                [link]="'update'"
-                ></app-edit-toggle>
+        <ng-container *ngIf="hasUpdatePermission">
+            <div class="row">
+                <div class="col-12">
+                    <app-edit-toggle 
+                    [isInUpdateState]=false 
+                    [link]="'update'"
+                    ></app-edit-toggle>
+                </div>
             </div>
-        </div>
+        </ng-container>
+
         
         <div class="row">
             <!-- Heading -->
@@ -21,18 +24,21 @@
         <div class="mt-4 mb-1 row mx-0" #playerSection>
             <!-- Background Image -->
             <div class="black-background col-12 px-0" (click)="togglePlayer(vimePlayer)">
-                <img class="mw-100" src="{{constants.audioImageUrl}}"/>
+                <img class="mw-100" [src]="constants.audioImageUrl"/>
             </div>
 
             <!-- Vime-Player -->
             <vm-player
-                theme="dark"
-                style="--vm-player-theme: var(--primary);"
-                class="w-100"
-                #vimePlayer
-            >
+            theme="dark"
+            style="--vm-player-theme: var(--primary);"
+            class="w-100"
+            #vimePlayer>
                 <vm-audio cross-origin>
-                    <source [src]="constants.wikiUrl + '/' + articleData.audio_file" type="audio/mp3" crossorigin="anonymous" #audioSource/>
+                    <source 
+                    [src]="constants.wikiUrl + '/' + articleData.audio_file" 
+                    type="audio/mp3" 
+                    crossorigin="anonymous" 
+                    #audioSource/>
                 </vm-audio>
                 
                 <vm-default-ui></vm-default-ui>
@@ -43,38 +49,33 @@
         <div class="mb-3 row justify-content-between">
             <!-- Next Session -->
             <div class="col-lg-3 col-6">
-                <a  
-                *ngIf="nextSessionAudioUrl"
-                routerLink="{{nextSessionAudioUrl}}"
-                class="btn btn-secondary"
-                > 
-                    <i class="fa fa-arrow-left mr-1"></i>
-                    Session {{articleData.sessionAudioNeighbours.nextSessionAudio.sessionNumber}}
-                </a>
+                <ng-container *ngIf="nextSessionAudioUrl">
+                    <a [routerLink]="nextSessionAudioUrl" class="btn btn-secondary"> 
+                        <i class="fa fa-arrow-left mr-1"></i>
+                        Session {{articleData.sessionAudioNeighbours.nextSessionAudio.sessionNumber}}
+                    </a>
+                </ng-container>
             </div>
 
             <!-- Prior Session -->
             <div class="col-lg-3 col-6">
-                <a  
-                *ngIf="priorSessionAudioUrl"
-                routerLink="{{priorSessionAudioUrl}}"
-                class="btn btn-secondary float-right"
-                > 
-                    Session {{articleData.sessionAudioNeighbours.priorSessionAudio.sessionNumber}}
-                    <i class="fa fa-arrow-right ml-1"></i>
-                </a>
+                <ng-container *ngIf="priorSessionAudioUrl">
+                    <a [routerLink]="priorSessionAudioUrl" class="btn btn-secondary float-right"> 
+                        Session {{articleData.sessionAudioNeighbours.priorSessionAudio.sessionNumber}}
+                        <i class="fa fa-arrow-right ml-1"></i>
+                    </a>
+                </ng-container>
             </div>
         </div>
 
         <!-- Add Timestamp -->
         <div class=" mb-3 row justify-content-center mx-0">
-            <div 
-            class="btn btn-primary col-lg-4" 
-            *ngIf = "hasCreatePermission"
-            (click)="createTimestampEventSubject.next(this.vimePlayer.currentTime)"
-            >
-                Add Timestamp <i class="fa fa-clock-o ml-1"></i>
-            </div>
+            <ng-container *ngIf="hasCreatePermission">
+                <div class="btn btn-primary col-lg-4" 
+                (click)="createTimestampEventSubject.next(this.vimePlayer.currentTime)">
+                    Add Timestamp <i class="fa fa-clock-o ml-1"></i>
+                </div>                
+            </ng-container>
         </div>
 
         <!-- Timestamp List -->

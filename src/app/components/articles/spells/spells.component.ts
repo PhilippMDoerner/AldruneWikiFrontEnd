@@ -1,5 +1,7 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, QueryList, ViewChildren } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
+import { ArticleObject } from 'src/app/models/base-models';
+import { CampaignOverview } from 'src/app/models/campaign';
 import { SpellObject, SpellPlayerClassConnection } from 'src/app/models/spell';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -21,7 +23,7 @@ export class SpellsComponent extends ArticleListMixin implements OnInit, AfterVi
 
   @ViewChildren("spellElements") articleElements: QueryList<any>;
   articlesInitialScrollParameter = "name";
-
+  homePageUrl: string;
   constructor(
     spellService: SpellService,
     routingService: RoutingService,
@@ -57,5 +59,9 @@ export class SpellsComponent extends ArticleListMixin implements OnInit, AfterVi
     const playerClasses : SpellPlayerClassConnection[] = spell.player_class_connections;
     const hasClass = playerClasses.some((connection: SpellPlayerClassConnection) => (this.selectedClasses.includes(connection.player_class_details.name)));
     return hasClass;
+  }
+
+  updateDynamicVariables(campaign: CampaignOverview, articles: ArticleObject[], params: Params): void{
+    this.homePageUrl = this.routingService.getRoutePath('home1', {campaign: campaign.name});
   }
 }

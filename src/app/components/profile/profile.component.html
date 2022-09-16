@@ -32,23 +32,27 @@
             <div class="col-6">{{ user.email }}</div>
             
             <h5 class="col-12 mb-0 mt-4">Campaign Memberships</h5>
-            <div *ngFor="let campaignRole of campaignRolesList; let i = index" class="col-12">
-
-                <ng-container *ngTemplateOutlet="leaveCampaignStates[i] ? leaveCampaignForm : displayCampaignForm; context: {$implicit: {campaignRole, index: i}}">
-                </ng-container>
-
-            </div>
+            <ng-container *ngFor="let campaignRole of campaignRolesList; let i = index">
+                <div class="col-12">
+                    <ng-container *ngTemplateOutlet="leaveCampaignStates[i] ? 
+                    leaveCampaignForm : displayCampaignForm; 
+                    context: {$implicit: {campaignRole, index: i}}">
+                    </ng-container>
+                </div>
+            </ng-container>
         </div>
 
         <!-- Password Form -->
-        <div class="my-3 card p-3" *ngIf="passwordEditState">
-            <app-formly-formcontainer
-            [model] = "passwordModel"
-            [fields] = "passwordFields"
-            (formlyCancel) = "togglePasswordEditState()"
-            (formlySubmit) = "updatePassword()"
-            ></app-formly-formcontainer>
-        </div>
+        <ng-container *ngIf="passwordEditState">
+            <div class="my-3 card p-3">
+                <app-formly-formcontainer
+                [model] = "passwordModel"
+                [fields] = "passwordFields"
+                (formlyCancel) = "togglePasswordEditState()"
+                (formlySubmit) = "updatePassword()"
+                ></app-formly-formcontainer>
+            </div>
+        </ng-container>
 
         <div class="mt-5 row">
             <div class="col-md-3">
@@ -71,7 +75,6 @@
                         </div>
                     </app-animated-toggle>
                 </div>
-
             </ng-container>
             
         </div>

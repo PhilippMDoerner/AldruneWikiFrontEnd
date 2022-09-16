@@ -1,7 +1,7 @@
 <div class="main">
     <article class="mb-5">
         <!-- Heading -->
-        <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
+        <ng-container *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
             <app-edit-toggle 
             [isInUpdateState]="true" 
             [link]="updateCancelUrl"
@@ -10,19 +10,7 @@
             <h2 class="text-center">
                 Updating Quest {{ userModel.name }}
             </h2>
-        </div>
-        
-        <ng-template #createState>
-            <app-edit-toggle 
-            [isInUpdateState]="true" 
-            [link]="creationCancelUrl"
-            ></app-edit-toggle>
-
-            <h2 class="text-center">
-                Creating a new Quest
-            </h2>
-        </ng-template>
-
+        </ng-container>
 
         <!-- Form -->
         <app-formly-formcontainer
@@ -44,3 +32,15 @@
 
     </article>
 </div>
+
+        
+<ng-template #createState>
+    <app-edit-toggle 
+    [isInUpdateState]="true" 
+    [link]="creationCancelUrl"
+    ></app-edit-toggle>
+
+    <h2 class="text-center">
+        Creating a new Quest
+    </h2>
+</ng-template>

@@ -1,24 +1,27 @@
 <div class="main" #article>
     <article class="container">
-        <div class="row" *ngIf="hasUpdatePermission">
-            <div class="col-12 d-flex align-items-end flex-column">
-                <app-edit-toggle 
-                [isInUpdateState]="false"
-                [link]="'update'"
-                ></app-edit-toggle>
-                
-                <div class="btn btn-secondary mt-2" (click)="diaryentryDisplayMode=!diaryentryDisplayMode">
-                    <span *ngIf="diaryentryDisplayMode">
-                        <span class="fa fa-pencil"></span> 
-                        Edit Encounters
-                    </span>
-                    <span *ngIf="!diaryentryDisplayMode">
-                        <span class="fa fa-times"></span> 
-                        Read Diaryentry
-                    </span>
+        <ng-container *ngIf="hasUpdatePermission">
+            <div class="row">
+                <div class="col-12 d-flex align-items-end flex-column">
+                    <app-edit-toggle 
+                    [isInUpdateState]="false"
+                    [link]="'update'"
+                    ></app-edit-toggle>
+                    
+                    <div class="btn btn-secondary mt-2" (click)="diaryentryDisplayMode=!diaryentryDisplayMode">
+                        <span *ngIf="diaryentryDisplayMode">
+                            <span class="fa fa-pencil"></span> 
+                            Edit Encounters
+                        </span>
+                        <span *ngIf="!diaryentryDisplayMode">
+                            <span class="fa fa-times"></span> 
+                            Read Diaryentry
+                        </span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </ng-container>
+
 
 
         <!-- Heading -->
@@ -39,27 +42,23 @@
         <div class="row mb-3 d-flex align-items-center justify-content-between">
             <!-- Next Diaryentry -->
             <div class="col-lg-2 col-md-4 col-5">
-                <a  
-                *ngIf="articleData.adjacent_diaryentries.next_diaryentry"
-                routerLink="{{nextDiaryentryUrl}}"
-                class="btn btn-secondary w-100"
-                > 
-                    <i class="fa fa-arrow-left mr-1"></i>
-                    Next
-                </a>
+                <ng-container *ngIf="articleData.adjacent_diaryentries.next_diaryentry">
+                    <a [routerLink]="nextDiaryentryUrl" class="btn btn-secondary w-100"> 
+                        <i class="fa fa-arrow-left mr-1"></i>
+                        Next
+                    </a>
+                </ng-container>
             </div>
 
 
             <!-- Prior Diaryentry -->
             <div class="col-lg-2 col-md-4 col-5">
-                <a  
-                *ngIf="articleData.adjacent_diaryentries.prior_diaryentry"
-                routerLink="{{priorDiaryentryUrl}}"
-                class="btn btn-secondary w-100"
-                > 
-                    Back
-                    <i class="fa fa-arrow-right ml-1"></i>
-                </a>
+                <ng-container *ngIf="articleData.adjacent_diaryentries.prior_diaryentry">
+                    <a [routerLink]="priorDiaryentryUrl" class="btn btn-secondary w-100"> 
+                        Back
+                        <i class="fa fa-arrow-right ml-1"></i>
+                    </a>
+                </ng-container>
             </div>
         </div>
 
@@ -74,27 +73,22 @@
         <div class="row mb-3 d-flex align-items-center justify-content-between">
             <!-- Next Diaryentry -->
             <div class="col-lg-2 col-md-4 col-5">
-                <a  
-                *ngIf="articleData.adjacent_diaryentries.next_diaryentry"
-                routerLink="{{nextDiaryentryUrl}}"
-                class="btn btn-secondary w-100"
-                > 
-                    <i class="fa fa-arrow-left mr-1"></i>
-                    Next
-                </a>
+                <ng-container *ngIf="articleData.adjacent_diaryentries.next_diaryentry">
+                    <a [routerLink]="nextDiaryentryUrl" class="btn btn-secondary w-100"> 
+                        <i class="fa fa-arrow-left mr-1"></i>
+                        Next
+                    </a>
+                </ng-container>
             </div>
-
 
             <!-- Prior Diaryentry -->
             <div class="col-lg-2 col-md-4 col-5">
-                <a  
-                *ngIf="articleData.adjacent_diaryentries.prior_diaryentry"
-                routerLink="{{priorDiaryentryUrl}}"
-                class="btn btn-secondary w-100"
-                > 
-                    Prior
-                    <i class="fa fa-arrow-right ml-1"></i>
-                </a>
+                <ng-container *ngIf="articleData.adjacent_diaryentries.prior_diaryentry">
+                    <a [routerLink]="priorDiaryentryUrl" class="btn btn-secondary w-100"> 
+                        Prior
+                        <i class="fa fa-arrow-right ml-1"></i>
+                    </a>
+                </ng-container>
             </div>
         </div>
 

@@ -1,13 +1,15 @@
 <div class="main" #article>
     <article class="container">
-        <div class="row" *ngIf="hasUpdatePermission">
-            <div class="col-12">
-                <app-edit-toggle 
-                [isInUpdateState]=false 
-                [link]="'update'"
-                ></app-edit-toggle>
+        <ng-container *ngIf="hasUpdatePermission">
+            <div class="row">
+                <div class="col-12">
+                    <app-edit-toggle 
+                    [isInUpdateState]=false 
+                    [link]="'update'"
+                    ></app-edit-toggle>
+                </div>
             </div>
-        </div>
+        </ng-container>
 
         <!-- Heading -->
         <div class="row">
@@ -18,26 +20,21 @@
             <!-- Leader-Subheading -->
             <div class="text-center subheading mb-1 col-12"> 
                 Leader: 
-                <a 
-                *ngIf="articleData.leader; else Unknown" 
-                class="ml-1" 
-                routerLink="{{ organizationLeaderUrl }}"
-                >
-                    {{ articleData.leader }}
-                </a>
-                <ng-template #Unknown>Unknown</ng-template>
+                <ng-container *ngIf="articleData.leader; else Unknown">
+                    <a class="ml-1" [routerLink]="organizationLeaderUrl">
+                        {{ articleData.leader }}
+                    </a>
+                </ng-container>
             </div>
 
             <!-- Headquarters Subheading -->
             <div class="text-center mb-3 subheading col-12"> 
                 Headquarters:
-                <a 
-                *ngIf="articleData.headquarter_details; else Unknown" 
-                class="ml-1" 
-                routerLink="{{ headquartersUrl }}"
-                >
-                    {{ articleData.headquarter_details.name_full }}
-                </a>
+                <ng-container *ngIf="articleData.headquarter_details; else Unknown">
+                    <a class="ml-1" [routerLink]="headquartersUrl">
+                        {{ articleData.headquarter_details.name_full }}
+                    </a>
+                </ng-container>
             </div>
         </div>
 
@@ -78,3 +75,5 @@
         ></app-article-footer>
     </article>
 </div>
+
+<ng-template #Unknown>Unknown</ng-template>

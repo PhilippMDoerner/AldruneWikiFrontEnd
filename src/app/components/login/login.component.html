@@ -1,13 +1,20 @@
 <div class="main" #loginMainCard>
-    <article *ngIf="!this.isRequestingPasswordReset; else passwordResetView">
-        <h1>Log In</h1>
-        <div class="mb-3 text-warning">{{extraMessage}}</div>
-        <form (submit)="onSubmit()" class="d-flex flex-column">
-            <formly-form [model]="model" [fields]="fields" [form]="form"></formly-form>
-            <div><span class="pointer pseudo-link" (click)="togglePasswordResetView()"> Forgot your password?</span></div>
-            <button type="submit" class="btn btn-primary mt-4">Login</button>
-        </form>
-    </article>
+    <ng-container *ngIf="!this.isRequestingPasswordReset; else passwordResetView">
+        <article>
+            <h1>Log In</h1>
+            <div class="mb-3 text-warning">{{extraMessage}}</div>
+            <form (submit)="onSubmit()" class="d-flex flex-column">
+                <formly-form [model]="model" [fields]="fields" [form]="form"></formly-form>
+                <div>
+                    <span class="pointer pseudo-link" (click)="togglePasswordResetView()"> 
+                        Forgot your password?
+                    </span>
+                </div>
+                <button type="submit" class="btn btn-primary mt-4">Login</button>
+            </form>
+        </article>
+    </ng-container>
+
 </div>
 
 <ng-template #passwordResetView>

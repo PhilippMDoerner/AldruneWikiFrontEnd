@@ -1,13 +1,15 @@
 <div class="main" #article>
     <article class="container">
-        <div class="row" *ngIf="hasUpdatePermission">
-            <div class="col-12">
-                <app-edit-toggle 
-                [isInUpdateState]=false 
-                [link]="'update'"
-                ></app-edit-toggle>
+        <ng-container *ngIf="hasUpdatePermission">
+            <div class="row">
+                <div class="col-12">
+                    <app-edit-toggle 
+                    [isInUpdateState]=false 
+                    [link]="'update'"
+                    ></app-edit-toggle>
+                </div>
             </div>
-        </div>
+        </ng-container>
 
         <!-- Heading -->
         <div class="row mb-3">
@@ -25,10 +27,9 @@
             <div class="col-5">Start - End:</div>
             <div class="col-7">
                 {{ articleData.start_session_details.name }} - 
-                <span *ngIf="articleData.end_session_details; else Ongoing"> 
+                <ng-container *ngIf="articleData.end_session_details; else Ongoing"> 
                     {{ articleData.end_session_details.name }} 
-                </span>
-                <ng-template #Ongoing class="d-inline">Ongoing</ng-template>
+                </ng-container>
             </div>
         </div>
 
@@ -36,14 +37,12 @@
         <div class="subheading row"> 
             <span class="col-5">Quest Giver:</span>
             <span class="col-7">
-                <a 
-                *ngIf="articleData.giver_details; else NoQuestGiver" 
-                routerLink="{{ questGiverUrl }}"
-                >
-                    {{ articleData.giver_details.name }}
-                </a>
+                <ng-container *ngIf="articleData.giver_details; else NoQuestGiver">
+                    <a [routerLink]="questGiverUrl">
+                        {{ articleData.giver_details.name }}
+                    </a>
+                </ng-container>
             </span>
-            <ng-template #NoQuestGiver> None </ng-template>
         </div>
 
         <!-- Description -->
@@ -65,3 +64,8 @@
         ></app-article-footer>
     </article>
 </div>
+
+
+<ng-template #Ongoing class="d-inline">Ongoing</ng-template>
+
+<ng-template #NoQuestGiver> None </ng-template>

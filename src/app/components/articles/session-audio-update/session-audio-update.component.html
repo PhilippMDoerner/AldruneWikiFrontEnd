@@ -1,7 +1,7 @@
 <div class="main">
     <article class="mb-5">
         <!-- Heading -->
-        <div *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
+        <ng-container *ngIf="(isInUpdateState() || isInOutdatedUpdateState()) && userModel; else createState">
             <app-edit-toggle 
             [isInUpdateState]=true 
             [link]="updateCancelUrl"
@@ -10,9 +10,9 @@
             <h2 class="text-center">
                 Updating SessionAudio {{ userModel.session_details.name }}
             </h2>
-        </div>
-
-        <div *ngIf="!fileUploadProgress; else uploadBar">
+        </ng-container>
+        
+        <ng-container *ngIf="!fileUploadProgress; else uploadBar">
             <!-- Form -->
             <app-formly-formcontainer 
             [model]="userModel" 
@@ -20,7 +20,7 @@
             (formlySubmit)="onSubmit()" 
             (formlyCancel)="onCancel()"
             ></app-formly-formcontainer>
-        </div>
+        </ng-container>
     </article>
 </div>
 

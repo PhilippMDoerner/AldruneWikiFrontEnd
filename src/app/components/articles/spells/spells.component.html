@@ -2,41 +2,42 @@
     <article class="container">
         <h1 class="text-center mb-3">
             Spells
-            <span 
-            *ngFor="let selectedClass of selectedClasses; let i = index" 
-            class="badge badge-secondary pointer" 
-            (click)="selectedClasses.splice(i, 1)"
-            >
-                {{ selectedClass }} <i class="fa fa-times"></i>
-            </span>
+            <ng-container *ngFor="let selectedClass of selectedClasses; let i = index" >
+                <span class="badge badge-secondary pointer" 
+                (click)="selectedClasses.splice(i, 1)">
+                    {{ selectedClass }} <i class="fa fa-times"></i>
+                </span>
+            </ng-container>
         </h1>
 
-
-        <div class="mb-3 row" *ngIf="hasCreatePermission">
-            <a class="btn btn-primary col-lg-2 col-sm-3" (click)="addArticle()"> 
-                <i class="fa fa-plus"></i>
-                Add Spell
-            </a>
-        </div>
-
+        <ng-container *ngIf="hasCreatePermission">
+            <div class="mb-3 row">
+                <a class="btn btn-primary col-lg-2 col-sm-3" (click)="addArticle()"> 
+                    <i class="fa fa-plus"></i>
+                    Add Spell
+                </a>
+            </div>
+        </ng-container>
 
         <!-- Spells -->
-        <div *ngFor="let spell of articles; let i = index" class="row">
-            <app-spell
-            class="flex-1"
-            #spellElements
-            [id]="spell.name.replaceAll(' ', '-').replaceAll('\'', '')"
-            [index] = "i"
-            [cardData] = "spell"
-            [campaign] = "campaign"
-            (cardDelete) = "onArticleDelete(i)"
-            (classSelect) = "selectClass($event)"
-            *ngIf="hasSelectedClasses(spell)"
-            ></app-spell>
-        </div>
+        <ng-container *ngFor="let spell of articles; let i = index">
+            <div class="row">
+                <app-spell
+                class="flex-1"
+                #spellElements
+                [id]="spell.name.replaceAll(' ', '-').replaceAll('\'', '')"
+                [index] = "i"
+                [cardData] = "spell"
+                [campaign] = "campaign"
+                (cardDelete) = "onArticleDelete(i)"
+                (classSelect) = "selectClass($event)"
+                *ngIf="hasSelectedClasses(spell)"
+                ></app-spell>
+            </div>
+        </ng-container>
 
         <div class="row">
-            <a class="col-lg-2 col-md-3 btn btn-secondary" routerLink="{{routingService.getRoutePath('home1', {campaign: campaign.name})}}">
+            <a class="col-lg-2 col-md-3 btn btn-secondary" [routerLink]="homePageUrl">
                 Back To Frontpage
             </a>
         </div>

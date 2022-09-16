@@ -1,13 +1,15 @@
 <div class="main" #article>
   <article class="container">
-    <div class="row" *ngIf="hasUpdatePermission">
-      <div class="col-12">
-        <app-edit-toggle
+    <ng-container *ngIf="hasUpdatePermission">
+      <div class="row" >
+        <div class="col-12">
+          <app-edit-toggle
           [isInUpdateState]="false"
           [link]="'update'"
-        ></app-edit-toggle>
-      </div>
-    </div>
+          ></app-edit-toggle>
+        </div>
+      </div>  
+    </ng-container>
 
     <!-- Heading -->
     <div class="row">
@@ -16,86 +18,79 @@
       </h1>
 
       <!-- String indicating all parent_locations -->
-      <p
-        *ngIf="articleData.parent_location_list.length > 0"
-        class="text-center font-italic col-12 mb-5"
-      >
-        <span
-          *ngFor="let loc of articleData.parent_location_list; let i = index"
-        >
-          <a routerLink="{{ parentLocationUrls[i] }}">
-            {{ loc }}
-          </a>
-          <i class="fa fa-arrow-right mx-1"></i>
-        </span>
-        {{ articleData.name }}
-      </p>
+      <ng-container *ngIf="articleData.parent_location_list.length > 0">
+        <p class="text-center font-italic col-12 mb-5">
+          <ng-container *ngFor="let loc of articleData.parent_location_list; let i = index">
+            <a [routerLink]="parentLocationUrls[i]">
+              {{ loc }}
+            </a>
+            <i class="fa fa-arrow-right mx-1"></i>
+          </ng-container>
+          {{ articleData.name }}
+        </p>
+      </ng-container>
+
     </div>
 
     <!-- Image Gallery -->
     <app-image-carousel
-      [article_type]="'location'"
-      [article_pk]="this.articleData.pk"
-      [images]="this.articleData.images"
-    ></app-image-carousel>
+    [article_type]="'location'"
+    [article_pk]="this.articleData.pk"
+    [images]="this.articleData.images">
+    </app-image-carousel>
 
     <div class="mb-3">
       <i> Marked on Maps:</i>
-      <a
-        class="badge badge-secondary p-2 mx-2 no-underline"
-        *ngFor="
-          let marker of articleData.marker_details;
-          let markerIndex = index
-        "
-        routerLink="{{ markerUrls[markerIndex] }}"
-      >
-        {{ marker.map }}
-        <!-- Marker Icons -->
-        <i class="mx-1 icon fas fa-{{ marker.map_icon }}"></i>
-      </a>
+      <ng-container *ngFor="let marker of articleData.marker_details; let markerIndex = index">
+        <a class="badge badge-secondary p-2 mx-2 no-underline" [routerLink]="markerUrls[markerIndex]">
+          {{ marker.map }}
+          <!-- Marker Icons -->
+          <i class="mx-1 icon fas fa-{{ marker.map_icon }}"></i>
+        </a>  
+      </ng-container>
 
       <!-- Add-Marker-Badge -->
-      <app-inline-create-button
-      [labelText]="'Add Marker'"
-      [link]="markerCreateUrl"
-      *ngIf="hasCreatePermission"
-      >     
-      </app-inline-create-button>
+      <ng-container *ngIf="hasCreatePermission">
+        <app-inline-create-button
+        [labelText]="'Add Marker'"
+        [link]="markerCreateUrl">     
+        </app-inline-create-button>
+      </ng-container>
     </div>
 
     <!-- Description -->
     <div class="mb-5">
       <app-textfield
-        [initialText]="articleData.description"
-        [heading]="'Description'"
-        [formStateSubject]="textfieldFormStateSubject"
-        (updateText)="onDescriptionUpdate($event)"
-      ></app-textfield>
+      [initialText]="articleData.description"
+      [heading]="'Description'"
+      [formStateSubject]="textfieldFormStateSubject"
+      (updateText)="onDescriptionUpdate($event)">
+      </app-textfield>
     </div>
 
     <!-- Characters of Interest -->
     <div class="mb-4">
       <app-object-list
-        [heading]="'Characters of Interest'"
-        [items]="articleData.characters"
-        [articleType]="OverviewType.Character"
-        [createLink]="characterCreateUrl"
-      ></app-object-list>
+      [heading]="'Characters of Interest'"
+      [items]="articleData.characters"
+      [articleType]="OverviewType.Character"
+      [createLink]="characterCreateUrl">
+      </app-object-list>
     </div>
 
     <!-- Locations of Interest -->
     <div class="encounter-list mb-5 mt-3">
-      <app-location-accordion
-        [sublocations]="articleData.sublocations"
-      ></app-location-accordion>
+      <app-location-accordion 
+      [sublocations]="articleData.sublocations">
+      </app-location-accordion>
     </div>
 
     <!-- Footer (Move to other Article + Delete Article) -->
     <app-article-footer
-      (delete)="deleteArticle()"
-      [link]="locationOverviewUrl"
-      [label]="'Back to Locations'"
-      [deleteMessage]="'Delete ' + articleData.name + '?'"
-    ></app-article-footer>
+    (delete)="deleteArticle()"
+    [link]="locationOverviewUrl"
+    [label]="'Back to Locations'"
+    [deleteMessage]="'Delete ' + articleData.name + '?'">
+    </app-article-footer>
   </article>
 </div>

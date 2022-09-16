@@ -2,46 +2,50 @@
     <article class="container">
         <h1 class="text-center">Session Audio Files</h1>
 
-        <div class="mb-3 row mx-0" *ngIf="hasCreatePermission">
-            <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
-                <i class="fa fa-plus"></i>
-                Add Recording
-            </a>
-        </div>
+        <ng-container *ngIf="hasCreatePermission">
+            <div class="mb-3 row mx-0">
+                <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
+                    <i class="fa fa-plus"></i>
+                    Add Recording
+                </a>
+            </div>
+        </ng-container>
+
 
         <!-- Requires m-0 because on mobile it else goes into overflow -->
         <div class="row">
             <!-- Normal Session Audio Cards -->
-            <div class="col-md-4 col-sm-6" *ngFor="let sessionAudio of sessionAudioFiles; let audioIndex=index">
-                <div class="card my-3">
-                    <!-- Card Title -->
-                    <div class="card-header">
-                        <h4 class="text-center card-title mb-0">{{ sessionAudio.name }}</h4>
-                    </div>
-
-                    <!-- Card Body -->
-                    <div class="card-body d-flex justify-content-center flex-column">
-                        <a routerLink="{{ sessionAudioURLs[audioIndex]}}" class="text-center btn btn-primary mb-2"> 
-                            <span class="fas fa-desktop"></span>
-                            <strong> Stream </strong>
-                        </a>
-
-                        <a 
-                        href="{{ constants.wikiUrl }}/{{ sessionAudioFiles[audioIndex].download_url }}"
-                        target="_blank"
-                        class="text-center btn btn-dark"
-                        > 
-                            <span class="fas fa-download"></span>
-                            <strong> Download </strong>
-                        </a>
+            <ng-container *ngFor="let sessionAudio of sessionAudioFiles; let audioIndex=index">
+                <div class="col-md-4 col-sm-6">
+                    <div class="card my-3">
+                        <!-- Card Title -->
+                        <div class="card-header">
+                            <h4 class="text-center card-title mb-0">{{ sessionAudio.name }}</h4>
+                        </div>
+    
+                        <!-- Card Body -->
+                        <div class="card-body d-flex justify-content-center flex-column">
+                            <a [routerLink]="sessionAudioURLs[audioIndex]" class="text-center btn btn-primary mb-2"> 
+                                <span class="fas fa-desktop"></span>
+                                <strong> Stream </strong>
+                            </a>
+    
+                            <a [href]="constants.wikiUrl + '/' + sessionAudioFiles[audioIndex].download_url"
+                            target="_blank"
+                            class="text-center btn btn-dark"> 
+                                <span class="fas fa-download"></span>
+                                <strong> Download </strong>
+                            </a>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </ng-container>
+
         </div>
 
         <!-- Button To Frontpage -->
         <div class="row mx-0">
-            <div class="col-md-3 mt-5 btn btn-secondary" routerLink="{{ homeUrl }}">
+            <div class="col-md-3 mt-5 btn btn-secondary" [routerLink]="homeUrl">
                 Back To Frontpage
             </div>
         </div>

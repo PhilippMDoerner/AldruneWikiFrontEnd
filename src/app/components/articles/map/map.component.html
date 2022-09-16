@@ -1,28 +1,35 @@
 <div class="main" #article>
     <article class="container">
         <!-- Heading -->
-        <div class="row" *ngIf="hasUpdatePermission">
-            <div class="col-12">
-                <app-edit-toggle 
-                [isInUpdateState]=false 
-                [link]="updateMapUrl"
-                ></app-edit-toggle>
+        <ng-container *ngIf="hasUpdatePermission">
+            <div class="row">
+                <div class="col-12">
+                    <app-edit-toggle 
+                    [isInUpdateState]=false 
+                    [link]="updateMapUrl"
+                    ></app-edit-toggle>
+                </div>
             </div>
-        </div>
+        </ng-container>
         
-        <div class="row text-center" *ngIf="maps.length > 0">
-            <h3 class="icon-container col">
-                <!-- Map-Selector -->
-                <!-- TODO: Add font awesome icons to the select choices like this https://stackoverflow.com/questions/36743041/font-awesome-icon-in-select-option -->
-                Map of
-                <select name="map" id="map" class="mw-100" #mapChoice (change)="onMapChange($event)">
-                    <option *ngFor="let map of maps" value="{{map.name}}">{{map.name}}</option>
-                </select> 
-            </h3>
-        </div>
+        <ng-container *ngIf="maps.length > 0">
+            <div class="row text-center">
+                <h3 class="icon-container col">
+                    <!-- Map-Selector -->
+                    <!-- TODO: Add font awesome icons to the select choices like this https://stackoverflow.com/questions/36743041/font-awesome-icon-in-select-option -->
+                    Map of
+                    <select name="map" id="map" class="mw-100" #mapChoice (change)="onMapChange($event)">
+                        <ng-container *ngFor="let map of maps">
+                            <option [value]="map.name">{{map.name}}</option>
+                        </ng-container>
+                    </select> 
+                </h3>
+            </div>
+        </ng-container>
+
 
         <div class="row mb-3">
-            <div class="col-md-3" routerLink="{{ createMapUrl }}">
+            <div class="col-md-3" [routerLink]="createMapUrl">
                 <div class="btn btn-primary w-100">
                     <span class="fas fa-plus"></span>
                     Add Map
@@ -31,16 +38,16 @@
         </div>
 
         <!-- Leaflet Map -->
-        <div class="row" *ngIf="maps.length > 0; else noMapMessage">
-            <div class="mb-5 col" *ngIf="articleData; else loading">
-                <app-leaflet-map 
-                [map]="articleData"
-                [campaign]="campaign"
-                ></app-leaflet-map>
+        <ng-container *ngIf="maps.length > 0; else noMapMessage">
+            <div class="row">
+                <div class="mb-5 col" *ngIf="articleData; else loading">
+                    <app-leaflet-map 
+                    [map]="articleData"
+                    [campaign]="campaign"
+                    ></app-leaflet-map>
+                </div>
             </div>
-        </div>
-
-
+        </ng-container>
 
         <!-- Footer (Move to other Article + Delete Article) -->
         <app-article-footer
@@ -55,19 +62,21 @@
 </div>
 
 <ng-template #noMapMessage>
-    <div class="row justify-content-center align-items-center flex-column mt-5" *ngIf="hasCreatePermission; else noMapMessageGuest">
-        <p class="h4"> <strong> There's no map yet! Want to add one? </strong> </p>
-        <a routerLink="{{ createMapUrl }}" class="mt-3 btn btn-lg btn-primary col-sm-4">
-            <span class="fas fa-plus"></span>
-            Add Map
-        </a>
-    </div>
+    <ng-container *ngIf="hasCreatePermission; else noMapMessageGuest">
+        <div class="row justify-content-center align-items-center flex-column mt-5">
+            <p class="h4"> <strong> There's no map yet! Want to add one? </strong> </p>
+            <a [routerLink]="createMapUrl" class="mt-3 btn btn-lg btn-primary col-sm-4">
+                <span class="fas fa-plus"></span>
+                Add Map
+            </a>
+        </div>
+    </ng-container>
 </ng-template>
 
 <ng-template #noMapMessageGuest>
     <div class="row justify-content-center align-items-center flex-column mt-5">
         <p class="h4"><strong> There's no map yet, but maybe there will be in the future! </strong></p>
-        <a routerLink="{{ homeUrl }}" class="mt-3 btn btn-lg btn-secondary">
+        <a [routerLink]="homeUrl" class="mt-3 btn btn-lg btn-secondary">
             Back to home page
         </a>
     </div>

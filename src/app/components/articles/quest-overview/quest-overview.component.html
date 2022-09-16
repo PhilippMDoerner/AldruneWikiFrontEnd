@@ -12,91 +12,86 @@
             </div>
         </div>
 
-        <div *ngFor="let questTaker of quests" class="row mb-5">
-            <div class="mb-3 col-12">
-                <div class="row">
-                    <!-- Outer Table Heading -->
-                    <h4 class="col-md-9 my-auto px-0">
-                        {{questTaker.key}}'s Quests
-                    </h4>
-
-                    <!-- Filterselect -->
-                    <select 
-                    name="quest-status" 
-                    class="col-md-3" 
-                    [(ngModel)]="filterStates[questTaker.key]"
-                    >
-                        <option selected value="Default">Default</option>
-                        <option value="All">All</option>
-                        <option 
-                        *ngFor="let filterStateType of filterStateTypes" 
-                        value="{{filterStateType}}"
-                        >
-                            {{filterStateType}}
-                        </option>
-                    </select>
+        <ng-container *ngFor="let questTaker of quests">
+            <div class="row mb-5">
+                <div class="mb-3 col-12">
+                    <div class="row">
+                        <!-- Outer Table Heading -->
+                        <h4 class="col-md-9 my-auto px-0">
+                            {{questTaker.key}}'s Quests
+                        </h4>
+    
+                        <!-- Filterselect -->
+                        <select 
+                        name="quest-status" 
+                        class="col-md-3" 
+                        [(ngModel)]="filterStates[questTaker.key]">
+                            <option selected value="Default">Default</option>
+                            <option value="All">All</option>
+                            <ng-container *ngFor="let filterStateType of filterStateTypes" >
+                                <option [value]="filterStateType">
+                                    {{filterStateType}}
+                                </option>
+                            </ng-container>
+                        </select>
+                    </div>
                 </div>
-            </div>
-
-            <table class="table table-dark table-striped mytable pb-2">
-                <!-- Inner Table Heading -->
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col" class="hide-on-mobile">
-                            Description
-                        </th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-
-                <!-- Table Body -->
-                <tbody id="{{questTaker.key}}-quests">
-                    <tr 
-                    *ngFor="let quest of questTaker.value; let questIndex = index" 
-                    [ngClass]='{"d-none": isFilteredOut(filterStates[questTaker.key], quest.status)}'
-                    >
-                        <!-- Quest Name Column -->
-                        <td>
-                            <a 
-                            id="quest{{ quest.pk }}" 
-                            routerLink="{{ quest.getAbsoluteRouterUrl() }}"
+    
+                <table class="table table-dark table-striped mytable pb-2">
+                    <!-- Inner Table Heading -->
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col" class="hide-on-mobile">
+                                Description
+                            </th>
+                            <th scope="col">Status</th>
+                        </tr>
+                    </thead>
+    
+                    <!-- Table Body -->
+                    <tbody [id]="questTaker.key + '-quests'">
+                        <ng-container *ngFor="let quest of questTaker.value; let questIndex = index">
+                            <tr 
+                        
+                            [ngClass]='{"d-none": isFilteredOut(filterStates[questTaker.key], quest.status)}'
                             >
-                                 <strong>{{ quest.name }}</strong>
-                            </a>
-                        </td>
-                        <!-- Quest Abstract -->
-                        <td class="hide-on-mobile"> {{ quest.abstract }}</td>
-                        <!-- Quest Status -->
-                        <td 
-                        [ngClass]="{
-                            'completed bg-success': quest.status === 'Completed',
-                            'on-hold bg-warning': quest.status === 'On Hold',
-                            'failed bg-danger': quest.status === 'Failed'
-                        }">
-                            <i 
-                                [ngClass]="{
-                                    'fa': true,
-                                    'fa-check-square-o': quest.status === 'Completed',
-                                    'fa-hourglass-half': quest.status === 'On Hold',
-                                    'fa-times': quest.status === 'Failed',
-                                    'fa-spinner': quest.status === 'In progress'
-                                }" 
-                                title="quest.status"
-                            ></i>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+                                <!-- Quest Name Column -->
+                                <td>
+                                    <a [id]="'quest' + quest.pk" [routerLink]="quest.getAbsoluteRouterUrl()">
+                                        <strong>{{ quest.name }}</strong>
+                                    </a>
+                                </td>
+                                <!-- Quest Abstract -->
+                                <td class="hide-on-mobile"> {{ quest.abstract }}</td>
+                                <!-- Quest Status -->
+                                <td [ngClass]="{
+                                    'completed bg-success': quest.status === 'Completed',
+                                    'on-hold bg-warning': quest.status === 'On Hold',
+                                    'failed bg-danger': quest.status === 'Failed'
+                                }">
+                                    <i [ngClass]="{
+                                        'fa': true,
+                                        'fa-check-square-o': quest.status === 'Completed',
+                                        'fa-hourglass-half': quest.status === 'On Hold',
+                                        'fa-times': quest.status === 'Failed',
+                                        'fa-spinner': quest.status === 'In progress'
+                                    }" 
+                                    title="quest.status"></i>
+                                </td>
+                            </tr>
+                        </ng-container>
+
+                    </tbody>
+                </table>
+            </div>
+        </ng-container>
+
     
         <div class="row">
-            <div 
-            class="btn btn-secondary col-md-3" 
-            routerLink="{{ homeUrl }}"
-            >
+            <a class="btn btn-secondary col-md-3" [routerLink]="homeUrl">
                 Back To Frontpage
-            </div>
+            </a>
         </div>
     </article>
 </div>

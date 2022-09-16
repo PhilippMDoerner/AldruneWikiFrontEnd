@@ -3,7 +3,7 @@
         <h3 class="text-center"> Quote Overview </h3>
         <h5 class="text-center"> 
             Quotes of: 
-            <a routerLink="{{ characterUrl }}">
+            <a [routerLink]="characterUrl">
                 {{ character.name }}
             </a>
         </h5>
@@ -13,26 +13,26 @@
             Add Quote 
         </div>
 
-        <div *ngFor="let quote of articles; let quoteIndex = index" class="mb-5">
-            <!-- Quote Heading -->
-            <h4 *ngIf="quote.pk"> Session {{ quote.session_details.session_number }} </h4>
-            <h4 *ngIf="!quote.pk"> Create Quote </h4>
-
-            <!-- Quote Body -->
-            <app-quotefield
-            [character]="character"
-            [campaign]="campaign"
-            [quote]="quote"
-            (delete)="onArticleDelete(quoteIndex)"
-            (create)="articles[quoteIndex]=$event"
-            ></app-quotefield>
-        </div>
+        <ng-container *ngFor="let quote of articles; let quoteIndex = index">
+            <div class="mb-5">
+                <!-- Quote Heading -->
+                <h4 *ngIf="quote.pk"> Session {{ quote.session_details.session_number }} </h4>
+                <h4 *ngIf="!quote.pk"> Create Quote </h4>
+    
+                <!-- Quote Body -->
+                <app-quotefield
+                [character]="character"
+                [campaign]="campaign"
+                [quote]="quote"
+                (delete)="onArticleDelete(quoteIndex)"
+                (create)="articles[quoteIndex]=$event"
+                ></app-quotefield>
+            </div>
+        </ng-container>
 
 
         <div class="col-md-3 px-0">
-            <a
-            routerLink="{{this.character.getAbsoluteRouterUrl()}}" 
-            class="btn btn-secondary w-100">
+            <a [routerLink]="this.character.getAbsoluteRouterUrl()" class="btn btn-secondary w-100">
                 Back to {{ character.name }}
             </a>
         </div>

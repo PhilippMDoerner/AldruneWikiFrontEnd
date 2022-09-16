@@ -1,25 +1,29 @@
 <div class="main" #article>
     <article class="container">
-        <div class="row" *ngIf="hasUpdatePermission">
-            <div class="col-12">
-                <app-edit-toggle 
-                [isInUpdateState]=false 
-                [link]="'update'"
-                ></app-edit-toggle>
+        <ng-container *ngIf="hasUpdatePermission">
+            <div class="row">
+                <div class="col-12">
+                    <app-edit-toggle 
+                    [isInUpdateState]="false" 
+                    [link]="'update'"
+                    ></app-edit-toggle>
+                </div>
             </div>
-        </div>
+        </ng-container>
 
         <!-- Heading -->
         <div class="row">
             <h1 class="text-center col"> {{ articleData.name }} </h1>
         </div>
         <div class="row">
-            <p *ngIf="articleData.owner_details" class="text-center col mb-5"> 
-                Owned by: 
-                <a routerLink="{{ ownerUrl }}">
-                    {{ articleData.owner_details.name }}
-                </a>
-            </p>
+            <ng-container *ngIf="articleData.owner_details">
+                <p class="text-center col mb-5"> 
+                    Owned by: 
+                    <a [routerLink]="ownerUrl">
+                        {{ articleData.owner_details.name }}
+                    </a>
+                </p>
+            </ng-container>
         </div>
 
 

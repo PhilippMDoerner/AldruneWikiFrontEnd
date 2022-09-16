@@ -4,27 +4,20 @@
     <div class="row">
       <h1 class="text-center col">
         Sessions
-        <app-tooltip-infocircle
-          [tooltipMessage]="
-            'A list of all sessions that happened this campaign'
-          "
-        ></app-tooltip-infocircle>
+        <app-tooltip-infocircle [tooltipMessage]="'A list of all sessions that happened this campaign'">
+        </app-tooltip-infocircle>
       </h1>
     </div>
 
     <div class="mb-3 row">
-      <div
-        class="btn btn-primary col-lg-2 col-sm-3"
-        (click)="addArticle()"
-        title="Add Session"
-      >
+      <div class="btn btn-primary col-lg-2 col-sm-3" (click)="addArticle()" title="Add Session">
         <i class="fa fa-plus"></i>
         Add Session
       </div>
     </div>
 
     <!-- Sessions -->
-    <div *ngFor="let session of articles; let i = index">
+    <ng-container *ngFor="let session of articles; let i = index">
       <app-session
         #ruleElements
         [cardData]="session"
@@ -32,11 +25,11 @@
         [index]="i"
         (cardDelete)="onArticleDelete(i)"
       ></app-session>
-    </div>
+    </ng-container>
 
     <!-- Button to Frontpage -->
     <div class="row mt-5">
-      <a class="btn btn-secondary col-md-3" routerLink="{{ homeUrl }}">
+      <a class="btn btn-secondary col-md-3" [routerLink]="homeUrl">
         Back To Frontpage
       </a>
     </div>

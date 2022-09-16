@@ -52,11 +52,13 @@
             <strong class="col-3">Color: </strong> 
 
             <span class="col-md-5 col-9"> 
-                <span *ngIf="articleData.color">{{articleData.color}}</span> 
-                <span *ngIf="!articleData.color">
+                <ng-container *ngIf="articleData.color">
+                    {{articleData.color}}
+                </ng-container> 
+                <ng-container *ngIf="!articleData.color">
                     {{articleData.type_details.color}}                    
                     <span class="text-muted ml-3"> (from marker type) </span> 
-                </span> 
+                </ng-container> 
             </span>
 
         </div>

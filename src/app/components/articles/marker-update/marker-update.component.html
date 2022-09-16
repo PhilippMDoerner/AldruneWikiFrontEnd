@@ -1,14 +1,17 @@
 <div class="main">
     <article class="mb-5">
         <!-- Heading -->
-        <div *ngIf="(isInOutdatedUpdateState() || isInUpdateState()) && userModel; else createState">
+        <ng-container *ngIf="(isInOutdatedUpdateState() || isInUpdateState()) && userModel; else createState">
             <app-edit-toggle 
             [isInUpdateState]=true 
             [link]="updateCancelUrl"
             ></app-edit-toggle>
 
-            <h2 class="text-center"> Updating Marker for {{userModel.location_details.name}} on {{userModel.map_details.name}} </h2>
-        </div>
+            <h2 class="text-center"> 
+                Updating Marker for {{userModel.location_details.name}} 
+                on {{userModel.map_details.name}} 
+            </h2>
+        </ng-container>
 
         <ng-template #createState>
             <app-edit-toggle 

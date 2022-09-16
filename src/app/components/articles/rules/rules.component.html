@@ -6,15 +6,17 @@
             <h1 class="text-center col">Rules</h1>
         </div>
 
-        <div class="mb-3 row" *ngIf="tokenService.isAdmin()">
-            <a class="btn btn-primary col-lg-2 col-sm-3" (click)="addArticle()"> 
-                <i class="fa fa-plus"></i>
-                Add Rule
-            </a>
-        </div>
+        <ng-container *ngIf="tokenService.isAdmin()">
+            <div class="mb-3 row">
+                <a class="btn btn-primary col-lg-2 col-sm-3" (click)="addArticle()"> 
+                    <i class="fa fa-plus"></i>
+                    Add Rule
+                </a>
+            </div>
+        </ng-container>
 
         <!-- Rules -->
-        <div *ngFor="let rule of articles; let i = index">
+        <ng-container *ngFor="let rule of articles; let i = index">
             <app-rule
             #ruleElements
             [cardData]="rule"
@@ -22,11 +24,11 @@
             [index]="i"
             (cardDelete)="onArticleDelete(i)"
             ></app-rule>
-        </div>
+        </ng-container>
 
         <!-- Button to Frontpage -->
         <div class="row mt-5">
-            <a class="btn btn-secondary col-md-3" routerLink="{{ homeUrl }}">
+            <a class="btn btn-secondary col-md-3" [routerLink]="homeUrl">
                 Back To Frontpage
             </a>
         </div>
