@@ -13,21 +13,25 @@
     font-size: 16px;
 }
 
-.badge a{
-    border-bottom: none;
-}
-
 .badge{
     background-color: var(--wiki-background-2);
-}
 
-.badge a:hover{
-    color: var(--link-blue) !important;
-}
+    a{
+        border-bottom: none;
+    }
 
-.badge .icon{
-    transition: display 0.2s;
-    display: none;
+    a:hover{
+        color: var(--link-blue) !important;
+    }
+    
+    .icon{
+        transition: display 0.2s;
+        display: none;
+    }
+
+    .fa-trash:hover{
+        color: red;
+    }
 }
 
 .badge:hover .icon{
@@ -48,10 +52,6 @@
 }
 
 .fa-times:hover{
-    color: red;
-}
-
-.badge .fa-trash:hover{
     color: red;
 }
 

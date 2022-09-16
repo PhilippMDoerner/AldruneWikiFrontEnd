@@ -8,118 +8,127 @@
     </h4>
 </div>
 
-<div class="encounter-list mb-5 mt-3" *ngIf="isInDisplayState(); else EncounterForm">
-    <ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)" [animation]="true">
-        <ngb-panel id="static-{{i}}" *ngFor="let encounter of encounters; let i = index">
+<ng-container *ngIf="isInDisplayState(); else EncounterForm">
+    <div class="encounter-list mb-5 mt-3">
+        <ngb-accordion [closeOthers]="true" (panelChange)="onPanelChange($event)" [animation]="true">
+            <ng-container *ngFor="let encounter of encounters; let i = index">
+                <ngb-panel [id]="'static-'+i">
+    
+                    <!-- Panel Title -->
+                    <ng-template ngbPanelTitle>
+                        <div class="d-flex align-items-center justify-content-between panel-title">
+                            <span class="encounter-title" [innerHTML]="encounter.name"></span>
+                            <i class="fa float-right icon"
+                            [ngClass]="{
+                                'fa-chevron-down': !panelIsOpen(i),
+                                'fa-chevron-up': panelIsOpen(i)
+                            }"></i>
+                        </div>
+                    </ng-template>
+        
+                    <!-- Panel Content -->
+                    <ng-template ngbPanelContent>
+                        <!-- Edit Toggler -->
+                        <div class="btn btn-secondary float-right" 
+                        (click)="fullEditEncounter(encounter)" 
+                        [ngClass]="{'d-none': !hasUpdatePermission}"
+                        >
+                            <i class="fa fa-pencil"></i>
+                        </div>
+        
+                        <!-- Encounter -->
+                        <div class="mb-1">
+                            <app-textfield 
+                            [initialText]="encounter.description"
+                            [heading]="encounter.title"
+                            [allowEdit]="false"
+                            (updateText)="onEncounterUpdate($event, i)"
+                            ></app-textfield>
+                        </div>
+        
+                        <hr class="white-line">
+                        <!-- Encounter Connections -->
+                        <div class="encounter-connections d-inline-flex">
+                            <span class="mr-4 tag-label"> Characters: </span>
+                            <div class="d-inline-flex align-items-center flex-wrap">
 
-            <!-- Panel Title -->
-            <ng-template ngbPanelTitle>
-                <div class="d-flex align-items-center justify-content-between panel-title">
-                    <span class="encounter-title" [innerHTML]="encounter.name"></span>
-                    <i [ngClass]="{
-                        'fa float-right icon': true,
-                        'fa-chevron-down': !panelIsOpen(i),
-                        'fa-chevron-up': panelIsOpen(i)
-                    }"
-                    ></i>
-                </div>
-            </ng-template>
+                                <!-- Connection List -->
+                                <ng-container *ngFor="let connection of encounter.encounterConnections; let connectionIndex=index">
+                                    <span class="badge badge-secondary mr-2 p-2">
+                                        <a [routerLink]="encounterConnectionUrls[i][connectionIndex]">
+                                            {{ connection.character_details.name }}
+                                        </a>
+                                        <ng-container *ngIf="hasDeletePermission">
+                                            <i class="fa fa-trash icon ml-1" 
+                                            (click)="deleteEncounterConnection(encounter, connection)"></i>
+                                        </ng-container>
+                                    </span>
+                                </ng-container>
+        
+                                <!-- Connection Create Form -->
+                                <ng-container *ngIf="inEncounterConnectionCreationState && hasCreatePermission">
+                                    <form class="d-flex align-items-center" (submit)="createEncounterConnection(encounter)">
 
-            <!-- Panel Content -->
-            <ng-template ngbPanelContent>
-                <!-- Edit Toggler -->
-                <div 
-                class="btn btn-secondary float-right" 
-                (click)="fullEditEncounter(encounter)" 
-                [ngClass]="{'d-none': !hasUpdatePermission}"
-                >
-                    <i class="fa fa-pencil"></i>
-                </div>
+                                        <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
+                                            <ng-container *ngFor="let character of characters">
+                                                <option [value]="character.pk">{{character.name}}</option>
+                                            </ng-container>
+                                        </select>
+            
+                                        <!-- Connection Create Icon-Buttons -->
+                                        <i class="fa icon mx-2 fa-times fa-1-5x" (click)="toggleEncounterConnectionCreationState()"></i>
+                                        <button type="submit">
+                                            <i class="fa icon fa-check fa-1-5x"></i>
+                                        </button>
+                                        
+                                    </form>
+                                </ng-container>
 
-                <!-- Encounter -->
-                <div class="mb-1">
-                    <app-textfield 
-                    [initialText]="encounter.description"
-                    [heading]="encounter.title"
-                    [allowEdit]="false"
-                    (updateText)="onEncounterUpdate($event, i)"
-                    ></app-textfield>
-                </div>
-
-                <hr class="white-line">
-                <!-- Encounter Connections -->
-                <div class="encounter-connections d-inline-flex">
-                    <span class="mr-4 tag-label"> Characters: </span>
-                    <div class="d-inline-flex align-items-center flex-wrap">
-                        <!-- Connection List -->
-                        <span class="badge badge-secondary mr-2 p-2" *ngFor="let connection of encounter.encounterConnections; let connectionIndex=index">
-                            <a routerLink="{{ encounterConnectionUrls[i][connectionIndex] }}">
-                                {{ connection.character_details.name }}
-                            </a>
-                            <i 
-                            class="fa fa-trash icon ml-1" 
-                            (click)="deleteEncounterConnection(encounter, connection)" 
-                            *ngIf="hasDeletePermission"
-                            ></i>
-                        </span>
-
-                        <!-- Connection Create Form -->
-                        <form class="d-flex align-items-center" *ngIf="inEncounterConnectionCreationState && hasCreatePermission" (submit)="createEncounterConnection(encounter)">
-                            <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
-                                <option *ngFor="let character of characters" value="{{character.pk}}">{{character.name}}</option>
-                            </select>
-
-                                                    <!-- Connection Create Icon-Buttons -->
-                            <i class="fa icon mx-2 fa-times fa-1-5x" (click)="toggleEncounterConnectionCreationState()"></i>
-
-                            <button type="submit">
-                                <i class="fa icon fa-check fa-1-5x"></i>
-                            </button>
-                            
-                        </form>
-
-                        <i 
-                        class="fa icon mx-2 fa-plus fa-1-5x" 
-                        *ngIf="!inEncounterConnectionCreationState && hasCreatePermission"
-                        (click)="toggleEncounterConnectionCreationState()"
-                        ></i>
-                    </div>
-                </div>
-
-                <!-- Encounter Footer/Delete Toggle -->
-                <app-delete-toggle
-                [deleteMessage]="'Delete this encounter?'"
-                (deleteEvent)="deleteEncounter(encounter)"
-                class="col-md-9 float-right px-0"
-                ></app-delete-toggle>
-
-            </ng-template>
-
-        </ngb-panel>
-    </ngb-accordion>
-</div>
+                                <ng-container *ngIf="!inEncounterConnectionCreationState && hasCreatePermission">
+                                    <i class="fa icon mx-2 fa-plus fa-1-5x" 
+                                    (click)="toggleEncounterConnectionCreationState()"></i>
+                                </ng-container>
+                            </div>
+                        </div>
+        
+                        <!-- Encounter Footer/Delete Toggle -->
+                        <app-delete-toggle
+                        [deleteMessage]="'Delete this encounter?'"
+                        (deleteEvent)="deleteEncounter(encounter)"
+                        class="col-md-9 float-right px-0"
+                        ></app-delete-toggle>
+        
+                    </ng-template>
+        
+                </ngb-panel>
+            </ng-container>
+        </ngb-accordion>
+    </div>
+</ng-container>
 
 <!-- Form to Update Encounters -->
 <ng-template #EncounterForm>
     <div class="my-3 py-3 px-3 card">
         <h4 [innerHTML]="userModel.title"></h4>
 
-        <app-formly-formcontainer
-        *ngIf="isInUpdateState()"
-        [model]="userModel" 
-        [fields]="formlyFields" 
-        (formlySubmit)="updateEncounter(userModel)" 
-        (formlyCancel)="formState=constants.displayState"
-        ></app-formly-formcontainer>
-        
-        <app-compare-form-container
-        *ngIf="isInOutdatedUpdateState()"
-        [formlyFields]="formlyFields"
-        [modelFromUser]="userModel"
-        [modelFromServer]="serverModel"
-        [displayVertically]="true"
-        (updateSubmit)="updateEncounter(userModel)"
-        (cancel)="formState=constants.displayState"
-        ></app-compare-form-container>  
+        <ng-container *ngIf="isInUpdateState()">
+            <app-formly-formcontainer
+            [model]="userModel" 
+            [fields]="formlyFields" 
+            (formlySubmit)="updateEncounter(userModel)" 
+            (formlyCancel)="formState=constants.displayState"
+            ></app-formly-formcontainer>
+        </ng-container>
+
+        <ng-container *ngIf="isInOutdatedUpdateState()">
+            <app-compare-form-container
+            [formlyFields]="formlyFields"
+            [modelFromUser]="userModel"
+            [modelFromServer]="serverModel"
+            [displayVertically]="true"
+            (updateSubmit)="updateEncounter(userModel)"
+            (cancel)="formState=constants.displayState"
+            ></app-compare-form-container>  
+        </ng-container>
     </div>
 </ng-template>
