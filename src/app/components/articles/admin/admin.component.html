@@ -1,5 +1,5 @@
 <div class="main" #adminCard>
-    <div class="btn btn-secondary mb-3" routerLink="{{campaignOverviewUrl}}">
+    <div class="btn btn-secondary mb-3" [routerLink]="campaignOverviewUrl">
         <span class="fas fa-globe-americas"></span>
         Back To campaign overview
     </div>
@@ -18,14 +18,14 @@
                 <div class="align-self-end position-relative top1">
                     <!-- Add Users -->
                     <div class="btn btn-dark border-white" (click)="toggleUserCreateState()">
-                        <span *ngIf="!isUserCreateState">
+                        <ng-container *ngIf="!isUserCreateState">
                             <span class="fa fa-user-plus"></span>
                             Add User
-                        </span>
-                        <span *ngIf="isUserCreateState">
+                        </ng-container>
+                        <ng-container *ngIf="isUserCreateState">
                             <span class="fa fa-times"></span>
                             Cancel User Creation
-                        </span>
+                        </ng-container>
                     </div>
                 </div>
 
@@ -34,17 +34,18 @@
             <hr class="white-separator">
 
             <!-- New Table Entry -->
-
-            <div *ngIf="isUserCreateState" class="my-2 card p-3">
-                <h4>Adding new User</h4>
-                <!-- Form -->
-                <app-formly-formcontainer 
-                [model]="userModel" 
-                [fields]="userFields" 
-                (formlySubmit)="saveNewUser()" 
-                (formlyCancel)="toggleUserCreateState()"
-                ></app-formly-formcontainer>
-            </div>
+            <ng-container *ngIf="isUserCreateState">
+                <div class="my-2 card p-3">
+                    <h4>Adding new User</h4>
+                    <!-- Form -->
+                    <app-formly-formcontainer 
+                    [model]="userModel" 
+                    [fields]="userFields" 
+                    (formlySubmit)="saveNewUser()" 
+                    (formlyCancel)="toggleUserCreateState()"
+                    ></app-formly-formcontainer>
+                </div>
+            </ng-container>
     
             <!-- Table -->
             <div class="usertable">
@@ -77,14 +78,16 @@
                 </div>
     
                 <!-- Table Entries -->
-                <div class="" *ngFor="let user of users; let i=index" [ngClass]="{'light-row': i%2===0}">
-                    <app-user-row
-                    [index] = "i"
-                    [user] = "user"
-                    [groups]="groups"
-                    (delete)="removeDeletedUser(i)"
-                    ></app-user-row>
-                </div>
+                <ng-container *ngFor="let user of users; let i=index">
+                    <div class="" [ngClass]="{'light-row': i%2 === 0}">
+                        <app-user-row
+                        [index]="i"
+                        [user]="user"
+                        [groups]="groups"
+                        (delete)="removeDeletedUser(i)"
+                        ></app-user-row>
+                    </div>
+                </ng-container>
                 
                 <div class="mt-3">(†): Deactivated/Deleted Account </div>
 
@@ -122,10 +125,12 @@
             <!-- Section Body -->
             <!-- Statistics -->
             <div class="container mb-5">
-                <div class="row" *ngFor="let statistic of statistics | keyvalue">
-                    <div class="col-6 col-sm-3"> {{ statistic.key }}</div>
-                    <div class="col-6 col-sm-3"> {{ statistic.value }}</div>
-                </div>
+                <ng-container *ngFor="let statistic of statistics | keyvalue">
+                    <div class="row">
+                        <div class="col-6 col-sm-3"> {{ statistic.key }}</div>
+                        <div class="col-6 col-sm-3"> {{ statistic.value }}</div>
+                    </div>
+                </ng-container>
             </div>
         </div>
 
@@ -137,21 +142,23 @@
                 <h3 class="mb-0"> 
                     <span class="fas fa-dragon"></span>
                     Campaigns
-                    <i class="ml-3 spinner-border" *ngIf="isWaitingForCampaignCreation"></i>
+                    <ng-container *ngIf="isWaitingForCampaignCreation">
+                        <i class="ml-3 spinner-border"></i>
+                    </ng-container>
                 </h3>
 
                 <!-- Heading Buttons -->
                 <div class="align-self-end position-relative top1">
                     <!-- Add Campaign -->
                     <div class="btn btn-primary border-white" (click)="toggleCampaignCreateState()"> 
-                        <span *ngIf="!isCampaignCreateState">
+                        <ng-container *ngIf="!isCampaignCreateState">
                             <span class="fa fa-plus"></span>
                             Add Campaign
-                        </span>
-                        <span *ngIf="isCampaignCreateState">
+                        </ng-container>
+                        <ng-container *ngIf="isCampaignCreateState">
                             <span class="fa fa-times"></span>
                             Cancel Campaign Creation
-                        </span>
+                        </ng-container>
                     </div>
                 </div> 
             </div>
@@ -159,33 +166,38 @@
             <hr class="white-separator">
 
             <!-- Section Body -->
-            <div class="container mb-5" *ngIf="!isCampaignCreateState && !isWaitingForCampaignCreation">
-                <div class="row mb-4" *ngFor="let campaign of campaigns">
-                    <div class="col-sm-3">
-                        <img [src]="campaign.icon" alt="Icon of campaign {{campaign.name}}" class="mr-3 campaign-icon">
-                        <strong>  {{ campaign.name }} </strong>
-                    </div>
-                    <div class="col-sm-3">Admins: {{campaign.admins.length}}</div>
-                    <div class="col-sm-3">Members: {{campaign.members.length}}</div>
-                    <div class="col-sm-3">Guest: {{campaign.guests.length}}</div>
+            <ng-container *ngIf="!isCampaignCreateState && !isWaitingForCampaignCreation">
+                <div class="container mb-5">
+                    <ng-container *ngFor="let campaign of campaigns">
+                        <div class="row mb-4">
+                            <div class="col-sm-3">
+                                <img [src]="campaign.icon" alt="Icon of campaign {{campaign.name}}" class="mr-3 campaign-icon">
+                                <strong>  {{ campaign.name }} </strong>
+                            </div>
+                            <div class="col-sm-3">Admins: {{campaign.admins.length}}</div>
+                            <div class="col-sm-3">Members: {{campaign.members.length}}</div>
+                            <div class="col-sm-3">Guest: {{campaign.guests.length}}</div>
+                        </div>
+                    </ng-container>
                 </div>
-            </div>
+            </ng-container>
 
             <!-- New Campaign Entry -->
-            <div *ngIf="isCampaignCreateState && !isWaitingForCampaignCreation" class="my-2 card p-3">
-                <h4>Adding new Campaign</h4>
-                <!-- Form -->
-                <app-formly-formcontainer 
-                [model]="campaignModel" 
-                [fields]="campaignFields"
-                (formlySubmit)="createNewCampaign()"
-                (formlyCancel)="toggleCampaignCreateState()"
-                ></app-formly-formcontainer>    
-            </div>
-
+            <ng-container *ngIf="isCampaignCreateState && !isWaitingForCampaignCreation">
+                <div class="my-2 card p-3">
+                    <h4>Adding new Campaign</h4>
+                    <!-- Form -->
+                    <app-formly-formcontainer 
+                    [model]="campaignModel" 
+                    [fields]="campaignFields"
+                    (formlySubmit)="createNewCampaign()"
+                    (formlyCancel)="toggleCampaignCreateState()"
+                    ></app-formly-formcontainer>    
+                </div>
+            </ng-container>
         </div>
 
-        <div class="btn btn-secondary mb-3" routerLink="{{campaignOverviewUrl}}">
+        <div class="btn btn-secondary mb-3" [routerLink]="campaignOverviewUrl">
             <span class="fas fa-globe-americas"></span>
             Back To campaign overview
         </div>
