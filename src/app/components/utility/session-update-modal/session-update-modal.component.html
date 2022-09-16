@@ -30,15 +30,20 @@
 
 <div class="form-group mx-2">
     <!-- Button to show in Create State -->
-    <div *ngIf="formState===constants.createState" class="btn btn-outline-info fa {{icon}}" title="Create new Session" (click)="open(content)"></div>    
+    <ng-container  *ngIf="formState === constants.createState">
+        <div [class]="'btn btn-outline-info fa ' + icon" 
+        title="Create new Session" 
+        (click)="open(content)"></div>   
+    </ng-container>
+     
     <!-- Button to show in Update State -->
-    <div 
-    *ngIf="formState===constants.updateState" 
-    class="btn btn-outline-info fa {{icon}}" 
-    title="Edit selected Session" 
-    (click)="open(content)"
-    [ngClass]="{'d-none': !model}"
-    ></div>
+    <ng-container *ngIf="formState === constants.updateState">
+        <div [class]="'btn btn-outline-info fa ' + icon" 
+        title="Edit selected Session" 
+        (click)="open(content)"
+        [ngClass]="{'d-none': !model}"></div>
+    </ng-container>
+
 </div>
 
 <!-- Loading Spinner -->
