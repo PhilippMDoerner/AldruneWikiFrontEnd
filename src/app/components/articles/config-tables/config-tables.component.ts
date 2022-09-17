@@ -116,7 +116,7 @@ export class ConfigTablesComponent implements OnInit {
     table.service.delete(entryPk).pipe(first()).subscribe(
       (response) => table.entries.splice(entryIndex, 1),
       (error) => this.warnings.showWarning(error)
-    )
+    );
   }
 
 }

@@ -1,10 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { CampaignRole, Constants } from '../app.constants';
-import { UserData, EncodedJWTToken, TokenData } from '../models/jwttoken';
+import { UserData, TokenData, CampaignMemberships } from '../models/jwttoken';
 import { User } from '../models/user';
 
 @Injectable({
@@ -102,7 +100,7 @@ export class TokenService {
   public getCampaignRole(campaignName: string): CampaignRole{
     if(campaignName == null) return null;
 
-    const memberships: any = this.getCampaignMemberships();
+    const memberships: CampaignMemberships = this.getCampaignMemberships();
     if (memberships == null) return null;
 
     const role: string = memberships[campaignName.toLowerCase()];
@@ -110,10 +108,10 @@ export class TokenService {
   }
 
   /**Retrieves campaign memberships of a user from their token */
-  public getCampaignMemberships(): any{
+  public getCampaignMemberships(): CampaignMemberships{
     const data: UserData = TokenService.getUserData();
 
-    const campaignMemberships = {}
+    const campaignMemberships: CampaignMemberships = {}
     for (const campaignIdentifier of Object.keys(data.campaignMemberships)){
       const isIdIdentifier: boolean = campaignIdentifier.startsWith(this.ID_IDENTIFIER_PREFIX);
       if (! isIdIdentifier){

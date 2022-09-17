@@ -55,16 +55,16 @@ export class AppComponent implements OnInit, OnDestroy{
     //or not with every update of the route
     this.routingSubscription = this.router.events
       .pipe(filter(this.isPageReroutingEndEvent))
-      .subscribe((event) => this.onPageReroutingEnd(event));
+      .subscribe((event: NavigationEnd) => this.onPageReroutingEnd(event));
   }
 
 
   /** Checks whether the given routing event is one that is fired at the end of routing, so when the new URL is reached */
-  isPageReroutingEndEvent(e: any): boolean{
+  isPageReroutingEndEvent(e: RouterEvent): boolean{
     return e instanceof NavigationEnd;
   }
 
-  onPageReroutingEnd(routingEvent: NavigationEnd){
+  onPageReroutingEnd(routingEvent: RouterEvent){
     this.updateSidebarAllowanceBasedOnRoute();
     this.showSidebarSubject.next(false);
   }

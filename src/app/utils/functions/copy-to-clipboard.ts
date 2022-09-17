@@ -31,8 +31,8 @@ function userHasElementsSelected(): boolean{
 function createTextContainerElement(text: string): HTMLElement{
     const textContainerElement : HTMLElement = document.createElement('div');
     textContainerElement.innerHTML = text;
-    const temp: any = textContainerElement.textContent; //Necessary as typescript hasn't caught up with browser having implemented replaceAll and thus throws a compiler error unnecessarily
-    textContainerElement.innerHTML = temp.replaceAll(">", "<br\>> ").slice("<br\>".length);
+    const strippedText: string = textContainerElement.textContent;
+    textContainerElement.innerHTML = strippedText.replaceAll(">", "<br\>> ").slice("<br\>".length);
 
     //set the position to be absolute and off the screen
     textContainerElement.style.position = 'absolute';

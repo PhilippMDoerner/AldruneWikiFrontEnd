@@ -45,7 +45,7 @@ export class DiaryentryArticleComponent extends ArticleMixin {
     )
   }
 
-  getQueryParameter(params: Params): any{
+  getQueryParameter(params: Params): {isMainSession: number, sessionNumber: number, authorName: string}{
     const isMainSession: number = parseInt(params.isMainSession);
     const sessionNumber: number = parseInt(params.sessionNumber);
     const authorName: string = params.authorName;

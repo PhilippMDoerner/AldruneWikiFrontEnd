@@ -9,6 +9,7 @@ import { SpellService } from 'src/app/services/spell.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleListMixin } from 'src/app/utils/functions/articleListMixin';
+import { SpellComponent } from '../../utility/spell/spell.component';
 
 @Component({
   selector: 'app-spells',
@@ -42,7 +43,7 @@ export class SpellsComponent extends ArticleListMixin implements OnInit, AfterVi
     )
   }
 
-  getArticleTitle(spell: any){
+  getArticleTitle(spell: SpellComponent){
     return spell.cardData.name;
   }
 

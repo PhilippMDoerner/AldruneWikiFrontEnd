@@ -90,7 +90,7 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
     this.model.campaign = campaign.pk;
   }
 
-  getNextSessionDate(lastSession: any): string{
+  getNextSessionDate(lastSession: SessionObject): string{
     const lastSessionDate: Date = new Date(lastSession.session_date);
     const assumedThisSessionDate: Date = this.addDaysToDate(7, lastSessionDate);
     return this.dateToYYYMMDDString(assumedThisSessionDate);

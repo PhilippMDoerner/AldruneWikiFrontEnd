@@ -7,6 +7,11 @@ import { GlobalUrlParamsService } from 'src/app/services/global-url-params.servi
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 
+interface ErrorType {
+  htmlBody: string, 
+  title: string, 
+  image: string,
+}
 @Component({
   selector: 'app-error',
   templateUrl: './error.component.html',
@@ -26,7 +31,7 @@ export class ErrorComponent implements OnInit, OnDestroy {
 
   errorStatus: number;
 
-  errorContents: any = {
+  errorContents: { [key: number]: ErrorType } = {
     400: {
       htmlBody: "It appears you supplied some invalid inputs!",
       title: "400 Bad Request",

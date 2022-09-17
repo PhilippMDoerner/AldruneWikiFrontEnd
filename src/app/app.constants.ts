@@ -51,7 +51,9 @@ export class Constants{
         'spell': 'violet',
     }}
 
-    public static get articleTypeMetaData(): object[] { 
+    
+
+    public static get articleTypeMetaData(): ArticleMetaData[] { 
       return [
         {
           title: "Creatures", 
@@ -358,4 +360,14 @@ export enum FormState{
   UPDATE,
   UPDATEOUTDATED,
   DELETE,
+}
+
+export interface ArticleMetaData{
+  title: string, 
+  iconClass: string 
+  route: string,
+  color: string,
+  article_types: string[],
+  showInSidebar: boolean,
+
 }

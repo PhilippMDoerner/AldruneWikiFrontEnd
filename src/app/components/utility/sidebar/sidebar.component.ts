@@ -1,5 +1,5 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { CampaignRole, Constants } from 'src/app/app.constants';
+import { ArticleMetaData, CampaignRole, Constants } from 'src/app/app.constants';
 import { RoutingService } from 'src/app/services/routing.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { TokenService } from 'src/app/services/token.service';
@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
 
   parameterSubscription: Subscription;
 
-  sidebarEntries: any;
+  sidebarEntries: ArticleMetaData[];
   showUserSection: boolean = false;
   showAdminSection: boolean = false;
 

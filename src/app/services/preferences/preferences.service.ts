@@ -13,7 +13,7 @@ export class PreferencesService {
     return this.getStoredPreferences(this.searchPreferenceKey);
   }
 
-  storeSearchPreferences(preferences: any): void{
+  storeSearchPreferences(preferences: SearchPreferences): void{
     this.storePreferences(preferences, this.searchPreferenceKey);
   }
 

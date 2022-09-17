@@ -6,8 +6,6 @@ import { copyToClipboard } from '../utils/functions/copy-to-clipboard';
   providedIn: 'root'
 })
 export class WarningsService {
-  notifications: any [];
-
   warnings: object = {
     0: "This can't be done without an internet connection",
     200: "Potential Syntaxerror",

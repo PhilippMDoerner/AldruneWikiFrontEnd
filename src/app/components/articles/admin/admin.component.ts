@@ -45,7 +45,7 @@ export class AdminComponent implements OnInit, AfterViewInit, OnDestroy {
   groups: PermissionGroup[];
 
   //DATABASE VARIABLES
-  statistics: any;
+  statistics: {[key: string]: number};
   databaseDeleteConfirmationCount: number = 0;
 
   //CAMPAIGN VARIABLES

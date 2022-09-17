@@ -28,12 +28,12 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
 
   priorSessionAudioUrl: string;
   nextSessionAudioUrl: string;
-  sessionAudioKeyControlMapping: any = {
-    "Space": this.togglePlayer,
-    "Enter": this.togglePlayer,
-    "KeyM": this.toggleSound,
-    "ArrowRight": this.seekForwards,
-    "ArrowLeft": this.seekBackwards,
+  sessionAudioKeyControlMapping: {[key: string]: (vimeplayer: ElementRef) => void} = {
+    Space: this.togglePlayer,
+    Enter: this.togglePlayer,
+    KeyM: this.toggleSound,
+    ArrowRight: this.seekForwards,
+    ArrowLeft: this.seekBackwards,
   }
 
   deleteRoute = {routeName: "sessionaudio-overview", params: {campaign: null}};
@@ -46,8 +46,8 @@ export class SessionAudioComponent extends ArticleMixin implements OnInit, OnDes
 
   @ContentChild("audioSource") audioSourceChild: ElementRef;
   @ViewChild("audioSource") audioSourceChild2: ElementRef;
-  @ViewChild("vimePlayer") vimePlayer: any; 
-  @ViewChild("playerSection") playerSection: any;
+  @ViewChild("vimePlayer") vimePlayer: ElementRef; 
+  @ViewChild("playerSection") playerSection: ElementRef;
   @ViewChild('article') articleElement: ElementRef;
 
   constructor(

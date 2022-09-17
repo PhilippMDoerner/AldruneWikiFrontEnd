@@ -72,7 +72,7 @@ export class LocationArticleComponent extends ArticleMixin implements OnInit {
     this.locationOverviewUrl = this.routingService.getRoutePath('location-overview', {campaign: campaign.name});
   }
 
-  getQueryParameter(params: Params): any{
+  getQueryParameter(params: Params): {locationName: string, parentLocationName: string}{
     const locationName: string = params['name'];
     const parentLocationName: string = params['parent_name'] ? params['parent_name'] : "None";
     return {locationName, parentLocationName};

@@ -166,30 +166,23 @@ export const fieldMatchValidator = {
  * If you wish to manipulate this, you also have to manipulate in diaryentry-article-update "hasDiaryentryForAuthor"
  * TODO: Fix how this makes way too many calls to the sessions api endpoint for no reason
  */
-async function isSessionAuthorPairUniqueValidator(control: any) {
-  const { session: selectedSessionId, author: selectedAuthorId } =
-    control.value;
+async function isSessionAuthorPairUniqueValidator(control: any): Promise<ValidationErrors> {
+  const { session: selectedSessionId, author: selectedAuthorId } = control.value;
   const sessionFieldConfig = control.controls.session._fields[0];
 
-  const selectFieldOptionsObservable: Observable<any> =
-    sessionFieldConfig.templateOptions.options;
-  const selectFieldOptions: any =
-    await selectFieldOptionsObservable.toPromise();
-  const selectedOption = selectFieldOptions.find(
-    (option) => option.pk === selectedSessionId
-  );
+  const selectFieldOptionsObs: Observable<any> =  sessionFieldConfig.templateOptions.options;
+  const selectFieldOptions: any = await selectFieldOptionsObs.toPromise();
+  const selectedOption = selectFieldOptions.find((option) => option.pk === selectedSessionId);
 
   if (selectedOption == null)
     throw 'WeirdError. You selected a session, its id got into the model and somehow that field is no longer among the options (?)';
 
-  const authorIdsWithDiaryentriesOnSession: number[] =
-    selectedOption.author_ids;
-  const selectedAuthorAlreadyHasDiaryentryOnSession: boolean =
-    authorIdsWithDiaryentriesOnSession.includes(selectedAuthorId);
+  const authorIdsWithDiaryentriesOnSession: number[] = selectedOption.author_ids;
+  const selectedAuthorAlreadyHasDiaryentryOnSession: boolean = authorIdsWithDiaryentriesOnSession.includes(selectedAuthorId);
   const isInitialValue: boolean = control.pristine; //True if this is an initial value, never changed by the user
 
   if (selectedAuthorAlreadyHasDiaryentryOnSession && !isInitialValue) {
-    return null; //{ "isInvalidSessionAuthorPair": true};
+    return { passwordMatch: { message: "That account already has a diaryentry written for that session. Accounts can only have one Diaryentry per session" } };
   }
 
   return null;

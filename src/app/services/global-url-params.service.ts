@@ -142,7 +142,7 @@ export class GlobalUrlParamsService {
    */
   private onRouteResolveStart(event: ResolveStart): void{
     const routeSnapshot: ActivatedRouteSnapshot = event.state.root.firstChild;
-    const routeParams: any = routeSnapshot.params;
+    const routeParams: Params = routeSnapshot.params;
     const routeName: string = routeSnapshot.data.name;
 
     this.updateCurrentlySelectedCampaignFromRoute(routeParams);
@@ -151,7 +151,7 @@ export class GlobalUrlParamsService {
   }
   
 
-  private updateCurrentlySelectedCampaignFromRoute(routeParameters: any): void{
+  private updateCurrentlySelectedCampaignFromRoute(routeParameters: Params): void{
     const campaignName: string = routeParameters?.campaign;
     this.updateCurrentlySelectedCampaign(campaignName);
   }

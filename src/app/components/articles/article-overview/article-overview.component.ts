@@ -9,6 +9,18 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
 import { TokenService } from 'src/app/services/token.service';
 import { CampaignOverview } from 'src/app/models/campaign';
 
+interface OverviewMetaData{
+  image: string,
+  heading: string,
+  processing: (listItems: OverviewItemObject[]) => OverviewItemObject[],
+  overviewTypeEnum: OverviewType,
+}
+interface OverviewMetaDataMap {
+  [key: string]: OverviewMetaData
+}
+
+
+
 @Component({
   selector: 'app-article-overview',
   templateUrl: './article-overview.component.html',
@@ -32,7 +44,7 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
   @ViewChild('overviewMainCard') articleElement: ElementRef;
 
   constants: any = Constants;
-  overviewTypeMetaData: any = {
+  overviewTypeMetaData: OverviewMetaDataMap = {
     character: {
       image: `/assets/overview_images/characters.webp`,
       heading: "Characters",
@@ -105,10 +117,10 @@ export class ArticleOverviewComponent extends PermissionUtilityFunctionMixin imp
     this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaign.name});
   }
 
-  getOverviewConfigs(): any{
+  getOverviewConfigs(): OverviewMetaData{
     const urlSplit: string[] = this.router.url.split('/');
     this.overviewTypeName = urlSplit[urlSplit.length - 2];
-    const configs: any = this.overviewTypeMetaData[this.overviewTypeName];
+    const configs: OverviewMetaData = this.overviewTypeMetaData[this.overviewTypeName];
     return configs;
   }
 

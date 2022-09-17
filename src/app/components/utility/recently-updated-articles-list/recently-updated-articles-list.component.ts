@@ -1,6 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { first } from 'rxjs/operators';
-import { Constants } from 'src/app/app.constants';
+import { ArticleMetaData, Constants } from 'src/app/app.constants';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
 import { RecentlyUpdatedService } from 'src/app/services/recently-updated.service';
 import { RoutingService } from 'src/app/services/routing.service';
@@ -37,8 +37,8 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
   }
 
   getArticleTypeMetaData(article_type: string) {
-    const allMetaData: any = Constants.articleTypeMetaData;
-    const metaData = allMetaData.filter((metaDataEntry) =>
+    const allMetaData: ArticleMetaData[] = Constants.articleTypeMetaData;
+    const metaData: ArticleMetaData[] = allMetaData.filter((metaDataEntry) =>
       metaDataEntry.article_types?.includes(article_type)
     );
 
