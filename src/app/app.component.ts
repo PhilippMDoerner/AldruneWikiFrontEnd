@@ -117,12 +117,12 @@ export class AppComponent implements OnInit, OnDestroy{
 
   //TOUCH EVENT HANDLERS
   @onlyOnTouchDevices
-  onSwipeLeft(event: any): void{
+  onSwipeLeft(): void{
     this.showSidebarSubject.next(false);
   }
 
   @onlyOnTouchDevices
-  onSwipeRight(event: any): void{
+  onSwipeRight(): void{
     this.showSidebarSubject.next(true);
   }
 
