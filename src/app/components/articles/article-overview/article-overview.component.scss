@@ -35,11 +35,6 @@ ul{
 #player-characters img{
     max-height: 7rem;
     object-fit: cover;
-    transition: max-height 0.2s ease-in-out;
-}
-
-#player-characters .card:hover > img{
-    max-height: 20rem;
 }
 
 @media(max-width: $medium-screen){
