@@ -27,7 +27,7 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
 })
 export class CampaignOverviewComponent implements OnInit {
   campaignData: CampaignOverview[];
-  constants: Constants = Constants;
+  constants: any = Constants;
   isLoading: boolean = false;
 
   //URLs

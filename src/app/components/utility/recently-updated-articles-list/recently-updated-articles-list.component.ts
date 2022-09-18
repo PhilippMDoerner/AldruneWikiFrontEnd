@@ -15,7 +15,7 @@ export class RecentlyUpdatedArticlesListComponent implements OnInit {
   articles: OverviewItemObject[];
   @Input() campaign: string;
 
-  constants: Constants = Constants;
+  constants: any = Constants;
   pageNumber: number = 0;
   isLoadingNextPage: boolean = false;
   hasLoadedAllArticles: boolean = false;
