@@ -1,20 +1,17 @@
 import { Injectable } from '@angular/core';
 import {
   ActivatedRouteSnapshot,
-  Params,
   Resolve,
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { Observable, of } from 'rxjs';
-import { filter, first } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { ArticleObject } from 'src/app/models/base-models';
 import { CampaignObject, CampaignOverview } from 'src/app/models/campaign';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import {
-  BaseArticleResolver,
   BaseArticleUpdateResolver,
 } from './base-resolvers';
 
@@ -27,6 +24,18 @@ export class CampaignResolver implements Resolve<CampaignOverview> {
     state: RouterStateSnapshot
   ): Promise<CampaignOverview> {
     return await this.globalUrlParams.getCurrentCampaign();
+  }
+}
+
+@Injectable({ providedIn: 'root'})
+export class GlobalCampaignSetResolver implements Resolve<void>{
+  constructor(private globalUrlParams: GlobalUrlParamsService) {}
+
+  resolve(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot
+  ): void {
+    this.globalUrlParams.autoUpdateCampaignSet();
   }
 }
 

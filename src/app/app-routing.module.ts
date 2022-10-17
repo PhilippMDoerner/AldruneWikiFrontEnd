@@ -43,7 +43,7 @@ import { CampaignComponent } from './components/utility/campaign/campaign.compon
 import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
 import { BaseNamedRoute, AdminRoute, CampaignRoute, GeneralRoute } from './app.routing-models';
 import { SessionsComponent } from './components/articles/sessions/sessions.component';
-import { CampaignDetailResolver, CampaignResolver, CampaignStatisticsResolver, CampaignUpdateResolver } from './utils/resolvers/campaign-resolver';
+import { CampaignDetailResolver, CampaignResolver, CampaignStatisticsResolver, CampaignUpdateResolver, GlobalCampaignSetResolver } from './utils/resolvers/campaign-resolver';
 import { CreatureResolver, CreatureUpdateResolver } from './utils/resolvers/creature-resolver';
 import { CharacterResolver, CharacterUpdateResolver } from './utils/resolvers/character-resolver';
 import { LocationMapCreateResolver, LocationResolver, LocationUpdateResolver } from './utils/resolvers/location-resolver';
@@ -110,7 +110,10 @@ const generalRoutes: GeneralRoute[] = [
 		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/campaigns`, 
 		component: CampaignOverviewComponent, 
 		data:{ name: "campaign-overview"}, 
-		canActivate: [LoginGuardService]
+		canActivate: [LoginGuardService],
+		resolve: {
+			_: GlobalCampaignSetResolver
+		}
 	},
 
 	// Wiki1 Route. Required as Cache may redirect people to /wiki2 when they want to visit /wiki1
