@@ -58,6 +58,11 @@ export class SpellsComponent extends ArticleListMixin implements OnInit, AfterVi
     if(this.selectedClasses.length === 0) return true; //If no classes are selected, all spells should be shown
 
     const playerClasses : SpellPlayerClassConnection[] = spell.player_class_connections;
+    const hasPlayerClass = playerClasses != null;
+    if (!hasPlayerClass){
+      return false;
+    }
+
     const hasClass = playerClasses.some((connection: SpellPlayerClassConnection) => (this.selectedClasses.includes(connection.player_class_details.name)));
     return hasClass;
   }
