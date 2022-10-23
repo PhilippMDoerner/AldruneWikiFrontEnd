@@ -141,32 +141,35 @@
         </div>
       </ng-container>
 
+      <ng-container *ngIf="!this.isInCreateState()">
+        <!-- You cannot add classes to a spell that does not yet exist -->
+        <div>
+          Classes:
+          <ng-container *ngFor="let connection of cardData.player_class_connections">
+            <span class="badge badge-secondary badge-lg p-2 mr-3 pointer"
+            (click)="emitClassSelectEvent($event, connection.player_class_details.name)">
+              {{ connection.player_class_details.name }}
+  
+              <ng-container *ngIf="tokenService.isAdmin()">
+                <span class="fa fa-trash ml-2"
+                (click)="deleteSpellPlayerClassConnection(connection)"
+                ></span>
+              </ng-container>
+            </span>
+          </ng-container>
+  
+  
+          <ng-container *ngIf="tokenService.isAdmin()">
+            <ng-container ></ng-container>
+            <app-inline-create-button
+            [labelText]="'Add Class'"
+            (click)="toggleConnectionCreateState()"
+            *ngIf="!isSpellConnectionCreateState; else connectionForm">     
+            </app-inline-create-button>
+          </ng-container>
+        </div>
+      </ng-container>
 
-      <div>
-        Classes:
-        <ng-container *ngFor="let connection of cardData.player_class_connections">
-          <span class="badge badge-secondary badge-lg p-2 mr-3 pointer"
-          (click)="emitClassSelectEvent($event, connection.player_class_details.name)">
-            {{ connection.player_class_details.name }}
-
-            <ng-container *ngIf="tokenService.isAdmin()">
-              <span class="fa fa-trash ml-2"
-              (click)="deleteSpellPlayerClassConnection(connection)"
-              ></span>
-            </ng-container>
-          </span>
-        </ng-container>
-
-
-        <ng-container *ngIf="tokenService.isAdmin()">
-          <ng-container ></ng-container>
-          <app-inline-create-button
-          [labelText]="'Add Class'"
-          (click)="toggleConnectionCreateState()"
-          *ngIf="!isSpellConnectionCreateState; else connectionForm">     
-          </app-inline-create-button>
-        </ng-container>
-      </div>
 
       <app-formly-formcontainer
         *ngIf="isInCreateState() || isInUpdateState()"
