@@ -21,10 +21,10 @@ export class TokenService {
   }
 
   public refreshUserData(): Observable<UserData>{
-    const refreshToken = TokenService.getRefreshToken();
+    const refreshToken = TokenService.getRefreshToken().token;
     const httpHeaders = new HttpHeaders().set("Authorization", `Bearer ${refreshToken}`);
     //TODO Figure out why this was necessary
-    return this.http.post<UserData>(this.refreshTokenUrl, {refresh: refreshToken.token}, {headers: httpHeaders});
+    return this.http.post<UserData>(this.refreshTokenUrl, {refresh: refreshToken}, {headers: httpHeaders});
   }
 
   public invalidateJWTToken(): void{
