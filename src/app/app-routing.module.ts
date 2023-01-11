@@ -1,65 +1,65 @@
 import { NgModule } from '@angular/core';
-import { RouterModule} from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { ArticleOverviewComponent } from "src/app/components/articles/article-overview/article-overview.component";
-import { CharacterArticleComponent } from "src/app/components/articles/character-article/character-article.component";
-import { LocationArticleComponent } from "src/app/components/articles/location-article/location-article.component";
-import { DiaryentryArticleComponent } from "src/app/components/articles/diaryentry-article/diaryentry-article.component";
-import { CreatureArticleComponent } from "src/app/components/articles/creature-article/creature-article.component";
-import { OrganizationArticleComponent } from "src/app/components/articles/organization-article/organization-article.component";
-import { ItemArticleComponent } from "src/app/components/articles/item-article/item-article.component";
-import { RulesComponent } from "src/app/components/articles/rules/rules.component";
 import { CharacterArticleUpdateComponent } from "src/app/components/articles/character-article-update/character-article-update.component";
+import { CharacterArticleComponent } from "src/app/components/articles/character-article/character-article.component";
+import { CreatureArticleComponent } from "src/app/components/articles/creature-article/creature-article.component";
+import { DiaryentryArticleComponent } from "src/app/components/articles/diaryentry-article/diaryentry-article.component";
+import { ItemArticleComponent } from "src/app/components/articles/item-article/item-article.component";
+import { LocationArticleComponent } from "src/app/components/articles/location-article/location-article.component";
+import { OrganizationArticleComponent } from "src/app/components/articles/organization-article/organization-article.component";
+import { RulesComponent } from "src/app/components/articles/rules/rules.component";
+import { CampaignRole, Constants } from './app.constants';
+import { AdminRoute, BaseNamedRoute, CampaignRoute, GeneralRoute } from './app.routing-models';
+import { AdminComponent } from './components/articles/admin/admin.component';
+import { CampaignOverviewComponent } from './components/articles/campaign-overview/campaign-overview.component';
+import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
+import { ConfigTablesComponent } from './components/articles/config-tables/config-tables.component';
 import { CreatureArticleUpdateComponent } from './components/articles/creature-article-update/creature-article-update.component';
 import { DiaryentryArticleUpdateComponent } from './components/articles/diaryentry-article-update/diaryentry-article-update.component';
 import { ItemArticleUpdateComponent } from './components/articles/item-article-update/item-article-update.component';
+import { LocationArticleMapCreateComponent } from './components/articles/location-article-map-create/location-article-map-create.component';
 import { LocationArticleUpdateComponent } from './components/articles/location-article-update/location-article-update.component';
+import { MapUpdateComponent } from './components/articles/map-update/map-update.component';
+import { MapComponent } from './components/articles/map/map.component';
+import { MarkerMapCreateComponent } from './components/articles/marker-map-create/marker-map-create.component';
+import { MarkerUpdateComponent } from './components/articles/marker-update/marker-update.component';
+import { MarkerComponent } from './components/articles/marker/marker.component';
 import { OrganizationArticleUpdateComponent } from './components/articles/organization-article-update/organization-article-update.component';
-import { QuestArticleComponent } from './components/articles/quest-article/quest-article.component';
 import { QuestArticleUpdateComponent } from './components/articles/quest-article-update/quest-article-update.component';
+import { QuestArticleComponent } from './components/articles/quest-article/quest-article.component';
 import { QuestOverviewComponent } from './components/articles/quest-overview/quest-overview.component';
-import { SpellsComponent } from './components/articles/spells/spells.component';
+import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
 import { SearchComponent } from './components/articles/search/search.component';
-import { SessionAudioComponent } from './components/articles/session-audio/session-audio.component';
 import { SessionAudioOverviewComponent } from './components/articles/session-audio-overview/session-audio-overview.component';
 import { SessionAudioUpdateComponent } from './components/articles/session-audio-update/session-audio-update.component';
-import { MarkerComponent } from './components/articles/marker/marker.component';
-import { MarkerUpdateComponent } from './components/articles/marker-update/marker-update.component';
-import { MapComponent } from './components/articles/map/map.component';
-import { MapUpdateComponent } from './components/articles/map-update/map-update.component';
-import { MarkerMapCreateComponent } from './components/articles/marker-map-create/marker-map-create.component';
-import { LocationArticleMapCreateComponent } from './components/articles/location-article-map-create/location-article-map-create.component';
-import { LoginComponent } from './components/login/login.component';
-import { CampaignRole, Constants } from './app.constants';
-import { AdminGuardService, CampaignGuardService, LoginGuardService} from './services/permission.service';
-import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
-import { QuoteOverviewComponent } from './components/articles/quote-overview/quote-overview.component';
-import { AdminComponent } from './components/articles/admin/admin.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { ConfigTablesComponent } from './components/articles/config-tables/config-tables.component';
+import { SessionAudioComponent } from './components/articles/session-audio/session-audio.component';
+import { SessionsComponent } from './components/articles/sessions/sessions.component';
+import { SpellsComponent } from './components/articles/spells/spells.component';
 import { ErrorComponent } from './components/error/error.component';
 import { Home2Component } from './components/home2/home2.component';
-import { CampaignOverviewComponent } from './components/articles/campaign-overview/campaign-overview.component';
+import { LoginComponent } from './components/login/login.component';
+import { ProfileComponent } from './components/profile/profile.component';
 import { CampaignComponent } from './components/utility/campaign/campaign.component';
-import { CampaignUpdateComponent } from './components/articles/campaign-update/campaign-update.component';
-import { BaseNamedRoute, AdminRoute, CampaignRoute, GeneralRoute } from './app.routing-models';
-import { SessionsComponent } from './components/articles/sessions/sessions.component';
+import { Wiki1RequestComponent } from './components/wiki1-request/wiki1-request.component';
+import { AdminGuardService, CampaignGuardService, LoginGuardService } from './services/permission.service';
 import { CampaignDetailResolver, CampaignResolver, CampaignStatisticsResolver, CampaignUpdateResolver, GlobalCampaignSetResolver } from './utils/resolvers/campaign-resolver';
-import { CreatureResolver, CreatureUpdateResolver } from './utils/resolvers/creature-resolver';
 import { CharacterResolver, CharacterUpdateResolver } from './utils/resolvers/character-resolver';
-import { LocationMapCreateResolver, LocationResolver, LocationUpdateResolver } from './utils/resolvers/location-resolver';
+import { CreatureResolver, CreatureUpdateResolver } from './utils/resolvers/creature-resolver';
 import { DiaryentryResolver, DiaryentryUpdateResolver } from './utils/resolvers/diaryentry-resolver';
 import { ItemCharacterCreationResolver, ItemResolver, ItemUpdateResolver } from './utils/resolvers/item-resolver';
+import { LocationMapCreateResolver, LocationResolver, LocationUpdateResolver } from './utils/resolvers/location-resolver';
 import { MapResolver, MapUpdateResolver } from './utils/resolvers/map-resolver';
+import { MarkerMapCreateResolver, MarkerResolver, MarkerUpdateResolver } from './utils/resolvers/marker-resolver';
 import { OrganizationResolver, OrganizationUpdateResolver } from './utils/resolvers/organization-resolver';
+import { OverviewResolver } from './utils/resolvers/overview-resolver';
 import { QuestOverviewResolver, QuestResolver, QuestUpdateResolver } from './utils/resolvers/quest-resolver';
 import { QuoteResolver } from './utils/resolvers/quote-resolver';
-import { SessionAudioOverviewResolver, SessionAudioResolver, SessionAudioUpdateResolver, TimestampResolver } from './utils/resolvers/sessionaudio-resolver';
-import { MarkerMapCreateResolver, MarkerResolver, MarkerUpdateResolver } from './utils/resolvers/marker-resolver';
 import { RuleResolver } from './utils/resolvers/rule-resolver';
-import { SpellResolver } from './utils/resolvers/spell-resolver';
-import { SessionResolver } from './utils/resolvers/session-resolver';
 import { SearchResolver } from './utils/resolvers/search-resolver';
-import { OverviewResolver } from './utils/resolvers/overview-resolver';
+import { SessionResolver } from './utils/resolvers/session-resolver';
+import { SessionAudioOverviewResolver, SessionAudioResolver, SessionAudioUpdateResolver, TimestampResolver } from './utils/resolvers/sessionaudio-resolver';
+import { SpellResolver } from './utils/resolvers/spell-resolver';
 import { UserResolver } from './utils/resolvers/user-resolver';
 
 
@@ -113,6 +113,17 @@ const generalRoutes: GeneralRoute[] = [
 		canActivate: [LoginGuardService],
 		resolve: {
 			_: GlobalCampaignSetResolver
+		}
+	},
+	//User Routes
+	{
+		path: `${Constants.wikiUrlFrontendPrefixNoSlash}/profile/:campaign/:username`,
+		component: ProfileComponent,
+		data: { name: "direct-campaign-profile"},
+		canActivate: [LoginGuardService],
+		resolve: {
+			campaign: CampaignResolver,
+			userData: UserResolver
 		}
 	},
 

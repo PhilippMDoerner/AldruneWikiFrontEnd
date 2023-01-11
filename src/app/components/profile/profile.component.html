@@ -56,8 +56,10 @@
 
         <div class="mt-5 row">
             <div class="col-md-3">
-                <a [routerLink]="campaignOverviewUrl" class="btn btn-secondary w-100">
-                    To Campaigns
+                <a [routerLink]="backUrl" class="btn btn-secondary w-100">
+                    Back To
+                    <ng-container *ngIf="campaign != null">{{campaign?.name}} </ng-container>
+                    <ng-container *ngIf="campaign == null"> Campaigns </ng-container>
                 </a>
             </div>
 

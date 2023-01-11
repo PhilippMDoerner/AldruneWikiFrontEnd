@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Observable } from 'rxjs';
@@ -22,7 +22,7 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator';
 })
 export class ProfileComponent implements OnInit, AfterViewInit {
   //URLs
-  campaignOverviewUrl: string;
+  backUrl: string;
 
   @ViewChild('profileCard') profileCard: ElementRef;
   user: UserObject;
@@ -58,7 +58,7 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   ) { }
 
   async ngOnInit(): Promise<void> {
-    this.campaign = this.route.snapshot.data["campaign"] ?? {};
+    this.campaign = this.route.snapshot.data["campaign"];
     this.user = this.route.snapshot.data["userData"]
     this.hasProfileDeletePermission = this.tokenService.getCurrentUserPk() === this.user.pk; //This is not necessary, as the user data I query stems from the token, but this just makes sure of it should I change how I load the data in the future
 
@@ -76,7 +76,16 @@ export class ProfileComponent implements OnInit, AfterViewInit {
   }
 
   updateDynamicVariables(campaign: CampaignOverview): void{
-    this.campaignOverviewUrl = this.routingService.getRoutePath('campaign-overview');
+    const isCampaignProfileRoute = campaign != null;
+    if (isCampaignProfileRoute){
+      const campaignUrl = this.routingService.getRoutePath('home1', {campaign: campaign.name});
+      this.backUrl = campaignUrl;
+
+    } else { //is being viewed from non-campaign-related route
+      const campaignOverviewUrl = this.routingService.getRoutePath('campaign-overview');
+      this.backUrl = campaignOverviewUrl;
+    }
+
   }
 
   toggleProfileEditState(): void{
@@ -150,9 +159,8 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 
         const leftCurrentCampaign: boolean = campaignRole.campaignName === this.campaign.name;
         if(leftCurrentCampaign){
-          this.routingService.routeToPath("campaign-overview");
+          this.routingService.routeToPath('direct-profile');
         } else {
-          //Stay on component and reinitalize it
           this.ngOnInit();
         }
       });
