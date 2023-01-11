@@ -100,7 +100,8 @@ export class EncounterObject implements Encounter {
     }
 
     getAbsoluteLocationRouterUrl(): string{
-        if (!this.location_details) throw "Can't generate URL for Location of Encounter object without locatoin_details !";
-        return `${Constants.wikiUrlFrontendPrefix}/location/${this.campaign_details.name}/${this.location_details.parent_location_name}/${this.location_details.name}`;
+        if (!this.location_details) throw "Can't generate URL for Location of Encounter object without location_details !";
+        const parentName = this.location_details?.parent_location_name || Constants.NONE_STRING;
+        return `${Constants.wikiUrlFrontendPrefix}/location/${this.campaign_details.name}/${parentName}/${this.location_details.name}`;
     }
 }
