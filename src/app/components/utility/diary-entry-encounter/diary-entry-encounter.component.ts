@@ -1,8 +1,8 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { first } from 'rxjs/operators';
-import { Constants, OverviewType } from 'src/app/app.constants';
+import { OverviewType } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { Encounter, EncounterObject } from 'src/app/models/encounter';
 import { EncounterConnection, EncounterConnectionObject } from 'src/app/models/encounterconnection';
@@ -157,7 +157,10 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
     this.baseEncounterConnection.campaign = this.campaign.pk;
     this.encounterConnectionService.create(this.baseEncounterConnection).pipe(first()).subscribe(
       (encounterConnection: EncounterConnectionObject) => {
+        console.log("The connection")
+        console.log(encounterConnection);
         encounter.encounterConnections.push(encounterConnection);
+        this.updateDynamicVariables(this.campaign, encounter as EncounterObject, this.route.snapshot.params);
         this.resetBaseEncounterConnection();
         this.inEncounterConnectionCreationState = false;
       },
