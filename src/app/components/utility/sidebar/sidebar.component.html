@@ -50,7 +50,13 @@
         </ng-container>
     
         <!-- Logout -->
-        <ul class="footer d-flex mt-auto">
+        <ul class="footer d-flex flex-column mt-auto">
+            <li class="entry w-100 align-self-end">
+                <a class="d-flex align-items-center entry pointer" [routerLink]="profileUrl"> 
+                    <i class="fas fa-user-circle"></i>
+                    <span class="on-hover-show">Profile</span> 
+                </a>
+            </li>
             <li class="entry w-100 align-self-end">
                 <a class="d-flex align-items-center entry pointer" (click)="logout()"> 
                     <i class="fas fa-sign-out-alt"></i>

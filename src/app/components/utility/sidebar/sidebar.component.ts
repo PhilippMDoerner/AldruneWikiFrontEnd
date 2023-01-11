@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { ArticleMetaData, CampaignRole, Constants } from 'src/app/app.constants';
-import { RoutingService } from 'src/app/services/routing.service';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
-import { TokenService } from 'src/app/services/token.service';
-import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
-import { CampaignOverview } from 'src/app/models/campaign';
 import { filter, map } from 'rxjs/operators';
+import { ArticleMetaData, CampaignRole, Constants } from 'src/app/app.constants';
+import { CampaignOverview } from 'src/app/models/campaign';
+import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
+import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,6 +18,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   //URLS
   campaignOverviewUrl: string;
   homeUrl: string;
+  profileUrl: string;
   campaignAdminUrl: string;
 
   @Input() showSidebar: BehaviorSubject<boolean>;
@@ -72,6 +73,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
   updateGeneralRouterLinks(campaignName: string): void{
     this.campaignOverviewUrl = this.routingService.getRoutePath("campaign-overview");
     this.homeUrl = this.routingService.getRoutePath('home2', {campaign: campaignName});
+    this.profileUrl = this.routingService.getRoutePath('direct-profile', {username: this.tokenService.getCurrentUserName()});
     this.campaignAdminUrl = this.routingService.getRoutePath('campaign-admin', {campaign: campaignName})
   }
 
