@@ -157,8 +157,7 @@ export class DiaryEntryEncounterComponent extends CardFormMixin {
     this.baseEncounterConnection.campaign = this.campaign.pk;
     this.encounterConnectionService.create(this.baseEncounterConnection).pipe(first()).subscribe(
       (encounterConnection: EncounterConnectionObject) => {
-        console.log("The connection")
-        console.log(encounterConnection);
+
         encounter.encounterConnections.push(encounterConnection);
         this.updateDynamicVariables(this.campaign, encounter as EncounterObject, this.route.snapshot.params);
         this.resetBaseEncounterConnection();
