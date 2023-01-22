@@ -87,6 +87,10 @@ ul{
     list-style-type: none;
     margin: 0;
     padding: 0;
+
+    &.footer{
+        border-top: 4px inset;
+    }
 }
 
 
@@ -95,6 +99,7 @@ li{
     height: 3rem;
     font-weight: bold;
     font-size: large;
+    flex-shrink: 0;
 
     a{
         height: 100%;
@@ -234,7 +239,7 @@ li{
     }
 
     #sidebar.swiped-right{
-        display: block;
+        display: flex;
         width: 75vw;
     
         -webkit-animation: slideInLeft-mobile 0.2s ease-out;
