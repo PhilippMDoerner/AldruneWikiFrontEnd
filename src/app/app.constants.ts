@@ -177,6 +177,7 @@ export class Constants{
     public static get pageNotFoundImageUrl(): string { return `/assets/error_images/404.png`; }
     public static get serverErrorImageUrl(): string { return `/assets/error_images/500.jpeg`; }
     public static get noscriptErrorImageUrl(): string { return "/assets/error_images/noscript.jpg"; }
+    public static get dragonFrameUrl(): string { return "/assets/dragon-frame.jpg"; }
 
     //Login Custom Message to URL Mapping
     public static get loginMessageForState(): object { return {

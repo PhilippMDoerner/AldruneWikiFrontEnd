@@ -76,6 +76,18 @@
     max-height: 100%;
 }
 
+#campaign-overview-body .frame-text{
+    color: black;
+    bottom: 24%;
+    width: 50%;
+    height: 15%;
+    text-align: center;
+    
+    & h4{
+        color: black;
+    }
+}
+
 @media(max-width: $medium-screen){
     .overlay-heading h3{
         font-size: 1.5rem;
@@ -84,6 +96,15 @@
     #campaign-overview-heading{
         height: unset;
     }
+
+    #campaign-overview-body .frame-text{
+        font-size: 12px;
+        
+        & h4{
+            font-size: 14px;
+        }
+    }
+
 }
 
 
