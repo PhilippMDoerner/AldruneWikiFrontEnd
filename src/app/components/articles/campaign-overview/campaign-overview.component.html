@@ -37,7 +37,7 @@
     </h3>
   </div>
   <div class="row flex-1 mx-0" id="campaign-overview-body">
-    <ng-container *ngIf="campaignData?.length > 0 && false; else noCampaign">
+    <ng-container *ngIf="campaignData?.length > 0; else noCampaign">
       <ng-container *ngFor="let campaign of campaignData">
         <a class="px-0 campaign pointer"
         (click)="routeToCampaign(campaign.name)"
