@@ -82,7 +82,7 @@ export class LocationArticleComponent extends ArticleMixin implements OnInit {
     if (!locationList) throw "Tried building a route to a location in parent_location_list when there is no parent_location_list";
     
     const index: number = locationList.indexOf(locationName);
-    const parentLocationName: string = (index >= 0) ? "None" : locationList[index-1];
+    const parentLocationName: string = (index === 0) ? "None" : locationList[index-1];
 
     const locationUrl: string = this.routingService.getRoutePath('location', {
       parent_name: parentLocationName, 
