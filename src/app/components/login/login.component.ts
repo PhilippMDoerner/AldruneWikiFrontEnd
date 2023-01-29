@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { MyFormlyService } from 'src/app/services/my-formly.service';
 import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
-import { animateElement } from 'src/app/utils/functions/animationDecorator'
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
 
 @Component({
   selector: 'app-login',
@@ -23,14 +23,14 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator'
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   model: User;
-  form = new UntypedFormGroup({});
+  form = new FormGroup({});
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: 'username', placeholder: 'Username'}),
     this.formlyService.genericPasswordInput({key: 'password', className:"mb-0", fieldGroupClassName: "mb-0"})
   ];
 
   recoveryModel: {username: string};
-  recoveryForm = new UntypedFormGroup({});
+  recoveryForm = new FormGroup({});
   recoveryFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: 'username', placeholder: 'Username'})
   ];

@@ -1,18 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { FormGroup } from '@angular/forms';
+import { ActivatedRoute, Params } from '@angular/router';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants, OverviewType } from 'src/app/app.constants';
+import { MapObject } from 'src/app/models/map';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
 import { MapService } from 'src/app/services/map.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { first } from 'rxjs/operators';
-import { WarningsService } from 'src/app/services/warnings.service';
-import { MapObject } from 'src/app/models/map';
 import { RoutingService } from 'src/app/services/routing.service';
-import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 @Component({
   selector: 'app-marker-map-create',
   templateUrl: './marker-map-create.component.html',
@@ -28,7 +27,7 @@ export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into 
   campaign: string = this.route.snapshot.params.campaign;
   constants: any = Constants;
 
-  form = new UntypedFormGroup({});
+  form = new FormGroup({});
   model: MapMarker;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
@@ -47,7 +46,6 @@ export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into 
     private formlyService: MyFormlyService,
     private warnings: WarningsService,  
     public routingService: RoutingService,
-    private globalUrlParams: GlobalUrlParamsService,
   ) { }
 
   ngOnInit(): void {

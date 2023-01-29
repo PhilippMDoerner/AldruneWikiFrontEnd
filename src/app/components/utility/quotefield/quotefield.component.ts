@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
@@ -53,7 +53,7 @@ export class QuotefieldComponent extends PermissionUtilityFunctionMixin implemen
   characters: OverviewItem[];
 
   model: Quote;
-  form = new UntypedFormGroup({});
+  form = new FormGroup({});
   fields: FormlyFieldConfig[];
 
   constructor(

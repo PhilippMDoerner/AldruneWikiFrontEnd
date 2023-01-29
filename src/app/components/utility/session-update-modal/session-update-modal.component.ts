@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
@@ -29,7 +29,7 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
   campaign: CampaignOverview;
 
   model: SessionObject;
-  form: UntypedFormGroup = new UntypedFormGroup({});
+  form = new FormGroup({});
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericCheckbox({key: "is_main_session", defaultValue: true, label: "Main Session?"}),
     this.formlyService.genericInput({key: "session_number", label: "Session Number", required: true}),

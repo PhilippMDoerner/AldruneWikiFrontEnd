@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
@@ -28,10 +28,10 @@ export class LocationArticleMapCreateComponent implements OnInit {
   mapName: string;
   campaign: string = this.route.snapshot.params.campaign;
 
-  locationForm = new UntypedFormGroup({});
+  locationForm = new FormGroup({});
   locationModel: LocationObject;
 
-  markerForm = new UntypedFormGroup({});
+  markerForm = new FormGroup({});
   markerModel: MapMarkerObject;
 
   constructor(
