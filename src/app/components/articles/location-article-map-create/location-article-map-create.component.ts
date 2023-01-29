@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants, OverviewType } from 'src/app/app.constants';
@@ -32,10 +32,10 @@ export class LocationArticleMapCreateComponent implements OnInit {
   mapName: string;
   campaign: string = this.route.snapshot.params.campaign;
 
-  locationForm = new FormGroup({});
+  locationForm = new UntypedFormGroup({});
   locationModel: LocationObject;
 
-  markerForm = new FormGroup({});
+  markerForm = new UntypedFormGroup({});
   markerModel: MapMarkerObject;
 
   constructor(

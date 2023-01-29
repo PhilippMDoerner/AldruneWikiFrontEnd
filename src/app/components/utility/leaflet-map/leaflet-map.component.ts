@@ -1,27 +1,15 @@
 import {
-  AfterContentInit,
-  AfterViewInit,
-  Component,
-  Input,
-  OnDestroy,
-  OnInit,
+  AfterContentInit, Component,
+  Input
 } from '@angular/core';
-import { Router } from '@angular/router';
-import { Constants } from 'src/app/app.constants';
-import { ExtendedMap } from 'src/app/models/map';
-import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
+import 'leaflet';
 import { Marker } from 'leaflet';
 import * as L from 'node_modules/leaflet';
-import 'leaflet/dist/leaflet.css';
-import { RoutingService } from 'src/app/services/routing.service';
+import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
-
-let DefaultIcon = L.icon({
-  iconUrl: `${Constants.wikiMediaUrl}/leaflet/marker-icon.png`,
-  shadowUrl: `${Constants.wikiMediaUrl}/leaflet/marker-shadow.png`,
-  iconSize: [24, 36],
-  iconAnchor: [12, 36],
-});
+import { ExtendedMap } from 'src/app/models/map';
+import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
+import { RoutingService } from 'src/app/services/routing.service';
 
 @Component({
   selector: 'app-leaflet-map',
@@ -32,8 +20,8 @@ export class LeafletMapComponent implements AfterContentInit {
   @Input() map: ExtendedMap;
   @Input() campaign: CampaignOverview;
 
-  private leafletMap;
-  constructor(private router: Router, public routingService: RoutingService) {}
+  private leafletMap: any;
+  constructor(public routingService: RoutingService) {}
 
   mouseLatitude: number;
   mouseLongitude: number;

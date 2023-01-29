@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
@@ -23,14 +23,14 @@ import { animateElement } from 'src/app/utils/functions/animationDecorator'
 export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   model: User;
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: 'username', placeholder: 'Username'}),
     this.formlyService.genericPasswordInput({key: 'password', className:"mb-0", fieldGroupClassName: "mb-0"})
   ];
 
   recoveryModel: {username: string};
-  recoveryForm = new FormGroup({});
+  recoveryForm = new UntypedFormGroup({});
   recoveryFields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: 'username', placeholder: 'Username'})
   ];

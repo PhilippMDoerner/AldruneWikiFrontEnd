@@ -1,4 +1,4 @@
-import { AbstractControl, FormControl, ValidationErrors } from '@angular/forms';
+import { AbstractControl, UntypedFormControl, ValidationErrors } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 /***
@@ -58,13 +58,13 @@ export const sessionAlreadyHasAuthor = {
 };
 
 // Validation Functions
-function timeValidation(control: FormControl): ValidationErrors {
+function timeValidation(control: UntypedFormControl): ValidationErrors {
   const isValidTime: boolean = /\d\d.[0-5]\d.[0-5]\d/.test(control.value);
   return isValidTime ? null : { time: true };
 }
 export const timeValidator = { name: 'time', validation: timeValidation };
 
-function requiredValidation(control: FormControl): ValidationErrors {
+function requiredValidation(control: UntypedFormControl): ValidationErrors {
   const hasValue: boolean = !!control.value || control.value === 0;
   return hasValue ? null : { required: true };
 }
@@ -77,7 +77,7 @@ export const requiredIconValidator = {
   validation: requiredValidation,
 };
 
-function dateValidation(control: FormControl): ValidationErrors {
+function dateValidation(control: UntypedFormControl): ValidationErrors {
   const dateHasYYYYMMDDFormat: boolean = /[1-2]\d{3}-(0\d|1[0-2])-[0-3]\d/.test(
     control.value
   );
@@ -85,13 +85,13 @@ function dateValidation(control: FormControl): ValidationErrors {
 }
 export const dateValidator = { name: 'date', validation: dateValidation };
 
-function iconValidation(control: FormControl): ValidationErrors {
+function iconValidation(control: UntypedFormControl): ValidationErrors {
   const hasFaPrefix = /fa-/.test(control.value);
   return hasFaPrefix ? { faPrefix: true } : null;
 }
 export const iconValidator = { name: 'faPrefix', validation: iconValidation };
 
-function isIntegerValidation(control: FormControl): ValidationErrors {
+function isIntegerValidation(control: UntypedFormControl): ValidationErrors {
   const isInteger =
     typeof control.value === 'number' && Number.isInteger(control.value);
   return isInteger ? null : { notInteger: true };
@@ -102,7 +102,7 @@ export const integerValidator = {
 };
 
 function hasNoSpecialCharactersValidation(
-  control: FormControl
+  control: UntypedFormControl
 ): ValidationErrors {
   const isString = typeof control.value === 'string';
   if (isString) {

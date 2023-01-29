@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Constants, OverviewType } from 'src/app/app.constants';
@@ -28,7 +28,7 @@ export class MarkerMapCreateComponent implements OnInit {//TODO: Move this into 
   campaign: string = this.route.snapshot.params.campaign;
   constants: any = Constants;
 
-  form = new FormGroup({});
+  form = new UntypedFormGroup({});
   model: MapMarker;
   fields: FormlyFieldConfig[] = [
     this.formlyService.genericInput({key: "latitude", isNumberInput: true}),
