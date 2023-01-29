@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router, RouterEvent } from '@angular/router';
+import { NavigationEnd, Router, RouterEvent } from '@angular/router';
 import { SwUpdate } from '@angular/service-worker';
 import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
@@ -43,9 +43,10 @@ export class AppComponent implements OnInit, OnDestroy{
       this.tokenService.removeJWTTokenFromLocalStorage();
       this.routingService.routeToPath("login");
     }
-
-    this.serviceWorkerSubscription = this.serviceWorkerUpdate.available.subscribe(
-      event => {
+    this.serviceWorkerSubscription = this.serviceWorkerUpdate.versionUpdates
+    .pipe(filter(event => event.type === 'VERSION_READY'))
+    .subscribe(
+      _ => {
         this.warnings.showAlert("There's an update to this webpage, that you've just downloaded in the background! We now need to reload the page to move it into cache...");
         location.reload();
       }
