@@ -15,12 +15,6 @@
       "es2021",
       "dom"
     ],
-    "paths": {
-      "aldrunewiki-swagger-client": [
-        "dist/aldrunewiki-swagger-client/aldrunewiki-swagger-client",
-        "dist/aldrunewiki-swagger-client"
-      ]
-    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
