@@ -30,27 +30,29 @@
     </div>
 
     <h3 class="flex-1 mb-0 text-center">
-      <ng-container *ngIf="campaignData.length > 0; else noCampaignHeading">
+      <ng-container *ngIf="campaignData?.length > 0; else noCampaignHeading">
         Choose your campaign
       </ng-container>
       <app-spinner *ngIf="isLoading"></app-spinner>
     </h3>
   </div>
   <div class="row flex-1 mx-0" id="campaign-overview-body">
-    <ng-container *ngIf="campaignData?.length > 0; else noCampaign">
-      <ng-container *ngFor="let campaign of campaignData">
-        <a class="px-0 campaign pointer"
-        (click)="routeToCampaign(campaign.name)"
-        [ngClass]="{
-          'col-sm-12': campaignData.length === 1,
-          'col-sm-6': campaignData.length === 2 || campaignData.length === 4,
-          'col-sm-4': campaignData.length === 3 || campaignData.length >= 5
-        }"
-        [style.background-image]="'url(' + constants.wikiUrl + campaign.background_image + ')'">
-          <div class="campaign-overlay overlay-heading text-center">
-            <h3 class="mb-0 px-3">{{ campaign.name }}</h3>
-          </div>
-        </a>
+    <ng-container *ngIf="campaignData != null && false; else campaignLoadingBody">
+      <ng-container *ngIf="campaignData?.length > 0; else noCampaign">
+        <ng-container *ngFor="let campaign of campaignData">
+          <a class="px-0 campaign pointer"
+          (click)="routeToCampaign(campaign.name)"
+          [ngClass]="{
+            'col-sm-12': campaignData.length === 1,
+            'col-sm-6': campaignData.length === 2 || campaignData.length === 4,
+            'col-sm-4': campaignData.length === 3 || campaignData.length >= 5
+          }"
+          [style.background-image]="'url(' + constants.wikiUrl + campaign.background_image + ')'">
+            <div class="campaign-overlay overlay-heading text-center">
+              <h3 class="mb-0 px-3">{{ campaign.name }}</h3>
+            </div>
+          </a>
+        </ng-container>
       </ng-container>
     </ng-container>
 
@@ -74,4 +76,8 @@
 
 <ng-template #noCampaignHeading>
     No Campaign available!
+</ng-template>
+
+<ng-template #campaignLoadingBody>
+  <app-spinner class="m-auto"></app-spinner>
 </ng-template>
