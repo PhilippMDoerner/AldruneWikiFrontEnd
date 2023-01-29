@@ -224,3 +224,9 @@ option {
   transform: scale(1.2);
   transform-origin: 0;
 }
+
+// Used by Angular for Screen-reader only text. Hiding it normally appears to be broken (?)
+// https://mdbootstrap.com/docs/angular/utilities/visually-hidden/#example1
+.visually-hidden{
+  display: none;
+}
