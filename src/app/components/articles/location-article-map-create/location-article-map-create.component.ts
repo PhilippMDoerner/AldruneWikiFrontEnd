@@ -1,21 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { UntypedFormGroup } from '@angular/forms';
 import { ActivatedRoute, Params } from '@angular/router';
+import { FormlyFieldConfig } from '@ngx-formly/core';
 import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Constants, OverviewType } from 'src/app/app.constants';
+import { LocationObject } from 'src/app/models/location';
 import { MapMarker, MapMarkerObject } from 'src/app/models/mapmarker';
-import { MapService } from 'src/app/services/map.service';
+import { LocationService } from 'src/app/services/location/location.service';
 import { MarkerService } from 'src/app/services/marker.service';
 import { MyFormlyService } from 'src/app/services/my-formly.service';
-import { FormlyFieldConfig } from '@ngx-formly/core';
-import { LocationObject } from 'src/app/models/location';
-import { LocationService } from 'src/app/services/location/location.service';
-import { first } from 'rxjs/operators';
-import { ExtendedMap } from 'src/app/models/map';
-import { WarningsService } from 'src/app/services/warnings.service';
 import { RoutingService } from 'src/app/services/routing.service';
-import { CampaignService } from 'src/app/services/campaign.service';
-import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
+import { WarningsService } from 'src/app/services/warnings.service';
 
 @Component({
   selector: 'app-location-article-map-create',
@@ -40,14 +36,11 @@ export class LocationArticleMapCreateComponent implements OnInit {
 
   constructor(
     private markerService: MarkerService,
-    private mapService: MapService,
     private locationService: LocationService,
     private route: ActivatedRoute,
     private formlyService: MyFormlyService,
     private warnings: WarningsService,  
     public routingService: RoutingService,
-    private campaignService: CampaignService,
-    private globalUrlParams: GlobalUrlParamsService,
   ) { }
 
   location_fields: FormlyFieldConfig[] = [
