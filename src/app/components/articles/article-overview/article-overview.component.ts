@@ -1,13 +1,12 @@
 import { Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
-import { OverviewItemObject } from "src/app/models/overviewItem";
 import { ActivatedRoute, Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { Constants, OverviewType } from 'src/app/app.constants';
-import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
-import { RoutingService } from 'src/app/services/routing.service';
-import { animateElement } from 'src/app/utils/functions/animationDecorator';
-import { TokenService } from 'src/app/services/token.service';
 import { CampaignOverview } from 'src/app/models/campaign';
+import { OverviewItemObject } from "src/app/models/overviewItem";
+import { RoutingService } from 'src/app/services/routing.service';
+import { TokenService } from 'src/app/services/token.service';
+import { animateElement } from 'src/app/utils/functions/animationDecorator';
+import { PermissionUtilityFunctionMixin } from 'src/app/utils/functions/permissionDecorators';
 
 interface OverviewMetaData{
   image: string,

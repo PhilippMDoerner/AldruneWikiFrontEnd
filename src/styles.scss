@@ -35,8 +35,6 @@ input[type="submit"], button {
 }
 
 //Animations
-@import '~animate.css/animate.min';
-
 .animate__animated{
 	--animate-duration: 0.35s;
 }
@@ -102,7 +100,7 @@ $marker-width: 100px;
 @import './app/custom_bootstrap.scss';
 
 /* Importing Bootstrap SCSS file. */
-@import '~bootstrap/scss/bootstrap';
+@import "bootstrap";
 
 /* Default Vime theme. ~960B */
 @import '~@vime/core/themes/default.css';
