@@ -6,7 +6,7 @@
         <div [innerHTML]="quote.quote"></div>
   
         <!-- Quote Description -->
-        <div class="mb-3 ml-4">
+        <div class="mb-3 ms-4">
           <ng-container *ngIf="!!quote.description">
             <span [innerHTML]="'- ' + quote.description"></span>
           </ng-container>
@@ -20,18 +20,18 @@
   
         <!-- Quote Connections -->
         <div class="quote-connections d-inline icon-container">
-          <span class="tag-label mr-2"> Characters: </span>
+          <span class="tag-label me-2"> Characters: </span>
   
           <span class="d-inline-flex align-items-center flex-wrap">
             <!-- Display Existing Quote Connections -->
             <ng-container *ngFor="let connection of quote.connections; let connectionIndex = index">
-              <span class="badge bg-secondary p-2 mr-2 text-center vanish-container">
+              <span class="badge bg-secondary p-2 me-2 text-center vanish-container">
                 <a [routerLink]="connectedCharacterURLs[connectionIndex]">
                   {{ connection.character_details.name }}
                 </a>
                 
                 <ng-container *ngIf="hasDeletePermission">
-                  <i class="fa fa-trash icon vanish-icon ml-2"
+                  <i class="fa fa-trash icon vanish-icon ms-2"
                   (click)="deleteQuoteConnection(connection)"></i>
                 </ng-container>
               </span>
@@ -109,7 +109,7 @@
         
         <ng-container *ngIf="enableLinkToOverview">
           <!-- Hyperlink to Quote Overview -->
-          <i class="fa fa-th-list fa-1-5x icon mr-3" 
+          <i class="fa fa-th-list fa-1-5x icon me-3" 
           title="See all quotes" 
           [routerLink]="quoteOverviewUrl"></i>
         </ng-container>
@@ -135,7 +135,7 @@
     <!-- Form -->
     <form [formGroup]="form" (submit)="onSubmit()">
       <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-      <div class="btn btn-secondary mr-3" (click)="onCancel()">Cancel</div>
+      <div class="btn btn-secondary me-3" (click)="onCancel()">Cancel</div>
       <button type="submit" class="btn btn-primary">Submit</button>
     </form>
   </blockquote>
@@ -145,7 +145,7 @@
 <ng-template #deleteRequest>
   <div>
     Delete this quote?
-    <div class="btn btn-danger mr-2" (click)="deleteQuote()">Yes</div>
-    <div class="btn btn-secondary mr-2" (click)="inDeleteState = false">No</div>
+    <div class="btn btn-danger me-2" (click)="deleteQuote()">Yes</div>
+    <div class="btn btn-secondary me-2" (click)="inDeleteState = false">No</div>
   </div>
 </ng-template>

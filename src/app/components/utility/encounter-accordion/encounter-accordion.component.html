@@ -49,17 +49,17 @@
                         <hr class="white-line">
                         <!-- Encounter Connections -->
                         <div class="encounter-connections d-inline-flex">
-                            <span class="mr-4 tag-label"> Characters: </span>
+                            <span class="me-4 tag-label"> Characters: </span>
                             <div class="d-inline-flex align-items-center flex-wrap">
 
                                 <!-- Connection List -->
                                 <ng-container *ngFor="let connection of encounter.encounterConnections; let connectionIndex=index">
-                                    <span class="badge bg-secondary mr-2 p-2">
+                                    <span class="badge bg-secondary me-2 p-2">
                                         <a [routerLink]="encounterConnectionUrls[i][connectionIndex]">
                                             {{ connection.character_details.name }}
                                         </a>
                                         <ng-container *ngIf="hasDeletePermission">
-                                            <i class="fa fa-trash icon ml-1" 
+                                            <i class="fa fa-trash icon ms-1" 
                                             (click)="deleteEncounterConnection(encounter, connection)"></i>
                                         </ng-container>
                                     </span>

@@ -17,7 +17,7 @@
           <div class="float-end flex-row d-flex">
             <!-- Cut Toggler -->
             <div
-              class="btn btn-secondary encounter-hidden mr-2"
+              class="btn btn-secondary encounter-hidden me-2"
               (click)="toggleCutState()"
               title="Cut Encounter"
             >
@@ -104,11 +104,11 @@
 
         <ng-container *ngIf="!diaryEntryView && !isInCreateState()">
           <div class="encounter-connections d-flex align-items-center">
-            <span class="mr-4 tag-label"> Characters: </span>
+            <span class="me-4 tag-label"> Characters: </span>
             <div class="d-inline-flex align-items-center flex-wrap">
               <!-- Connection List -->
               <span
-                class="badge bg-secondary p-2 mr-2"
+                class="badge bg-secondary p-2 me-2"
                 *ngFor="
                   let connection of cardData.encounterConnections;
                   let connectionIndex = index
@@ -118,7 +118,7 @@
                   {{ connection.character_details.name }}
                 </a>
                 <ng-container *ngIf="hasDeletePermission">
-                  <i class="fa fa-trash icon ml-1" (click)="deleteEncounterConnection(cardData, connection)"></i>
+                  <i class="fa fa-trash icon ms-1" (click)="deleteEncounterConnection(cardData, connection)"></i>
                 </ng-container>
 
               </span>

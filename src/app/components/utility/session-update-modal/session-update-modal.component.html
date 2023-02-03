@@ -20,7 +20,7 @@
             <!-- Form -->
             <form [formGroup]="form" (submit)="onSubmit(modal)">
                 <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
-                <div class="btn btn-secondary mr-3" (click)="modal.close()">Cancel</div>
+                <div class="btn btn-secondary me-3" (click)="modal.close()">Cancel</div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>

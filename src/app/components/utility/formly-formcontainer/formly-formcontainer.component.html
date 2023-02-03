@@ -3,7 +3,7 @@
     <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
     <!-- Cancel Button -->
     <ng-container *ngIf="enableSubmitButtons">
-        <div class="btn btn-dark mr-3" (click)="onCancel()">
+        <div class="btn btn-dark me-3" (click)="onCancel()">
             Cancel
         </div>
     </ng-container>
@@ -27,7 +27,7 @@
     placement="top" 
     [ngbTooltip]="'The form is not yet correctly filled out!'"
     [tooltipClass]="'my-tooltip'">
-        <i class="fa fa-lock mr-2" aria-hidden="true"></i>
+        <i class="fa fa-lock me-2" aria-hidden="true"></i>
         Submit *
     </div>
 </ng-template>

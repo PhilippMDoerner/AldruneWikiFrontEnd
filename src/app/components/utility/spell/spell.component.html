@@ -10,12 +10,12 @@
     <!-- Spell Title -->
     <strong>
       <span>{{ cardData.name }}</span>
-      <span *ngIf="cardData.concentration" class="ml-2">(C)</span>
-      <span *ngIf="cardData.ritual" class="ml-2">(R)</span>
-      <span class="d-inline-flex flex-wrap align-items-center ml-3">
+      <span *ngIf="cardData.concentration" class="ms-2">(C)</span>
+      <span *ngIf="cardData.ritual" class="ms-2">(R)</span>
+      <span class="d-inline-flex flex-wrap align-items-center ms-3">
         
         <ng-container *ngFor="let connection of cardData.player_class_connections">
-          <span class="badge bg-secondary badge-sm mr-3"
+          <span class="badge bg-secondary badge-sm me-3"
           (click)="emitClassSelectEvent($event, connection.player_class_details.name)">
             {{ connection.player_class_details.name }}
           </span>
@@ -146,12 +146,12 @@
         <div>
           Classes:
           <ng-container *ngFor="let connection of cardData.player_class_connections">
-            <span class="badge bg-secondary badge-lg p-2 mr-3 pointer"
+            <span class="badge bg-secondary badge-lg p-2 me-3 pointer"
             (click)="emitClassSelectEvent($event, connection.player_class_details.name)">
               {{ connection.player_class_details.name }}
   
               <ng-container *ngIf="tokenService.isAdmin()">
-                <span class="fa fa-trash ml-2"
+                <span class="fa fa-trash ms-2"
                 (click)="deleteSpellPlayerClassConnection(connection)"
                 ></span>
               </ng-container>

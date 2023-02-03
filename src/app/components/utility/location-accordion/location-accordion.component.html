@@ -1,6 +1,6 @@
 <h4>
     Locations of Interest 
-    <i class="fa fa-plus icon ml-1" 
+    <i class="fa fa-plus icon ms-1" 
     [ngClass]="{'d-none': !hasCreatePermission}" 
     routerLink="create"></i>
 </h4>
@@ -36,10 +36,10 @@
             <!-- List of Characters at this location -->
             <ng-container *ngIf="location.characters.length > 0">
                 <div class="location-character mb-1">
-                    <span class="mr-4"> Characters: </span>
+                    <span class="me-4"> Characters: </span>
                     <span class="d-inline-flex align-items-center flex-wrap">
                         <ng-container *ngFor="let character of location.characters; let characterIndex = index">
-                            <span class="badge bg-secondary mr-2 p-1 mb-1">
+                            <span class="badge bg-secondary me-2 p-1 mb-1">
                                 <a [routerLink]="locationCharacterUrls[i][characterIndex]">
                                     {{ character.name }}
                                 </a>

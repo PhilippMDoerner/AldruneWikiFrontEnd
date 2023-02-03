@@ -63,7 +63,7 @@
                     <h5 class="mb-1"> <span class="fas fa-book-open"></span> Diaryentries </h5>
                     <div class="d-flex flex-column">
                         <ng-container *ngFor="let diaryentry of cardData.diaryentries; let diaryentryIndex = index">
-                            <a [routerLink]="diaryentryUrls[diaryentryIndex]" class="ml-4 max-content-width">
+                            <a [routerLink]="diaryentryUrls[diaryentryIndex]" class="ms-4 max-content-width">
                                 {{diaryentry.author_name}} - {{diaryentry.name}}
                             </a>
                         </ng-container>

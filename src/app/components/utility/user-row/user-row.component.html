@@ -2,7 +2,7 @@
     <div class="py-2 row">
         <!-- Username Column -->
         <div class="col-md-3 col-4 p-0 d-flex align-items-center">
-            <span class="ml-3">
+            <span class="ms-3">
                 {{user.username}}
                 <ng-container *ngIf="!user.is_active">
                     <span title="Deleted/Deactivated" > (†) </span>
@@ -57,9 +57,9 @@
 <!-- Confirmation Window about deleting a user -->
 <ng-template #userDelete>
     <div class="delete-request d-flex animate__animated animate__flipInY">
-        <div class="mr-3"><strong>Delete {{user.username}}?</strong></div>
+        <div class="me-3"><strong>Delete {{user.username}}?</strong></div>
         <div class="d-inline-flex">
-            <div class="btn btn-danger float-end mr-2" (click)="deleteUser()"> Yes </div>
+            <div class="btn btn-danger float-end me-2" (click)="deleteUser()"> Yes </div>
             <div class="btn btn-secondary float-end" (click)="toggleDeleteState()"> No </div>
         </div>
     </div>

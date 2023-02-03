@@ -51,7 +51,7 @@
             <div class="col-lg-3 col-6">
                 <ng-container *ngIf="nextSessionAudioUrl">
                     <a [routerLink]="nextSessionAudioUrl" class="btn btn-secondary"> 
-                        <i class="fa fa-arrow-left mr-1"></i>
+                        <i class="fa fa-arrow-left me-1"></i>
                         Session {{articleData.sessionAudioNeighbours.nextSessionAudio.sessionNumber}}
                     </a>
                 </ng-container>
@@ -62,7 +62,7 @@
                 <ng-container *ngIf="priorSessionAudioUrl">
                     <a [routerLink]="priorSessionAudioUrl" class="btn btn-secondary float-end"> 
                         Session {{articleData.sessionAudioNeighbours.priorSessionAudio.sessionNumber}}
-                        <i class="fa fa-arrow-right ml-1"></i>
+                        <i class="fa fa-arrow-right ms-1"></i>
                     </a>
                 </ng-container>
             </div>
@@ -73,7 +73,7 @@
             <ng-container *ngIf="hasCreatePermission">
                 <div class="btn btn-primary col-lg-4" 
                 (click)="createTimestampEventSubject.next(this.vimePlayer.currentTime)">
-                    Add Timestamp <i class="fa fa-clock-o ml-1"></i>
+                    Add Timestamp <i class="fa fa-clock-o ms-1"></i>
                 </div>                
             </ng-container>
         </div>

@@ -3,9 +3,9 @@
     <h4 [innerHTML]="heading" class="d-inline"></h4>
     <ng-container *ngIf="hasUpdatePermission">
         <h4 class="d-inline" >
-            <i *ngIf="isInDisplayState() && allowEdit" (click)="enableEdit()" class="fa icon fa-pencil ml-2"></i>
-            <i *ngIf="isInUpdateState()" (click)="cancelEdit()" class="fa icon fa-times ml-2"></i>
-            <i *ngIf="isInUpdateState()" (click)="finishEdit()" class="fa icon fa-check ml-2"></i>
+            <i *ngIf="isInDisplayState() && allowEdit" (click)="enableEdit()" class="fa icon fa-pencil ms-2"></i>
+            <i *ngIf="isInUpdateState()" (click)="cancelEdit()" class="fa icon fa-times ms-2"></i>
+            <i *ngIf="isInUpdateState()" (click)="finishEdit()" class="fa icon fa-check ms-2"></i>
         </h4>
     </ng-container>
 </ng-container>

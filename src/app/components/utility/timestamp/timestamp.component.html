@@ -1,5 +1,5 @@
 <ng-container *ngIf="!isInDeleteState; else deleteRequest">
-    <div class="row ml-auto mw-85">
+    <div class="row ms-auto mw-85">
         <!-- Timestamp Time -->
         <a (click)="vimePlayer.currentTime=timestamp.time" class="timestamp pointer col-lg-2 col-3 px-0"> 
             {{timeString}} 
@@ -24,7 +24,7 @@
     #timestampDeleteElement>
         <div class="col-lg-2 col-0"></div>
         <div class="col-lg-7 col-12 timestamp-box">
-            <span class="ml-2">Delete Timestamp?</span> 
+            <span class="ms-2">Delete Timestamp?</span> 
             <div class="btn btn-danger btn-sm mx-3" (click)="deleteTimestamp()">Delete</div>
             <div class="btn btn-secondary btn-sm" (click)="onCancelClick()">Cancel</div> 
         </div>
