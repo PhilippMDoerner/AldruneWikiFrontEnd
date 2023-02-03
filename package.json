@@ -30,6 +30,7 @@
     "@ngx-formly/schematics": "^5.10.21",
     "@ngx-loading-bar/core": "^5.1.2",
     "@ngx-loading-bar/router": "^5.1.2",
+    "@popperjs/core": "^2.11.6",
     "@tinymce/tinymce-angular": "^4.2.4",
     "@vime/core": "^5.0.35",
     "animate.css": "^4.1.1",
