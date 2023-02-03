@@ -16,7 +16,7 @@
             <li class="flex-1 entry brand-entry" 
             [title]="currentCampaign.name + '-Home'" 
             [ngClass]="{'disabled-entry': currentCampaign == null}">
-                <a class="pl-0" [routerLink]="homeUrl">
+                <a class="ps-0" [routerLink]="homeUrl">
                     <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                         <img class="campaign-icon" [src]="campaignIcon$ | async" alt="..." />
                         <span class="ms-2 on-hover-show">{{currentCampaign.name }}</span>
@@ -74,7 +74,7 @@
 <ng-template #nonCampaignBrand>
     <ul class="brand-line d-flex">
         <li class="flex-1">
-            <a class="pl-0" [routerLink]="campaignOverviewUrl">
+            <a class="ps-0" [routerLink]="campaignOverviewUrl">
                 <h3 class="d-flex align-items-center justify-content-center" id="brand"> 
                     <span class="fas fa-chevron-left"></span>
                     <span class="ms-2 on-hover-show"> To campaigns</span>
