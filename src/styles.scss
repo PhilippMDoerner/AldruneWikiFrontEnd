@@ -1,6 +1,12 @@
 @use "sass:math";
 @import '/src/app/cssvariables.scss';
 
+/* Bootstrap customizations */
+@import './app/custom_bootstrap.scss';
+
+/* Importing Bootstrap SCSS file. */
+@import "bootstrap";
+
 
 //Fonts
 input[type="submit"], button {
@@ -96,12 +102,6 @@ $marker-width: 100px;
 /* Leaflet CSS */
 @import "~leaflet/dist/leaflet.css";
 
-/* Bootstrap customizations */
-@import './app/custom_bootstrap.scss';
-
-/* Importing Bootstrap SCSS file. */
-@import "bootstrap";
-
 /* Default Vime theme. ~960B */
 @import '~@vime/core/themes/default.css';
 
@@ -162,6 +162,7 @@ strong{
 a{
 	color: white;
 	border-bottom: dotted 1px gray;
+	text-decoration: none;
 }
 
 a:hover{
