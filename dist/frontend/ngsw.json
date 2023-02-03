@@ -1,6 +1,6 @@
 {
   "configVersion": 1,
-  "timestamp": 1675002139603,
+  "timestamp": 1675460067596,
   "index": "/index.html",
   "assetGroups": [
     {
@@ -13,12 +13,12 @@
       "urls": [
         "/799.4bed615fd3ea3b9c.js",
         "/index.html",
-        "/main.b71055e28b82bd82.js",
+        "/main.f2c1ea317a3d6edf.js",
         "/manifest.webmanifest",
         "/polyfills.7b2b82305a0bae27.js",
         "/runtime.0edddc2516fbe69f.js",
         "/scripts.6253ca5790bc7186.js",
-        "/styles.a64a3637461707c3.css"
+        "/styles.32f08fa61193b70b.css"
       ],
       "patterns": [
         "https:\\/\\/www\\.aldrune\\.com\\/static\\/frontpage\\/images\\/pic01\\.jpg",
@@ -228,16 +228,16 @@
     "/fontawesome-webfont.cf011583fb81df9f.woff": "28b782240b3e76db824e12c02754a9731a167527",
     "/fontawesome-webfont.da909aa098b0ee2d.svg": "98a8aa5cf7d62c2eff5f07ede8d844b874ef06ed",
     "/fontawesome-webfont.e9955780856cf8aa.woff2": "d6f48cba7d076fb6f2fd6ba993a75b9dc1ecbf0c",
-    "/index.html": "f23e94a409f96654a3e62ced3d03e0c31adf2ae2",
+    "/index.html": "fa96c33db84298ebbcb3a964bdf99c4838f720eb",
     "/layers-2x.9859cd1231006a4a.png": "152a162333e46d24f9d89f566312fc0c64011dee",
     "/layers.ef6db8722c2c3f9a.png": "c9e7528e491a39232ba24a2706c6c739d6fb0f06",
-    "/main.b71055e28b82bd82.js": "38f6f8c7f375c64220e14f262448fe091d6094a2",
+    "/main.f2c1ea317a3d6edf.js": "544d9f40d0b27a77c9f8024173d2ab210ab47838",
     "/manifest.webmanifest": "116c35892aa2a2a2ae967202ecd0a917f9fe39db",
     "/marker-icon.d577052aa271e13f.png": "60a90bcbb2b42b7ddb4556db94eb7c1084b0e5da",
     "/polyfills.7b2b82305a0bae27.js": "b6c1ad647724e83beb8b5f7ccf2ca9dd88f65459",
     "/runtime.0edddc2516fbe69f.js": "90976a6e3c74eee3d7dc7ad13e48f8e5639312f5",
     "/scripts.6253ca5790bc7186.js": "326d8bbeae8d640f34b4a1a29d32a1d6cab994d4",
-    "/styles.a64a3637461707c3.css": "03983953ca079463b2a210f99d3aea008b8cb68f"
+    "/styles.32f08fa61193b70b.css": "5f91112d291eb1c5e8e788cf10d6bb9d2955b133"
   },
   "navigationUrls": [
     {
