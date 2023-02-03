@@ -21,9 +21,11 @@
             <div class="text-center subheading mb-1 col-12"> 
                 Leader: 
                 <ng-container *ngIf="articleData.leader; else Unknown">
-                    <a class="ms-1" [routerLink]="organizationLeaderUrl">
-                        {{ articleData.leader }}
-                    </a>
+                    <strong>
+                        <a class="ms-1" [routerLink]="organizationLeaderUrl">
+                            {{ articleData.leader }}
+                        </a>
+                    </strong>
                 </ng-container>
             </div>
 
@@ -31,9 +33,11 @@
             <div class="text-center mb-3 subheading col-12"> 
                 Headquarters:
                 <ng-container *ngIf="articleData.headquarter_details; else Unknown">
-                    <a class="ms-1" [routerLink]="headquartersUrl">
-                        {{ articleData.headquarter_details.name_full }}
-                    </a>
+                    <strong>    
+                        <a class="ms-1" [routerLink]="headquartersUrl">
+                            {{ articleData.headquarter_details.name_full }}
+                        </a>
+                    </strong>
                 </ng-container>
             </div>
         </div>

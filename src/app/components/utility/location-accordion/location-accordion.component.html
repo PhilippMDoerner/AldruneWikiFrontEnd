@@ -9,16 +9,11 @@
     <ngb-panel [id]="'static-'+i" *ngFor="let location of sublocations; let i = index">
         <!-- Header -->
         <ng-template ngbPanelTitle class="button-container">
-            <span class="location-title"> 
-                <a [routerLink]="locationUrls[i]"> 
+            <strong>
+                <a class="location-title" [routerLink]="locationUrls[i]"> 
                     {{ location.name }} 
                 </a>
-            </span>
-            <i class="fa float-end icon" 
-            [ngClass]="{
-                'fa-chevron-down': !panelIsOpen(i),
-                'fa-chevron-up': panelIsOpen(i)
-            }"></i>
+            </strong>
         </ng-template>
 
         <!-- Body -->

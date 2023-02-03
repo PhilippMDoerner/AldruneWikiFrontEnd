@@ -2,13 +2,11 @@
 
 .location-title{
     color: white;
-    width: 100%;
     font-size: 18px;
-    border-bottom: dotted 2px gray;
 }
 
-.location-title:hover{
-    border-bottom: solid 2px gray;
+a:hover{
+    color: var(--link-blue);  
 }
 
 .location-character{
@@ -19,12 +17,4 @@
 
 .badge a{
     border-bottom: none;
-}
-
-.badge a:hover{
-    color: var(--link-blue);
-}
-
-.bg-secondary{
-    background-color: rgba(27, 31, 34, 1);
 }

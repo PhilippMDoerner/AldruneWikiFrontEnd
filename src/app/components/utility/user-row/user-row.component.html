@@ -70,7 +70,7 @@
     <div class="mt-3">
         
         <form (submit)="addUserToSelectedGroup(groupField.value)">
-            <select class="form-control" name="character" id="character" [(ngModel)]="newGroup" #groupField>
+            <select class="form-select" name="character" id="character" [(ngModel)]="newGroup" #groupField>
                 <ng-container *ngFor="let group of groups">
                     <option [value]="group.id" [attr.disabled]="isUserInGroup(group.id) ? true : null">
                         {{group.name}}

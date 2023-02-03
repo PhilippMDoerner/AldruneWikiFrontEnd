@@ -121,7 +121,6 @@ body {
 	--wiki-background-1: rgba(27, 31, 34, 0.85);
 	--highlight-gray: rgba(61, 70, 77, 0.85);
 	--wiki-background-2: rgb(27, 31, 34);
-
 }
 
 //headings
@@ -161,7 +160,7 @@ strong{
 
 a{
 	color: white;
-	border-bottom: dotted 1px gray;
+	border-bottom: dotted 2px gray;
 	text-decoration: none;
 }
 
@@ -595,6 +594,9 @@ formly-validation-message{
 	color: var(--lightest-red);
 }
 
+.form-check-input{
+	background-color: white;
+}
 
 //Custom "updated" class for formly
 .updated{
@@ -726,8 +728,8 @@ button{
 
 	//In general make drop-down cards (e.g. rules, spells) un-padded to reduce space waste
 	.card.px-4{
-		padding-left: 0 !important;
-		padding-right: 0 !important;
+		padding-left: 0.5rem !important;
+		padding-right: 0.5rem !important;
 	}
 
 	h1{

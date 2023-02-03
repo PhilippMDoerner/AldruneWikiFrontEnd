@@ -105,7 +105,7 @@
 <ng-template #connectionForm>
     <!-- Form for Creating Player Class Connections -->
     <form class="d-inline-flex align-items-center" (submit)="createPlayerClassConnection(connectionModel)">
-        <select class="form-control d-inline-block" name="connection" id="connection" [(ngModel)]="connectionModel.player_class">
+        <select class="form-select d-inline-block" name="connection" id="connection" [(ngModel)]="connectionModel.player_class">
             <ng-container *ngFor="let playerClass of playerClasses">
                 <option [value]="playerClass.pk" [attr.disabled]="hasConnection(playerClass) ? true : null">
                     {{playerClass.name}}

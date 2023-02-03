@@ -69,6 +69,31 @@ $text-muted: $gray-600 !default;
 
 $table-accent-bg: $gray-800 !default;
 $table-border-color: $gray-700 !default;
+$table-cell-padding-y:        .75rem;
+$table-cell-padding-x:        .75rem;
+$table-cell-padding-y-sm:     .75rem;
+$table-cell-padding-x-sm:     .75rem;
+
+.table-warning{
+  background-color: rgba(255, 200, 36, 0.30) !important;
+  i{
+    color: white;
+  }
+}
+
+.table-success{
+  background-color:rgba(147, 196, 125, 0.30) !important;
+  i{
+    color: white;
+  }
+}
+
+.table-danger{
+  background-color: rgba(206, 10, 10, 0.30) !important;
+  i{
+    color: white;
+  }
+}
 
 // Forms
 
@@ -171,6 +196,11 @@ $close-text-shadow: none !default;
 
 $pre-color: inherit !default;
 
+// Accordion
+.accordion{
+  --bs-accordion-active-bg: var(--bs-gray-900) !important;
+}
+
 button.btn.btn-link:hover {
   text-decoration: none !important;
 }
@@ -203,7 +233,7 @@ input.form-control:focus {
   color: white;
 }
 
-select.form-control {
+select.form-select{
   color: white !important;
   background-color: #4c4c4c !important;
 }

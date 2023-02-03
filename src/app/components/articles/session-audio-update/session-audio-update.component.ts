@@ -1,19 +1,19 @@
+import { HttpEventType } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
-import { SessionAudioService } from 'src/app/services/session-audio.service';
-import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { Observable, Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
-import { WarningsService } from 'src/app/services/warnings.service';
-import { RoutingService } from 'src/app/services/routing.service';
-import { HttpEventType } from '@angular/common/http';
-import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 import { Constants, OverviewType } from 'src/app/app.constants';
+import { SessionAudio, SessionAudioObject } from 'src/app/models/sessionaudio';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
+import { MyFormlyService } from 'src/app/services/my-formly.service';
+import { RoutingService } from 'src/app/services/routing.service';
+import { SessionAudioService } from 'src/app/services/session-audio.service';
 import { TokenService } from 'src/app/services/token.service';
+import { WarningsService } from 'src/app/services/warnings.service';
+import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
 
 @Component({
   selector: 'app-session-audio-update',

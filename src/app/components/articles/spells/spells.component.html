@@ -11,7 +11,7 @@
         </h1>
 
         <ng-container *ngIf="hasCreatePermission">
-            <div class="mb-3 row">
+            <div class="mb-3">
                 <a class="btn btn-primary col-lg-2 col-sm-3" (click)="addArticle()"> 
                     <i class="fa fa-plus"></i>
                     Add Spell
@@ -36,8 +36,8 @@
             </div>
         </ng-container>
 
-        <div class="row">
-            <a class="col-lg-2 col-md-3 btn btn-secondary" [routerLink]="homePageUrl">
+        <div class="d-flex">
+            <a class="col-md-3 col-4 btn btn-secondary" [routerLink]="homePageUrl">
                 Back To Frontpage
             </a>
         </div>

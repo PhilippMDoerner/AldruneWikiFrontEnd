@@ -19,9 +19,11 @@
             <ng-container *ngIf="articleData.owner_details">
                 <p class="text-center col mb-5"> 
                     Owned by: 
-                    <a [routerLink]="ownerUrl">
-                        {{ articleData.owner_details.name }}
-                    </a>
+                    <strong>
+                        <a [routerLink]="ownerUrl">
+                            {{ articleData.owner_details.name }}
+                        </a>
+                    </strong>
                 </p>
             </ng-container>
         </div>

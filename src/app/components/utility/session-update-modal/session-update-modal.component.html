@@ -1,25 +1,43 @@
+<div class="mb-3 mx-2">
+    <!-- Button to show in Create State -->
+    <ng-container  *ngIf="isInCreateMode">
+        <div [class]="'btn btn-outline-info fa ' + icon" 
+        title="Create new Session" 
+        (click)="open(content)"></div>   
+    </ng-container>
+     
+    <!-- Button to show in Update State -->
+    <ng-container *ngIf="isInUpdateMode && !sessionFormModel">
+        <div [class]="'btn btn-outline-info fa ' + icon" 
+        title="Edit selected Session" 
+        (click)="open(content)"></div>
+    </ng-container>
+</div>
+
 <ng-template #content let-modal>
     <!-- Header -->
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">
-            <ng-container *ngIf="formState === constants.createState">
+            <ng-container *ngIf="isInCreateMode">
                 Create Session 
             </ng-container>
-            <ng-container *ngIf="formState === constants.updateState">
-                Update {{ model.name }} 
+            <ng-container *ngIf="isInUpdateMode">
+                <ng-container *ngIf="!!sessionFormModel; else requestSelectingModel">
+                    Update {{ sessionFormModel?.name }} 
+                </ng-container>
             </ng-container>
         </h4>
-        <div class="btn-close" aria-label="Close" (click)="modal.dismiss()">
+        <div class="" aria-label="Close" (click)="modal.dismiss()">
             <span aria-hidden="true" class="fa fa-times pointer"></span>
         </div>
     </div>
 
     <!-- Body -->
     <div class="modal-body">
-        <div class="mb-1" *ngIf="model; else loading">        
+        <div class="mb-1" *ngIf="!!sessionFormModel">        
             <!-- Form -->
-            <form [formGroup]="form" (submit)="onSubmit(modal)">
-                <formly-form [form]="form" [fields]="fields" [model]="model"></formly-form>
+            <form [formGroup]="sessionForm" (submit)="onSubmit(modal)">
+                <formly-form [form]="sessionForm" [fields]="sessionFormFields" [model]="sessionFormModel"></formly-form>
                 <div class="btn btn-secondary me-3" (click)="modal.close()">Cancel</div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>
@@ -28,23 +46,7 @@
 
 </ng-template>
 
-<div class="mb-3 mx-2">
-    <!-- Button to show in Create State -->
-    <ng-container  *ngIf="formState === constants.createState">
-        <div [class]="'btn btn-outline-info fa ' + icon" 
-        title="Create new Session" 
-        (click)="open(content)"></div>   
-    </ng-container>
-     
-    <!-- Button to show in Update State -->
-    <ng-container *ngIf="formState === constants.updateState">
-        <div [class]="'btn btn-outline-info fa ' + icon" 
-        title="Edit selected Session" 
-        (click)="open(content)"
-        [ngClass]="{'d-none': !model}"></div>
-    </ng-container>
-
-</div>
 
 <!-- Loading Spinner -->
 <ng-template #loading><app-spinner></app-spinner></ng-template>
+<ng-template #requestSelectingModel> Please Select a session that you want to update</ng-template>

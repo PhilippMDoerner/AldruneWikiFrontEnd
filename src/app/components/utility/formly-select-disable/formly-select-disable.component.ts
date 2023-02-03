@@ -1,10 +1,9 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
-import { AbstractControl } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { AbstractControl, FormControlStatus } from '@angular/forms';
 import { FieldType, FormlyTemplateOptions } from '@ngx-formly/core';
-import { observable, Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
-import { OverviewItem, OverviewItemObject } from 'src/app/models/overviewItem';
-import { WarningsService } from 'src/app/services/warnings.service';
+import { combineLatest, Observable, of } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
+import { OverviewItemObject } from 'src/app/models/overviewItem';
 
 /**
  * CUSTOM OVERVIEW SELECT THAT ALLOWS DISABLING FIELDS
@@ -36,80 +35,57 @@ import { WarningsService } from 'src/app/services/warnings.service';
   templateUrl: './formly-select-disable.component.html',
   styleUrls: ['./formly-select-disable.component.scss']
 })
-export class FormlySelectDisableComponent extends FieldType implements OnInit, OnChanges {
+export class FormlySelectDisableComponent extends FieldType implements OnInit {
 
-  constructor(
-    private warnings: WarningsService
-  ) { super() }
+  constructor() { super() }
 
-  allSelectOptions: OverviewItemObject[];
-  isOptionDisabledArray: boolean[] = [];
-
+  allSelectOptions$: Observable<OverviewItemObject[]>;
+  isOptionDisabledArray$: Observable<boolean[]> = of([]);
+  hasInvalidOptionSelected$: Observable<boolean> = of(false);
 
   ngOnInit(): void {
-    const selectOptionsObservable = this.to.options as Observable<any[]>;
-    const hasObservableOptions: boolean = (selectOptionsObservable instanceof Observable);
+
+    this.allSelectOptions$ = this.props.options as Observable<any[]>;
+    const hasObservableOptions: boolean = (this.allSelectOptions$ instanceof Observable);
     if(!hasObservableOptions) throw "InvalidSelectOptionsException. You tried to create a FormlySelectDisableComponent - field, but provided an option that wasn't an Observable!"
+    
+    this.isOptionDisabledArray$ = combineLatest(
+      [ 
+        this.form.statusChanges.pipe(startWith(0)), 
+        this.allSelectOptions$ 
+      ]
+    ).pipe(
+      map(([_, options]: [FormControlStatus, OverviewItemObject[]]): boolean[] => {
+        return options.map(option => this.isDisabledOption(option, this));
+      }),
+      startWith([]),
+    );
 
-    selectOptionsObservable.pipe(first()).subscribe(
-      (observableOptions: OverviewItemObject[]) => {
-        this.allSelectOptions = observableOptions;
-        this.determineDisabledStateOfOptions();
-      },
-      error => this.warnings.showWarning(error)
+    this.hasInvalidOptionSelected$ = combineLatest(
+      [ this.allSelectOptions$, this.isOptionDisabledArray$]
+    ).pipe(
+      map(([options, isOptionDisabledArray]) => {
+        const selectedOptionPk: number = this.model.session;
+        const selectedOptionIndex: number = options.findIndex(
+          (option: OverviewItemObject) => option.pk === selectedOptionPk
+          );
+          const hasNoSelectedOption = selectedOptionIndex == -1;
+          if(hasNoSelectedOption) return false;
+          
+        return isOptionDisabledArray[selectedOptionIndex];
+      })
     );
   }
 
-  ngOnChanges(): void{
-    this.determineDisabledStateOfOptions();
-  }
-
-  determineDisabledStateOfOptions(): void{
-    const hasNoOptions = this.allSelectOptions == null;
-    if(hasNoOptions) return;
-
-    const checkForBeingDisabledCallback: Function = this.to.disabledExpression;
-    const hasNoCallback = checkForBeingDisabledCallback == null;
-    if(hasNoCallback) return;
-
-    const thisComponentRef: this = this;
-
-    this.isOptionDisabledArray = this.allSelectOptions.map(
-      (option: OverviewItemObject) => thisComponentRef.isDisabledOption(option, thisComponentRef)
-    );
-  }
-
-  isDisabledOption(option: OverviewItemObject, thisComponentRef: this){
-    const hasNoOptions: boolean = thisComponentRef.allSelectOptions == null;
-    if(hasNoOptions) return;
-
-    const checkForBeingDisabledCallback: Function = thisComponentRef.to.disabledExpression;
+  isDisabledOption(option: OverviewItemObject, thisComponentRef: this): boolean{
+    const checkForBeingDisabledCallback: Function = thisComponentRef.props.disabledExpression;
     const hasNoCallback: boolean = checkForBeingDisabledCallback == null;
-    if(hasNoCallback) return;
+    if(hasNoCallback) return false;
 
-    const templateOptions: FormlyTemplateOptions = thisComponentRef.to;
+    const templateOptions: FormlyTemplateOptions = thisComponentRef.props;
     const formControl: AbstractControl = thisComponentRef.formControl;
     const model = thisComponentRef.model;
-
+    
     return checkForBeingDisabledCallback(option, templateOptions, model, formControl);
   }
-
-  
-
-  hasInvalidOptionSelected(): boolean{
-    const hasNoOption = this.allSelectOptions == null;
-    if(hasNoOption) return false;
-
-    const selectedOptionPk: number = this.model.session;
-    const selectedOption: OverviewItemObject = this.allSelectOptions.find(
-      (option: OverviewItemObject) => option.pk === selectedOptionPk
-    );
-    const hasNoSelectedOption = selectedOption == null;
-    if(hasNoSelectedOption) return false;
-
-    const thisComponentRef: this = this;
-    const selectedOptionIsInvalid = this.isDisabledOption(selectedOption, thisComponentRef);
-    return selectedOptionIsInvalid;
-  }
-
 }

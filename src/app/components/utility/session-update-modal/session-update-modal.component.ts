@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FieldType } from '@ngx-formly/bootstrap/form-field';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { BehaviorSubject, Observable, Subscription } from 'rxjs';
 import { filter, first } from 'rxjs/operators';
@@ -16,7 +17,7 @@ import { SessionService } from 'src/app/services/session.service';
   templateUrl: './session-update-modal.component.html',
   styleUrls: ['./session-update-modal.component.scss']
 })
-export class SessionUpdateModalComponent implements OnInit, OnDestroy {
+export class SessionUpdateModalComponent extends FieldType implements OnInit, OnDestroy {
   @Input() session_pk_subject: BehaviorSubject<number>;
   @Input() icon: string = "fa-pencil";
   @Output() updateSession: EventEmitter<SessionObject> = new EventEmitter();
@@ -24,13 +25,13 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
 
   sessionList: SessionObject[];
 
-  formState: string;
-
   campaign: CampaignOverview;
+  sessionFormModel: SessionObject; 
+  sessionForm = new FormGroup({});
+  isInCreateMode: boolean = false;
+  isInUpdateMode: boolean = false
 
-  model: SessionObject;
-  form = new FormGroup({});
-  fields: FormlyFieldConfig[] = [
+  sessionFormFields: FormlyFieldConfig[] = [
     this.formlyService.genericCheckbox({key: "is_main_session", defaultValue: true, label: "Main Session?"}),
     this.formlyService.genericInput({key: "session_number", label: "Session Number", required: true}),
     this.formlyService.genericDatepicker({key: "session_date", label: "Day of the Session", required: true}),
@@ -48,20 +49,22 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
     private formlyService: MyFormlyService,
     private sessionService: SessionService,
     private globalUrlParams: GlobalUrlParamsService,
-  ) { }
+  ) { super() }
 
   async ngOnInit(){
-    this.formState = (this.session_pk_subject) ? Constants.updateState : Constants.createState;
+    const isGivenPkDataOfExistingEntry = !!this.session_pk_subject;
+    this.isInUpdateMode = isGivenPkDataOfExistingEntry;
+    this.isInCreateMode = !isGivenPkDataOfExistingEntry;
 
     this.campaign = await this.globalUrlParams.getCurrentCampaign();
     this.onAfterCampaignLoad(this.campaign);
   }
 
   onAfterCampaignLoad(campaign: CampaignOverview): void{
-    if (this.formState === Constants.updateState){
+    if (this.isInUpdateMode){
       this.fetchUserModel();
 
-    } else if (this.formState === Constants.createState){
+    } else if (this.isInCreateMode){
       this.createModel(campaign);
     }
   }
@@ -72,7 +75,7 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
       .subscribe((sessionPk: number) => {
         this.sessionService.read(sessionPk)
           .pipe(first())
-          .subscribe((session: SessionObject) => this.model = session);
+          .subscribe((session: SessionObject) => this.sessionFormModel = session);
       });
   }
 
@@ -82,12 +85,12 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
     }
     
     const lastSession = this.sessionList[0];
-    this.model = new SessionObject();
+    this.sessionFormModel = new SessionObject();
 
-    this.model.session_date = this.getNextSessionDate(lastSession);
-    this.model.is_main_session = true;
-    this.model.session_number = lastSession.session_number + 1;
-    this.model.campaign = campaign.pk;
+    this.sessionFormModel.session_date = this.getNextSessionDate(lastSession);
+    this.sessionFormModel.is_main_session = true;
+    this.sessionFormModel.session_number = lastSession.session_number + 1;
+    this.sessionFormModel.campaign = campaign.pk;
   }
 
   getNextSessionDate(lastSession: SessionObject): string{
@@ -106,13 +109,12 @@ export class SessionUpdateModalComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(modal: NgbActiveModal): void{
-    const isFormInUpdateState: boolean = this.formState === Constants.updateState;
-    const responseObservable: Observable<SessionObject> = (isFormInUpdateState) ? 
-        this.sessionService.update(this.model.pk, this.model) : 
-        this.sessionService.create(this.model);
+    const responseObservable: Observable<SessionObject> = (this.isInUpdateMode) ? 
+        this.sessionService.update(this.sessionFormModel.pk, this.sessionFormModel) : 
+        this.sessionService.create(this.sessionFormModel);
 
     responseObservable.pipe(first()).subscribe(session =>{
-      const emitter: EventEmitter<SessionObject> = (this.formState === Constants.updateState) ? this.updateSession : this.createSession;
+      const emitter: EventEmitter<SessionObject> = (this.isInUpdateMode) ? this.updateSession : this.createSession;
       emitter.emit(session);
       modal.close();
     });

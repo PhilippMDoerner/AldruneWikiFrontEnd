@@ -1,44 +1,48 @@
 <div class="mb-3">
 
-    <label for="formly_disable_select_{{to.label}}">
+    <label for="formly_disable_select_{{props.label}}">
         <strong placement="top"
         [ngbTooltip]="tooltipContent"
         [tooltipClass]="'my-tooltip'"> 
-            {{to.label}} 
+            {{props.label}} 
             <span class="fa fa-info-circle mx-1"></span>
-            <ng-container *ngIf="to.required">*</ng-container>
+            <ng-container *ngIf="props.required">*</ng-container>
         </strong>
 
     </label>
     
-    <select 
-    [id]="'formly_disable_select_' + to.label" 
-    [required]="to.required"
-    class="form-control"
-    [formControl]="formControl" 
-    [formlyAttributes]="field"
-    >
-        <ng-container *ngFor="let selectOption of allSelectOptions; let optionIndex = index">
-            <option [ngValue]="selectOption[to.valueProp]" [disabled]="this.isOptionDisabledArray[optionIndex]">
-                {{selectOption[to.labelProp]}}
-            </option>
-        </ng-container>
-    </select>
+    <ng-container *ngIf="{
+        allSelectOptions: allSelectOptions$ | async,
+        isOptionsDisabledArray: isOptionDisabledArray$ | async
+    } as data; else loading">
+        <select 
+        [id]="'formly_disable_select_' + props.label" 
+        [required]="props.required"
+        class="form-select"
+        [formControl]="formControl" 
+        [formlyAttributes]="field"
+        >
+            {{ allSelectOptions$ | async }} Walumba
+            <ng-container *ngFor="let selectOption of data.allSelectOptions; let optionIndex = index">
+                <option [ngValue]="selectOption[props.valueProp]" [disabled]="data.isOptionsDisabledArray[optionIndex]">
+                    {{selectOption[props.labelProp]}}
+                </option>
+            </ng-container>
+        </select>
+    </ng-container>
 
-    <ng-container *ngIf="hasInvalidOptionSelected()">
+    <ng-container *ngIf="hasInvalidOptionSelected$ | async">
         <div class="mywarningmessage">
-            {{ to.warningMessage }}
+            {{ props.warningMessage }}
         </div>
     </ng-container>
 </div>
 
 <ng-template #tooltipContent>
     <div class="alert alert-info m-0 p-0">
-        {{ to.tooltipMessage }}
+        {{ props.tooltipMessage }}
     </div>
 </ng-template>
-    
-<!-- This is solely written here because doing this is to trigger determineDisabledStateOfOptions
-is simpler than figuring out how to get ngOnChanges to trigger whenever the model is updated...
-Which would likely mean replacing the model -->
-{{ ngOnChanges() }}
+
+<!-- Loading Spinner -->
+<ng-template #loading><app-spinner></app-spinner></ng-template>

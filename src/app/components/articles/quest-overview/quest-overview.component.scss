@@ -15,19 +15,13 @@ select {
     color: white;
 }
 
-.bg-warning{
-    background-color: rgba(255, 200, 36, 0.30) !important;
-}
-
-.bg-success{
-    background-color:rgba(147, 196, 125, 0.30) !important;
-}
-
-.bg-danger{
-    background-color: rgba(206, 10, 10, 0.30) !important;
-}
-
 .form-control{
     max-width: 20%;
     min-width: 8rem;
+}
+
+.table-success, 
+.table-warning, 
+.table-danger{
+    box-shadow: none;
 }

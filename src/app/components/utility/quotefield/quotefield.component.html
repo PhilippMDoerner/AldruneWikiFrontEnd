@@ -40,7 +40,7 @@
             <!-- Form for Creating Quote Connections -->
             <ng-container *ngIf="inQuoteConnectionCreateState">
               <form class="d-flex align-items-center" (submit)="createQuoteConnection()">
-                <select class="form-control"
+                <select class="form-select"
                 name="character"
                 id="character"
                 [(ngModel)]="baseQuoteConnection.character">

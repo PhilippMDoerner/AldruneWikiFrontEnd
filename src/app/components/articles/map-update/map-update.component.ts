@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { Constants } from 'src/app/app.constants';
-import { MapObject, Map } from 'src/app/models/map';
+import { Map, MapObject } from 'src/app/models/map';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
 import { MapService } from 'src/app/services/map.service';
@@ -57,11 +56,12 @@ export class MapUpdateComponent extends ArticleFormMixin implements OnInit {
 
   ngOnInit(): void {
     super.ngOnInit();
-
     this.userModel.icon = this.extractIconNameFromPath(this.userModel.icon);
   }
 
   extractIconNameFromPath(iconPath: string): string {
+    if (iconPath == null) return null;
+
     const iconPathSections = iconPath.split("/");
     return iconPathSections[iconPathSections.length - 1];
   }

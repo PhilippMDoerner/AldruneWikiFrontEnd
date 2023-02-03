@@ -17,12 +17,7 @@
                     <!-- Panel Title -->
                     <ng-template ngbPanelTitle>
                         <div class="d-flex align-items-center justify-content-between panel-title">
-                            <span class="encounter-title" [innerHTML]="encounter.name"></span>
-                            <i class="fa float-end icon"
-                            [ngClass]="{
-                                'fa-chevron-down': !panelIsOpen(i),
-                                'fa-chevron-up': panelIsOpen(i)
-                            }"></i>
+                            <strong class="encounter-title" [innerHTML]="encounter.name"></strong>
                         </div>
                     </ng-template>
         
@@ -69,7 +64,7 @@
                                 <ng-container *ngIf="inEncounterConnectionCreationState && hasCreatePermission">
                                     <form class="d-flex align-items-center" (submit)="createEncounterConnection(encounter)">
 
-                                        <select class="form-control" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
+                                        <select class="form-select" name="character" id="character" [(ngModel)]="baseEncounterConnection.character">
                                             <ng-container *ngFor="let character of characters">
                                                 <option [value]="character.pk">{{character.name}}</option>
                                             </ng-container>
@@ -95,7 +90,7 @@
                         <app-delete-toggle
                         [deleteMessage]="'Delete this encounter?'"
                         (deleteEvent)="deleteEncounter(encounter)"
-                        class="col-md-9 px-0"
+                        class="px-0 d-flex justify-content-end w-100"
                         ></app-delete-toggle>
         
                     </ng-template>

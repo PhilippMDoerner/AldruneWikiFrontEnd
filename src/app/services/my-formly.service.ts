@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { FormlyCheckboxConfig, FormlyCustomSelectConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewDisabledSelectConfig, FormlyOverviewSelectConfig, FormlyPasswordInterface } from "src/app/models/formly";
-import { FormlyField, FormlyFieldConfig } from "@ngx-formly/core";
-import { OverviewService } from './overview.service';
-import { OverviewType } from '../app.constants';
+import { FormlyFieldConfig } from "@ngx-formly/core";
 import { Observable } from 'rxjs';
+import { FormlyCheckboxConfig, FormlyCustomSelectConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewDisabledSelectConfig, FormlyOverviewSelectConfig, FormlyPasswordInterface } from "src/app/models/formly";
+import { OverviewService } from './overview.service';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +42,7 @@ export class MyFormlyService {
       className: config.className,
       wrappers: config.wrappers,
       hideExpression: (config.hide) ? config.hide : false,
-      templateOptions:{
+      props:{
         label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
         labelProp: (config.labelProp) ? config.labelProp : "name_full",
         valueProp: (config.valueProp) ? config.valueProp : "pk",
@@ -71,17 +70,17 @@ export class MyFormlyService {
     } else {
       optionsObservable = this.selectOptionService.getCampaignOverviewItems(config.campaign, config.overviewType, config.sortProp);
     }
-
+    
     return {
       key: config.key,
       type: "formly-select-disable",
       className: config.className,
       wrappers: config.wrappers,
-      hideExpression: (config.hide) ? config.hide : false,
-      templateOptions:{
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
-        labelProp: (config.labelProp) ? config.labelProp : "name_full",
-        valueProp: (config.valueProp) ? config.valueProp : "pk",
+      hideExpression: !!config.hide,
+      props:{
+        label: config.label || this.capitalizeFirstLetter(config.key),
+        labelProp:  config.labelProp  || "name_full",
+        valueProp:  config.valueProp || "pk",
         options: optionsObservable,
         required: (typeof config.required === "boolean") ? config.required : true,
         disabledExpression: config.disabledExpression,

@@ -52,34 +52,33 @@
                     <!-- Table Body -->
                     <tbody [id]="questTaker.key + '-quests'">
                         <ng-container *ngFor="let quest of questTaker.value; let questIndex = index">
-                            <tr 
-                        
-                            [ngClass]='{"d-none": isFilteredOut(filterStates[questTaker.key], quest.status)}'
-                            >
-                                <!-- Quest Name Column -->
-                                <td>
-                                    <a [id]="'quest' + quest.pk" [routerLink]="quest.getAbsoluteRouterUrl()">
-                                        <strong>{{ quest.name }}</strong>
-                                    </a>
-                                </td>
-                                <!-- Quest Abstract -->
-                                <td class="hide-on-mobile"> {{ quest.abstract }}</td>
-                                <!-- Quest Status -->
-                                <td [ngClass]="{
-                                    'completed bg-success': quest.status === 'Completed',
-                                    'on-hold bg-warning': quest.status === 'On Hold',
-                                    'failed bg-danger': quest.status === 'Failed'
-                                }">
-                                    <i [ngClass]="{
-                                        'fa': true,
-                                        'fa-check-square-o': quest.status === 'Completed',
-                                        'fa-hourglass-half': quest.status === 'On Hold',
-                                        'fa-times': quest.status === 'Failed',
-                                        'fa-spinner': quest.status === 'In progress'
-                                    }" 
-                                    title="quest.status"></i>
-                                </td>
-                            </tr>
+                            <ng-container *ngIf="!isFilteredOut(filterStates[questTaker.key], quest.status)">
+                                <tr>
+                                    <!-- Quest Name Column -->
+                                    <td>
+                                        <a [id]="'quest' + quest.pk" [routerLink]="quest.getAbsoluteRouterUrl()">
+                                            <strong>{{ quest.name }}</strong>
+                                        </a>
+                                    </td>
+                                    <!-- Quest Abstract -->
+                                    <td class="hide-on-mobile"> {{ quest.abstract }}</td>
+                                    <!-- Quest Status -->
+                                    <td [ngClass]="{
+                                        'completed table-success': quest.status === 'Completed',
+                                        'on-hold table-warning': quest.status === 'On Hold',
+                                        'failed table-danger': quest.status === 'Failed'
+                                    }">
+                                        <i [ngClass]="{
+                                            'fa': true,
+                                            'fa-check-square-o': quest.status === 'Completed',
+                                            'fa-hourglass-half': quest.status === 'On Hold',
+                                            'fa-times': quest.status === 'Failed',
+                                            'fa-spinner': quest.status === 'In progress'
+                                        }" 
+                                        title="quest.status"></i>
+                                    </td>
+                                </tr>
+                            </ng-container>
                         </ng-container>
 
                     </tbody>

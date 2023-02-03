@@ -1,11 +1,10 @@
-import { HttpClient, HttpEventType, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
+import { convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
 import { Constants } from '../app.constants';
 import { SessionAudio, SessionAudioObject } from '../models/sessionaudio';
-import { convertSingleFileModelToFormData } from "src/app/utils/formDataConverter";
 import { TransformObservable } from '../utils/functions/transform';
-import { filter, map, tap } from 'rxjs/operators';
 import { GenericObjectService } from './generic-object.service';
 
 @Injectable({
@@ -32,7 +31,7 @@ export class SessionAudioService extends GenericObjectService {
       reportProgress: true,
       observe: 'events',
       headers: headers
-    }).pipe(tap(resp => console.log(resp)));
+    });
   }
 
   //@TransformObservable(SessionAudioObject)
