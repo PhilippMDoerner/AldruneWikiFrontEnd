@@ -18,7 +18,7 @@
                     <ng-template ngbPanelTitle>
                         <div class="d-flex align-items-center justify-content-between panel-title">
                             <span class="encounter-title" [innerHTML]="encounter.name"></span>
-                            <i class="fa float-right icon"
+                            <i class="fa float-end icon"
                             [ngClass]="{
                                 'fa-chevron-down': !panelIsOpen(i),
                                 'fa-chevron-up': panelIsOpen(i)
@@ -29,7 +29,7 @@
                     <!-- Panel Content -->
                     <ng-template ngbPanelContent>
                         <!-- Edit Toggler -->
-                        <div class="btn btn-secondary float-right" 
+                        <div class="btn btn-secondary float-end" 
                         (click)="fullEditEncounter(encounter)" 
                         [ngClass]="{'d-none': !hasUpdatePermission}"
                         >
@@ -95,7 +95,7 @@
                         <app-delete-toggle
                         [deleteMessage]="'Delete this encounter?'"
                         (deleteEvent)="deleteEncounter(encounter)"
-                        class="col-md-9 float-right px-0"
+                        class="col-md-9 px-0"
                         ></app-delete-toggle>
         
                     </ng-template>

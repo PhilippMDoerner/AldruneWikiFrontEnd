@@ -100,7 +100,7 @@ export class WarningsService {
     const notificationHTML = `
     <div class="card notification animate__animated animate__fadeInDown">
         <div class="card-body">
-          <i class="fa fa-times fa-1-5x icon float-right" id="closeIcon"></i>
+          <i class="fa fa-times fa-1-5x icon float-end" id="closeIcon"></i>
           <h3 class="card-title mb-0">${heading}</h3>
           <hr class="white-separator">
           <div class="card-subtitle"></div>

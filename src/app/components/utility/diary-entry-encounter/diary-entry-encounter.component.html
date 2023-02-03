@@ -13,36 +13,32 @@
         {{ cardData.title }}
 
         <!-- Edit Toggler + Cut Toggler-->
-        <div
-          class="float-right flex-row"
-          [ngClass]="{
-            'd-none': hasUpdatePermission || diaryEntryView,
-            'd-flex': hasUpdatePermission && !diaryEntryView
-          }"
-        >
-          <!-- Cut Toggler -->
-          <div
-            class="btn btn-secondary encounter-hidden mr-2"
-            (click)="toggleCutState()"
-            title="Cut Encounter"
-          >
-            <i class="fas fa-cut"></i>
+        <ng-container *ngIf="hasUpdatePermission && !diaryEntryView">
+          <div class="float-end flex-row d-flex">
+            <!-- Cut Toggler -->
+            <div
+              class="btn btn-secondary encounter-hidden mr-2"
+              (click)="toggleCutState()"
+              title="Cut Encounter"
+            >
+              <i class="fas fa-cut"></i>
+            </div>
+  
+            <!-- Edit Toggler -->
+            <div
+              class="btn btn-secondary encounter-hidden"
+              (click)="toggleFormState()"
+            >
+              <i
+                class="fa"
+                [ngClass]="{
+                  'fa-pencil': isInDisplayState(),
+                  'fa-times': !isInDisplayState()
+                }"
+              ></i>
+            </div>
           </div>
-
-          <!-- Edit Toggler -->
-          <div
-            class="btn btn-secondary encounter-hidden"
-            (click)="toggleFormState()"
-          >
-            <i
-              class="fa"
-              [ngClass]="{
-                'fa-pencil': isInDisplayState(),
-                'fa-times': !isInDisplayState()
-              }"
-            ></i>
-          </div>
-        </div>
+        </ng-container>
       </h4>
 
       <!-- Encounter Location (Must only be rendered for existing encounters, not during create state)-->
@@ -112,7 +108,7 @@
             <div class="d-inline-flex align-items-center flex-wrap">
               <!-- Connection List -->
               <span
-                class="badge badge-secondary p-2 mr-2"
+                class="badge bg-secondary p-2 mr-2"
                 *ngFor="
                   let connection of cardData.encounterConnections;
                   let connectionIndex = index
@@ -168,7 +164,7 @@
           <app-delete-toggle
           [deleteMessage]="'Delete this encounter?'"
           (deleteEvent)="articleDelete(cardData)"
-          class="float-right px-0"
+          class="px-0"
           ></app-delete-toggle>
         </ng-container>
 
