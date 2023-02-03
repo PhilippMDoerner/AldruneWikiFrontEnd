@@ -42,7 +42,7 @@
     <div class="mb-3">
       <i> Marked on Maps:</i>
       <ng-container *ngFor="let marker of articleData.marker_details; let markerIndex = index">
-        <a class="badge badge-secondary p-2 mx-2 no-underline" [routerLink]="markerUrls[markerIndex]">
+        <a class="badge bg-secondary p-2 mx-2 no-underline" [routerLink]="markerUrls[markerIndex]">
           {{ marker.map }}
           <!-- Marker Icons -->
           <i class="mx-1 icon fas fa-{{ marker.map_icon }}"></i>

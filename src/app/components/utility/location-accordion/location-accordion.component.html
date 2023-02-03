@@ -39,7 +39,7 @@
                     <span class="mr-4"> Characters: </span>
                     <span class="d-inline-flex align-items-center flex-wrap">
                         <ng-container *ngFor="let character of location.characters; let characterIndex = index">
-                            <span class="badge badge-secondary mr-2 p-1 mb-1">
+                            <span class="badge bg-secondary mr-2 p-1 mb-1">
                                 <a [routerLink]="locationCharacterUrls[i][characterIndex]">
                                     {{ character.name }}
                                 </a>

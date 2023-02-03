@@ -54,7 +54,7 @@
 
                                 <!-- Connection List -->
                                 <ng-container *ngFor="let connection of encounter.encounterConnections; let connectionIndex=index">
-                                    <span class="badge badge-secondary mr-2 p-2">
+                                    <span class="badge bg-secondary mr-2 p-2">
                                         <a [routerLink]="encounterConnectionUrls[i][connectionIndex]">
                                             {{ connection.character_details.name }}
                                         </a>

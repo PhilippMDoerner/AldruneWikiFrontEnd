@@ -36,7 +36,7 @@ table {
   border-bottom: 1px grey solid;
 }
 
-.badge-secondary .fa-trash:hover {
+.bg-secondary .fa-trash:hover {
   color: $red;
 }
 
@@ -48,7 +48,7 @@ table {
   padding: 0.4em 0.8em;
 }
 
-.badge-secondary:hover {
+.bg-secondary:hover {
   background-color: var(--#{dark});
   color: var(--link-blue);
 }

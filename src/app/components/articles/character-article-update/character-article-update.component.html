@@ -20,7 +20,7 @@
             <ng-container *ngIf="userModel">
                 <div id="player-classes" class="mb-5">
                     <ng-container *ngFor="let connection of userModel.player_class_connections">
-                        <span class="badge badge-secondary mr-3">
+                        <span class="badge bg-secondary mr-3">
                             {{ connection.player_class_details.name }}
                             <span class="ml-2 fa fa-trash icon" (click)="deletePlayerClassConnection(connection)"></span>
                         </span>
@@ -50,7 +50,7 @@
                 
                 <ng-container *ngIf="!isOrganizationMembershipCreationState; else createMembershipForm">
                     <div id="organizations" *ngIf="userModel">
-                        <span class="badge badge-secondary mr-3" *ngFor="let membership of userModel.organizations">
+                        <span class="badge bg-secondary mr-3" *ngFor="let membership of userModel.organizations">
                             {{ membership.name }}
                             <span class="ml-2 fa fa-trash icon" (click)="deleteOrganizationMembership(membership)"></span>
                         </span>

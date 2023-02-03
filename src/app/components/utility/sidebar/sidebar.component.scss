@@ -5,7 +5,7 @@
     width: 4rem;
     transition: width 0.2s ease-in-out;
     position: fixed;
-    background-color: var(--dark);
+    background-color: var(--bs-gray-dark);
     z-index: 1005; //Necessary because map uses z-indexes going up to 1000
     overflow-y: auto;
     overflow-x: hidden; //Necessary because when sidebar folds out, x scrollbar appears
