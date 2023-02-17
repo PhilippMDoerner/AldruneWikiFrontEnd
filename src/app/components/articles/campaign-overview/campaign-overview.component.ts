@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { Constants } from 'src/app/app.constants';
 import { CampaignOverview } from 'src/app/models/campaign';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
