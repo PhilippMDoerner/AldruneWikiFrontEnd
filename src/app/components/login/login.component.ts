@@ -39,6 +39,8 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
 
   state: string;
   extraMessage: string;
+  resetErrorMessage: string;
+  isWaitingForPasswordReset: boolean;
   parameter_subscription: Subscription;
   hasConfirmedLogin: boolean = false;
   campaign: string;
@@ -110,9 +112,13 @@ export class LoginComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   requestPasswordReset(){
+    this.isWaitingForPasswordReset = true;
     this.mailService.requestPasswordReset(this.recoveryModel.username).pipe(first()).subscribe(
-      (response) =>  this.togglePasswordResetView(),
-      (error) => this.warnings.showWarning(error)
+      (_) =>  this.togglePasswordResetView(),
+      (error) => {
+        this.resetErrorMessage = error.message;
+        this.isWaitingForPasswordReset = false;
+      }
     );
   }
 

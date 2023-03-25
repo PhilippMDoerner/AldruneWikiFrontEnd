@@ -79,11 +79,11 @@ export class WarningsService {
       if(isErrorMessageArray){
         const formFieldErrors: string[] = httpErrorObject.error[formField];
         formFieldErrors.forEach(errorMessage => {
-          httpErrorMessagesHTML += `<strong class='ml-5'>- ${errorMessage}</strong> <br>`;
+          httpErrorMessagesHTML += `<strong class='ms-5'>- ${errorMessage}</strong> <br>`;
         });
       } else {
         const errorMessage = httpErrorObject.error[formField];
-        httpErrorMessagesHTML += `<strong class='ml-5'>- ${errorMessage}</strong> <br>`;
+        httpErrorMessagesHTML += `<strong class='ms-5'>- ${errorMessage}</strong> <br>`;
       }
 
     }

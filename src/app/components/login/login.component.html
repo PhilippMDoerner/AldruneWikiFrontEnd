@@ -19,10 +19,15 @@
 
 <ng-template #passwordResetView>
     <h1> Password Reset </h1>
-    <p> Forgot your account’s password? Enter your account name and we’ll send you a randomized new password to your email address.</p>
+    <p> Forgot your account's password? Enter your account name and we'll send you a randomized new password to your email address.</p>
+    <div class="mb-3 text-warning">{{resetErrorMessage}}</div>
+    
     <form class="d-flex flex-column" (submit)="requestPasswordReset()">
         <formly-form [model]="recoveryModel" [fields]="recoveryFields" [form]="recoveryForm"></formly-form>
         <div class="btn btn-secondary mb-3" (click)="togglePasswordResetView()">I do have a password !</div>
-        <button class="btn btn-primary" type="submit">Reset Password </button>
+        <button class="btn btn-primary d-flex justify-content-center align-items-center" [disabled]="isWaitingForPasswordReset" type="submit">
+            <span class="me-3"> Reset Password </span> 
+            <app-spinner *ngIf="isWaitingForPasswordReset"></app-spinner>
+        </button>
     </form>
 </ng-template>
