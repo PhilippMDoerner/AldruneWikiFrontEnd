@@ -22,7 +22,6 @@
         [formControl]="formControl" 
         [formlyAttributes]="field"
         >
-            {{ allSelectOptions$ | async }} Walumba
             <ng-container *ngFor="let selectOption of data.allSelectOptions; let optionIndex = index">
                 <option [ngValue]="selectOption[props.valueProp]" [disabled]="data.isOptionsDisabledArray[optionIndex]">
                     {{selectOption[props.labelProp]}}
