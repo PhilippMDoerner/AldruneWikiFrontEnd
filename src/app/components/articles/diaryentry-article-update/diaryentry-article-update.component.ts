@@ -13,7 +13,7 @@ import { RoutingService } from 'src/app/services/routing.service';
 import { TokenService } from 'src/app/services/token.service';
 import { WarningsService } from 'src/app/services/warnings.service';
 import { ArticleFormMixin } from 'src/app/utils/functions/articleFormMixin';
-import { sessionAlreadyHasAuthor } from 'src/app/utils/functions/formly-validation'
+import { sessionAlreadyHasAuthor } from 'src/app/utils/functions/formly-validation';
 
 @Component({
   selector: 'app-diaryentry-article-update',
@@ -52,7 +52,8 @@ export class DiaryentryArticleUpdateComponent extends ArticleFormMixin implement
           tooltipMessage: "Sessions may be impossible to select if the selected author already has a diaryentry for that session.",
           warningMessage: sessionAlreadyHasAuthor.message,
           wrappers: ["session-update-wrapper"],
-          showWrapperLabel: false
+          showWrapperLabel: false,
+          sortProp: "-session_number"
         }),
       ]
     },
