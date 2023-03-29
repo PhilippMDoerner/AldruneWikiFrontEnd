@@ -1,28 +1,28 @@
 import { Injectable } from '@angular/core';
-import { Constants, OverviewType } from '../app.constants';
-import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
 import { Observable } from 'rxjs';
-import { TransformArrayObservable, transformObservableArrayContent } from '../utils/functions/transform';
+import { map } from 'rxjs/operators';
+import { OverviewItem, OverviewItemObject } from "src/app/models/overviewItem";
+import { Constants, OverviewType } from '../app.constants';
+import { transformObservableArrayContent } from '../utils/functions/transform';
 import { CharacterService } from './character/character.service';
 import { CreatureService } from './creature/creature.service';
 import { DiaryentryService } from './diaryentry/diaryentry.service';
 import { EncounterServiceService } from './encounter/encounter-service.service';
+import { GenericObjectService } from './generic-object.service';
+import { GenericService } from './generic.service';
 import { ItemService } from './item/item.service';
 import { LocationService } from './location/location.service';
 import { MapService } from './map.service';
-import { QuestService } from './quest.service';
-import { SpellService } from './spell.service';
-import { RuleService } from './rule.service';
-import { SessionService } from './session.service';
-import { SessionAudioService } from './session-audio.service';
-import { QuoteService } from './quote.service';
-import { GenericObjectService } from './generic-object.service';
-import { GenericService } from './generic.service';
-import { OrganizationService } from './organization/organization.service';
-import { UserService } from './user.service';
-import { MarkerService } from './marker.service';
 import { MarkerTypeService } from './marker-type.service';
-import { map } from 'rxjs/operators';
+import { MarkerService } from './marker.service';
+import { OrganizationService } from './organization/organization.service';
+import { QuestService } from './quest.service';
+import { QuoteService } from './quote.service';
+import { RuleService } from './rule.service';
+import { SessionAudioService } from './session-audio.service';
+import { SessionService } from './session.service';
+import { SpellService } from './spell.service';
+import { UserService } from './user.service';
 
 
 @Injectable({
@@ -79,11 +79,7 @@ export class OverviewService {
 
     if(sortProperty != null){      
       overviewItemObservable = overviewItemObservable.pipe(
-        map( (items: OverviewItem[]) => {
-          return items.sort( 
-            (item1:OverviewItem, item2: OverviewItem) => item1[sortProperty] < item2[sortProperty] ? -1 : 1
-          );
-        })
+        map((items: OverviewItem[]) => this.sortByProperty(items, sortProperty))
       );
     }
 
@@ -94,17 +90,45 @@ export class OverviewService {
     const targetService: GenericObjectService | GenericService = this.overviewServiceMapping[overviewType];
     let overviewItemObservable: Observable<OverviewItem[]> = targetService.list();
 
-    if(sortProperty != null){      
-      overviewItemObservable = overviewItemObservable.pipe(
-        map( (items: OverviewItem[]) => {
-          return items.sort( 
-            (item1:OverviewItem, item2: OverviewItem) => item1[sortProperty].toLowerCase() < item2[sortProperty].toLowerCase() ? -1 : 1
-          );
-        })
-      );
+    if(sortProperty == null){
+      return transformObservableArrayContent(overviewItemObservable, OverviewItemObject);
     }
+    
+    overviewItemObservable = overviewItemObservable.pipe(
+      map((items: OverviewItem[]) => this.sortByProperty(items, sortProperty))
+    );
     
     return transformObservableArrayContent(overviewItemObservable, OverviewItemObject);
   }
-
+  
+  private sortByProperty(list: any[], propertyName: string): any[] {
+    const isInverseSort = propertyName.startsWith("-");
+    if(isInverseSort){
+      propertyName = this.removeInversionPrefix(propertyName);
+    }
+    
+    const sortFunction = (item1:OverviewItem, item2: OverviewItem) => {
+      const isStringSortVal = typeof item1[propertyName] === "string"; 
+      const item1SortVal = isStringSortVal ?
+        item1[propertyName].toLowerCase() :
+        item1[propertyName];
+      const item2SortVal = isStringSortVal ?
+        item2[propertyName].toLowerCase() :
+        item2[propertyName];
+      
+      let inCorrectOrder = item1SortVal < item2SortVal;
+      if(isInverseSort){
+        inCorrectOrder = !inCorrectOrder;
+      }
+      
+      return inCorrectOrder ? -1 : 1;
+    };
+    
+    return list.sort(sortFunction);
+  };
+  
+  
+  private removeInversionPrefix(str: string): string{
+    return str.substring(1);
+  }
 }
