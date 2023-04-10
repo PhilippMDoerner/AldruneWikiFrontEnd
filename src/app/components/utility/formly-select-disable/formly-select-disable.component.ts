@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AbstractControl, FormControlStatus } from '@angular/forms';
 import { FieldType, FormlyTemplateOptions } from '@ngx-formly/core';
-import { combineLatest, Observable, of } from 'rxjs';
+import { Observable, combineLatest, of } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { OverviewItemObject } from 'src/app/models/overviewItem';
 
@@ -37,6 +37,9 @@ import { OverviewItemObject } from 'src/app/models/overviewItem';
 })
 export class FormlySelectDisableComponent extends FieldType implements OnInit {
 
+  private static EMPTY_OPTION_LABEL = "------";
+  private static EMPTY_OPTION_VALUE = null;
+  
   constructor() { super() }
 
   allSelectOptions$: Observable<OverviewItemObject[]>;
@@ -68,9 +71,9 @@ export class FormlySelectDisableComponent extends FieldType implements OnInit {
         const selectedOptionPk: number = this.model.session;
         const selectedOptionIndex: number = options.findIndex(
           (option: OverviewItemObject) => option.pk === selectedOptionPk
-          );
-          const hasNoSelectedOption = selectedOptionIndex == -1;
-          if(hasNoSelectedOption) return false;
+        );
+        const hasNoSelectedOption = selectedOptionIndex == -1;
+        if(hasNoSelectedOption) return false;
           
         return isOptionDisabledArray[selectedOptionIndex];
       })
@@ -78,14 +81,30 @@ export class FormlySelectDisableComponent extends FieldType implements OnInit {
   }
 
   isDisabledOption(option: OverviewItemObject, thisComponentRef: this): boolean{
-    const checkForBeingDisabledCallback: Function = thisComponentRef.props.disabledExpression;
-    const hasNoCallback: boolean = checkForBeingDisabledCallback == null;
-    if(hasNoCallback) return false;
+    if(!this.hasIsDisabledOptionChecker(thisComponentRef)){
+      return false;
+    };
+    const isDisabledOption_Function: Function = thisComponentRef.props.disabledExpression;
+    
+    if(this.isEmptyOption(option, thisComponentRef)){
+      return false;
+    }
 
     const templateOptions: FormlyTemplateOptions = thisComponentRef.props;
     const formControl: AbstractControl = thisComponentRef.formControl;
     const model = thisComponentRef.model;
     
-    return checkForBeingDisabledCallback(option, templateOptions, model, formControl);
+    return isDisabledOption_Function(option, templateOptions, model, formControl);
+  }
+  
+  private isEmptyOption(option: OverviewItemObject, thisComponentRef: this): boolean {
+    const label = option[thisComponentRef.key as any];
+    const value = option[thisComponentRef.props.valueProp];
+    return label === FormlySelectDisableComponent.EMPTY_OPTION_LABEL 
+      && value === FormlySelectDisableComponent.EMPTY_OPTION_VALUE;
+  }
+  
+  private hasIsDisabledOptionChecker(thisComponentRef: this): boolean {
+    return thisComponentRef.props.disabledExpression != null;
   }
 }

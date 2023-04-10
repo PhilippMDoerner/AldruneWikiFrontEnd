@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from "@ngx-formly/core";
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { FormlyCheckboxConfig, FormlyCustomSelectConfig, FormlyCustomStringSelectConfig, FormlyDatepickerConfig, FormlyGenericInputConfig, FormlyInterface, FormlyOverviewDisabledSelectConfig, FormlyOverviewSelectConfig, FormlyPasswordInterface } from "src/app/models/formly";
 import { OverviewService } from './overview.service';
 
@@ -14,41 +15,57 @@ export class MyFormlyService {
   ) { }
 
   setDefaultValues(config: any): any{
-    if (config.required == null) config.required = true;
-    if (config.disabled == null) config.disabled = false;
-    if (config.sortProp == null) config.sortProperty = null;
-
-    return config
+    return {
+      required: true,
+      disabled: false,
+      sortProperty: null,
+      valueProp: "pk",
+      ...config
+    };
   }
 
-
+  private getOverviewItems(config: FormlyOverviewSelectConfig): Observable<any[]> {
+    const isCampaignSpecific = config.campaign !== null;
+    let options: Observable<any[]> = isCampaignSpecific 
+    ? this.selectOptionService.getCampaignOverviewItems(config.campaign, config.overviewType, config.sortProp)
+    : this.selectOptionService.getAllOverviewItems(config.overviewType, config.sortProp);
+      
+    const isRequired = config.required === true;
+    if(!isRequired){
+      options = options.pipe(map(values => {
+        const emptyOption = {};
+        emptyOption[config.key] = "------";
+        emptyOption[config.valueProp] = null;
+        return [emptyOption, ...values];
+      }));
+    }
+    
+    return options;
+  }
+  
   genericSelect(config: FormlyOverviewSelectConfig): FormlyFieldConfig{
     config = this.setDefaultValues(config);
+    
+    const optionsObservable: Observable<any[]> = this.getOverviewItems(config);
 
-    const validatorList = (config.validators) ? config.validators : [];
-    if (config.required === true ) validatorList.push('required');
-
-    let optionsObservable: Observable<any>;
-    if (config.campaign == null){
-      optionsObservable = this.selectOptionService.getAllOverviewItems(config.overviewType, config.sortProp);
-    } else {
-      optionsObservable = this.selectOptionService.getCampaignOverviewItems(config.campaign, config.overviewType, config.sortProp);
+    const validatorList = config.validators ?? [];
+    if (config.required === true ) {
+      validatorList.push('required');
     }
-
 
     return {
       key: config.key,
       type: "select",
       className: config.className,
       wrappers: config.wrappers,
-      hideExpression: (config.hide) ? config.hide : false,
+      hideExpression: config.hide ?? false,
       props:{
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
-        labelProp: (config.labelProp) ? config.labelProp : "name_full",
-        valueProp: (config.valueProp) ? config.valueProp : "pk",
+        label: config.label ?? this.capitalizeFirstLetter(config.key),
+        labelProp: config.labelProp ?? "name_full",
+        valueProp: config.valueProp,
         options: optionsObservable,
-        required: (typeof config.required === "boolean") ? config.required : true,
-        disabled: config.disabled,
+        required: config.required ?? true,
+        disabled: !!config.disabled,
       },
       validators: {
         validation: validatorList
@@ -59,17 +76,12 @@ export class MyFormlyService {
 
   genericDisableSelect(config: FormlyOverviewDisabledSelectConfig): FormlyFieldConfig{
     config = this.setDefaultValues(config);
+    console.log(config);
 
-    const validatorList = (config.validators) ? config.validators : [];
+    const validatorList = config.validators ?? [];
     if (config.required === true ) validatorList.push('required');
-    if (config.showWrapperLabel == null) config.showWrapperLabel = true;
 
-    let optionsObservable: Observable<any>;
-    if (config.campaign == null){
-      optionsObservable = this.selectOptionService.getAllOverviewItems(config.overviewType, config.sortProp);
-    } else {
-      optionsObservable = this.selectOptionService.getCampaignOverviewItems(config.campaign, config.overviewType, config.sortProp);
-    }
+    const optionsObservable: Observable<any[]> = this.getOverviewItems(config);
     
     return {
       key: config.key,
@@ -78,16 +90,16 @@ export class MyFormlyService {
       wrappers: config.wrappers,
       hideExpression: !!config.hide,
       props:{
-        label: config.label || this.capitalizeFirstLetter(config.key),
-        labelProp:  config.labelProp  || "name_full",
-        valueProp:  config.valueProp || "pk",
+        label: config.label ?? this.capitalizeFirstLetter(config.key),
+        labelProp:  config.labelProp  ?? "name_full",
+        valueProp:  config.valueProp,
         options: optionsObservable,
-        required: (typeof config.required === "boolean") ? config.required : true,
+        required: config.required ?? true,
         disabledExpression: config.disabledExpression,
         tooltipMessage: config.tooltipMessage,
         warningMessage: config.warningMessage,
         additionalProperties: {
-          showWrapperLabel: config.showWrapperLabel
+          showWrapperLabel: config.showWrapperLabel ?? true,
         }
       },
       validators: {
@@ -100,19 +112,19 @@ export class MyFormlyService {
   customSelect(config: FormlyCustomSelectConfig): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 
-    const validatorList = (config.validators) ? config.validators : [];
+    const validatorList = config.validators ?? [];
     if (config.required === true ) validatorList.push('required');
 
     return {
       key: config.key,
       type: "select",
       className: config.className,
-      hideExpression: (config.hide) ? config.hide : false,
+      hideExpression: config.hide ?? false,
       templateOptions:{
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+        label: config.label ?? this.capitalizeFirstLetter(config.key),
         options: config.options,
-        required: (typeof config.required === "boolean") ? config.required : true,
-        disabled: config.disabled,
+        required: config.required ?? true,
+        disabled: !!config.disabled,
       },
       validators: {
         validation: validatorList,
@@ -123,24 +135,23 @@ export class MyFormlyService {
   customStringSelect(config: FormlyCustomStringSelectConfig): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 
-    let options: {label: string, value: string}[] = [];
-    for (let option of config.options){
-      options.push({label: option, value: option});
-    }
+    let options: {label: string, value: string}[] = config.options.map(opt => {
+      return {label: opt, value: opt}
+    });
 
-    const validatorList = (config.validators) ? config.validators : [];
+    const validatorList = config.validators ?? [];
     if (config.required === true ) validatorList.push('required');
 
     return {
       key: config.key,
       type: "select",
       className: config.className,
-      hideExpression: (config.hide) ? config.hide : false,
+      hideExpression: config.hide ?? false,
       templateOptions:{
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+        label: config.label ?? this.capitalizeFirstLetter(config.key),
         options: options,
-        required: (typeof config.required === "boolean") ? config.required : true,
-        disabled: config.disabled,
+        required: config.required ?? true,
+        disabled: !!config.disabled,
       },
       validators: {
         validation: validatorList,
@@ -151,7 +162,7 @@ export class MyFormlyService {
   genericInput(config: FormlyGenericInputConfig): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 
-    const validatorList = (config.validators) ? config.validators : [];
+    const validatorList = config.validators ?? [];
     if (config.required === true ) validatorList.push('required'); //This is non functional as required is only rarely set at this point
     if (config.isNumberInput === true) validatorList.push('notInteger');
     //Why "hasSpecialCharacters" validation? Names are used in URLs, they mustn't have special characters
@@ -170,16 +181,16 @@ export class MyFormlyService {
       key: config.key,
       type: "input",
       className: config.className,
-      hideExpression: (config.hide) ? config.hide : false,
+      hideExpression: config.hide ?? false,
       parsers: config.parsers,
       templateOptions:{
         maxLength: config.maxLength,
         minLength: config.minLength,
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
+        label: config.label ?? this.capitalizeFirstLetter(config.key),
         type: inputType,
-        required: (typeof config.required === "boolean") ? config.required : true,
-        placeholder: (config.placeholder) ? config.placeholder : null,
-        disabled: config.disabled,
+        required: config.required ?? true,
+        placeholder: config.placeholder ?? null,
+        disabled: !!config.disabled,
       },
       validators:{
         validation: validatorList,
@@ -190,7 +201,7 @@ export class MyFormlyService {
   genericPasswordInput(config: FormlyInterface): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 
-    const validatorList = (config.validators) ? config.validators : [];
+    const validatorList = config.validators ?? [];
     if (config.required === true ) validatorList.push('required');
     
     return {
@@ -199,11 +210,11 @@ export class MyFormlyService {
       className: config.className,
       fieldGroupClassName: config.fieldGroupClassName,
       templateOptions:{
-        label: (config.label) ? config.label : "Password",
+        label: config.label ?? "Password",
         type: "password",
         required: true,
         placeholder: "Your password",
-        disabled: config.disabled,
+        disabled: !!config.disabled,
         attributes: {
           autocomplete: "on"
         }
@@ -218,7 +229,7 @@ export class MyFormlyService {
   confirmedPasswordInput(config: FormlyPasswordInterface): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 
-    const validatorList = (config.validators) ? config.validators : [];
+    const validatorList = config.validators ?? [];
     validatorList.push('required');
     
     const passwordField = {
@@ -226,11 +237,11 @@ export class MyFormlyService {
       type: "input",
       className: config.className,
       templateOptions:{
-        label: (config.label) ? config.label : "Password",
+        label: config.label ?? "Password",
         type: "password",
         required: true,
         placeholder: "Password, at least 7 characters",
-        disabled: config.disabled,
+        disabled: !!config.disabled,
       },
       validators:{
         validation: validatorList
@@ -246,7 +257,7 @@ export class MyFormlyService {
         type: "password",
         required: true,
         placeholder: "Please re-enter your password",
-        disabled: config.disabled,
+        disabled: !!config.disabled,
       },
     }
 
@@ -271,10 +282,10 @@ export class MyFormlyService {
       type: "checkbox",
       className: config.className,
       defaultValue: config.defaultValue,
-      hideExpression: (config.hide) ? config.hide : false,
+      hideExpression: !!config.hide,
       templateOptions:{
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
-        disabled: config.disabled,
+        label: config.label ?? this.capitalizeFirstLetter(config.key),
+        disabled: !!config.disabled,
       },
     }
   }
@@ -282,7 +293,7 @@ export class MyFormlyService {
   genericDatepicker(config: FormlyDatepickerConfig): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 
-    const validatorList = (config.validators) ? config.validators : [];
+    const validatorList = config.validators ?? [];
     validatorList.push('date');
     if (config.required === true ) validatorList.push('required');
 
@@ -290,10 +301,10 @@ export class MyFormlyService {
       key: config.key,
       type: "datepicker",
       className: config.className,
-      hideExpression: (config.hide) ? config.hide : false,
+      hideExpression: !!config.hide,
       templateOptions:{
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
-        disabled: config.disabled,
+        label: config.label ?? this.capitalizeFirstLetter(config.key),
+        disabled: !!config.disabled,
       },
       validators:{
         validation: validatorList,
@@ -304,18 +315,18 @@ export class MyFormlyService {
   singleFileField(config: FormlyInterface): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 
-    const validatorList = (config.validators) ? config.validators : [];
+    const validatorList = config.validators ?? [];
     if (config.required === true ) validatorList.push('required');
 
     return {
       key: config.key,
       type: "file",
       className: config.className,
-      hideExpression: (config.hide) ? config.hide : false,
+      hideExpression: !!config.hide,
       templateOptions: {
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
-        required: (typeof config.required === "boolean") ? config.required : true,
-        disabled: config.disabled,
+        label: config.label ?? this.capitalizeFirstLetter(config.key),
+        required: config.required ?? true,
+        disabled: !!config.disabled,
       },
       validators:{
         validation: validatorList,
@@ -326,18 +337,18 @@ export class MyFormlyService {
   genericTextField(config: FormlyInterface): FormlyFieldConfig{
     config = this.setDefaultValues(config);
 
-    const validatorList = (config.validators) ? config.validators : [];
+    const validatorList = config.validators ?? [];
     if (config.required === true ) validatorList.push('required');
 
     return {
       key: config.key,
       type: "tinymce",
       className: config.className,
-      hideExpression: (config.hide) ? config.hide : false,
+      hideExpression: !!config.hide,
       templateOptions:{
-        label: (config.label) ? config.label : this.capitalizeFirstLetter(config.key),
-        required: (typeof config.required === "boolean") ? config.required : true,
-        disabled: config.disabled,
+        label: config.label ?? this.capitalizeFirstLetter(config.key),
+        required: config.required ?? true,
+        disabled: !!config.disabled,
       },
       validators:{
         validation: validatorList
