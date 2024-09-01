@@ -57,7 +57,25 @@ export class CampaignService extends GenericService {
 
   update(pk: number, data: Campaign): Observable<Campaign> {
     const campaignData = this.processCampaignData(data);
-    return super.update(pk, campaignData);
+    const hasNewIcon = this.hasImageSelected(data.icon);
+    const hasNewBackgroundImage = this.hasImageSelected(data.background_image);
+    const formData = new FormData();
+    for (var key in data) {
+      if (['background_image', 'icon'].includes(key)) {
+        formData.append(key, data[key][0]);
+      } else if (data[key]) {
+        formData.append(key, data[key]);
+      }
+    }
+
+    if (!hasNewIcon) {
+      delete formData['icon'];
+    }
+    if (!hasNewBackgroundImage) {
+      delete formData['background_image'];
+    }
+
+    return super.update(pk, formData);
   }
 
   patch(pk: number, data: Campaign): Observable<Campaign> {
@@ -108,7 +126,7 @@ export class CampaignService extends GenericService {
   }
 
   private hasImageSelected(imageFieldValue: any): boolean {
-    return imageFieldValue.constructor.name === 'FileList';
+    return imageFieldValue?.constructor?.name === 'FileList';
   }
 
   delete(pk: number): Observable<any> {
