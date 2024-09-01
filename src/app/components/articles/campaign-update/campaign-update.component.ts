@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { first } from 'rxjs/operators';
 import { OverviewType } from 'src/app/app.constants';
-import { ApiObject } from 'src/app/models/base-models';
 import { CampaignObject } from 'src/app/models/campaign';
 import { CampaignService } from 'src/app/services/campaign.service';
 import { GlobalUrlParamsService } from 'src/app/services/global-url-params.service';
@@ -103,24 +101,6 @@ export class CampaignUpdateComponent extends ArticleFormMixin {
     });
 
     this.globalUrlParam.autoUpdateCampaignSet();
-  }
-
-  articleUpdate(userModel: any) {
-    if (userModel.pk == null)
-      throw `Invalid userModel Exception. The userModel provided here does not have a primary
-    key defined. This primary key is necessary to update the correct article in the database. Please contact the developer`;
-
-    const executionContext = this;
-
-    this.articleService
-      .patch(userModel.pk, userModel)
-      .pipe(first())
-      .subscribe(
-        (response: ApiObject) =>
-          this.onUpdateSuccess(response, executionContext),
-        (errorResponse: any) =>
-          this.onUpdateError(errorResponse, executionContext)
-      );
   }
 
   async onCreationSuccess(createdArticle: any, self: ArticleFormMixin) {

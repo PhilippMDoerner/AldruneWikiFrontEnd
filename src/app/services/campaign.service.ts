@@ -56,6 +56,11 @@ export class CampaignService extends GenericService {
   }
 
   update(pk: number, data: Campaign): Observable<Campaign> {
+    const isUpdateWithoutImage = !data.icon && !data.background_image;
+    if (isUpdateWithoutImage) {
+      return this.patch(pk, data);
+    }
+
     const campaignData = this.processCampaignData(data);
     return super.update(pk, campaignData);
   }
