@@ -1,177 +1,240 @@
 <div class="main" #overviewMainCard>
-    <article class="container">
-        <!-- Heading -->
-        <div class="row" *ngIf="overviewTypeName">
-            <h1 class="major col mb-4 pb-1 border-bottom">{{ overviewTypeMetaData[overviewTypeName]?.heading }}</h1>
-        </div>
+  <article class="container">
+    <!-- Heading -->
+    <div class="row" *ngIf="overviewTypeName">
+      <h1 class="major col mb-4 pb-1 border-bottom">
+        {{ overviewTypeMetaData[overviewTypeName]?.heading }}
+      </h1>
+    </div>
 
-        <ng-container [ngSwitch]="overviewTypeMetaData[overviewTypeName].overviewTypeEnum" #heading>
-            <ng-container *ngSwitchCase="OverviewType.Character" [ngTemplateOutlet]="characterHeading"></ng-container>
-            <ng-container *ngSwitchDefault [ngTemplateOutlet]="defaultHeading"></ng-container>        
-        </ng-container>
+    <ng-container
+      [ngSwitch]="overviewTypeMetaData[overviewTypeName].overviewTypeEnum"
+      #heading
+    >
+      <ng-container
+        *ngSwitchCase="OverviewType.Character"
+        [ngTemplateOutlet]="characterHeading"
+      ></ng-container>
+      <ng-container
+        *ngSwitchDefault
+        [ngTemplateOutlet]="defaultHeading"
+      ></ng-container>
+    </ng-container>
 
-        <!-- Adding Item button -->
-        <ng-container *ngIf="hasCreatePermission">
-            <div class="mb-3 row">
-                <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create"> 
-                    <i class="fa fa-plus"></i>
-                    Add {{ overviewTypeName | titlecase }}
-                </a>
-            </div>
-        </ng-container>
+    <!-- Adding Item button -->
+    <ng-container *ngIf="hasCreatePermission">
+      <div class="mb-3 row">
+        <a class="btn btn-primary col-lg-2 col-sm-3" routerLink="create">
+          <i class="fa fa-plus"></i>
+          Add {{ overviewTypeName | titlecase }}
+        </a>
+      </div>
+    </ng-container>
 
-        <form autocomplete="off" class="row" (submit)="openFirstArticle(filter.value)">
-            <input
-            type="text"
-            id="filter_input"
-            placeholder="Search for {{ overviewTypeName }}..."
-            class="filter-bar mt-2 mb-4 w-100 col"
-            #filter
-            (keyup)="filterListItems()">    
-        </form>
+    <form
+      autocomplete="off"
+      class="row"
+      (submit)="openFirstArticle(filter.value)"
+    >
+      <input
+        type="text"
+        id="filter_input"
+        placeholder="Search for {{ overviewTypeName }}..."
+        class="filter-bar mt-2 mb-4 w-100 col"
+        #filter
+        (keyup)="filterListItems()"
+      />
+    </form>
 
-        <ng-container [ngSwitch]="overviewTypeMetaData[overviewTypeName].overviewTypeEnum" #body> 
-            <ng-container *ngSwitchCase="OverviewType.Character" [ngTemplateOutlet]="characterBody"></ng-container>
-            <ng-container *ngSwitchCase="OverviewType.Diaryentry" [ngTemplateOutlet]="diaryentryBody"></ng-container>
-            <ng-container *ngSwitchDefault [ngTemplateOutlet]="defaultBody"></ng-container>        
-        </ng-container>
+    <ng-container
+      [ngSwitch]="overviewTypeMetaData[overviewTypeName].overviewTypeEnum"
+      #body
+    >
+      <ng-container
+        *ngSwitchCase="OverviewType.Character"
+        [ngTemplateOutlet]="characterBody"
+      ></ng-container>
+      <ng-container
+        *ngSwitchCase="OverviewType.Diaryentry"
+        [ngTemplateOutlet]="diaryentryBody"
+      ></ng-container>
+      <ng-container
+        *ngSwitchDefault
+        [ngTemplateOutlet]="defaultBody"
+      ></ng-container>
+    </ng-container>
 
-        <div class="row">
-            <a [routerLink]="homeUrl" class="mt-4 col-sm-3 btn btn-secondary">
-                Back to Frontpage
-            </a>
-        </div>
-    </article>
+    <div class="row">
+      <a [routerLink]="homeUrl" class="mt-4 col-sm-3 btn btn-secondary">
+        Back to Frontpage
+      </a>
+    </div>
+  </article>
 </div>
 
-
 <ng-template #defaultHeading>
-    <!-- Image -->
-    <div class="row">
-        <img 
-        class="col overview-image px-0 mb-4" 
-        [src]="overviewTypeMetaData[overviewTypeName].image" 
-        alt="Image indicating the overview type"/>
-    </div>
+  <!-- Image -->
+  <div class="row">
+    <img
+      class="col overview-image px-0 mb-4"
+      [src]="overviewTypeMetaData[overviewTypeName].image"
+      alt="Image indicating the overview type"
+    />
+  </div>
 </ng-template>
-
 
 <ng-template #characterHeading>
-    <div class="row">
-        <h3 class="col mb-0"> Player Characters </h3>
-    </div>
+  <div class="row">
+    <h3 class="col mb-0">Player Characters</h3>
+  </div>
 
-    <div class="mb-5 row" id="player-characters">
-        <ng-container *ngFor="let playerCharacter of playerCharacters">
-            <div class="mb-4 col-lg-3 col-md-4 col-sm-6 col-12">
-                <a [routerLink]="playerCharacter.getAbsoluteRouterUrl()">
-                    <div class="card">
-                        <ng-container *ngIf="playerCharacter.images">
-                            <img class="card-img-top" 
-                            [src]="constants.wikiUrl + playerCharacter.images[0]" 
-                            alt="An image displaying a player character">
-                        </ng-container>
-                        <div class="card-body p-3">
-                            <h5 class="card-title mb-0 text-center">{{ playerCharacter.name_full }}</h5>
-                        </div>
-                    </div>
-                </a> 
+  <div class="mb-5 row" id="player-characters">
+    <ng-container *ngFor="let playerCharacter of playerCharacters">
+      <div class="mb-4 col-lg-3 col-md-4 col-sm-6 col-12">
+        <a [routerLink]="playerCharacter.getAbsoluteRouterUrl()">
+          <div class="card">
+            <ng-container *ngIf="playerCharacter.images">
+              <img
+                class="card-img-top"
+                [src]="constants.wikiUrl + playerCharacter.images[0]"
+                alt="An image displaying a player character"
+              />
+            </ng-container>
+            <div class="card-body p-3">
+              <h5 class="card-title mb-0 text-center">
+                {{ playerCharacter.name_full }}
+              </h5>
             </div>
-        </ng-container>
-    </div>
+          </div>
+        </a>
+      </div>
+    </ng-container>
+  </div>
 </ng-template>
-
 
 <ng-template #characterBody>
-    <ng-container [ngTemplateOutlet]="filterField"></ng-container>
+  <ng-container [ngTemplateOutlet]="filterField"></ng-container>
 
-    <div class="row">
-        <h3 class="mb-3 col"> Non-Player Characters </h3>
-    </div>
+  <div class="row">
+    <h3 class="mb-3 col">Non-Player Characters</h3>
+  </div>
 
-    <div class="row">
-        <ng-container *ngFor="let characterLetterEntries of listItems | groupByFirstLetter: 'name'">
-            <div [ngClass]="{
-                'py-4 col-md-6 border-bottom': !filter.value, 
-                'col-12': filter.value
-            }">
-                <!-- Single-Letter-Group-Heading -->
-                <h5 class="mb-0" [ngClass]="{'d-none': filter.value}"> {{ characterLetterEntries.key }} </h5>
-    
-                <!-- Single-Letter-Group-Names -->
-                <ul class="mb-0">
-                    <ng-container *ngFor="let characterEntry of characterLetterEntries.value">
-                        <span class="px-0">
-                            <li 
-                            [ngClass]="{'d-none': !characterEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}"
-                            >
-                                <a [routerLink]="characterEntry.getAbsoluteRouterUrl()"> 
-                                    {{characterEntry.name_full}}
-                                </a>
-                            </li>
-                        </span>
-                    </ng-container>
-                </ul>
-    
-            </div>
-        </ng-container>
+  <div class="row">
+    <ng-container
+      *ngFor="
+        let characterLetterEntries of listItems | groupByFirstLetter : 'name'
+      "
+    >
+      <div
+        [ngClass]="{
+          'py-4 col-md-6 border-bottom': !filter.value,
+          'col-12': filter.value
+        }"
+      >
+        <!-- Single-Letter-Group-Heading -->
+        <h5 class="mb-0" [ngClass]="{ 'd-none': filter.value }">
+          {{ characterLetterEntries.key }}
+        </h5>
 
-    </div>
+        <!-- Single-Letter-Group-Names -->
+        <ul class="mb-0">
+          <ng-container
+            *ngFor="let characterEntry of characterLetterEntries.value"
+          >
+            <span class="px-0">
+              <li
+                [ngClass]="{
+                  'd-none': !characterEntry.name_full
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
+                }"
+              >
+                <a [routerLink]="characterEntry.getAbsoluteRouterUrl()">
+                  {{ characterEntry.name_full }}
+                </a>
+              </li>
+            </span>
+          </ng-container>
+        </ul>
+      </div>
+    </ng-container>
+  </div>
 </ng-template>
-
 
 <ng-template #diaryentryBody>
-    <ng-container *ngFor="let authorDiaryEntries of listItems | groupBy: 'author_details.name'">
-        <!-- Author Heading -->
-        <div class="row">
-            <h5 class="col" [ngClass]="{'d-none': filter.value}"> {{ authorDiaryEntries.key }} </h5>
-        </div>
-
-        <!-- Author Entries -->
-        <ul [ngClass]="{'mb-0': filter.value}">
-            <ng-container *ngFor="let diaryEntry of authorDiaryEntries.value">
-                <span class="row">
-                    <li class="col" [ngClass]="{'d-none': !diaryEntry.name_full.toLowerCase().includes(filter.value.toLowerCase())}">
-                        <a [routerLink]="diaryEntry.getAbsoluteRouterUrl()" >
-                            {{diaryEntry.name_full}}
-                        </a>
-                    </li>
-                </span>
-            </ng-container>
-        </ul>
-    </ng-container>
-</ng-template>
-
-
-<ng-template #defaultBody>
-    <ng-container [ngTemplateOutlet]="filterField"></ng-container>
-
+  <ng-container
+    *ngFor="
+      let authorDiaryEntries of listItems | groupBy : 'author_details.name'
+    "
+  >
+    <!-- Author Heading -->
     <div class="row">
-        <ng-container *ngFor="let itemLetterEntries of listItems | groupByFirstLetter: 'name_full'">
-            <div [ngClass]="{'py-4 col-md-6 border-bottom': !filter.value, 'col-12': filter.value}">
-                <!-- Letter Heading -->
-                 <h5 class="mb-0" [ngClass]="{'d-none': filter.value}"> {{ itemLetterEntries.key }} </h5>
-        
-                <!-- Article List -->
-                <ul class="mb-0">
-                    <ng-container *ngFor="let item of itemLetterEntries.value">
-                        <li [ngClass]="{'d-none': !item.name_full.toLowerCase().includes(filter.value.toLowerCase())}">
-                            <a [routerLink]="item.getAbsoluteRouterUrl()">
-                                {{item.name_full}}
-                            </a>
-                        </li>
-                    </ng-container>
-                </ul>
-        
-            </div>
-        </ng-container>
-
+      <h5 class="col" [ngClass]="{ 'd-none': filter.value }">
+        {{ authorDiaryEntries.key }}
+      </h5>
     </div>
 
+    <!-- Author Entries -->
+    <ul [ngClass]="{ 'mb-0': filter.value }">
+      <ng-container *ngFor="let diaryEntry of authorDiaryEntries.value">
+        <span class="row">
+          <li
+            class="col"
+            [ngClass]="{
+              'd-none': !diaryEntry.name_full
+                .toLowerCase()
+                .includes(filter.value.toLowerCase())
+            }"
+          >
+            <a [routerLink]="diaryEntry.getAbsoluteRouterUrl()">
+              {{ diaryEntry.name_full }}
+            </a>
+          </li>
+        </span>
+      </ng-container>
+    </ul>
+  </ng-container>
 </ng-template>
 
+<ng-template #defaultBody>
+  <ng-container [ngTemplateOutlet]="filterField"></ng-container>
 
+  <div class="row">
+    <ng-container
+      *ngFor="
+        let itemLetterEntries of listItems | groupByFirstLetter : 'name_full'
+      "
+    >
+      <div
+        [ngClass]="{
+          'py-4 col-md-6 border-bottom': !filter.value,
+          'col-12': filter.value
+        }"
+      >
+        <!-- Letter Heading -->
+        <h5 class="mb-0" [ngClass]="{ 'd-none': filter.value }">
+          {{ itemLetterEntries.key }}
+        </h5>
 
-<ng-template #filterField>
-
+        <!-- Article List -->
+        <ul class="mb-0">
+          <ng-container *ngFor="let item of itemLetterEntries.value">
+            <li
+              [ngClass]="{
+                'd-none': !item.name_full
+                  .toLowerCase()
+                  .includes(filter.value.toLowerCase())
+              }"
+            >
+              <a [routerLink]="item.getAbsoluteRouterUrl()">
+                {{ item.name_full }}
+              </a>
+            </li>
+          </ng-container>
+        </ul>
+      </div>
+    </ng-container>
+  </div>
 </ng-template>
+
+<ng-template #filterField> </ng-template>
